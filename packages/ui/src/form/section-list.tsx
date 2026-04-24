@@ -140,6 +140,9 @@ export function SectionList<T extends { id: string }>({
                     {({ attributes, listeners }) => (
                       <AccordionItem value={entry.id}>
                         <AccordionTrigger className="min-w-0 items-center gap-2">
+                          {/* biome-ignore lint/a11y/noStaticElementInteractions: drag handle inside button — dnd-kit provides keyboard a11y via attributes/listeners */}
+                          {/* biome-ignore lint/a11y/noNoninteractiveElementInteractions: drag handle inside button — dnd-kit provides keyboard a11y via attributes/listeners */}
+                          {/* biome-ignore lint/a11y/useKeyWithClickEvents: spread keyboard handlers come from dnd-kit listeners */}
                           <span
                             className="inline-flex shrink-0 cursor-grab items-center text-muted-foreground/50 hover:text-muted-foreground"
                             {...attributes}
@@ -155,6 +158,8 @@ export function SectionList<T extends { id: string }>({
                           {hasError?.(entry) && (
                             <span className="size-1.5 shrink-0 rounded-full bg-destructive" />
                           )}
+                          {/* biome-ignore lint/a11y/useKeyWithClickEvents: visual button nested in parent <button>; keyboard delete handled by accordion remove flow */}
+                          {/* biome-ignore lint/a11y/useSemanticElements: cannot nest <button> inside AccordionTrigger which is already a button */}
                           <span
                             className="inline-flex size-8 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground md:size-5"
                             onClick={(e) => {

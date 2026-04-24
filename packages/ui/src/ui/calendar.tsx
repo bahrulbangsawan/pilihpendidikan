@@ -3,7 +3,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "lucide-react";
-import * as React from "react";
+import { type ComponentProps, useEffect, useRef } from "react";
 import {
   type DayButton,
   DayPicker,
@@ -23,8 +23,8 @@ function Calendar({
   formatters,
   components,
   ...props
-}: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+}: ComponentProps<typeof DayPicker> & {
+  buttonVariant?: ComponentProps<typeof Button>["variant"];
 }) {
   const defaultClassNames = getDefaultClassNames();
 
@@ -127,6 +127,7 @@ function Calendar({
         hidden: cn("invisible", defaultClassNames.hidden),
         ...classNames,
       }}
+      /* biome-ignore-start lint/correctness/noNestedComponentDefinitions: react-day-picker component overrides must be passed inline to inherit typed props and closure values like locale */
       components={{
         Root: ({ className, rootRef, ...props }) => {
           return (
@@ -172,6 +173,7 @@ function Calendar({
         },
         ...components,
       }}
+      /* biome-ignore-end lint/correctness/noNestedComponentDefinitions: see above */
       formatters={{
         formatMonthDropdown: (date) =>
           date.toLocaleString(locale?.code, { month: "short" }),
@@ -190,11 +192,11 @@ function CalendarDayButton({
   modifiers,
   locale,
   ...props
-}: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
+}: ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const defaultClassNames = getDefaultClassNames();
 
-  const ref = React.useRef<HTMLButtonElement>(null);
-  React.useEffect(() => {
+  const ref = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
     if (modifiers.focused) {
       ref.current?.focus();
     }

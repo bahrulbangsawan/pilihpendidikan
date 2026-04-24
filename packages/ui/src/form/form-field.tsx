@@ -20,49 +20,63 @@ interface FormFieldProps {
   max?: string | number;
 }
 
-export function FormField({
-  label,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-  error,
-  onBlur,
-  disabled,
-  multiline,
-  rows = 2,
-  step,
-  min,
-  max,
-}: FormFieldProps) {
+function renderControl(props: FormFieldProps): ReactNode {
+  const {
+    value,
+    onChange,
+    placeholder,
+    type = "text",
+    error,
+    onBlur,
+    disabled,
+    multiline,
+    rows = 2,
+    step,
+    min,
+    max,
+  } = props;
+
+  if (multiline) {
+    return (
+      <Textarea
+        disabled={disabled}
+        onBlur={onBlur}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        rows={rows}
+        value={value}
+      />
+    );
+  }
+
+  if (type === "month") {
+    return (
+      <MonthPicker disabled={disabled} onChange={onChange} value={value} />
+    );
+  }
+
+  return (
+    <Input
+      aria-invalid={!!error}
+      disabled={disabled}
+      max={max}
+      min={min}
+      onBlur={onBlur}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      step={step}
+      type={type}
+      value={value}
+    />
+  );
+}
+
+export function FormField(props: FormFieldProps) {
+  const { label, error } = props;
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>
-      {multiline ? (
-        <Textarea
-          disabled={disabled}
-          onBlur={onBlur}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          rows={rows}
-          value={value}
-        />
-      ) : type === "month" ? (
-        <MonthPicker disabled={disabled} onChange={onChange} value={value} />
-      ) : (
-        <Input
-          aria-invalid={!!error}
-          disabled={disabled}
-          max={max}
-          min={min}
-          onBlur={onBlur}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          step={step}
-          type={type}
-          value={value}
-        />
-      )}
+      {renderControl(props)}
       {error && <p className="text-destructive text-xs">{error}</p>}
     </div>
   );

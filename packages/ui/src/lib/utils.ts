@@ -1,6 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+const NON_DIGIT_RE = /\D/g;
+const HTTP_PROTOCOL_RE = /^https?:\/\//i;
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -11,7 +14,7 @@ export function formatPhoneDisplay(phone: string): string {
   }
 
   const hasPlus = phone.startsWith("+");
-  const digits = phone.replace(/\D/g, "");
+  const digits = phone.replace(NON_DIGIT_RE, "");
 
   if (digits.length <= 4) {
     return (hasPlus ? "+" : "") + digits;
@@ -27,8 +30,10 @@ export function formatPhoneDisplay(phone: string): string {
   }
 
   // Merge a lone leading digit into the next group
-  if (groups.length > 1 && groups[0]!.length === 1) {
-    groups[0] = groups[0]! + groups[1]!;
+  const first = groups[0];
+  const second = groups[1];
+  if (groups.length > 1 && first && second && first.length === 1) {
+    groups[0] = first + second;
     groups.splice(1, 1);
   }
 
@@ -39,7 +44,7 @@ export function ensureUrl(url: string): string {
   if (!url) {
     return url;
   }
-  if (/^https?:\/\//i.test(url)) {
+  if (HTTP_PROTOCOL_RE.test(url)) {
     return url;
   }
   return `https://${url}`;

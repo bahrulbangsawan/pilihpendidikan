@@ -50,15 +50,14 @@ export function MonthPicker({
   function handleChange(newMonth: string, newYear: string) {
     if (newMonth && newYear) {
       // Clamp month if switching to max year with a month that exceeds max
-      if (
+      const clampedMonth =
         maxYear &&
         maxMonth &&
         Number(newYear) === maxYear &&
         newMonth > maxMonth
-      ) {
-        newMonth = maxMonth;
-      }
-      onChange(`${newYear}-${newMonth}`);
+          ? maxMonth
+          : newMonth;
+      onChange(`${newYear}-${clampedMonth}`);
     } else if (!(newMonth || newYear)) {
       onChange("");
     }
