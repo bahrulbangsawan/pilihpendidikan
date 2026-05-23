@@ -38,6 +38,7 @@ interface SectionListProps<T extends { id: string }> {
   hasError?: (entry: T) => boolean;
   renderContent: (entry: T, index: number) => ReactNode;
   titleExtra?: ReactNode;
+  titleIcon?: ReactNode;
   triggerExtra?: (entry: T, index: number) => ReactNode;
 }
 
@@ -86,6 +87,7 @@ export function SectionList<T extends { id: string }>({
   hasError,
   renderContent,
   titleExtra,
+  titleIcon,
   triggerExtra,
 }: SectionListProps<T>) {
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -111,12 +113,19 @@ export function SectionList<T extends { id: string }>({
   return (
     <section>
       <div className="flex items-center gap-3">
-        <input
-          className="min-w-0 flex-1 bg-transparent font-medium text-base outline-none placeholder:text-muted-foreground md:text-sm"
-          onChange={(e) => onTitleChange(e.target.value)}
-          placeholder={placeholder}
-          value={title}
-        />
+        <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          {titleIcon && (
+            <span className="inline-flex shrink-0 items-center">
+              {titleIcon}
+            </span>
+          )}
+          <input
+            className="min-w-0 flex-1 bg-transparent font-medium text-base outline-none placeholder:text-muted-foreground md:text-sm"
+            onChange={(e) => onTitleChange(e.target.value)}
+            placeholder={placeholder}
+            value={title}
+          />
+        </div>
         {titleExtra}
       </div>
       <div className="mt-3 space-y-3">

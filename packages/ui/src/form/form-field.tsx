@@ -18,6 +18,14 @@ interface FormFieldProps {
   step?: string | number;
   min?: string | number;
   max?: string | number;
+  numeric?: boolean;
+}
+
+// V2.2.3 / V2.3.7 boundary guard: strip anything that is not a digit so
+// non-finite tokens (NaN, Infinity, -Infinity, exponential noise) cannot
+// propagate upstream when the caller will pass the value to Number().
+function sanitizeNumeric(raw: string): string {
+  return raw.replace(/\D+/g, "");
 }
 
 function renderControl(props: FormFieldProps): ReactNode {
@@ -34,6 +42,7 @@ function renderControl(props: FormFieldProps): ReactNode {
     step,
     min,
     max,
+    numeric,
   } = props;
 
   if (multiline) {
@@ -59,10 +68,14 @@ function renderControl(props: FormFieldProps): ReactNode {
     <Input
       aria-invalid={!!error}
       disabled={disabled}
+      inputMode={numeric ? "numeric" : undefined}
       max={max}
       min={min}
       onBlur={onBlur}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) =>
+        onChange(numeric ? sanitizeNumeric(e.target.value) : e.target.value)
+      }
+      pattern={numeric ? "[0-9]*" : undefined}
       placeholder={placeholder}
       step={step}
       type={type}
