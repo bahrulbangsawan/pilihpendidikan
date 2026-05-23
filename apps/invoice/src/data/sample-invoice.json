@@ -1,0 +1,128 @@
+{
+  "invoiceNumber": "INV-2026-0001",
+  "dateOfIssue": "25 Mar 2026",
+  "dateDue": "25 Apr 2026",
+  "currency": "IDR",
+  "accentColor": "#f48120",
+  "from": {
+    "companyName": "Bahrul Bangsawan",
+    "address": "Jalan Poros Manuju Krg. Manuju",
+    "city": "Kabupaten Gowa",
+    "kecamatan": "Manuju",
+    "state": "Sulawesi Selatan",
+    "postalCode": "92173",
+    "country": "Indonesia",
+    "email": "work@bahrul.me",
+    "logoUrl": ""
+  },
+  "billTo": {
+    "name": "Prabowo Subianto",
+    "address": "Jl. Veteran No.17-18 RT.2/RW.3",
+    "city": "Kota Jakarta Pusat",
+    "kecamatan": "Gambir",
+    "stateRegion": "Daerah Khusus Ibukota Jakarta",
+    "postalCode": "10110",
+    "country": "Indonesia",
+    "email": "dumas@setneg.go.id"
+  },
+  "items": [
+    {
+      "id": "item-1",
+      "description": "Website Development — Company Profile (Next.js, Responsive, CMS Integration)",
+      "period": "01 Mar 2026–31 Mar 2026",
+      "qty": 1,
+      "unitPrice": 25000000,
+      "amount": 25000000,
+      "subItems": []
+    },
+    {
+      "id": "item-2",
+      "description": "SEO Optimization — On-Page & Technical SEO Audit + Implementation",
+      "period": "01 Mar 2026–31 Mar 2026",
+      "qty": 1,
+      "unitPrice": 8500000,
+      "amount": 8500000,
+      "subItems": []
+    },
+    {
+      "id": "item-3",
+      "description": "Google Ads Management — Search & Display Campaign Setup + Optimization",
+      "period": "01 Mar 2026–31 Mar 2026",
+      "qty": 1,
+      "unitPrice": 5000000,
+      "amount": 5000000,
+      "subItems": [
+        {
+          "id": "sub-3-1",
+          "label": "Ad Spend Budget (pass-through)",
+          "qty": 1,
+          "unitPrice": 15000000,
+          "amount": 15000000
+        }
+      ]
+    },
+    {
+      "id": "item-4",
+      "description": "Social Media Management — Content Creation, Scheduling & Reporting (Instagram, TikTok)",
+      "period": "01 Mar 2026–31 Mar 2026",
+      "qty": 1,
+      "unitPrice": 7500000,
+      "amount": 7500000,
+      "subItems": []
+    },
+    {
+      "id": "item-5",
+      "description": "UI/UX Design — Dashboard Admin Panel (Figma, 10 Screens)",
+      "period": "01 Mar 2026–31 Mar 2026",
+      "qty": 10,
+      "unitPrice": 1500000,
+      "amount": 15000000,
+      "subItems": []
+    }
+  ],
+  "adjustments": [
+    {
+      "id": "adj-1",
+      "label": "Diskon Loyal Client",
+      "type": "deduct",
+      "mode": "percentage",
+      "value": 10
+    },
+    {
+      "id": "adj-2",
+      "label": "PPN 11%",
+      "type": "add",
+      "mode": "percentage",
+      "value": 11
+    }
+  ],
+  "customFields": [
+    {
+      "id": "cf-1",
+      "label": "KTP",
+      "value": "12345678910112"
+    },
+    {
+      "id": "cf-2",
+      "label": "NPWP",
+      "value": "12345678910112"
+    },
+    {
+      "id": "cf-3",
+      "label": "Bank",
+      "value": "BCA"
+    },
+    {
+      "id": "cf-4",
+      "label": "Nama Rekening",
+      "value": "Bahrul Bangsawan"
+    },
+    {
+      "id": "cf-5",
+      "label": "No. Rekening",
+      "value": "12345678910112"
+    }
+  ],
+  "notes": "Pembayaran harap ditransfer ke rekening BCA a/n Bahrul Bangsawan sebelum tanggal jatuh tempo. Invoice ini sah sebagai bukti tagihan tanpa tanda tangan basah.Terima kasih atas kepercayaan Anda.",
+  "taxRate": 0
+}

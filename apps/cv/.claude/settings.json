@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bahrul": {
+      "type": "sse",
+      "url": "https://mcp.bahrul.me/sse"
+    }
+  }
+}
