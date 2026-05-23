@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import en from "./locales/en.json";
 import id from "./locales/id.json";
 
@@ -97,5 +97,5 @@ const I18nContext = createContext<I18nContextValue>({
 export const I18nProvider = I18nContext.Provider;
 
 export function useTranslation() {
-  return useContext(I18nContext);
+  return use(I18nContext);
 }

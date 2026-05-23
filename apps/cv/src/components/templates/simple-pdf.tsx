@@ -1,3 +1,6 @@
+// prefer-dynamic-import for @react-pdf/renderer is skipped: this module is
+// loaded via dynamic import() at the call site (index.tsx handleDownloadPDF).
+// The static import here is required for @react-pdf JSX primitives to work.
 import {
   Document,
   Link,
@@ -132,7 +135,7 @@ export function CVDocument({ data }: { data: CVData }) {
                   : "",
               ]
                 .filter(Boolean)
-                .join("  \u00b7  ")}
+                .join("  ·  ")}
             </Text>
           )}
         </View>
@@ -149,9 +152,11 @@ export function CVDocument({ data }: { data: CVData }) {
         {experience.some((e) => e.company || e.title) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.experienceTitle}</Text>
-            {experience
-              .filter((e) => e.company || e.title)
-              .map((entry) => (
+            {experience.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!(entry.company || entry.title)) {
+                return acc;
+              }
+              acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
                   {entry.title && (
                     <Text style={s.entryTitle}>{entry.title}</Text>
@@ -177,7 +182,7 @@ export function CVDocument({ data }: { data: CVData }) {
                             : "Present",
                       ]
                         .filter(Boolean)
-                        .join(" \u2013 ")}
+                        .join(" – ")}
                   </Text>
                   {(entry.workType || entry.locationPolicy) && (
                     <Text style={s.entryMeta}>
@@ -186,21 +191,23 @@ export function CVDocument({ data }: { data: CVData }) {
                         LOCATION_LABELS[entry.locationPolicy],
                       ]
                         .filter(Boolean)
-                        .join(" \u00b7 ")}
+                        .join(" · ")}
                     </Text>
                   )}
-                  {entry.description &&
-                    entry.description
-                      .split("\n")
-                      .filter((l) => l.trim())
-                      .map((line, i) => (
-                        <View key={i} style={s.bulletRow}>
-                          <Text style={s.bulletDot}>{"\u2022"}</Text>
-                          <Text style={s.bulletText}>{line.trim()}</Text>
-                        </View>
-                      ))}
+                  {entry.description
+                    ?.split("\n")
+                    .filter((l) => l.trim())
+                    // index key safe: static newline-split, never reordered
+                    .map((line, i) => (
+                      <View key={i} style={s.bulletRow}>
+                        <Text style={s.bulletDot}>{"•"}</Text>
+                        <Text style={s.bulletText}>{line.trim()}</Text>
+                      </View>
+                    ))}
                 </View>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -208,9 +215,11 @@ export function CVDocument({ data }: { data: CVData }) {
         {education.some((e) => e.institution || e.degree) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.educationTitle}</Text>
-            {education
-              .filter((e) => e.institution || e.degree)
-              .map((entry) => (
+            {education.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!(entry.institution || entry.degree)) {
+                return acc;
+              }
+              acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
                   {entry.degree && (
                     <Text style={s.entryTitle}>{entry.degree}</Text>
@@ -226,7 +235,7 @@ export function CVDocument({ data }: { data: CVData }) {
                               : formatMonth(entry.endDate),
                           ]
                             .filter(Boolean)
-                            .join(" \u2013 ")
+                            .join(" – ")
                         : "",
                     ]
                       .filter(Boolean)
@@ -241,11 +250,13 @@ export function CVDocument({ data }: { data: CVData }) {
                         entry.gpa ? `GPA: ${entry.gpa}` : "",
                       ]
                         .filter(Boolean)
-                        .join(" \u00b7 ")}
+                        .join(" · ")}
                     </Text>
                   )}
                 </View>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -253,14 +264,18 @@ export function CVDocument({ data }: { data: CVData }) {
         {skills.some((c) => c.items.length > 0) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.skillsTitle}</Text>
-            {skills
-              .filter((c) => c.items.length > 0)
-              .map((cat) => (
+            {skills.reduce<React.ReactNode[]>((acc, cat) => {
+              if (cat.items.length === 0) {
+                return acc;
+              }
+              acc.push(
                 <Text key={cat.id} style={[s.bodyText, s.skillRow]}>
                   {cat.name && <Text style={s.skillLabel}>{cat.name}: </Text>}
                   {cat.items.join(", ")}.
                 </Text>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -268,9 +283,11 @@ export function CVDocument({ data }: { data: CVData }) {
         {awards.some((e) => e.title) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.awardsTitle}</Text>
-            {awards
-              .filter((e) => e.title)
-              .map((entry) => (
+            {awards.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!entry.title) {
+                return acc;
+              }
+              acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
                   <Text style={s.entryTitle}>{entry.title}</Text>
                   <Text style={s.entryMeta}>
@@ -289,7 +306,9 @@ export function CVDocument({ data }: { data: CVData }) {
                     </Link>
                   )}
                 </View>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -297,9 +316,11 @@ export function CVDocument({ data }: { data: CVData }) {
         {certificates.some((e) => e.name) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.certificatesTitle}</Text>
-            {certificates
-              .filter((e) => e.name)
-              .map((entry) => (
+            {certificates.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!entry.name) {
+                return acc;
+              }
+              acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
                   {entry.url ? (
                     <Link src={ensureUrl(entry.url)} style={s.entryTitle}>
@@ -316,14 +337,16 @@ export function CVDocument({ data }: { data: CVData }) {
                         entry.expiryDate ? formatMonth(entry.expiryDate) : "",
                       ]
                         .filter(Boolean)
-                        .join(" \u2013 "),
+                        .join(" – "),
                       entry.credentialId ? `ID: ${entry.credentialId}` : "",
                     ]
                       .filter(Boolean)
                       .join(" | ")}
                   </Text>
                 </View>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -331,19 +354,23 @@ export function CVDocument({ data }: { data: CVData }) {
         {languages.some((e) => e.language) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.languagesTitle}</Text>
-            {languages
-              .filter((e) => e.language)
-              .map((entry) => (
+            {languages.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!entry.language) {
+                return acc;
+              }
+              acc.push(
                 <Text key={entry.id} style={[s.bodyText, s.langRow]}>
                   {entry.language}
                   {entry.proficiency && (
                     <Text style={s.langProficiency}>
                       {" "}
-                      {"\u2013"} {entry.proficiency}
+                      {"–"} {entry.proficiency}
                     </Text>
                   )}
                 </Text>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
 
@@ -374,9 +401,11 @@ export function CVDocument({ data }: { data: CVData }) {
         {volunteer.some((e) => e.organization || e.role) && (
           <View style={s.sectionWrap}>
             <Text style={s.sectionTitle}>{data.volunteerTitle}</Text>
-            {volunteer
-              .filter((e) => e.organization || e.role)
-              .map((entry) => (
+            {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
+              if (!(entry.organization || entry.role)) {
+                return acc;
+              }
+              acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
                   {entry.role && <Text style={s.entryTitle}>{entry.role}</Text>}
                   <Text style={s.entryMeta}>
@@ -392,24 +421,26 @@ export function CVDocument({ data }: { data: CVData }) {
                                 : "Present",
                           ]
                             .filter(Boolean)
-                            .join(" \u2013 ")
+                            .join(" – ")
                         : "",
                     ]
                       .filter(Boolean)
                       .join(" | ")}
                   </Text>
-                  {entry.description &&
-                    entry.description
-                      .split("\n")
-                      .filter((l) => l.trim())
-                      .map((line, i) => (
-                        <View key={i} style={s.bulletRow}>
-                          <Text style={s.bulletDot}>{"\u2022"}</Text>
-                          <Text style={s.bulletText}>{line.trim()}</Text>
-                        </View>
-                      ))}
+                  {entry.description
+                    ?.split("\n")
+                    .filter((l) => l.trim())
+                    // index key safe: static newline-split, never reordered
+                    .map((line, i) => (
+                      <View key={i} style={s.bulletRow}>
+                        <Text style={s.bulletDot}>{"•"}</Text>
+                        <Text style={s.bulletText}>{line.trim()}</Text>
+                      </View>
+                    ))}
                 </View>
-              ))}
+              );
+              return acc;
+            }, [])}
           </View>
         )}
       </Page>

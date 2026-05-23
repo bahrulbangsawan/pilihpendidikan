@@ -6,14 +6,14 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import type { InvoiceData } from "@/components/invoice-form";
+import type { InvoiceData } from "@/components/invoice-form-utils";
 import {
   calcAdjustmentAmount,
   calcSubtotal,
   calcTax,
   calcTotal,
   formatCurrency,
-} from "@/components/invoice-form";
+} from "@/components/invoice-form-utils";
 import type { Locale } from "@/i18n";
 import { getT } from "@/i18n";
 

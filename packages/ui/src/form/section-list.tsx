@@ -120,6 +120,7 @@ export function SectionList<T extends { id: string }>({
             </span>
           )}
           <input
+            aria-label={placeholder}
             className="min-w-0 flex-1 bg-transparent font-medium text-base outline-none placeholder:text-muted-foreground md:text-sm"
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder={placeholder}

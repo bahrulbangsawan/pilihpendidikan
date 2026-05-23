@@ -74,7 +74,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
       {/* Header */}
       <header className="mb-3 text-center">
         {personalInfo.fullName && (
-          <h1 className="font-bold text-neutral-700 text-xl tracking-tight">
+          <h1 className="font-semibold text-neutral-700 text-xl tracking-tight">
             {personalInfo.fullName}
           </h1>
         )}
@@ -105,7 +105,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.summaryTitle}
                 </h2>
                 <p className="mt-2 text-neutral-700 text-xs leading-relaxed">
@@ -119,12 +119,14 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.experienceTitle}
                 </h2>
-                {experience
-                  .filter((e) => e.company || e.title)
-                  .map((entry) => (
+                {experience.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.company || entry.title)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
                         <h3 className="font-semibold text-neutral-700 text-sm">
@@ -156,7 +158,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
                                   : "Present",
                             ]
                               .filter(Boolean)
-                              .join(" \u2013 ")}
+                              .join(" – ")}
                           </span>
                         )}
                       </div>
@@ -167,11 +169,12 @@ export function HarvardPreview({ data }: { data: CVData }) {
                             LOCATION_LABELS[entry.locationPolicy],
                           ]
                             .filter(Boolean)
-                            .join(" \u00b7 ")}
+                            .join(" · ")}
                         </p>
                       )}
                       {entry.description && (
                         <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                          {/* index key is safe: static newline-split, never reordered */}
                           {entry.description
                             .split("\n")
                             .filter((l) => l.trim())
@@ -186,7 +189,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                         </ul>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "education":
@@ -195,12 +200,14 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.educationTitle}
                 </h2>
-                {education
-                  .filter((e) => e.institution || e.degree)
-                  .map((entry) => (
+                {education.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.institution || entry.degree)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
                         <h3 className="font-semibold text-neutral-700 text-sm">
@@ -219,7 +226,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
                                 : formatMonth(entry.endDate),
                             ]
                               .filter(Boolean)
-                              .join(" \u2013 ")}
+                              .join(" – ")}
                           </span>
                         )}
                       </div>
@@ -232,11 +239,13 @@ export function HarvardPreview({ data }: { data: CVData }) {
                             entry.gpa ? `GPA: ${entry.gpa}` : "",
                           ]
                             .filter(Boolean)
-                            .join(" \u00b7 ")}
+                            .join(" · ")}
                         </p>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "skills":
@@ -245,13 +254,15 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.skillsTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
-                  {skills
-                    .filter((c) => c.items.length > 0)
-                    .map((category) => (
+                  {skills.reduce<React.ReactNode[]>((acc, category) => {
+                    if (category.items.length === 0) {
+                      return acc;
+                    }
+                    acc.push(
                       <p className="text-neutral-700 text-xs" key={category.id}>
                         {category.name && (
                           <span className="font-semibold">
@@ -260,7 +271,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                         )}
                         {category.items.join(", ")}
                       </p>
-                    ))}
+                    );
+                    return acc;
+                  }, [])}
                 </div>
               </section>
             );
@@ -270,12 +283,14 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.awardsTitle}
                 </h2>
-                {awards
-                  .filter((e) => e.title)
-                  .map((entry) => (
+                {awards.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!entry.title) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
                         <h3 className="font-semibold text-neutral-700 text-sm">
@@ -304,7 +319,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                         </a>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "certificates":
@@ -313,12 +330,14 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.certificatesTitle}
                 </h2>
-                {certificates
-                  .filter((e) => e.name)
-                  .map((entry) => (
+                {certificates.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!entry.name) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
                         <h3 className="font-semibold text-neutral-700 text-sm">
@@ -355,7 +374,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                         </p>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "languages":
@@ -364,23 +385,27 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.languagesTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
-                  {languages
-                    .filter((e) => e.language)
-                    .map((entry) => (
+                  {languages.reduce<React.ReactNode[]>((acc, entry) => {
+                    if (!entry.language) {
+                      return acc;
+                    }
+                    acc.push(
                       <p className="text-neutral-700 text-xs" key={entry.id}>
                         <span className="font-semibold">{entry.language}</span>
                         {entry.proficiency && (
                           <span>
                             {" "}
-                            {"\u2013"} {entry.proficiency}
+                            {"–"} {entry.proficiency}
                           </span>
                         )}
                       </p>
-                    ))}
+                    );
+                    return acc;
+                  }, [])}
                 </div>
               </section>
             );
@@ -390,7 +415,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.projectsTitle}
                 </h2>
                 {projects.map((entry) => (
@@ -426,12 +451,14 @@ export function HarvardPreview({ data }: { data: CVData }) {
             }
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-bold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
                   {data.volunteerTitle}
                 </h2>
-                {volunteer
-                  .filter((e) => e.organization || e.role)
-                  .map((entry) => (
+                {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.organization || entry.role)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
                         <h3 className="font-semibold text-neutral-700 text-sm">
@@ -452,12 +479,13 @@ export function HarvardPreview({ data }: { data: CVData }) {
                                   : "Present",
                             ]
                               .filter(Boolean)
-                              .join(" \u2013 ")}
+                              .join(" – ")}
                           </span>
                         )}
                       </div>
                       {entry.description && (
                         <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                          {/* index key is safe: static newline-split, never reordered */}
                           {entry.description
                             .split("\n")
                             .filter((l) => l.trim())
@@ -472,7 +500,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                         </ul>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           default:

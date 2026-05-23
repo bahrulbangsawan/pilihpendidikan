@@ -39,6 +39,12 @@ import sampleData from "@/data/sample-invoice.json";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 
+const ISSUE_DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+
 const InvoicePreview = lazy(() =>
   import("@/components/invoice-preview").then((m) => ({
     default: m.InvoicePreview,
@@ -192,11 +198,7 @@ export function InvoiceGenerator() {
       // Set today's date only on client to avoid server/client date mismatch
       setDataRaw((prev) => ({
         ...prev,
-        dateOfIssue: new Intl.DateTimeFormat("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }).format(new Date()),
+        dateOfIssue: ISSUE_DATE_FORMATTER.format(new Date()),
       }));
     }
     preloadPdfRenderer();
@@ -245,8 +247,10 @@ export function InvoiceGenerator() {
 
     setGenerating(true);
     try {
-      const { pdf } = await import("@react-pdf/renderer");
-      const { InvoiceDocument } = await import("@/components/invoice-pdf");
+      const [{ pdf }, { InvoiceDocument }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/invoice-pdf"),
+      ]);
 
       const blob = await pdf(
         <InvoiceDocument data={data} locale={locale} />
@@ -339,7 +343,7 @@ export function InvoiceGenerator() {
                     </li>
                   </ol>
                   <Button asChild className="w-full" size="lg">
-                    <a href={MCP_URL} rel="noopener" target="_blank">
+                    <a href={MCP_URL} rel="noopener noreferrer" target="_blank">
                       {t("mcp.cta")}
                       <ArrowUpRight className="size-4" />
                     </a>
@@ -364,6 +368,7 @@ export function InvoiceGenerator() {
               </Button>
               <input
                 accept=".json"
+                aria-label={t("toolbar.importJson")}
                 className="hidden"
                 onChange={handleImportJSON}
                 ref={fileInputRef}
@@ -464,9 +469,9 @@ export function InvoiceGenerator() {
           </DropdownMenu>
         </div>
         {/* Live region for screen reader announcements */}
-        <div aria-live="polite" className="sr-only" role="status">
+        <output aria-live="polite" className="sr-only">
           {generating ? t("a11y.generatingPdf") : ""}
-        </div>
+        </output>
       </main>
     </>
   );

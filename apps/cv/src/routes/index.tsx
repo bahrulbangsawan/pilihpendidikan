@@ -218,7 +218,7 @@ function CVGenerator() {
           .join(" · ");
         lines.push(
           "",
-          `### ${exp.title} — ${exp.company}`,
+          `### ${exp.title}, ${exp.company}`,
           `*${period}*${tags ? ` | ${tags}` : ""}`
         );
         if (exp.description) {
@@ -240,7 +240,7 @@ function CVGenerator() {
           : `${edu.startDate} – ${edu.endDate}`;
         lines.push(
           "",
-          `### ${edu.degree} — ${edu.institution}`,
+          `### ${edu.degree}, ${edu.institution}`,
           `*${period}*${edu.category ? ` | ${edu.category}` : ""}`
         );
       }
@@ -261,7 +261,7 @@ function CVGenerator() {
         lines.push(
           "",
           `### ${award.title}`,
-          `*${award.issuer} — ${award.date}*`
+          `*${award.issuer}, ${award.date}*`
         );
         if (award.description) {
           lines.push("", award.description);
@@ -277,7 +277,7 @@ function CVGenerator() {
           .filter(Boolean)
           .join(" – ");
         lines.push(
-          `- **${cert.name}** — ${cert.issuer}${dateRange ? ` (${dateRange})` : ""}`
+          `- **${cert.name}** (${cert.issuer}${dateRange ? `, ${dateRange}` : ""})`
         );
       }
     }
@@ -294,7 +294,7 @@ function CVGenerator() {
     if (data.projects.length) {
       lines.push("", `## ${data.projectsTitle}`);
       for (const proj of data.projects) {
-        const link = proj.url ? ` — [${proj.url}](${proj.url})` : "";
+        const link = proj.url ? ` (${proj.url})` : "";
         lines.push(
           `- **${proj.name}**${link}${proj.description ? `: ${proj.description}` : ""}`
         );
@@ -308,7 +308,7 @@ function CVGenerator() {
         const period = vol.current
           ? `${vol.startDate} – Present`
           : `${vol.startDate} – ${vol.endDate}`;
-        lines.push("", `### ${vol.role} — ${vol.organization}`, `*${period}*`);
+        lines.push("", `### ${vol.role}, ${vol.organization}`, `*${period}*`);
         if (vol.description) {
           for (const bullet of vol.description.split("\n")) {
             if (bullet.trim()) {
@@ -341,7 +341,7 @@ function CVGenerator() {
   return (
     <div className="flex min-h-svh flex-col md:flex-row">
       <h1 className="sr-only">
-        CV Builder & Resume Generator — Bahrul Bangsawan
+        CV Builder &amp; Resume Generator, Bahrul Bangsawan
       </h1>
       <div className="h-svh w-full overflow-y-auto border-border border-b md:w-1/2 md:border-r md:border-b-0">
         <div className="sticky top-0 z-10 flex items-center gap-2 border-border border-b bg-background px-4 py-3 sm:px-6">
@@ -366,7 +366,7 @@ function CVGenerator() {
                   <a
                     className="text-foreground underline underline-offset-2"
                     href={MCP_URL}
-                    rel="noopener"
+                    rel="noreferrer"
                     target="_blank"
                   >
                     mcp.bahrul.me
@@ -385,13 +385,13 @@ function CVGenerator() {
                       <a
                         className="text-foreground underline underline-offset-2"
                         href={MCP_URL}
-                        rel="noopener"
+                        rel="noreferrer"
                         target="_blank"
                       >
                         mcp.bahrul.me
                       </a>{" "}
-                      and sign in to generate your personal MCP token — required
-                      to save your CVs to the cloud.
+                      and sign in to generate your personal MCP token (required
+                      to save your CVs to the cloud).
                     </span>
                   </li>
                   <li className="flex gap-2">
@@ -399,7 +399,7 @@ function CVGenerator() {
                       2
                     </span>
                     <span>
-                      Follow the client-specific setup on the guides page —
+                      Follow the client-specific setup on the guides page:
                       Claude Code, Cursor, Codex, Windsurf, Zed, and more.
                     </span>
                   </li>
@@ -413,13 +413,13 @@ function CVGenerator() {
                   </li>
                 </ol>
                 <Button asChild className="w-full" size="lg">
-                  <a href={MCP_URL} rel="noopener" target="_blank">
+                  <a href={MCP_URL} rel="noreferrer" target="_blank">
                     Get my MCP token at mcp.bahrul.me
                     <ArrowUpRight className="size-4" />
                   </a>
                 </Button>
                 <p className="text-[11px] text-muted-foreground">
-                  Your MCP URL is personal — keep it private.
+                  Your MCP URL is personal, keep it private.
                 </p>
               </div>
             </DialogContent>
@@ -435,6 +435,7 @@ function CVGenerator() {
             </Button>
             <input
               accept=".json"
+              aria-label="Import CV from JSON file"
               className="hidden"
               onChange={handleImportJSON}
               ref={fileInputRef}
@@ -505,11 +506,12 @@ function CVGenerator() {
           <CVPreview data={data} style={style} />
         </div>
       </div>
-      {/* Floating download button — mobile only */}
+      {/* Floating download button, mobile only */}
       <div className="fixed bottom-4 left-4 z-50 sm:bottom-6 sm:left-6 md:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
+              aria-label="Download CV"
               className="size-12 rounded-full shadow-lg"
               disabled={isEmpty || generating}
               size="icon"

@@ -4,7 +4,7 @@ import { GlobeIcon } from "lucide-react";
 import {
   type ComponentProps,
   createContext,
-  useContext,
+  use,
   useMemo,
   useState,
 } from "react";
@@ -68,10 +68,12 @@ function PhoneInput({
   ...props
 }: PhoneInputProps) {
   const phoneInputSize = variant || "default";
+  const contextValue = useMemo(
+    () => ({ variant: phoneInputSize, popupClassName, scrollAreaClassName }),
+    [phoneInputSize, popupClassName, scrollAreaClassName]
+  );
   return (
-    <PhoneInputContext.Provider
-      value={{ variant: phoneInputSize, popupClassName, scrollAreaClassName }}
-    >
+    <PhoneInputContext.Provider value={contextValue}>
       <BasePhoneInput
         className={cn(
           "flex",
@@ -92,7 +94,7 @@ function PhoneInput({
 }
 
 function InputComponent({ className, ...props }: ComponentProps<typeof Input>) {
-  const { variant } = useContext(PhoneInputContext);
+  const { variant } = use(PhoneInputContext);
 
   return (
     <Input
@@ -125,7 +127,7 @@ function CountrySelect({
   options: countryList,
   onChange,
 }: CountrySelectProps) {
-  const { variant, popupClassName } = useContext(PhoneInputContext);
+  const { variant, popupClassName } = use(PhoneInputContext);
   const [searchValue, setSearchValue] = useState("");
 
   const filteredCountries = useMemo(() => {

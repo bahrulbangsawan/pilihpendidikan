@@ -28,7 +28,7 @@ function sanitizeNumeric(raw: string): string {
   return raw.replace(/\D+/g, "");
 }
 
-function renderControl(props: FormFieldProps): ReactNode {
+function FormControl(props: FormFieldProps) {
   const {
     value,
     onChange,
@@ -89,7 +89,7 @@ export function FormField(props: FormFieldProps) {
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>
-      {renderControl(props)}
+      <FormControl {...props} />
       {error && <p className="text-destructive text-xs">{error}</p>}
     </div>
   );

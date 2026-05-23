@@ -83,7 +83,7 @@ export function StandardPreview({ data }: { data: CVData }) {
           )}
           <div>
             {personalInfo.fullName && (
-              <h1 className="font-bold text-neutral-900 text-xl tracking-tight">
+              <h1 className="font-semibold text-neutral-900 text-xl tracking-tight">
                 {personalInfo.fullName}
               </h1>
             )}
@@ -136,9 +136,11 @@ export function StandardPreview({ data }: { data: CVData }) {
                 <h2 className="border-neutral-200 border-b pb-1 font-semibold text-neutral-900 text-sm">
                   {data.experienceTitle}
                 </h2>
-                {experience
-                  .filter((e) => e.company || e.title)
-                  .map((entry) => (
+                {experience.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.company || entry.title)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <h3 className="font-semibold text-neutral-900 text-sm">
                         {entry.title}
@@ -167,7 +169,7 @@ export function StandardPreview({ data }: { data: CVData }) {
                                 : "Present",
                           ]
                             .filter(Boolean)
-                            .join(" \u2013 ")}
+                            .join(" – ")}
                         </p>
                       )}
                       {(entry.workType || entry.locationPolicy) && (
@@ -177,11 +179,12 @@ export function StandardPreview({ data }: { data: CVData }) {
                             LOCATION_LABELS[entry.locationPolicy],
                           ]
                             .filter(Boolean)
-                            .join(" \u00b7 ")}
+                            .join(" · ")}
                         </p>
                       )}
                       {entry.description && (
                         <ul className="mt-1.5 list-disc space-y-0.5 pl-4">
+                          {/* index key is safe: static newline-split, never reordered */}
                           {entry.description
                             .split("\n")
                             .filter((l) => l.trim())
@@ -196,7 +199,9 @@ export function StandardPreview({ data }: { data: CVData }) {
                         </ul>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "education":
@@ -208,14 +213,16 @@ export function StandardPreview({ data }: { data: CVData }) {
                 <h2 className="border-neutral-200 border-b pb-1 font-semibold text-neutral-900 text-sm">
                   {data.educationTitle}
                 </h2>
-                {education
-                  .filter((e) => e.institution || e.degree)
-                  .map((entry) => (
+                {education.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.institution || entry.degree)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <h3 className="font-semibold text-neutral-900 text-sm">
                         {[entry.degree, entry.institution]
                           .filter(Boolean)
-                          .join(" \u2013 ")}
+                          .join(" – ")}
                       </h3>
                       {(entry.startDate ||
                         entry.endDate ||
@@ -231,18 +238,20 @@ export function StandardPreview({ data }: { data: CVData }) {
                                 : formatMonth(entry.endDate),
                             ]
                               .filter(Boolean)
-                              .join(" \u2013 "),
+                              .join(" – "),
                             entry.category
                               ? EDUCATION_CATEGORY_LABELS[entry.category]
                               : "",
                             entry.gpa ? `GPA: ${entry.gpa}` : "",
                           ]
                             .filter(Boolean)
-                            .join(" \u00b7 ")}
+                            .join(" · ")}
                         </p>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "skills":
@@ -255,9 +264,11 @@ export function StandardPreview({ data }: { data: CVData }) {
                   {data.skillsTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
-                  {skills
-                    .filter((c) => c.items.length > 0)
-                    .map((category) => (
+                  {skills.reduce<React.ReactNode[]>((acc, category) => {
+                    if (category.items.length === 0) {
+                      return acc;
+                    }
+                    acc.push(
                       <p className="text-neutral-700 text-xs" key={category.id}>
                         {category.name && (
                           <span className="font-semibold text-neutral-900">
@@ -266,7 +277,9 @@ export function StandardPreview({ data }: { data: CVData }) {
                         )}
                         {category.items.join(", ")}.
                       </p>
-                    ))}
+                    );
+                    return acc;
+                  }, [])}
                 </div>
               </section>
             );
@@ -279,14 +292,16 @@ export function StandardPreview({ data }: { data: CVData }) {
                 <h2 className="border-neutral-200 border-b pb-1 font-semibold text-neutral-900 text-sm">
                   {data.awardsTitle}
                 </h2>
-                {awards
-                  .filter((e) => e.title)
-                  .map((entry) => (
+                {awards.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!entry.title) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <h3 className="font-semibold text-neutral-900 text-sm">
                         {[entry.title, entry.issuer]
                           .filter(Boolean)
-                          .join(" \u2013 ")}
+                          .join(" – ")}
                       </h3>
                       {entry.date && (
                         <p className="text-neutral-500 text-xs">
@@ -309,7 +324,9 @@ export function StandardPreview({ data }: { data: CVData }) {
                         </a>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "certificates":
@@ -321,9 +338,11 @@ export function StandardPreview({ data }: { data: CVData }) {
                 <h2 className="border-neutral-200 border-b pb-1 font-semibold text-neutral-900 text-sm">
                   {data.certificatesTitle}
                 </h2>
-                {certificates
-                  .filter((e) => e.name)
-                  .map((entry) => (
+                {certificates.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!entry.name) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <h3 className="font-semibold text-neutral-900 text-sm">
                         {entry.url ? (
@@ -338,7 +357,7 @@ export function StandardPreview({ data }: { data: CVData }) {
                         ) : (
                           entry.name
                         )}
-                        {entry.name && entry.issuer ? " \u2013 " : ""}
+                        {entry.name && entry.issuer ? " – " : ""}
                         {entry.issuer}
                       </h3>
                       <p className="text-neutral-500 text-xs">
@@ -354,10 +373,12 @@ export function StandardPreview({ data }: { data: CVData }) {
                           entry.credentialId ? `ID: ${entry.credentialId}` : "",
                         ]
                           .filter(Boolean)
-                          .join(" \u00b7 ")}
+                          .join(" · ")}
                       </p>
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           case "languages":
@@ -370,19 +391,23 @@ export function StandardPreview({ data }: { data: CVData }) {
                   {data.languagesTitle}
                 </h2>
                 <ul className="mt-2 space-y-1">
-                  {languages
-                    .filter((e) => e.language)
-                    .map((entry) => (
+                  {languages.reduce<React.ReactNode[]>((acc, entry) => {
+                    if (!entry.language) {
+                      return acc;
+                    }
+                    acc.push(
                       <li className="text-neutral-700 text-xs" key={entry.id}>
                         {entry.language}
                         {entry.proficiency && (
                           <span className="text-neutral-500">
-                            {" \u2013 "}
+                            {" – "}
                             {entry.proficiency}
                           </span>
                         )}
                       </li>
-                    ))}
+                    );
+                    return acc;
+                  }, [])}
                 </ul>
               </section>
             );
@@ -429,9 +454,11 @@ export function StandardPreview({ data }: { data: CVData }) {
                 <h2 className="border-neutral-200 border-b pb-1 font-semibold text-neutral-900 text-sm">
                   {data.volunteerTitle}
                 </h2>
-                {volunteer
-                  .filter((e) => e.organization || e.role)
-                  .map((entry) => (
+                {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
+                  if (!(entry.organization || entry.role)) {
+                    return acc;
+                  }
+                  acc.push(
                     <section className="mt-3" key={entry.id}>
                       <h3 className="font-semibold text-neutral-900 text-sm">
                         {[entry.role, entry.organization]
@@ -449,11 +476,12 @@ export function StandardPreview({ data }: { data: CVData }) {
                                 : "Present",
                           ]
                             .filter(Boolean)
-                            .join(" \u2013 ")}
+                            .join(" – ")}
                         </p>
                       )}
                       {entry.description && (
                         <ul className="mt-1.5 list-disc space-y-0.5 pl-4">
+                          {/* index key is safe: static newline-split, never reordered */}
                           {entry.description
                             .split("\n")
                             .filter((l) => l.trim())
@@ -468,7 +496,9 @@ export function StandardPreview({ data }: { data: CVData }) {
                         </ul>
                       )}
                     </section>
-                  ))}
+                  );
+                  return acc;
+                }, [])}
               </section>
             );
           default:

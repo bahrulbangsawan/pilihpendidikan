@@ -1,11 +1,11 @@
-import type { InvoiceData } from "@/components/invoice-form";
+import type { InvoiceData } from "@/components/invoice-form-utils";
 import {
   calcAdjustmentAmount,
   calcSubtotal,
   calcTax,
   calcTotal,
   formatCurrency,
-} from "@/components/invoice-form";
+} from "@/components/invoice-form-utils";
 import { useTranslation } from "@/i18n";
 
 export function InvoicePreview({ data }: { data: InvoiceData }) {
@@ -36,7 +36,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
       <div className="p-4 sm:p-6 md:p-8">
         {/* Header: Invoice title + logo */}
         <div className="flex items-start justify-between gap-3">
-          <h1 className="font-bold text-lg sm:text-xl">
+          <h1 className="font-semibold text-lg sm:text-xl">
             {t("preview.invoice")}
           </h1>
           {from.logoUrl && (
