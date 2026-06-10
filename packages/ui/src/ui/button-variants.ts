@@ -19,13 +19,17 @@ export const buttonVariants = cva(
       size: {
         default:
           "h-10 gap-1 px-2 text-xs/relaxed has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 md:h-7 [&_svg:not([class*='size-'])]:size-3.5",
-        xs: "h-5 gap-1 rounded-sm px-2 text-[0.625rem] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-2.5",
+        xs: "h-5 gap-1 rounded-sm px-2 text-micro has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-2.5",
         sm: "h-9 gap-1 px-2 text-xs/relaxed has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 md:h-6 [&_svg:not([class*='size-'])]:size-3",
         lg: "h-11 gap-1 px-2.5 text-xs/relaxed has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 md:h-8 [&_svg:not([class*='size-'])]:size-4",
-        icon: "size-7 [&_svg:not([class*='size-'])]:size-3.5",
+        // Icon variants carry the SAME responsive height as their text
+        // counterpart (icon↔default, icon-sm↔sm, icon-lg↔lg) so an icon-only
+        // button and a labelled button on the same toolbar row stay equal
+        // height at every breakpoint.
+        icon: "size-10 md:size-7 [&_svg:not([class*='size-'])]:size-3.5",
         "icon-xs": "size-5 rounded-sm [&_svg:not([class*='size-'])]:size-2.5",
-        "icon-sm": "size-6 [&_svg:not([class*='size-'])]:size-3",
-        "icon-lg": "size-8 [&_svg:not([class*='size-'])]:size-4",
+        "icon-sm": "size-9 md:size-6 [&_svg:not([class*='size-'])]:size-3",
+        "icon-lg": "size-11 md:size-8 [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {

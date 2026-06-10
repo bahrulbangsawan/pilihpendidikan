@@ -195,6 +195,6 @@ export const countries = [
   "Yemen",
   "Zambia",
   "Zimbabwe",
-] as const;
+] as const
 
-export type Country = (typeof countries)[number];
+export type Country = (typeof countries)[number]

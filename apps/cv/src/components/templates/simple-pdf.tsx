@@ -8,9 +8,9 @@ import {
   StyleSheet,
   Text,
   View,
-} from "@react-pdf/renderer";
-import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
-import type { CVData } from "@/components/cv-form";
+} from "@react-pdf/renderer"
+import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils"
+import type { CVData } from "@/components/cv-form"
 
 const s = StyleSheet.create({
   page: {
@@ -60,30 +60,30 @@ const s = StyleSheet.create({
     textDecoration: "underline",
     marginTop: 2,
   },
-});
+})
 
 function formatMonth(value: string): string {
   if (!value) {
-    return "";
+    return ""
   }
-  const [year, month] = value.split("-");
+  const [year, month] = value.split("-")
   if (!(year && month)) {
-    return value;
+    return value
   }
-  const date = new Date(Number(year), Number(month) - 1);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  const date = new Date(Number(year), Number(month) - 1)
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" })
 }
 
 const WORK_TYPE_LABELS: Record<string, string> = {
   "full-time": "Full-Time",
   "part-time": "Part-Time",
   internship: "Internship",
-};
+}
 const LOCATION_LABELS: Record<string, string> = {
   "work-from-office": "Work From Office",
   "work-from-anywhere": "Work From Anywhere",
   hybrid: "Hybrid",
-};
+}
 const EDUCATION_CATEGORY_LABELS: Record<string, string> = {
   university: "University",
   college: "College / Institute",
@@ -93,7 +93,7 @@ const EDUCATION_CATEGORY_LABELS: Record<string, string> = {
   "language-center": "Language / Tuition Center",
   "online-platform": "Online Learning Platform",
   "professional-association": "Professional Association",
-};
+}
 
 export function CVDocument({ data }: { data: CVData }) {
   const {
@@ -107,7 +107,7 @@ export function CVDocument({ data }: { data: CVData }) {
     languages,
     projects,
     volunteer,
-  } = data;
+  } = data
   return (
     <Document>
       <Page size="A4" style={s.page}>
@@ -154,7 +154,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.experienceTitle}</Text>
             {experience.reduce<React.ReactNode[]>((acc, entry) => {
               if (!(entry.company || entry.title)) {
-                return acc;
+                return acc
               }
               acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
@@ -205,8 +205,8 @@ export function CVDocument({ data }: { data: CVData }) {
                       </View>
                     ))}
                 </View>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -217,7 +217,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.educationTitle}</Text>
             {education.reduce<React.ReactNode[]>((acc, entry) => {
               if (!(entry.institution || entry.degree)) {
-                return acc;
+                return acc
               }
               acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
@@ -254,8 +254,8 @@ export function CVDocument({ data }: { data: CVData }) {
                     </Text>
                   )}
                 </View>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -266,15 +266,15 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.skillsTitle}</Text>
             {skills.reduce<React.ReactNode[]>((acc, cat) => {
               if (cat.items.length === 0) {
-                return acc;
+                return acc
               }
               acc.push(
                 <Text key={cat.id} style={[s.bodyText, s.skillRow]}>
                   {cat.name && <Text style={s.skillLabel}>{cat.name}: </Text>}
                   {cat.items.join(", ")}.
                 </Text>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -285,7 +285,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.awardsTitle}</Text>
             {awards.reduce<React.ReactNode[]>((acc, entry) => {
               if (!entry.title) {
-                return acc;
+                return acc
               }
               acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
@@ -306,8 +306,8 @@ export function CVDocument({ data }: { data: CVData }) {
                     </Link>
                   )}
                 </View>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -318,7 +318,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.certificatesTitle}</Text>
             {certificates.reduce<React.ReactNode[]>((acc, entry) => {
               if (!entry.name) {
-                return acc;
+                return acc
               }
               acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
@@ -344,8 +344,8 @@ export function CVDocument({ data }: { data: CVData }) {
                       .join(" | ")}
                   </Text>
                 </View>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -356,7 +356,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.languagesTitle}</Text>
             {languages.reduce<React.ReactNode[]>((acc, entry) => {
               if (!entry.language) {
-                return acc;
+                return acc
               }
               acc.push(
                 <Text key={entry.id} style={[s.bodyText, s.langRow]}>
@@ -368,8 +368,8 @@ export function CVDocument({ data }: { data: CVData }) {
                     </Text>
                   )}
                 </Text>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
@@ -403,7 +403,7 @@ export function CVDocument({ data }: { data: CVData }) {
             <Text style={s.sectionTitle}>{data.volunteerTitle}</Text>
             {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
               if (!(entry.organization || entry.role)) {
-                return acc;
+                return acc
               }
               acc.push(
                 <View key={entry.id} style={s.entryWrap} wrap={false}>
@@ -438,12 +438,12 @@ export function CVDocument({ data }: { data: CVData }) {
                       </View>
                     ))}
                 </View>
-              );
-              return acc;
+              )
+              return acc
             }, [])}
           </View>
         )}
       </Page>
     </Document>
-  );
+  )
 }

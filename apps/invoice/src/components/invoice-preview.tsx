@@ -1,28 +1,28 @@
-import type { InvoiceData } from "@/components/invoice-form-utils";
+import type { InvoiceData } from "@/components/invoice-form-utils"
 import {
   calcAdjustmentAmount,
   calcSubtotal,
   calcTax,
   calcTotal,
   formatCurrency,
-} from "@/components/invoice-form-utils";
-import { useTranslation } from "@/i18n";
+} from "@/components/invoice-form-utils"
+import { useTranslation } from "@/i18n"
 
 export function InvoicePreview({ data }: { data: InvoiceData }) {
-  const { t } = useTranslation();
-  const { from, billTo, items, adjustments, currency, taxRate } = data;
-  const subtotal = calcSubtotal(items);
-  const tax = calcTax(subtotal, taxRate);
-  const total = calcTotal(items, taxRate, adjustments);
+  const { t } = useTranslation()
+  const { from, billTo, items, adjustments, currency, taxRate } = data
+  const subtotal = calcSubtotal(items)
+  const tax = calcTax(subtotal, taxRate)
+  const total = calcTotal(items, taxRate, adjustments)
 
-  const isEmpty = !from.companyName && items.length === 0;
+  const isEmpty = !from.companyName && items.length === 0
 
   if (isEmpty) {
     return (
       <div className="flex min-h-[37.5rem] items-center justify-center text-center text-muted-foreground">
         {t("preview.emptyState")}
       </div>
-    );
+    )
   }
 
   return (
@@ -36,7 +36,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
       <div className="p-4 sm:p-6 md:p-8">
         {/* Header: Invoice title + logo */}
         <div className="flex items-start justify-between gap-3">
-          <h1 className="font-semibold text-lg sm:text-xl">
+          <h1 className="text-lg font-semibold sm:text-xl">
             {t("preview.invoice")}
           </h1>
           {from.logoUrl && (
@@ -59,7 +59,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         </div>
 
         {/* Separator */}
-        <div className="my-4 border-gray-300 border-t sm:my-6" />
+        <div className="my-4 border-t border-gray-300 sm:my-6" />
 
         {/* Sender / Recipient two-column */}
         <div className="grid grid-cols-1 gap-4 text-xs sm:grid-cols-2 sm:gap-8">
@@ -112,7 +112,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         </div>
 
         {/* Amount due banner */}
-        <p className="mt-4 font-bold text-sm sm:mt-6 sm:text-base">
+        <p className="mt-4 text-sm font-bold sm:mt-6 sm:text-base">
           {formatCurrency(total, currency)} {currency} {t("preview.due")}{" "}
           {data.dateDue}
         </p>
@@ -121,7 +121,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         {items.length > 0 && (
           <div className="-mx-4 mt-4 overflow-x-auto px-4 sm:-mx-0 sm:mt-6 sm:px-0">
             {/* Column headers */}
-            <div className="grid min-w-[20rem] grid-cols-[1fr_2.5rem_auto_auto] gap-2 border-gray-300 border-b pb-2 font-medium text-[0.625rem] text-gray-500 sm:grid-cols-[1fr_3rem_5rem_5rem] sm:gap-4">
+            <div className="grid min-w-[20rem] grid-cols-[1fr_2.5rem_auto_auto] gap-2 border-b border-gray-300 pb-2 text-[0.625rem] font-medium text-gray-500 sm:grid-cols-[1fr_3rem_5rem_5rem] sm:gap-4">
               <span>{t("preview.description")}</span>
               <span className="text-right">{t("preview.qty")}</span>
               <span className="text-right">{t("preview.unitPrice")}</span>
@@ -192,7 +192,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
               </div>
             )}
             {adjustments.map((adj) => {
-              const amount = calcAdjustmentAmount(adj, subtotal);
+              const amount = calcAdjustmentAmount(adj, subtotal)
               return (
                 <div className="flex justify-between" key={adj.id}>
                   <span>
@@ -202,7 +202,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
                   </span>
                   <span>{formatCurrency(amount, currency)}</span>
                 </div>
-              );
+              )
             })}
             <div className="flex justify-between border-t pt-2">
               <span>{t("preview.total")}</span>
@@ -241,5 +241,5 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         )}
       </div>
     </article>
-  );
+  )
 }

@@ -1,0 +1,26 @@
+import { createFileRoute } from "@tanstack/react-router"
+import { PortfolioGenerator } from "@/components/portfolio-generator"
+import { headForLocale } from "@/i18n"
+
+const BASE_URL = "https://portfolio.bahrul.me"
+
+export const Route = createFileRoute("/")({
+  head: () => headForLocale("en", BASE_URL),
+  component: RouteComponent,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): { portfolio?: string; print?: true; template?: string } => ({
+    portfolio: (search.portfolio as string) || undefined,
+    print:
+      search.print === "1" ||
+      search.print === 1 ||
+      search.print === true ||
+      undefined,
+    template: (search.template as string) || undefined,
+  }),
+})
+
+function RouteComponent() {
+  const { portfolio, print } = Route.useSearch()
+  return <PortfolioGenerator portfolioId={portfolio} print={print} />
+}

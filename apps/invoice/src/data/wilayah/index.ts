@@ -1,22 +1,22 @@
 export interface WilayahEntry {
-  kode: string;
-  nama: string;
+  kode: string
+  nama: string
 }
 
 export interface ProvinceData {
-  kabupaten: Array<WilayahEntry>;
-  kecamatan: Array<WilayahEntry>;
-  kelurahan: Array<WilayahEntry>;
+  kabupaten: Array<WilayahEntry>
+  kecamatan: Array<WilayahEntry>
+  kelurahan: Array<WilayahEntry>
 }
 
-const cache = new Map<string, ProvinceData>();
+const cache = new Map<string, ProvinceData>()
 
 export async function loadProvinceData(
   provinceCode: string
 ): Promise<ProvinceData> {
-  const cached = cache.get(provinceCode);
+  const cached = cache.get(provinceCode)
   if (cached) {
-    return cached;
+    return cached
   }
 
   const chunks: Record<string, () => Promise<{ default: ProvinceData }>> = {
@@ -58,14 +58,14 @@ export async function loadProvinceData(
     "94": () => import("./94"),
     "95": () => import("./95"),
     "96": () => import("./96"),
-  };
-
-  const loader = chunks[provinceCode];
-  if (!loader) {
-    return { kabupaten: [], kecamatan: [], kelurahan: [] };
   }
 
-  const mod = await loader();
-  cache.set(provinceCode, mod.default);
-  return mod.default;
+  const loader = chunks[provinceCode]
+  if (!loader) {
+    return { kabupaten: [], kecamatan: [], kelurahan: [] }
+  }
+
+  const mod = await loader()
+  cache.set(provinceCode, mod.default)
+  return mod.default
 }

@@ -1,14 +1,68 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
+   (code chips). The --font-sans / --font-mono stacks fall through to these. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/geist-mono/400.css";
 
 @source "../node_modules/@rulisme/ui/dist";
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hide scrollbars on the editor scroll panels while keeping scroll behavior. */
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/*
+ * Warp — "moonlit terminal" design system (see DESIGN.md).
+ * Dark warm-neutral terminal aesthetic. Tokens below are the single source of
+ * truth; this @theme block is byte-identical across apps/cv-bahrul and
+ * apps/invoice-bahrul (enforced by a parity diff). Editor chrome only — the
+ * CV/invoice print artifacts (.cv-page / .invoice-page and templates/*-pdf,
+ * *-preview) stay print-faithful (light) and are re-scoped at the bottom.
+ *
+ * Accent discipline: --color-gold-leaf and --color-muted-cobalt appear ONLY in
+ * code/terminal/syntax and section headings — never on buttons, tags, or badges.
+ */
 @theme inline {
+  /* Fonts — Matter (UI), Geist/Matter Mono (code chips only). System fallback. */
   --font-heading: var(--font-sans);
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans:
+    "Matter", "Inter", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:
+    "Geist Mono", "Matter Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+
+  /* Warp raw palette — DESIGN.md. */
+  --color-warm-off-white: #faf9f6;
+  --color-bone-gray: #868684;
+  --color-pale-stone: #b4b4b2;
+  --color-faint-linen: #e3e2e0;
+  --color-smoke-charcoal: #2f2f2f;
+  --color-iron-veil: #383838;
+  --color-slate-hearth: #40403f;
+  --color-deep-ember: #121212;
+  --color-smoked-onyx: #1e1e1d;
+  --color-absolute: #000000;
+  --color-ink-black: #080808;
+  --color-gold-leaf: #bd9f65;
+  --color-muted-cobalt: #6f839f;
+
+  /* Surfaces — DESIGN.md elevation ladder (0 canvas → 4 floating). */
+  --color-surface-canvas: #121212;
+  --color-surface-banded: #1e1e1d;
+  --color-surface-card: #2f2f2f;
+  --color-surface-control: #383838;
+  --color-surface-floating: #40403f;
+
+  /* shadcn/reui semantic aliases → resolve to the :root values below. */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -40,82 +94,127 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Radius — DESIGN.md: buttons/nav 4 · cards/icons 8 · images 20 (never pill). */
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 14px;
+  --radius-2xl: 20px;
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;
+
+  /* Type scale — Matter. Each size pairs its line-height + (negative) tracking,
+     so a single utility carries the engineered look (DESIGN.md Type Scale). */
+  --text-micro: 10px;
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: 0.2px;
+  --text-caption-tracked: 11px;
+  --text-caption-tracked--line-height: 1.2;
+  --text-caption-tracked--letter-spacing: 2.2px;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 1.38;
+  --text-body-sm--letter-spacing: 0.14px;
+  --text-body: 16px;
+  --text-body--line-height: 1.38;
+  --text-body--letter-spacing: 0.16px;
+  --text-subheading: 20px;
+  --text-subheading--line-height: 1.3;
+  --text-subheading--letter-spacing: -0.2px;
+  --text-heading-sm: 24px;
+  --text-heading-sm--line-height: 1.2;
+  --text-heading-sm--letter-spacing: -0.48px;
+  --text-heading: 32px;
+  --text-heading--line-height: 1.19;
+  --text-heading--letter-spacing: -0.64px;
+  --text-heading-lg: 48px;
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -1.44px;
+  --text-display: 68px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -2.04px;
+
+  /* Weights — 400 / 500 only (font-bold is forbidden in chrome). */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
 }
 
+/*
+ * Light (:root) is the default theme — a warm "daylight" counterpart to Warp
+ * dark. next-themes toggles the `.dark` class on <html>; when it is absent the
+ * light tokens below apply, when present the dark block wins. Semantic
+ * shadcn/reui vars are mapped onto warm surfaces so every @rulisme/ui primitive
+ * inherits the skin in both themes. Editor chrome only — the CV/invoice print
+ * artifacts stay print-faithful and are re-scoped at the bottom of this file.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.153 0.006 107.1);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.153 0.006 107.1);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.153 0.006 107.1);
-  --primary: oklch(0.488 0.243 264.376);
-  --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.966 0.005 106.5);
-  --muted-foreground: oklch(0.58 0.031 107.3);
-  --accent: oklch(0.488 0.243 264.376);
-  --accent-foreground: oklch(0.97 0.014 254.604);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.93 0.007 106.5);
-  --input: oklch(0.93 0.007 106.5);
-  --ring: oklch(0.737 0.021 106.9);
-  --chart-1: oklch(0.837 0.128 66.29);
-  --chart-2: oklch(0.705 0.213 47.604);
-  --chart-3: oklch(0.646 0.222 41.116);
-  --chart-4: oklch(0.553 0.195 38.402);
-  --chart-5: oklch(0.47 0.157 37.304);
-  --radius: 0;
-  --sidebar: oklch(0.988 0.003 106.5);
-  --sidebar-foreground: oklch(0.153 0.006 107.1);
-  --sidebar-primary: oklch(0.546 0.245 262.881);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-  --sidebar-accent: oklch(0.966 0.005 106.5);
-  --sidebar-accent-foreground: oklch(0.228 0.013 107.4);
-  --sidebar-border: oklch(0.93 0.007 106.5);
-  --sidebar-ring: oklch(0.737 0.021 106.9);
+  --background: #faf9f6; /* warm off-white canvas */
+  --foreground: #1e1e1d; /* warm near-black ink (never pure #000) */
+  --card: #ffffff; /* white card lifts above the canvas */
+  --card-foreground: #1e1e1d;
+  --popover: #ffffff; /* floating panels (dialogs/popovers) */
+  --popover-foreground: #1e1e1d;
+  --primary: #1e1e1d; /* filled control — ink on light */
+  --primary-foreground: #faf9f6;
+  --secondary: #ececea; /* light warm secondary control */
+  --secondary-foreground: #1e1e1d;
+  --muted: #f0efec; /* recessed warm light */
+  --muted-foreground: #6b6a66; /* warm stone — low-emphasis text */
+  --accent: #ececea; /* hover / highlight surface */
+  --accent-foreground: #1e1e1d;
+  --destructive: oklch(0.577 0.245 27.325); /* error red (semantic state) */
+  --border: oklch(0.27 0.01 60 / 12%); /* warm ink hairline */
+  --input: oklch(0.27 0.01 60 / 18%); /* input border */
+  --ring: #868684; /* neutral focus ring (no gold/cobalt on chrome) */
+  --chart-1: #bd9f65;
+  --chart-2: #6f839f;
+  --chart-3: #6b6a66;
+  --chart-4: #868684;
+  --chart-5: #1e1e1d;
+  --radius: 0.5rem;
+  --sidebar: #f0efec;
+  --sidebar-foreground: #1e1e1d;
+  --sidebar-primary: #1e1e1d;
+  --sidebar-primary-foreground: #faf9f6;
+  --sidebar-accent: #ececea;
+  --sidebar-accent-foreground: #1e1e1d;
+  --sidebar-border: oklch(0.27 0.01 60 / 12%);
+  --sidebar-ring: #868684;
 }
 
+/* Dark class mirrors :root so the dark: variant + colorScheme stay consistent. */
 .dark {
-  --background: oklch(0.153 0.006 107.1);
-  --foreground: oklch(0.988 0.003 106.5);
-  --card: oklch(0.228 0.013 107.4);
-  --card-foreground: oklch(0.988 0.003 106.5);
-  --popover: oklch(0.228 0.013 107.4);
-  --popover-foreground: oklch(0.988 0.003 106.5);
-  --primary: oklch(0.424 0.199 265.638);
-  --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.286 0.016 107.4);
-  --muted-foreground: oklch(0.737 0.021 106.9);
-  --accent: oklch(0.424 0.199 265.638);
-  --accent-foreground: oklch(0.97 0.014 254.604);
+  --background: #121212;
+  --foreground: #faf9f6;
+  --card: #2f2f2f;
+  --card-foreground: #faf9f6;
+  --popover: #40403f;
+  --popover-foreground: #faf9f6;
+  --primary: #faf9f6;
+  --primary-foreground: #121212;
+  --secondary: #383838;
+  --secondary-foreground: #faf9f6;
+  --muted: #262624;
+  --muted-foreground: #b4b4b2;
+  --accent: #383838;
+  --accent-foreground: #faf9f6;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.58 0.031 107.3);
-  --chart-1: oklch(0.837 0.128 66.29);
-  --chart-2: oklch(0.705 0.213 47.604);
-  --chart-3: oklch(0.646 0.222 41.116);
-  --chart-4: oklch(0.553 0.195 38.402);
-  --chart-5: oklch(0.47 0.157 37.304);
-  --sidebar: oklch(0.228 0.013 107.4);
-  --sidebar-foreground: oklch(0.988 0.003 106.5);
-  --sidebar-primary: oklch(0.623 0.214 259.815);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-  --sidebar-accent: oklch(0.286 0.016 107.4);
-  --sidebar-accent-foreground: oklch(0.988 0.003 106.5);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.58 0.031 107.3);
+  --border: oklch(0.97 0.006 95 / 12%);
+  --input: oklch(0.97 0.006 95 / 16%);
+  --ring: #b4b4b2;
+  --chart-1: #bd9f65;
+  --chart-2: #6f839f;
+  --chart-3: #b4b4b2;
+  --chart-4: #868684;
+  --chart-5: #faf9f6;
+  --sidebar: #1e1e1d;
+  --sidebar-foreground: #faf9f6;
+  --sidebar-primary: #faf9f6;
+  --sidebar-primary-foreground: #121212;
+  --sidebar-accent: #383838;
+  --sidebar-accent-foreground: #faf9f6;
+  --sidebar-border: oklch(0.97 0.006 95 / 12%);
+  --sidebar-ring: #b4b4b2;
 }
 
 @layer base {
@@ -124,18 +223,87 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings:
+      "ss01" on,
+      "tnum" on;
   }
   html {
+    font-size: 100%;
     @apply font-sans;
   }
 }
 
-/* Invoice preview page */
+/*
+ * Invoice preview document — a print-faithful light "paper" island floating on
+ * the dark editor canvas. DESIGN.md print-template exception: NOT dark-themed.
+ * Semantic vars are locally re-scoped to light and the print font is pinned so
+ * the rendered invoice (and its PDF) stays ink-on-paper regardless of the dark
+ * editor theme.
+ */
 .invoice-page {
   max-width: 42rem;
-  background: white;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  color: #171717;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+  --foreground: #171717;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+  --background: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #171717;
+}
+
+/* Standalone print/PDF view (invoice.bahrul.me/?invoice=<slug>&print=1). Centers
+   the document on the dark editor backdrop for on-screen viewing; the @media
+   print rules below strip it to the bare page. */
+.invoice-print-root {
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 2rem 1rem;
+  background: var(--muted);
+}
+
+/* The web preview IS the PDF. When printing — the in-editor "Download as PDF"
+   (window.print over the full editor) or the auto-print on the standalone print
+   view — hide every chrome element and let the single `.invoice-page` document
+   flow across paper pages. One renderer, byte-faithful output. */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  .invoice-no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Release the fixed-height, scrolling app panes so the document is not
+     clipped to a single viewport. */
+  .invoice-app-shell,
+  .invoice-preview-pane,
+  .invoice-preview-scroll,
+  .invoice-print-root {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  .invoice-page {
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
 }

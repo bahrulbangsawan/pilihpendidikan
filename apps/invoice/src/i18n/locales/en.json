@@ -12,7 +12,21 @@
     "downloadPdf": "Download as PDF",
     "downloadJson": "Download as JSON",
     "clearAll": "Clear All",
-    "mcpGuide": "MCP Guide"
+    "mcp": "MCP"
+  },
+  "theme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "confirm": {
+    "title": "Clear all data?",
+    "description": "This removes everything currently in the form. This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Clear all"
+  },
+  "status": {
+    "saving": "Saving…",
+    "saved": "Saved"
   },
   "mcp": {
     "title": "Connect via MCP",
@@ -123,6 +137,7 @@
     "setupAiAssistant": "Set up AI Assistant",
     "setAccentColor": "Set accent color to {color}",
     "switchLanguage": "Switch language",
+    "downloadInvoice": "Download invoice",
     "skipToContent": "Skip to main content",
     "removeItem": "Remove item",
     "removeSubItem": "Remove sub-item",

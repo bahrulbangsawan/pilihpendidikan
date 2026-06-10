@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio — Bahrul · Apple Developer Academy Indonesia</title>
+    <style>
+      :root {
+        --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --ink: #1d1d1f;
+        --ink-soft: #6e6e73;
+        --ink-faint: #a1a1a6;
+        --line: #e3e3e6;
+        --bg: #ffffff;
+        --panel: #f5f5f7;
+        --accent: #0066cc;
+        --page-w: 297mm; /* A4 landscape */
+        --page-h: 210mm;
+        --gutter: 14mm;
+      }
+      @page { size: A4 landscape; margin: 0; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: #d9d9de;
+        -webkit-font-smoothing: antialiased;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---- Page shell (each .page reads as one PDF page) ---- */
+      .deck { padding: 40px 0 80px; }
+      .page {
+        width: var(--page-w);
+        min-height: var(--page-h);
+        margin: 0 auto 28px;
+        background: var(--bg);
+        position: relative;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+        overflow: hidden;
+      }
+
+      /* ---- Cover ---- */
+      .cover {
+        background: #000;
+        color: #f5f5f7;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--gutter);
+      }
+      .cover__kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        color: #d0d0d4;
+      }
+      .cover__kicker .dot {
+        width: 22px; height: 22px; border-radius: 50%;
+        border: 1.5px solid #f5f5f7;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 12px;
+      }
+      .cover__title {
+        font-size: 96px;
+        line-height: 0.98;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+      }
+      .cover__title .muted { color: #86868b; }
+      .cover__sub {
+        font-size: 28px;
+        font-weight: 600;
+        color: #c7c7cc;
+        letter-spacing: -0.02em;
+        margin: 18px 0 0;
+      }
+      .cover__foot {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr;
+        gap: 28px;
+        border-top: 1px solid #2a2a2d;
+        padding-top: 26px;
+      }
+      .cover__foot h4 {
+        margin: 0 0 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #f5f5f7;
+      }
+      .cover__foot p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #98989d;
+      }
+      .cover__foot a { color: #2997ff; text-decoration: none; }
+
+      /* ---- Project page ---- */
+      .project {
+        padding: var(--gutter);
+        display: grid;
+        grid-template-columns: 248px 1fr;
+        grid-template-rows: auto auto auto;
+        align-content: start; /* don't stretch rows to fill A4 — slack collects at page bottom */
+        gap: 0 48px;
+      }
+      .project__index {
+        position: absolute;
+        top: var(--gutter);
+        right: var(--gutter);
+        font-size: 13px;
+        color: var(--ink-faint);
+        letter-spacing: 0.02em;
+      }
+
+      /* left meta rail */
+      .rail { grid-column: 1; grid-row: 1 / span 2; }
+      .rail .field { margin-bottom: 26px; }
+      .rail .field h5 {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .rail .field p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.45;
+        color: var(--ink-soft);
+      }
+      .rail .field a { color: var(--accent); text-decoration: none; }
+      .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tag {
+        font-size: 11px;
+        line-height: 1;
+        padding: 5px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink-soft);
+        background: var(--panel);
+      }
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #e8f0fe;
+        color: var(--accent);
+      }
+      .badge--group { background: #fdecea; color: #c0392b; }
+
+      /* right content column */
+      .content { grid-column: 2; grid-row: 1; }
+      .content h2 {
+        margin: 0;
+        padding-right: 104px; /* reserve space for "Project N of 5" index */
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+      }
+      .content .lede {
+        margin: 12px 0 0;
+        font-size: 19px;
+        line-height: 1.45;
+        color: var(--ink);
+        font-weight: 500;
+        letter-spacing: -0.015em;
+      }
+      .content .body {
+        margin: 12px 0 0;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+      .figure {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 12px;
+        /* FIXED 16:9 image slot. Uploads must match this ratio exactly;
+           the box never resizes, so every project image is identical in size. */
+        width: 150mm;
+        height: 84.375mm; /* 150 × 9/16 = exact 16:9 */
+        aspect-ratio: 16 / 9;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--ink-faint);
+        overflow: hidden;
+      }
+      .figure img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ratio is pre-validated, so cover never crops */
+        display: block;
+      }
+      .figure .ph-title { font-size: 15px; font-weight: 600; color: var(--ink-soft); }
+      .figure .ph-note { font-size: 12px; margin-top: 6px; max-width: 440px; line-height: 1.5; }
+
+      /* reflection strip */
+      .reflect {
+        grid-column: 1 / span 2;
+        grid-row: 3;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center; /* both cells share a baseline band, vertically centered */
+        gap: 28px;
+        margin-top: 22px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+      .reflect h6 {
+        margin: 0 0 5px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+      .reflect p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+
+      /* page footer (repeats template footer) */
+      .pagefoot {
+        position: absolute;
+        left: var(--gutter);
+        right: var(--gutter);
+        bottom: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        font-size: 11px;
+        color: var(--ink-faint);
+      }
+      .pagefoot strong { color: var(--ink-soft); font-weight: 600; }
+
+      /* ---- Fixed-footprint enforcement ----
+         Every field is clamped so content can't reflow its neighbours.
+         Limits mirror the LIMITS map in portfolio-data-model.ts. */
+      .clamp { overflow: hidden; }
+      /* Fixed line counts + reserved heights so every project page is identical
+         and the spacing between blocks stays equal. */
+      .content h2 { /* title: 1 line */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; overflow: hidden;
+        min-height: 44px; /* reserves exactly 1 line */
+      }
+      .content .lede { /* subtitle: max 2 lines */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; overflow: hidden;
+        min-height: 56px; /* reserves 2 lines */
+      }
+      .content .body { /* problem: max 3 lines */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; overflow: hidden;
+        min-height: 70px; /* reserves 3 lines */
+      }
+      .reflect p { /* max 3 lines */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; overflow: hidden;
+      }
+      .rail .field h5, /* rail labels: 1 line */
+      .reflect h6, /* reflection labels: 1 line */
+      .rail .field p { /* rail values: 1 line */
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+
+      /* Cover text line limits */
+      .cover__kicker { /* 1 line */
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .cover__title { /* 1 line */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; overflow: hidden;
+      }
+      .cover__sub { /* 1 line */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; overflow: hidden;
+      }
+      .cover__foot h4 { /* 1 line */
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .cover__foot p { /* max 3 lines */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; overflow: hidden;
+      }
+      .pagefoot span { /* 1 line each */
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .figure .ph-note { /* placeholder copy: max 2 lines */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; overflow: hidden;
+      }
+
+      /* Scope of Work — bullet list, the only flexible field.
+         Bounded so it can never push Technologies past the page divider. */
+      .field--sow { flex: 0 1 auto; min-height: 0; }
+      .sow {
+        margin: 0;
+        padding-left: 18px;
+        list-style: disc outside;
+        max-height: 116px; /* ~6 single-line items; clipped on the UL, not the LI */
+        overflow: hidden;
+      }
+      .sow li {
+        font-size: 13px;
+        line-height: 1.45;
+        color: var(--ink-soft);
+        margin-bottom: 2px;
+        white-space: nowrap; /* no overflow here — that would hide the marker */
+      }
+      .sow li::marker { color: var(--ink-faint); }
+      .rail { display: flex; flex-direction: column; }
+      /* Technologies block is pinned to the bottom of the rail so it holds
+         its position regardless of how many SOW bullets are present. */
+      .field--tech { margin-top: auto; margin-bottom: 0; }
+
+      @media print {
+        body { background: #fff; }
+        .deck { padding: 0; }
+        .page { box-shadow: none; margin: 0; page-break-after: always; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deck">
+      <!-- ============ COVER ============ -->
+      <section class="page cover">
+        <div class="cover__kicker">
+          <span class="dot">&#8594;</span>
+          Portfolio Submission — Cohort 2025
+        </div>
+
+        <div>
+          <h1 class="cover__title">Portfolio<span class="muted">.</span></h1>
+          <p class="cover__sub">Bahrul &middot; iOS &amp; Product Engineering</p>
+        </div>
+
+        <div class="cover__foot">
+          <div>
+            <h4>Bahrul</h4>
+            <p>Selected works, 2022&ndash;2026.<br />Tech track.</p>
+          </div>
+          <div>
+            <h4>Background</h4>
+            <p>Universitas Example<br />Student &middot; Semester 6</p>
+            <!-- general: e.g. "Acme Inc.<br />Product Designer · 4 yrs" -->
+          </div>
+          <div>
+            <h4>Contact</h4>
+            <p>
+              +62 8xx xxxx xxxx<br />
+              <a href="mailto:work@bahrul.me">work@bahrul.me</a><br />
+              <a href="#">linkedin.com/in/bahrul</a>
+            </p>
+          </div>
+          <div>
+            <h4>Submission for</h4>
+            <p>Apple Developer Academy<br />Indonesia</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROJECT 1 ============ -->
+      <section class="page project">
+        <span class="project__index">Project 1 of 5</span>
+
+        <aside class="rail">
+          <div class="field">
+            <h5>Year Accomplished</h5>
+            <p>2025</p>
+          </div>
+          <div class="field">
+            <h5>Role / Position</h5>
+            <p>iOS Developer &amp; Team Lead</p>
+          </div>
+          <div class="field">
+            <h5>Type</h5>
+            <p><span class="badge badge--group">Group Project</span></p>
+          </div>
+          <div class="field">
+            <h5>Publication Link</h5>
+            <p><a href="#">apps.apple.com/&hellip;</a></p>
+          </div>
+          <div class="field field--sow">
+            <h5>Scope of Work</h5>
+            <ul class="sow">
+              <li>User research &amp; synthesis</li>
+              <li>On-device ML pipeline</li>
+              <li>SwiftUI client build</li>
+              <li>Team lead (4 people)</li>
+            </ul>
+          </div>
+          <div class="field field--tech">
+            <h5>Technologies</h5>
+            <div class="tag-row">
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Core ML</span>
+              <span class="tag">CloudKit</span>
+              <span class="tag">Swift</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="content">
+          <h2>Lumen — Adaptive Focus Timer</h2>
+          <p class="lede">
+            An iOS app that learns a user&rsquo;s attention rhythm and reshapes work
+            sessions around it, instead of forcing a fixed Pomodoro block.
+          </p>
+          <p class="body">
+            Problem: rigid timers ignore that focus capacity fluctuates across the
+            day. Research with 12 students surfaced three failure modes in existing
+            apps. I framed the solution as an on-device model that infers session
+            length from interaction signals, then designed and shipped the SwiftUI
+            client end to end. Logical core: predict &rarr; suggest &rarr; learn from
+            the accept/reject signal.
+          </p>
+        </div>
+
+        <div class="figure">
+          <div class="ph-title">Artwork / Project image</div>
+          <div class="ph-note">
+            Craftsmanship-quality screenshots or a hero shot. For video work: scene
+            screenshots plus a link to the online publication.
+          </div>
+        </div>
+
+        <div class="reflect">
+          <div>
+            <h6>Impact</h6>
+            <p>
+              Shipped to TestFlight with 40 users; median focused minutes per session
+              rose 23% over two weeks. Led a team of four and owned the model pipeline.
+            </p>
+          </div>
+          <div>
+            <h6>What I learned</h6>
+            <p>
+              Scoping an ML feature to ship on-device taught me to trade model accuracy
+              against latency and privacy &mdash; and to defend that trade-off to the team.
+            </p>
+          </div>
+        </div>
+
+        <div class="pagefoot">
+          <span><strong>Bahrul</strong> &middot; Universitas Example (Student, Sem 6)</span>
+          <span>work@bahrul.me &middot; Apple Developer Academy Indonesia</span>
+        </div>
+      </section>
+
+      <!-- ============ PROJECT 2 ============ -->
+      <section class="page project">
+        <span class="project__index">Project 2 of 5</span>
+
+        <aside class="rail">
+          <div class="field">
+            <h5>Year Accomplished</h5>
+            <p>2024</p>
+          </div>
+          <div class="field">
+            <h5>Role / Position</h5>
+            <p>Sole Designer &amp; Developer</p>
+          </div>
+          <div class="field">
+            <h5>Type</h5>
+            <p><span class="badge">Self-initiated</span></p>
+          </div>
+          <div class="field">
+            <h5>Publication Link</h5>
+            <p><a href="#">github.com/bahrul/&hellip;</a></p>
+          </div>
+          <div class="field field--sow">
+            <h5>Scope of Work</h5>
+            <ul class="sow">
+              <li>System architecture</li>
+              <li>Edge render engine</li>
+              <li>Templating layer</li>
+              <li>Open-source &amp; docs</li>
+            </ul>
+          </div>
+          <div class="field field--tech">
+            <h5>Technologies</h5>
+            <div class="tag-row">
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Cloudflare</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="content">
+          <h2>OG Studio — Dynamic Image Engine</h2>
+          <p class="lede">
+            A self-hosted service that renders branded social preview images on the
+            edge, in under 50&nbsp;ms.
+          </p>
+          <p class="body">
+            Problem: hand-made share images don&rsquo;t scale across hundreds of pages.
+            I researched edge-render constraints, then built a templating layer on
+            Cloudflare Workers that composes typography and art into a cached PNG.
+            The design reasoning centered on cache keys: identical inputs must map to
+            one durable asset.
+          </p>
+        </div>
+
+        <div class="figure">
+          <div class="ph-title">Artwork / Project image</div>
+          <div class="ph-note">
+            Show command of technique &mdash; before/after, architecture diagram, or a
+            grid of generated outputs.
+          </div>
+        </div>
+
+        <div class="reflect">
+          <div>
+            <h6>Impact</h6>
+            <p>
+              Powers preview images across a live portfolio platform; eliminated manual
+              asset work entirely. Open-sourced and used by 3 other developers.
+            </p>
+          </div>
+          <div>
+            <h6>What I learned</h6>
+            <p>
+              Designing for the edge forced discipline around cold starts and binary
+              size &mdash; constraints I now treat as first-class design inputs.
+            </p>
+          </div>
+        </div>
+
+        <div class="pagefoot">
+          <span><strong>Bahrul</strong> &middot; Universitas Example (Student, Sem 6)</span>
+          <span>work@bahrul.me &middot; Apple Developer Academy Indonesia</span>
+        </div>
+      </section>
+
+      <!-- ============ PROJECT 3 (compact example) ============ -->
+      <section class="page project">
+        <span class="project__index">Project 3 of 5</span>
+
+        <aside class="rail">
+          <div class="field">
+            <h5>Year Accomplished</h5>
+            <p>2023</p>
+          </div>
+          <div class="field">
+            <h5>Role / Position</h5>
+            <p>UI/UX Designer</p>
+          </div>
+          <div class="field">
+            <h5>Type</h5>
+            <p><span class="badge">Class Assignment</span></p>
+          </div>
+          <div class="field">
+            <h5>Publication Link</h5>
+            <p><a href="#">behance.net/&hellip;</a></p>
+          </div>
+          <div class="field field--sow">
+            <h5>Scope of Work</h5>
+            <ul class="sow">
+              <li>Heuristic audit</li>
+              <li>Information architecture</li>
+              <li>Interactive prototyping</li>
+              <li>Usability testing (n=8)</li>
+            </ul>
+          </div>
+          <div class="field field--tech">
+            <h5>Disciplines</h5>
+            <div class="tag-row">
+              <span class="tag">Figma</span>
+              <span class="tag">Motion</span>
+              <span class="tag">Prototyping</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="content">
+          <h2>Transit — Wayfinding Redesign</h2>
+          <p class="lede">
+            A concept redesign of a city transit app focused on legibility for
+            first-time riders.
+          </p>
+          <p class="body">
+            Problem: dense route maps overwhelm new users. I ran a heuristic audit,
+            rebuilt the information hierarchy, and prototyped a progressive-disclosure
+            flow that reveals detail on demand. The argument: reduce decisions per
+            screen, not features.
+          </p>
+        </div>
+
+        <div class="figure">
+          <div class="ph-title">Artwork / Project image</div>
+          <div class="ph-note">Hand drawings, UI frames, or a motion-graphic still.</div>
+        </div>
+
+        <div class="reflect">
+          <div>
+            <h6>Impact</h6>
+            <p>
+              Usability test (n=8) cut average route-finding time by 31% versus the
+              original. Top-graded design in the cohort.
+            </p>
+          </div>
+          <div>
+            <h6>What I learned</h6>
+            <p>
+              How to defend subtractive design decisions with evidence rather than taste.
+            </p>
+          </div>
+        </div>
+
+        <div class="pagefoot">
+          <span><strong>Bahrul</strong> &middot; Universitas Example (Student, Sem 6)</span>
+          <span>work@bahrul.me &middot; Apple Developer Academy Indonesia</span>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

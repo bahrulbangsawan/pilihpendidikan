@@ -1,55 +1,24 @@
-import { createRootRoute } from "@tanstack/react-router";
+import { createRootRoute } from "@tanstack/react-router"
 
-import appCss from "../styles.css?url";
-import { RootComponent, RootDocument } from "./__root.components";
+import appCss from "../styles.css?url"
+import { RootComponent, RootDocument } from "./__root-components"
+
+const BASE_URL = "https://cv.bahrul.me"
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Bahrul Bangsawan — CV Builder & Resume Generator" },
-      {
-        name: "description",
-        content:
-          "Create, preview, and download professional resumes as PDF. Free online CV builder by Bahrul Bangsawan with real-time preview and ATS-friendly formatting.",
-      },
-      // Open Graph
-      {
-        property: "og:title",
-        content: "Bahrul Bangsawan — CV Builder & Resume Generator",
-      },
-      {
-        property: "og:description",
-        content:
-          "Create, preview, and download professional resumes as PDF. Free online CV builder with real-time preview.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://cv.bahrul.me" },
-      {
-        property: "og:image",
-        content: "https://cv.bahrul.me/og-image.png",
-      },
-      { name: "theme-color", content: "#ffffff" },
-      // Twitter Card
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Bahrul Bangsawan — CV Builder & Resume Generator",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Create, preview, and download professional resumes as PDF. Free online CV builder with real-time preview.",
-      },
-      {
-        name: "twitter:image",
-        content: "https://cv.bahrul.me/og-image.png",
-      },
+      { name: "theme-color", content: "#121212" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://cv.bahrul.me" },
+      // hreflang tags
+      { rel: "alternate", hrefLang: "en", href: BASE_URL },
+      { rel: "alternate", hrefLang: "id", href: `${BASE_URL}/id` },
+      { rel: "alternate", hrefLang: "x-default", href: BASE_URL },
+      // Favicons
       {
         rel: "icon",
         type: "image/x-icon",
@@ -77,4 +46,4 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   shellComponent: RootDocument,
-});
+})

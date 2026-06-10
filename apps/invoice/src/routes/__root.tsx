@@ -1,15 +1,15 @@
-import { createRootRoute } from "@tanstack/react-router";
-import { RootComponent, RootDocument } from "@/routes/__root-shell";
-import appCss from "../styles.css?url";
+import { createRootRoute } from "@tanstack/react-router"
+import { RootComponent, RootDocument } from "@/routes/__root-shell"
+import appCss from "../styles.css?url"
 
-const BASE_URL = "https://invoice.bahrul.me";
+const BASE_URL = "https://invoice.bahrul.me"
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#ffffff" },
+      { name: "theme-color", content: "#121212" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -45,4 +45,4 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   shellComponent: RootDocument,
-});
+})

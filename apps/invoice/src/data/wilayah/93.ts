@@ -1,5 +1,5 @@
 // Auto-generated from wilayah.sql — do not edit manually
-import type { ProvinceData } from "./index";
+import type { ProvinceData } from "./index"
 
 const data: ProvinceData = {
   kabupaten: [
@@ -3112,6 +3112,6 @@ const data: ProvinceData = {
       nama: "Fakan/Ani",
     },
   ],
-};
+}
 
-export default data;
+export default data

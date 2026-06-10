@@ -1,0 +1,35 @@
+/goal Build new TanStack Start SSR app `apps/portfolio-bahrul` (dev port 4005, wrangler name portfolio-bahrul, host portfolio.bahrul.me) in this Bun+Turborepo monorepo, mirroring apps/cv-bahrul + invoice-bahrul. Deploy via Cloudflare.
+Purpose: Bilingual portfolio builder that edits up to 5 projects and renders a locked Apple-Developer-Academy A4 portfolio preview, downloadable as PDF and JSON.
+
+Scaffold (mirror apps/cv-bahrul):
+1. Copy skeleton: vite.config.ts, wrangler.jsonc, tsconfig, package.json (dev port 4005), styles.css, router.tsx, routes/{__root,index=EN,id=ID,$}.tsx with validateSearch {portfolio?:string, print?:true, template?}. Register in workspace.
+2. Deps identical to cv-bahrul: React 19.2, @tanstack/react-start + react-router, Tailwind v4, @rulisme/ui, @base-ui/react, lucide-react, next-themes, @react-pdf/renderer, i18n EN/ID.
+
+Data model:
+3. Port portfolio-mock/portfolio-data-model.ts verbatim as the types module (Portfolio, PortfolioOwner, Affiliation union, Project, MediaAsset, Track, LIMITS, LINES, MAX_PROJECTS=5, isValidImageRatio). Add data/sample-portfolio.json.
+
+Panel + Preview (mirror cv-generator.tsx):
+4. portfolio-generator.tsx: 50/50 split — left = portfolio-form.tsx editor + toolbar (MCP token dialog, import JSON, prefill sample, clear-all confirm, ThemeToggle, LanguageSwitcher); right = portfolio-preview.tsx + download dropdown (PDF/JSON).
+5. portfolio-preview.tsx: port portfolio-mock/index.html markup to React — dark cover + up to 5 A4-landscape project pages. Keep EVERY locked-layout rule: fixed 16:9 image slot (150mm), bounded SOW bullet list, -webkit-line-clamp per LINES, align-content:start, equal 12px rhythm, char caps per LIMITS.
+6. portfolio-pdf.tsx: @react-pdf/renderer <PortfolioDocument> reproducing the same A4-landscape layout; download via dynamic import like cv handleDownloadPDF.
+7. Print route: reuse <PortfolioPreview> + window.print() for `?print=1` (PortfolioPrintView) so `/portfolio/<slug>.pdf` works.
+
+Persistence:
+8. Copy lib/use-cloud-save.ts; extend resource union to "portfolio". localStorage debounced draft (key portfolio-data), `?portfolio=<slug>` cloud load via GET /api/portfolio/:id, optimistic PUT save with rollback. MCP_API dev=localhost:8787, prod=https://mcp.bahrul.me.
+
+Design — follow DESIGN.md (Warp dark):
+9. Add DESIGN.md tokens to styles.css @theme: text warm-off-white #faf9f6, canvas deep-ember #121212, cards smoke-charcoal #2f2f2f, Matter + Geist-Mono fonts, negative display tracking, 4px button / 8px card radius, NO drop shadows, accents #bd9f65/#6f839f only in code/eyebrow contexts, never pure #fff text or pill buttons. App chrome dark; cover uses #121212; project pages stay print-light but adopt Matter type + tracked eyebrows.
+
+Requirements:
+- Files kebab-case; named exports only, no default component exports; React19 ref-as-prop; data-slot on primitives; no barrel files; per-app @/* alias.
+- Enforce model: max 5 projects; reject any image upload not exactly 16:9 (isValidImageRatio + IMAGE_RATIO_TOLERANCE) with a user-facing error; clamp every text field to LIMITS chars + LINES lines.
+- No hardcoded secrets; cloud save Bearer-token gated and server-authoritative (client never mutates KV directly); clear-all and JSON-import overwrite confirmed.
+- `bun x ultracite fix && bun run check` clean; `bun run typecheck` passes; typography lint + parity pass.
+
+Verification:
+- Dev on :4005 boots; EN `/` and ID `/id` render; agent-browser screenshot of preview matches portfolio-mock/index.html (cover + project pages, 16:9 slot, bounded SOW, no overflow).
+- Upload 4:3 image -> rejected; 16:9 -> accepted.
+- Download PDF (@react-pdf) and JSON; re-import JSON round-trips; `?print=1` fires print dialog.
+- `bun run check` + typecheck exit 0; confirm no shadows, no pill buttons, no pure-white text per DESIGN.md.
+Do end-to-end testing. Make sure all things are correct, then stop. If not, repeat until requirements are met.
+Deliver working code, not stubs. State assumptions inline.

@@ -1,41 +1,37 @@
-import { cn } from "@rulisme/ui/lib/utils";
-import { Button } from "@rulisme/ui/ui/button";
-import { Calendar } from "@rulisme/ui/ui/calendar";
-import { Label } from "@rulisme/ui/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@rulisme/ui/ui/popover";
-import { format, parse } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { useState } from "react";
+import { cn } from "@rulisme/ui/lib/utils"
+import { Button } from "@rulisme/ui/ui/button"
+import { Calendar } from "@rulisme/ui/ui/calendar"
+import { Label } from "@rulisme/ui/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@rulisme/ui/ui/popover"
+import { format, parse } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { useState } from "react"
 
-const DATE_FORMATS = ["dd MMM yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM/dd/yyyy"];
+const DATE_FORMATS = ["dd MMM yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM/dd/yyyy"]
 
 function parseDate(str: string): Date | undefined {
   if (!str) {
-    return undefined;
+    return undefined
   }
   for (const fmt of DATE_FORMATS) {
     try {
-      const d = parse(str, fmt, new Date());
+      const d = parse(str, fmt, new Date())
       if (!isNaN(d.getTime())) {
-        return d;
+        return d
       }
     } catch {
       /* continue */
     }
   }
-  return undefined;
+  return undefined
 }
 
 interface DatePickerProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  disabled?: boolean;
-  placeholder?: string;
+  label: string
+  value: string
+  onChange: (value: string) => void
+  disabled?: boolean
+  placeholder?: string
 }
 
 export function DatePicker({
@@ -45,23 +41,23 @@ export function DatePicker({
   disabled,
   placeholder = "Select date...",
 }: DatePickerProps) {
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(() => parseDate(value));
+  const [open, setOpen] = useState(false)
+  const [date, setDate] = useState<Date | undefined>(() => parseDate(value))
 
   function handleOpenChange(isOpen: boolean) {
     if (isOpen) {
-      setDate(parseDate(value));
+      setDate(parseDate(value))
     }
-    setOpen(isOpen);
+    setOpen(isOpen)
   }
 
   function handleSelect(selected: Date | undefined) {
     if (!selected) {
-      return;
+      return
     }
-    setDate(selected);
-    onChange(format(selected, "dd MMM yyyy"));
-    setOpen(false);
+    setDate(selected)
+    onChange(format(selected, "dd MMM yyyy"))
+    setOpen(false)
   }
 
   return (
@@ -71,7 +67,7 @@ export function DatePicker({
         <PopoverTrigger asChild>
           <Button
             className={cn(
-              "h-7 w-full justify-start border-input bg-input/20 px-2 text-left font-normal text-sm md:text-xs/relaxed dark:bg-input/30",
+              "h-7 w-full justify-start border-input bg-input/20 px-2 text-left text-sm font-normal md:text-xs/relaxed dark:bg-input/30",
               !value && "text-muted-foreground"
             )}
             disabled={disabled}
@@ -92,5 +88,5 @@ export function DatePicker({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

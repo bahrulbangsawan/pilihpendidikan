@@ -12,7 +12,21 @@
     "downloadPdf": "Unduh sebagai PDF",
     "downloadJson": "Unduh sebagai JSON",
     "clearAll": "Hapus Semua",
-    "mcpGuide": "Panduan MCP"
+    "mcp": "MCP"
+  },
+  "theme": {
+    "toLight": "Beralih ke mode terang",
+    "toDark": "Beralih ke mode gelap"
+  },
+  "confirm": {
+    "title": "Hapus semua data?",
+    "description": "Ini menghapus seluruh isi formulir saat ini. Tindakan ini tidak dapat dibatalkan.",
+    "cancel": "Batal",
+    "confirm": "Hapus semua"
+  },
+  "status": {
+    "saving": "Menyimpan…",
+    "saved": "Tersimpan"
   },
   "mcp": {
     "title": "Hubungkan melalui MCP",
@@ -123,6 +137,7 @@
     "setupAiAssistant": "Atur Asisten AI",
     "setAccentColor": "Atur warna aksen ke {color}",
     "switchLanguage": "Ganti bahasa",
+    "downloadInvoice": "Unduh faktur",
     "skipToContent": "Langsung ke konten utama",
     "removeItem": "Hapus item",
     "removeSubItem": "Hapus sub-item",

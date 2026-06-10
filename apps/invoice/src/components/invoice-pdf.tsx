@@ -5,25 +5,25 @@ import {
   StyleSheet,
   Text,
   View,
-} from "@react-pdf/renderer";
-import type { InvoiceData } from "@/components/invoice-form-utils";
+} from "@react-pdf/renderer"
+import type { InvoiceData } from "@/components/invoice-form-utils"
 import {
   calcAdjustmentAmount,
   calcSubtotal,
   calcTax,
   calcTotal,
   formatCurrency,
-} from "@/components/invoice-form-utils";
-import type { Locale } from "@/i18n";
-import { getT } from "@/i18n";
+} from "@/components/invoice-form-utils"
+import type { Locale } from "@/i18n"
+import { getT } from "@/i18n"
 
 // ── Date formatting ───────────────────────────────────────
 
 function formatDate(dateStr: string): string {
   if (!dateStr) {
-    return "";
+    return ""
   }
-  return dateStr;
+  return dateStr
 }
 
 // ── Styles ────────────────────────────────────────────────
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: "#888888",
   },
-});
+})
 
 // ── Component ─────────────────────────────────────────────
 
@@ -277,13 +277,13 @@ export function InvoiceDocument({
   data,
   locale = "en",
 }: {
-  data: InvoiceData;
-  locale?: Locale;
+  data: InvoiceData
+  locale?: Locale
 }) {
-  const t = getT(locale);
-  const subtotal = calcSubtotal(data.items);
-  const tax = calcTax(subtotal, data.taxRate);
-  const total = calcTotal(data.items, data.taxRate, data.adjustments);
+  const t = getT(locale)
+  const subtotal = calcSubtotal(data.items)
+  const tax = calcTax(subtotal, data.taxRate)
+  const total = calcTotal(data.items, data.taxRate, data.adjustments)
 
   return (
     <Document>
@@ -473,7 +473,7 @@ export function InvoiceDocument({
               </View>
             ) : null}
             {data.adjustments.map((adj) => {
-              const amount = calcAdjustmentAmount(adj, subtotal);
+              const amount = calcAdjustmentAmount(adj, subtotal)
               return (
                 <View key={adj.id} style={styles.totalRow}>
                   <Text style={styles.totalLabel}>
@@ -485,7 +485,7 @@ export function InvoiceDocument({
                     {formatCurrency(amount, data.currency)}
                   </Text>
                 </View>
-              );
+              )
             })}
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>{t("preview.total")}</Text>
@@ -537,5 +537,5 @@ export function InvoiceDocument({
         />
       </Page>
     </Document>
-  );
+  )
 }

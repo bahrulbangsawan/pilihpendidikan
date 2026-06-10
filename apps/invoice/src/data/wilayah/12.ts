@@ -1,5 +1,5 @@
 // Auto-generated from wilayah.sql — do not edit manually
-import type { ProvinceData } from "./index";
+import type { ProvinceData } from "./index"
 
 const data: ProvinceData = {
   kabupaten: [
@@ -26400,6 +26400,6 @@ const data: ProvinceData = {
       nama: "Ononamolo II Lot",
     },
   ],
-};
+}
 
-export default data;
+export default data
