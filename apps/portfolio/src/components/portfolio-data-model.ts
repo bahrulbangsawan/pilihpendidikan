@@ -102,7 +102,12 @@ export type Track = "tech" | "design" | "domain"
 // student, an alumnus, or a working professional. A discriminated union keeps
 // each case's required fields explicit instead of forcing an education shape.
 export type Affiliation =
-  | { kind: "student"; institution: string; program?: string; semester?: number }
+  | {
+      kind: "student"
+      institution: string
+      program?: string
+      semester?: number
+    }
   | {
       kind: "alumni"
       institution: string

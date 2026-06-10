@@ -1,0 +1,101 @@
+{
+  "owner": {
+    "fullName": "Bahrul Bangsawan",
+    "headline": "iOS & Product Engineering",
+    "affiliation": {
+      "kind": "student",
+      "institution": "Universitas Example",
+      "program": "B.S. Computer Science",
+      "semester": 6
+    },
+    "contact": {
+      "email": "work@bahrul.me",
+      "phone": "+62 812 3456 7890",
+      "websiteUrl": "https://bahrul.me",
+      "socials": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/bahrulbangsawan"
+        }
+      ]
+    },
+    "track": "tech"
+  },
+  "submissionTarget": "Apple Developer Academy Indonesia",
+  "cohortYear": 2025,
+  "projects": [
+    {
+      "id": "sample-lumen-001",
+      "order": 1,
+      "title": "Lumen — Adaptive Focus Timer",
+      "yearAccomplished": 2025,
+      "role": "iOS Developer & Team Lead",
+      "publicationUrl": "https://apps.apple.com/app/lumen",
+      "summary": "An iOS app that learns a user's attention rhythm and reshapes work sessions around it, instead of forcing a fixed Pomodoro block.",
+      "description": "Rigid timers ignore that focus capacity fluctuates across the day. Research with 12 students surfaced three failure modes; I shipped an on-device model that infers session length from interaction signals.",
+      "projectType": "self-initiated",
+      "collaboration": { "kind": "group", "teamSize": 4, "role": "Team Lead" },
+      "impact": "Shipped to TestFlight with 40 users; median focused minutes per session rose 23% over two weeks.",
+      "learnings": "Scoping an ML feature to ship on-device taught me to trade model accuracy against latency and privacy.",
+      "scopeOfWork": [
+        "User research & synthesis",
+        "On-device ML pipeline",
+        "SwiftUI client build",
+        "Team lead (4 people)"
+      ],
+      "track": "tech",
+      "technologies": ["SwiftUI", "Core ML", "CloudKit", "Swift"],
+      "skills": [],
+      "media": []
+    },
+    {
+      "id": "sample-ogstudio-002",
+      "order": 2,
+      "title": "OG Studio — Dynamic Image Engine",
+      "yearAccomplished": 2024,
+      "role": "Sole Designer & Developer",
+      "publicationUrl": "https://github.com/bahrul/og-studio",
+      "summary": "A self-hosted service that renders branded social preview images on the edge, in under 50 ms.",
+      "description": "Hand-made share images don't scale across hundreds of pages. I built a templating layer on Cloudflare Workers that composes typography and art into a cached PNG, keyed so identical inputs map to one durable asset.",
+      "projectType": "self-initiated",
+      "collaboration": { "kind": "individual" },
+      "impact": "Powers preview images across a live portfolio platform; eliminated manual asset work entirely. Used by 3 other developers.",
+      "learnings": "Designing for the edge forced discipline around cold starts and binary size — constraints I now treat as first-class design inputs.",
+      "scopeOfWork": [
+        "System architecture",
+        "Edge render engine",
+        "Templating layer",
+        "Open-source & docs"
+      ],
+      "track": "tech",
+      "technologies": ["React", "TypeScript", "Cloudflare"],
+      "skills": [],
+      "media": []
+    },
+    {
+      "id": "sample-transit-003",
+      "order": 3,
+      "title": "Transit — Wayfinding Redesign",
+      "yearAccomplished": 2023,
+      "role": "UI/UX Designer",
+      "publicationUrl": "https://behance.net/bahrul/transit",
+      "summary": "A concept redesign of a city transit app focused on legibility for first-time riders.",
+      "description": "Dense route maps overwhelm new users. I ran a heuristic audit, rebuilt the information hierarchy, and prototyped a progressive-disclosure flow that reveals detail on demand. Reduce decisions per screen, not features.",
+      "projectType": "class-assignment",
+      "collaboration": { "kind": "individual" },
+      "impact": "Usability test (n=8) cut average route-finding time by 31% versus the original. Top-graded design in the cohort.",
+      "learnings": "How to defend subtractive design decisions with evidence rather than taste.",
+      "scopeOfWork": [
+        "Heuristic audit",
+        "Information architecture",
+        "Interactive prototyping",
+        "Usability testing (n=8)"
+      ],
+      "track": "design",
+      "technologies": [],
+      "skills": ["Figma", "Motion", "Prototyping"],
+      "media": []
+    }
+  ],
+  "updatedAt": "2026-06-11T00:00:00.000Z"
+}
