@@ -2,7 +2,9 @@
   "meta": {
     "title": "Generator Faktur — Bahrul Bangsawan",
     "description": "Buat, pratinjau, dan unduh faktur profesional dalam format PDF. Generator faktur online gratis dengan pratinjau langsung dan asisten AI.",
-    "ogDescription": "Buat, pratinjau, dan unduh faktur profesional dalam format PDF. Generator faktur online gratis dengan pratinjau langsung."
+    "ogDescription": "Buat, pratinjau, dan unduh faktur profesional dalam format PDF. Generator faktur online gratis dengan pratinjau langsung.",
+    "siteName": "Generator Faktur",
+    "ogImageAlt": "Generator Faktur oleh Bahrul Bangsawan — pembuat faktur online gratis dengan pratinjau langsung"
   },
   "toolbar": {
     "importJson": "Impor JSON",

@@ -1,0 +1,24 @@
+# CV Builder — Bahrul Bangsawan
+
+> Free bilingual (English / Bahasa Indonesia) online CV and resume builder with real-time preview, ATS-friendly templates, and one-click PDF export. Runs in the browser, no sign-up.
+
+## Pages
+
+- [CV Builder (English)](https://cv.bahrul.me): Build, preview, and download an ATS-friendly resume as PDF with live preview and four templates (basic, Harvard, simple, standard).
+- [Pembuat CV (Bahasa Indonesia)](https://cv.bahrul.me/id): Indonesian-language version of the CV builder with the same templates, real-time preview, and PDF export.
+
+## Key Facts
+
+- Free to use; no account or sign-up required
+- Bilingual: English (default, /) and Bahasa Indonesia (/id)
+- Exports print-faithful PDF resumes rendered in the browser
+- ATS-friendly templates: basic, Harvard, simple, standard
+- Privacy-friendly: resume data stays in your browser
+- Built by Bahrul Bangsawan
+
+## Contact
+
+- Website: https://cv.bahrul.me
+- Author: https://work.bahrul.me
+- LinkedIn: https://www.linkedin.com/in/bahrulbangsawan
+- GitHub: https://github.com/bahrulbangsawan

@@ -10,7 +10,9 @@ export const Route = createFileRoute("/id")({
   component: RouteComponent,
   validateSearch: (
     search: Record<string, unknown>
-  ): { cv?: string; print?: true; template?: CVStyle } => ({
+  ): { id?: string; cv?: string; print?: true; template?: CVStyle } => ({
+    // `?id=` is the canonical edit param; the legacy `?cv=` stays a working alias.
+    id: (search.id as string) || undefined,
     cv: (search.cv as string) || undefined,
     print:
       search.print === "1" ||
@@ -22,6 +24,6 @@ export const Route = createFileRoute("/id")({
 })
 
 function RouteComponent() {
-  const { cv, print, template } = Route.useSearch()
-  return <CVGenerator cvId={cv} print={print} template={template} />
+  const { id, cv, print, template } = Route.useSearch()
+  return <CVGenerator cvId={id ?? cv} print={print} template={template} />
 }

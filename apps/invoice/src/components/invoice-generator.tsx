@@ -192,10 +192,13 @@ function PreviewSkeleton() {
 
 export function InvoiceGenerator() {
   const { t, locale } = useTranslation()
-  const { invoice: invoiceId, print } = useSearch({ strict: false }) as {
+  // `?id=` is the canonical edit param; `?invoice=` is kept as a working alias.
+  const { id, invoice, print } = useSearch({ strict: false }) as {
+    id?: string
     invoice?: string
     print?: true
   }
+  const invoiceId = id ?? invoice
   const [data, setDataRaw] = useState<InvoiceData>(initialData)
   const [loading, setLoading] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)

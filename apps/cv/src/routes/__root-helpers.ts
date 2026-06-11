@@ -5,7 +5,7 @@ import { useEffect } from "react"
 
 export const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": "SoftwareApplication",
   name: "Bahrul Bangsawan — CV Builder",
   description:
     "Create, preview, and download professional resumes as PDF. Free online CV builder with real-time preview and ATS-friendly formatting.",
@@ -13,10 +13,15 @@ export const jsonLd = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "All",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  inLanguage: ["en", "id"],
   author: {
     "@type": "Person",
     name: "Bahrul Bangsawan",
-    url: "https://linkedin.com/in/bahrulbangsawan",
+    url: "https://work.bahrul.me",
+    sameAs: [
+      "https://www.linkedin.com/in/bahrulbangsawan",
+      "https://github.com/bahrulbangsawan",
+    ],
   },
 }
 

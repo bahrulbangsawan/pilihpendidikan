@@ -2,7 +2,9 @@
   "meta": {
     "title": "Bahrul Bangsawan — Portfolio Builder",
     "description": "Create, preview, and download a locked Apple Developer Academy portfolio as PDF. Bilingual portfolio builder with a fixed A4-landscape layout and real-time preview.",
-    "ogDescription": "Create, preview, and download a locked Apple Developer Academy portfolio as PDF. Real-time A4-landscape preview."
+    "ogDescription": "Create, preview, and download a locked Apple Developer Academy portfolio as PDF. Real-time A4-landscape preview.",
+    "siteName": "Portfolio Builder",
+    "ogImageAlt": "Bahrul Bangsawan Portfolio Builder — Apple Developer Academy portfolio in a locked A4-landscape layout"
   },
   "toolbar": {
     "mcp": "MCP",

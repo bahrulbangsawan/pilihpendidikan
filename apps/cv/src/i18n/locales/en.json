@@ -2,7 +2,9 @@
   "meta": {
     "title": "Bahrul Bangsawan — CV Builder & Resume Generator",
     "description": "Create, preview, and download professional resumes as PDF. Free online CV builder by Bahrul Bangsawan with real-time preview and ATS-friendly formatting.",
-    "ogDescription": "Create, preview, and download professional resumes as PDF. Free online CV builder with real-time preview."
+    "ogDescription": "Create, preview, and download professional resumes as PDF. Free online CV builder with real-time preview.",
+    "siteName": "CV Builder",
+    "ogImageAlt": "Bahrul Bangsawan CV Builder — free online resume generator with real-time preview and ATS-friendly formatting"
   },
   "toolbar": {
     "mcp": "MCP",

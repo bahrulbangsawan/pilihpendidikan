@@ -9,7 +9,10 @@ export const Route = createFileRoute("/")({
   component: RouteComponent,
   validateSearch: (
     search: Record<string, unknown>
-  ): { portfolio?: string; print?: true; template?: string } => ({
+  ): { id?: string; portfolio?: string; print?: true; template?: string } => ({
+    // `?id=` is the canonical edit param across cv/invoice/portfolio; the legacy
+    // `?portfolio=` is kept as a working alias. The component resolves id ?? portfolio.
+    id: (search.id as string) || undefined,
     portfolio: (search.portfolio as string) || undefined,
     print:
       search.print === "1" ||
@@ -21,6 +24,6 @@ export const Route = createFileRoute("/")({
 })
 
 function RouteComponent() {
-  const { portfolio, print } = Route.useSearch()
-  return <PortfolioGenerator portfolioId={portfolio} print={print} />
+  const { id, portfolio, print } = Route.useSearch()
+  return <PortfolioGenerator portfolioId={id ?? portfolio} print={print} />
 }

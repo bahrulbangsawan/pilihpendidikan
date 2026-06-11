@@ -1,4 +1,5 @@
 import { createContext, use } from "react"
+import { buildOgUrl } from "@/lib/og-url"
 import en from "./locales/en.json"
 import id from "./locales/id.json"
 
@@ -63,22 +64,49 @@ export function headForLocale(locale: Locale, baseUrl: string) {
   const t = getT(locale)
   const canonicalPath = locale === "en" ? "" : `/${locale}`
 
+  const canonicalUrl = `${baseUrl}${canonicalPath}`
+  const ogImage = buildOgUrl({
+    title: t("meta.title"),
+    subtitle: t("meta.siteName"),
+    theme: "dark",
+  })
+
   return {
     meta: [
       { title: t("meta.title") },
       { name: "description", content: t("meta.description") },
+      { name: "author", content: "Bahrul Bangsawan" },
+      { name: "application-name", content: t("meta.siteName") },
+      {
+        name: "robots",
+        content:
+          "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      },
+      // Open Graph
       { property: "og:title", content: t("meta.title") },
       { property: "og:description", content: t("meta.ogDescription") },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: `${baseUrl}${canonicalPath}` },
-      { property: "og:image", content: `${baseUrl}/og-image.webp` },
+      { property: "og:site_name", content: t("meta.siteName") },
+      { property: "og:url", content: canonicalUrl },
       { property: "og:locale", content: locale === "id" ? "id_ID" : "en_US" },
+      {
+        property: "og:locale:alternate",
+        content: locale === "id" ? "en_US" : "id_ID",
+      },
+      { property: "og:image", content: ogImage },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: t("meta.ogImageAlt") },
+      // Twitter
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@bahrulbangsawan" },
+      { name: "twitter:creator", content: "@bahrulbangsawan" },
       { name: "twitter:title", content: t("meta.title") },
       { name: "twitter:description", content: t("meta.ogDescription") },
-      { name: "twitter:image", content: `${baseUrl}/og-image.webp` },
+      { name: "twitter:image", content: ogImage },
     ],
-    links: [{ rel: "canonical", href: `${baseUrl}${canonicalPath}` }],
+    links: [{ rel: "canonical", href: canonicalUrl }],
   }
 }
 

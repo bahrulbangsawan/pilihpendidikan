@@ -2,7 +2,9 @@
   "meta": {
     "title": "Bahrul Bangsawan — Pembuat CV & Resume",
     "description": "Buat, pratinjau, dan unduh resume profesional dalam format PDF. Pembuat CV online gratis oleh Bahrul Bangsawan dengan pratinjau langsung dan format ramah ATS.",
-    "ogDescription": "Buat, pratinjau, dan unduh resume profesional dalam format PDF. Pembuat CV online gratis dengan pratinjau langsung."
+    "ogDescription": "Buat, pratinjau, dan unduh resume profesional dalam format PDF. Pembuat CV online gratis dengan pratinjau langsung.",
+    "siteName": "Pembuat CV",
+    "ogImageAlt": "Pembuat CV Bahrul Bangsawan — generator resume online gratis dengan pratinjau langsung dan format ramah ATS"
   },
   "toolbar": {
     "mcp": "MCP",

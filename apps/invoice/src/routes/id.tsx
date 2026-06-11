@@ -9,7 +9,9 @@ export const Route = createFileRoute("/id")({
   component: InvoiceGenerator,
   validateSearch: (
     search: Record<string, unknown>
-  ): { invoice?: string; print?: true } => ({
+  ): { id?: string; invoice?: string; print?: true } => ({
+    // `?id=` is the canonical edit param; the legacy `?invoice=` stays a working alias.
+    id: (search.id as string) || undefined,
     invoice: (search.invoice as string) || undefined,
     print:
       search.print === "1" ||

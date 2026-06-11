@@ -2,7 +2,9 @@
   "meta": {
     "title": "Bahrul Bangsawan — Pembuat Portofolio",
     "description": "Buat, pratinjau, dan unduh portofolio Apple Developer Academy sebagai PDF. Pembuat portofolio dwibahasa dengan tata letak A4 lanskap terkunci dan pratinjau langsung.",
-    "ogDescription": "Buat, pratinjau, dan unduh portofolio Apple Developer Academy sebagai PDF. Pratinjau A4 lanskap langsung."
+    "ogDescription": "Buat, pratinjau, dan unduh portofolio Apple Developer Academy sebagai PDF. Pratinjau A4 lanskap langsung.",
+    "siteName": "Pembuat Portofolio",
+    "ogImageAlt": "Pembuat Portofolio Bahrul Bangsawan — portofolio Apple Developer Academy dalam tata letak A4 lanskap terkunci"
   },
   "toolbar": {
     "mcp": "MCP",
