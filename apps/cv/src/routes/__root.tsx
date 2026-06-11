@@ -14,6 +14,17 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      // Warm DNS + TLS to the MCP API origin during HTML parse so the first
+      // document fetch (loading an existing CV via `?id=`) reuses an open
+      // connection instead of paying a full cross-origin handshake after
+      // hydration. `crossOrigin: "anonymous"` matches the public (no-credential)
+      // read; `dns-prefetch` is the universal fallback.
+      {
+        rel: "preconnect",
+        href: "https://mcp.bahrul.me",
+        crossOrigin: "anonymous",
+      },
+      { rel: "dns-prefetch", href: "https://mcp.bahrul.me" },
       // hreflang tags
       { rel: "alternate", hrefLang: "en", href: BASE_URL },
       { rel: "alternate", hrefLang: "id", href: `${BASE_URL}/id` },

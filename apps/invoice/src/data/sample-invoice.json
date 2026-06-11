@@ -1,7 +1,7 @@
 {
   "invoiceNumber": "INV-2026-0001",
-  "dateOfIssue": "25 Mar 2026",
-  "dateDue": "25 Apr 2026",
+  "dateOfIssue": "2026-03-25",
+  "dateDue": "2026-04-25",
   "currency": "IDR",
   "accentColor": "#f48120",
   "from": {
@@ -50,7 +50,7 @@
       "period": "01 Mar 2026–31 Mar 2026",
       "qty": 1,
       "unitPrice": 5000000,
-      "amount": 5000000,
+      "amount": 20000000,
       "subItems": [
         {
           "id": "sub-3-1",

@@ -5,6 +5,8 @@ import {
   calcTax,
   calcTotal,
   formatCurrency,
+  formatInvoiceDate,
+  lineItemTotal,
 } from "@/components/invoice-form-utils"
 import { useTranslation } from "@/i18n"
 
@@ -53,9 +55,9 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
           <span className="font-bold">{t("preview.invoiceNumber")}</span>
           <span>{data.invoiceNumber}</span>
           <span className="font-bold">{t("preview.dateOfIssue")}</span>
-          <span>{data.dateOfIssue}</span>
+          <span>{formatInvoiceDate(data.dateOfIssue)}</span>
           <span className="font-bold">{t("preview.dateDue")}</span>
-          <span>{data.dateDue}</span>
+          <span>{formatInvoiceDate(data.dateDue)}</span>
         </div>
 
         {/* Separator */}
@@ -114,7 +116,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         {/* Amount due banner */}
         <p className="mt-4 text-sm font-bold sm:mt-6 sm:text-base">
           {formatCurrency(total, currency)} {currency} {t("preview.due")}{" "}
-          {data.dateDue}
+          {formatInvoiceDate(data.dateDue)}
         </p>
 
         {/* Line items table */}
@@ -148,7 +150,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
                     {formatCurrency(item.unitPrice, currency)}
                   </span>
                   <span className="text-right">
-                    {formatCurrency(item.amount, currency)}
+                    {formatCurrency(lineItemTotal(item), currency)}
                   </span>
                 </div>
 

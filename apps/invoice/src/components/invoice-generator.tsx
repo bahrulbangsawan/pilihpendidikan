@@ -39,11 +39,14 @@ import { useTranslation } from "@/i18n"
 import { LanguageSwitcher } from "@/i18n/components/language-switcher"
 import { useCloudSave } from "@/lib/use-cloud-save"
 
-const ISSUE_DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-})
+// Canonical ISO `yyyy-MM-dd` seed for a new invoice's issue date, matching what
+// the mcp tools and createEmptyInvoice() persist (was "dd MMM yyyy"). [defect-1]
+function todayIso(): string {
+  const now = new Date()
+  const month = String(now.getMonth() + 1).padStart(2, "0")
+  const day = String(now.getDate()).padStart(2, "0")
+  return `${now.getFullYear()}-${month}-${day}`
+}
 
 const InvoicePreview = lazy(() =>
   import("@/components/invoice-preview").then((m) => ({
@@ -229,7 +232,7 @@ export function InvoiceGenerator() {
       // Set today's date only on client to avoid server/client date mismatch
       setDataRaw((prev) => ({
         ...prev,
-        dateOfIssue: ISSUE_DATE_FORMATTER.format(new Date()),
+        dateOfIssue: todayIso(),
       }))
     }
   }, [invoiceId])

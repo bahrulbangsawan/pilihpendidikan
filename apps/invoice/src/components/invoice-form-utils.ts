@@ -1,3 +1,5 @@
+import { format, parse } from "date-fns"
+
 // ── Types ──────────────────────────────────────────────────
 
 export interface SenderInfo {
@@ -104,8 +106,18 @@ export function formatCurrency(amount: number, currency: string): string {
 
 // ── Calculations ───────────────────────────────────────────
 
+// Authoritative line total: own qty × unitPrice PLUS the sum of its sub-item
+// amounts. Computing from first principles (instead of trusting the stored
+// `item.amount`) keeps the rendered subtotal correct even when a write path left
+// a parent `amount` stale, and mirrors the mcp `invoiceLineTotal`. [defect-2]
+export function lineItemTotal(item: InvoiceLineItem): number {
+  const own = item.qty * item.unitPrice
+  const subTotal = item.subItems.reduce((sum, sub) => sum + sub.amount, 0)
+  return own + subTotal
+}
+
 export function calcSubtotal(items: InvoiceLineItem[]): number {
-  return items.reduce((sum, item) => sum + item.amount, 0)
+  return items.reduce((sum, item) => sum + lineItemTotal(item), 0)
 }
 
 export function calcTax(subtotal: number, taxRate: number): number {
@@ -140,4 +152,30 @@ export function calcTotal(
   const tax = calcTax(subtotal, taxRate)
   const adj = calcAdjustmentsTotal(adjustments, subtotal)
   return subtotal + tax + adj
+}
+
+// ── Dates ──────────────────────────────────────────────────
+//
+// Stored canonically as ISO `yyyy-MM-dd`. For display we parse the stored value
+// — tolerating legacy "dd MMM yyyy" / "dd-MM-yyyy" / "MM/dd/yyyy" documents — and
+// render a friendly "dd MMM yyyy". An unparseable value passes through unchanged
+// so nothing is ever lost on screen. [defect-1]
+const DATE_INPUT_FORMATS = [
+  "yyyy-MM-dd",
+  "dd MMM yyyy",
+  "dd-MM-yyyy",
+  "MM/dd/yyyy",
+]
+
+export function formatInvoiceDate(value: string): string {
+  if (!value) {
+    return ""
+  }
+  for (const fmt of DATE_INPUT_FORMATS) {
+    const parsed = parse(value, fmt, new Date())
+    if (!Number.isNaN(parsed.getTime())) {
+      return format(parsed, "dd MMM yyyy")
+    }
+  }
+  return value
 }

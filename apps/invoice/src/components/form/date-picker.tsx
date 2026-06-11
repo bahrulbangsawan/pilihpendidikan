@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@rulisme/ui/ui/popover"
 import { format, parse } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { useState } from "react"
+import { formatInvoiceDate } from "@/components/invoice-form-utils"
 
 const DATE_FORMATS = ["dd MMM yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM/dd/yyyy"]
 
@@ -56,7 +57,9 @@ export function DatePicker({
       return
     }
     setDate(selected)
-    onChange(format(selected, "dd MMM yyyy"))
+    // Persist canonical ISO (yyyy-MM-dd); the display below renders it friendly.
+    // Keeps app-written dates compatible with the mcp isoDateField tools. [defect-1]
+    onChange(format(selected, "yyyy-MM-dd"))
     setOpen(false)
   }
 
@@ -74,7 +77,9 @@ export function DatePicker({
             variant="outline"
           >
             <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-            <span className="truncate">{value || placeholder}</span>
+            <span className="truncate">
+              {value ? formatInvoiceDate(value) : placeholder}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent align="start" className="w-auto p-0">

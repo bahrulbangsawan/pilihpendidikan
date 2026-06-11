@@ -237,7 +237,15 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
       return
     }
     setLoading(true)
-    fetch(`${MCP_API}/api/cv/${encodeURIComponent(cvId)}`)
+    // Bound the document load: a slow or unreachable MCP API would otherwise
+    // leave the preview stranded on a perpetual spinner (a hung fetch never
+    // settles, so `.finally` never clears `loading`). On timeout the request
+    // aborts, the catch runs, and the editor falls back to its current document.
+    const controller = new AbortController()
+    const abortTimer = setTimeout(() => controller.abort(), 12_000)
+    fetch(`${MCP_API}/api/cv/${encodeURIComponent(cvId)}`, {
+      signal: controller.signal,
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error("CV not found")
@@ -249,7 +257,10 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
         markSaved(loaded)
       })
       .catch((err) => console.error("Failed to load remote CV:", err))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        clearTimeout(abortTimer)
+        setLoading(false)
+      })
   }, [cvId, markSaved])
 
   const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {

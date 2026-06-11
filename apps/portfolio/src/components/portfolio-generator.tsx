@@ -180,7 +180,15 @@ export function PortfolioGenerator({
       return
     }
     setLoading(true)
-    fetch(`${MCP_API}/api/portfolio/${encodeURIComponent(portfolioId)}`)
+    // Bound the document load: a slow or unreachable MCP API would otherwise
+    // leave the preview stranded on a perpetual spinner (a hung fetch never
+    // settles, so `.finally` never clears `loading`). On timeout the request
+    // aborts, the catch runs, and the editor falls back to its current document.
+    const controller = new AbortController()
+    const abortTimer = setTimeout(() => controller.abort(), 12_000)
+    fetch(`${MCP_API}/api/portfolio/${encodeURIComponent(portfolioId)}`, {
+      signal: controller.signal,
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error("Portfolio not found")
@@ -192,7 +200,10 @@ export function PortfolioGenerator({
         markSaved(loaded)
       })
       .catch((err) => console.error("Failed to load remote portfolio:", err))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        clearTimeout(abortTimer)
+        setLoading(false)
+      })
   }, [portfolioId, markSaved])
 
   const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {

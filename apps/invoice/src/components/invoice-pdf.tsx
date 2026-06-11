@@ -13,6 +13,8 @@ import {
   calcTax,
   calcTotal,
   formatCurrency,
+  formatInvoiceDate,
+  lineItemTotal,
 } from "@/components/invoice-form-utils"
 import type { Locale } from "@/i18n"
 import { getT } from "@/i18n"
@@ -20,10 +22,8 @@ import { getT } from "@/i18n"
 // ── Date formatting ───────────────────────────────────────
 
 function formatDate(dateStr: string): string {
-  if (!dateStr) {
-    return ""
-  }
-  return dateStr
+  // Stored ISO yyyy-MM-dd → friendly "dd MMM yyyy" (legacy formats tolerated).
+  return formatInvoiceDate(dateStr)
 }
 
 // ── Styles ────────────────────────────────────────────────
@@ -428,7 +428,7 @@ export function InvoiceDocument({
                   {formatCurrency(item.unitPrice, data.currency)}
                 </Text>
                 <Text style={[styles.itemNumber, styles.colAmount]}>
-                  {formatCurrency(item.amount, data.currency)}
+                  {formatCurrency(lineItemTotal(item), data.currency)}
                 </Text>
               </View>
 
