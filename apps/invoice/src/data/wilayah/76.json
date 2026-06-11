@@ -1,0 +1,2900 @@
+{
+  "kabupaten": [
+    {
+      "kode": "76.01",
+      "nama": "Kabupaten Pasangkayu"
+    },
+    {
+      "kode": "76.02",
+      "nama": "Kabupaten Mamuju"
+    },
+    {
+      "kode": "76.03",
+      "nama": "Kabupaten Mamasa"
+    },
+    {
+      "kode": "76.04",
+      "nama": "Kabupaten Polewali Mandar"
+    },
+    {
+      "kode": "76.05",
+      "nama": "Kabupaten Majene"
+    },
+    {
+      "kode": "76.06",
+      "nama": "Kabupaten Mamuju Tengah"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "76.01.01",
+      "nama": "Bambalamotu"
+    },
+    {
+      "kode": "76.01.02",
+      "nama": "Pasangkayu"
+    },
+    {
+      "kode": "76.01.03",
+      "nama": "Baras"
+    },
+    {
+      "kode": "76.01.04",
+      "nama": "Sarudu"
+    },
+    {
+      "kode": "76.01.05",
+      "nama": "Dapurang"
+    },
+    {
+      "kode": "76.01.06",
+      "nama": "Duripoku"
+    },
+    {
+      "kode": "76.01.07",
+      "nama": "Bulu Taba"
+    },
+    {
+      "kode": "76.01.08",
+      "nama": "Tikke Raya"
+    },
+    {
+      "kode": "76.01.09",
+      "nama": "Pedongga"
+    },
+    {
+      "kode": "76.01.10",
+      "nama": "Bambaira"
+    },
+    {
+      "kode": "76.01.11",
+      "nama": "Sarjo"
+    },
+    {
+      "kode": "76.01.12",
+      "nama": "Lariang"
+    },
+    {
+      "kode": "76.02.01",
+      "nama": "Mamuju"
+    },
+    {
+      "kode": "76.02.02",
+      "nama": "Tapalang"
+    },
+    {
+      "kode": "76.02.03",
+      "nama": "Kalukku"
+    },
+    {
+      "kode": "76.02.04",
+      "nama": "Kalumpang"
+    },
+    {
+      "kode": "76.02.07",
+      "nama": "Papalang"
+    },
+    {
+      "kode": "76.02.08",
+      "nama": "Sampaga"
+    },
+    {
+      "kode": "76.02.11",
+      "nama": "Tommo"
+    },
+    {
+      "kode": "76.02.12",
+      "nama": "Simboro"
+    },
+    {
+      "kode": "76.02.13",
+      "nama": "Tapalang Barat"
+    },
+    {
+      "kode": "76.02.15",
+      "nama": "Bonehau"
+    },
+    {
+      "kode": "76.02.16",
+      "nama": "Kepulauan Bala Balakang"
+    },
+    {
+      "kode": "76.03.01",
+      "nama": "Mambi"
+    },
+    {
+      "kode": "76.03.02",
+      "nama": "Aralle"
+    },
+    {
+      "kode": "76.03.03",
+      "nama": "Mamasa"
+    },
+    {
+      "kode": "76.03.04",
+      "nama": "Pana"
+    },
+    {
+      "kode": "76.03.05",
+      "nama": "Tabulahan"
+    },
+    {
+      "kode": "76.03.06",
+      "nama": "Sumarorong"
+    },
+    {
+      "kode": "76.03.07",
+      "nama": "Messawa"
+    },
+    {
+      "kode": "76.03.08",
+      "nama": "Sesenapadang"
+    },
+    {
+      "kode": "76.03.09",
+      "nama": "Tanduk Kalua"
+    },
+    {
+      "kode": "76.03.10",
+      "nama": "Tabang"
+    },
+    {
+      "kode": "76.03.11",
+      "nama": "Bambang"
+    },
+    {
+      "kode": "76.03.12",
+      "nama": "Balla"
+    },
+    {
+      "kode": "76.03.13",
+      "nama": "Nosu"
+    },
+    {
+      "kode": "76.03.14",
+      "nama": "Tawalian"
+    },
+    {
+      "kode": "76.03.15",
+      "nama": "Rantebulahan Timur"
+    },
+    {
+      "kode": "76.03.16",
+      "nama": "Buntumalangka"
+    },
+    {
+      "kode": "76.03.17",
+      "nama": "Mehalaan"
+    },
+    {
+      "kode": "76.04.01",
+      "nama": "Tinambung"
+    },
+    {
+      "kode": "76.04.02",
+      "nama": "Campalagian"
+    },
+    {
+      "kode": "76.04.03",
+      "nama": "Wonomulyo"
+    },
+    {
+      "kode": "76.04.04",
+      "nama": "Polewali"
+    },
+    {
+      "kode": "76.04.05",
+      "nama": "Tutar"
+    },
+    {
+      "kode": "76.04.06",
+      "nama": "Binuang"
+    },
+    {
+      "kode": "76.04.07",
+      "nama": "Tapango"
+    },
+    {
+      "kode": "76.04.08",
+      "nama": "Mapilli"
+    },
+    {
+      "kode": "76.04.09",
+      "nama": "Matangnga"
+    },
+    {
+      "kode": "76.04.10",
+      "nama": "Luyo"
+    },
+    {
+      "kode": "76.04.11",
+      "nama": "Limboro"
+    },
+    {
+      "kode": "76.04.12",
+      "nama": "Balanipa"
+    },
+    {
+      "kode": "76.04.13",
+      "nama": "Anreapi"
+    },
+    {
+      "kode": "76.04.14",
+      "nama": "Matakali"
+    },
+    {
+      "kode": "76.04.15",
+      "nama": "Allu"
+    },
+    {
+      "kode": "76.04.16",
+      "nama": "Bulo"
+    },
+    {
+      "kode": "76.05.01",
+      "nama": "Banggae"
+    },
+    {
+      "kode": "76.05.02",
+      "nama": "Pamboang"
+    },
+    {
+      "kode": "76.05.03",
+      "nama": "Sendana"
+    },
+    {
+      "kode": "76.05.04",
+      "nama": "Malunda"
+    },
+    {
+      "kode": "76.05.05",
+      "nama": "Ulumanda"
+    },
+    {
+      "kode": "76.05.06",
+      "nama": "Tammerodo Sendana"
+    },
+    {
+      "kode": "76.05.07",
+      "nama": "Tubo Sendana"
+    },
+    {
+      "kode": "76.05.08",
+      "nama": "Banggae Timur"
+    },
+    {
+      "kode": "76.06.01",
+      "nama": "Tobadak"
+    },
+    {
+      "kode": "76.06.02",
+      "nama": "Pangale"
+    },
+    {
+      "kode": "76.06.03",
+      "nama": "Budong-Budong"
+    },
+    {
+      "kode": "76.06.04",
+      "nama": "Topoyo"
+    },
+    {
+      "kode": "76.06.05",
+      "nama": "Karossa"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "76.01.01.1006",
+      "nama": "Bambalamotu"
+    },
+    {
+      "kode": "76.01.01.2003",
+      "nama": "Polewali"
+    },
+    {
+      "kode": "76.01.01.2004",
+      "nama": "Randomayang"
+    },
+    {
+      "kode": "76.01.01.2007",
+      "nama": "Pangiang"
+    },
+    {
+      "kode": "76.01.01.2008",
+      "nama": "Kalola"
+    },
+    {
+      "kode": "76.01.01.2009",
+      "nama": "Wulai"
+    },
+    {
+      "kode": "76.01.02.1001",
+      "nama": "Pasangkayu"
+    },
+    {
+      "kode": "76.01.02.1002",
+      "nama": "Martajaya"
+    },
+    {
+      "kode": "76.01.02.2010",
+      "nama": "Pakava"
+    },
+    {
+      "kode": "76.01.02.2014",
+      "nama": "Karya Bersama"
+    },
+    {
+      "kode": "76.01.02.2015",
+      "nama": "Ako"
+    },
+    {
+      "kode": "76.01.02.2016",
+      "nama": "Gunung Sari"
+    },
+    {
+      "kode": "76.01.03.1001",
+      "nama": "Baras"
+    },
+    {
+      "kode": "76.01.03.2002",
+      "nama": "Balanti"
+    },
+    {
+      "kode": "76.01.03.2003",
+      "nama": "Motu"
+    },
+    {
+      "kode": "76.01.03.2012",
+      "nama": "Bulu Parigi"
+    },
+    {
+      "kode": "76.01.03.2013",
+      "nama": "Towoni"
+    },
+    {
+      "kode": "76.01.03.2016",
+      "nama": "Kasano"
+    },
+    {
+      "kode": "76.01.04.2001",
+      "nama": "Sarudu"
+    },
+    {
+      "kode": "76.01.04.2003",
+      "nama": "Bulu Mario"
+    },
+    {
+      "kode": "76.01.04.2005",
+      "nama": "Kumasari"
+    },
+    {
+      "kode": "76.01.04.2011",
+      "nama": "Patika"
+    },
+    {
+      "kode": "76.01.04.2012",
+      "nama": "Doda"
+    },
+    {
+      "kode": "76.01.05.2001",
+      "nama": "Dapurang"
+    },
+    {
+      "kode": "76.01.05.2002",
+      "nama": "Benggaulu"
+    },
+    {
+      "kode": "76.01.05.2003",
+      "nama": "Tirtabuana"
+    },
+    {
+      "kode": "76.01.05.2004",
+      "nama": "Bulu Bonggu"
+    },
+    {
+      "kode": "76.01.05.2005",
+      "nama": "Sarasa"
+    },
+    {
+      "kode": "76.01.06.2001",
+      "nama": "Tammarunang"
+    },
+    {
+      "kode": "76.01.06.2002",
+      "nama": "Saptanajaya"
+    },
+    {
+      "kode": "76.01.06.2003",
+      "nama": "Taranggi"
+    },
+    {
+      "kode": "76.01.06.2004",
+      "nama": "Sipakainga"
+    },
+    {
+      "kode": "76.01.07.2001",
+      "nama": "Lilimori"
+    },
+    {
+      "kode": "76.01.07.2002",
+      "nama": "Karave"
+    },
+    {
+      "kode": "76.01.07.2003",
+      "nama": "Bukit Harapan"
+    },
+    {
+      "kode": "76.01.07.2004",
+      "nama": "Kastabuana"
+    },
+    {
+      "kode": "76.01.07.2005",
+      "nama": "Sumber Sari"
+    },
+    {
+      "kode": "76.01.07.2006",
+      "nama": "Lelejae"
+    },
+    {
+      "kode": "76.01.07.2007",
+      "nama": "Ompi"
+    },
+    {
+      "kode": "76.01.08.2001",
+      "nama": "Tikke"
+    },
+    {
+      "kode": "76.01.08.2002",
+      "nama": "Makmur Jaya"
+    },
+    {
+      "kode": "76.01.08.2003",
+      "nama": "Lariang"
+    },
+    {
+      "kode": "76.01.08.2004",
+      "nama": "Pajalele"
+    },
+    {
+      "kode": "76.01.08.2005",
+      "nama": "Jengeng Raya"
+    },
+    {
+      "kode": "76.01.09.2001",
+      "nama": "Malei"
+    },
+    {
+      "kode": "76.01.09.2002",
+      "nama": "Pedanda"
+    },
+    {
+      "kode": "76.01.09.2003",
+      "nama": "Batu Oge"
+    },
+    {
+      "kode": "76.01.09.2004",
+      "nama": "Martasari"
+    },
+    {
+      "kode": "76.01.10.2001",
+      "nama": "Bambaira"
+    },
+    {
+      "kode": "76.01.10.2002",
+      "nama": "Kasoloang"
+    },
+    {
+      "kode": "76.01.10.2003",
+      "nama": "Tampaure"
+    },
+    {
+      "kode": "76.01.10.2004",
+      "nama": "Kaluku Nangka"
+    },
+    {
+      "kode": "76.01.11.2001",
+      "nama": "Sarjo"
+    },
+    {
+      "kode": "76.01.11.2002",
+      "nama": "Maponu"
+    },
+    {
+      "kode": "76.01.11.2003",
+      "nama": "Letawa"
+    },
+    {
+      "kode": "76.01.11.2004",
+      "nama": "Sarude"
+    },
+    {
+      "kode": "76.01.12.2001",
+      "nama": "Parabu"
+    },
+    {
+      "kode": "76.01.12.2002",
+      "nama": "Kenangan"
+    },
+    {
+      "kode": "76.01.12.2003",
+      "nama": "Bajawali"
+    },
+    {
+      "kode": "76.01.12.2004",
+      "nama": "Singgani"
+    },
+    {
+      "kode": "76.01.12.2005",
+      "nama": "Kulu"
+    },
+    {
+      "kode": "76.01.12.2006",
+      "nama": "Batu Matoru"
+    },
+    {
+      "kode": "76.01.12.2007",
+      "nama": "Bambakoro"
+    },
+    {
+      "kode": "76.02.01.1002",
+      "nama": "Binanga"
+    },
+    {
+      "kode": "76.02.01.1003",
+      "nama": "Mamunyu"
+    },
+    {
+      "kode": "76.02.01.1012",
+      "nama": "Karema"
+    },
+    {
+      "kode": "76.02.01.1013",
+      "nama": "Rimuku"
+    },
+    {
+      "kode": "76.02.01.2005",
+      "nama": "Bambu"
+    },
+    {
+      "kode": "76.02.01.2006",
+      "nama": "Karampuang"
+    },
+    {
+      "kode": "76.02.01.2010",
+      "nama": "Tadui"
+    },
+    {
+      "kode": "76.02.01.2014",
+      "nama": "Batu Pannu"
+    },
+    {
+      "kode": "76.02.02.1001",
+      "nama": "Galung"
+    },
+    {
+      "kode": "76.02.02.1002",
+      "nama": "Kasambang"
+    },
+    {
+      "kode": "76.02.02.1014",
+      "nama": "Dayanginna"
+    },
+    {
+      "kode": "76.02.02.2003",
+      "nama": "Orobatu"
+    },
+    {
+      "kode": "76.02.02.2006",
+      "nama": "Takandeang"
+    },
+    {
+      "kode": "76.02.02.2009",
+      "nama": "Bela"
+    },
+    {
+      "kode": "76.02.02.2010",
+      "nama": "Taan"
+    },
+    {
+      "kode": "76.02.02.2011",
+      "nama": "Tampalang"
+    },
+    {
+      "kode": "76.02.02.2012",
+      "nama": "Rantedoda"
+    },
+    {
+      "kode": "76.02.02.2013",
+      "nama": "Kopeang"
+    },
+    {
+      "kode": "76.02.03.1001",
+      "nama": "Sinyonyoi"
+    },
+    {
+      "kode": "76.02.03.1002",
+      "nama": "Bebanga"
+    },
+    {
+      "kode": "76.02.03.1003",
+      "nama": "Kalukku"
+    },
+    {
+      "kode": "76.02.03.1014",
+      "nama": "Sinyonyoi Selatan"
+    },
+    {
+      "kode": "76.02.03.2004",
+      "nama": "Sondoang"
+    },
+    {
+      "kode": "76.02.03.2005",
+      "nama": "Beru-Beru"
+    },
+    {
+      "kode": "76.02.03.2006",
+      "nama": "Belang Belang"
+    },
+    {
+      "kode": "76.02.03.2007",
+      "nama": "Kabuloang"
+    },
+    {
+      "kode": "76.02.03.2008",
+      "nama": "Keang"
+    },
+    {
+      "kode": "76.02.03.2009",
+      "nama": "Pokkang"
+    },
+    {
+      "kode": "76.02.03.2010",
+      "nama": "Guliling"
+    },
+    {
+      "kode": "76.02.03.2011",
+      "nama": "Uhaimate"
+    },
+    {
+      "kode": "76.02.03.2012",
+      "nama": "Kalukku Barat"
+    },
+    {
+      "kode": "76.02.03.2013",
+      "nama": "Pammulukang"
+    },
+    {
+      "kode": "76.02.04.2001",
+      "nama": "Kalumpang"
+    },
+    {
+      "kode": "76.02.04.2003",
+      "nama": "Karataun"
+    },
+    {
+      "kode": "76.02.04.2004",
+      "nama": "Karama"
+    },
+    {
+      "kode": "76.02.04.2006",
+      "nama": "Siraun"
+    },
+    {
+      "kode": "76.02.04.2007",
+      "nama": "Tumoga"
+    },
+    {
+      "kode": "76.02.04.2010",
+      "nama": "Salumakki"
+    },
+    {
+      "kode": "76.02.04.2011",
+      "nama": "Polio"
+    },
+    {
+      "kode": "76.02.04.2012",
+      "nama": "Limbong"
+    },
+    {
+      "kode": "76.02.04.2013",
+      "nama": "Sandapang"
+    },
+    {
+      "kode": "76.02.04.2014",
+      "nama": "Kondo Bulo"
+    },
+    {
+      "kode": "76.02.04.2015",
+      "nama": "Makkaliki"
+    },
+    {
+      "kode": "76.02.04.2016",
+      "nama": "Batu Makkada"
+    },
+    {
+      "kode": "76.02.04.2017",
+      "nama": "Lasa'"
+    },
+    {
+      "kode": "76.02.07.2001",
+      "nama": "Toabo"
+    },
+    {
+      "kode": "76.02.07.2002",
+      "nama": "Papalang"
+    },
+    {
+      "kode": "76.02.07.2003",
+      "nama": "Bonda"
+    },
+    {
+      "kode": "76.02.07.2004",
+      "nama": "Topore"
+    },
+    {
+      "kode": "76.02.07.2005",
+      "nama": "Salukayu"
+    },
+    {
+      "kode": "76.02.07.2006",
+      "nama": "Sukadamai"
+    },
+    {
+      "kode": "76.02.07.2007",
+      "nama": "Boda-Boda"
+    },
+    {
+      "kode": "76.02.07.2008",
+      "nama": "Sisango"
+    },
+    {
+      "kode": "76.02.07.2009",
+      "nama": "Batu Ampa"
+    },
+    {
+      "kode": "76.02.08.2001",
+      "nama": "Bunde"
+    },
+    {
+      "kode": "76.02.08.2002",
+      "nama": "Kalonding"
+    },
+    {
+      "kode": "76.02.08.2003",
+      "nama": "Tarailu"
+    },
+    {
+      "kode": "76.02.08.2004",
+      "nama": "Sampaga"
+    },
+    {
+      "kode": "76.02.08.2005",
+      "nama": "Tanambuah"
+    },
+    {
+      "kode": "76.02.08.2006",
+      "nama": "Salubarana"
+    },
+    {
+      "kode": "76.02.08.2007",
+      "nama": "Losso"
+    },
+    {
+      "kode": "76.02.11.2001",
+      "nama": "Tommo"
+    },
+    {
+      "kode": "76.02.11.2002",
+      "nama": "Campaloga"
+    },
+    {
+      "kode": "76.02.11.2003",
+      "nama": "Buana Sakti"
+    },
+    {
+      "kode": "76.02.11.2004",
+      "nama": "Tamemongga"
+    },
+    {
+      "kode": "76.02.11.2005",
+      "nama": "Tamejarra"
+    },
+    {
+      "kode": "76.02.11.2006",
+      "nama": "Rantemario"
+    },
+    {
+      "kode": "76.02.11.2007",
+      "nama": "Malino"
+    },
+    {
+      "kode": "76.02.11.2008",
+      "nama": "Kakullasang"
+    },
+    {
+      "kode": "76.02.11.2009",
+      "nama": "Leling"
+    },
+    {
+      "kode": "76.02.11.2010",
+      "nama": "Kalepu"
+    },
+    {
+      "kode": "76.02.11.2011",
+      "nama": "Sandana"
+    },
+    {
+      "kode": "76.02.11.2012",
+      "nama": "Leling Barat"
+    },
+    {
+      "kode": "76.02.11.2013",
+      "nama": "Leling Utara"
+    },
+    {
+      "kode": "76.02.11.2014",
+      "nama": "Saludengen"
+    },
+    {
+      "kode": "76.02.12.1001",
+      "nama": "Simboro"
+    },
+    {
+      "kode": "76.02.12.1002",
+      "nama": "Rangas"
+    },
+    {
+      "kode": "76.02.12.2003",
+      "nama": "Botteng"
+    },
+    {
+      "kode": "76.02.12.2004",
+      "nama": "Saletto"
+    },
+    {
+      "kode": "76.02.12.2005",
+      "nama": "Sumare"
+    },
+    {
+      "kode": "76.02.12.2007",
+      "nama": "Botteng Utara"
+    },
+    {
+      "kode": "76.02.12.2008",
+      "nama": "Tapandullu"
+    },
+    {
+      "kode": "76.02.12.2009",
+      "nama": "Pati'di"
+    },
+    {
+      "kode": "76.02.13.2001",
+      "nama": "Dungkait"
+    },
+    {
+      "kode": "76.02.13.2002",
+      "nama": "Lebani"
+    },
+    {
+      "kode": "76.02.13.2003",
+      "nama": "Labuang Rano"
+    },
+    {
+      "kode": "76.02.13.2004",
+      "nama": "Pasabu"
+    },
+    {
+      "kode": "76.02.13.2005",
+      "nama": "Tanete Pao"
+    },
+    {
+      "kode": "76.02.13.2006",
+      "nama": "Pangasaan"
+    },
+    {
+      "kode": "76.02.13.2007",
+      "nama": "Ahu"
+    },
+    {
+      "kode": "76.02.15.2001",
+      "nama": "Bonehau"
+    },
+    {
+      "kode": "76.02.15.2002",
+      "nama": "Salutiwo"
+    },
+    {
+      "kode": "76.02.15.2003",
+      "nama": "Buttuada"
+    },
+    {
+      "kode": "76.02.15.2004",
+      "nama": "Tamalea"
+    },
+    {
+      "kode": "76.02.15.2005",
+      "nama": "Lumika"
+    },
+    {
+      "kode": "76.02.15.2006",
+      "nama": "Mappu"
+    },
+    {
+      "kode": "76.02.15.2009",
+      "nama": "Banuada"
+    },
+    {
+      "kode": "76.02.15.2010",
+      "nama": "Hinua"
+    },
+    {
+      "kode": "76.02.15.2011",
+      "nama": "Kinatang"
+    },
+    {
+      "kode": "76.02.16.2001",
+      "nama": "Bala Balakang"
+    },
+    {
+      "kode": "76.02.16.2002",
+      "nama": "Bala-Balakang Timur"
+    },
+    {
+      "kode": "76.03.01.1001",
+      "nama": "Mambi"
+    },
+    {
+      "kode": "76.03.01.1002",
+      "nama": "Talipukki"
+    },
+    {
+      "kode": "76.03.01.2004",
+      "nama": "Rantebulahan"
+    },
+    {
+      "kode": "76.03.01.2008",
+      "nama": "Sondonglayu"
+    },
+    {
+      "kode": "76.03.01.2016",
+      "nama": "Salubanua"
+    },
+    {
+      "kode": "76.03.01.2017",
+      "nama": "Tapalina"
+    },
+    {
+      "kode": "76.03.01.2019",
+      "nama": "Sendana"
+    },
+    {
+      "kode": "76.03.01.2024",
+      "nama": "Pamosean"
+    },
+    {
+      "kode": "76.03.01.2025",
+      "nama": "Selumaka"
+    },
+    {
+      "kode": "76.03.01.2026",
+      "nama": "Bujung Manurung"
+    },
+    {
+      "kode": "76.03.01.2027",
+      "nama": "Salu Alo"
+    },
+    {
+      "kode": "76.03.01.2029",
+      "nama": "Indobanua"
+    },
+    {
+      "kode": "76.03.01.2030",
+      "nama": "Saludurian"
+    },
+    {
+      "kode": "76.03.02.1001",
+      "nama": "Aralle"
+    },
+    {
+      "kode": "76.03.02.2003",
+      "nama": "Ralle Anak"
+    },
+    {
+      "kode": "76.03.02.2004",
+      "nama": "Panetean"
+    },
+    {
+      "kode": "76.03.02.2005",
+      "nama": "Uhailanu"
+    },
+    {
+      "kode": "76.03.02.2007",
+      "nama": "Aralle Utara"
+    },
+    {
+      "kode": "76.03.02.2009",
+      "nama": "Uhaidaho"
+    },
+    {
+      "kode": "76.03.02.2010",
+      "nama": "Baruru"
+    },
+    {
+      "kode": "76.03.02.2015",
+      "nama": "Ralleanak Utara"
+    },
+    {
+      "kode": "76.03.02.2016",
+      "nama": "Pamoseang Pangga"
+    },
+    {
+      "kode": "76.03.02.2017",
+      "nama": "Kalabe"
+    },
+    {
+      "kode": "76.03.02.2018",
+      "nama": "Aralle Selatan"
+    },
+    {
+      "kode": "76.03.02.2019",
+      "nama": "Hahangan"
+    },
+    {
+      "kode": "76.03.03.1001",
+      "nama": "Mamasa"
+    },
+    {
+      "kode": "76.03.03.2002",
+      "nama": "Rambusaratu"
+    },
+    {
+      "kode": "76.03.03.2003",
+      "nama": "Osango"
+    },
+    {
+      "kode": "76.03.03.2004",
+      "nama": "Lambanan"
+    },
+    {
+      "kode": "76.03.03.2005",
+      "nama": "Lembana Salulo"
+    },
+    {
+      "kode": "76.03.03.2006",
+      "nama": "Taupe"
+    },
+    {
+      "kode": "76.03.03.2007",
+      "nama": "Buntu Buda"
+    },
+    {
+      "kode": "76.03.03.2008",
+      "nama": "Tondok Bakaru"
+    },
+    {
+      "kode": "76.03.03.2009",
+      "nama": "Pebassian"
+    },
+    {
+      "kode": "76.03.03.2010",
+      "nama": "Mambuliling"
+    },
+    {
+      "kode": "76.03.03.2011",
+      "nama": "Bombong Lambe"
+    },
+    {
+      "kode": "76.03.03.2012",
+      "nama": "Bubun Batu"
+    },
+    {
+      "kode": "76.03.04.1001",
+      "nama": "Pana"
+    },
+    {
+      "kode": "76.03.04.2003",
+      "nama": "Manipi"
+    },
+    {
+      "kode": "76.03.04.2005",
+      "nama": "Mamullu"
+    },
+    {
+      "kode": "76.03.04.2006",
+      "nama": "Sapan"
+    },
+    {
+      "kode": "76.03.04.2009",
+      "nama": "Datubaringan"
+    },
+    {
+      "kode": "76.03.04.2010",
+      "nama": "Panura"
+    },
+    {
+      "kode": "76.03.04.2011",
+      "nama": "Tallang Bulawan"
+    },
+    {
+      "kode": "76.03.04.2012",
+      "nama": "Karaka"
+    },
+    {
+      "kode": "76.03.04.2013",
+      "nama": "Ulusalu"
+    },
+    {
+      "kode": "76.03.04.2014",
+      "nama": "Weri"
+    },
+    {
+      "kode": "76.03.04.2015",
+      "nama": "Salutambun"
+    },
+    {
+      "kode": "76.03.04.2016",
+      "nama": "Saloan"
+    },
+    {
+      "kode": "76.03.04.2017",
+      "nama": "Ulusalu Indah"
+    },
+    {
+      "kode": "76.03.05.1001",
+      "nama": "Lakahang"
+    },
+    {
+      "kode": "76.03.05.2002",
+      "nama": "Periangan"
+    },
+    {
+      "kode": "76.03.05.2003",
+      "nama": "Malatiro"
+    },
+    {
+      "kode": "76.03.05.2004",
+      "nama": "Tabulahan"
+    },
+    {
+      "kode": "76.03.05.2005",
+      "nama": "Saluleang"
+    },
+    {
+      "kode": "76.03.05.2007",
+      "nama": "Tampak Kurra"
+    },
+    {
+      "kode": "76.03.05.2008",
+      "nama": "Gandang Dewata"
+    },
+    {
+      "kode": "76.03.05.2009",
+      "nama": "Burana"
+    },
+    {
+      "kode": "76.03.05.2010",
+      "nama": "Salubakka"
+    },
+    {
+      "kode": "76.03.05.2011",
+      "nama": "Pangandaran"
+    },
+    {
+      "kode": "76.03.05.2012",
+      "nama": "Talopak"
+    },
+    {
+      "kode": "76.03.05.2013",
+      "nama": "Peu'"
+    },
+    {
+      "kode": "76.03.05.2014",
+      "nama": "Timoro"
+    },
+    {
+      "kode": "76.03.05.2015",
+      "nama": "Lakahang Utama"
+    },
+    {
+      "kode": "76.03.06.1001",
+      "nama": "Sumarorong"
+    },
+    {
+      "kode": "76.03.06.1002",
+      "nama": "Tabone"
+    },
+    {
+      "kode": "76.03.06.2003",
+      "nama": "Batang Uru"
+    },
+    {
+      "kode": "76.03.06.2004",
+      "nama": "Sasakan"
+    },
+    {
+      "kode": "76.03.06.2005",
+      "nama": "Tadisi"
+    },
+    {
+      "kode": "76.03.06.2006",
+      "nama": "Sibanawa"
+    },
+    {
+      "kode": "76.03.06.2007",
+      "nama": "Batangnguru Timur"
+    },
+    {
+      "kode": "76.03.06.2008",
+      "nama": "Salubalo"
+    },
+    {
+      "kode": "76.03.06.2009",
+      "nama": "Banea"
+    },
+    {
+      "kode": "76.03.06.2010",
+      "nama": "Rante Kamase"
+    },
+    {
+      "kode": "76.03.07.1001",
+      "nama": "Messawa"
+    },
+    {
+      "kode": "76.03.07.2002",
+      "nama": "Rippung"
+    },
+    {
+      "kode": "76.03.07.2003",
+      "nama": "Makuang"
+    },
+    {
+      "kode": "76.03.07.2004",
+      "nama": "Sepang"
+    },
+    {
+      "kode": "76.03.07.2005",
+      "nama": "Malimbong"
+    },
+    {
+      "kode": "76.03.07.2006",
+      "nama": "Matande"
+    },
+    {
+      "kode": "76.03.07.2007",
+      "nama": "Sipai"
+    },
+    {
+      "kode": "76.03.07.2008",
+      "nama": "Pasma Mambu"
+    },
+    {
+      "kode": "76.03.07.2009",
+      "nama": "Tanete Batu"
+    },
+    {
+      "kode": "76.03.08.2002",
+      "nama": "Orobua"
+    },
+    {
+      "kode": "76.03.08.2003",
+      "nama": "Paladan"
+    },
+    {
+      "kode": "76.03.08.2004",
+      "nama": "Orobua Timur"
+    },
+    {
+      "kode": "76.03.08.2006",
+      "nama": "Rante Puang"
+    },
+    {
+      "kode": "76.03.08.2007",
+      "nama": "Satenetean"
+    },
+    {
+      "kode": "76.03.08.2008",
+      "nama": "Lisuan Ada"
+    },
+    {
+      "kode": "76.03.08.2010",
+      "nama": "Orobua Selatan"
+    },
+    {
+      "kode": "76.03.08.2012",
+      "nama": "Malangkena Padang"
+    },
+    {
+      "kode": "76.03.08.2013",
+      "nama": "Malimbong"
+    },
+    {
+      "kode": "76.03.08.2014",
+      "nama": "Marampan Orobua"
+    },
+    {
+      "kode": "76.03.09.1011",
+      "nama": "Minake"
+    },
+    {
+      "kode": "76.03.09.2001",
+      "nama": "Malabo"
+    },
+    {
+      "kode": "76.03.09.2005",
+      "nama": "Sindagamanik"
+    },
+    {
+      "kode": "76.03.09.2006",
+      "nama": "Parondobulawan"
+    },
+    {
+      "kode": "76.03.09.2007",
+      "nama": "Tamalantik"
+    },
+    {
+      "kode": "76.03.09.2008",
+      "nama": "Mannababa"
+    },
+    {
+      "kode": "76.03.09.2009",
+      "nama": "Mesakada"
+    },
+    {
+      "kode": "76.03.09.2010",
+      "nama": "Ballabatu"
+    },
+    {
+      "kode": "76.03.09.2012",
+      "nama": "Pambe"
+    },
+    {
+      "kode": "76.03.09.2013",
+      "nama": "Salurano"
+    },
+    {
+      "kode": "76.03.09.2014",
+      "nama": "Talimbung"
+    },
+    {
+      "kode": "76.03.09.2015",
+      "nama": "Kanan"
+    },
+    {
+      "kode": "76.03.10.1001",
+      "nama": "Tabang"
+    },
+    {
+      "kode": "76.03.10.2003",
+      "nama": "Tadokalua"
+    },
+    {
+      "kode": "76.03.10.2004",
+      "nama": "Tabang Barat"
+    },
+    {
+      "kode": "76.03.10.2005",
+      "nama": "Masupu"
+    },
+    {
+      "kode": "76.03.10.2006",
+      "nama": "Kalama"
+    },
+    {
+      "kode": "76.03.10.2007",
+      "nama": "Bakadisura"
+    },
+    {
+      "kode": "76.03.10.2008",
+      "nama": "Salukona"
+    },
+    {
+      "kode": "76.03.11.2001",
+      "nama": "Mokallang"
+    },
+    {
+      "kode": "76.03.11.2002",
+      "nama": "Masoso"
+    },
+    {
+      "kode": "76.03.11.2003",
+      "nama": "Saluassing"
+    },
+    {
+      "kode": "76.03.11.2004",
+      "nama": "Salubulo"
+    },
+    {
+      "kode": "76.03.11.2005",
+      "nama": "Salukadi"
+    },
+    {
+      "kode": "76.03.11.2006",
+      "nama": "Salukepopok"
+    },
+    {
+      "kode": "76.03.11.2007",
+      "nama": "Ulumambi Barat"
+    },
+    {
+      "kode": "76.03.11.2008",
+      "nama": "Limbadebata"
+    },
+    {
+      "kode": "76.03.11.2009",
+      "nama": "Tanete Tomba"
+    },
+    {
+      "kode": "76.03.11.2010",
+      "nama": "Bambang"
+    },
+    {
+      "kode": "76.03.11.2011",
+      "nama": "Rantelemo"
+    },
+    {
+      "kode": "76.03.11.2012",
+      "nama": "Saludengen"
+    },
+    {
+      "kode": "76.03.11.2013",
+      "nama": "Ulumambi"
+    },
+    {
+      "kode": "76.03.11.2014",
+      "nama": "Bambang Timur"
+    },
+    {
+      "kode": "76.03.11.2015",
+      "nama": "Minanga"
+    },
+    {
+      "kode": "76.03.11.2016",
+      "nama": "Sikamase"
+    },
+    {
+      "kode": "76.03.11.2017",
+      "nama": "Rantetarima"
+    },
+    {
+      "kode": "76.03.11.2018",
+      "nama": "Salururu"
+    },
+    {
+      "kode": "76.03.11.2019",
+      "nama": "Salutabang"
+    },
+    {
+      "kode": "76.03.11.2020",
+      "nama": "Balatana"
+    },
+    {
+      "kode": "76.03.12.2001",
+      "nama": "Balla"
+    },
+    {
+      "kode": "76.03.12.2002",
+      "nama": "Balla Barat"
+    },
+    {
+      "kode": "76.03.12.2003",
+      "nama": "Balla Satanetean"
+    },
+    {
+      "kode": "76.03.12.2004",
+      "nama": "Balla Tumuka"
+    },
+    {
+      "kode": "76.03.12.2005",
+      "nama": "Sepakuan"
+    },
+    {
+      "kode": "76.03.12.2006",
+      "nama": "Pidara"
+    },
+    {
+      "kode": "76.03.12.2007",
+      "nama": "Bambapuang"
+    },
+    {
+      "kode": "76.03.12.2008",
+      "nama": "Balla Timur"
+    },
+    {
+      "kode": "76.03.13.1001",
+      "nama": "Nosu"
+    },
+    {
+      "kode": "76.03.13.2002",
+      "nama": "Minanga"
+    },
+    {
+      "kode": "76.03.13.2003",
+      "nama": "Batupapan"
+    },
+    {
+      "kode": "76.03.13.2004",
+      "nama": "Masewwe"
+    },
+    {
+      "kode": "76.03.13.2005",
+      "nama": "Siwi"
+    },
+    {
+      "kode": "76.03.13.2006",
+      "nama": "Minanga Timur"
+    },
+    {
+      "kode": "76.03.13.2007",
+      "nama": "Parinding"
+    },
+    {
+      "kode": "76.03.14.1001",
+      "nama": "Tawalian"
+    },
+    {
+      "kode": "76.03.14.2002",
+      "nama": "Tawalian Timur"
+    },
+    {
+      "kode": "76.03.14.2003",
+      "nama": "Kariango"
+    },
+    {
+      "kode": "76.03.14.2004",
+      "nama": "Rantetangnga"
+    },
+    {
+      "kode": "76.03.15.2001",
+      "nama": "Salumokanan"
+    },
+    {
+      "kode": "76.03.15.2003",
+      "nama": "Salumokanan Barat"
+    },
+    {
+      "kode": "76.03.15.2004",
+      "nama": "Buangin"
+    },
+    {
+      "kode": "76.03.15.2005",
+      "nama": "Bambang Buda"
+    },
+    {
+      "kode": "76.03.15.2006",
+      "nama": "Leko"
+    },
+    {
+      "kode": "76.03.15.2007",
+      "nama": "Kirak"
+    },
+    {
+      "kode": "76.03.15.2008",
+      "nama": "Salumokanan Utara"
+    },
+    {
+      "kode": "76.03.15.2009",
+      "nama": "Sampale"
+    },
+    {
+      "kode": "76.03.16.2001",
+      "nama": "Buntumalangka"
+    },
+    {
+      "kode": "76.03.16.2002",
+      "nama": "Ranteberan"
+    },
+    {
+      "kode": "76.03.16.2003",
+      "nama": "Kebanga"
+    },
+    {
+      "kode": "76.03.16.2004",
+      "nama": "Salurindu"
+    },
+    {
+      "kode": "76.03.16.2005",
+      "nama": "Taora"
+    },
+    {
+      "kode": "76.03.16.2006",
+      "nama": "Kabae"
+    },
+    {
+      "kode": "76.03.16.2007",
+      "nama": "Salutambun Barat"
+    },
+    {
+      "kode": "76.03.16.2008",
+      "nama": "Penatangan"
+    },
+    {
+      "kode": "76.03.16.2009",
+      "nama": "Salutambun Timur"
+    },
+    {
+      "kode": "76.03.16.2010",
+      "nama": "Salutambun"
+    },
+    {
+      "kode": "76.03.16.2011",
+      "nama": "Aralle Timur"
+    },
+    {
+      "kode": "76.03.17.2001",
+      "nama": "Mehalaan"
+    },
+    {
+      "kode": "76.03.17.2002",
+      "nama": "Botteng"
+    },
+    {
+      "kode": "76.03.17.2003",
+      "nama": "Salukonta"
+    },
+    {
+      "kode": "76.03.17.2004",
+      "nama": "Mesakada"
+    },
+    {
+      "kode": "76.03.17.2005",
+      "nama": "Mehalaan Barat"
+    },
+    {
+      "kode": "76.03.17.2006",
+      "nama": "Saluahok"
+    },
+    {
+      "kode": "76.03.17.2007",
+      "nama": "Salubalo"
+    },
+    {
+      "kode": "76.03.17.2008",
+      "nama": "Passembuk"
+    },
+    {
+      "kode": "76.03.17.2009",
+      "nama": "Kondo"
+    },
+    {
+      "kode": "76.03.17.2010",
+      "nama": "Leko Sukamaju"
+    },
+    {
+      "kode": "76.03.17.2011",
+      "nama": "Ulumea"
+    },
+    {
+      "kode": "76.04.01.1001",
+      "nama": "Tinambung"
+    },
+    {
+      "kode": "76.04.01.2002",
+      "nama": "Karama"
+    },
+    {
+      "kode": "76.04.01.2003",
+      "nama": "Tangnga Tangnga"
+    },
+    {
+      "kode": "76.04.01.2004",
+      "nama": "Lekopadis"
+    },
+    {
+      "kode": "76.04.01.2005",
+      "nama": "Galung Lombok"
+    },
+    {
+      "kode": "76.04.01.2006",
+      "nama": "Tandung"
+    },
+    {
+      "kode": "76.04.01.2007",
+      "nama": "Batulaya"
+    },
+    {
+      "kode": "76.04.01.2008",
+      "nama": "Sepabatu"
+    },
+    {
+      "kode": "76.04.02.1001",
+      "nama": "Pappang"
+    },
+    {
+      "kode": "76.04.02.2002",
+      "nama": "Laliko"
+    },
+    {
+      "kode": "76.04.02.2003",
+      "nama": "Bonde"
+    },
+    {
+      "kode": "76.04.02.2004",
+      "nama": "Katumbangan Lemo"
+    },
+    {
+      "kode": "76.04.02.2005",
+      "nama": "Panyampa"
+    },
+    {
+      "kode": "76.04.02.2006",
+      "nama": "Suruang"
+    },
+    {
+      "kode": "76.04.02.2007",
+      "nama": "Lampoko"
+    },
+    {
+      "kode": "76.04.02.2008",
+      "nama": "Katumbangan"
+    },
+    {
+      "kode": "76.04.02.2009",
+      "nama": "Lapeo"
+    },
+    {
+      "kode": "76.04.02.2010",
+      "nama": "Parappe"
+    },
+    {
+      "kode": "76.04.02.2011",
+      "nama": "Ongko"
+    },
+    {
+      "kode": "76.04.02.2012",
+      "nama": "Kenje"
+    },
+    {
+      "kode": "76.04.02.2013",
+      "nama": "Sumarrang"
+    },
+    {
+      "kode": "76.04.02.2014",
+      "nama": "Botto"
+    },
+    {
+      "kode": "76.04.02.2015",
+      "nama": "Gattungan"
+    },
+    {
+      "kode": "76.04.02.2016",
+      "nama": "Padang Timur"
+    },
+    {
+      "kode": "76.04.02.2017",
+      "nama": "Padang"
+    },
+    {
+      "kode": "76.04.02.2018",
+      "nama": "Lagi-Agi"
+    },
+    {
+      "kode": "76.04.03.1001",
+      "nama": "Sidodadi"
+    },
+    {
+      "kode": "76.04.03.2002",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "76.04.03.2003",
+      "nama": "Sumberjo"
+    },
+    {
+      "kode": "76.04.03.2004",
+      "nama": "Bumiayu"
+    },
+    {
+      "kode": "76.04.03.2005",
+      "nama": "Kebunsari"
+    },
+    {
+      "kode": "76.04.03.2006",
+      "nama": "Banua Baru"
+    },
+    {
+      "kode": "76.04.03.2007",
+      "nama": "Nepo"
+    },
+    {
+      "kode": "76.04.03.2008",
+      "nama": "Sugihwaras"
+    },
+    {
+      "kode": "76.04.03.2009",
+      "nama": "Campurjo"
+    },
+    {
+      "kode": "76.04.03.2010",
+      "nama": "Bumimulyo"
+    },
+    {
+      "kode": "76.04.03.2011",
+      "nama": "Tumpiling"
+    },
+    {
+      "kode": "76.04.03.2012",
+      "nama": "Bakka-Bakka"
+    },
+    {
+      "kode": "76.04.03.2013",
+      "nama": "Arjosari"
+    },
+    {
+      "kode": "76.04.03.2014",
+      "nama": "Galeso"
+    },
+    {
+      "kode": "76.04.04.1001",
+      "nama": "Polewali"
+    },
+    {
+      "kode": "76.04.04.1002",
+      "nama": "Wattang"
+    },
+    {
+      "kode": "76.04.04.1003",
+      "nama": "Sulewatang"
+    },
+    {
+      "kode": "76.04.04.1004",
+      "nama": "Lantora"
+    },
+    {
+      "kode": "76.04.04.1005",
+      "nama": "Takatidung"
+    },
+    {
+      "kode": "76.04.04.1006",
+      "nama": "Pekkabata"
+    },
+    {
+      "kode": "76.04.04.1007",
+      "nama": "Madatte"
+    },
+    {
+      "kode": "76.04.04.1008",
+      "nama": "Manding"
+    },
+    {
+      "kode": "76.04.04.1009",
+      "nama": "Darma"
+    },
+    {
+      "kode": "76.04.05.1001",
+      "nama": "Taramanu"
+    },
+    {
+      "kode": "76.04.05.2002",
+      "nama": "Ambopadang"
+    },
+    {
+      "kode": "76.04.05.2003",
+      "nama": "Tubbi"
+    },
+    {
+      "kode": "76.04.05.2004",
+      "nama": "Ratte"
+    },
+    {
+      "kode": "76.04.05.2005",
+      "nama": "Besoangin"
+    },
+    {
+      "kode": "76.04.05.2006",
+      "nama": "Piriang Tapiko"
+    },
+    {
+      "kode": "76.04.05.2007",
+      "nama": "Peburru"
+    },
+    {
+      "kode": "76.04.05.2008",
+      "nama": "Taloba"
+    },
+    {
+      "kode": "76.04.05.2009",
+      "nama": "Pollewani"
+    },
+    {
+      "kode": "76.04.05.2010",
+      "nama": "Arabua"
+    },
+    {
+      "kode": "76.04.05.2011",
+      "nama": "Besoangin Utara"
+    },
+    {
+      "kode": "76.04.05.2012",
+      "nama": "Poda-Poda"
+    },
+    {
+      "kode": "76.04.05.2013",
+      "nama": "Taramanu Tua"
+    },
+    {
+      "kode": "76.04.06.1005",
+      "nama": "Amassangan"
+    },
+    {
+      "kode": "76.04.06.2001",
+      "nama": "Tonyaman"
+    },
+    {
+      "kode": "76.04.06.2002",
+      "nama": "Kuajang"
+    },
+    {
+      "kode": "76.04.06.2003",
+      "nama": "Paku"
+    },
+    {
+      "kode": "76.04.06.2004",
+      "nama": "Mirring"
+    },
+    {
+      "kode": "76.04.06.2006",
+      "nama": "Batetangnga"
+    },
+    {
+      "kode": "76.04.06.2007",
+      "nama": "Mammi"
+    },
+    {
+      "kode": "76.04.06.2008",
+      "nama": "Kaleok"
+    },
+    {
+      "kode": "76.04.06.2009",
+      "nama": "Amola"
+    },
+    {
+      "kode": "76.04.06.2010",
+      "nama": "Rea"
+    },
+    {
+      "kode": "76.04.07.1001",
+      "nama": "Pelitakan"
+    },
+    {
+      "kode": "76.04.07.2002",
+      "nama": "Tapango"
+    },
+    {
+      "kode": "76.04.07.2003",
+      "nama": "Rappang"
+    },
+    {
+      "kode": "76.04.07.2004",
+      "nama": "Dakka"
+    },
+    {
+      "kode": "76.04.07.2005",
+      "nama": "Batu"
+    },
+    {
+      "kode": "76.04.07.2006",
+      "nama": "Riso"
+    },
+    {
+      "kode": "76.04.07.2007",
+      "nama": "Palatta"
+    },
+    {
+      "kode": "76.04.07.2008",
+      "nama": "Tapango Barat"
+    },
+    {
+      "kode": "76.04.07.2009",
+      "nama": "Kurrak"
+    },
+    {
+      "kode": "76.04.07.2010",
+      "nama": "Bussu"
+    },
+    {
+      "kode": "76.04.07.2011",
+      "nama": "Tuttula"
+    },
+    {
+      "kode": "76.04.07.2012",
+      "nama": "Jambu Malea"
+    },
+    {
+      "kode": "76.04.07.2013",
+      "nama": "Kalimbua"
+    },
+    {
+      "kode": "76.04.07.2014",
+      "nama": "Banato Rejo"
+    },
+    {
+      "kode": "76.04.08.1001",
+      "nama": "Mapilli"
+    },
+    {
+      "kode": "76.04.08.2002",
+      "nama": "Ugibaru"
+    },
+    {
+      "kode": "76.04.08.2003",
+      "nama": "Rumpa"
+    },
+    {
+      "kode": "76.04.08.2005",
+      "nama": "Kurma"
+    },
+    {
+      "kode": "76.04.08.2007",
+      "nama": "Buku"
+    },
+    {
+      "kode": "76.04.08.2009",
+      "nama": "Bonne Bonne"
+    },
+    {
+      "kode": "76.04.08.2011",
+      "nama": "Beroangin"
+    },
+    {
+      "kode": "76.04.08.2015",
+      "nama": "Segerang"
+    },
+    {
+      "kode": "76.04.08.2016",
+      "nama": "Bonra"
+    },
+    {
+      "kode": "76.04.08.2017",
+      "nama": "Sattoko"
+    },
+    {
+      "kode": "76.04.08.2018",
+      "nama": "Rappang Barat"
+    },
+    {
+      "kode": "76.04.08.2019",
+      "nama": "Landi Kanusuang"
+    },
+    {
+      "kode": "76.04.09.1001",
+      "nama": "Matangnga"
+    },
+    {
+      "kode": "76.04.09.2002",
+      "nama": "Lilli"
+    },
+    {
+      "kode": "76.04.09.2003",
+      "nama": "Rangoan"
+    },
+    {
+      "kode": "76.04.09.2004",
+      "nama": "Tapua"
+    },
+    {
+      "kode": "76.04.09.2005",
+      "nama": "Mambu Tapua"
+    },
+    {
+      "kode": "76.04.09.2006",
+      "nama": "Ba'ba Tapua"
+    },
+    {
+      "kode": "76.04.09.2007",
+      "nama": "Katimbang"
+    },
+    {
+      "kode": "76.04.10.1004",
+      "nama": "Batupanga"
+    },
+    {
+      "kode": "76.04.10.2001",
+      "nama": "Mambu"
+    },
+    {
+      "kode": "76.04.10.2002",
+      "nama": "Tenggelang"
+    },
+    {
+      "kode": "76.04.10.2003",
+      "nama": "Baru"
+    },
+    {
+      "kode": "76.04.10.2005",
+      "nama": "Pussui"
+    },
+    {
+      "kode": "76.04.10.2006",
+      "nama": "Mapilli Barat"
+    },
+    {
+      "kode": "76.04.10.2007",
+      "nama": "Sambali Wali"
+    },
+    {
+      "kode": "76.04.10.2008",
+      "nama": "Batupanga Daala"
+    },
+    {
+      "kode": "76.04.10.2009",
+      "nama": "Luyo"
+    },
+    {
+      "kode": "76.04.10.2010",
+      "nama": "Pussui Barat"
+    },
+    {
+      "kode": "76.04.10.2011",
+      "nama": "Puccadi"
+    },
+    {
+      "kode": "76.04.11.1001",
+      "nama": "Limboro"
+    },
+    {
+      "kode": "76.04.11.2002",
+      "nama": "Lembang Lembang"
+    },
+    {
+      "kode": "76.04.11.2003",
+      "nama": "Tandassura"
+    },
+    {
+      "kode": "76.04.11.2004",
+      "nama": "Samasundu"
+    },
+    {
+      "kode": "76.04.11.2005",
+      "nama": "Napo"
+    },
+    {
+      "kode": "76.04.11.2006",
+      "nama": "Todang Todang"
+    },
+    {
+      "kode": "76.04.11.2007",
+      "nama": "Pendulangan"
+    },
+    {
+      "kode": "76.04.11.2008",
+      "nama": "Renggeang"
+    },
+    {
+      "kode": "76.04.11.2009",
+      "nama": "Salarri"
+    },
+    {
+      "kode": "76.04.11.2010",
+      "nama": "Tangan Baru"
+    },
+    {
+      "kode": "76.04.11.2011",
+      "nama": "Palece"
+    },
+    {
+      "kode": "76.04.12.1002",
+      "nama": "Balanipa"
+    },
+    {
+      "kode": "76.04.12.2001",
+      "nama": "Tammajarra"
+    },
+    {
+      "kode": "76.04.12.2003",
+      "nama": "Tammangalle"
+    },
+    {
+      "kode": "76.04.12.2004",
+      "nama": "Mosso"
+    },
+    {
+      "kode": "76.04.12.2005",
+      "nama": "Galung Tuluk"
+    },
+    {
+      "kode": "76.04.12.2006",
+      "nama": "Sabang Subik"
+    },
+    {
+      "kode": "76.04.12.2007",
+      "nama": "Pambusuang"
+    },
+    {
+      "kode": "76.04.12.2008",
+      "nama": "Bala"
+    },
+    {
+      "kode": "76.04.12.2009",
+      "nama": "Lambanan"
+    },
+    {
+      "kode": "76.04.12.2010",
+      "nama": "Lego"
+    },
+    {
+      "kode": "76.04.12.2011",
+      "nama": "Pallis"
+    },
+    {
+      "kode": "76.04.13.1001",
+      "nama": "Anreapi"
+    },
+    {
+      "kode": "76.04.13.2002",
+      "nama": "Duampanua"
+    },
+    {
+      "kode": "76.04.13.2003",
+      "nama": "Kelapa Dua"
+    },
+    {
+      "kode": "76.04.13.2004",
+      "nama": "Pappandangan"
+    },
+    {
+      "kode": "76.04.13.2005",
+      "nama": "Kunyi"
+    },
+    {
+      "kode": "76.04.14.1001",
+      "nama": "Matakali"
+    },
+    {
+      "kode": "76.04.14.2002",
+      "nama": "Petampanua"
+    },
+    {
+      "kode": "76.04.14.2003",
+      "nama": "Barumbung"
+    },
+    {
+      "kode": "76.04.14.2004",
+      "nama": "Pasiang"
+    },
+    {
+      "kode": "76.04.14.2005",
+      "nama": "Tonrolima"
+    },
+    {
+      "kode": "76.04.14.2006",
+      "nama": "Indomakkombong"
+    },
+    {
+      "kode": "76.04.14.2007",
+      "nama": "Bunga-Bunga"
+    },
+    {
+      "kode": "76.04.15.1009",
+      "nama": "Petoosang"
+    },
+    {
+      "kode": "76.04.15.2002",
+      "nama": "Mombi"
+    },
+    {
+      "kode": "76.04.15.2003",
+      "nama": "Kalumammang"
+    },
+    {
+      "kode": "76.04.15.2004",
+      "nama": "Pao-pao"
+    },
+    {
+      "kode": "76.04.15.2005",
+      "nama": "Puppuuring"
+    },
+    {
+      "kode": "76.04.15.2006",
+      "nama": "Saragian"
+    },
+    {
+      "kode": "76.04.15.2007",
+      "nama": "Sayoang"
+    },
+    {
+      "kode": "76.04.15.2008",
+      "nama": "Allu"
+    },
+    {
+      "kode": "76.04.16.2001",
+      "nama": "Bulo"
+    },
+    {
+      "kode": "76.04.16.2002",
+      "nama": "Pulliwa"
+    },
+    {
+      "kode": "76.04.16.2003",
+      "nama": "Patambanua"
+    },
+    {
+      "kode": "76.04.16.2004",
+      "nama": "Karombang"
+    },
+    {
+      "kode": "76.04.16.2005",
+      "nama": "Daala Timur"
+    },
+    {
+      "kode": "76.04.16.2006",
+      "nama": "Lenggo"
+    },
+    {
+      "kode": "76.04.16.2007",
+      "nama": "Sabura"
+    },
+    {
+      "kode": "76.04.16.2008",
+      "nama": "Sepporakki"
+    },
+    {
+      "kode": "76.04.16.2009",
+      "nama": "Ihing"
+    },
+    {
+      "kode": "76.05.01.1001",
+      "nama": "Banggae"
+    },
+    {
+      "kode": "76.05.01.1003",
+      "nama": "Baru"
+    },
+    {
+      "kode": "76.05.01.1007",
+      "nama": "Pangali Ali"
+    },
+    {
+      "kode": "76.05.01.1009",
+      "nama": "Totoli"
+    },
+    {
+      "kode": "76.05.01.1010",
+      "nama": "Rangas"
+    },
+    {
+      "kode": "76.05.01.1013",
+      "nama": "Galung"
+    },
+    {
+      "kode": "76.05.01.2011",
+      "nama": "Palipi Soreang"
+    },
+    {
+      "kode": "76.05.01.2012",
+      "nama": "Pamboborang"
+    },
+    {
+      "kode": "76.05.02.1001",
+      "nama": "Lalampanua"
+    },
+    {
+      "kode": "76.05.02.1002",
+      "nama": "Sirindu"
+    },
+    {
+      "kode": "76.05.02.2003",
+      "nama": "Adolang"
+    },
+    {
+      "kode": "76.05.02.2004",
+      "nama": "Bababulo"
+    },
+    {
+      "kode": "76.05.02.2005",
+      "nama": "Bonde"
+    },
+    {
+      "kode": "76.05.02.2006",
+      "nama": "Betteng"
+    },
+    {
+      "kode": "76.05.02.2007",
+      "nama": "Simbang"
+    },
+    {
+      "kode": "76.05.02.2008",
+      "nama": "Bonde Utara"
+    },
+    {
+      "kode": "76.05.02.2009",
+      "nama": "Bababulo Utara"
+    },
+    {
+      "kode": "76.05.02.2010",
+      "nama": "Buttu Pamboang"
+    },
+    {
+      "kode": "76.05.02.2011",
+      "nama": "Banua Adolang"
+    },
+    {
+      "kode": "76.05.02.2012",
+      "nama": "Adolang Dhua"
+    },
+    {
+      "kode": "76.05.02.2013",
+      "nama": "Tinambung"
+    },
+    {
+      "kode": "76.05.02.2014",
+      "nama": "Pesuloang"
+    },
+    {
+      "kode": "76.05.02.2015",
+      "nama": "Balombong"
+    },
+    {
+      "kode": "76.05.03.1001",
+      "nama": "Mosso"
+    },
+    {
+      "kode": "76.05.03.1002",
+      "nama": "Mosso Dhua"
+    },
+    {
+      "kode": "76.05.03.2004",
+      "nama": "Totolisi Sendana"
+    },
+    {
+      "kode": "76.05.03.2007",
+      "nama": "Tallubanua"
+    },
+    {
+      "kode": "76.05.03.2015",
+      "nama": "Lalatedzong"
+    },
+    {
+      "kode": "76.05.03.2016",
+      "nama": "Binanga"
+    },
+    {
+      "kode": "76.05.03.2017",
+      "nama": "Puttada"
+    },
+    {
+      "kode": "76.05.03.2018",
+      "nama": "Paminggalan"
+    },
+    {
+      "kode": "76.05.03.2019",
+      "nama": "Leppangang"
+    },
+    {
+      "kode": "76.05.03.2020",
+      "nama": "Pundau"
+    },
+    {
+      "kode": "76.05.03.2021",
+      "nama": "Sendana"
+    },
+    {
+      "kode": "76.05.03.2022",
+      "nama": "Banua Sendana"
+    },
+    {
+      "kode": "76.05.03.2023",
+      "nama": "Tallubanua Utara"
+    },
+    {
+      "kode": "76.05.03.2024",
+      "nama": "Limboro Rambu-Rambu"
+    },
+    {
+      "kode": "76.05.03.2025",
+      "nama": "Limbua"
+    },
+    {
+      "kode": "76.05.03.2026",
+      "nama": "Bukit Samang"
+    },
+    {
+      "kode": "76.05.04.1001",
+      "nama": "Malunda"
+    },
+    {
+      "kode": "76.05.04.1015",
+      "nama": "Lamungang Batu"
+    },
+    {
+      "kode": "76.05.04.2002",
+      "nama": "Bambangan"
+    },
+    {
+      "kode": "76.05.04.2004",
+      "nama": "Lombang"
+    },
+    {
+      "kode": "76.05.04.2005",
+      "nama": "Lombong"
+    },
+    {
+      "kode": "76.05.04.2006",
+      "nama": "Mekkatta"
+    },
+    {
+      "kode": "76.05.04.2010",
+      "nama": "Maliaya"
+    },
+    {
+      "kode": "76.05.04.2011",
+      "nama": "Lombang Timur"
+    },
+    {
+      "kode": "76.05.04.2012",
+      "nama": "Salutahongan"
+    },
+    {
+      "kode": "76.05.04.2013",
+      "nama": "Lombong Timur"
+    },
+    {
+      "kode": "76.05.04.2014",
+      "nama": "Mekkatta Selatan"
+    },
+    {
+      "kode": "76.05.04.2016",
+      "nama": "Kayuangin"
+    },
+    {
+      "kode": "76.05.05.2001",
+      "nama": "Kabiraan"
+    },
+    {
+      "kode": "76.05.05.2002",
+      "nama": "Sambabo"
+    },
+    {
+      "kode": "76.05.05.2003",
+      "nama": "Tandeallo"
+    },
+    {
+      "kode": "76.05.05.2004",
+      "nama": "Ulumanda"
+    },
+    {
+      "kode": "76.05.05.2005",
+      "nama": "Salutambung"
+    },
+    {
+      "kode": "76.05.05.2006",
+      "nama": "Popenga"
+    },
+    {
+      "kode": "76.05.05.2007",
+      "nama": "Sulai"
+    },
+    {
+      "kode": "76.05.05.2008",
+      "nama": "Panggalo"
+    },
+    {
+      "kode": "76.05.06.2001",
+      "nama": "Seppong"
+    },
+    {
+      "kode": "76.05.06.2002",
+      "nama": "Tammerodo"
+    },
+    {
+      "kode": "76.05.06.2003",
+      "nama": "Ulidang"
+    },
+    {
+      "kode": "76.05.06.2004",
+      "nama": "Tallambalao"
+    },
+    {
+      "kode": "76.05.06.2005",
+      "nama": "Tammerodo Utara"
+    },
+    {
+      "kode": "76.05.06.2006",
+      "nama": "Manyamba"
+    },
+    {
+      "kode": "76.05.06.2007",
+      "nama": "Awo"
+    },
+    {
+      "kode": "76.05.07.2001",
+      "nama": "Onang"
+    },
+    {
+      "kode": "76.05.07.2002",
+      "nama": "Tubo"
+    },
+    {
+      "kode": "76.05.07.2003",
+      "nama": "Onang Utara"
+    },
+    {
+      "kode": "76.05.07.2004",
+      "nama": "Tubo Selatan"
+    },
+    {
+      "kode": "76.05.07.2005",
+      "nama": "Bonde bonde"
+    },
+    {
+      "kode": "76.05.07.2006",
+      "nama": "Tubo Tengah"
+    },
+    {
+      "kode": "76.05.07.2007",
+      "nama": "Tubo Poang"
+    },
+    {
+      "kode": "76.05.08.1001",
+      "nama": "Baurung"
+    },
+    {
+      "kode": "76.05.08.1002",
+      "nama": "Baruga"
+    },
+    {
+      "kode": "76.05.08.1003",
+      "nama": "Baruga Dhua"
+    },
+    {
+      "kode": "76.05.08.1004",
+      "nama": "Labuang"
+    },
+    {
+      "kode": "76.05.08.1005",
+      "nama": "Tande"
+    },
+    {
+      "kode": "76.05.08.1006",
+      "nama": "Lembang"
+    },
+    {
+      "kode": "76.05.08.1007",
+      "nama": "Labuang Utara"
+    },
+    {
+      "kode": "76.05.08.1008",
+      "nama": "Tande Timur"
+    },
+    {
+      "kode": "76.05.08.2009",
+      "nama": "Buttu Baruga"
+    },
+    {
+      "kode": "76.06.01.2001",
+      "nama": "Mahahe"
+    },
+    {
+      "kode": "76.06.01.2002",
+      "nama": "Salobaja"
+    },
+    {
+      "kode": "76.06.01.2003",
+      "nama": "Tobadak"
+    },
+    {
+      "kode": "76.06.01.2004",
+      "nama": "Palongaan"
+    },
+    {
+      "kode": "76.06.01.2005",
+      "nama": "Batu Parigi"
+    },
+    {
+      "kode": "76.06.01.2006",
+      "nama": "Bambadaru"
+    },
+    {
+      "kode": "76.06.01.2007",
+      "nama": "Sejati"
+    },
+    {
+      "kode": "76.06.01.2008",
+      "nama": "Saloadak"
+    },
+    {
+      "kode": "76.06.02.2001",
+      "nama": "Polo Pangale"
+    },
+    {
+      "kode": "76.06.02.2002",
+      "nama": "Pangale"
+    },
+    {
+      "kode": "76.06.02.2003",
+      "nama": "Sartanamaju"
+    },
+    {
+      "kode": "76.06.02.2004",
+      "nama": "Polo Lereng"
+    },
+    {
+      "kode": "76.06.02.2005",
+      "nama": "Kuo"
+    },
+    {
+      "kode": "76.06.02.2006",
+      "nama": "Polo Camba"
+    },
+    {
+      "kode": "76.06.02.2007",
+      "nama": "Lamba-lamba"
+    },
+    {
+      "kode": "76.06.02.2008",
+      "nama": "Kombiling"
+    },
+    {
+      "kode": "76.06.02.2009",
+      "nama": "Lemo-Lemo"
+    },
+    {
+      "kode": "76.06.03.2001",
+      "nama": "Babana"
+    },
+    {
+      "kode": "76.06.03.2002",
+      "nama": "Lumu"
+    },
+    {
+      "kode": "76.06.03.2003",
+      "nama": "Pontanakayang"
+    },
+    {
+      "kode": "76.06.03.2004",
+      "nama": "Salogatta"
+    },
+    {
+      "kode": "76.06.03.2005",
+      "nama": "Kire"
+    },
+    {
+      "kode": "76.06.03.2006",
+      "nama": "Tinali"
+    },
+    {
+      "kode": "76.06.03.2007",
+      "nama": "Salumanurung"
+    },
+    {
+      "kode": "76.06.03.2008",
+      "nama": "Pasapa"
+    },
+    {
+      "kode": "76.06.03.2009",
+      "nama": "Bojo"
+    },
+    {
+      "kode": "76.06.03.2010",
+      "nama": "Barakkang"
+    },
+    {
+      "kode": "76.06.03.2011",
+      "nama": "Lembah Hada"
+    },
+    {
+      "kode": "76.06.04.2001",
+      "nama": "Budong-Budong"
+    },
+    {
+      "kode": "76.06.04.2002",
+      "nama": "Topoyo"
+    },
+    {
+      "kode": "76.06.04.2003",
+      "nama": "Tumbu"
+    },
+    {
+      "kode": "76.06.04.2004",
+      "nama": "Kabubu"
+    },
+    {
+      "kode": "76.06.04.2005",
+      "nama": "Waeputeh"
+    },
+    {
+      "kode": "76.06.04.2006",
+      "nama": "Tangkou"
+    },
+    {
+      "kode": "76.06.04.2007",
+      "nama": "Tabolang"
+    },
+    {
+      "kode": "76.06.04.2008",
+      "nama": "Paraili"
+    },
+    {
+      "kode": "76.06.04.2009",
+      "nama": "Salupangkang"
+    },
+    {
+      "kode": "76.06.04.2010",
+      "nama": "Salupangkang IV"
+    },
+    {
+      "kode": "76.06.04.2011",
+      "nama": "Tappilina"
+    },
+    {
+      "kode": "76.06.04.2012",
+      "nama": "Bambamanurung"
+    },
+    {
+      "kode": "76.06.04.2013",
+      "nama": "Salulekbo"
+    },
+    {
+      "kode": "76.06.04.2014",
+      "nama": "Pangalloang"
+    },
+    {
+      "kode": "76.06.04.2015",
+      "nama": "Sinabatta"
+    },
+    {
+      "kode": "76.06.05.2001",
+      "nama": "Karossa"
+    },
+    {
+      "kode": "76.06.05.2002",
+      "nama": "Tasokko"
+    },
+    {
+      "kode": "76.06.05.2003",
+      "nama": "Lara"
+    },
+    {
+      "kode": "76.06.05.2004",
+      "nama": "Kadaila"
+    },
+    {
+      "kode": "76.06.05.2005",
+      "nama": "Kayu Calla"
+    },
+    {
+      "kode": "76.06.05.2006",
+      "nama": "Lembah Hopo"
+    },
+    {
+      "kode": "76.06.05.2007",
+      "nama": "Benggaulu"
+    },
+    {
+      "kode": "76.06.05.2008",
+      "nama": "Suka Maju"
+    },
+    {
+      "kode": "76.06.05.2009",
+      "nama": "Kambunong"
+    },
+    {
+      "kode": "76.06.05.2010",
+      "nama": "Salubiro"
+    },
+    {
+      "kode": "76.06.05.2011",
+      "nama": "Sanjango"
+    }
+  ]
+}

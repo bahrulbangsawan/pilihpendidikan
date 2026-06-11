@@ -1,0 +1,4612 @@
+{
+  "kabupaten": [
+    {
+      "kode": "96.01",
+      "nama": "Kabupaten Sorong"
+    },
+    {
+      "kode": "96.02",
+      "nama": "Kabupaten Sorong Selatan"
+    },
+    {
+      "kode": "96.03",
+      "nama": "Kabupaten Raja Ampat"
+    },
+    {
+      "kode": "96.04",
+      "nama": "Kabupaten Tambrauw"
+    },
+    {
+      "kode": "96.05",
+      "nama": "Kabupaten Maybrat"
+    },
+    {
+      "kode": "96.71",
+      "nama": "Kota Sorong"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "96.01.01",
+      "nama": "Makbon"
+    },
+    {
+      "kode": "96.01.02",
+      "nama": "Beraur"
+    },
+    {
+      "kode": "96.01.03",
+      "nama": "Salawati"
+    },
+    {
+      "kode": "96.01.04",
+      "nama": "Seget"
+    },
+    {
+      "kode": "96.01.05",
+      "nama": "Aimas"
+    },
+    {
+      "kode": "96.01.06",
+      "nama": "Klamono"
+    },
+    {
+      "kode": "96.01.07",
+      "nama": "Sayosa"
+    },
+    {
+      "kode": "96.01.08",
+      "nama": "Segun"
+    },
+    {
+      "kode": "96.01.09",
+      "nama": "Mayamuk"
+    },
+    {
+      "kode": "96.01.10",
+      "nama": "Salawati Selatan"
+    },
+    {
+      "kode": "96.01.11",
+      "nama": "Klabot"
+    },
+    {
+      "kode": "96.01.12",
+      "nama": "Klawak"
+    },
+    {
+      "kode": "96.01.13",
+      "nama": "Maudus"
+    },
+    {
+      "kode": "96.01.14",
+      "nama": "Mariat"
+    },
+    {
+      "kode": "96.01.15",
+      "nama": "Klayili"
+    },
+    {
+      "kode": "96.01.16",
+      "nama": "Klaso"
+    },
+    {
+      "kode": "96.01.17",
+      "nama": "Moisegen"
+    },
+    {
+      "kode": "96.01.18",
+      "nama": "Sorong"
+    },
+    {
+      "kode": "96.01.19",
+      "nama": "Bagun"
+    },
+    {
+      "kode": "96.01.20",
+      "nama": "Wemak"
+    },
+    {
+      "kode": "96.01.21",
+      "nama": "Sunook"
+    },
+    {
+      "kode": "96.01.22",
+      "nama": "Buk"
+    },
+    {
+      "kode": "96.01.23",
+      "nama": "Saengkeduk"
+    },
+    {
+      "kode": "96.01.24",
+      "nama": "Malabotom"
+    },
+    {
+      "kode": "96.01.25",
+      "nama": "Konhir"
+    },
+    {
+      "kode": "96.01.26",
+      "nama": "Klasafet"
+    },
+    {
+      "kode": "96.01.27",
+      "nama": "Hobard"
+    },
+    {
+      "kode": "96.01.28",
+      "nama": "Salawati Tengah"
+    },
+    {
+      "kode": "96.01.29",
+      "nama": "Botain"
+    },
+    {
+      "kode": "96.01.30",
+      "nama": "Sayosa Timur"
+    },
+    {
+      "kode": "96.02.01",
+      "nama": "Teminabuan"
+    },
+    {
+      "kode": "96.02.02",
+      "nama": "Inanwatan"
+    },
+    {
+      "kode": "96.02.03",
+      "nama": "Sawiat"
+    },
+    {
+      "kode": "96.02.04",
+      "nama": "Kokoda"
+    },
+    {
+      "kode": "96.02.05",
+      "nama": "Moswaren"
+    },
+    {
+      "kode": "96.02.06",
+      "nama": "Seremuk"
+    },
+    {
+      "kode": "96.02.07",
+      "nama": "Wayer"
+    },
+    {
+      "kode": "96.02.08",
+      "nama": "Kais"
+    },
+    {
+      "kode": "96.02.09",
+      "nama": "Konda"
+    },
+    {
+      "kode": "96.02.10",
+      "nama": "Matemani"
+    },
+    {
+      "kode": "96.02.11",
+      "nama": "Kokoda Utara"
+    },
+    {
+      "kode": "96.02.12",
+      "nama": "Saifi"
+    },
+    {
+      "kode": "96.02.13",
+      "nama": "Fokour"
+    },
+    {
+      "kode": "96.02.14",
+      "nama": "Salkma"
+    },
+    {
+      "kode": "96.02.15",
+      "nama": "Kais Darat"
+    },
+    {
+      "kode": "96.03.01",
+      "nama": "Misool (Misool Utara)"
+    },
+    {
+      "kode": "96.03.02",
+      "nama": "Waigeo Utara"
+    },
+    {
+      "kode": "96.03.03",
+      "nama": "Waigeo Selatan"
+    },
+    {
+      "kode": "96.03.04",
+      "nama": "Salawati Utara"
+    },
+    {
+      "kode": "96.03.05",
+      "nama": "Ayau"
+    },
+    {
+      "kode": "96.03.06",
+      "nama": "Misool Timur"
+    },
+    {
+      "kode": "96.03.07",
+      "nama": "Waigeo Barat"
+    },
+    {
+      "kode": "96.03.08",
+      "nama": "Waigeo Timur"
+    },
+    {
+      "kode": "96.03.09",
+      "nama": "Teluk Mayalibit"
+    },
+    {
+      "kode": "96.03.10",
+      "nama": "Kofiau"
+    },
+    {
+      "kode": "96.03.11",
+      "nama": "Meos Mansar"
+    },
+    {
+      "kode": "96.03.12",
+      "nama": "Misool Selatan"
+    },
+    {
+      "kode": "96.03.13",
+      "nama": "Warwarbomi"
+    },
+    {
+      "kode": "96.03.14",
+      "nama": "Waigeo Barat Kepulauan"
+    },
+    {
+      "kode": "96.03.15",
+      "nama": "Misool Barat"
+    },
+    {
+      "kode": "96.03.16",
+      "nama": "Kepulauan Sembilan"
+    },
+    {
+      "kode": "96.03.17",
+      "nama": "Kota Waisai"
+    },
+    {
+      "kode": "96.03.18",
+      "nama": "Tiplol Mayalibit"
+    },
+    {
+      "kode": "96.03.19",
+      "nama": "Batanta Utara"
+    },
+    {
+      "kode": "96.03.20",
+      "nama": "Salawati Barat"
+    },
+    {
+      "kode": "96.03.21",
+      "nama": "Salawati Tengah"
+    },
+    {
+      "kode": "96.03.22",
+      "nama": "Supnin"
+    },
+    {
+      "kode": "96.03.23",
+      "nama": "Kepulauan Ayau"
+    },
+    {
+      "kode": "96.03.24",
+      "nama": "Batanta Selatan"
+    },
+    {
+      "kode": "96.04.01",
+      "nama": "Fef"
+    },
+    {
+      "kode": "96.04.02",
+      "nama": "Miyah"
+    },
+    {
+      "kode": "96.04.03",
+      "nama": "Yembun"
+    },
+    {
+      "kode": "96.04.04",
+      "nama": "Kwoor"
+    },
+    {
+      "kode": "96.04.05",
+      "nama": "Sausapor"
+    },
+    {
+      "kode": "96.04.06",
+      "nama": "Abun"
+    },
+    {
+      "kode": "96.04.07",
+      "nama": "Syujak"
+    },
+    {
+      "kode": "96.04.08",
+      "nama": "Moraid"
+    },
+    {
+      "kode": "96.04.09",
+      "nama": "Kebar"
+    },
+    {
+      "kode": "96.04.10",
+      "nama": "Amberbaken"
+    },
+    {
+      "kode": "96.04.11",
+      "nama": "Senopi"
+    },
+    {
+      "kode": "96.04.12",
+      "nama": "Mubrani"
+    },
+    {
+      "kode": "96.04.13",
+      "nama": "Bikar"
+    },
+    {
+      "kode": "96.04.14",
+      "nama": "Bamusbama"
+    },
+    {
+      "kode": "96.04.15",
+      "nama": "Ases"
+    },
+    {
+      "kode": "96.04.16",
+      "nama": "Miyah Selatan"
+    },
+    {
+      "kode": "96.04.17",
+      "nama": "Ireres"
+    },
+    {
+      "kode": "96.04.18",
+      "nama": "Tobouw"
+    },
+    {
+      "kode": "96.04.19",
+      "nama": "Wilhem Roumbouts"
+    },
+    {
+      "kode": "96.04.20",
+      "nama": "Tinggouw"
+    },
+    {
+      "kode": "96.04.21",
+      "nama": "Kwesefo"
+    },
+    {
+      "kode": "96.04.22",
+      "nama": "Mawabuan"
+    },
+    {
+      "kode": "96.04.23",
+      "nama": "Kebar Timur"
+    },
+    {
+      "kode": "96.04.24",
+      "nama": "Kebar Selatan"
+    },
+    {
+      "kode": "96.04.25",
+      "nama": "Manekar"
+    },
+    {
+      "kode": "96.04.26",
+      "nama": "Mpur"
+    },
+    {
+      "kode": "96.04.27",
+      "nama": "Amberbaken Barat"
+    },
+    {
+      "kode": "96.04.28",
+      "nama": "Kasi"
+    },
+    {
+      "kode": "96.04.29",
+      "nama": "Selemkai"
+    },
+    {
+      "kode": "96.05.01",
+      "nama": "Aifat"
+    },
+    {
+      "kode": "96.05.02",
+      "nama": "Aifat Utara"
+    },
+    {
+      "kode": "96.05.03",
+      "nama": "Aifat Timur"
+    },
+    {
+      "kode": "96.05.04",
+      "nama": "Aifat Selatan"
+    },
+    {
+      "kode": "96.05.05",
+      "nama": "Aitinyo Barat"
+    },
+    {
+      "kode": "96.05.06",
+      "nama": "Aitinyo"
+    },
+    {
+      "kode": "96.05.07",
+      "nama": "Aitinyo Utara"
+    },
+    {
+      "kode": "96.05.08",
+      "nama": "Ayamaru"
+    },
+    {
+      "kode": "96.05.09",
+      "nama": "Ayamaru Utara"
+    },
+    {
+      "kode": "96.05.10",
+      "nama": "Ayamaru Timur"
+    },
+    {
+      "kode": "96.05.11",
+      "nama": "Mare"
+    },
+    {
+      "kode": "96.05.12",
+      "nama": "Aifat Timur Tengah"
+    },
+    {
+      "kode": "96.05.13",
+      "nama": "Aifat Timur Jauh"
+    },
+    {
+      "kode": "96.05.14",
+      "nama": "Aifat Timur Selatan"
+    },
+    {
+      "kode": "96.05.15",
+      "nama": "Ayamaru Selatan"
+    },
+    {
+      "kode": "96.05.16",
+      "nama": "Ayamaru Jaya"
+    },
+    {
+      "kode": "96.05.17",
+      "nama": "Ayamaru Selatan Jaya"
+    },
+    {
+      "kode": "96.05.18",
+      "nama": "Ayamaru Timur Selatan"
+    },
+    {
+      "kode": "96.05.19",
+      "nama": "Ayamaru Utara Timur"
+    },
+    {
+      "kode": "96.05.20",
+      "nama": "Ayamaru Tengah"
+    },
+    {
+      "kode": "96.05.21",
+      "nama": "Ayamaru Barat"
+    },
+    {
+      "kode": "96.05.22",
+      "nama": "Aitinyo Tengah"
+    },
+    {
+      "kode": "96.05.23",
+      "nama": "Aitinyo Raya"
+    },
+    {
+      "kode": "96.05.24",
+      "nama": "Mare Selatan"
+    },
+    {
+      "kode": "96.71.01",
+      "nama": "Sorong"
+    },
+    {
+      "kode": "96.71.02",
+      "nama": "Sorong Timur"
+    },
+    {
+      "kode": "96.71.03",
+      "nama": "Sorong Barat"
+    },
+    {
+      "kode": "96.71.04",
+      "nama": "Sorong Kepulauan"
+    },
+    {
+      "kode": "96.71.05",
+      "nama": "Sorong Utara"
+    },
+    {
+      "kode": "96.71.06",
+      "nama": "Sorong Manoi"
+    },
+    {
+      "kode": "96.71.07",
+      "nama": "Sorong Kota"
+    },
+    {
+      "kode": "96.71.08",
+      "nama": "Klaurung"
+    },
+    {
+      "kode": "96.71.09",
+      "nama": "Malaimsimsa"
+    },
+    {
+      "kode": "96.71.10",
+      "nama": "Maladum Mes"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "96.01.01.1001",
+      "nama": "Makbon"
+    },
+    {
+      "kode": "96.01.01.2002",
+      "nama": "Asbaken"
+    },
+    {
+      "kode": "96.01.01.2003",
+      "nama": "Malaumkarta"
+    },
+    {
+      "kode": "96.01.01.2004",
+      "nama": "Batu Lubang"
+    },
+    {
+      "kode": "96.01.01.2005",
+      "nama": "Batu Lubang Pantai"
+    },
+    {
+      "kode": "96.01.01.2006",
+      "nama": "Kwadas"
+    },
+    {
+      "kode": "96.01.01.2007",
+      "nama": "Bainkete"
+    },
+    {
+      "kode": "96.01.01.2008",
+      "nama": "Teluk Dore"
+    },
+    {
+      "kode": "96.01.01.2009",
+      "nama": "Sawatuk"
+    },
+    {
+      "kode": "96.01.01.2010",
+      "nama": "Malagasih"
+    },
+    {
+      "kode": "96.01.01.2011",
+      "nama": "Klasimigik"
+    },
+    {
+      "kode": "96.01.01.2012",
+      "nama": "Klasigi"
+    },
+    {
+      "kode": "96.01.01.2013",
+      "nama": "Klagulus"
+    },
+    {
+      "kode": "96.01.01.2014",
+      "nama": "Suatolo"
+    },
+    {
+      "kode": "96.01.01.2015",
+      "nama": "Mibi"
+    },
+    {
+      "kode": "96.01.02.2001",
+      "nama": "Klabra"
+    },
+    {
+      "kode": "96.01.02.2002",
+      "nama": "Wanurian"
+    },
+    {
+      "kode": "96.01.02.2003",
+      "nama": "Klarion"
+    },
+    {
+      "kode": "96.01.02.2004",
+      "nama": "Kaas"
+    },
+    {
+      "kode": "96.01.02.2005",
+      "nama": "Wensi"
+    },
+    {
+      "kode": "96.01.02.2006",
+      "nama": "Mumpi"
+    },
+    {
+      "kode": "96.01.02.2007",
+      "nama": "Klamak"
+    },
+    {
+      "kode": "96.01.02.2008",
+      "nama": "Serselion"
+    },
+    {
+      "kode": "96.01.02.2009",
+      "nama": "Kmafo"
+    },
+    {
+      "kode": "96.01.02.2010",
+      "nama": "Midlal"
+    },
+    {
+      "kode": "96.01.02.2011",
+      "nama": "Sorain"
+    },
+    {
+      "kode": "96.01.02.2012",
+      "nama": "Armoin"
+    },
+    {
+      "kode": "96.01.02.2013",
+      "nama": "Serselion Baru"
+    },
+    {
+      "kode": "96.01.03.1001",
+      "nama": "Katinim"
+    },
+    {
+      "kode": "96.01.03.1002",
+      "nama": "Majener"
+    },
+    {
+      "kode": "96.01.03.1003",
+      "nama": "Majaran"
+    },
+    {
+      "kode": "96.01.03.1004",
+      "nama": "Matawolot"
+    },
+    {
+      "kode": "96.01.03.2005",
+      "nama": "Walal"
+    },
+    {
+      "kode": "96.01.03.2006",
+      "nama": "Malaus"
+    },
+    {
+      "kode": "96.01.03.2007",
+      "nama": "Rawa Sugi"
+    },
+    {
+      "kode": "96.01.04.2001",
+      "nama": "Seget"
+    },
+    {
+      "kode": "96.01.04.2002",
+      "nama": "Malabam"
+    },
+    {
+      "kode": "96.01.04.2003",
+      "nama": "Pulau Kasim"
+    },
+    {
+      "kode": "96.01.04.2004",
+      "nama": "Kasimle"
+    },
+    {
+      "kode": "96.01.04.2005",
+      "nama": "Wewenagu"
+    },
+    {
+      "kode": "96.01.04.2006",
+      "nama": "Wasingsan"
+    },
+    {
+      "kode": "96.01.04.2007",
+      "nama": "Klayas"
+    },
+    {
+      "kode": "96.01.04.2008",
+      "nama": "Wayenkede"
+    },
+    {
+      "kode": "96.01.04.2009",
+      "nama": "Mobi"
+    },
+    {
+      "kode": "96.01.05.1001",
+      "nama": "Aimas"
+    },
+    {
+      "kode": "96.01.05.1002",
+      "nama": "Malawili"
+    },
+    {
+      "kode": "96.01.05.1003",
+      "nama": "Malawele"
+    },
+    {
+      "kode": "96.01.05.1004",
+      "nama": "Mariat Pantai"
+    },
+    {
+      "kode": "96.01.05.1005",
+      "nama": "Mariat Gunung"
+    },
+    {
+      "kode": "96.01.05.1007",
+      "nama": "Warmon"
+    },
+    {
+      "kode": "96.01.05.1008",
+      "nama": "Klabinain"
+    },
+    {
+      "kode": "96.01.05.1009",
+      "nama": "Malasom"
+    },
+    {
+      "kode": "96.01.05.1010",
+      "nama": "Klaigit"
+    },
+    {
+      "kode": "96.01.05.1012",
+      "nama": "Malagusa"
+    },
+    {
+      "kode": "96.01.05.1013",
+      "nama": "Klafma"
+    },
+    {
+      "kode": "96.01.05.2006",
+      "nama": "Maibo"
+    },
+    {
+      "kode": "96.01.05.2011",
+      "nama": "Aimo"
+    },
+    {
+      "kode": "96.01.05.2014",
+      "nama": "Malasaum"
+    },
+    {
+      "kode": "96.01.06.2001",
+      "nama": "Klawana"
+    },
+    {
+      "kode": "96.01.06.2002",
+      "nama": "Klamono"
+    },
+    {
+      "kode": "96.01.06.2003",
+      "nama": "Wariyau"
+    },
+    {
+      "kode": "96.01.06.2004",
+      "nama": "Klalomon"
+    },
+    {
+      "kode": "96.01.06.2005",
+      "nama": "Wonosari"
+    },
+    {
+      "kode": "96.01.06.2006",
+      "nama": "Gisim Darat"
+    },
+    {
+      "kode": "96.01.06.2007",
+      "nama": "Mlais"
+    },
+    {
+      "kode": "96.01.06.2008",
+      "nama": "Malasmiliy"
+    },
+    {
+      "kode": "96.01.06.2009",
+      "nama": "Klasafet"
+    },
+    {
+      "kode": "96.01.06.2010",
+      "nama": "Posa"
+    },
+    {
+      "kode": "96.01.07.2001",
+      "nama": "Sayosa"
+    },
+    {
+      "kode": "96.01.07.2002",
+      "nama": "Maladofok"
+    },
+    {
+      "kode": "96.01.07.2003",
+      "nama": "Yorbes"
+    },
+    {
+      "kode": "96.01.07.2004",
+      "nama": "Samusa"
+    },
+    {
+      "kode": "96.01.07.2005",
+      "nama": "Klamintu"
+    },
+    {
+      "kode": "96.01.07.2006",
+      "nama": "Klain"
+    },
+    {
+      "kode": "96.01.08.2001",
+      "nama": "Segun"
+    },
+    {
+      "kode": "96.01.08.2002",
+      "nama": "Gisim"
+    },
+    {
+      "kode": "96.01.08.2003",
+      "nama": "Waimon"
+    },
+    {
+      "kode": "96.01.08.2004",
+      "nama": "Klasegun"
+    },
+    {
+      "kode": "96.01.08.2005",
+      "nama": "Waimlabat"
+    },
+    {
+      "kode": "96.01.08.2006",
+      "nama": "Majemau"
+    },
+    {
+      "kode": "96.01.08.2007",
+      "nama": "Klasin"
+    },
+    {
+      "kode": "96.01.08.2008",
+      "nama": "Klajaring"
+    },
+    {
+      "kode": "96.01.08.2009",
+      "nama": "Malamas"
+    },
+    {
+      "kode": "96.01.09.1001",
+      "nama": "Makbusun"
+    },
+    {
+      "kode": "96.01.09.1002",
+      "nama": "Makbalim"
+    },
+    {
+      "kode": "96.01.09.1003",
+      "nama": "Makotyamsa"
+    },
+    {
+      "kode": "96.01.09.2004",
+      "nama": "Jeflio"
+    },
+    {
+      "kode": "96.01.09.2005",
+      "nama": "Arar"
+    },
+    {
+      "kode": "96.01.09.2006",
+      "nama": "Klain"
+    },
+    {
+      "kode": "96.01.09.2007",
+      "nama": "Klasmelek"
+    },
+    {
+      "kode": "96.01.09.2008",
+      "nama": "Wen"
+    },
+    {
+      "kode": "96.01.09.2009",
+      "nama": "Warmon Kokoda"
+    },
+    {
+      "kode": "96.01.09.2010",
+      "nama": "Asjidba"
+    },
+    {
+      "kode": "96.01.09.2011",
+      "nama": "Malamay"
+    },
+    {
+      "kode": "96.01.10.2001",
+      "nama": "Sailolof"
+    },
+    {
+      "kode": "96.01.10.2002",
+      "nama": "Kotlol"
+    },
+    {
+      "kode": "96.01.10.2003",
+      "nama": "Dulbatan"
+    },
+    {
+      "kode": "96.01.10.2004",
+      "nama": "Manoket"
+    },
+    {
+      "kode": "96.01.10.2005",
+      "nama": "Payapop"
+    },
+    {
+      "kode": "96.01.10.2006",
+      "nama": "Masmapop"
+    },
+    {
+      "kode": "96.01.11.2001",
+      "nama": "Indiwi"
+    },
+    {
+      "kode": "96.01.11.2002",
+      "nama": "Klabot"
+    },
+    {
+      "kode": "96.01.11.2003",
+      "nama": "Mlat"
+    },
+    {
+      "kode": "96.01.11.2004",
+      "nama": "Mlawes"
+    },
+    {
+      "kode": "96.01.11.2005",
+      "nama": "Mlasfa"
+    },
+    {
+      "kode": "96.01.11.2006",
+      "nama": "Kanolo"
+    },
+    {
+      "kode": "96.01.11.2007",
+      "nama": "Somir"
+    },
+    {
+      "kode": "96.01.11.2008",
+      "nama": "Warkti"
+    },
+    {
+      "kode": "96.01.12.2001",
+      "nama": "Wilty"
+    },
+    {
+      "kode": "96.01.12.2002",
+      "nama": "Mlawen"
+    },
+    {
+      "kode": "96.01.12.2003",
+      "nama": "Byoklokfle"
+    },
+    {
+      "kode": "96.01.12.2004",
+      "nama": "Tbotjin"
+    },
+    {
+      "kode": "96.01.12.2005",
+      "nama": "Sas"
+    },
+    {
+      "kode": "96.01.12.2006",
+      "nama": "Samolslo"
+    },
+    {
+      "kode": "96.01.12.2007",
+      "nama": "Kmasen"
+    },
+    {
+      "kode": "96.01.12.2008",
+      "nama": "Klasawon"
+    },
+    {
+      "kode": "96.01.12.2009",
+      "nama": "Yurkaden"
+    },
+    {
+      "kode": "96.01.12.2010",
+      "nama": "Betwaf"
+    },
+    {
+      "kode": "96.01.12.2011",
+      "nama": "Cokhif"
+    },
+    {
+      "kode": "96.01.13.2001",
+      "nama": "Luwelala"
+    },
+    {
+      "kode": "96.01.13.2002",
+      "nama": "Klatim"
+    },
+    {
+      "kode": "96.01.13.2003",
+      "nama": "Klaos"
+    },
+    {
+      "kode": "96.01.13.2004",
+      "nama": "Suluh"
+    },
+    {
+      "kode": "96.01.13.2005",
+      "nama": "Bousui"
+    },
+    {
+      "kode": "96.01.13.2006",
+      "nama": "Kamuyar"
+    },
+    {
+      "kode": "96.01.13.2007",
+      "nama": "Klaka"
+    },
+    {
+      "kode": "96.01.13.2008",
+      "nama": "Safdesa"
+    },
+    {
+      "kode": "96.01.13.2009",
+      "nama": "Klagen"
+    },
+    {
+      "kode": "96.01.14.1001",
+      "nama": "Klamalu"
+    },
+    {
+      "kode": "96.01.14.1002",
+      "nama": "Mariyai"
+    },
+    {
+      "kode": "96.01.14.1003",
+      "nama": "Klasuluk"
+    },
+    {
+      "kode": "96.01.14.1004",
+      "nama": "Klamasen"
+    },
+    {
+      "kode": "96.01.14.1008",
+      "nama": "Maklalut"
+    },
+    {
+      "kode": "96.01.14.1009",
+      "nama": "Klaru"
+    },
+    {
+      "kode": "96.01.14.1010",
+      "nama": "Jamaimo"
+    },
+    {
+      "kode": "96.01.14.2005",
+      "nama": "Klaben"
+    },
+    {
+      "kode": "96.01.14.2006",
+      "nama": "Klasan"
+    },
+    {
+      "kode": "96.01.14.2007",
+      "nama": "Fafi"
+    },
+    {
+      "kode": "96.01.14.2011",
+      "nama": "Kasih"
+    },
+    {
+      "kode": "96.01.15.2001",
+      "nama": "Klayili"
+    },
+    {
+      "kode": "96.01.15.2002",
+      "nama": "Klawuluh"
+    },
+    {
+      "kode": "96.01.15.2003",
+      "nama": "Malakobutu"
+    },
+    {
+      "kode": "96.01.15.2004",
+      "nama": "Kwakeik"
+    },
+    {
+      "kode": "96.01.15.2005",
+      "nama": "Klasowoh"
+    },
+    {
+      "kode": "96.01.15.2006",
+      "nama": "Malalilis"
+    },
+    {
+      "kode": "96.01.15.2007",
+      "nama": "Mlawer"
+    },
+    {
+      "kode": "96.01.15.2008",
+      "nama": "Klatomok"
+    },
+    {
+      "kode": "96.01.16.2001",
+      "nama": "Siwis"
+    },
+    {
+      "kode": "96.01.16.2002",
+      "nama": "Miskum"
+    },
+    {
+      "kode": "96.01.16.2003",
+      "nama": "Klamugun"
+    },
+    {
+      "kode": "96.01.16.2004",
+      "nama": "Sbaga"
+    },
+    {
+      "kode": "96.01.16.2005",
+      "nama": "Klalik"
+    },
+    {
+      "kode": "96.01.16.2006",
+      "nama": "Malawhili"
+    },
+    {
+      "kode": "96.01.16.2007",
+      "nama": "Klasou"
+    },
+    {
+      "kode": "96.01.17.2001",
+      "nama": "Klafdalim"
+    },
+    {
+      "kode": "96.01.17.2002",
+      "nama": "Klaforo"
+    },
+    {
+      "kode": "96.01.17.2003",
+      "nama": "Klasof"
+    },
+    {
+      "kode": "96.01.17.2004",
+      "nama": "Ninjimur"
+    },
+    {
+      "kode": "96.01.17.2005",
+      "nama": "Klasari"
+    },
+    {
+      "kode": "96.01.17.2006",
+      "nama": "Klawoton"
+    },
+    {
+      "kode": "96.01.17.2007",
+      "nama": "Wonosobo"
+    },
+    {
+      "kode": "96.01.17.2008",
+      "nama": "Sakamerin"
+    },
+    {
+      "kode": "96.01.17.2009",
+      "nama": "Masmili"
+    },
+    {
+      "kode": "96.01.18.2001",
+      "nama": "Maibo"
+    },
+    {
+      "kode": "96.01.18.2002",
+      "nama": "Malaflon"
+    },
+    {
+      "kode": "96.01.18.2003",
+      "nama": "Kabanmolo"
+    },
+    {
+      "kode": "96.01.18.2004",
+      "nama": "Kagiwala"
+    },
+    {
+      "kode": "96.01.19.2001",
+      "nama": "Disfra"
+    },
+    {
+      "kode": "96.01.19.2002",
+      "nama": "Bagun"
+    },
+    {
+      "kode": "96.01.19.2003",
+      "nama": "Klawom"
+    },
+    {
+      "kode": "96.01.19.2004",
+      "nama": "Klamomis"
+    },
+    {
+      "kode": "96.01.19.2005",
+      "nama": "Klakwonrit"
+    },
+    {
+      "kode": "96.01.19.2006",
+      "nama": "Mode"
+    },
+    {
+      "kode": "96.01.19.2007",
+      "nama": "Bratmawe"
+    },
+    {
+      "kode": "96.01.19.2008",
+      "nama": "Klawon"
+    },
+    {
+      "kode": "96.01.19.2009",
+      "nama": "Mlamli"
+    },
+    {
+      "kode": "96.01.20.2001",
+      "nama": "Saluk"
+    },
+    {
+      "kode": "96.01.20.2002",
+      "nama": "Klawaren"
+    },
+    {
+      "kode": "96.01.20.2003",
+      "nama": "Woloin"
+    },
+    {
+      "kode": "96.01.20.2004",
+      "nama": "Klalin Mos"
+    },
+    {
+      "kode": "96.01.20.2005",
+      "nama": "Kwari"
+    },
+    {
+      "kode": "96.01.20.2006",
+      "nama": "Kamlin"
+    },
+    {
+      "kode": "96.01.21.2001",
+      "nama": "Dasri"
+    },
+    {
+      "kode": "96.01.21.2002",
+      "nama": "Masos"
+    },
+    {
+      "kode": "96.01.21.2003",
+      "nama": "Ketawas"
+    },
+    {
+      "kode": "96.01.21.2004",
+      "nama": "Warbo"
+    },
+    {
+      "kode": "96.01.21.2005",
+      "nama": "Suus"
+    },
+    {
+      "kode": "96.01.21.2006",
+      "nama": "Sulya"
+    },
+    {
+      "kode": "96.01.21.2007",
+      "nama": "Bouwoi"
+    },
+    {
+      "kode": "96.01.22.2001",
+      "nama": "Buk"
+    },
+    {
+      "kode": "96.01.22.2002",
+      "nama": "Mlakhan"
+    },
+    {
+      "kode": "96.01.22.2003",
+      "nama": "Klais"
+    },
+    {
+      "kode": "96.01.22.2004",
+      "nama": "Mimpe"
+    },
+    {
+      "kode": "96.01.22.2005",
+      "nama": "Tiklen"
+    },
+    {
+      "kode": "96.01.22.2006",
+      "nama": "Klahen"
+    },
+    {
+      "kode": "96.01.22.2007",
+      "nama": "Moos"
+    },
+    {
+      "kode": "96.01.23.2001",
+      "nama": "Saengkeduk"
+    },
+    {
+      "kode": "96.01.23.2002",
+      "nama": "Selekobo"
+    },
+    {
+      "kode": "96.01.23.2003",
+      "nama": "Suye"
+    },
+    {
+      "kode": "96.01.23.2004",
+      "nama": "Klamede"
+    },
+    {
+      "kode": "96.01.23.2005",
+      "nama": "Sambatie"
+    },
+    {
+      "kode": "96.01.23.2006",
+      "nama": "Klagele"
+    },
+    {
+      "kode": "96.01.24.2001",
+      "nama": "Malasigit"
+    },
+    {
+      "kode": "96.01.24.2002",
+      "nama": "Klagulu"
+    },
+    {
+      "kode": "96.01.24.2003",
+      "nama": "Klamugun"
+    },
+    {
+      "kode": "96.01.24.2004",
+      "nama": "Malajapa"
+    },
+    {
+      "kode": "96.01.24.2005",
+      "nama": "Klasman"
+    },
+    {
+      "kode": "96.01.24.2006",
+      "nama": "Malamoja"
+    },
+    {
+      "kode": "96.01.24.2007",
+      "nama": "Magatarum"
+    },
+    {
+      "kode": "96.01.24.2008",
+      "nama": "Tanah Tinggi"
+    },
+    {
+      "kode": "96.01.24.2009",
+      "nama": "Marik May"
+    },
+    {
+      "kode": "96.01.25.2001",
+      "nama": "Tarsa"
+    },
+    {
+      "kode": "96.01.25.2002",
+      "nama": "Klamne"
+    },
+    {
+      "kode": "96.01.25.2003",
+      "nama": "Wisbiak"
+    },
+    {
+      "kode": "96.01.25.2004",
+      "nama": "Klafyo"
+    },
+    {
+      "kode": "96.01.25.2005",
+      "nama": "Mlasiwor"
+    },
+    {
+      "kode": "96.01.25.2006",
+      "nama": "Klafelem"
+    },
+    {
+      "kode": "96.01.25.2007",
+      "nama": "Klaflum"
+    },
+    {
+      "kode": "96.01.25.2008",
+      "nama": "Klarin"
+    },
+    {
+      "kode": "96.01.25.2009",
+      "nama": "Mlaron"
+    },
+    {
+      "kode": "96.01.26.2001",
+      "nama": "Maladuk"
+    },
+    {
+      "kode": "96.01.26.2002",
+      "nama": "Klamono Olie"
+    },
+    {
+      "kode": "96.01.26.2003",
+      "nama": "Barros"
+    },
+    {
+      "kode": "96.01.26.2004",
+      "nama": "Pusu Tiligum"
+    },
+    {
+      "kode": "96.01.26.2005",
+      "nama": "Klawilibe"
+    },
+    {
+      "kode": "96.01.27.2001",
+      "nama": "Hobard"
+    },
+    {
+      "kode": "96.01.27.2002",
+      "nama": "Brianlo"
+    },
+    {
+      "kode": "96.01.27.2003",
+      "nama": "Floyi"
+    },
+    {
+      "kode": "96.01.27.2004",
+      "nama": "Klazelt"
+    },
+    {
+      "kode": "96.01.27.2005",
+      "nama": "Sfadon"
+    },
+    {
+      "kode": "96.01.27.2006",
+      "nama": "Selol"
+    },
+    {
+      "kode": "96.01.27.2007",
+      "nama": "Dais"
+    },
+    {
+      "kode": "96.01.28.2001",
+      "nama": "Waliam"
+    },
+    {
+      "kode": "96.01.28.2002",
+      "nama": "Manfanim"
+    },
+    {
+      "kode": "96.01.28.2003",
+      "nama": "Waibin"
+    },
+    {
+      "kode": "96.01.28.2004",
+      "nama": "Waiman"
+    },
+    {
+      "kode": "96.01.28.2005",
+      "nama": "Sakapul"
+    },
+    {
+      "kode": "96.01.28.2006",
+      "nama": "Maralol"
+    },
+    {
+      "kode": "96.01.28.2007",
+      "nama": "Batbiro"
+    },
+    {
+      "kode": "96.01.28.2008",
+      "nama": "Duriankari"
+    },
+    {
+      "kode": "96.01.28.2009",
+      "nama": "Meyaup"
+    },
+    {
+      "kode": "96.01.28.2010",
+      "nama": "Sailen"
+    },
+    {
+      "kode": "96.01.29.2001",
+      "nama": "Klafluk"
+    },
+    {
+      "kode": "96.01.29.2002",
+      "nama": "Mamsit"
+    },
+    {
+      "kode": "96.01.29.2003",
+      "nama": "Sabake"
+    },
+    {
+      "kode": "96.01.29.2004",
+      "nama": "Klayastani"
+    },
+    {
+      "kode": "96.01.29.2005",
+      "nama": "Botain"
+    },
+    {
+      "kode": "96.01.30.2001",
+      "nama": "Sailala"
+    },
+    {
+      "kode": "96.01.30.2002",
+      "nama": "Klawana"
+    },
+    {
+      "kode": "96.01.30.2003",
+      "nama": "Kladuk"
+    },
+    {
+      "kode": "96.01.30.2004",
+      "nama": "Klawon"
+    },
+    {
+      "kode": "96.01.30.2005",
+      "nama": "Klakak"
+    },
+    {
+      "kode": "96.01.30.2006",
+      "nama": "Klalwok"
+    },
+    {
+      "kode": "96.02.01.1002",
+      "nama": "Kaibus"
+    },
+    {
+      "kode": "96.02.01.1003",
+      "nama": "Kohoin"
+    },
+    {
+      "kode": "96.02.01.2001",
+      "nama": "Wersar"
+    },
+    {
+      "kode": "96.02.01.2004",
+      "nama": "Wehali"
+    },
+    {
+      "kode": "96.02.01.2005",
+      "nama": "Aibobor"
+    },
+    {
+      "kode": "96.02.01.2006",
+      "nama": "Wermit"
+    },
+    {
+      "kode": "96.02.01.2007",
+      "nama": "Keyen"
+    },
+    {
+      "kode": "96.02.01.2008",
+      "nama": "Siribau"
+    },
+    {
+      "kode": "96.02.01.2009",
+      "nama": "Magis"
+    },
+    {
+      "kode": "96.02.01.2010",
+      "nama": "Tegirolo"
+    },
+    {
+      "kode": "96.02.01.2011",
+      "nama": "Wernas"
+    },
+    {
+      "kode": "96.02.01.2012",
+      "nama": "Tapiri"
+    },
+    {
+      "kode": "96.02.01.2013",
+      "nama": "Gorolo"
+    },
+    {
+      "kode": "96.02.01.2014",
+      "nama": "Nambro"
+    },
+    {
+      "kode": "96.02.01.2015",
+      "nama": "Seyolo"
+    },
+    {
+      "kode": "96.02.01.2016",
+      "nama": "Ani Sesna"
+    },
+    {
+      "kode": "96.02.02.2001",
+      "nama": "Mate"
+    },
+    {
+      "kode": "96.02.02.2002",
+      "nama": "Serkos"
+    },
+    {
+      "kode": "96.02.02.2003",
+      "nama": "Solta Baru"
+    },
+    {
+      "kode": "96.02.02.2004",
+      "nama": "Wadoi"
+    },
+    {
+      "kode": "96.02.02.2005",
+      "nama": "Isogo"
+    },
+    {
+      "kode": "96.02.02.2006",
+      "nama": "Sibae"
+    },
+    {
+      "kode": "96.02.02.2007",
+      "nama": "Mogibi"
+    },
+    {
+      "kode": "96.02.02.2008",
+      "nama": "Odeare"
+    },
+    {
+      "kode": "96.02.02.2009",
+      "nama": "Siri-siri"
+    },
+    {
+      "kode": "96.02.03.2001",
+      "nama": "Sawiat"
+    },
+    {
+      "kode": "96.02.03.2002",
+      "nama": "Sasnek"
+    },
+    {
+      "kode": "96.02.03.2003",
+      "nama": "Elles"
+    },
+    {
+      "kode": "96.02.03.2004",
+      "nama": "Sodrofoyo"
+    },
+    {
+      "kode": "96.02.03.2005",
+      "nama": "Sfakyo"
+    },
+    {
+      "kode": "96.02.03.2006",
+      "nama": "Wensough"
+    },
+    {
+      "kode": "96.02.03.2007",
+      "nama": "Ween"
+    },
+    {
+      "kode": "96.02.03.2008",
+      "nama": "Wendi"
+    },
+    {
+      "kode": "96.02.04.2001",
+      "nama": "Tarof"
+    },
+    {
+      "kode": "96.02.04.2002",
+      "nama": "Negeri Besar"
+    },
+    {
+      "kode": "96.02.04.2003",
+      "nama": "Siwatori"
+    },
+    {
+      "kode": "96.02.04.2004",
+      "nama": "Kasuweri"
+    },
+    {
+      "kode": "96.02.04.2005",
+      "nama": "Migori"
+    },
+    {
+      "kode": "96.02.04.2006",
+      "nama": "Tambani"
+    },
+    {
+      "kode": "96.02.04.2007",
+      "nama": "Daubak"
+    },
+    {
+      "kode": "96.02.04.2008",
+      "nama": "Totona"
+    },
+    {
+      "kode": "96.02.04.2009",
+      "nama": "Nayakore"
+    },
+    {
+      "kode": "96.02.04.2010",
+      "nama": "Arbasina"
+    },
+    {
+      "kode": "96.02.04.2011",
+      "nama": "Birawaku"
+    },
+    {
+      "kode": "96.02.04.2012",
+      "nama": "Korewatara"
+    },
+    {
+      "kode": "96.02.04.2013",
+      "nama": "Tapas"
+    },
+    {
+      "kode": "96.02.04.2014",
+      "nama": "Topdan"
+    },
+    {
+      "kode": "96.02.04.2015",
+      "nama": "Migrito"
+    },
+    {
+      "kode": "96.02.04.2016",
+      "nama": "Daimar"
+    },
+    {
+      "kode": "96.02.05.2001",
+      "nama": "Moswaren"
+    },
+    {
+      "kode": "96.02.05.2002",
+      "nama": "Johsiro"
+    },
+    {
+      "kode": "96.02.05.2003",
+      "nama": "Hararo"
+    },
+    {
+      "kode": "96.02.05.2004",
+      "nama": "Bumi Ajo"
+    },
+    {
+      "kode": "96.02.05.2005",
+      "nama": "Hasik Jaya"
+    },
+    {
+      "kode": "96.02.05.2006",
+      "nama": "Kamisabe"
+    },
+    {
+      "kode": "96.02.05.2007",
+      "nama": "Tokass"
+    },
+    {
+      "kode": "96.02.06.2001",
+      "nama": "Haha"
+    },
+    {
+      "kode": "96.02.06.2002",
+      "nama": "Klaogin"
+    },
+    {
+      "kode": "96.02.06.2003",
+      "nama": "Tofot"
+    },
+    {
+      "kode": "96.02.06.2004",
+      "nama": "Sbir"
+    },
+    {
+      "kode": "96.02.06.2005",
+      "nama": "Srer"
+    },
+    {
+      "kode": "96.02.06.2006",
+      "nama": "Woloin"
+    },
+    {
+      "kode": "96.02.06.2007",
+      "nama": "Kamaro"
+    },
+    {
+      "kode": "96.02.06.2008",
+      "nama": "Kakas"
+    },
+    {
+      "kode": "96.02.07.2001",
+      "nama": "Sungguer"
+    },
+    {
+      "kode": "96.02.07.2002",
+      "nama": "Unggi"
+    },
+    {
+      "kode": "96.02.07.2003",
+      "nama": "Boldon"
+    },
+    {
+      "kode": "96.02.07.2004",
+      "nama": "Sesor"
+    },
+    {
+      "kode": "96.02.07.2005",
+      "nama": "Waigo"
+    },
+    {
+      "kode": "96.02.07.2006",
+      "nama": "Bagaraga"
+    },
+    {
+      "kode": "96.02.07.2007",
+      "nama": "Wardik"
+    },
+    {
+      "kode": "96.02.07.2008",
+      "nama": "Wayer"
+    },
+    {
+      "kode": "96.02.08.2001",
+      "nama": "Kais"
+    },
+    {
+      "kode": "96.02.08.2002",
+      "nama": "Tapuri"
+    },
+    {
+      "kode": "96.02.08.2003",
+      "nama": "Yahadian"
+    },
+    {
+      "kode": "96.02.08.2004",
+      "nama": "Benawa I"
+    },
+    {
+      "kode": "96.02.08.2005",
+      "nama": "Sumano"
+    },
+    {
+      "kode": "96.02.09.2001",
+      "nama": "Konda"
+    },
+    {
+      "kode": "96.02.09.2002",
+      "nama": "Wamargege"
+    },
+    {
+      "kode": "96.02.09.2003",
+      "nama": "Bariat"
+    },
+    {
+      "kode": "96.02.09.2004",
+      "nama": "Manelek"
+    },
+    {
+      "kode": "96.02.09.2005",
+      "nama": "Nagna"
+    },
+    {
+      "kode": "96.02.10.2001",
+      "nama": "Mugim"
+    },
+    {
+      "kode": "96.02.10.2002",
+      "nama": "Nusa"
+    },
+    {
+      "kode": "96.02.10.2003",
+      "nama": "Saga"
+    },
+    {
+      "kode": "96.02.10.2004",
+      "nama": "Puragi"
+    },
+    {
+      "kode": "96.02.10.2005",
+      "nama": "Tawanggire"
+    },
+    {
+      "kode": "96.02.10.2006",
+      "nama": "Bedare"
+    },
+    {
+      "kode": "96.02.11.2001",
+      "nama": "Udagaga"
+    },
+    {
+      "kode": "96.02.11.2002",
+      "nama": "Kayubiro"
+    },
+    {
+      "kode": "96.02.11.2003",
+      "nama": "Adona"
+    },
+    {
+      "kode": "96.02.11.2004",
+      "nama": "Benawa II"
+    },
+    {
+      "kode": "96.02.11.2005",
+      "nama": "Atori"
+    },
+    {
+      "kode": "96.02.11.2006",
+      "nama": "Kamundan Satu"
+    },
+    {
+      "kode": "96.02.11.2007",
+      "nama": "Karirif"
+    },
+    {
+      "kode": "96.02.11.2008",
+      "nama": "Bubuko"
+    },
+    {
+      "kode": "96.02.11.2009",
+      "nama": "Kamundan Dua"
+    },
+    {
+      "kode": "96.02.12.2001",
+      "nama": "Manggroholo"
+    },
+    {
+      "kode": "96.02.12.2002",
+      "nama": "Komanggaret"
+    },
+    {
+      "kode": "96.02.12.2003",
+      "nama": "Sayal"
+    },
+    {
+      "kode": "96.02.12.2004",
+      "nama": "Kayabo"
+    },
+    {
+      "kode": "96.02.12.2005",
+      "nama": "Sisir"
+    },
+    {
+      "kode": "96.02.12.2006",
+      "nama": "Mlaswat"
+    },
+    {
+      "kode": "96.02.12.2007",
+      "nama": "Kwowok"
+    },
+    {
+      "kode": "96.02.12.2008",
+      "nama": "Sira"
+    },
+    {
+      "kode": "96.02.12.2009",
+      "nama": "Kenaya"
+    },
+    {
+      "kode": "96.02.13.2001",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "96.02.13.2002",
+      "nama": "Wandum"
+    },
+    {
+      "kode": "96.02.13.2003",
+      "nama": "Bemus"
+    },
+    {
+      "kode": "96.02.13.2004",
+      "nama": "Welek"
+    },
+    {
+      "kode": "96.02.14.2001",
+      "nama": "Wenslolo"
+    },
+    {
+      "kode": "96.02.14.2002",
+      "nama": "Klamit"
+    },
+    {
+      "kode": "96.02.14.2003",
+      "nama": "Mlabolo"
+    },
+    {
+      "kode": "96.02.14.2004",
+      "nama": "Kofalit"
+    },
+    {
+      "kode": "96.02.14.2005",
+      "nama": "Alma"
+    },
+    {
+      "kode": "96.02.15.2001",
+      "nama": "Mukamat"
+    },
+    {
+      "kode": "96.02.15.2002",
+      "nama": "Ikana"
+    },
+    {
+      "kode": "96.02.15.2003",
+      "nama": "Haemaran"
+    },
+    {
+      "kode": "96.02.15.2004",
+      "nama": "Siranggo"
+    },
+    {
+      "kode": "96.02.15.2005",
+      "nama": "Mogatemin"
+    },
+    {
+      "kode": "96.02.15.2006",
+      "nama": "Onimsefa"
+    },
+    {
+      "kode": "96.02.15.2007",
+      "nama": "Makaroro"
+    },
+    {
+      "kode": "96.03.01.2001",
+      "nama": "Waigama"
+    },
+    {
+      "kode": "96.03.01.2002",
+      "nama": "Salafen"
+    },
+    {
+      "kode": "96.03.01.2003",
+      "nama": "Aduwei"
+    },
+    {
+      "kode": "96.03.01.2004",
+      "nama": "Atkari"
+    },
+    {
+      "kode": "96.03.01.2005",
+      "nama": "Solal"
+    },
+    {
+      "kode": "96.03.02.2001",
+      "nama": "Kabare"
+    },
+    {
+      "kode": "96.03.02.2002",
+      "nama": "Andey"
+    },
+    {
+      "kode": "96.03.02.2003",
+      "nama": "Asukweri"
+    },
+    {
+      "kode": "96.03.02.2004",
+      "nama": "Bonsayor"
+    },
+    {
+      "kode": "96.03.02.2005",
+      "nama": "Darumbab"
+    },
+    {
+      "kode": "96.03.02.2006",
+      "nama": "Kalisade"
+    },
+    {
+      "kode": "96.03.03.2001",
+      "nama": "Saonek"
+    },
+    {
+      "kode": "96.03.03.2002",
+      "nama": "Saporkren"
+    },
+    {
+      "kode": "96.03.03.2003",
+      "nama": "Yenbeser"
+    },
+    {
+      "kode": "96.03.03.2004",
+      "nama": "Friwen"
+    },
+    {
+      "kode": "96.03.03.2005",
+      "nama": "Wawiyai"
+    },
+    {
+      "kode": "96.03.04.2001",
+      "nama": "Samate"
+    },
+    {
+      "kode": "96.03.04.2002",
+      "nama": "Kapatlap"
+    },
+    {
+      "kode": "96.03.04.2003",
+      "nama": "Jefman Barat"
+    },
+    {
+      "kode": "96.03.04.2004",
+      "nama": "Wamega"
+    },
+    {
+      "kode": "96.03.04.2005",
+      "nama": "Jefman Timur"
+    },
+    {
+      "kode": "96.03.04.2006",
+      "nama": "Waidim"
+    },
+    {
+      "kode": "96.03.05.2001",
+      "nama": "Dorehkar"
+    },
+    {
+      "kode": "96.03.05.2002",
+      "nama": "Yenkawir"
+    },
+    {
+      "kode": "96.03.05.2003",
+      "nama": "Boiseran"
+    },
+    {
+      "kode": "96.03.05.2004",
+      "nama": "Runi"
+    },
+    {
+      "kode": "96.03.05.2005",
+      "nama": "Yenkanfan"
+    },
+    {
+      "kode": "96.03.06.2001",
+      "nama": "Foley"
+    },
+    {
+      "kode": "96.03.06.2002",
+      "nama": "Tomolol"
+    },
+    {
+      "kode": "96.03.06.2003",
+      "nama": "Usaha Jaya"
+    },
+    {
+      "kode": "96.03.06.2004",
+      "nama": "Limalas Timur"
+    },
+    {
+      "kode": "96.03.06.2005",
+      "nama": "Audam"
+    },
+    {
+      "kode": "96.03.06.2006",
+      "nama": "Limalas Barat"
+    },
+    {
+      "kode": "96.03.07.2001",
+      "nama": "Selpele"
+    },
+    {
+      "kode": "96.03.07.2002",
+      "nama": "Mutus"
+    },
+    {
+      "kode": "96.03.07.2003",
+      "nama": "Bianci"
+    },
+    {
+      "kode": "96.03.07.2004",
+      "nama": "Saleo"
+    },
+    {
+      "kode": "96.03.07.2005",
+      "nama": "Waisilip"
+    },
+    {
+      "kode": "96.03.08.2001",
+      "nama": "Puper"
+    },
+    {
+      "kode": "96.03.08.2002",
+      "nama": "Yenbekaki"
+    },
+    {
+      "kode": "96.03.08.2003",
+      "nama": "Urbinasopen"
+    },
+    {
+      "kode": "96.03.08.2004",
+      "nama": "Yensner"
+    },
+    {
+      "kode": "96.03.09.2001",
+      "nama": "Lopintol"
+    },
+    {
+      "kode": "96.03.09.2002",
+      "nama": "Warsamdin"
+    },
+    {
+      "kode": "96.03.09.2003",
+      "nama": "Mumes"
+    },
+    {
+      "kode": "96.03.09.2004",
+      "nama": "Kalitoko"
+    },
+    {
+      "kode": "96.03.10.2001",
+      "nama": "Dibalal"
+    },
+    {
+      "kode": "96.03.10.2002",
+      "nama": "Tolobi"
+    },
+    {
+      "kode": "96.03.10.2003",
+      "nama": "Deer"
+    },
+    {
+      "kode": "96.03.10.2004",
+      "nama": "Mikiran"
+    },
+    {
+      "kode": "96.03.10.2005",
+      "nama": "Awat"
+    },
+    {
+      "kode": "96.03.11.2001",
+      "nama": "Yenbekwan"
+    },
+    {
+      "kode": "96.03.11.2002",
+      "nama": "Kapisawar"
+    },
+    {
+      "kode": "96.03.11.2003",
+      "nama": "Sawinggrai"
+    },
+    {
+      "kode": "96.03.11.2004",
+      "nama": "Yenwaupnor"
+    },
+    {
+      "kode": "96.03.11.2005",
+      "nama": "Arborek"
+    },
+    {
+      "kode": "96.03.11.2006",
+      "nama": "Yenbuba"
+    },
+    {
+      "kode": "96.03.11.2007",
+      "nama": "Kabuy"
+    },
+    {
+      "kode": "96.03.11.2008",
+      "nama": "Kurkapa"
+    },
+    {
+      "kode": "96.03.11.2009",
+      "nama": "Sauandarek"
+    },
+    {
+      "kode": "96.03.12.2001",
+      "nama": "Fafanlap"
+    },
+    {
+      "kode": "96.03.12.2002",
+      "nama": "Yellu"
+    },
+    {
+      "kode": "96.03.12.2003",
+      "nama": "Harapan Jaya"
+    },
+    {
+      "kode": "96.03.12.2004",
+      "nama": "Kareyepop"
+    },
+    {
+      "kode": "96.03.12.2005",
+      "nama": "Dabatan"
+    },
+    {
+      "kode": "96.03.13.2001",
+      "nama": "Warwanai"
+    },
+    {
+      "kode": "96.03.13.2002",
+      "nama": "Mnier"
+    },
+    {
+      "kode": "96.03.13.2003",
+      "nama": "Boni"
+    },
+    {
+      "kode": "96.03.13.2004",
+      "nama": "Warkori"
+    },
+    {
+      "kode": "96.03.14.2001",
+      "nama": "Manyaifun"
+    },
+    {
+      "kode": "96.03.14.2002",
+      "nama": "Miosmanggara"
+    },
+    {
+      "kode": "96.03.14.2003",
+      "nama": "Pam"
+    },
+    {
+      "kode": "96.03.14.2004",
+      "nama": "Saukabu"
+    },
+    {
+      "kode": "96.03.14.2005",
+      "nama": "Gag"
+    },
+    {
+      "kode": "96.03.14.2006",
+      "nama": "Saupapir"
+    },
+    {
+      "kode": "96.03.15.2001",
+      "nama": "Lilinta"
+    },
+    {
+      "kode": "96.03.15.2002",
+      "nama": "Gamta"
+    },
+    {
+      "kode": "96.03.15.2003",
+      "nama": "Biga"
+    },
+    {
+      "kode": "96.03.15.2004",
+      "nama": "Kapatcol"
+    },
+    {
+      "kode": "96.03.15.2005",
+      "nama": "Magey"
+    },
+    {
+      "kode": "96.03.16.2001",
+      "nama": "Weijim Barat"
+    },
+    {
+      "kode": "96.03.16.2002",
+      "nama": "Weijim Timur"
+    },
+    {
+      "kode": "96.03.16.2003",
+      "nama": "Satokurano"
+    },
+    {
+      "kode": "96.03.16.2004",
+      "nama": "Pulau Tikus"
+    },
+    {
+      "kode": "96.03.17.1001",
+      "nama": "Waisai"
+    },
+    {
+      "kode": "96.03.17.1002",
+      "nama": "Sapordanco"
+    },
+    {
+      "kode": "96.03.17.1003",
+      "nama": "Bonkawir"
+    },
+    {
+      "kode": "96.03.17.1004",
+      "nama": "Warmasen"
+    },
+    {
+      "kode": "96.03.18.2001",
+      "nama": "Go"
+    },
+    {
+      "kode": "96.03.18.2002",
+      "nama": "Kabilol"
+    },
+    {
+      "kode": "96.03.18.2003",
+      "nama": "Arawai"
+    },
+    {
+      "kode": "96.03.18.2004",
+      "nama": "Beo"
+    },
+    {
+      "kode": "96.03.18.2005",
+      "nama": "Waifoi"
+    },
+    {
+      "kode": "96.03.18.2006",
+      "nama": "Warimak"
+    },
+    {
+      "kode": "96.03.19.2001",
+      "nama": "Yensawai Timur"
+    },
+    {
+      "kode": "96.03.19.2002",
+      "nama": "Yensawai Barat"
+    },
+    {
+      "kode": "96.03.19.2003",
+      "nama": "Arefi Timur"
+    },
+    {
+      "kode": "96.03.19.2004",
+      "nama": "Arefi Selatan"
+    },
+    {
+      "kode": "96.03.20.2001",
+      "nama": "Waibon"
+    },
+    {
+      "kode": "96.03.20.2002",
+      "nama": "Solol"
+    },
+    {
+      "kode": "96.03.20.2003",
+      "nama": "Kaliam"
+    },
+    {
+      "kode": "96.03.20.2004",
+      "nama": "Kalwal"
+    },
+    {
+      "kode": "96.03.21.2001",
+      "nama": "Kalobo"
+    },
+    {
+      "kode": "96.03.21.2002",
+      "nama": "Sakabu"
+    },
+    {
+      "kode": "96.03.21.2003",
+      "nama": "Waibu"
+    },
+    {
+      "kode": "96.03.21.2004",
+      "nama": "Waijan"
+    },
+    {
+      "kode": "96.03.21.2005",
+      "nama": "Waimeci"
+    },
+    {
+      "kode": "96.03.21.2006",
+      "nama": "Wailabu"
+    },
+    {
+      "kode": "96.03.21.2007",
+      "nama": "Wailen"
+    },
+    {
+      "kode": "96.03.22.2001",
+      "nama": "Rauki"
+    },
+    {
+      "kode": "96.03.22.2002",
+      "nama": "Urai"
+    },
+    {
+      "kode": "96.03.22.2003",
+      "nama": "Duber"
+    },
+    {
+      "kode": "96.03.22.2004",
+      "nama": "Kapadiri"
+    },
+    {
+      "kode": "96.03.23.2001",
+      "nama": "Abidon"
+    },
+    {
+      "kode": "96.03.23.2002",
+      "nama": "Rutum"
+    },
+    {
+      "kode": "96.03.23.2003",
+      "nama": "Reni"
+    },
+    {
+      "kode": "96.03.23.2004",
+      "nama": "Meosbekwan"
+    },
+    {
+      "kode": "96.03.24.2001",
+      "nama": "Yenanas"
+    },
+    {
+      "kode": "96.03.24.2002",
+      "nama": "Amdui"
+    },
+    {
+      "kode": "96.03.24.2003",
+      "nama": "Wailebet"
+    },
+    {
+      "kode": "96.03.24.2004",
+      "nama": "Waiman"
+    },
+    {
+      "kode": "96.04.01.2001",
+      "nama": "Fef"
+    },
+    {
+      "kode": "96.04.01.2002",
+      "nama": "Wayo"
+    },
+    {
+      "kode": "96.04.01.2003",
+      "nama": "Syubun"
+    },
+    {
+      "kode": "96.04.01.2004",
+      "nama": "Sikor"
+    },
+    {
+      "kode": "96.04.01.2005",
+      "nama": "Ibe"
+    },
+    {
+      "kode": "96.04.01.2006",
+      "nama": "Syunam"
+    },
+    {
+      "kode": "96.04.01.2007",
+      "nama": "Banfot"
+    },
+    {
+      "kode": "96.04.01.2008",
+      "nama": "Iwin"
+    },
+    {
+      "kode": "96.04.01.2009",
+      "nama": "Esyum"
+    },
+    {
+      "kode": "96.04.01.2010",
+      "nama": "Imor"
+    },
+    {
+      "kode": "96.04.02.2001",
+      "nama": "Siakwa"
+    },
+    {
+      "kode": "96.04.02.2002",
+      "nama": "Aibogiar"
+    },
+    {
+      "kode": "96.04.02.2003",
+      "nama": "Ayae"
+    },
+    {
+      "kode": "96.04.02.2004",
+      "nama": "Ayawit"
+    },
+    {
+      "kode": "96.04.02.2005",
+      "nama": "Aifair"
+    },
+    {
+      "kode": "96.04.03.2001",
+      "nama": "Baun"
+    },
+    {
+      "kode": "96.04.03.2002",
+      "nama": "Sumbekas"
+    },
+    {
+      "kode": "96.04.03.2003",
+      "nama": "Metnayam"
+    },
+    {
+      "kode": "96.04.03.2004",
+      "nama": "Metbelum"
+    },
+    {
+      "kode": "96.04.03.2005",
+      "nama": "Salem"
+    },
+    {
+      "kode": "96.04.03.2006",
+      "nama": "Metbesa"
+    },
+    {
+      "kode": "96.04.04.2001",
+      "nama": "Kwoor"
+    },
+    {
+      "kode": "96.04.04.2002",
+      "nama": "Hopmare"
+    },
+    {
+      "kode": "96.04.04.2003",
+      "nama": "Orwen"
+    },
+    {
+      "kode": "96.04.04.2004",
+      "nama": "Barar"
+    },
+    {
+      "kode": "96.04.04.2005",
+      "nama": "Esmambo"
+    },
+    {
+      "kode": "96.04.05.2001",
+      "nama": "Sausapor"
+    },
+    {
+      "kode": "96.04.05.2002",
+      "nama": "Emaos"
+    },
+    {
+      "kode": "96.04.05.2003",
+      "nama": "Jokte"
+    },
+    {
+      "kode": "96.04.05.2004",
+      "nama": "Uigwem"
+    },
+    {
+      "kode": "96.04.05.2005",
+      "nama": "Sungguwan"
+    },
+    {
+      "kode": "96.04.05.2006",
+      "nama": "Sau Uram"
+    },
+    {
+      "kode": "96.04.05.2007",
+      "nama": "Nanggou"
+    },
+    {
+      "kode": "96.04.05.2008",
+      "nama": "Bondek"
+    },
+    {
+      "kode": "96.04.05.2009",
+      "nama": "Bondonggwan"
+    },
+    {
+      "kode": "96.04.05.2010",
+      "nama": "Syurauw"
+    },
+    {
+      "kode": "96.04.06.2001",
+      "nama": "Wau"
+    },
+    {
+      "kode": "96.04.06.2002",
+      "nama": "Syukwo"
+    },
+    {
+      "kode": "96.04.06.2003",
+      "nama": "Waibem"
+    },
+    {
+      "kode": "96.04.06.2004",
+      "nama": "Weyaf"
+    },
+    {
+      "kode": "96.04.06.2005",
+      "nama": "Weprari"
+    },
+    {
+      "kode": "96.04.07.2001",
+      "nama": "Syujak"
+    },
+    {
+      "kode": "96.04.07.2002",
+      "nama": "Banso"
+    },
+    {
+      "kode": "96.04.07.2003",
+      "nama": "Iof"
+    },
+    {
+      "kode": "96.04.07.2004",
+      "nama": "Frafane"
+    },
+    {
+      "kode": "96.04.08.2001",
+      "nama": "Mega"
+    },
+    {
+      "kode": "96.04.08.2002",
+      "nama": "Selewok"
+    },
+    {
+      "kode": "96.04.08.2003",
+      "nama": "Malaworsai"
+    },
+    {
+      "kode": "96.04.08.2004",
+      "nama": "Kwade"
+    },
+    {
+      "kode": "96.04.08.2005",
+      "nama": "Bonem"
+    },
+    {
+      "kode": "96.04.08.2006",
+      "nama": "Warafor"
+    },
+    {
+      "kode": "96.04.08.2007",
+      "nama": "Warmasi"
+    },
+    {
+      "kode": "96.04.08.2008",
+      "nama": "Warmanen"
+    },
+    {
+      "kode": "96.04.08.2009",
+      "nama": "Namuas"
+    },
+    {
+      "kode": "96.04.09.2001",
+      "nama": "Injai"
+    },
+    {
+      "kode": "96.04.09.2002",
+      "nama": "Apoki"
+    },
+    {
+      "kode": "96.04.09.2003",
+      "nama": "Matatun"
+    },
+    {
+      "kode": "96.04.09.2004",
+      "nama": "Jafai"
+    },
+    {
+      "kode": "96.04.09.2005",
+      "nama": "Jambuani"
+    },
+    {
+      "kode": "96.04.09.2006",
+      "nama": "Manaria"
+    },
+    {
+      "kode": "96.04.09.2007",
+      "nama": "Anarum"
+    },
+    {
+      "kode": "96.04.09.2008",
+      "nama": "Wasanggon"
+    },
+    {
+      "kode": "96.04.09.2009",
+      "nama": "Wabanek"
+    },
+    {
+      "kode": "96.04.10.2001",
+      "nama": "Saukorem"
+    },
+    {
+      "kode": "96.04.10.2002",
+      "nama": "Wefiani"
+    },
+    {
+      "kode": "96.04.10.2003",
+      "nama": "Wasarak"
+    },
+    {
+      "kode": "96.04.10.2004",
+      "nama": "Binasi"
+    },
+    {
+      "kode": "96.04.10.2005",
+      "nama": "Kabibwan"
+    },
+    {
+      "kode": "96.04.10.2006",
+      "nama": "Binmaks"
+    },
+    {
+      "kode": "96.04.10.2007",
+      "nama": "Manggapnut"
+    },
+    {
+      "kode": "96.04.10.2008",
+      "nama": "Waramui"
+    },
+    {
+      "kode": "96.04.10.2009",
+      "nama": "Warpaperi"
+    },
+    {
+      "kode": "96.04.11.2001",
+      "nama": "Senopi"
+    },
+    {
+      "kode": "96.04.11.2002",
+      "nama": "Arapi"
+    },
+    {
+      "kode": "96.04.11.2003",
+      "nama": "Srurem"
+    },
+    {
+      "kode": "96.04.11.2004",
+      "nama": "Sumo"
+    },
+    {
+      "kode": "96.04.11.2005",
+      "nama": "Ifat Mitu"
+    },
+    {
+      "kode": "96.04.11.2006",
+      "nama": "Povokek Ania"
+    },
+    {
+      "kode": "96.04.11.2007",
+      "nama": "Thomas"
+    },
+    {
+      "kode": "96.04.11.2008",
+      "nama": "Tintum Araw"
+    },
+    {
+      "kode": "96.04.11.2009",
+      "nama": "Hobiah"
+    },
+    {
+      "kode": "96.04.12.2001",
+      "nama": "Arfu"
+    },
+    {
+      "kode": "96.04.12.2002",
+      "nama": "Bawey"
+    },
+    {
+      "kode": "96.04.12.2003",
+      "nama": "Wasnembri"
+    },
+    {
+      "kode": "96.04.12.2004",
+      "nama": "Waru"
+    },
+    {
+      "kode": "96.04.12.2005",
+      "nama": "Atori"
+    },
+    {
+      "kode": "96.04.12.2006",
+      "nama": "Meriambeker"
+    },
+    {
+      "kode": "96.04.12.2007",
+      "nama": "Warokon"
+    },
+    {
+      "kode": "96.04.12.2008",
+      "nama": "Arekon"
+    },
+    {
+      "kode": "96.04.12.2009",
+      "nama": "Bonpaya"
+    },
+    {
+      "kode": "96.04.12.2010",
+      "nama": "Marbuan"
+    },
+    {
+      "kode": "96.04.13.2001",
+      "nama": "Werur"
+    },
+    {
+      "kode": "96.04.13.2002",
+      "nama": "Bukit"
+    },
+    {
+      "kode": "96.04.13.2003",
+      "nama": "Wertam"
+    },
+    {
+      "kode": "96.04.13.2004",
+      "nama": "Werwaf"
+    },
+    {
+      "kode": "96.04.13.2005",
+      "nama": "Werbes"
+    },
+    {
+      "kode": "96.04.13.2006",
+      "nama": "Nombrak"
+    },
+    {
+      "kode": "96.04.13.2007",
+      "nama": "Bikar"
+    },
+    {
+      "kode": "96.04.13.2008",
+      "nama": "Syunai"
+    },
+    {
+      "kode": "96.04.13.2009",
+      "nama": "Suyam"
+    },
+    {
+      "kode": "96.04.13.2010",
+      "nama": "Wertim"
+    },
+    {
+      "kode": "96.04.14.2001",
+      "nama": "Bamusbama"
+    },
+    {
+      "kode": "96.04.14.2002",
+      "nama": "Bamuswaiman"
+    },
+    {
+      "kode": "96.04.14.2003",
+      "nama": "Syarwom"
+    },
+    {
+      "kode": "96.04.14.2004",
+      "nama": "Babak"
+    },
+    {
+      "kode": "96.04.14.2005",
+      "nama": "Bano"
+    },
+    {
+      "kode": "96.04.14.2006",
+      "nama": "Wormon"
+    },
+    {
+      "kode": "96.04.15.2001",
+      "nama": "Ases"
+    },
+    {
+      "kode": "96.04.15.2002",
+      "nama": "Asuon"
+    },
+    {
+      "kode": "96.04.15.2003",
+      "nama": "Safotiek"
+    },
+    {
+      "kode": "96.04.15.2004",
+      "nama": "Frasayoah"
+    },
+    {
+      "kode": "96.04.16.2001",
+      "nama": "Mawor"
+    },
+    {
+      "kode": "96.04.16.2002",
+      "nama": "Ruf"
+    },
+    {
+      "kode": "96.04.16.2003",
+      "nama": "Ayamane"
+    },
+    {
+      "kode": "96.04.16.2004",
+      "nama": "Whismer"
+    },
+    {
+      "kode": "96.04.16.2005",
+      "nama": "Sahae"
+    },
+    {
+      "kode": "96.04.16.2006",
+      "nama": "Hewi"
+    },
+    {
+      "kode": "96.04.16.2007",
+      "nama": "Sisu"
+    },
+    {
+      "kode": "96.04.16.2008",
+      "nama": "Ruvewes"
+    },
+    {
+      "kode": "96.04.16.2009",
+      "nama": "Yabuow"
+    },
+    {
+      "kode": "96.04.17.2001",
+      "nama": "Miri"
+    },
+    {
+      "kode": "96.04.17.2002",
+      "nama": "Meis"
+    },
+    {
+      "kode": "96.04.17.2003",
+      "nama": "Aifamas"
+    },
+    {
+      "kode": "96.04.17.2004",
+      "nama": "Meinad"
+    },
+    {
+      "kode": "96.04.17.2005",
+      "nama": "Atafrumek"
+    },
+    {
+      "kode": "96.04.17.2006",
+      "nama": "Ifiam"
+    },
+    {
+      "kode": "96.04.17.2007",
+      "nama": "Wufmana"
+    },
+    {
+      "kode": "96.04.18.2001",
+      "nama": "Syumbab"
+    },
+    {
+      "kode": "96.04.18.2002",
+      "nama": "Krisnos"
+    },
+    {
+      "kode": "96.04.18.2003",
+      "nama": "Syukwes"
+    },
+    {
+      "kode": "96.04.18.2004",
+      "nama": "Sunggak"
+    },
+    {
+      "kode": "96.04.18.2005",
+      "nama": "Wowom"
+    },
+    {
+      "kode": "96.04.18.2006",
+      "nama": "Resye"
+    },
+    {
+      "kode": "96.04.19.2001",
+      "nama": "Tabamsere"
+    },
+    {
+      "kode": "96.04.19.2002",
+      "nama": "Sayam"
+    },
+    {
+      "kode": "96.04.19.2003",
+      "nama": "Araf Mafat"
+    },
+    {
+      "kode": "96.04.19.2004",
+      "nama": "Esyuom"
+    },
+    {
+      "kode": "96.04.20.2001",
+      "nama": "Tinggouw"
+    },
+    {
+      "kode": "96.04.20.2002",
+      "nama": "Hohair"
+    },
+    {
+      "kode": "96.04.20.2003",
+      "nama": "Ruriai"
+    },
+    {
+      "kode": "96.04.20.2004",
+      "nama": "Soon"
+    },
+    {
+      "kode": "96.04.20.2005",
+      "nama": "Ifatkan"
+    },
+    {
+      "kode": "96.04.21.2001",
+      "nama": "Jokbujoker"
+    },
+    {
+      "kode": "96.04.21.2002",
+      "nama": "Kranfotsu"
+    },
+    {
+      "kode": "96.04.21.2003",
+      "nama": "Syuau"
+    },
+    {
+      "kode": "96.04.21.2004",
+      "nama": "Kwesefo"
+    },
+    {
+      "kode": "96.04.21.2005",
+      "nama": "Batdey"
+    },
+    {
+      "kode": "96.04.21.2006",
+      "nama": "Syumbi"
+    },
+    {
+      "kode": "96.04.21.2007",
+      "nama": "Bao"
+    },
+    {
+      "kode": "96.04.21.2008",
+      "nama": "Donan"
+    },
+    {
+      "kode": "96.04.21.2009",
+      "nama": "Dombron"
+    },
+    {
+      "kode": "96.04.22.2001",
+      "nama": "Wausin"
+    },
+    {
+      "kode": "96.04.22.2002",
+      "nama": "Asiti"
+    },
+    {
+      "kode": "96.04.22.2003",
+      "nama": "Bisaud"
+    },
+    {
+      "kode": "96.04.22.2004",
+      "nama": "Nisandauw"
+    },
+    {
+      "kode": "96.04.22.2005",
+      "nama": "Afrawi"
+    },
+    {
+      "kode": "96.04.22.2006",
+      "nama": "Ajokwapi"
+    },
+    {
+      "kode": "96.04.23.2001",
+      "nama": "Inam"
+    },
+    {
+      "kode": "96.04.23.2002",
+      "nama": "Jandurauw"
+    },
+    {
+      "kode": "96.04.23.2003",
+      "nama": "Inambuari"
+    },
+    {
+      "kode": "96.04.23.2004",
+      "nama": "Sitori"
+    },
+    {
+      "kode": "96.04.23.2005",
+      "nama": "Untorey"
+    },
+    {
+      "kode": "96.04.23.2006",
+      "nama": "Nabisai"
+    },
+    {
+      "kode": "96.04.23.2007",
+      "nama": "Arumi"
+    },
+    {
+      "kode": "96.04.23.2008",
+      "nama": "Karawi"
+    },
+    {
+      "kode": "96.04.23.2009",
+      "nama": "Arampak"
+    },
+    {
+      "kode": "96.04.23.2010",
+      "nama": "Barona"
+    },
+    {
+      "kode": "96.04.24.2001",
+      "nama": "Nekori"
+    },
+    {
+      "kode": "96.04.24.2002",
+      "nama": "Ajami"
+    },
+    {
+      "kode": "96.04.24.2003",
+      "nama": "Aniti"
+    },
+    {
+      "kode": "96.04.24.2004",
+      "nama": "Akari"
+    },
+    {
+      "kode": "96.04.24.2005",
+      "nama": "Amnan"
+    },
+    {
+      "kode": "96.04.24.2006",
+      "nama": "Atiki"
+    },
+    {
+      "kode": "96.04.24.2007",
+      "nama": "Arwani"
+    },
+    {
+      "kode": "96.04.24.2008",
+      "nama": "Aritowi"
+    },
+    {
+      "kode": "96.04.24.2009",
+      "nama": "Umpay"
+    },
+    {
+      "kode": "96.04.24.2010",
+      "nama": "Meiwar"
+    },
+    {
+      "kode": "96.04.25.2001",
+      "nama": "Atai"
+    },
+    {
+      "kode": "96.04.25.2002",
+      "nama": "Akmuri"
+    },
+    {
+      "kode": "96.04.25.2003",
+      "nama": "Awori"
+    },
+    {
+      "kode": "96.04.25.2004",
+      "nama": "Itafiti"
+    },
+    {
+      "kode": "96.04.25.2005",
+      "nama": "Atunari"
+    },
+    {
+      "kode": "96.04.25.2006",
+      "nama": "Ajami Waripi"
+    },
+    {
+      "kode": "96.04.25.2007",
+      "nama": "Narai"
+    },
+    {
+      "kode": "96.04.25.2008",
+      "nama": "Aranari"
+    },
+    {
+      "kode": "96.04.25.2009",
+      "nama": "Waumi"
+    },
+    {
+      "kode": "96.04.25.2010",
+      "nama": "Aneti"
+    },
+    {
+      "kode": "96.04.26.2001",
+      "nama": "Arupi"
+    },
+    {
+      "kode": "96.04.26.2002",
+      "nama": "Mangganek"
+    },
+    {
+      "kode": "96.04.26.2003",
+      "nama": "Wajarek"
+    },
+    {
+      "kode": "96.04.26.2004",
+      "nama": "Kali An"
+    },
+    {
+      "kode": "96.04.26.2005",
+      "nama": "Araro"
+    },
+    {
+      "kode": "96.04.26.2006",
+      "nama": "Wekari"
+    },
+    {
+      "kode": "96.04.26.2007",
+      "nama": "Serayo"
+    },
+    {
+      "kode": "96.04.27.2001",
+      "nama": "Sasui"
+    },
+    {
+      "kode": "96.04.27.2002",
+      "nama": "Imbuan"
+    },
+    {
+      "kode": "96.04.27.2003",
+      "nama": "Manggaew"
+    },
+    {
+      "kode": "96.04.27.2004",
+      "nama": "Saurabon"
+    },
+    {
+      "kode": "96.04.27.2005",
+      "nama": "Wasawmontem"
+    },
+    {
+      "kode": "96.04.28.2001",
+      "nama": "Meserikweda"
+    },
+    {
+      "kode": "96.04.28.2002",
+      "nama": "Kasi Baru"
+    },
+    {
+      "kode": "96.04.28.2003",
+      "nama": "Kasi Jaya"
+    },
+    {
+      "kode": "96.04.28.2004",
+      "nama": "Meimorufof"
+    },
+    {
+      "kode": "96.04.28.2005",
+      "nama": "Kasi Indah"
+    },
+    {
+      "kode": "96.04.28.2006",
+      "nama": "Wacam"
+    },
+    {
+      "kode": "96.04.28.2007",
+      "nama": "Irumfei"
+    },
+    {
+      "kode": "96.04.28.2008",
+      "nama": "Pubuan"
+    },
+    {
+      "kode": "96.04.28.2009",
+      "nama": "Ireji"
+    },
+    {
+      "kode": "96.04.28.2010",
+      "nama": "Kasi Inom"
+    },
+    {
+      "kode": "96.04.28.2011",
+      "nama": "Meycocforga"
+    },
+    {
+      "kode": "96.04.28.2012",
+      "nama": "Meyomnar"
+    },
+    {
+      "kode": "96.04.29.2001",
+      "nama": "Della"
+    },
+    {
+      "kode": "96.04.29.2002",
+      "nama": "Malayauw"
+    },
+    {
+      "kode": "96.04.29.2003",
+      "nama": "Klasbon"
+    },
+    {
+      "kode": "96.04.29.2004",
+      "nama": "Klasei"
+    },
+    {
+      "kode": "96.04.29.2005",
+      "nama": "Klabili"
+    },
+    {
+      "kode": "96.05.01.2001",
+      "nama": "Kumurkek"
+    },
+    {
+      "kode": "96.05.01.2002",
+      "nama": "Susumuk"
+    },
+    {
+      "kode": "96.05.01.2003",
+      "nama": "Kokas"
+    },
+    {
+      "kode": "96.05.01.2004",
+      "nama": "Kocuas"
+    },
+    {
+      "kode": "96.05.01.2005",
+      "nama": "Kocuwer"
+    },
+    {
+      "kode": "96.05.01.2006",
+      "nama": "Bori"
+    },
+    {
+      "kode": "96.05.01.2007",
+      "nama": "Werjaya"
+    },
+    {
+      "kode": "96.05.01.2008",
+      "nama": "Tehahite"
+    },
+    {
+      "kode": "96.05.01.2009",
+      "nama": "Faitmayaf"
+    },
+    {
+      "kode": "96.05.01.2010",
+      "nama": "Aisyo"
+    },
+    {
+      "kode": "96.05.01.2011",
+      "nama": "Futon"
+    },
+    {
+      "kode": "96.05.01.2012",
+      "nama": "Sampika"
+    },
+    {
+      "kode": "96.05.01.2013",
+      "nama": "Martaim"
+    },
+    {
+      "kode": "96.05.01.2014",
+      "nama": "Frawebo"
+    },
+    {
+      "kode": "96.05.01.2015",
+      "nama": "Faitsawe"
+    },
+    {
+      "kode": "96.05.01.2016",
+      "nama": "Kocuwer Selatan"
+    },
+    {
+      "kode": "96.05.01.2017",
+      "nama": "Faitmayaf Barat"
+    },
+    {
+      "kode": "96.05.01.2018",
+      "nama": "Sikof"
+    },
+    {
+      "kode": "96.05.01.2019",
+      "nama": "Bori Timur"
+    },
+    {
+      "kode": "96.05.01.2020",
+      "nama": "Kumurkek Barat"
+    },
+    {
+      "kode": "96.05.01.2021",
+      "nama": "Ainod"
+    },
+    {
+      "kode": "96.05.01.2022",
+      "nama": "Kocuas Utara"
+    },
+    {
+      "kode": "96.05.01.2023",
+      "nama": "Sunei"
+    },
+    {
+      "kode": "96.05.02.2001",
+      "nama": "Ayawasi"
+    },
+    {
+      "kode": "96.05.02.2002",
+      "nama": "Ayawasi Selatan"
+    },
+    {
+      "kode": "96.05.02.2003",
+      "nama": "Ayawasi Timur"
+    },
+    {
+      "kode": "96.05.02.2004",
+      "nama": "Susai"
+    },
+    {
+      "kode": "96.05.02.2005",
+      "nama": "Fonatu"
+    },
+    {
+      "kode": "96.05.02.2006",
+      "nama": "Mosun"
+    },
+    {
+      "kode": "96.05.02.2007",
+      "nama": "Wayane"
+    },
+    {
+      "kode": "96.05.02.2008",
+      "nama": "Konja"
+    },
+    {
+      "kode": "96.05.02.2009",
+      "nama": "Yarat"
+    },
+    {
+      "kode": "96.05.02.2010",
+      "nama": "Man"
+    },
+    {
+      "kode": "96.05.02.2011",
+      "nama": "Howait"
+    },
+    {
+      "kode": "96.05.02.2012",
+      "nama": "Haenkanes"
+    },
+    {
+      "kode": "96.05.02.2013",
+      "nama": "Konja Barat"
+    },
+    {
+      "kode": "96.05.02.2014",
+      "nama": "Yarat Timur"
+    },
+    {
+      "kode": "96.05.02.2015",
+      "nama": "Raha"
+    },
+    {
+      "kode": "96.05.02.2016",
+      "nama": "Mowes"
+    },
+    {
+      "kode": "96.05.02.2017",
+      "nama": "Irata"
+    },
+    {
+      "kode": "96.05.02.2018",
+      "nama": "Neset"
+    },
+    {
+      "kode": "96.05.02.2019",
+      "nama": "Mosun Timur"
+    },
+    {
+      "kode": "96.05.02.2020",
+      "nama": "Mosun Utara"
+    },
+    {
+      "kode": "96.05.03.2001",
+      "nama": "Aisa"
+    },
+    {
+      "kode": "96.05.03.2002",
+      "nama": "Aikrer"
+    },
+    {
+      "kode": "96.05.03.2003",
+      "nama": "Aitrem"
+    },
+    {
+      "kode": "96.05.03.2004",
+      "nama": "Sawin"
+    },
+    {
+      "kode": "96.05.03.2005",
+      "nama": "Sahbuku"
+    },
+    {
+      "kode": "96.05.03.2006",
+      "nama": "Sasior Frabuku"
+    },
+    {
+      "kode": "96.05.03.2007",
+      "nama": "Wakom"
+    },
+    {
+      "kode": "96.05.03.2008",
+      "nama": "Sanem"
+    },
+    {
+      "kode": "96.05.03.2009",
+      "nama": "Buoh Sa"
+    },
+    {
+      "kode": "96.05.04.2001",
+      "nama": "Kisor"
+    },
+    {
+      "kode": "96.05.04.2002",
+      "nama": "Sorry"
+    },
+    {
+      "kode": "96.05.04.2003",
+      "nama": "Imsun"
+    },
+    {
+      "kode": "96.05.04.2004",
+      "nama": "Sabah"
+    },
+    {
+      "kode": "96.05.04.2005",
+      "nama": "Tahsimara"
+    },
+    {
+      "kode": "96.05.04.2006",
+      "nama": "Fuog"
+    },
+    {
+      "kode": "96.05.04.2007",
+      "nama": "Asiaf Saman"
+    },
+    {
+      "kode": "96.05.04.2008",
+      "nama": "Hora Iek"
+    },
+    {
+      "kode": "96.05.04.2009",
+      "nama": "Fuog Selatan"
+    },
+    {
+      "kode": "96.05.04.2010",
+      "nama": "Same Rakator"
+    },
+    {
+      "kode": "96.05.04.2011",
+      "nama": "Roma"
+    },
+    {
+      "kode": "96.05.04.2012",
+      "nama": "Krus"
+    },
+    {
+      "kode": "96.05.04.2013",
+      "nama": "Awet Main"
+    },
+    {
+      "kode": "96.05.04.2014",
+      "nama": "Yeek"
+    },
+    {
+      "kode": "96.05.04.2015",
+      "nama": "Kaitana"
+    },
+    {
+      "kode": "96.05.04.2016",
+      "nama": "Tolak"
+    },
+    {
+      "kode": "96.05.05.2001",
+      "nama": "Kambufatem"
+    },
+    {
+      "kode": "96.05.05.2002",
+      "nama": "Kambufatem Utara"
+    },
+    {
+      "kode": "96.05.05.2003",
+      "nama": "Fatase"
+    },
+    {
+      "kode": "96.05.05.2004",
+      "nama": "Hosyo Ata"
+    },
+    {
+      "kode": "96.05.05.2005",
+      "nama": "Waybomatah"
+    },
+    {
+      "kode": "96.05.05.2006",
+      "nama": "Siyo"
+    },
+    {
+      "kode": "96.05.05.2007",
+      "nama": "Hasweh"
+    },
+    {
+      "kode": "96.05.05.2008",
+      "nama": "Fatem"
+    },
+    {
+      "kode": "96.05.05.2009",
+      "nama": "Hosyo Banah"
+    },
+    {
+      "kode": "96.05.06.2001",
+      "nama": "Aitinyo"
+    },
+    {
+      "kode": "96.05.06.2002",
+      "nama": "Irohe"
+    },
+    {
+      "kode": "96.05.06.2003",
+      "nama": "Sris"
+    },
+    {
+      "kode": "96.05.06.2004",
+      "nama": "Kamro"
+    },
+    {
+      "kode": "96.05.06.2005",
+      "nama": "Karsu"
+    },
+    {
+      "kode": "96.05.06.2006",
+      "nama": "Tehak Kecil"
+    },
+    {
+      "kode": "96.05.06.2007",
+      "nama": "Sira Aya"
+    },
+    {
+      "kode": "96.05.06.2008",
+      "nama": "Korom"
+    },
+    {
+      "kode": "96.05.06.2009",
+      "nama": "Sumanis"
+    },
+    {
+      "kode": "96.05.06.2010",
+      "nama": "Ibasuf"
+    },
+    {
+      "kode": "96.05.06.2011",
+      "nama": "Sowai Sau"
+    },
+    {
+      "kode": "96.05.06.2012",
+      "nama": "Subin"
+    },
+    {
+      "kode": "96.05.06.2013",
+      "nama": "Irohmrar"
+    },
+    {
+      "kode": "96.05.06.2014",
+      "nama": "Bofait"
+    },
+    {
+      "kode": "96.05.06.2015",
+      "nama": "Afkrem"
+    },
+    {
+      "kode": "96.05.06.2016",
+      "nama": "Wiho"
+    },
+    {
+      "kode": "96.05.06.2017",
+      "nama": "Kamro Selatan"
+    },
+    {
+      "kode": "96.05.07.2001",
+      "nama": "Fategomi"
+    },
+    {
+      "kode": "96.05.07.2002",
+      "nama": "Tehak Besar"
+    },
+    {
+      "kode": "96.05.07.2003",
+      "nama": "Fan"
+    },
+    {
+      "kode": "96.05.07.2004",
+      "nama": "Gohsames"
+    },
+    {
+      "kode": "96.05.07.2005",
+      "nama": "Asmuruf U"
+    },
+    {
+      "kode": "96.05.07.2006",
+      "nama": "Mirafaan"
+    },
+    {
+      "kode": "96.05.07.2007",
+      "nama": "Asmuruf Tee"
+    },
+    {
+      "kode": "96.05.07.2008",
+      "nama": "Tehak Tee"
+    },
+    {
+      "kode": "96.05.07.2009",
+      "nama": "Framafir"
+    },
+    {
+      "kode": "96.05.07.2010",
+      "nama": "Subrit"
+    },
+    {
+      "kode": "96.05.07.2011",
+      "nama": "Inta"
+    },
+    {
+      "kode": "96.05.07.2012",
+      "nama": "Bahwat"
+    },
+    {
+      "kode": "96.05.08.1001",
+      "nama": "Ayamaru"
+    },
+    {
+      "kode": "96.05.08.2002",
+      "nama": "Framu"
+    },
+    {
+      "kode": "96.05.08.2003",
+      "nama": "Mefkajim II"
+    },
+    {
+      "kode": "96.05.08.2004",
+      "nama": "Fraharo"
+    },
+    {
+      "kode": "96.05.08.2005",
+      "nama": "Smusswioh"
+    },
+    {
+      "kode": "96.05.08.2006",
+      "nama": "Twer"
+    },
+    {
+      "kode": "96.05.08.2007",
+      "nama": "Afes"
+    },
+    {
+      "kode": "96.05.08.2008",
+      "nama": "Tuso"
+    },
+    {
+      "kode": "96.05.09.2001",
+      "nama": "Yubiah"
+    },
+    {
+      "kode": "96.05.09.2002",
+      "nama": "Karetubun"
+    },
+    {
+      "kode": "96.05.09.2003",
+      "nama": "Setta"
+    },
+    {
+      "kode": "96.05.09.2004",
+      "nama": "Hohoyor"
+    },
+    {
+      "kode": "96.05.09.2005",
+      "nama": "Arne"
+    },
+    {
+      "kode": "96.05.09.2006",
+      "nama": "Aus Tiwit"
+    },
+    {
+      "kode": "96.05.09.2007",
+      "nama": "Johafah"
+    },
+    {
+      "kode": "96.05.09.2008",
+      "nama": "Yukase"
+    },
+    {
+      "kode": "96.05.09.2009",
+      "nama": "Serma"
+    },
+    {
+      "kode": "96.05.09.2010",
+      "nama": "Kfaa"
+    },
+    {
+      "kode": "96.05.09.2011",
+      "nama": "Arne Timur"
+    },
+    {
+      "kode": "96.05.09.2012",
+      "nama": "Nauwita"
+    },
+    {
+      "kode": "96.05.10.2001",
+      "nama": "Kambuaya"
+    },
+    {
+      "kode": "96.05.10.2002",
+      "nama": "Huberita"
+    },
+    {
+      "kode": "96.05.10.2003",
+      "nama": "Faitmajin"
+    },
+    {
+      "kode": "96.05.10.2004",
+      "nama": "Ismayo"
+    },
+    {
+      "kode": "96.05.10.2005",
+      "nama": "Sefayit"
+    },
+    {
+      "kode": "96.05.10.2006",
+      "nama": "Insas"
+    },
+    {
+      "kode": "96.05.10.2007",
+      "nama": "Faitsiur"
+    },
+    {
+      "kode": "96.05.10.2008",
+      "nama": "Keyum"
+    },
+    {
+      "kode": "96.05.11.2001",
+      "nama": "Suswa"
+    },
+    {
+      "kode": "96.05.11.2002",
+      "nama": "Seya"
+    },
+    {
+      "kode": "96.05.11.2003",
+      "nama": "Waban"
+    },
+    {
+      "kode": "96.05.11.2004",
+      "nama": "Kombif"
+    },
+    {
+      "kode": "96.05.11.2005",
+      "nama": "Rufases"
+    },
+    {
+      "kode": "96.05.11.2006",
+      "nama": "Bakrabi"
+    },
+    {
+      "kode": "96.05.11.2007",
+      "nama": "Nafasi"
+    },
+    {
+      "kode": "96.05.11.2008",
+      "nama": "Mahos"
+    },
+    {
+      "kode": "96.05.11.2009",
+      "nama": "Sawo"
+    },
+    {
+      "kode": "96.05.12.2001",
+      "nama": "Mupas"
+    },
+    {
+      "kode": "96.05.12.2002",
+      "nama": "Kamat"
+    },
+    {
+      "kode": "96.05.12.2003",
+      "nama": "Frambu"
+    },
+    {
+      "kode": "96.05.12.2004",
+      "nama": "Ayata"
+    },
+    {
+      "kode": "96.05.12.2005",
+      "nama": "Aikus"
+    },
+    {
+      "kode": "96.05.12.2006",
+      "nama": "Aiwesa"
+    },
+    {
+      "kode": "96.05.12.2007",
+      "nama": "Pitor"
+    },
+    {
+      "kode": "96.05.12.2008",
+      "nama": "Aifam"
+    },
+    {
+      "kode": "96.05.12.2009",
+      "nama": "Saud"
+    },
+    {
+      "kode": "96.05.12.2010",
+      "nama": "Tiam"
+    },
+    {
+      "kode": "96.05.12.2011",
+      "nama": "Faan Kahrio"
+    },
+    {
+      "kode": "96.05.12.2012",
+      "nama": "Assem"
+    },
+    {
+      "kode": "96.05.13.2001",
+      "nama": "Ainesra"
+    },
+    {
+      "kode": "96.05.13.2002",
+      "nama": "Aimau"
+    },
+    {
+      "kode": "96.05.13.2003",
+      "nama": "Mesyam"
+    },
+    {
+      "kode": "96.05.13.2004",
+      "nama": "Aisasior"
+    },
+    {
+      "kode": "96.05.13.2005",
+      "nama": "Franeway"
+    },
+    {
+      "kode": "96.05.13.2006",
+      "nama": "Aikingging"
+    },
+    {
+      "kode": "96.05.13.2007",
+      "nama": "Tiefromen"
+    },
+    {
+      "kode": "96.05.14.2001",
+      "nama": "Wormu"
+    },
+    {
+      "kode": "96.05.14.2002",
+      "nama": "Makiri"
+    },
+    {
+      "kode": "96.05.14.2003",
+      "nama": "Warba"
+    },
+    {
+      "kode": "96.05.14.2004",
+      "nama": "Winuni"
+    },
+    {
+      "kode": "96.05.14.2005",
+      "nama": "Srumate"
+    },
+    {
+      "kode": "96.05.14.2006",
+      "nama": "Womba"
+    },
+    {
+      "kode": "96.05.15.2001",
+      "nama": "Sauf"
+    },
+    {
+      "kode": "96.05.15.2002",
+      "nama": "Sembaro"
+    },
+    {
+      "kode": "96.05.15.2003",
+      "nama": "Koma Koma"
+    },
+    {
+      "kode": "96.05.15.2004",
+      "nama": "Kanisabar"
+    },
+    {
+      "kode": "96.05.15.2005",
+      "nama": "Sfarare"
+    },
+    {
+      "kode": "96.05.15.2006",
+      "nama": "Saneh"
+    },
+    {
+      "kode": "96.05.15.2007",
+      "nama": "Lemauk Klit"
+    },
+    {
+      "kode": "96.05.15.2008",
+      "nama": "Hawioh"
+    },
+    {
+      "kode": "96.05.15.2009",
+      "nama": "Simiyah"
+    },
+    {
+      "kode": "96.05.15.2010",
+      "nama": "Sagrim"
+    },
+    {
+      "kode": "96.05.16.2001",
+      "nama": "Adoh"
+    },
+    {
+      "kode": "96.05.16.2002",
+      "nama": "Temel"
+    },
+    {
+      "kode": "96.05.16.2003",
+      "nama": "Sosian"
+    },
+    {
+      "kode": "96.05.16.2004",
+      "nama": "Segior"
+    },
+    {
+      "kode": "96.05.16.2005",
+      "nama": "Orain"
+    },
+    {
+      "kode": "96.05.16.2006",
+      "nama": "Rawas"
+    },
+    {
+      "kode": "96.05.16.2007",
+      "nama": "Orsu"
+    },
+    {
+      "kode": "96.05.16.2008",
+      "nama": "Soan"
+    },
+    {
+      "kode": "96.05.16.2009",
+      "nama": "Warbo"
+    },
+    {
+      "kode": "96.05.16.2010",
+      "nama": "Woman"
+    },
+    {
+      "kode": "96.05.17.2001",
+      "nama": "Faitsimar"
+    },
+    {
+      "kode": "96.05.17.2002",
+      "nama": "Asses"
+    },
+    {
+      "kode": "96.05.17.2003",
+      "nama": "Fait Nigre"
+    },
+    {
+      "kode": "96.05.17.2004",
+      "nama": "Sufu"
+    },
+    {
+      "kode": "96.05.17.2005",
+      "nama": "Arus"
+    },
+    {
+      "kode": "96.05.17.2006",
+      "nama": "Kofait"
+    },
+    {
+      "kode": "96.05.17.2007",
+      "nama": "Isnum"
+    },
+    {
+      "kode": "96.05.18.2001",
+      "nama": "Kambuskato"
+    },
+    {
+      "kode": "96.05.18.2002",
+      "nama": "Kambuskato Utara"
+    },
+    {
+      "kode": "96.05.18.2003",
+      "nama": "Kambuifa"
+    },
+    {
+      "kode": "96.05.18.2004",
+      "nama": "Isusu"
+    },
+    {
+      "kode": "96.05.18.2005",
+      "nama": "Mano"
+    },
+    {
+      "kode": "96.05.18.2006",
+      "nama": "Sipat"
+    },
+    {
+      "kode": "96.05.18.2007",
+      "nama": "Faitwosur/Angkasa Pura"
+    },
+    {
+      "kode": "96.05.19.2001",
+      "nama": "Mapura"
+    },
+    {
+      "kode": "96.05.19.2002",
+      "nama": "Suwiam"
+    },
+    {
+      "kode": "96.05.19.2003",
+      "nama": "Tomase"
+    },
+    {
+      "kode": "96.05.19.2004",
+      "nama": "Frabo"
+    },
+    {
+      "kode": "96.05.19.2005",
+      "nama": "Karfa"
+    },
+    {
+      "kode": "96.05.19.2006",
+      "nama": "Kona"
+    },
+    {
+      "kode": "96.05.19.2007",
+      "nama": "Kosah"
+    },
+    {
+      "kode": "96.05.20.2001",
+      "nama": "Fiane"
+    },
+    {
+      "kode": "96.05.20.2002",
+      "nama": "Kartapura"
+    },
+    {
+      "kode": "96.05.20.2003",
+      "nama": "Men"
+    },
+    {
+      "kode": "96.05.20.2004",
+      "nama": "Semu"
+    },
+    {
+      "kode": "96.05.20.2005",
+      "nama": "Isme"
+    },
+    {
+      "kode": "96.05.20.2006",
+      "nama": "Rindu"
+    },
+    {
+      "kode": "96.05.20.2007",
+      "nama": "Tut"
+    },
+    {
+      "kode": "96.05.20.2008",
+      "nama": "Yohwer"
+    },
+    {
+      "kode": "96.05.20.2009",
+      "nama": "Hufioh"
+    },
+    {
+      "kode": "96.05.20.2010",
+      "nama": "Bawy"
+    },
+    {
+      "kode": "96.05.21.2001",
+      "nama": "Soroan"
+    },
+    {
+      "kode": "96.05.21.2002",
+      "nama": "Fanse"
+    },
+    {
+      "kode": "96.05.21.2003",
+      "nama": "Chaliat"
+    },
+    {
+      "kode": "96.05.21.2004",
+      "nama": "Sfacko"
+    },
+    {
+      "kode": "96.05.21.2005",
+      "nama": "Sehu"
+    },
+    {
+      "kode": "96.05.21.2006",
+      "nama": "Tbo"
+    },
+    {
+      "kode": "96.05.21.2007",
+      "nama": "Sien"
+    },
+    {
+      "kode": "96.05.21.2008",
+      "nama": "Sfaraka"
+    },
+    {
+      "kode": "96.05.22.2001",
+      "nama": "Yaksoro"
+    },
+    {
+      "kode": "96.05.22.2002",
+      "nama": "Awit"
+    },
+    {
+      "kode": "96.05.22.2003",
+      "nama": "Sira"
+    },
+    {
+      "kode": "96.05.22.2004",
+      "nama": "Eway"
+    },
+    {
+      "kode": "96.05.22.2005",
+      "nama": "Erokwero"
+    },
+    {
+      "kode": "96.05.22.2006",
+      "nama": "Sabun"
+    },
+    {
+      "kode": "96.05.22.2007",
+      "nama": "Itigah"
+    },
+    {
+      "kode": "96.05.22.2008",
+      "nama": "Sira Tee"
+    },
+    {
+      "kode": "96.05.22.2009",
+      "nama": "Wrait 'U'"
+    },
+    {
+      "kode": "96.05.22.2010",
+      "nama": "Way 'U'"
+    },
+    {
+      "kode": "96.05.22.2011",
+      "nama": "Asnaif"
+    },
+    {
+      "kode": "96.05.22.2012",
+      "nama": "Iroh Sohser"
+    },
+    {
+      "kode": "96.05.22.2013",
+      "nama": "Framboh"
+    },
+    {
+      "kode": "96.05.22.2014",
+      "nama": "Tohmri"
+    },
+    {
+      "kode": "96.05.23.2001",
+      "nama": "Jitmau"
+    },
+    {
+      "kode": "96.05.23.2002",
+      "nama": "Ikuf"
+    },
+    {
+      "kode": "96.05.23.2003",
+      "nama": "Isir"
+    },
+    {
+      "kode": "96.05.23.2004",
+      "nama": "Jitmau Timur"
+    },
+    {
+      "kode": "96.05.23.2005",
+      "nama": "Ikuf Utara"
+    },
+    {
+      "kode": "96.05.23.2006",
+      "nama": "Sarimo"
+    },
+    {
+      "kode": "96.05.23.2007",
+      "nama": "Kambusabo"
+    },
+    {
+      "kode": "96.05.23.2008",
+      "nama": "Srirtabam"
+    },
+    {
+      "kode": "96.05.23.2009",
+      "nama": "Faithowes"
+    },
+    {
+      "kode": "96.05.23.2010",
+      "nama": "Yumame"
+    },
+    {
+      "kode": "96.05.24.2001",
+      "nama": "Seni"
+    },
+    {
+      "kode": "96.05.24.2002",
+      "nama": "Renis"
+    },
+    {
+      "kode": "96.05.24.2003",
+      "nama": "Sire"
+    },
+    {
+      "kode": "96.05.24.2004",
+      "nama": "Fase"
+    },
+    {
+      "kode": "96.05.24.2005",
+      "nama": "Sabes"
+    },
+    {
+      "kode": "96.05.24.2006",
+      "nama": "Kuraso"
+    },
+    {
+      "kode": "96.05.24.2007",
+      "nama": "Sidi"
+    },
+    {
+      "kode": "96.05.24.2008",
+      "nama": "Osom"
+    },
+    {
+      "kode": "96.05.24.2009",
+      "nama": "Sire Timur"
+    },
+    {
+      "kode": "96.71.01.1001",
+      "nama": "Remu Utara"
+    },
+    {
+      "kode": "96.71.01.1002",
+      "nama": "Klademak"
+    },
+    {
+      "kode": "96.71.01.1003",
+      "nama": "Kofkerbu"
+    },
+    {
+      "kode": "96.71.01.1004",
+      "nama": "Remu"
+    },
+    {
+      "kode": "96.71.02.1001",
+      "nama": "Klawalu"
+    },
+    {
+      "kode": "96.71.02.1002",
+      "nama": "Klamana"
+    },
+    {
+      "kode": "96.71.02.1003",
+      "nama": "Klawuyuk"
+    },
+    {
+      "kode": "96.71.02.1004",
+      "nama": "Kladufu"
+    },
+    {
+      "kode": "96.71.03.1001",
+      "nama": "Rufei"
+    },
+    {
+      "kode": "96.71.03.1002",
+      "nama": "Klawasi"
+    },
+    {
+      "kode": "96.71.03.1003",
+      "nama": "Puncak Cendrawasih"
+    },
+    {
+      "kode": "96.71.03.1004",
+      "nama": "Pal Putih"
+    },
+    {
+      "kode": "96.71.04.1001",
+      "nama": "Dum Barat"
+    },
+    {
+      "kode": "96.71.04.1002",
+      "nama": "Dum Timur"
+    },
+    {
+      "kode": "96.71.04.1003",
+      "nama": "Soop"
+    },
+    {
+      "kode": "96.71.04.1004",
+      "nama": "Raam"
+    },
+    {
+      "kode": "96.71.05.1001",
+      "nama": "Malanu"
+    },
+    {
+      "kode": "96.71.05.1002",
+      "nama": "Malasilen"
+    },
+    {
+      "kode": "96.71.05.1003",
+      "nama": "Matalamagi"
+    },
+    {
+      "kode": "96.71.05.1004",
+      "nama": "Sawagumu"
+    },
+    {
+      "kode": "96.71.06.1001",
+      "nama": "Klaligi"
+    },
+    {
+      "kode": "96.71.06.1002",
+      "nama": "Malawei"
+    },
+    {
+      "kode": "96.71.06.1003",
+      "nama": "Malabutor"
+    },
+    {
+      "kode": "96.71.06.1004",
+      "nama": "Remu Selatan"
+    },
+    {
+      "kode": "96.71.06.1005",
+      "nama": "Klasabi"
+    },
+    {
+      "kode": "96.71.07.1001",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "96.71.07.1002",
+      "nama": "Klabala"
+    },
+    {
+      "kode": "96.71.07.1003",
+      "nama": "Klasuur"
+    },
+    {
+      "kode": "96.71.07.1004",
+      "nama": "Klakublik"
+    },
+    {
+      "kode": "96.71.08.1001",
+      "nama": "Klasuat"
+    },
+    {
+      "kode": "96.71.08.1002",
+      "nama": "Klablim"
+    },
+    {
+      "kode": "96.71.08.1003",
+      "nama": "Klasaman"
+    },
+    {
+      "kode": "96.71.08.1004",
+      "nama": "Giwu"
+    },
+    {
+      "kode": "96.71.09.1001",
+      "nama": "Klagete"
+    },
+    {
+      "kode": "96.71.09.1002",
+      "nama": "Malaingkedi"
+    },
+    {
+      "kode": "96.71.09.1003",
+      "nama": "Malamso"
+    },
+    {
+      "kode": "96.71.09.1004",
+      "nama": "Klabulu"
+    },
+    {
+      "kode": "96.71.10.1001",
+      "nama": "Suprau"
+    },
+    {
+      "kode": "96.71.10.1002",
+      "nama": "Tampa Garam"
+    },
+    {
+      "kode": "96.71.10.1003",
+      "nama": "Saoka"
+    },
+    {
+      "kode": "96.71.10.1004",
+      "nama": "Tanjung Kasuari"
+    }
+  ]
+}

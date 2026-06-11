@@ -1,0 +1,5396 @@
+{
+  "kabupaten": [
+    {
+      "kode": "94.01",
+      "nama": "Kabupaten Nabire"
+    },
+    {
+      "kode": "94.02",
+      "nama": "Kabupaten Puncak Jaya"
+    },
+    {
+      "kode": "94.03",
+      "nama": "Kabupaten Paniai"
+    },
+    {
+      "kode": "94.04",
+      "nama": "Kabupaten Mimika"
+    },
+    {
+      "kode": "94.05",
+      "nama": "Kabupaten Puncak"
+    },
+    {
+      "kode": "94.06",
+      "nama": "Kabupaten Dogiyai"
+    },
+    {
+      "kode": "94.07",
+      "nama": "Kabupaten Intan Jaya"
+    },
+    {
+      "kode": "94.08",
+      "nama": "Kabupaten Deiyai"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "94.01.01",
+      "nama": "Nabire"
+    },
+    {
+      "kode": "94.01.02",
+      "nama": "Napan"
+    },
+    {
+      "kode": "94.01.03",
+      "nama": "Yaur"
+    },
+    {
+      "kode": "94.01.04",
+      "nama": "Uwapa"
+    },
+    {
+      "kode": "94.01.05",
+      "nama": "Wanggar"
+    },
+    {
+      "kode": "94.01.06",
+      "nama": "Siriwo"
+    },
+    {
+      "kode": "94.01.07",
+      "nama": "Makimi"
+    },
+    {
+      "kode": "94.01.08",
+      "nama": "Teluk Umar"
+    },
+    {
+      "kode": "94.01.09",
+      "nama": "Teluk Kimi"
+    },
+    {
+      "kode": "94.01.10",
+      "nama": "Yaro"
+    },
+    {
+      "kode": "94.01.11",
+      "nama": "Wapoga"
+    },
+    {
+      "kode": "94.01.12",
+      "nama": "Nabire Barat"
+    },
+    {
+      "kode": "94.01.13",
+      "nama": "Moora"
+    },
+    {
+      "kode": "94.01.14",
+      "nama": "Dipa"
+    },
+    {
+      "kode": "94.01.15",
+      "nama": "Menou"
+    },
+    {
+      "kode": "94.02.01",
+      "nama": "Mulia"
+    },
+    {
+      "kode": "94.02.02",
+      "nama": "Ilu"
+    },
+    {
+      "kode": "94.02.03",
+      "nama": "Fawi"
+    },
+    {
+      "kode": "94.02.04",
+      "nama": "Mewoluk"
+    },
+    {
+      "kode": "94.02.05",
+      "nama": "Yamo"
+    },
+    {
+      "kode": "94.02.06",
+      "nama": "Nume"
+    },
+    {
+      "kode": "94.02.07",
+      "nama": "Torere"
+    },
+    {
+      "kode": "94.02.08",
+      "nama": "Tingginambut"
+    },
+    {
+      "kode": "94.02.09",
+      "nama": "Pagaleme"
+    },
+    {
+      "kode": "94.02.10",
+      "nama": "Gurage"
+    },
+    {
+      "kode": "94.02.11",
+      "nama": "Irimuli"
+    },
+    {
+      "kode": "94.02.12",
+      "nama": "Muara"
+    },
+    {
+      "kode": "94.02.13",
+      "nama": "Ilamburawi"
+    },
+    {
+      "kode": "94.02.14",
+      "nama": "Yambi"
+    },
+    {
+      "kode": "94.02.15",
+      "nama": "Lumo"
+    },
+    {
+      "kode": "94.02.16",
+      "nama": "Molanikime"
+    },
+    {
+      "kode": "94.02.17",
+      "nama": "Dokome"
+    },
+    {
+      "kode": "94.02.18",
+      "nama": "Kalome"
+    },
+    {
+      "kode": "94.02.19",
+      "nama": "Wanwi"
+    },
+    {
+      "kode": "94.02.20",
+      "nama": "Yamoneri"
+    },
+    {
+      "kode": "94.02.21",
+      "nama": "Waegi"
+    },
+    {
+      "kode": "94.02.22",
+      "nama": "Nioga"
+    },
+    {
+      "kode": "94.02.23",
+      "nama": "Gubume"
+    },
+    {
+      "kode": "94.02.24",
+      "nama": "Taganombak"
+    },
+    {
+      "kode": "94.02.25",
+      "nama": "Dagai"
+    },
+    {
+      "kode": "94.02.26",
+      "nama": "Kiyage"
+    },
+    {
+      "kode": "94.03.01",
+      "nama": "Paniai Timur"
+    },
+    {
+      "kode": "94.03.02",
+      "nama": "Paniai Barat"
+    },
+    {
+      "kode": "94.03.03",
+      "nama": "Aradide"
+    },
+    {
+      "kode": "94.03.04",
+      "nama": "Bogabaida"
+    },
+    {
+      "kode": "94.03.05",
+      "nama": "Bibida"
+    },
+    {
+      "kode": "94.03.06",
+      "nama": "Dumadama"
+    },
+    {
+      "kode": "94.03.07",
+      "nama": "Siriwo"
+    },
+    {
+      "kode": "94.03.08",
+      "nama": "Kebo"
+    },
+    {
+      "kode": "94.03.09",
+      "nama": "Yatamo"
+    },
+    {
+      "kode": "94.03.10",
+      "nama": "Ekadide"
+    },
+    {
+      "kode": "94.03.11",
+      "nama": "Wegee Muka"
+    },
+    {
+      "kode": "94.03.12",
+      "nama": "Wegee Bino"
+    },
+    {
+      "kode": "94.03.13",
+      "nama": "Pugo Dagi"
+    },
+    {
+      "kode": "94.03.14",
+      "nama": "Muye"
+    },
+    {
+      "kode": "94.03.15",
+      "nama": "Nakama"
+    },
+    {
+      "kode": "94.03.16",
+      "nama": "Teluk Deya"
+    },
+    {
+      "kode": "94.03.17",
+      "nama": "Yagai"
+    },
+    {
+      "kode": "94.03.18",
+      "nama": "Youtadi"
+    },
+    {
+      "kode": "94.03.19",
+      "nama": "Baya Biru"
+    },
+    {
+      "kode": "94.03.20",
+      "nama": "Deiyai Miyo"
+    },
+    {
+      "kode": "94.03.21",
+      "nama": "Dogomo"
+    },
+    {
+      "kode": "94.03.22",
+      "nama": "Aweida"
+    },
+    {
+      "kode": "94.03.23",
+      "nama": "Topiyai"
+    },
+    {
+      "kode": "94.03.24",
+      "nama": "Fajar Timur"
+    },
+    {
+      "kode": "94.04.01",
+      "nama": "Mimika Baru"
+    },
+    {
+      "kode": "94.04.02",
+      "nama": "Agimuga"
+    },
+    {
+      "kode": "94.04.03",
+      "nama": "Mimika Timur"
+    },
+    {
+      "kode": "94.04.04",
+      "nama": "Mimika Barat"
+    },
+    {
+      "kode": "94.04.05",
+      "nama": "Jita"
+    },
+    {
+      "kode": "94.04.06",
+      "nama": "Jila"
+    },
+    {
+      "kode": "94.04.07",
+      "nama": "Mimika Timur Jauh"
+    },
+    {
+      "kode": "94.04.08",
+      "nama": "Mimika Tengah"
+    },
+    {
+      "kode": "94.04.09",
+      "nama": "Kuala Kencana"
+    },
+    {
+      "kode": "94.04.10",
+      "nama": "Tembagapura"
+    },
+    {
+      "kode": "94.04.11",
+      "nama": "Mimika Barat Jauh"
+    },
+    {
+      "kode": "94.04.12",
+      "nama": "Mimika Barat Tengah"
+    },
+    {
+      "kode": "94.04.13",
+      "nama": "Kwamki Narama"
+    },
+    {
+      "kode": "94.04.14",
+      "nama": "Hoya"
+    },
+    {
+      "kode": "94.04.15",
+      "nama": "Iwaka"
+    },
+    {
+      "kode": "94.04.16",
+      "nama": "Wania"
+    },
+    {
+      "kode": "94.04.17",
+      "nama": "Amar"
+    },
+    {
+      "kode": "94.04.18",
+      "nama": "Alama"
+    },
+    {
+      "kode": "94.05.01",
+      "nama": "Ilaga"
+    },
+    {
+      "kode": "94.05.02",
+      "nama": "Wangbe"
+    },
+    {
+      "kode": "94.05.03",
+      "nama": "Beoga"
+    },
+    {
+      "kode": "94.05.04",
+      "nama": "Doufo"
+    },
+    {
+      "kode": "94.05.05",
+      "nama": "Pogoma"
+    },
+    {
+      "kode": "94.05.06",
+      "nama": "Sinak"
+    },
+    {
+      "kode": "94.05.07",
+      "nama": "Agandugume"
+    },
+    {
+      "kode": "94.05.08",
+      "nama": "Gome"
+    },
+    {
+      "kode": "94.05.09",
+      "nama": "Dervos"
+    },
+    {
+      "kode": "94.05.10",
+      "nama": "Beoga Barat"
+    },
+    {
+      "kode": "94.05.11",
+      "nama": "Beoga Timur"
+    },
+    {
+      "kode": "94.05.12",
+      "nama": "Ogamanim"
+    },
+    {
+      "kode": "94.05.13",
+      "nama": "Kembru"
+    },
+    {
+      "kode": "94.05.14",
+      "nama": "Bina"
+    },
+    {
+      "kode": "94.05.15",
+      "nama": "Sinak Barat"
+    },
+    {
+      "kode": "94.05.16",
+      "nama": "Mage'abume"
+    },
+    {
+      "kode": "94.05.17",
+      "nama": "Yugumuak"
+    },
+    {
+      "kode": "94.05.18",
+      "nama": "Ilaga Utara"
+    },
+    {
+      "kode": "94.05.19",
+      "nama": "Mabugi"
+    },
+    {
+      "kode": "94.05.20",
+      "nama": "Omukia"
+    },
+    {
+      "kode": "94.05.21",
+      "nama": "Lambewi"
+    },
+    {
+      "kode": "94.05.22",
+      "nama": "Oneri"
+    },
+    {
+      "kode": "94.05.23",
+      "nama": "Amungkalpia"
+    },
+    {
+      "kode": "94.05.24",
+      "nama": "Gome Utara"
+    },
+    {
+      "kode": "94.05.25",
+      "nama": "Erelmakawia"
+    },
+    {
+      "kode": "94.06.01",
+      "nama": "Kamu"
+    },
+    {
+      "kode": "94.06.02",
+      "nama": "Mapia"
+    },
+    {
+      "kode": "94.06.03",
+      "nama": "Piyaiye"
+    },
+    {
+      "kode": "94.06.04",
+      "nama": "Kamu Utara"
+    },
+    {
+      "kode": "94.06.05",
+      "nama": "Sukikai Selatan"
+    },
+    {
+      "kode": "94.06.06",
+      "nama": "Mapia Barat"
+    },
+    {
+      "kode": "94.06.07",
+      "nama": "Kamu Selatan"
+    },
+    {
+      "kode": "94.06.08",
+      "nama": "Kamu Timur"
+    },
+    {
+      "kode": "94.06.09",
+      "nama": "Mapia Tengah"
+    },
+    {
+      "kode": "94.06.10",
+      "nama": "Dogiyai"
+    },
+    {
+      "kode": "94.07.01",
+      "nama": "Sugapa"
+    },
+    {
+      "kode": "94.07.02",
+      "nama": "Homeyo"
+    },
+    {
+      "kode": "94.07.03",
+      "nama": "Wandai"
+    },
+    {
+      "kode": "94.07.04",
+      "nama": "Biandoga"
+    },
+    {
+      "kode": "94.07.05",
+      "nama": "Agisiga"
+    },
+    {
+      "kode": "94.07.06",
+      "nama": "Hitadipa"
+    },
+    {
+      "kode": "94.07.07",
+      "nama": "Ugimba"
+    },
+    {
+      "kode": "94.07.08",
+      "nama": "Tomosiga"
+    },
+    {
+      "kode": "94.08.01",
+      "nama": "Tigi"
+    },
+    {
+      "kode": "94.08.02",
+      "nama": "Tigi Timur"
+    },
+    {
+      "kode": "94.08.03",
+      "nama": "Bowobado"
+    },
+    {
+      "kode": "94.08.04",
+      "nama": "Tigi Barat"
+    },
+    {
+      "kode": "94.08.05",
+      "nama": "Kapiraya"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "94.01.01.1001",
+      "nama": "Wonorejo"
+    },
+    {
+      "kode": "94.01.01.1002",
+      "nama": "Kali Bobo"
+    },
+    {
+      "kode": "94.01.01.1003",
+      "nama": "Morgo"
+    },
+    {
+      "kode": "94.01.01.1004",
+      "nama": "Girimulyo"
+    },
+    {
+      "kode": "94.01.01.1005",
+      "nama": "Karang Tumaritis"
+    },
+    {
+      "kode": "94.01.01.1006",
+      "nama": "Oyehe"
+    },
+    {
+      "kode": "94.01.01.1007",
+      "nama": "Karang Mulia"
+    },
+    {
+      "kode": "94.01.01.1008",
+      "nama": "Nabarua"
+    },
+    {
+      "kode": "94.01.01.1009",
+      "nama": "Siriwini"
+    },
+    {
+      "kode": "94.01.01.2010",
+      "nama": "Kalisusu"
+    },
+    {
+      "kode": "94.01.01.2011",
+      "nama": "Kali Harapan"
+    },
+    {
+      "kode": "94.01.01.2012",
+      "nama": "Sanoba"
+    },
+    {
+      "kode": "94.01.02.2001",
+      "nama": "Napan"
+    },
+    {
+      "kode": "94.01.02.2002",
+      "nama": "Masipawa"
+    },
+    {
+      "kode": "94.01.02.2003",
+      "nama": "Weinami"
+    },
+    {
+      "kode": "94.01.03.2001",
+      "nama": "Yaur"
+    },
+    {
+      "kode": "94.01.03.2002",
+      "nama": "Akudiomi"
+    },
+    {
+      "kode": "94.01.03.2003",
+      "nama": "Sima"
+    },
+    {
+      "kode": "94.01.03.2004",
+      "nama": "Wami"
+    },
+    {
+      "kode": "94.01.04.2001",
+      "nama": "Topo"
+    },
+    {
+      "kode": "94.01.04.2002",
+      "nama": "Urumusu"
+    },
+    {
+      "kode": "94.01.04.2003",
+      "nama": "Marga Jaya"
+    },
+    {
+      "kode": "94.01.04.2004",
+      "nama": "Argo Mulyo"
+    },
+    {
+      "kode": "94.01.04.2005",
+      "nama": "Topo Jaya"
+    },
+    {
+      "kode": "94.01.04.2006",
+      "nama": "Gamei Jaya"
+    },
+    {
+      "kode": "94.01.05.2001",
+      "nama": "Bumi Mulia"
+    },
+    {
+      "kode": "94.01.05.2002",
+      "nama": "Karadiri"
+    },
+    {
+      "kode": "94.01.05.2003",
+      "nama": "Wanggar Makmur"
+    },
+    {
+      "kode": "94.01.06.2001",
+      "nama": "Unipo"
+    },
+    {
+      "kode": "94.01.06.2002",
+      "nama": "Aibore"
+    },
+    {
+      "kode": "94.01.06.2003",
+      "nama": "Epomani"
+    },
+    {
+      "kode": "94.01.06.2004",
+      "nama": "Tibai"
+    },
+    {
+      "kode": "94.01.06.2005",
+      "nama": "Mabou"
+    },
+    {
+      "kode": "94.01.06.2006",
+      "nama": "Ugida"
+    },
+    {
+      "kode": "94.01.07.2001",
+      "nama": "Makimi"
+    },
+    {
+      "kode": "94.01.07.2002",
+      "nama": "Nifasi"
+    },
+    {
+      "kode": "94.01.07.2003",
+      "nama": "Biha"
+    },
+    {
+      "kode": "94.01.07.2004",
+      "nama": "Lagari Jaya"
+    },
+    {
+      "kode": "94.01.07.2005",
+      "nama": "Maidei"
+    },
+    {
+      "kode": "94.01.07.2006",
+      "nama": "Manunggal Jaya"
+    },
+    {
+      "kode": "94.01.08.2001",
+      "nama": "Napan Yaur"
+    },
+    {
+      "kode": "94.01.08.2002",
+      "nama": "Yeretuar"
+    },
+    {
+      "kode": "94.01.08.2003",
+      "nama": "Bawei"
+    },
+    {
+      "kode": "94.01.08.2004",
+      "nama": "Goni"
+    },
+    {
+      "kode": "94.01.09.2001",
+      "nama": "Samabusa"
+    },
+    {
+      "kode": "94.01.09.2002",
+      "nama": "Waharia"
+    },
+    {
+      "kode": "94.01.09.2003",
+      "nama": "Kimi"
+    },
+    {
+      "kode": "94.01.09.2004",
+      "nama": "Lani"
+    },
+    {
+      "kode": "94.01.09.2005",
+      "nama": "Air Mandidi"
+    },
+    {
+      "kode": "94.01.10.2001",
+      "nama": "Wanggar Sari"
+    },
+    {
+      "kode": "94.01.10.2002",
+      "nama": "Wiraska"
+    },
+    {
+      "kode": "94.01.10.2003",
+      "nama": "Yaro Makmur"
+    },
+    {
+      "kode": "94.01.10.2004",
+      "nama": "Jaya Mukti"
+    },
+    {
+      "kode": "94.01.10.2005",
+      "nama": "Wanggar Pantai"
+    },
+    {
+      "kode": "94.01.10.2006",
+      "nama": "Ororodo"
+    },
+    {
+      "kode": "94.01.10.2007",
+      "nama": "Bomopai"
+    },
+    {
+      "kode": "94.01.10.2008",
+      "nama": "Parauto"
+    },
+    {
+      "kode": "94.01.11.2001",
+      "nama": "Totoberi"
+    },
+    {
+      "kode": "94.01.11.2002",
+      "nama": "Samanui"
+    },
+    {
+      "kode": "94.01.11.2003",
+      "nama": "Kamarisano"
+    },
+    {
+      "kode": "94.01.11.2004",
+      "nama": "Taumi"
+    },
+    {
+      "kode": "94.01.11.2005",
+      "nama": "Keuw"
+    },
+    {
+      "kode": "94.01.12.2001",
+      "nama": "Bumi Raya"
+    },
+    {
+      "kode": "94.01.12.2002",
+      "nama": "Waroki"
+    },
+    {
+      "kode": "94.01.12.2003",
+      "nama": "Gerbang Sadu"
+    },
+    {
+      "kode": "94.01.12.2004",
+      "nama": "Kali Semen"
+    },
+    {
+      "kode": "94.01.12.2005",
+      "nama": "Wadio"
+    },
+    {
+      "kode": "94.01.13.2001",
+      "nama": "Mambor"
+    },
+    {
+      "kode": "94.01.13.2002",
+      "nama": "Hariti"
+    },
+    {
+      "kode": "94.01.13.2003",
+      "nama": "Moor"
+    },
+    {
+      "kode": "94.01.13.2004",
+      "nama": "Kama"
+    },
+    {
+      "kode": "94.01.13.2005",
+      "nama": "Arui"
+    },
+    {
+      "kode": "94.01.14.2001",
+      "nama": "Epouwa"
+    },
+    {
+      "kode": "94.01.14.2002",
+      "nama": "Dikiya"
+    },
+    {
+      "kode": "94.01.14.2003",
+      "nama": "Tagauto"
+    },
+    {
+      "kode": "94.01.14.2004",
+      "nama": "Jigikebo"
+    },
+    {
+      "kode": "94.01.14.2005",
+      "nama": "Jainoa"
+    },
+    {
+      "kode": "94.01.15.2001",
+      "nama": "Kunupi"
+    },
+    {
+      "kode": "94.01.15.2002",
+      "nama": "Ogiyai"
+    },
+    {
+      "kode": "94.01.15.2003",
+      "nama": "Lokodimi"
+    },
+    {
+      "kode": "94.01.15.2004",
+      "nama": "Yegeugi"
+    },
+    {
+      "kode": "94.02.01.1010",
+      "nama": "Wuyukwi"
+    },
+    {
+      "kode": "94.02.01.1011",
+      "nama": "Pagaleme"
+    },
+    {
+      "kode": "94.02.01.2001",
+      "nama": "Pruleme"
+    },
+    {
+      "kode": "94.02.01.2002",
+      "nama": "Wuyukwi"
+    },
+    {
+      "kode": "94.02.01.2003",
+      "nama": "Wuyuneri"
+    },
+    {
+      "kode": "94.02.01.2004",
+      "nama": "Pepera"
+    },
+    {
+      "kode": "94.02.01.2005",
+      "nama": "Muliagambut"
+    },
+    {
+      "kode": "94.02.01.2006",
+      "nama": "Trikora"
+    },
+    {
+      "kode": "94.02.01.2007",
+      "nama": "Towogi"
+    },
+    {
+      "kode": "94.02.01.2008",
+      "nama": "Birak Ambut"
+    },
+    {
+      "kode": "94.02.01.2009",
+      "nama": "Usir"
+    },
+    {
+      "kode": "94.02.02.1021",
+      "nama": "Wurak"
+    },
+    {
+      "kode": "94.02.02.2001",
+      "nama": "Wurak"
+    },
+    {
+      "kode": "94.02.02.2002",
+      "nama": "Lambo"
+    },
+    {
+      "kode": "94.02.02.2003",
+      "nama": "Pindebaga"
+    },
+    {
+      "kode": "94.02.02.2004",
+      "nama": "Dolinggame"
+    },
+    {
+      "kode": "94.02.02.2005",
+      "nama": "Belantara"
+    },
+    {
+      "kode": "94.02.02.2006",
+      "nama": "Kalengga"
+    },
+    {
+      "kode": "94.02.02.2007",
+      "nama": "Pulau Timur"
+    },
+    {
+      "kode": "94.02.02.2008",
+      "nama": "Girmor"
+    },
+    {
+      "kode": "94.02.02.2009",
+      "nama": "Maka"
+    },
+    {
+      "kode": "94.02.02.2010",
+      "nama": "Mobigi"
+    },
+    {
+      "kode": "94.02.02.2011",
+      "nama": "Jauria I"
+    },
+    {
+      "kode": "94.02.02.2012",
+      "nama": "Gubulome"
+    },
+    {
+      "kode": "94.02.02.2013",
+      "nama": "Megawi Megewa"
+    },
+    {
+      "kode": "94.02.02.2014",
+      "nama": "Kurikpulok"
+    },
+    {
+      "kode": "94.02.02.2015",
+      "nama": "Puky paky"
+    },
+    {
+      "kode": "94.02.02.2016",
+      "nama": "Kaninonggo"
+    },
+    {
+      "kode": "94.02.02.2017",
+      "nama": "Kirigimaduk"
+    },
+    {
+      "kode": "94.02.02.2018",
+      "nama": "Pologengga"
+    },
+    {
+      "kode": "94.02.02.2019",
+      "nama": "Ginipago"
+    },
+    {
+      "kode": "94.02.02.2020",
+      "nama": "Aulukme"
+    },
+    {
+      "kode": "94.02.03.2001",
+      "nama": "Fawi"
+    },
+    {
+      "kode": "94.02.03.2002",
+      "nama": "Bakusi"
+    },
+    {
+      "kode": "94.02.03.2003",
+      "nama": "Turumo"
+    },
+    {
+      "kode": "94.02.03.2004",
+      "nama": "Kaho"
+    },
+    {
+      "kode": "94.02.03.2005",
+      "nama": "Biricare"
+    },
+    {
+      "kode": "94.02.03.2006",
+      "nama": "Dorey"
+    },
+    {
+      "kode": "94.02.03.2007",
+      "nama": "Fii"
+    },
+    {
+      "kode": "94.02.03.2008",
+      "nama": "Evo"
+    },
+    {
+      "kode": "94.02.03.2009",
+      "nama": "Yerei"
+    },
+    {
+      "kode": "94.02.04.2001",
+      "nama": "Mewoluk"
+    },
+    {
+      "kode": "94.02.04.2002",
+      "nama": "Gumbru"
+    },
+    {
+      "kode": "94.02.04.2003",
+      "nama": "Anggulobaga"
+    },
+    {
+      "kode": "94.02.04.2004",
+      "nama": "Balinggup"
+    },
+    {
+      "kode": "94.02.04.2005",
+      "nama": "Waliba"
+    },
+    {
+      "kode": "94.02.04.2006",
+      "nama": "Nggininik"
+    },
+    {
+      "kode": "94.02.04.2007",
+      "nama": "Biak"
+    },
+    {
+      "kode": "94.02.04.2008",
+      "nama": "Wutikme"
+    },
+    {
+      "kode": "94.02.05.2001",
+      "nama": "Yambuni"
+    },
+    {
+      "kode": "94.02.05.2002",
+      "nama": "Yogolawi"
+    },
+    {
+      "kode": "94.02.05.2003",
+      "nama": "Wundu"
+    },
+    {
+      "kode": "94.02.05.2004",
+      "nama": "Binime"
+    },
+    {
+      "kode": "94.02.05.2005",
+      "nama": "Tiogeme"
+    },
+    {
+      "kode": "94.02.05.2006",
+      "nama": "Goyage"
+    },
+    {
+      "kode": "94.02.05.2007",
+      "nama": "Kalimbut"
+    },
+    {
+      "kode": "94.02.05.2008",
+      "nama": "Wolame"
+    },
+    {
+      "kode": "94.02.05.2009",
+      "nama": "Muara"
+    },
+    {
+      "kode": "94.02.05.2010",
+      "nama": "Gibaga"
+    },
+    {
+      "kode": "94.02.05.2011",
+      "nama": "Nami"
+    },
+    {
+      "kode": "94.02.05.2012",
+      "nama": "Linwakwi"
+    },
+    {
+      "kode": "94.02.05.2013",
+      "nama": "Kwantineri"
+    },
+    {
+      "kode": "94.02.05.2014",
+      "nama": "Jileyale"
+    },
+    {
+      "kode": "94.02.06.2001",
+      "nama": "Mepar"
+    },
+    {
+      "kode": "94.02.06.2002",
+      "nama": "Anebalui"
+    },
+    {
+      "kode": "94.02.06.2003",
+      "nama": "Pagolome"
+    },
+    {
+      "kode": "94.02.06.2004",
+      "nama": "Tombok"
+    },
+    {
+      "kode": "94.02.06.2005",
+      "nama": "Kering"
+    },
+    {
+      "kode": "94.02.06.2006",
+      "nama": "Meyongga"
+    },
+    {
+      "kode": "94.02.06.2007",
+      "nama": "Oum"
+    },
+    {
+      "kode": "94.02.06.2008",
+      "nama": "Nume"
+    },
+    {
+      "kode": "94.02.06.2009",
+      "nama": "Yawor"
+    },
+    {
+      "kode": "94.02.06.2010",
+      "nama": "Wurina"
+    },
+    {
+      "kode": "94.02.06.2011",
+      "nama": "Woraluk"
+    },
+    {
+      "kode": "94.02.06.2012",
+      "nama": "Onendu"
+    },
+    {
+      "kode": "94.02.06.2013",
+      "nama": "Akwibaga"
+    },
+    {
+      "kode": "94.02.07.2001",
+      "nama": "Gubugani"
+    },
+    {
+      "kode": "94.02.07.2002",
+      "nama": "Ambok"
+    },
+    {
+      "kode": "94.02.07.2003",
+      "nama": "Awiyam"
+    },
+    {
+      "kode": "94.02.07.2004",
+      "nama": "Tubugime"
+    },
+    {
+      "kode": "94.02.07.2005",
+      "nama": "Wariru"
+    },
+    {
+      "kode": "94.02.07.2006",
+      "nama": "Digi"
+    },
+    {
+      "kode": "94.02.07.2007",
+      "nama": "Kikup"
+    },
+    {
+      "kode": "94.02.07.2008",
+      "nama": "Gunung Tayok"
+    },
+    {
+      "kode": "94.02.07.2009",
+      "nama": "Nambu"
+    },
+    {
+      "kode": "94.02.07.2010",
+      "nama": "Asua"
+    },
+    {
+      "kode": "94.02.07.2011",
+      "nama": "Degei"
+    },
+    {
+      "kode": "94.02.07.2012",
+      "nama": "Sigou"
+    },
+    {
+      "kode": "94.02.07.2013",
+      "nama": "Nalu"
+    },
+    {
+      "kode": "94.02.08.2001",
+      "nama": "Tinggineri"
+    },
+    {
+      "kode": "94.02.08.2002",
+      "nama": "Monia"
+    },
+    {
+      "kode": "94.02.08.2003",
+      "nama": "Tingginambut"
+    },
+    {
+      "kode": "94.02.08.2004",
+      "nama": "Melekom"
+    },
+    {
+      "kode": "94.02.08.2005",
+      "nama": "Gigume"
+    },
+    {
+      "kode": "94.02.08.2006",
+      "nama": "Papua"
+    },
+    {
+      "kode": "94.02.08.2007",
+      "nama": "Tingginime"
+    },
+    {
+      "kode": "94.02.08.2008",
+      "nama": "Tombo"
+    },
+    {
+      "kode": "94.02.08.2009",
+      "nama": "Gimanggen"
+    },
+    {
+      "kode": "94.02.08.2010",
+      "nama": "Uragi"
+    },
+    {
+      "kode": "94.02.08.2011",
+      "nama": "Yamengga"
+    },
+    {
+      "kode": "94.02.08.2012",
+      "nama": "Degi"
+    },
+    {
+      "kode": "94.02.08.2013",
+      "nama": "Jugumblawi"
+    },
+    {
+      "kode": "94.02.08.2014",
+      "nama": "Paralo"
+    },
+    {
+      "kode": "94.02.08.2015",
+      "nama": "Womelagandan"
+    },
+    {
+      "kode": "94.02.08.2016",
+      "nama": "Bigirage"
+    },
+    {
+      "kode": "94.02.08.2017",
+      "nama": "Lumbuk"
+    },
+    {
+      "kode": "94.02.08.2018",
+      "nama": "Inikimaluk"
+    },
+    {
+      "kode": "94.02.08.2019",
+      "nama": "Yonggun"
+    },
+    {
+      "kode": "94.02.08.2020",
+      "nama": "Gobak"
+    },
+    {
+      "kode": "94.02.08.2021",
+      "nama": "Gubupur"
+    },
+    {
+      "kode": "94.02.08.2022",
+      "nama": "Berime"
+    },
+    {
+      "kode": "94.02.09.2001",
+      "nama": "Pagaleme"
+    },
+    {
+      "kode": "94.02.09.2002",
+      "nama": "Muliambut"
+    },
+    {
+      "kode": "94.02.09.2003",
+      "nama": "Lunggineri"
+    },
+    {
+      "kode": "94.02.09.2004",
+      "nama": "Igimbut"
+    },
+    {
+      "kode": "94.02.09.2005",
+      "nama": "Kulok enggame"
+    },
+    {
+      "kode": "94.02.10.2001",
+      "nama": "Yarmukum"
+    },
+    {
+      "kode": "94.02.10.2002",
+      "nama": "Pilia"
+    },
+    {
+      "kode": "94.02.10.2003",
+      "nama": "Yaniruk"
+    },
+    {
+      "kode": "94.02.10.2004",
+      "nama": "Gwenggu"
+    },
+    {
+      "kode": "94.02.10.2005",
+      "nama": "Tukwi"
+    },
+    {
+      "kode": "94.02.10.2006",
+      "nama": "Tiru"
+    },
+    {
+      "kode": "94.02.10.2007",
+      "nama": "Yogorini"
+    },
+    {
+      "kode": "94.02.10.2008",
+      "nama": "Nalime"
+    },
+    {
+      "kode": "94.02.10.2009",
+      "nama": "Urgele"
+    },
+    {
+      "kode": "94.02.10.2010",
+      "nama": "Yagonik"
+    },
+    {
+      "kode": "94.02.10.2011",
+      "nama": "Lulame"
+    },
+    {
+      "kode": "94.02.11.2001",
+      "nama": "Wandenggobak"
+    },
+    {
+      "kode": "94.02.11.2002",
+      "nama": "Jiginikime"
+    },
+    {
+      "kode": "94.02.11.2003",
+      "nama": "Puncak Senyum"
+    },
+    {
+      "kode": "94.02.11.2004",
+      "nama": "Anggutari"
+    },
+    {
+      "kode": "94.02.11.2005",
+      "nama": "Wunagelo"
+    },
+    {
+      "kode": "94.02.11.2006",
+      "nama": "Dondo"
+    },
+    {
+      "kode": "94.02.11.2007",
+      "nama": "Tanoba"
+    },
+    {
+      "kode": "94.02.11.2008",
+      "nama": "Niruwi"
+    },
+    {
+      "kode": "94.02.11.2009",
+      "nama": "Yalikambi"
+    },
+    {
+      "kode": "94.02.12.2001",
+      "nama": "Kulirik"
+    },
+    {
+      "kode": "94.02.12.2002",
+      "nama": "Doligobak"
+    },
+    {
+      "kode": "94.02.12.2003",
+      "nama": "Yalinggua"
+    },
+    {
+      "kode": "94.02.12.2004",
+      "nama": "Talilome"
+    },
+    {
+      "kode": "94.02.12.2005",
+      "nama": "Muara"
+    },
+    {
+      "kode": "94.02.12.2006",
+      "nama": "Karubate"
+    },
+    {
+      "kode": "94.02.12.2007",
+      "nama": "Dologobak"
+    },
+    {
+      "kode": "94.02.12.2008",
+      "nama": "Yambidugum"
+    },
+    {
+      "kode": "94.02.13.2001",
+      "nama": "Ilamburawi"
+    },
+    {
+      "kode": "94.02.13.2002",
+      "nama": "Berelema"
+    },
+    {
+      "kode": "94.02.13.2003",
+      "nama": "Kalome"
+    },
+    {
+      "kode": "94.02.13.2004",
+      "nama": "Temu"
+    },
+    {
+      "kode": "94.02.13.2005",
+      "nama": "Jigunikime"
+    },
+    {
+      "kode": "94.02.14.2001",
+      "nama": "Mondu"
+    },
+    {
+      "kode": "94.02.14.2002",
+      "nama": "Yambi"
+    },
+    {
+      "kode": "94.02.14.2003",
+      "nama": "Moulo"
+    },
+    {
+      "kode": "94.02.14.2004",
+      "nama": "Tenolok"
+    },
+    {
+      "kode": "94.02.14.2005",
+      "nama": "Ginigom"
+    },
+    {
+      "kode": "94.02.14.2006",
+      "nama": "Dangenpaga"
+    },
+    {
+      "kode": "94.02.14.2007",
+      "nama": "Wonome"
+    },
+    {
+      "kode": "94.02.14.2008",
+      "nama": "Yoboluk"
+    },
+    {
+      "kode": "94.02.14.2009",
+      "nama": "Tirineri"
+    },
+    {
+      "kode": "94.02.15.2001",
+      "nama": "Lumo"
+    },
+    {
+      "kode": "94.02.15.2002",
+      "nama": "Kililumo"
+    },
+    {
+      "kode": "94.02.15.2003",
+      "nama": "Gilibe"
+    },
+    {
+      "kode": "94.02.15.2004",
+      "nama": "Ninggineri"
+    },
+    {
+      "kode": "94.02.15.2005",
+      "nama": "Wurabak"
+    },
+    {
+      "kode": "94.02.15.2006",
+      "nama": "Wuluma"
+    },
+    {
+      "kode": "94.02.15.2007",
+      "nama": "Tigir"
+    },
+    {
+      "kode": "94.02.15.2008",
+      "nama": "Gililome"
+    },
+    {
+      "kode": "94.02.15.2009",
+      "nama": "Wuramburu"
+    },
+    {
+      "kode": "94.02.16.2001",
+      "nama": "Tiolome"
+    },
+    {
+      "kode": "94.02.16.2002",
+      "nama": "Belabaga"
+    },
+    {
+      "kode": "94.02.16.2003",
+      "nama": "Mewut"
+    },
+    {
+      "kode": "94.02.16.2004",
+      "nama": "Maloinggen"
+    },
+    {
+      "kode": "94.02.16.2005",
+      "nama": "Wanume"
+    },
+    {
+      "kode": "94.02.17.2001",
+      "nama": "Dokome"
+    },
+    {
+      "kode": "94.02.17.2002",
+      "nama": "Purbalo"
+    },
+    {
+      "kode": "94.02.17.2003",
+      "nama": "Wurage"
+    },
+    {
+      "kode": "94.02.17.2004",
+      "nama": "Nowoneri"
+    },
+    {
+      "kode": "94.02.17.2005",
+      "nama": "Nowome"
+    },
+    {
+      "kode": "94.02.17.2006",
+      "nama": "Imulineri"
+    },
+    {
+      "kode": "94.02.17.2007",
+      "nama": "Molobak"
+    },
+    {
+      "kode": "94.02.17.2008",
+      "nama": "Kimibut"
+    },
+    {
+      "kode": "94.02.17.2009",
+      "nama": "Nunggwagi"
+    },
+    {
+      "kode": "94.02.18.2001",
+      "nama": "Kalome"
+    },
+    {
+      "kode": "94.02.18.2002",
+      "nama": "Agape"
+    },
+    {
+      "kode": "94.02.18.2003",
+      "nama": "Cilome"
+    },
+    {
+      "kode": "94.02.18.2004",
+      "nama": "Longgawi"
+    },
+    {
+      "kode": "94.02.18.2005",
+      "nama": "Wundini"
+    },
+    {
+      "kode": "94.02.18.2006",
+      "nama": "Berem"
+    },
+    {
+      "kode": "94.02.18.2007",
+      "nama": "Diraluk"
+    },
+    {
+      "kode": "94.02.18.2008",
+      "nama": "Yanenggawi"
+    },
+    {
+      "kode": "94.02.18.2009",
+      "nama": "Kayogebur"
+    },
+    {
+      "kode": "94.02.18.2010",
+      "nama": "Wurabume"
+    },
+    {
+      "kode": "94.02.18.2011",
+      "nama": "Binggelakme"
+    },
+    {
+      "kode": "94.02.18.2012",
+      "nama": "Torage"
+    },
+    {
+      "kode": "94.02.18.2013",
+      "nama": "Palumagi"
+    },
+    {
+      "kode": "94.02.18.2014",
+      "nama": "Jiramok"
+    },
+    {
+      "kode": "94.02.18.2015",
+      "nama": "Jinggwi"
+    },
+    {
+      "kode": "94.02.18.2016",
+      "nama": "Pilibur"
+    },
+    {
+      "kode": "94.02.19.2001",
+      "nama": "Wanuwi"
+    },
+    {
+      "kode": "94.02.19.2002",
+      "nama": "Nenegame"
+    },
+    {
+      "kode": "94.02.19.2003",
+      "nama": "Bime"
+    },
+    {
+      "kode": "94.02.19.2004",
+      "nama": "Anggege"
+    },
+    {
+      "kode": "94.02.19.2005",
+      "nama": "Pernaluk"
+    },
+    {
+      "kode": "94.02.19.2006",
+      "nama": "Kiburu"
+    },
+    {
+      "kode": "94.02.19.2007",
+      "nama": "Nuwi"
+    },
+    {
+      "kode": "94.02.19.2008",
+      "nama": "Ponggoname"
+    },
+    {
+      "kode": "94.02.19.2009",
+      "nama": "Gibume"
+    },
+    {
+      "kode": "94.02.19.2010",
+      "nama": "Naburage"
+    },
+    {
+      "kode": "94.02.19.2011",
+      "nama": "Yunggwi"
+    },
+    {
+      "kode": "94.02.19.2012",
+      "nama": "Anggagalo"
+    },
+    {
+      "kode": "94.02.19.2013",
+      "nama": "Anggalo"
+    },
+    {
+      "kode": "94.02.19.2014",
+      "nama": "Wiyage"
+    },
+    {
+      "kode": "94.02.19.2015",
+      "nama": "Piyabigimbut"
+    },
+    {
+      "kode": "94.02.19.2016",
+      "nama": "Bunaluk"
+    },
+    {
+      "kode": "94.02.19.2017",
+      "nama": "Gereja Lama"
+    },
+    {
+      "kode": "94.02.20.2001",
+      "nama": "Amberiambut"
+    },
+    {
+      "kode": "94.02.20.2002",
+      "nama": "Kobarak"
+    },
+    {
+      "kode": "94.02.20.2003",
+      "nama": "Wugiwagi"
+    },
+    {
+      "kode": "94.02.20.2004",
+      "nama": "Yagaluk"
+    },
+    {
+      "kode": "94.02.20.2005",
+      "nama": "Moulo"
+    },
+    {
+      "kode": "94.02.20.2006",
+      "nama": "Jimbanime"
+    },
+    {
+      "kode": "94.02.20.2007",
+      "nama": "Jiguluk"
+    },
+    {
+      "kode": "94.02.20.2008",
+      "nama": "Yamoneri"
+    },
+    {
+      "kode": "94.02.20.2009",
+      "nama": "Gumawi"
+    },
+    {
+      "kode": "94.02.20.2010",
+      "nama": "Digolome"
+    },
+    {
+      "kode": "94.02.20.2011",
+      "nama": "Bunume"
+    },
+    {
+      "kode": "94.02.20.2012",
+      "nama": "Ngginigum"
+    },
+    {
+      "kode": "94.02.20.2013",
+      "nama": "Jimbeneri"
+    },
+    {
+      "kode": "94.02.20.2014",
+      "nama": "Jigelo"
+    },
+    {
+      "kode": "94.02.20.2015",
+      "nama": "Piyapigi"
+    },
+    {
+      "kode": "94.02.20.2016",
+      "nama": "Jibonok"
+    },
+    {
+      "kode": "94.02.21.2001",
+      "nama": "Anggutare"
+    },
+    {
+      "kode": "94.02.21.2002",
+      "nama": "Agopaga"
+    },
+    {
+      "kode": "94.02.21.2003",
+      "nama": "Lerawera"
+    },
+    {
+      "kode": "94.02.21.2004",
+      "nama": "Nakongwe"
+    },
+    {
+      "kode": "94.02.21.2005",
+      "nama": "Ginilome"
+    },
+    {
+      "kode": "94.02.21.2006",
+      "nama": "Yalibate"
+    },
+    {
+      "kode": "94.02.21.2007",
+      "nama": "Wurunikime"
+    },
+    {
+      "kode": "94.02.21.2008",
+      "nama": "Jimbinggame"
+    },
+    {
+      "kode": "94.02.21.2009",
+      "nama": "Oriluk"
+    },
+    {
+      "kode": "94.02.21.2010",
+      "nama": "Pagarugom"
+    },
+    {
+      "kode": "94.02.21.2011",
+      "nama": "Towoluk"
+    },
+    {
+      "kode": "94.02.21.2012",
+      "nama": "Tenolok"
+    },
+    {
+      "kode": "94.02.21.2013",
+      "nama": "Jiogobak"
+    },
+    {
+      "kode": "94.02.21.2014",
+      "nama": "Tirigoi"
+    },
+    {
+      "kode": "94.02.21.2015",
+      "nama": "Mondogoneri"
+    },
+    {
+      "kode": "94.02.21.2016",
+      "nama": "Tenomanggen"
+    },
+    {
+      "kode": "94.02.21.2017",
+      "nama": "Andiron"
+    },
+    {
+      "kode": "94.02.21.2018",
+      "nama": "Ambitmbit"
+    },
+    {
+      "kode": "94.02.21.2019",
+      "nama": "Aulakme"
+    },
+    {
+      "kode": "94.02.22.2001",
+      "nama": "Nioga"
+    },
+    {
+      "kode": "94.02.22.2002",
+      "nama": "Yonggi"
+    },
+    {
+      "kode": "94.02.22.2003",
+      "nama": "Wonggi"
+    },
+    {
+      "kode": "94.02.22.2004",
+      "nama": "Wambagalo"
+    },
+    {
+      "kode": "94.02.22.2005",
+      "nama": "Jigonikme"
+    },
+    {
+      "kode": "94.02.22.2006",
+      "nama": "Muruwi"
+    },
+    {
+      "kode": "94.02.22.2007",
+      "nama": "Wutime"
+    },
+    {
+      "kode": "94.02.22.2008",
+      "nama": "Gibaga"
+    },
+    {
+      "kode": "94.02.22.2009",
+      "nama": "Papak"
+    },
+    {
+      "kode": "94.02.22.2010",
+      "nama": "Wanduri"
+    },
+    {
+      "kode": "94.02.22.2011",
+      "nama": "Walom"
+    },
+    {
+      "kode": "94.02.23.2001",
+      "nama": "Gubume"
+    },
+    {
+      "kode": "94.02.23.2002",
+      "nama": "Milineri"
+    },
+    {
+      "kode": "94.02.23.2003",
+      "nama": "Melela"
+    },
+    {
+      "kode": "94.02.23.2004",
+      "nama": "Kenendaga"
+    },
+    {
+      "kode": "94.02.23.2005",
+      "nama": "Apelome"
+    },
+    {
+      "kode": "94.02.23.2006",
+      "nama": "Kumigi"
+    },
+    {
+      "kode": "94.02.23.2007",
+      "nama": "Noba-Noba"
+    },
+    {
+      "kode": "94.02.23.2008",
+      "nama": "Nogi"
+    },
+    {
+      "kode": "94.02.23.2009",
+      "nama": "Gubuneri"
+    },
+    {
+      "kode": "94.02.23.2010",
+      "nama": "Liguni"
+    },
+    {
+      "kode": "94.02.23.2011",
+      "nama": "Mondu"
+    },
+    {
+      "kode": "94.02.23.2012",
+      "nama": "Jinggi"
+    },
+    {
+      "kode": "94.02.23.2013",
+      "nama": "Ginilume"
+    },
+    {
+      "kode": "94.02.23.2014",
+      "nama": "Wunggani"
+    },
+    {
+      "kode": "94.02.23.2015",
+      "nama": "Menggegenikime"
+    },
+    {
+      "kode": "94.02.23.2016",
+      "nama": "Tinggirege"
+    },
+    {
+      "kode": "94.02.23.2017",
+      "nama": "Timoramo"
+    },
+    {
+      "kode": "94.02.24.2001",
+      "nama": "Guna"
+    },
+    {
+      "kode": "94.02.24.2002",
+      "nama": "Mandura"
+    },
+    {
+      "kode": "94.02.24.2003",
+      "nama": "Lugubago"
+    },
+    {
+      "kode": "94.02.24.2004",
+      "nama": "Andugir"
+    },
+    {
+      "kode": "94.02.24.2005",
+      "nama": "Muara Miguni"
+    },
+    {
+      "kode": "94.02.24.2006",
+      "nama": "Abili"
+    },
+    {
+      "kode": "94.02.24.2007",
+      "nama": "Pereya"
+    },
+    {
+      "kode": "94.02.24.2008",
+      "nama": "Ginimanggen"
+    },
+    {
+      "kode": "94.02.24.2009",
+      "nama": "Laworege"
+    },
+    {
+      "kode": "94.02.24.2010",
+      "nama": "Wumbiri"
+    },
+    {
+      "kode": "94.02.25.2001",
+      "nama": "Dagai"
+    },
+    {
+      "kode": "94.02.25.2002",
+      "nama": "Dagai 2"
+    },
+    {
+      "kode": "94.02.25.2003",
+      "nama": "Deide"
+    },
+    {
+      "kode": "94.02.25.2004",
+      "nama": "Faride"
+    },
+    {
+      "kode": "94.02.25.2005",
+      "nama": "Soi"
+    },
+    {
+      "kode": "94.02.25.2006",
+      "nama": "Mbomban"
+    },
+    {
+      "kode": "94.02.25.2007",
+      "nama": "Yeihneri"
+    },
+    {
+      "kode": "94.02.25.2008",
+      "nama": "Mandara Lani"
+    },
+    {
+      "kode": "94.02.25.2009",
+      "nama": "Debite"
+    },
+    {
+      "kode": "94.02.25.2010",
+      "nama": "Gueri"
+    },
+    {
+      "kode": "94.02.26.2001",
+      "nama": "Kiyage"
+    },
+    {
+      "kode": "94.02.26.2002",
+      "nama": "Wanggiba"
+    },
+    {
+      "kode": "94.02.26.2003",
+      "nama": "Amuringgik"
+    },
+    {
+      "kode": "94.02.26.2004",
+      "nama": "Tenggabanggwi"
+    },
+    {
+      "kode": "94.02.26.2005",
+      "nama": "Tumbiwolu"
+    },
+    {
+      "kode": "94.02.26.2006",
+      "nama": "Kelandu"
+    },
+    {
+      "kode": "94.02.26.2007",
+      "nama": "Ambo"
+    },
+    {
+      "kode": "94.02.26.2008",
+      "nama": "Atoli"
+    },
+    {
+      "kode": "94.03.01.1001",
+      "nama": "Enarotali"
+    },
+    {
+      "kode": "94.03.01.1006",
+      "nama": "Timida"
+    },
+    {
+      "kode": "94.03.01.2002",
+      "nama": "Madi"
+    },
+    {
+      "kode": "94.03.01.2003",
+      "nama": "Aikai"
+    },
+    {
+      "kode": "94.03.01.2004",
+      "nama": "Ipakiye"
+    },
+    {
+      "kode": "94.03.01.2005",
+      "nama": "Papato"
+    },
+    {
+      "kode": "94.03.01.2007",
+      "nama": "Kopo"
+    },
+    {
+      "kode": "94.03.01.2008",
+      "nama": "Wage"
+    },
+    {
+      "kode": "94.03.01.2009",
+      "nama": "Kagupago"
+    },
+    {
+      "kode": "94.03.01.2010",
+      "nama": "Oyaigo"
+    },
+    {
+      "kode": "94.03.01.2011",
+      "nama": "Kogekotu"
+    },
+    {
+      "kode": "94.03.01.2012",
+      "nama": "Awabutu"
+    },
+    {
+      "kode": "94.03.01.2013",
+      "nama": "Geko"
+    },
+    {
+      "kode": "94.03.01.2014",
+      "nama": "Mugimeketago"
+    },
+    {
+      "kode": "94.03.01.2015",
+      "nama": "Tuamakida"
+    },
+    {
+      "kode": "94.03.01.2016",
+      "nama": "Geibu"
+    },
+    {
+      "kode": "94.03.01.2017",
+      "nama": "Pudotadi"
+    },
+    {
+      "kode": "94.03.01.2018",
+      "nama": "Kogekotu"
+    },
+    {
+      "kode": "94.03.01.2019",
+      "nama": "Iyaitaka"
+    },
+    {
+      "kode": "94.03.01.2020",
+      "nama": "Ugibutu"
+    },
+    {
+      "kode": "94.03.01.2021",
+      "nama": "Wouyebutu"
+    },
+    {
+      "kode": "94.03.01.2022",
+      "nama": "Amougibutu"
+    },
+    {
+      "kode": "94.03.01.2023",
+      "nama": "Dapaiba"
+    },
+    {
+      "kode": "94.03.01.2024",
+      "nama": "Yukekebo"
+    },
+    {
+      "kode": "94.03.01.2025",
+      "nama": "Agumaida"
+    },
+    {
+      "kode": "94.03.01.2026",
+      "nama": "Yagiyo Butu"
+    },
+    {
+      "kode": "94.03.02.1001",
+      "nama": "Obano"
+    },
+    {
+      "kode": "94.03.02.2002",
+      "nama": "Kegouda"
+    },
+    {
+      "kode": "94.03.02.2003",
+      "nama": "Totiyo"
+    },
+    {
+      "kode": "94.03.02.2004",
+      "nama": "Beko"
+    },
+    {
+      "kode": "94.03.02.2005",
+      "nama": "Tipakotu"
+    },
+    {
+      "kode": "94.03.02.2006",
+      "nama": "Epo Obano"
+    },
+    {
+      "kode": "94.03.02.2007",
+      "nama": "Towauwo"
+    },
+    {
+      "kode": "94.03.02.2008",
+      "nama": "Wiyogei"
+    },
+    {
+      "kode": "94.03.02.2009",
+      "nama": "Ekinauwo"
+    },
+    {
+      "kode": "94.03.02.2010",
+      "nama": "Kigodide"
+    },
+    {
+      "kode": "94.03.02.2011",
+      "nama": "Putakogopa"
+    },
+    {
+      "kode": "94.03.02.2012",
+      "nama": "Waukotopa"
+    },
+    {
+      "kode": "94.03.02.2013",
+      "nama": "Digiugii"
+    },
+    {
+      "kode": "94.03.03.2001",
+      "nama": "Toyaimoti"
+    },
+    {
+      "kode": "94.03.03.2002",
+      "nama": "Agapo"
+    },
+    {
+      "kode": "94.03.03.2003",
+      "nama": "Abatadi"
+    },
+    {
+      "kode": "94.03.03.2005",
+      "nama": "Baguwo"
+    },
+    {
+      "kode": "94.03.03.2006",
+      "nama": "Makidini"
+    },
+    {
+      "kode": "94.03.03.2007",
+      "nama": "Tagiya"
+    },
+    {
+      "kode": "94.03.03.2008",
+      "nama": "Emai"
+    },
+    {
+      "kode": "94.03.03.2009",
+      "nama": "Dinubutu"
+    },
+    {
+      "kode": "94.03.03.2013",
+      "nama": "Duwadide"
+    },
+    {
+      "kode": "94.03.04.2001",
+      "nama": "Bogobaida"
+    },
+    {
+      "kode": "94.03.04.2002",
+      "nama": "Nawipauwo"
+    },
+    {
+      "kode": "94.03.04.2003",
+      "nama": "Madou"
+    },
+    {
+      "kode": "94.03.04.2004",
+      "nama": "Jibudide II"
+    },
+    {
+      "kode": "94.03.04.2005",
+      "nama": "Yumauwo"
+    },
+    {
+      "kode": "94.03.04.2006",
+      "nama": "Kagoudide"
+    },
+    {
+      "kode": "94.03.04.2007",
+      "nama": "Eyapouda"
+    },
+    {
+      "kode": "94.03.04.2008",
+      "nama": "Miyokepi"
+    },
+    {
+      "kode": "94.03.04.2009",
+      "nama": "Obaya Dimi"
+    },
+    {
+      "kode": "94.03.05.1001",
+      "nama": "Bibida"
+    },
+    {
+      "kode": "94.03.05.2002",
+      "nama": "Ugidimi"
+    },
+    {
+      "kode": "94.03.05.2003",
+      "nama": "Odiyai"
+    },
+    {
+      "kode": "94.03.05.2004",
+      "nama": "Tuwaktu"
+    },
+    {
+      "kode": "94.03.05.2005",
+      "nama": "Kugaisiga"
+    },
+    {
+      "kode": "94.03.05.2006",
+      "nama": "Kolaitaga"
+    },
+    {
+      "kode": "94.03.05.2007",
+      "nama": "Dama-dama"
+    },
+    {
+      "kode": "94.03.06.2001",
+      "nama": "Duma"
+    },
+    {
+      "kode": "94.03.06.2002",
+      "nama": "Bomosiga"
+    },
+    {
+      "kode": "94.03.06.2003",
+      "nama": "Japesigaiwaka"
+    },
+    {
+      "kode": "94.03.06.2004",
+      "nama": "Waitapa"
+    },
+    {
+      "kode": "94.03.06.2005",
+      "nama": "Duma II"
+    },
+    {
+      "kode": "94.03.07.2001",
+      "nama": "Todia"
+    },
+    {
+      "kode": "94.03.07.2002",
+      "nama": "Dadou"
+    },
+    {
+      "kode": "94.03.07.2003",
+      "nama": "Bua"
+    },
+    {
+      "kode": "94.03.07.2004",
+      "nama": "Kepi"
+    },
+    {
+      "kode": "94.03.07.2005",
+      "nama": "Wageme"
+    },
+    {
+      "kode": "94.03.07.2006",
+      "nama": "Bugubutu"
+    },
+    {
+      "kode": "94.03.07.2007",
+      "nama": "Dogomouto"
+    },
+    {
+      "kode": "94.03.07.2008",
+      "nama": "Giwo"
+    },
+    {
+      "kode": "94.03.07.2009",
+      "nama": "Nomokepota"
+    },
+    {
+      "kode": "94.03.07.2010",
+      "nama": "Eguai"
+    },
+    {
+      "kode": "94.03.07.2011",
+      "nama": "Degatadi"
+    },
+    {
+      "kode": "94.03.07.2012",
+      "nama": "Uwoyupi"
+    },
+    {
+      "kode": "94.03.07.2013",
+      "nama": "Wegekebo"
+    },
+    {
+      "kode": "94.03.07.2014",
+      "nama": "Yinotadi"
+    },
+    {
+      "kode": "94.03.08.2001",
+      "nama": "Kebo II"
+    },
+    {
+      "kode": "94.03.08.2002",
+      "nama": "Togowa"
+    },
+    {
+      "kode": "94.03.08.2003",
+      "nama": "Ibumaida"
+    },
+    {
+      "kode": "94.03.08.2004",
+      "nama": "Kagupagu"
+    },
+    {
+      "kode": "94.03.08.2005",
+      "nama": "Ayaigo"
+    },
+    {
+      "kode": "94.03.08.2006",
+      "nama": "Geibu"
+    },
+    {
+      "kode": "94.03.08.2007",
+      "nama": "Yokadagi"
+    },
+    {
+      "kode": "94.03.08.2008",
+      "nama": "Bunaida"
+    },
+    {
+      "kode": "94.03.08.2009",
+      "nama": "Kedege"
+    },
+    {
+      "kode": "94.03.08.2010",
+      "nama": "Uwaiye"
+    },
+    {
+      "kode": "94.03.08.2011",
+      "nama": "Dawawa"
+    },
+    {
+      "kode": "94.03.08.2012",
+      "nama": "Mugime Ketago"
+    },
+    {
+      "kode": "94.03.08.2013",
+      "nama": "Tuwamakida"
+    },
+    {
+      "kode": "94.03.09.2001",
+      "nama": "Wotai"
+    },
+    {
+      "kode": "94.03.09.2002",
+      "nama": "Keniapa"
+    },
+    {
+      "kode": "94.03.09.2003",
+      "nama": "Memiyaibutu"
+    },
+    {
+      "kode": "94.03.09.2004",
+      "nama": "Dimiya"
+    },
+    {
+      "kode": "94.03.09.2005",
+      "nama": "Udaugi"
+    },
+    {
+      "kode": "94.03.10.2001",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "94.03.10.2002",
+      "nama": "Geida"
+    },
+    {
+      "kode": "94.03.10.2003",
+      "nama": "Widimeida"
+    },
+    {
+      "kode": "94.03.10.2004",
+      "nama": "Makidimi"
+    },
+    {
+      "kode": "94.03.10.2005",
+      "nama": "Iteuwo"
+    },
+    {
+      "kode": "94.03.10.2006",
+      "nama": "Ogeida"
+    },
+    {
+      "kode": "94.03.10.2007",
+      "nama": "Teguogi Pugaida"
+    },
+    {
+      "kode": "94.03.10.2008",
+      "nama": "Dabamomaida"
+    },
+    {
+      "kode": "94.03.10.2009",
+      "nama": "Baguwo"
+    },
+    {
+      "kode": "94.03.10.2010",
+      "nama": "Keneugi"
+    },
+    {
+      "kode": "94.03.10.2011",
+      "nama": "Debamomaida"
+    },
+    {
+      "kode": "94.03.10.2012",
+      "nama": "Tegougi Pugaida"
+    },
+    {
+      "kode": "94.03.11.1006",
+      "nama": "Badawo"
+    },
+    {
+      "kode": "94.03.11.2001",
+      "nama": "Uwamani"
+    },
+    {
+      "kode": "94.03.11.2002",
+      "nama": "Muyadebe"
+    },
+    {
+      "kode": "94.03.11.2003",
+      "nama": "Woubutu"
+    },
+    {
+      "kode": "94.03.11.2004",
+      "nama": "Kugitadi"
+    },
+    {
+      "kode": "94.03.11.2005",
+      "nama": "Kobouyagapa"
+    },
+    {
+      "kode": "94.03.11.2007",
+      "nama": "Geko"
+    },
+    {
+      "kode": "94.03.11.2008",
+      "nama": "Kinou"
+    },
+    {
+      "kode": "94.03.11.2009",
+      "nama": "Toko"
+    },
+    {
+      "kode": "94.03.11.2010",
+      "nama": "Yagiyo Butu"
+    },
+    {
+      "kode": "94.03.11.2011",
+      "nama": "Obaidagi"
+    },
+    {
+      "kode": "94.03.12.2001",
+      "nama": "Dei"
+    },
+    {
+      "kode": "94.03.12.2002",
+      "nama": "Obaiyoweta"
+    },
+    {
+      "kode": "94.03.12.2003",
+      "nama": "Bubugiwo"
+    },
+    {
+      "kode": "94.03.12.2004",
+      "nama": "Yimouto"
+    },
+    {
+      "kode": "94.03.12.2005",
+      "nama": "Tamugauwo"
+    },
+    {
+      "kode": "94.03.12.2006",
+      "nama": "Dagouto"
+    },
+    {
+      "kode": "94.03.12.2007",
+      "nama": "Kopabutu"
+    },
+    {
+      "kode": "94.03.12.2008",
+      "nama": "Boutai"
+    },
+    {
+      "kode": "94.03.12.2009",
+      "nama": "Buka Duwata"
+    },
+    {
+      "kode": "94.03.13.2001",
+      "nama": "Pugo"
+    },
+    {
+      "kode": "94.03.13.2002",
+      "nama": "Waidide"
+    },
+    {
+      "kode": "94.03.13.2003",
+      "nama": "Kopaidagi"
+    },
+    {
+      "kode": "94.03.13.2004",
+      "nama": "Uwibutu"
+    },
+    {
+      "kode": "94.03.13.2005",
+      "nama": "Tipago"
+    },
+    {
+      "kode": "94.03.13.2006",
+      "nama": "Boba"
+    },
+    {
+      "kode": "94.03.13.2007",
+      "nama": "Iyaidagi"
+    },
+    {
+      "kode": "94.03.13.2008",
+      "nama": "Iyaitadi"
+    },
+    {
+      "kode": "94.03.13.2009",
+      "nama": "Waiepo"
+    },
+    {
+      "kode": "94.03.14.2001",
+      "nama": "Muyetadi"
+    },
+    {
+      "kode": "94.03.14.2002",
+      "nama": "Mogeya"
+    },
+    {
+      "kode": "94.03.14.2003",
+      "nama": "Epabutu"
+    },
+    {
+      "kode": "94.03.14.2004",
+      "nama": "Tiga Damuto"
+    },
+    {
+      "kode": "94.03.14.2005",
+      "nama": "Bebiyai"
+    },
+    {
+      "kode": "94.03.14.2006",
+      "nama": "Idaiyo"
+    },
+    {
+      "kode": "94.03.14.2007",
+      "nama": "Tinou"
+    },
+    {
+      "kode": "94.03.14.2008",
+      "nama": "Damuto"
+    },
+    {
+      "kode": "94.03.14.2009",
+      "nama": "Obaiyodimi"
+    },
+    {
+      "kode": "94.03.14.2010",
+      "nama": "Amopa"
+    },
+    {
+      "kode": "94.03.15.2001",
+      "nama": "Okaitadi"
+    },
+    {
+      "kode": "94.03.15.2002",
+      "nama": "Kito"
+    },
+    {
+      "kode": "94.03.15.2003",
+      "nama": "Geiketago"
+    },
+    {
+      "kode": "94.03.15.2004",
+      "nama": "Kadiyai"
+    },
+    {
+      "kode": "94.03.15.2005",
+      "nama": "Uwodege"
+    },
+    {
+      "kode": "94.03.15.2006",
+      "nama": "Digiyo Tuwataida"
+    },
+    {
+      "kode": "94.03.15.2007",
+      "nama": "Itoka"
+    },
+    {
+      "kode": "94.03.16.2001",
+      "nama": "Ukauwo"
+    },
+    {
+      "kode": "94.03.16.2002",
+      "nama": "Waipa"
+    },
+    {
+      "kode": "94.03.16.2003",
+      "nama": "Ukago"
+    },
+    {
+      "kode": "94.03.16.2004",
+      "nama": "Totiyo"
+    },
+    {
+      "kode": "94.03.16.2005",
+      "nama": "Biyadide"
+    },
+    {
+      "kode": "94.03.16.2006",
+      "nama": "Pekege"
+    },
+    {
+      "kode": "94.03.17.2001",
+      "nama": "Panibagata"
+    },
+    {
+      "kode": "94.03.17.2002",
+      "nama": "Pugaida"
+    },
+    {
+      "kode": "94.03.17.2003",
+      "nama": "Aweubutu"
+    },
+    {
+      "kode": "94.03.17.2004",
+      "nama": "Ipuwa"
+    },
+    {
+      "kode": "94.03.17.2005",
+      "nama": "Munaiyepa"
+    },
+    {
+      "kode": "94.03.17.2006",
+      "nama": "Kebo I"
+    },
+    {
+      "kode": "94.03.17.2007",
+      "nama": "Payogei"
+    },
+    {
+      "kode": "94.03.17.2008",
+      "nama": "Detauwo"
+    },
+    {
+      "kode": "94.03.17.2009",
+      "nama": "Yaibu"
+    },
+    {
+      "kode": "94.03.17.2010",
+      "nama": "Woyouto"
+    },
+    {
+      "kode": "94.03.18.2001",
+      "nama": "Youtadi"
+    },
+    {
+      "kode": "94.03.18.2002",
+      "nama": "Uwagi"
+    },
+    {
+      "kode": "94.03.18.2003",
+      "nama": "Ipouwa"
+    },
+    {
+      "kode": "94.03.18.2004",
+      "nama": "Munaiyepa"
+    },
+    {
+      "kode": "94.03.18.2005",
+      "nama": "Dokoneida"
+    },
+    {
+      "kode": "94.03.18.2006",
+      "nama": "Namutadi"
+    },
+    {
+      "kode": "94.03.19.2001",
+      "nama": "Nomouwodide"
+    },
+    {
+      "kode": "94.03.19.2002",
+      "nama": "Pikokebo"
+    },
+    {
+      "kode": "94.03.19.2003",
+      "nama": "Baya Biru"
+    },
+    {
+      "kode": "94.03.19.2004",
+      "nama": "Jigitopa Timur"
+    },
+    {
+      "kode": "94.03.19.2005",
+      "nama": "Maatadi"
+    },
+    {
+      "kode": "94.03.19.2006",
+      "nama": "Pupekebo"
+    },
+    {
+      "kode": "94.03.20.2001",
+      "nama": "Uwebutu"
+    },
+    {
+      "kode": "94.03.20.2002",
+      "nama": "Epouto"
+    },
+    {
+      "kode": "94.03.20.2003",
+      "nama": "Tugumo"
+    },
+    {
+      "kode": "94.03.20.2004",
+      "nama": "Tugu Kagomoma"
+    },
+    {
+      "kode": "94.03.20.2005",
+      "nama": "Deiyamo"
+    },
+    {
+      "kode": "94.03.20.2006",
+      "nama": "Miyamo"
+    },
+    {
+      "kode": "94.03.21.2001",
+      "nama": "Dogomo"
+    },
+    {
+      "kode": "94.03.21.2002",
+      "nama": "Bomong Bugopa"
+    },
+    {
+      "kode": "94.03.21.2003",
+      "nama": "Dangipa"
+    },
+    {
+      "kode": "94.03.21.2004",
+      "nama": "Ondegapa"
+    },
+    {
+      "kode": "94.03.21.2005",
+      "nama": "Sogomo"
+    },
+    {
+      "kode": "94.03.22.2001",
+      "nama": "Deta"
+    },
+    {
+      "kode": "94.03.22.2002",
+      "nama": "Tuguwai"
+    },
+    {
+      "kode": "94.03.22.2003",
+      "nama": "Tuguwai Moma"
+    },
+    {
+      "kode": "94.03.22.2004",
+      "nama": "Bumaida"
+    },
+    {
+      "kode": "94.03.22.2005",
+      "nama": "Debaiye"
+    },
+    {
+      "kode": "94.03.22.2007",
+      "nama": "Komopa"
+    },
+    {
+      "kode": "94.03.23.2001",
+      "nama": "Obaipugaida"
+    },
+    {
+      "kode": "94.03.23.2002",
+      "nama": "Eyagitaida"
+    },
+    {
+      "kode": "94.03.23.2003",
+      "nama": "Momageida"
+    },
+    {
+      "kode": "94.03.23.2004",
+      "nama": "Ekauwiya"
+    },
+    {
+      "kode": "94.03.23.2005",
+      "nama": "DebaKebouda"
+    },
+    {
+      "kode": "94.03.23.2006",
+      "nama": "Kaidoutadi"
+    },
+    {
+      "kode": "94.03.23.2007",
+      "nama": "Pogeidimi"
+    },
+    {
+      "kode": "94.03.23.2008",
+      "nama": "Okonobaida"
+    },
+    {
+      "kode": "94.03.23.2009",
+      "nama": "Gakokotu"
+    },
+    {
+      "kode": "94.03.23.2010",
+      "nama": "Kegama"
+    },
+    {
+      "kode": "94.03.24.2001",
+      "nama": "Yabomaida"
+    },
+    {
+      "kode": "94.03.24.2002",
+      "nama": "Akoubaida"
+    },
+    {
+      "kode": "94.03.24.2003",
+      "nama": "Dauwagu"
+    },
+    {
+      "kode": "94.03.24.2004",
+      "nama": "Ganeyetaka"
+    },
+    {
+      "kode": "94.03.24.2005",
+      "nama": "Yabomaida II"
+    },
+    {
+      "kode": "94.03.24.2006",
+      "nama": "Bodatadi"
+    },
+    {
+      "kode": "94.03.24.2007",
+      "nama": "Ibouwagu"
+    },
+    {
+      "kode": "94.04.01.1001",
+      "nama": "Koperapoka"
+    },
+    {
+      "kode": "94.04.01.1002",
+      "nama": "Kwamki"
+    },
+    {
+      "kode": "94.04.01.1003",
+      "nama": "Timika Jaya"
+    },
+    {
+      "kode": "94.04.01.1007",
+      "nama": "Sempan"
+    },
+    {
+      "kode": "94.04.01.1008",
+      "nama": "Pasar Sentral"
+    },
+    {
+      "kode": "94.04.01.1009",
+      "nama": "Wanagon"
+    },
+    {
+      "kode": "94.04.01.1010",
+      "nama": "Kebun Sirih"
+    },
+    {
+      "kode": "94.04.01.1011",
+      "nama": "Otomona"
+    },
+    {
+      "kode": "94.04.01.1012",
+      "nama": "Perintis"
+    },
+    {
+      "kode": "94.04.01.1013",
+      "nama": "Dingo Narama"
+    },
+    {
+      "kode": "94.04.01.1014",
+      "nama": "Timika Indah"
+    },
+    {
+      "kode": "94.04.01.2004",
+      "nama": "Nayaro"
+    },
+    {
+      "kode": "94.04.01.2005",
+      "nama": "Minabua"
+    },
+    {
+      "kode": "94.04.01.2006",
+      "nama": "Hangaitji"
+    },
+    {
+      "kode": "94.04.02.2001",
+      "nama": "Kiliarma"
+    },
+    {
+      "kode": "94.04.02.2002",
+      "nama": "Amungun"
+    },
+    {
+      "kode": "94.04.02.2003",
+      "nama": "Aramsolki"
+    },
+    {
+      "kode": "94.04.02.2004",
+      "nama": "Fakafuku"
+    },
+    {
+      "kode": "94.04.02.2005",
+      "nama": "Masasimamo"
+    },
+    {
+      "kode": "94.04.02.2006",
+      "nama": "Emogoma"
+    },
+    {
+      "kode": "94.04.02.2007",
+      "nama": "Emkoma Halama"
+    },
+    {
+      "kode": "94.04.02.2008",
+      "nama": "Hinat Untung"
+    },
+    {
+      "kode": "94.04.03.1001",
+      "nama": "Wania"
+    },
+    {
+      "kode": "94.04.03.2002",
+      "nama": "Kaugapa"
+    },
+    {
+      "kode": "94.04.03.2003",
+      "nama": "Poumako"
+    },
+    {
+      "kode": "94.04.03.2004",
+      "nama": "Tipuka"
+    },
+    {
+      "kode": "94.04.03.2005",
+      "nama": "Muare"
+    },
+    {
+      "kode": "94.04.03.2006",
+      "nama": "Hiripau"
+    },
+    {
+      "kode": "94.04.04.2001",
+      "nama": "Kokonao"
+    },
+    {
+      "kode": "94.04.04.2002",
+      "nama": "Migiwia"
+    },
+    {
+      "kode": "94.04.04.2003",
+      "nama": "Kiura"
+    },
+    {
+      "kode": "94.04.04.2004",
+      "nama": "Mimika"
+    },
+    {
+      "kode": "94.04.04.2005",
+      "nama": "Aparuka"
+    },
+    {
+      "kode": "94.04.04.2006",
+      "nama": "Atapo"
+    },
+    {
+      "kode": "94.04.04.2007",
+      "nama": "Apuri"
+    },
+    {
+      "kode": "94.04.05.2001",
+      "nama": "Sempan Timur"
+    },
+    {
+      "kode": "94.04.05.2002",
+      "nama": "Wenin"
+    },
+    {
+      "kode": "94.04.05.2003",
+      "nama": "Noema"
+    },
+    {
+      "kode": "94.04.05.2004",
+      "nama": "Wapu"
+    },
+    {
+      "kode": "94.04.05.2005",
+      "nama": "Sumapro"
+    },
+    {
+      "kode": "94.04.05.2006",
+      "nama": "Wacakam"
+    },
+    {
+      "kode": "94.04.05.2007",
+      "nama": "Waituku"
+    },
+    {
+      "kode": "94.04.05.2008",
+      "nama": "Bulumen"
+    },
+    {
+      "kode": "94.04.05.2009",
+      "nama": "Kanmapiri"
+    },
+    {
+      "kode": "94.04.05.2010",
+      "nama": "Jaitak"
+    },
+    {
+      "kode": "94.04.06.2001",
+      "nama": "Jila"
+    },
+    {
+      "kode": "94.04.06.2002",
+      "nama": "Diloa"
+    },
+    {
+      "kode": "94.04.06.2003",
+      "nama": "Noemun"
+    },
+    {
+      "kode": "94.04.06.2004",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "94.04.06.2005",
+      "nama": "Jengkon"
+    },
+    {
+      "kode": "94.04.06.2006",
+      "nama": "Pilik Ogom"
+    },
+    {
+      "kode": "94.04.06.2007",
+      "nama": "Bunaraugin"
+    },
+    {
+      "kode": "94.04.06.2008",
+      "nama": "Umpliga"
+    },
+    {
+      "kode": "94.04.06.2009",
+      "nama": "Amua Ogom"
+    },
+    {
+      "kode": "94.04.06.2010",
+      "nama": "Pusuwe"
+    },
+    {
+      "kode": "94.04.06.2011",
+      "nama": "Wandud"
+    },
+    {
+      "kode": "94.04.06.2012",
+      "nama": "Diloa Dua"
+    },
+    {
+      "kode": "94.04.07.2001",
+      "nama": "Ayuka"
+    },
+    {
+      "kode": "94.04.07.2002",
+      "nama": "Amamapare"
+    },
+    {
+      "kode": "94.04.07.2003",
+      "nama": "Ohotya"
+    },
+    {
+      "kode": "94.04.07.2004",
+      "nama": "Omawita"
+    },
+    {
+      "kode": "94.04.07.2005",
+      "nama": "Fanamo"
+    },
+    {
+      "kode": "94.04.08.2001",
+      "nama": "Atuka"
+    },
+    {
+      "kode": "94.04.08.2002",
+      "nama": "Tiwaka"
+    },
+    {
+      "kode": "94.04.08.2003",
+      "nama": "Keakwa"
+    },
+    {
+      "kode": "94.04.08.2004",
+      "nama": "Aikawapuka"
+    },
+    {
+      "kode": "94.04.08.2005",
+      "nama": "Kamoro"
+    },
+    {
+      "kode": "94.04.09.1001",
+      "nama": "Kuala Kencana"
+    },
+    {
+      "kode": "94.04.09.1002",
+      "nama": "Karang Senang"
+    },
+    {
+      "kode": "94.04.09.2003",
+      "nama": "Utikini Baru"
+    },
+    {
+      "kode": "94.04.09.2004",
+      "nama": "Bhintuka"
+    },
+    {
+      "kode": "94.04.09.2005",
+      "nama": "Tioka Kencana"
+    },
+    {
+      "kode": "94.04.09.2006",
+      "nama": "Mimika Gunung"
+    },
+    {
+      "kode": "94.04.09.2007",
+      "nama": "Karya Kencana"
+    },
+    {
+      "kode": "94.04.09.2008",
+      "nama": "Utikini Dua"
+    },
+    {
+      "kode": "94.04.09.2009",
+      "nama": "Utikini Tiga"
+    },
+    {
+      "kode": "94.04.09.2010",
+      "nama": "Jimbi"
+    },
+    {
+      "kode": "94.04.10.1001",
+      "nama": "Tembagapura"
+    },
+    {
+      "kode": "94.04.10.2002",
+      "nama": "Waa"
+    },
+    {
+      "kode": "94.04.10.2003",
+      "nama": "Arwanop"
+    },
+    {
+      "kode": "94.04.10.2004",
+      "nama": "T'Singa"
+    },
+    {
+      "kode": "94.04.10.2005",
+      "nama": "Jagamin"
+    },
+    {
+      "kode": "94.04.10.2006",
+      "nama": "Banigogom"
+    },
+    {
+      "kode": "94.04.10.2007",
+      "nama": "Opitawak"
+    },
+    {
+      "kode": "94.04.10.2008",
+      "nama": "Doliningokngin"
+    },
+    {
+      "kode": "94.04.10.2009",
+      "nama": "Banti Dua"
+    },
+    {
+      "kode": "94.04.10.2010",
+      "nama": "Aingogin"
+    },
+    {
+      "kode": "94.04.10.2011",
+      "nama": "Baluni"
+    },
+    {
+      "kode": "94.04.10.2012",
+      "nama": "Noselanop"
+    },
+    {
+      "kode": "94.04.10.2013",
+      "nama": "Meningimponogama"
+    },
+    {
+      "kode": "94.04.10.2014",
+      "nama": "Jongkogama"
+    },
+    {
+      "kode": "94.04.11.2001",
+      "nama": "Potowai Buru"
+    },
+    {
+      "kode": "94.04.11.2002",
+      "nama": "Yapkoka"
+    },
+    {
+      "kode": "94.04.11.2003",
+      "nama": "Aindua"
+    },
+    {
+      "kode": "94.04.11.2004",
+      "nama": "Tapomai"
+    },
+    {
+      "kode": "94.04.11.2005",
+      "nama": "Umar"
+    },
+    {
+      "kode": "94.04.12.2001",
+      "nama": "Kapiraya"
+    },
+    {
+      "kode": "94.04.12.2002",
+      "nama": "Uta"
+    },
+    {
+      "kode": "94.04.12.2003",
+      "nama": "Mupuruka"
+    },
+    {
+      "kode": "94.04.12.2004",
+      "nama": "Wumuka"
+    },
+    {
+      "kode": "94.04.12.2005",
+      "nama": "Akar"
+    },
+    {
+      "kode": "94.04.12.2006",
+      "nama": "Mapar"
+    },
+    {
+      "kode": "94.04.12.2007",
+      "nama": "Kipia"
+    },
+    {
+      "kode": "94.04.12.2008",
+      "nama": "Pronggo"
+    },
+    {
+      "kode": "94.04.12.2009",
+      "nama": "Wakia"
+    },
+    {
+      "kode": "94.04.13.1001",
+      "nama": "Harapan"
+    },
+    {
+      "kode": "94.04.13.2002",
+      "nama": "Meekurima"
+    },
+    {
+      "kode": "94.04.13.2003",
+      "nama": "Landun Mekar"
+    },
+    {
+      "kode": "94.04.13.2004",
+      "nama": "Olaroa"
+    },
+    {
+      "kode": "94.04.13.2005",
+      "nama": "Bintang Lima"
+    },
+    {
+      "kode": "94.04.13.2006",
+      "nama": "Damai"
+    },
+    {
+      "kode": "94.04.13.2007",
+      "nama": "Walani"
+    },
+    {
+      "kode": "94.04.13.2008",
+      "nama": "Amole"
+    },
+    {
+      "kode": "94.04.13.2009",
+      "nama": "Lamopi"
+    },
+    {
+      "kode": "94.04.13.2010",
+      "nama": "Tunas Matoa"
+    },
+    {
+      "kode": "94.04.14.2001",
+      "nama": "Hoya"
+    },
+    {
+      "kode": "94.04.14.2002",
+      "nama": "Mamontoga"
+    },
+    {
+      "kode": "94.04.14.2003",
+      "nama": "Jinonin"
+    },
+    {
+      "kode": "94.04.14.2004",
+      "nama": "Kulama Ogom"
+    },
+    {
+      "kode": "94.04.14.2005",
+      "nama": "Puti"
+    },
+    {
+      "kode": "94.04.14.2006",
+      "nama": "Jawa"
+    },
+    {
+      "kode": "94.04.15.2001",
+      "nama": "Limau Asri Timur"
+    },
+    {
+      "kode": "94.04.15.2002",
+      "nama": "Wangirja"
+    },
+    {
+      "kode": "94.04.15.2003",
+      "nama": "Iwaka"
+    },
+    {
+      "kode": "94.04.15.2004",
+      "nama": "Naena Muktipura"
+    },
+    {
+      "kode": "94.04.15.2005",
+      "nama": "Mulia Kencana"
+    },
+    {
+      "kode": "94.04.15.2006",
+      "nama": "Pigapu"
+    },
+    {
+      "kode": "94.04.15.2007",
+      "nama": "Limau Asri Barat"
+    },
+    {
+      "kode": "94.04.16.1002",
+      "nama": "Kamoro Jaya"
+    },
+    {
+      "kode": "94.04.16.1003",
+      "nama": "Wonosari Jaya"
+    },
+    {
+      "kode": "94.04.16.1005",
+      "nama": "Inauga"
+    },
+    {
+      "kode": "94.04.16.2001",
+      "nama": "Kadun Jaya"
+    },
+    {
+      "kode": "94.04.16.2004",
+      "nama": "Nawaripi"
+    },
+    {
+      "kode": "94.04.16.2006",
+      "nama": "Mawokau Jaya"
+    },
+    {
+      "kode": "94.04.16.2007",
+      "nama": "Mandiri Jaya"
+    },
+    {
+      "kode": "94.04.17.2001",
+      "nama": "Amar"
+    },
+    {
+      "kode": "94.04.17.2002",
+      "nama": "Kawar"
+    },
+    {
+      "kode": "94.04.17.2003",
+      "nama": "Manuare"
+    },
+    {
+      "kode": "94.04.17.2004",
+      "nama": "Ipiri"
+    },
+    {
+      "kode": "94.04.17.2005",
+      "nama": "Paripi"
+    },
+    {
+      "kode": "94.04.17.2006",
+      "nama": "Yaraya"
+    },
+    {
+      "kode": "94.04.18.2001",
+      "nama": "Enggin"
+    },
+    {
+      "kode": "94.04.18.2002",
+      "nama": "Alama"
+    },
+    {
+      "kode": "94.04.18.2003",
+      "nama": "Senawak"
+    },
+    {
+      "kode": "94.04.18.2004",
+      "nama": "Unimogom"
+    },
+    {
+      "kode": "94.04.18.2005",
+      "nama": "Bemoki"
+    },
+    {
+      "kode": "94.04.18.2006",
+      "nama": "Tagaralma"
+    },
+    {
+      "kode": "94.04.18.2007",
+      "nama": "Geselema"
+    },
+    {
+      "kode": "94.04.18.2008",
+      "nama": "Wuarem"
+    },
+    {
+      "kode": "94.04.18.2009",
+      "nama": "Jenggelo"
+    },
+    {
+      "kode": "94.04.18.2010",
+      "nama": "Purua"
+    },
+    {
+      "kode": "94.04.18.2011",
+      "nama": "Kilmit"
+    },
+    {
+      "kode": "94.05.01.2001",
+      "nama": "Kago"
+    },
+    {
+      "kode": "94.05.01.2002",
+      "nama": "Kimak"
+    },
+    {
+      "kode": "94.05.01.2003",
+      "nama": "Wuloni"
+    },
+    {
+      "kode": "94.05.01.2004",
+      "nama": "Nipuralome"
+    },
+    {
+      "kode": "94.05.01.2005",
+      "nama": "Tagaloa"
+    },
+    {
+      "kode": "94.05.01.2006",
+      "nama": "Jenggerpaga"
+    },
+    {
+      "kode": "94.05.01.2007",
+      "nama": "kibogolome"
+    },
+    {
+      "kode": "94.05.01.2008",
+      "nama": "Ilambet"
+    },
+    {
+      "kode": "94.05.01.2009",
+      "nama": "Kalebut"
+    },
+    {
+      "kode": "94.05.02.2001",
+      "nama": "Wangbe"
+    },
+    {
+      "kode": "94.05.02.2002",
+      "nama": "Jindak"
+    },
+    {
+      "kode": "94.05.02.2003",
+      "nama": "Pungki"
+    },
+    {
+      "kode": "94.05.02.2004",
+      "nama": "Wonalbe"
+    },
+    {
+      "kode": "94.05.02.2005",
+      "nama": "Ulipia"
+    },
+    {
+      "kode": "94.05.02.2006",
+      "nama": "Marilaukin"
+    },
+    {
+      "kode": "94.05.02.2007",
+      "nama": "Ailpailin"
+    },
+    {
+      "kode": "94.05.02.2008",
+      "nama": "Wungbet"
+    },
+    {
+      "kode": "94.05.02.2009",
+      "nama": "Nagaljagama"
+    },
+    {
+      "kode": "94.05.02.2010",
+      "nama": "Mongkoihol"
+    },
+    {
+      "kode": "94.05.02.2011",
+      "nama": "Nangi"
+    },
+    {
+      "kode": "94.05.03.2001",
+      "nama": "Yulukoma"
+    },
+    {
+      "kode": "94.05.03.2002",
+      "nama": "Milawak"
+    },
+    {
+      "kode": "94.05.03.2003",
+      "nama": "Tinggilbet"
+    },
+    {
+      "kode": "94.05.03.2004",
+      "nama": "Ogamki"
+    },
+    {
+      "kode": "94.05.03.2005",
+      "nama": "Dengkibuma"
+    },
+    {
+      "kode": "94.05.03.2006",
+      "nama": "Dambet"
+    },
+    {
+      "kode": "94.05.03.2007",
+      "nama": "Ondugi"
+    },
+    {
+      "kode": "94.05.03.2008",
+      "nama": "Ambobera"
+    },
+    {
+      "kode": "94.05.04.2001",
+      "nama": "Doufo"
+    },
+    {
+      "kode": "94.05.04.2002",
+      "nama": "Iratoi"
+    },
+    {
+      "kode": "94.05.04.2003",
+      "nama": "Lani"
+    },
+    {
+      "kode": "94.05.04.2004",
+      "nama": "Wahuka"
+    },
+    {
+      "kode": "94.05.04.2005",
+      "nama": "Sibita"
+    },
+    {
+      "kode": "94.05.04.2006",
+      "nama": "Rawa"
+    },
+    {
+      "kode": "94.05.04.2007",
+      "nama": "Jirei"
+    },
+    {
+      "kode": "94.05.05.2001",
+      "nama": "Pogoma"
+    },
+    {
+      "kode": "94.05.05.2002",
+      "nama": "Gagama"
+    },
+    {
+      "kode": "94.05.05.2003",
+      "nama": "Wiha"
+    },
+    {
+      "kode": "94.05.05.2004",
+      "nama": "Wakme"
+    },
+    {
+      "kode": "94.05.05.2005",
+      "nama": "Ugutmu"
+    },
+    {
+      "kode": "94.05.05.2006",
+      "nama": "Yugume"
+    },
+    {
+      "kode": "94.05.05.2007",
+      "nama": "Kolamagi"
+    },
+    {
+      "kode": "94.05.05.2008",
+      "nama": "Guwamu"
+    },
+    {
+      "kode": "94.05.05.2009",
+      "nama": "Kumasingga"
+    },
+    {
+      "kode": "94.05.06.2001",
+      "nama": "Yauria"
+    },
+    {
+      "kode": "94.05.06.2002",
+      "nama": "Gigobak"
+    },
+    {
+      "kode": "94.05.06.2003",
+      "nama": "Kalibuk"
+    },
+    {
+      "kode": "94.05.06.2004",
+      "nama": "Kelemame"
+    },
+    {
+      "kode": "94.05.06.2005",
+      "nama": "Gulabut"
+    },
+    {
+      "kode": "94.05.06.2006",
+      "nama": "Kolaribanak"
+    },
+    {
+      "kode": "94.05.06.2007",
+      "nama": "Mogulu"
+    },
+    {
+      "kode": "94.05.06.2008",
+      "nama": "Gigobak II"
+    },
+    {
+      "kode": "94.05.06.2009",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "94.05.06.2010",
+      "nama": "Gingga Baru"
+    },
+    {
+      "kode": "94.05.06.2011",
+      "nama": "Tenonggame"
+    },
+    {
+      "kode": "94.05.07.2001",
+      "nama": "Agandugume"
+    },
+    {
+      "kode": "94.05.07.2002",
+      "nama": "Gut'yenggenak"
+    },
+    {
+      "kode": "94.05.07.2003",
+      "nama": "Dugunale"
+    },
+    {
+      "kode": "94.05.07.2004",
+      "nama": "Ogobak'pelenak"
+    },
+    {
+      "kode": "94.05.07.2005",
+      "nama": "Dolinggu"
+    },
+    {
+      "kode": "94.05.07.2006",
+      "nama": "Ayume"
+    },
+    {
+      "kode": "94.05.07.2007",
+      "nama": "Terowi"
+    },
+    {
+      "kode": "94.05.08.2001",
+      "nama": "Gome"
+    },
+    {
+      "kode": "94.05.08.2002",
+      "nama": "Misimaga"
+    },
+    {
+      "kode": "94.05.08.2003",
+      "nama": "Upaga"
+    },
+    {
+      "kode": "94.05.08.2004",
+      "nama": "Agiyome"
+    },
+    {
+      "kode": "94.05.08.2005",
+      "nama": "Yenggernok"
+    },
+    {
+      "kode": "94.05.08.2006",
+      "nama": "Wako"
+    },
+    {
+      "kode": "94.05.08.2007",
+      "nama": "Tegelobak"
+    },
+    {
+      "kode": "94.05.08.2008",
+      "nama": "Ninggabuma"
+    },
+    {
+      "kode": "94.05.08.2009",
+      "nama": "Kelanungin"
+    },
+    {
+      "kode": "94.05.08.2010",
+      "nama": "Yonggolawi"
+    },
+    {
+      "kode": "94.05.09.2001",
+      "nama": "Tayai"
+    },
+    {
+      "kode": "94.05.09.2002",
+      "nama": "Kordesi"
+    },
+    {
+      "kode": "94.05.09.2003",
+      "nama": "Faisau"
+    },
+    {
+      "kode": "94.05.09.2004",
+      "nama": "Fokri"
+    },
+    {
+      "kode": "94.05.09.2005",
+      "nama": "Foisa"
+    },
+    {
+      "kode": "94.05.09.2006",
+      "nama": "Duaita"
+    },
+    {
+      "kode": "94.05.09.2007",
+      "nama": "Dervos"
+    },
+    {
+      "kode": "94.05.10.2001",
+      "nama": "Babe"
+    },
+    {
+      "kode": "94.05.10.2002",
+      "nama": "Jambul"
+    },
+    {
+      "kode": "94.05.10.2003",
+      "nama": "Nungai"
+    },
+    {
+      "kode": "94.05.10.2004",
+      "nama": "Mugulip"
+    },
+    {
+      "kode": "94.05.10.2005",
+      "nama": "Kelmabet"
+    },
+    {
+      "kode": "94.05.10.2006",
+      "nama": "Jenggeren"
+    },
+    {
+      "kode": "94.05.11.2001",
+      "nama": "Puluk"
+    },
+    {
+      "kode": "94.05.11.2002",
+      "nama": "Kelandiruma"
+    },
+    {
+      "kode": "94.05.11.2003",
+      "nama": "Pupet"
+    },
+    {
+      "kode": "94.05.11.2004",
+      "nama": "Pilokoma"
+    },
+    {
+      "kode": "94.05.11.2005",
+      "nama": "Gimurik"
+    },
+    {
+      "kode": "94.05.11.2006",
+      "nama": "Wandibet"
+    },
+    {
+      "kode": "94.05.11.2007",
+      "nama": "Meningimte"
+    },
+    {
+      "kode": "94.05.11.2008",
+      "nama": "Bungok"
+    },
+    {
+      "kode": "94.05.12.2001",
+      "nama": "Erong Berong"
+    },
+    {
+      "kode": "94.05.12.2002",
+      "nama": "Hikinat"
+    },
+    {
+      "kode": "94.05.12.2003",
+      "nama": "Daung"
+    },
+    {
+      "kode": "94.05.12.2004",
+      "nama": "Kombet"
+    },
+    {
+      "kode": "94.05.12.2005",
+      "nama": "Onop"
+    },
+    {
+      "kode": "94.05.12.2006",
+      "nama": "Kulamagom"
+    },
+    {
+      "kode": "94.05.12.2007",
+      "nama": "Ogamanin"
+    },
+    {
+      "kode": "94.05.13.2001",
+      "nama": "Aguit"
+    },
+    {
+      "kode": "94.05.13.2002",
+      "nama": "Kembru"
+    },
+    {
+      "kode": "94.05.13.2003",
+      "nama": "Molu"
+    },
+    {
+      "kode": "94.05.13.2004",
+      "nama": "Belaba"
+    },
+    {
+      "kode": "94.05.13.2005",
+      "nama": "Makuma"
+    },
+    {
+      "kode": "94.05.13.2006",
+      "nama": "Tinoti"
+    },
+    {
+      "kode": "94.05.13.2007",
+      "nama": "Nilime"
+    },
+    {
+      "kode": "94.05.14.2001",
+      "nama": "Golu"
+    },
+    {
+      "kode": "94.05.14.2002",
+      "nama": "Bina"
+    },
+    {
+      "kode": "94.05.14.2003",
+      "nama": "Lumakluk"
+    },
+    {
+      "kode": "94.05.14.2004",
+      "nama": "Wogot"
+    },
+    {
+      "kode": "94.05.14.2005",
+      "nama": "Kabogoluk"
+    },
+    {
+      "kode": "94.05.14.2006",
+      "nama": "Ogomegat"
+    },
+    {
+      "kode": "94.05.14.2007",
+      "nama": "Mamaput"
+    },
+    {
+      "kode": "94.05.15.2001",
+      "nama": "Kilunggame"
+    },
+    {
+      "kode": "94.05.15.2002",
+      "nama": "Bakcini"
+    },
+    {
+      "kode": "94.05.15.2003",
+      "nama": "Timobut"
+    },
+    {
+      "kode": "94.05.15.2004",
+      "nama": "Tagalame I"
+    },
+    {
+      "kode": "94.05.15.2005",
+      "nama": "Wonelupaga"
+    },
+    {
+      "kode": "94.05.15.2006",
+      "nama": "Komapaga"
+    },
+    {
+      "kode": "94.05.15.2007",
+      "nama": "Timobut Egewak"
+    },
+    {
+      "kode": "94.05.16.2001",
+      "nama": "Nigilome"
+    },
+    {
+      "kode": "94.05.16.2002",
+      "nama": "Weni"
+    },
+    {
+      "kode": "94.05.16.2003",
+      "nama": "Amuleme"
+    },
+    {
+      "kode": "94.05.16.2004",
+      "nama": "Jigunggi"
+    },
+    {
+      "kode": "94.05.16.2005",
+      "nama": "Kumikomo"
+    },
+    {
+      "kode": "94.05.16.2006",
+      "nama": "Rumagi"
+    },
+    {
+      "kode": "94.05.16.2007",
+      "nama": "Gelegi"
+    },
+    {
+      "kode": "94.05.16.2008",
+      "nama": "Wombru"
+    },
+    {
+      "kode": "94.05.16.2009",
+      "nama": "Kondokwe"
+    },
+    {
+      "kode": "94.05.16.2010",
+      "nama": "Tinibolu"
+    },
+    {
+      "kode": "94.05.16.2011",
+      "nama": "Winanggwi"
+    },
+    {
+      "kode": "94.05.17.2001",
+      "nama": "Pamebut"
+    },
+    {
+      "kode": "94.05.17.2002",
+      "nama": "Agenggen"
+    },
+    {
+      "kode": "94.05.17.2003",
+      "nama": "Yugumuak"
+    },
+    {
+      "kode": "94.05.17.2004",
+      "nama": "Wilewak"
+    },
+    {
+      "kode": "94.05.17.2005",
+      "nama": "Lambera"
+    },
+    {
+      "kode": "94.05.17.2006",
+      "nama": "Wobulo"
+    },
+    {
+      "kode": "94.05.17.2007",
+      "nama": "Mugalolo"
+    },
+    {
+      "kode": "94.05.17.2008",
+      "nama": "Manggame"
+    },
+    {
+      "kode": "94.05.17.2009",
+      "nama": "Jerusalem"
+    },
+    {
+      "kode": "94.05.17.2010",
+      "nama": "Wiyabubu"
+    },
+    {
+      "kode": "94.05.18.2001",
+      "nama": "Mayuberi"
+    },
+    {
+      "kode": "94.05.18.2002",
+      "nama": "Maki"
+    },
+    {
+      "kode": "94.05.18.2003",
+      "nama": "Paluga"
+    },
+    {
+      "kode": "94.05.18.2004",
+      "nama": "Ayali"
+    },
+    {
+      "kode": "94.05.18.2005",
+      "nama": "Toegi"
+    },
+    {
+      "kode": "94.05.18.2006",
+      "nama": "Amungi"
+    },
+    {
+      "kode": "94.05.18.2007",
+      "nama": "Olenki"
+    },
+    {
+      "kode": "94.05.18.2008",
+      "nama": "Mundiba"
+    },
+    {
+      "kode": "94.05.18.2009",
+      "nama": "Akonobak"
+    },
+    {
+      "kode": "94.05.19.2001",
+      "nama": "Bubet"
+    },
+    {
+      "kode": "94.05.19.2002",
+      "nama": "Bologobak"
+    },
+    {
+      "kode": "94.05.19.2003",
+      "nama": "Ko'eao"
+    },
+    {
+      "kode": "94.05.19.2004",
+      "nama": "Ogongki"
+    },
+    {
+      "kode": "94.05.19.2005",
+      "nama": "Mabuga"
+    },
+    {
+      "kode": "94.05.19.2006",
+      "nama": "Kabuki"
+    },
+    {
+      "kode": "94.05.19.2007",
+      "nama": "Oknanim"
+    },
+    {
+      "kode": "94.05.19.2008",
+      "nama": "Kalemogom"
+    },
+    {
+      "kode": "94.05.20.2001",
+      "nama": "Eromaga"
+    },
+    {
+      "kode": "94.05.20.2002",
+      "nama": "Pinggil/Eronggobak"
+    },
+    {
+      "kode": "94.05.20.2003",
+      "nama": "Gilini"
+    },
+    {
+      "kode": "94.05.20.2004",
+      "nama": "Pinapa"
+    },
+    {
+      "kode": "94.05.20.2005",
+      "nama": "Kunga"
+    },
+    {
+      "kode": "94.05.20.2006",
+      "nama": "Ondugura"
+    },
+    {
+      "kode": "94.05.20.2007",
+      "nama": "Manggume"
+    },
+    {
+      "kode": "94.05.20.2008",
+      "nama": "Kuleme"
+    },
+    {
+      "kode": "94.05.20.2009",
+      "nama": "Ninggibome"
+    },
+    {
+      "kode": "94.05.20.2010",
+      "nama": "Awilkinop"
+    },
+    {
+      "kode": "94.05.20.2011",
+      "nama": "Domaoa"
+    },
+    {
+      "kode": "94.05.20.2012",
+      "nama": "Pungtrama"
+    },
+    {
+      "kode": "94.05.20.2013",
+      "nama": "Balamagalama"
+    },
+    {
+      "kode": "94.05.20.2014",
+      "nama": "Aminggaru"
+    },
+    {
+      "kode": "94.05.21.2001",
+      "nama": "Tuput"
+    },
+    {
+      "kode": "94.05.21.2002",
+      "nama": "Wenggen'ambut"
+    },
+    {
+      "kode": "94.05.21.2003",
+      "nama": "Wamiru"
+    },
+    {
+      "kode": "94.05.21.2004",
+      "nama": "Piluwolu"
+    },
+    {
+      "kode": "94.05.21.2005",
+      "nama": "Tenawi"
+    },
+    {
+      "kode": "94.05.21.2006",
+      "nama": "Wanombut"
+    },
+    {
+      "kode": "94.05.21.2007",
+      "nama": "Pumbanak"
+    },
+    {
+      "kode": "94.05.22.2001",
+      "nama": "Jiwot"
+    },
+    {
+      "kode": "94.05.22.2002",
+      "nama": "Gunaluk"
+    },
+    {
+      "kode": "94.05.22.2003",
+      "nama": "Kugiame"
+    },
+    {
+      "kode": "94.05.22.2004",
+      "nama": "Wuyunggame"
+    },
+    {
+      "kode": "94.05.22.2005",
+      "nama": "Deogi"
+    },
+    {
+      "kode": "94.05.22.2006",
+      "nama": "Jugumi"
+    },
+    {
+      "kode": "94.05.23.2001",
+      "nama": "Amungkalpia"
+    },
+    {
+      "kode": "94.05.23.2002",
+      "nama": "Bela"
+    },
+    {
+      "kode": "94.05.23.2003",
+      "nama": "Ompliga"
+    },
+    {
+      "kode": "94.05.23.2004",
+      "nama": "Alama"
+    },
+    {
+      "kode": "94.05.23.2005",
+      "nama": "Tagalarama"
+    },
+    {
+      "kode": "94.05.23.2006",
+      "nama": "Bemoki"
+    },
+    {
+      "kode": "94.05.24.2001",
+      "nama": "Mundidok"
+    },
+    {
+      "kode": "94.05.24.2002",
+      "nama": "Yaiki Maiki"
+    },
+    {
+      "kode": "94.05.24.2003",
+      "nama": "Tobenggi"
+    },
+    {
+      "kode": "94.05.24.2004",
+      "nama": "Towenggi II"
+    },
+    {
+      "kode": "94.05.24.2005",
+      "nama": "Welenggaru"
+    },
+    {
+      "kode": "94.05.25.2001",
+      "nama": "Erelmakawia"
+    },
+    {
+      "kode": "94.05.25.2002",
+      "nama": "Kalpamonora"
+    },
+    {
+      "kode": "94.05.25.2003",
+      "nama": "Bomogin"
+    },
+    {
+      "kode": "94.05.25.2004",
+      "nama": "Mamoldema"
+    },
+    {
+      "kode": "94.05.25.2005",
+      "nama": "Wamagun"
+    },
+    {
+      "kode": "94.05.25.2006",
+      "nama": "Amungkonin"
+    },
+    {
+      "kode": "94.05.25.2007",
+      "nama": "Ipmangkop"
+    },
+    {
+      "kode": "94.05.25.2008",
+      "nama": "Tamagun"
+    },
+    {
+      "kode": "94.05.25.2009",
+      "nama": "Ai Arama"
+    },
+    {
+      "kode": "94.06.01.2001",
+      "nama": "Ikebo"
+    },
+    {
+      "kode": "94.06.01.2002",
+      "nama": "Mauwa"
+    },
+    {
+      "kode": "94.06.01.2003",
+      "nama": "Ekemanida"
+    },
+    {
+      "kode": "94.06.01.2004",
+      "nama": "Bukapa"
+    },
+    {
+      "kode": "94.06.01.2005",
+      "nama": "Kimupugi"
+    },
+    {
+      "kode": "94.06.01.2006",
+      "nama": "Dikiyouwo"
+    },
+    {
+      "kode": "94.06.01.2007",
+      "nama": "Idakotu"
+    },
+    {
+      "kode": "94.06.01.2008",
+      "nama": "Putapa"
+    },
+    {
+      "kode": "94.06.02.2001",
+      "nama": "Bobomani"
+    },
+    {
+      "kode": "94.06.02.2002",
+      "nama": "Abaimaida"
+    },
+    {
+      "kode": "94.06.02.2003",
+      "nama": "Bonakunu"
+    },
+    {
+      "kode": "94.06.02.2004",
+      "nama": "Dawaikunu"
+    },
+    {
+      "kode": "94.06.02.2005",
+      "nama": "Magone"
+    },
+    {
+      "kode": "94.06.02.2006",
+      "nama": "Diyoudimi"
+    },
+    {
+      "kode": "94.06.02.2007",
+      "nama": "Obaikagopa"
+    },
+    {
+      "kode": "94.06.03.2001",
+      "nama": "Apogomakida"
+    },
+    {
+      "kode": "94.06.03.2002",
+      "nama": "Deneiode"
+    },
+    {
+      "kode": "94.06.03.2003",
+      "nama": "Yegiyepa"
+    },
+    {
+      "kode": "94.06.03.2004",
+      "nama": "Ideduwa"
+    },
+    {
+      "kode": "94.06.03.2005",
+      "nama": "Kegata"
+    },
+    {
+      "kode": "94.06.03.2006",
+      "nama": "Egipa"
+    },
+    {
+      "kode": "94.06.03.2007",
+      "nama": "Ukagu"
+    },
+    {
+      "kode": "94.06.03.2008",
+      "nama": "Tibaugi"
+    },
+    {
+      "kode": "94.06.04.2001",
+      "nama": "Idakebo"
+    },
+    {
+      "kode": "94.06.04.2002",
+      "nama": "Pugatadi I"
+    },
+    {
+      "kode": "94.06.04.2003",
+      "nama": "Pugatadi II"
+    },
+    {
+      "kode": "94.06.04.2004",
+      "nama": "Ikrar"
+    },
+    {
+      "kode": "94.06.04.2005",
+      "nama": "Obayo"
+    },
+    {
+      "kode": "94.06.04.2006",
+      "nama": "Kuyakago"
+    },
+    {
+      "kode": "94.06.04.2007",
+      "nama": "Mogou"
+    },
+    {
+      "kode": "94.06.04.2008",
+      "nama": "Yametadi"
+    },
+    {
+      "kode": "94.06.04.2009",
+      "nama": "Duntek"
+    },
+    {
+      "kode": "94.06.04.2010",
+      "nama": "Ekimani"
+    },
+    {
+      "kode": "94.06.05.2001",
+      "nama": "Unito"
+    },
+    {
+      "kode": "94.06.05.2002",
+      "nama": "Sukikai"
+    },
+    {
+      "kode": "94.06.05.2003",
+      "nama": "Iyaro"
+    },
+    {
+      "kode": "94.06.05.2004",
+      "nama": "Wigoumakida"
+    },
+    {
+      "kode": "94.06.06.2001",
+      "nama": "Abouyaga"
+    },
+    {
+      "kode": "94.06.06.2002",
+      "nama": "Maikotu"
+    },
+    {
+      "kode": "94.06.06.2003",
+      "nama": "Taubaikebo"
+    },
+    {
+      "kode": "94.06.06.2004",
+      "nama": "Yegoukotu"
+    },
+    {
+      "kode": "94.06.07.2001",
+      "nama": "Puweta I"
+    },
+    {
+      "kode": "94.06.07.2002",
+      "nama": "Pouwouda"
+    },
+    {
+      "kode": "94.06.07.2003",
+      "nama": "Puweta II"
+    },
+    {
+      "kode": "94.06.07.2004",
+      "nama": "Botumoma"
+    },
+    {
+      "kode": "94.06.07.2005",
+      "nama": "Obaibega"
+    },
+    {
+      "kode": "94.06.07.2006",
+      "nama": "Digikebo"
+    },
+    {
+      "kode": "94.06.07.2007",
+      "nama": "Bogiyateugi"
+    },
+    {
+      "kode": "94.06.07.2008",
+      "nama": "Matadi"
+    },
+    {
+      "kode": "94.06.07.2009",
+      "nama": "Tuwaida"
+    },
+    {
+      "kode": "94.06.07.2010",
+      "nama": "Yepo"
+    },
+    {
+      "kode": "94.06.07.2011",
+      "nama": "Ugikagouda"
+    },
+    {
+      "kode": "94.06.07.2012",
+      "nama": "Ugikebo"
+    },
+    {
+      "kode": "94.06.08.2001",
+      "nama": "Ugapuga"
+    },
+    {
+      "kode": "94.06.08.2002",
+      "nama": "Deiyapa"
+    },
+    {
+      "kode": "94.06.08.2003",
+      "nama": "Boduda"
+    },
+    {
+      "kode": "94.06.08.2004",
+      "nama": "Yotapuga"
+    },
+    {
+      "kode": "94.06.08.2005",
+      "nama": "Bokaibutu"
+    },
+    {
+      "kode": "94.06.08.2006",
+      "nama": "Bunauwo"
+    },
+    {
+      "kode": "94.06.08.2007",
+      "nama": "Nuwa"
+    },
+    {
+      "kode": "94.06.09.2001",
+      "nama": "Piyakunu"
+    },
+    {
+      "kode": "94.06.09.2002",
+      "nama": "Diyeugi"
+    },
+    {
+      "kode": "94.06.09.2003",
+      "nama": "Putaapa"
+    },
+    {
+      "kode": "94.06.09.2004",
+      "nama": "Atou"
+    },
+    {
+      "kode": "94.06.09.2005",
+      "nama": "Modio"
+    },
+    {
+      "kode": "94.06.09.2006",
+      "nama": "Upibega"
+    },
+    {
+      "kode": "94.06.09.2007",
+      "nama": "Timepa"
+    },
+    {
+      "kode": "94.06.09.2008",
+      "nama": "Gabaikunu"
+    },
+    {
+      "kode": "94.06.09.2009",
+      "nama": "Adauwo"
+    },
+    {
+      "kode": "94.06.09.2010",
+      "nama": "Megaikebo"
+    },
+    {
+      "kode": "94.06.10.2001",
+      "nama": "Dogimani"
+    },
+    {
+      "kode": "94.06.10.2002",
+      "nama": "Kigamani"
+    },
+    {
+      "kode": "94.06.10.2003",
+      "nama": "Idadagi"
+    },
+    {
+      "kode": "94.06.10.2004",
+      "nama": "Denemani"
+    },
+    {
+      "kode": "94.06.10.2005",
+      "nama": "Makidimi"
+    },
+    {
+      "kode": "94.06.10.2006",
+      "nama": "Egebutu"
+    },
+    {
+      "kode": "94.06.10.2007",
+      "nama": "Motito"
+    },
+    {
+      "kode": "94.06.10.2008",
+      "nama": "Bobobutu"
+    },
+    {
+      "kode": "94.06.10.2009",
+      "nama": "Pona"
+    },
+    {
+      "kode": "94.07.01.2001",
+      "nama": "Emondi"
+    },
+    {
+      "kode": "94.07.01.2002",
+      "nama": "Mindau"
+    },
+    {
+      "kode": "94.07.01.2003",
+      "nama": "Sambili"
+    },
+    {
+      "kode": "94.07.01.2004",
+      "nama": "Yoparu"
+    },
+    {
+      "kode": "94.07.01.2005",
+      "nama": "Yokatapa"
+    },
+    {
+      "kode": "94.07.01.2006",
+      "nama": "Bilogai"
+    },
+    {
+      "kode": "94.07.01.2007",
+      "nama": "Puyagia"
+    },
+    {
+      "kode": "94.07.01.2008",
+      "nama": "Jalae"
+    },
+    {
+      "kode": "94.07.01.2009",
+      "nama": "Mamba"
+    },
+    {
+      "kode": "94.07.01.2010",
+      "nama": "Titigi"
+    },
+    {
+      "kode": "94.07.01.2011",
+      "nama": "Eknemba"
+    },
+    {
+      "kode": "94.07.01.2012",
+      "nama": "Wandoga"
+    },
+    {
+      "kode": "94.07.01.2013",
+      "nama": "Pesiga"
+    },
+    {
+      "kode": "94.07.01.2014",
+      "nama": "Mblusiga"
+    },
+    {
+      "kode": "94.07.01.2015",
+      "nama": "Ndugusiga"
+    },
+    {
+      "kode": "94.07.01.2016",
+      "nama": "Kumbalagupa"
+    },
+    {
+      "kode": "94.07.01.2017",
+      "nama": "Buwisiga"
+    },
+    {
+      "kode": "94.07.02.2001",
+      "nama": "Mapa"
+    },
+    {
+      "kode": "94.07.02.2002",
+      "nama": "Bilai"
+    },
+    {
+      "kode": "94.07.02.2003",
+      "nama": "Maya"
+    },
+    {
+      "kode": "94.07.02.2004",
+      "nama": "Degesiga"
+    },
+    {
+      "kode": "94.07.02.2005",
+      "nama": "Pogapa"
+    },
+    {
+      "kode": "94.07.02.2006",
+      "nama": "Bamba"
+    },
+    {
+      "kode": "94.07.02.2007",
+      "nama": "Zombandoga"
+    },
+    {
+      "kode": "94.07.02.2008",
+      "nama": "Kobae"
+    },
+    {
+      "kode": "94.07.02.2009",
+      "nama": "Selemama"
+    },
+    {
+      "kode": "94.07.02.2010",
+      "nama": "Kendetapa"
+    },
+    {
+      "kode": "94.07.02.2011",
+      "nama": "Hiyabu"
+    },
+    {
+      "kode": "94.07.02.2012",
+      "nama": "Ogoeapa"
+    },
+    {
+      "kode": "94.07.02.2013",
+      "nama": "Bonogo"
+    },
+    {
+      "kode": "94.07.02.2014",
+      "nama": "Agapa"
+    },
+    {
+      "kode": "94.07.02.2015",
+      "nama": "Engganengga"
+    },
+    {
+      "kode": "94.07.02.2016",
+      "nama": "Waiagepa"
+    },
+    {
+      "kode": "94.07.02.2017",
+      "nama": "Hugitapa"
+    },
+    {
+      "kode": "94.07.02.2018",
+      "nama": "Bubisiga"
+    },
+    {
+      "kode": "94.07.02.2019",
+      "nama": "Nggagemba"
+    },
+    {
+      "kode": "94.07.02.2020",
+      "nama": "Sanepa"
+    },
+    {
+      "kode": "94.07.02.2021",
+      "nama": "Mbomogo"
+    },
+    {
+      "kode": "94.07.03.2001",
+      "nama": "Sabisa"
+    },
+    {
+      "kode": "94.07.03.2002",
+      "nama": "Dubandoga"
+    },
+    {
+      "kode": "94.07.03.2003",
+      "nama": "Debasiga I"
+    },
+    {
+      "kode": "94.07.03.2004",
+      "nama": "Debasiga II"
+    },
+    {
+      "kode": "94.07.03.2005",
+      "nama": "Isandoga"
+    },
+    {
+      "kode": "94.07.03.2006",
+      "nama": "Mogalo"
+    },
+    {
+      "kode": "94.07.03.2007",
+      "nama": "Jae"
+    },
+    {
+      "kode": "94.07.03.2008",
+      "nama": "Mbugulo"
+    },
+    {
+      "kode": "94.07.03.2009",
+      "nama": "Hulagupa"
+    },
+    {
+      "kode": "94.07.04.2001",
+      "nama": "Danggatadi"
+    },
+    {
+      "kode": "94.07.04.2002",
+      "nama": "Mbiandoga"
+    },
+    {
+      "kode": "94.07.04.2003",
+      "nama": "Bugalaga"
+    },
+    {
+      "kode": "94.07.04.2004",
+      "nama": "Yagaito"
+    },
+    {
+      "kode": "94.07.04.2005",
+      "nama": "Kalawa"
+    },
+    {
+      "kode": "94.07.04.2006",
+      "nama": "Yanei"
+    },
+    {
+      "kode": "94.07.04.2007",
+      "nama": "Maniuwo"
+    },
+    {
+      "kode": "94.07.04.2008",
+      "nama": "Tunggapo"
+    },
+    {
+      "kode": "94.07.04.2009",
+      "nama": "Pagamba"
+    },
+    {
+      "kode": "94.07.04.2010",
+      "nama": "Maolagi"
+    },
+    {
+      "kode": "94.07.04.2011",
+      "nama": "Aneya"
+    },
+    {
+      "kode": "94.07.04.2012",
+      "nama": "Kigitadi"
+    },
+    {
+      "kode": "94.07.04.2013",
+      "nama": "Ndabatadi"
+    },
+    {
+      "kode": "94.07.04.2014",
+      "nama": "Moyomataga"
+    },
+    {
+      "kode": "94.07.04.2015",
+      "nama": "Pitadi"
+    },
+    {
+      "kode": "94.07.04.2016",
+      "nama": "Ular Merah"
+    },
+    {
+      "kode": "94.07.05.2001",
+      "nama": "Agisiga"
+    },
+    {
+      "kode": "94.07.05.2002",
+      "nama": "Tausiga"
+    },
+    {
+      "kode": "94.07.05.2003",
+      "nama": "Unabundoga"
+    },
+    {
+      "kode": "94.07.05.2004",
+      "nama": "Mbamogo"
+    },
+    {
+      "kode": "94.07.05.2005",
+      "nama": "Jenetapa Janasiga"
+    },
+    {
+      "kode": "94.07.05.2006",
+      "nama": "Soali"
+    },
+    {
+      "kode": "94.07.05.2007",
+      "nama": "Tambage"
+    },
+    {
+      "kode": "94.07.05.2008",
+      "nama": "Nabia"
+    },
+    {
+      "kode": "94.07.05.2009",
+      "nama": "Danggoa"
+    },
+    {
+      "kode": "94.07.05.2010",
+      "nama": "Kombogosiga"
+    },
+    {
+      "kode": "94.07.06.2001",
+      "nama": "Wabui"
+    },
+    {
+      "kode": "94.07.06.2002",
+      "nama": "Balaimai"
+    },
+    {
+      "kode": "94.07.06.2003",
+      "nama": "Janamba"
+    },
+    {
+      "kode": "94.07.06.2004",
+      "nama": "Kulapa"
+    },
+    {
+      "kode": "94.07.06.2005",
+      "nama": "Pugisiga"
+    },
+    {
+      "kode": "94.07.06.2006",
+      "nama": "Hitadipa"
+    },
+    {
+      "kode": "94.07.06.2007",
+      "nama": "Soanggama"
+    },
+    {
+      "kode": "94.07.06.2008",
+      "nama": "Danggomba"
+    },
+    {
+      "kode": "94.07.06.2009",
+      "nama": "Sakumba"
+    },
+    {
+      "kode": "94.07.07.2001",
+      "nama": "Ugimba"
+    },
+    {
+      "kode": "94.07.07.2002",
+      "nama": "Bunaopa"
+    },
+    {
+      "kode": "94.07.07.2003",
+      "nama": "Pigabu"
+    },
+    {
+      "kode": "94.07.07.2004",
+      "nama": "Teteopa"
+    },
+    {
+      "kode": "94.07.07.2005",
+      "nama": "Dukendopa"
+    },
+    {
+      "kode": "94.07.07.2006",
+      "nama": "Nggamagae"
+    },
+    {
+      "kode": "94.07.08.2001",
+      "nama": "Tomosiga"
+    },
+    {
+      "kode": "94.07.08.2002",
+      "nama": "Bigasiga"
+    },
+    {
+      "kode": "94.07.08.2003",
+      "nama": "Dapiaga"
+    },
+    {
+      "kode": "94.07.08.2004",
+      "nama": "Pewesiga"
+    },
+    {
+      "kode": "94.07.08.2005",
+      "nama": "Hegenagai"
+    },
+    {
+      "kode": "94.07.08.2006",
+      "nama": "Gaimigi"
+    },
+    {
+      "kode": "94.07.08.2007",
+      "nama": "Jawasiga"
+    },
+    {
+      "kode": "94.07.08.2008",
+      "nama": "Duginggobo"
+    },
+    {
+      "kode": "94.07.08.2009",
+      "nama": "Sugulubagala"
+    },
+    {
+      "kode": "94.08.01.2001",
+      "nama": "Waghete I"
+    },
+    {
+      "kode": "94.08.01.2002",
+      "nama": "Ugiya"
+    },
+    {
+      "kode": "94.08.01.2003",
+      "nama": "Yaba"
+    },
+    {
+      "kode": "94.08.01.2004",
+      "nama": "Waghete II"
+    },
+    {
+      "kode": "94.08.01.2005",
+      "nama": "Bomau I"
+    },
+    {
+      "kode": "94.08.01.2006",
+      "nama": "Okomakebo"
+    },
+    {
+      "kode": "94.08.01.2007",
+      "nama": "Bamou II"
+    },
+    {
+      "kode": "94.08.01.2008",
+      "nama": "Atouda"
+    },
+    {
+      "kode": "94.08.01.2009",
+      "nama": "Oneibo"
+    },
+    {
+      "kode": "94.08.01.2010",
+      "nama": "Yaba II"
+    },
+    {
+      "kode": "94.08.01.2011",
+      "nama": "Mugouda"
+    },
+    {
+      "kode": "94.08.01.2012",
+      "nama": "Bomou III"
+    },
+    {
+      "kode": "94.08.01.2013",
+      "nama": "Okomotadi"
+    },
+    {
+      "kode": "94.08.01.2014",
+      "nama": "Buwoudimi"
+    },
+    {
+      "kode": "94.08.01.2015",
+      "nama": "Ibodiyo"
+    },
+    {
+      "kode": "94.08.01.2016",
+      "nama": "Ikiyawo"
+    },
+    {
+      "kode": "94.08.01.2017",
+      "nama": "Motano"
+    },
+    {
+      "kode": "94.08.01.2018",
+      "nama": "Amago"
+    },
+    {
+      "kode": "94.08.01.2019",
+      "nama": "Idege"
+    },
+    {
+      "kode": "94.08.01.2020",
+      "nama": "Peku"
+    },
+    {
+      "kode": "94.08.02.2001",
+      "nama": "Damabagata"
+    },
+    {
+      "kode": "94.08.02.2002",
+      "nama": "Kokobaya"
+    },
+    {
+      "kode": "94.08.02.2003",
+      "nama": "Watiyai"
+    },
+    {
+      "kode": "94.08.02.2004",
+      "nama": "Edagotadi"
+    },
+    {
+      "kode": "94.08.02.2005",
+      "nama": "Dakebo"
+    },
+    {
+      "kode": "94.08.02.2006",
+      "nama": "Bagou"
+    },
+    {
+      "kode": "94.08.02.2007",
+      "nama": "Dagokebo"
+    },
+    {
+      "kode": "94.08.02.2008",
+      "nama": "Ipoke"
+    },
+    {
+      "kode": "94.08.02.2009",
+      "nama": "Waitakotu"
+    },
+    {
+      "kode": "94.08.02.2010",
+      "nama": "Pekepa"
+    },
+    {
+      "kode": "94.08.02.2011",
+      "nama": "Bagumoma"
+    },
+    {
+      "kode": "94.08.02.2012",
+      "nama": "Udaugida"
+    },
+    {
+      "kode": "94.08.02.2013",
+      "nama": "Bagou II"
+    },
+    {
+      "kode": "94.08.02.2014",
+      "nama": "Idayodagi"
+    },
+    {
+      "kode": "94.08.03.2001",
+      "nama": "Kopai I"
+    },
+    {
+      "kode": "94.08.03.2002",
+      "nama": "Kopai II"
+    },
+    {
+      "kode": "94.08.03.2003",
+      "nama": "Woge"
+    },
+    {
+      "kode": "94.08.03.2004",
+      "nama": "Yewadide"
+    },
+    {
+      "kode": "94.08.03.2005",
+      "nama": "Mudetadi"
+    },
+    {
+      "kode": "94.08.03.2006",
+      "nama": "Diita"
+    },
+    {
+      "kode": "94.08.04.2001",
+      "nama": "Gakokebo"
+    },
+    {
+      "kode": "94.08.04.2002",
+      "nama": "Demago"
+    },
+    {
+      "kode": "94.08.04.2003",
+      "nama": "Widuwakiya"
+    },
+    {
+      "kode": "94.08.04.2004",
+      "nama": "Onago"
+    },
+    {
+      "kode": "94.08.04.2005",
+      "nama": "Wagomani"
+    },
+    {
+      "kode": "94.08.04.2006",
+      "nama": "Digibagata"
+    },
+    {
+      "kode": "94.08.04.2007",
+      "nama": "Piyekedimi"
+    },
+    {
+      "kode": "94.08.04.2008",
+      "nama": "Ayatei"
+    },
+    {
+      "kode": "94.08.04.2009",
+      "nama": "Tenedagi"
+    },
+    {
+      "kode": "94.08.04.2010",
+      "nama": "Diyai"
+    },
+    {
+      "kode": "94.08.04.2011",
+      "nama": "Jinidaba"
+    },
+    {
+      "kode": "94.08.04.2012",
+      "nama": "Widimei"
+    },
+    {
+      "kode": "94.08.04.2013",
+      "nama": "Yagu"
+    },
+    {
+      "kode": "94.08.04.2014",
+      "nama": "Obai"
+    },
+    {
+      "kode": "94.08.04.2015",
+      "nama": "Yipai"
+    },
+    {
+      "kode": "94.08.04.2016",
+      "nama": "Diyai II"
+    },
+    {
+      "kode": "94.08.04.2017",
+      "nama": "Meyepa"
+    },
+    {
+      "kode": "94.08.04.2018",
+      "nama": "Kogemani"
+    },
+    {
+      "kode": "94.08.04.2019",
+      "nama": "Digikotu"
+    },
+    {
+      "kode": "94.08.04.2020",
+      "nama": "Onago II"
+    },
+    {
+      "kode": "94.08.04.2021",
+      "nama": "Maatadi"
+    },
+    {
+      "kode": "94.08.04.2022",
+      "nama": "Epanai"
+    },
+    {
+      "kode": "94.08.05.2001",
+      "nama": "Komauto/Kapiraya"
+    },
+    {
+      "kode": "94.08.05.2002",
+      "nama": "Mogodagi"
+    },
+    {
+      "kode": "94.08.05.2003",
+      "nama": "Yamouwitina"
+    },
+    {
+      "kode": "94.08.05.2004",
+      "nama": "Idego"
+    },
+    {
+      "kode": "94.08.05.2005",
+      "nama": "Uwe Onagei"
+    }
+  ]
+}

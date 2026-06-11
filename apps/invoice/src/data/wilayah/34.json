@@ -1,0 +1,2092 @@
+{
+  "kabupaten": [
+    {
+      "kode": "34.01",
+      "nama": "Kabupaten Kulon Progo"
+    },
+    {
+      "kode": "34.02",
+      "nama": "Kabupaten Bantul"
+    },
+    {
+      "kode": "34.03",
+      "nama": "Kabupaten Gunungkidul"
+    },
+    {
+      "kode": "34.04",
+      "nama": "Kabupaten Sleman"
+    },
+    {
+      "kode": "34.71",
+      "nama": "Kota Yogyakarta"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "34.01.01",
+      "nama": "Temon"
+    },
+    {
+      "kode": "34.01.02",
+      "nama": "Wates"
+    },
+    {
+      "kode": "34.01.03",
+      "nama": "Panjatan"
+    },
+    {
+      "kode": "34.01.04",
+      "nama": "Galur"
+    },
+    {
+      "kode": "34.01.05",
+      "nama": "Lendah"
+    },
+    {
+      "kode": "34.01.06",
+      "nama": "Sentolo"
+    },
+    {
+      "kode": "34.01.07",
+      "nama": "Pengasih"
+    },
+    {
+      "kode": "34.01.08",
+      "nama": "Kokap"
+    },
+    {
+      "kode": "34.01.09",
+      "nama": "Girimulyo"
+    },
+    {
+      "kode": "34.01.10",
+      "nama": "Nanggulan"
+    },
+    {
+      "kode": "34.01.11",
+      "nama": "Samigaluh"
+    },
+    {
+      "kode": "34.01.12",
+      "nama": "Kalibawang"
+    },
+    {
+      "kode": "34.02.01",
+      "nama": "Srandakan"
+    },
+    {
+      "kode": "34.02.02",
+      "nama": "Sanden"
+    },
+    {
+      "kode": "34.02.03",
+      "nama": "Kretek"
+    },
+    {
+      "kode": "34.02.04",
+      "nama": "Pundong"
+    },
+    {
+      "kode": "34.02.05",
+      "nama": "Bambanglipuro"
+    },
+    {
+      "kode": "34.02.06",
+      "nama": "Pandak"
+    },
+    {
+      "kode": "34.02.07",
+      "nama": "Pajangan"
+    },
+    {
+      "kode": "34.02.08",
+      "nama": "Bantul"
+    },
+    {
+      "kode": "34.02.09",
+      "nama": "Jetis"
+    },
+    {
+      "kode": "34.02.10",
+      "nama": "Imogiri"
+    },
+    {
+      "kode": "34.02.11",
+      "nama": "Dlingo"
+    },
+    {
+      "kode": "34.02.12",
+      "nama": "Banguntapan"
+    },
+    {
+      "kode": "34.02.13",
+      "nama": "Pleret"
+    },
+    {
+      "kode": "34.02.14",
+      "nama": "Piyungan"
+    },
+    {
+      "kode": "34.02.15",
+      "nama": "Sewon"
+    },
+    {
+      "kode": "34.02.16",
+      "nama": "Kasihan"
+    },
+    {
+      "kode": "34.02.17",
+      "nama": "Sedayu"
+    },
+    {
+      "kode": "34.03.01",
+      "nama": "Wonosari"
+    },
+    {
+      "kode": "34.03.02",
+      "nama": "Nglipar"
+    },
+    {
+      "kode": "34.03.03",
+      "nama": "Playen"
+    },
+    {
+      "kode": "34.03.04",
+      "nama": "Patuk"
+    },
+    {
+      "kode": "34.03.05",
+      "nama": "Paliyan"
+    },
+    {
+      "kode": "34.03.06",
+      "nama": "Panggang"
+    },
+    {
+      "kode": "34.03.07",
+      "nama": "Tepus"
+    },
+    {
+      "kode": "34.03.08",
+      "nama": "Semanu"
+    },
+    {
+      "kode": "34.03.09",
+      "nama": "Karangmojo"
+    },
+    {
+      "kode": "34.03.10",
+      "nama": "Ponjong"
+    },
+    {
+      "kode": "34.03.11",
+      "nama": "Rongkop"
+    },
+    {
+      "kode": "34.03.12",
+      "nama": "Semin"
+    },
+    {
+      "kode": "34.03.13",
+      "nama": "Ngawen"
+    },
+    {
+      "kode": "34.03.14",
+      "nama": "Gedangsari"
+    },
+    {
+      "kode": "34.03.15",
+      "nama": "Saptosari"
+    },
+    {
+      "kode": "34.03.16",
+      "nama": "Girisubo"
+    },
+    {
+      "kode": "34.03.17",
+      "nama": "Tanjungsari"
+    },
+    {
+      "kode": "34.03.18",
+      "nama": "Purwosari"
+    },
+    {
+      "kode": "34.04.01",
+      "nama": "Gamping"
+    },
+    {
+      "kode": "34.04.02",
+      "nama": "Godean"
+    },
+    {
+      "kode": "34.04.03",
+      "nama": "Moyudan"
+    },
+    {
+      "kode": "34.04.04",
+      "nama": "Minggir"
+    },
+    {
+      "kode": "34.04.05",
+      "nama": "Seyegan"
+    },
+    {
+      "kode": "34.04.06",
+      "nama": "Mlati"
+    },
+    {
+      "kode": "34.04.07",
+      "nama": "Depok"
+    },
+    {
+      "kode": "34.04.08",
+      "nama": "Berbah"
+    },
+    {
+      "kode": "34.04.09",
+      "nama": "Prambanan"
+    },
+    {
+      "kode": "34.04.10",
+      "nama": "Kalasan"
+    },
+    {
+      "kode": "34.04.11",
+      "nama": "Ngemplak"
+    },
+    {
+      "kode": "34.04.12",
+      "nama": "Ngaglik"
+    },
+    {
+      "kode": "34.04.13",
+      "nama": "Sleman"
+    },
+    {
+      "kode": "34.04.14",
+      "nama": "Tempel"
+    },
+    {
+      "kode": "34.04.15",
+      "nama": "Turi"
+    },
+    {
+      "kode": "34.04.16",
+      "nama": "Pakem"
+    },
+    {
+      "kode": "34.04.17",
+      "nama": "Cangkringan"
+    },
+    {
+      "kode": "34.71.01",
+      "nama": "Tegalrejo"
+    },
+    {
+      "kode": "34.71.02",
+      "nama": "Jetis"
+    },
+    {
+      "kode": "34.71.03",
+      "nama": "Gondokusuman"
+    },
+    {
+      "kode": "34.71.04",
+      "nama": "Danurejan"
+    },
+    {
+      "kode": "34.71.05",
+      "nama": "Gedongtengen"
+    },
+    {
+      "kode": "34.71.06",
+      "nama": "Ngampilan"
+    },
+    {
+      "kode": "34.71.07",
+      "nama": "Wirobrajan"
+    },
+    {
+      "kode": "34.71.08",
+      "nama": "Mantrijeron"
+    },
+    {
+      "kode": "34.71.09",
+      "nama": "Kraton"
+    },
+    {
+      "kode": "34.71.10",
+      "nama": "Gondomanan"
+    },
+    {
+      "kode": "34.71.11",
+      "nama": "Pakualaman"
+    },
+    {
+      "kode": "34.71.12",
+      "nama": "Mergangsan"
+    },
+    {
+      "kode": "34.71.13",
+      "nama": "Umbulharjo"
+    },
+    {
+      "kode": "34.71.14",
+      "nama": "Kotagede"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "34.01.01.2001",
+      "nama": "Jangkaran"
+    },
+    {
+      "kode": "34.01.01.2002",
+      "nama": "Sindutan"
+    },
+    {
+      "kode": "34.01.01.2003",
+      "nama": "Palihan"
+    },
+    {
+      "kode": "34.01.01.2004",
+      "nama": "Glagah"
+    },
+    {
+      "kode": "34.01.01.2005",
+      "nama": "Kalidengen"
+    },
+    {
+      "kode": "34.01.01.2006",
+      "nama": "Plumbon"
+    },
+    {
+      "kode": "34.01.01.2007",
+      "nama": "Kedundang"
+    },
+    {
+      "kode": "34.01.01.2008",
+      "nama": "Demen"
+    },
+    {
+      "kode": "34.01.01.2009",
+      "nama": "Kulur"
+    },
+    {
+      "kode": "34.01.01.2010",
+      "nama": "Kaligintung"
+    },
+    {
+      "kode": "34.01.01.2011",
+      "nama": "Temon Wetan"
+    },
+    {
+      "kode": "34.01.01.2012",
+      "nama": "Temon Kulon"
+    },
+    {
+      "kode": "34.01.01.2013",
+      "nama": "Kebonrejo"
+    },
+    {
+      "kode": "34.01.01.2014",
+      "nama": "Janten"
+    },
+    {
+      "kode": "34.01.01.2015",
+      "nama": "Karangwuluh"
+    },
+    {
+      "kode": "34.01.02.1008",
+      "nama": "Wates"
+    },
+    {
+      "kode": "34.01.02.2001",
+      "nama": "Karangwuni"
+    },
+    {
+      "kode": "34.01.02.2002",
+      "nama": "Sogan"
+    },
+    {
+      "kode": "34.01.02.2003",
+      "nama": "Kulwaru"
+    },
+    {
+      "kode": "34.01.02.2004",
+      "nama": "Ngestiharjo"
+    },
+    {
+      "kode": "34.01.02.2005",
+      "nama": "Bendungan"
+    },
+    {
+      "kode": "34.01.02.2006",
+      "nama": "Triharjo"
+    },
+    {
+      "kode": "34.01.02.2007",
+      "nama": "Giripeni"
+    },
+    {
+      "kode": "34.01.03.2001",
+      "nama": "Garongan"
+    },
+    {
+      "kode": "34.01.03.2002",
+      "nama": "Pleret"
+    },
+    {
+      "kode": "34.01.03.2003",
+      "nama": "Bugel"
+    },
+    {
+      "kode": "34.01.03.2004",
+      "nama": "Kanoman"
+    },
+    {
+      "kode": "34.01.03.2005",
+      "nama": "Depok"
+    },
+    {
+      "kode": "34.01.03.2006",
+      "nama": "Bojong"
+    },
+    {
+      "kode": "34.01.03.2007",
+      "nama": "Tayuban"
+    },
+    {
+      "kode": "34.01.03.2008",
+      "nama": "Gotakan"
+    },
+    {
+      "kode": "34.01.03.2009",
+      "nama": "Panjatan"
+    },
+    {
+      "kode": "34.01.03.2010",
+      "nama": "Cerme"
+    },
+    {
+      "kode": "34.01.03.2011",
+      "nama": "Krembangan"
+    },
+    {
+      "kode": "34.01.04.2001",
+      "nama": "Banaran"
+    },
+    {
+      "kode": "34.01.04.2002",
+      "nama": "Kranggan"
+    },
+    {
+      "kode": "34.01.04.2003",
+      "nama": "Nomporejo"
+    },
+    {
+      "kode": "34.01.04.2004",
+      "nama": "Karangsewu"
+    },
+    {
+      "kode": "34.01.04.2005",
+      "nama": "Tirtorahayu"
+    },
+    {
+      "kode": "34.01.04.2006",
+      "nama": "Pandowan"
+    },
+    {
+      "kode": "34.01.04.2007",
+      "nama": "Brosot"
+    },
+    {
+      "kode": "34.01.05.2001",
+      "nama": "Wahyuharjo"
+    },
+    {
+      "kode": "34.01.05.2002",
+      "nama": "Bumirejo"
+    },
+    {
+      "kode": "34.01.05.2003",
+      "nama": "Jatirejo"
+    },
+    {
+      "kode": "34.01.05.2004",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "34.01.05.2005",
+      "nama": "Gulurejo"
+    },
+    {
+      "kode": "34.01.05.2006",
+      "nama": "Ngentakrejo"
+    },
+    {
+      "kode": "34.01.06.2001",
+      "nama": "Demangrejo"
+    },
+    {
+      "kode": "34.01.06.2002",
+      "nama": "Srikayangan"
+    },
+    {
+      "kode": "34.01.06.2003",
+      "nama": "Tuksono"
+    },
+    {
+      "kode": "34.01.06.2004",
+      "nama": "Salamrejo"
+    },
+    {
+      "kode": "34.01.06.2005",
+      "nama": "Sukoreno"
+    },
+    {
+      "kode": "34.01.06.2006",
+      "nama": "Kaliagung"
+    },
+    {
+      "kode": "34.01.06.2007",
+      "nama": "Sentolo"
+    },
+    {
+      "kode": "34.01.06.2008",
+      "nama": "Banguncipto"
+    },
+    {
+      "kode": "34.01.07.2001",
+      "nama": "Tawangsari"
+    },
+    {
+      "kode": "34.01.07.2002",
+      "nama": "Karangsari"
+    },
+    {
+      "kode": "34.01.07.2003",
+      "nama": "Kedungsari"
+    },
+    {
+      "kode": "34.01.07.2004",
+      "nama": "Margosari"
+    },
+    {
+      "kode": "34.01.07.2005",
+      "nama": "Pengasih"
+    },
+    {
+      "kode": "34.01.07.2006",
+      "nama": "Sendangsari"
+    },
+    {
+      "kode": "34.01.07.2007",
+      "nama": "Sidomulyo"
+    },
+    {
+      "kode": "34.01.08.2001",
+      "nama": "Hargomulyo"
+    },
+    {
+      "kode": "34.01.08.2002",
+      "nama": "Hargorejo"
+    },
+    {
+      "kode": "34.01.08.2003",
+      "nama": "Hargowilis"
+    },
+    {
+      "kode": "34.01.08.2004",
+      "nama": "Kalirejo"
+    },
+    {
+      "kode": "34.01.08.2005",
+      "nama": "Hargotirto"
+    },
+    {
+      "kode": "34.01.09.2001",
+      "nama": "Jatimulyo"
+    },
+    {
+      "kode": "34.01.09.2002",
+      "nama": "Giripurwo"
+    },
+    {
+      "kode": "34.01.09.2003",
+      "nama": "Pendoworejo"
+    },
+    {
+      "kode": "34.01.09.2004",
+      "nama": "Purwosari"
+    },
+    {
+      "kode": "34.01.10.2001",
+      "nama": "Banyuroto"
+    },
+    {
+      "kode": "34.01.10.2002",
+      "nama": "Donomulyo"
+    },
+    {
+      "kode": "34.01.10.2003",
+      "nama": "Wijimulyo"
+    },
+    {
+      "kode": "34.01.10.2004",
+      "nama": "Tanjungharjo"
+    },
+    {
+      "kode": "34.01.10.2005",
+      "nama": "Jatisarono"
+    },
+    {
+      "kode": "34.01.10.2006",
+      "nama": "Kembang"
+    },
+    {
+      "kode": "34.01.11.2001",
+      "nama": "Kebonharjo"
+    },
+    {
+      "kode": "34.01.11.2002",
+      "nama": "Banjarsari"
+    },
+    {
+      "kode": "34.01.11.2003",
+      "nama": "Purwoharjo"
+    },
+    {
+      "kode": "34.01.11.2004",
+      "nama": "Sidoharjo"
+    },
+    {
+      "kode": "34.01.11.2005",
+      "nama": "Gerbosari"
+    },
+    {
+      "kode": "34.01.11.2006",
+      "nama": "Ngargosari"
+    },
+    {
+      "kode": "34.01.11.2007",
+      "nama": "Pagerharjo"
+    },
+    {
+      "kode": "34.01.12.2001",
+      "nama": "Banjararum"
+    },
+    {
+      "kode": "34.01.12.2002",
+      "nama": "Banjarasri"
+    },
+    {
+      "kode": "34.01.12.2003",
+      "nama": "Banjarharjo"
+    },
+    {
+      "kode": "34.01.12.2004",
+      "nama": "Banjaroyo"
+    },
+    {
+      "kode": "34.02.01.2001",
+      "nama": "Poncosari"
+    },
+    {
+      "kode": "34.02.01.2002",
+      "nama": "Trimurti"
+    },
+    {
+      "kode": "34.02.02.2001",
+      "nama": "Gadingsari"
+    },
+    {
+      "kode": "34.02.02.2002",
+      "nama": "Gadingharjo"
+    },
+    {
+      "kode": "34.02.02.2003",
+      "nama": "Srigading"
+    },
+    {
+      "kode": "34.02.02.2004",
+      "nama": "Murtigading"
+    },
+    {
+      "kode": "34.02.03.2001",
+      "nama": "Tirtomulyo"
+    },
+    {
+      "kode": "34.02.03.2002",
+      "nama": "Parangtritis"
+    },
+    {
+      "kode": "34.02.03.2003",
+      "nama": "Donotirto"
+    },
+    {
+      "kode": "34.02.03.2004",
+      "nama": "Tirtosari"
+    },
+    {
+      "kode": "34.02.03.2005",
+      "nama": "Tirtohargo"
+    },
+    {
+      "kode": "34.02.04.2001",
+      "nama": "Seloharjo"
+    },
+    {
+      "kode": "34.02.04.2002",
+      "nama": "Panjangrejo"
+    },
+    {
+      "kode": "34.02.04.2003",
+      "nama": "Srihardono"
+    },
+    {
+      "kode": "34.02.05.2001",
+      "nama": "Sidomulyo"
+    },
+    {
+      "kode": "34.02.05.2002",
+      "nama": "Mulyodadi"
+    },
+    {
+      "kode": "34.02.05.2003",
+      "nama": "Sumbermulyo"
+    },
+    {
+      "kode": "34.02.06.2001",
+      "nama": "Caturharjo"
+    },
+    {
+      "kode": "34.02.06.2002",
+      "nama": "Triharjo"
+    },
+    {
+      "kode": "34.02.06.2003",
+      "nama": "Gilangharjo"
+    },
+    {
+      "kode": "34.02.06.2004",
+      "nama": "Wijirejo"
+    },
+    {
+      "kode": "34.02.07.2001",
+      "nama": "Triwidadi"
+    },
+    {
+      "kode": "34.02.07.2002",
+      "nama": "Sendangsari"
+    },
+    {
+      "kode": "34.02.07.2003",
+      "nama": "Guwosari"
+    },
+    {
+      "kode": "34.02.08.2001",
+      "nama": "Palbapang"
+    },
+    {
+      "kode": "34.02.08.2002",
+      "nama": "Ringinharjo"
+    },
+    {
+      "kode": "34.02.08.2003",
+      "nama": "Bantul"
+    },
+    {
+      "kode": "34.02.08.2004",
+      "nama": "Trirenggo"
+    },
+    {
+      "kode": "34.02.08.2005",
+      "nama": "Sabdodadi"
+    },
+    {
+      "kode": "34.02.09.2001",
+      "nama": "Patalan"
+    },
+    {
+      "kode": "34.02.09.2002",
+      "nama": "Canden"
+    },
+    {
+      "kode": "34.02.09.2003",
+      "nama": "Sumberagung"
+    },
+    {
+      "kode": "34.02.09.2004",
+      "nama": "Trimulyo"
+    },
+    {
+      "kode": "34.02.10.2001",
+      "nama": "Selopamioro"
+    },
+    {
+      "kode": "34.02.10.2002",
+      "nama": "Sriharjo"
+    },
+    {
+      "kode": "34.02.10.2003",
+      "nama": "Wukirsari"
+    },
+    {
+      "kode": "34.02.10.2004",
+      "nama": "Kebonagung"
+    },
+    {
+      "kode": "34.02.10.2005",
+      "nama": "Karangtengah"
+    },
+    {
+      "kode": "34.02.10.2006",
+      "nama": "Girirejo"
+    },
+    {
+      "kode": "34.02.10.2007",
+      "nama": "Karangtalun"
+    },
+    {
+      "kode": "34.02.10.2008",
+      "nama": "Imogiri"
+    },
+    {
+      "kode": "34.02.11.2001",
+      "nama": "Mangunan"
+    },
+    {
+      "kode": "34.02.11.2002",
+      "nama": "Muntuk"
+    },
+    {
+      "kode": "34.02.11.2003",
+      "nama": "Dlingo"
+    },
+    {
+      "kode": "34.02.11.2004",
+      "nama": "Temuwuh"
+    },
+    {
+      "kode": "34.02.11.2005",
+      "nama": "Terong"
+    },
+    {
+      "kode": "34.02.11.2006",
+      "nama": "Jatimulyo"
+    },
+    {
+      "kode": "34.02.12.2001",
+      "nama": "Baturetno"
+    },
+    {
+      "kode": "34.02.12.2002",
+      "nama": "Banguntapan"
+    },
+    {
+      "kode": "34.02.12.2003",
+      "nama": "Jagalan"
+    },
+    {
+      "kode": "34.02.12.2004",
+      "nama": "Singosaren"
+    },
+    {
+      "kode": "34.02.12.2005",
+      "nama": "Jambidan"
+    },
+    {
+      "kode": "34.02.12.2006",
+      "nama": "Potorono"
+    },
+    {
+      "kode": "34.02.12.2007",
+      "nama": "Tamanan"
+    },
+    {
+      "kode": "34.02.12.2008",
+      "nama": "Wirokerten"
+    },
+    {
+      "kode": "34.02.13.2001",
+      "nama": "Wonokromo"
+    },
+    {
+      "kode": "34.02.13.2002",
+      "nama": "Pleret"
+    },
+    {
+      "kode": "34.02.13.2003",
+      "nama": "Segoroyoso"
+    },
+    {
+      "kode": "34.02.13.2004",
+      "nama": "Bawuran"
+    },
+    {
+      "kode": "34.02.13.2005",
+      "nama": "Wonolelo"
+    },
+    {
+      "kode": "34.02.14.2001",
+      "nama": "Sitimulyo"
+    },
+    {
+      "kode": "34.02.14.2002",
+      "nama": "Srimulyo"
+    },
+    {
+      "kode": "34.02.14.2003",
+      "nama": "Srimartani"
+    },
+    {
+      "kode": "34.02.15.2001",
+      "nama": "Pendowoharjo"
+    },
+    {
+      "kode": "34.02.15.2002",
+      "nama": "Timbulharjo"
+    },
+    {
+      "kode": "34.02.15.2003",
+      "nama": "Bangunharjo"
+    },
+    {
+      "kode": "34.02.15.2004",
+      "nama": "Panggungharjo"
+    },
+    {
+      "kode": "34.02.16.2001",
+      "nama": "Bangunjiwo"
+    },
+    {
+      "kode": "34.02.16.2002",
+      "nama": "Tirtonirmolo"
+    },
+    {
+      "kode": "34.02.16.2003",
+      "nama": "Tamantirto"
+    },
+    {
+      "kode": "34.02.16.2004",
+      "nama": "Ngestiharjo"
+    },
+    {
+      "kode": "34.02.17.2001",
+      "nama": "Argodadi"
+    },
+    {
+      "kode": "34.02.17.2002",
+      "nama": "Argorejo"
+    },
+    {
+      "kode": "34.02.17.2003",
+      "nama": "Argosari"
+    },
+    {
+      "kode": "34.02.17.2004",
+      "nama": "Argomulyo"
+    },
+    {
+      "kode": "34.03.01.2001",
+      "nama": "Wonosari"
+    },
+    {
+      "kode": "34.03.01.2002",
+      "nama": "Kepek"
+    },
+    {
+      "kode": "34.03.01.2003",
+      "nama": "Piyaman"
+    },
+    {
+      "kode": "34.03.01.2004",
+      "nama": "Gari"
+    },
+    {
+      "kode": "34.03.01.2005",
+      "nama": "Karangtengah"
+    },
+    {
+      "kode": "34.03.01.2006",
+      "nama": "Selang"
+    },
+    {
+      "kode": "34.03.01.2007",
+      "nama": "Baleharjo"
+    },
+    {
+      "kode": "34.03.01.2008",
+      "nama": "Siraman"
+    },
+    {
+      "kode": "34.03.01.2009",
+      "nama": "Pulutan"
+    },
+    {
+      "kode": "34.03.01.2010",
+      "nama": "Wareng"
+    },
+    {
+      "kode": "34.03.01.2011",
+      "nama": "Duwet"
+    },
+    {
+      "kode": "34.03.01.2012",
+      "nama": "Mulo"
+    },
+    {
+      "kode": "34.03.01.2013",
+      "nama": "Wunung"
+    },
+    {
+      "kode": "34.03.01.2014",
+      "nama": "Karangrejek"
+    },
+    {
+      "kode": "34.03.02.2001",
+      "nama": "Natah"
+    },
+    {
+      "kode": "34.03.02.2002",
+      "nama": "Pilangrejo"
+    },
+    {
+      "kode": "34.03.02.2003",
+      "nama": "Kedungpoh"
+    },
+    {
+      "kode": "34.03.02.2004",
+      "nama": "Pengkol"
+    },
+    {
+      "kode": "34.03.02.2005",
+      "nama": "Kedungkeris"
+    },
+    {
+      "kode": "34.03.02.2006",
+      "nama": "Nglipar"
+    },
+    {
+      "kode": "34.03.02.2007",
+      "nama": "Katongan"
+    },
+    {
+      "kode": "34.03.03.2001",
+      "nama": "Banyusoco"
+    },
+    {
+      "kode": "34.03.03.2002",
+      "nama": "Plembutan"
+    },
+    {
+      "kode": "34.03.03.2003",
+      "nama": "Bleberan"
+    },
+    {
+      "kode": "34.03.03.2004",
+      "nama": "Getas"
+    },
+    {
+      "kode": "34.03.03.2005",
+      "nama": "Dengok"
+    },
+    {
+      "kode": "34.03.03.2006",
+      "nama": "Ngunut"
+    },
+    {
+      "kode": "34.03.03.2007",
+      "nama": "Playen"
+    },
+    {
+      "kode": "34.03.03.2008",
+      "nama": "Ngawu"
+    },
+    {
+      "kode": "34.03.03.2009",
+      "nama": "Bandung"
+    },
+    {
+      "kode": "34.03.03.2010",
+      "nama": "Logandeng"
+    },
+    {
+      "kode": "34.03.03.2011",
+      "nama": "Gading"
+    },
+    {
+      "kode": "34.03.03.2012",
+      "nama": "Banaran"
+    },
+    {
+      "kode": "34.03.03.2013",
+      "nama": "Ngleri"
+    },
+    {
+      "kode": "34.03.04.2001",
+      "nama": "Bunder"
+    },
+    {
+      "kode": "34.03.04.2002",
+      "nama": "Beji"
+    },
+    {
+      "kode": "34.03.04.2003",
+      "nama": "Pengkok"
+    },
+    {
+      "kode": "34.03.04.2004",
+      "nama": "Semoyo"
+    },
+    {
+      "kode": "34.03.04.2005",
+      "nama": "Salam"
+    },
+    {
+      "kode": "34.03.04.2006",
+      "nama": "Patuk"
+    },
+    {
+      "kode": "34.03.04.2007",
+      "nama": "Ngoro-oro"
+    },
+    {
+      "kode": "34.03.04.2008",
+      "nama": "Nglanggeran"
+    },
+    {
+      "kode": "34.03.04.2009",
+      "nama": "Putat"
+    },
+    {
+      "kode": "34.03.04.2010",
+      "nama": "Nglegi"
+    },
+    {
+      "kode": "34.03.04.2011",
+      "nama": "Terbah"
+    },
+    {
+      "kode": "34.03.05.2001",
+      "nama": "Sodo"
+    },
+    {
+      "kode": "34.03.05.2002",
+      "nama": "Pampang"
+    },
+    {
+      "kode": "34.03.05.2003",
+      "nama": "Grogol"
+    },
+    {
+      "kode": "34.03.05.2004",
+      "nama": "Karangduwet"
+    },
+    {
+      "kode": "34.03.05.2005",
+      "nama": "Karangasem"
+    },
+    {
+      "kode": "34.03.05.2006",
+      "nama": "Mulusan"
+    },
+    {
+      "kode": "34.03.05.2007",
+      "nama": "Giring"
+    },
+    {
+      "kode": "34.03.06.2001",
+      "nama": "Girikarto"
+    },
+    {
+      "kode": "34.03.06.2002",
+      "nama": "Girisekar"
+    },
+    {
+      "kode": "34.03.06.2003",
+      "nama": "Girimulyo"
+    },
+    {
+      "kode": "34.03.06.2004",
+      "nama": "Giriwungu"
+    },
+    {
+      "kode": "34.03.06.2005",
+      "nama": "Giriharjo"
+    },
+    {
+      "kode": "34.03.06.2006",
+      "nama": "Girisuko"
+    },
+    {
+      "kode": "34.03.07.2001",
+      "nama": "Giripanggung"
+    },
+    {
+      "kode": "34.03.07.2002",
+      "nama": "Sumberwungu"
+    },
+    {
+      "kode": "34.03.07.2003",
+      "nama": "Sidoharjo"
+    },
+    {
+      "kode": "34.03.07.2004",
+      "nama": "Tepus"
+    },
+    {
+      "kode": "34.03.07.2005",
+      "nama": "Purwodadi"
+    },
+    {
+      "kode": "34.03.08.2001",
+      "nama": "Ngeposari"
+    },
+    {
+      "kode": "34.03.08.2002",
+      "nama": "Semanu"
+    },
+    {
+      "kode": "34.03.08.2003",
+      "nama": "Pacarejo"
+    },
+    {
+      "kode": "34.03.08.2004",
+      "nama": "Candirejo"
+    },
+    {
+      "kode": "34.03.08.2005",
+      "nama": "Dadapayu"
+    },
+    {
+      "kode": "34.03.09.2001",
+      "nama": "Bejiharjo"
+    },
+    {
+      "kode": "34.03.09.2002",
+      "nama": "Wiladeg"
+    },
+    {
+      "kode": "34.03.09.2003",
+      "nama": "Bendungan"
+    },
+    {
+      "kode": "34.03.09.2004",
+      "nama": "Kelor"
+    },
+    {
+      "kode": "34.03.09.2005",
+      "nama": "Ngipak"
+    },
+    {
+      "kode": "34.03.09.2006",
+      "nama": "Karangmojo"
+    },
+    {
+      "kode": "34.03.09.2007",
+      "nama": "Gedangrejo"
+    },
+    {
+      "kode": "34.03.09.2008",
+      "nama": "Ngawis"
+    },
+    {
+      "kode": "34.03.09.2009",
+      "nama": "Jatiayu"
+    },
+    {
+      "kode": "34.03.10.2001",
+      "nama": "Umbulrejo"
+    },
+    {
+      "kode": "34.03.10.2002",
+      "nama": "Sawahan"
+    },
+    {
+      "kode": "34.03.10.2003",
+      "nama": "Tambakromo"
+    },
+    {
+      "kode": "34.03.10.2004",
+      "nama": "Kenteng"
+    },
+    {
+      "kode": "34.03.10.2005",
+      "nama": "Sumbergiri"
+    },
+    {
+      "kode": "34.03.10.2006",
+      "nama": "Genjahan"
+    },
+    {
+      "kode": "34.03.10.2007",
+      "nama": "Ponjong"
+    },
+    {
+      "kode": "34.03.10.2008",
+      "nama": "Karangasem"
+    },
+    {
+      "kode": "34.03.10.2009",
+      "nama": "Bedoyo"
+    },
+    {
+      "kode": "34.03.10.2010",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "34.03.10.2011",
+      "nama": "Gombang"
+    },
+    {
+      "kode": "34.03.11.2001",
+      "nama": "Bohol"
+    },
+    {
+      "kode": "34.03.11.2002",
+      "nama": "Pringombo"
+    },
+    {
+      "kode": "34.03.11.2003",
+      "nama": "Botodayaan"
+    },
+    {
+      "kode": "34.03.11.2004",
+      "nama": "Petir"
+    },
+    {
+      "kode": "34.03.11.2005",
+      "nama": "Pucanganom"
+    },
+    {
+      "kode": "34.03.11.2006",
+      "nama": "Semugih"
+    },
+    {
+      "kode": "34.03.11.2007",
+      "nama": "Melikan"
+    },
+    {
+      "kode": "34.03.11.2008",
+      "nama": "Karangwuni"
+    },
+    {
+      "kode": "34.03.12.2001",
+      "nama": "Kalitekuk"
+    },
+    {
+      "kode": "34.03.12.2002",
+      "nama": "Kemejing"
+    },
+    {
+      "kode": "34.03.12.2003",
+      "nama": "Bulurejo"
+    },
+    {
+      "kode": "34.03.12.2004",
+      "nama": "Sumberejo"
+    },
+    {
+      "kode": "34.03.12.2005",
+      "nama": "Bendung"
+    },
+    {
+      "kode": "34.03.12.2006",
+      "nama": "Candirejo"
+    },
+    {
+      "kode": "34.03.12.2007",
+      "nama": "Rejosari"
+    },
+    {
+      "kode": "34.03.12.2008",
+      "nama": "Karangsari"
+    },
+    {
+      "kode": "34.03.12.2009",
+      "nama": "Pundungsari"
+    },
+    {
+      "kode": "34.03.12.2010",
+      "nama": "Semin"
+    },
+    {
+      "kode": "34.03.13.2001",
+      "nama": "Tancep"
+    },
+    {
+      "kode": "34.03.13.2002",
+      "nama": "Sambirejo"
+    },
+    {
+      "kode": "34.03.13.2003",
+      "nama": "Jurangjero"
+    },
+    {
+      "kode": "34.03.13.2004",
+      "nama": "Kampung"
+    },
+    {
+      "kode": "34.03.13.2005",
+      "nama": "Beji"
+    },
+    {
+      "kode": "34.03.13.2006",
+      "nama": "Watusigar"
+    },
+    {
+      "kode": "34.03.14.2001",
+      "nama": "Hargomulyo"
+    },
+    {
+      "kode": "34.03.14.2002",
+      "nama": "Mertelu"
+    },
+    {
+      "kode": "34.03.14.2003",
+      "nama": "Watugajah"
+    },
+    {
+      "kode": "34.03.14.2004",
+      "nama": "Sampang"
+    },
+    {
+      "kode": "34.03.14.2005",
+      "nama": "Serut"
+    },
+    {
+      "kode": "34.03.14.2006",
+      "nama": "Ngalang"
+    },
+    {
+      "kode": "34.03.14.2007",
+      "nama": "Tegalrejo"
+    },
+    {
+      "kode": "34.03.15.2001",
+      "nama": "Krambilsawit"
+    },
+    {
+      "kode": "34.03.15.2002",
+      "nama": "Ngloro"
+    },
+    {
+      "kode": "34.03.15.2003",
+      "nama": "Jetis"
+    },
+    {
+      "kode": "34.03.15.2004",
+      "nama": "Kepek"
+    },
+    {
+      "kode": "34.03.15.2005",
+      "nama": "Kanigoro"
+    },
+    {
+      "kode": "34.03.15.2006",
+      "nama": "Monggol"
+    },
+    {
+      "kode": "34.03.15.2007",
+      "nama": "Planjan"
+    },
+    {
+      "kode": "34.03.16.2001",
+      "nama": "Balong"
+    },
+    {
+      "kode": "34.03.16.2002",
+      "nama": "Jepitu"
+    },
+    {
+      "kode": "34.03.16.2003",
+      "nama": "Karangawen"
+    },
+    {
+      "kode": "34.03.16.2004",
+      "nama": "Nglindur"
+    },
+    {
+      "kode": "34.03.16.2005",
+      "nama": "Jerukwudel"
+    },
+    {
+      "kode": "34.03.16.2006",
+      "nama": "Tileng"
+    },
+    {
+      "kode": "34.03.16.2007",
+      "nama": "Pucung"
+    },
+    {
+      "kode": "34.03.16.2008",
+      "nama": "Songbanyu"
+    },
+    {
+      "kode": "34.03.17.2001",
+      "nama": "Hargosari"
+    },
+    {
+      "kode": "34.03.17.2002",
+      "nama": "Kemiri"
+    },
+    {
+      "kode": "34.03.17.2003",
+      "nama": "Kemadang"
+    },
+    {
+      "kode": "34.03.17.2004",
+      "nama": "Banjarejo"
+    },
+    {
+      "kode": "34.03.17.2005",
+      "nama": "Ngestirejo"
+    },
+    {
+      "kode": "34.03.18.2001",
+      "nama": "Giripurwo"
+    },
+    {
+      "kode": "34.03.18.2002",
+      "nama": "Giricahyo"
+    },
+    {
+      "kode": "34.03.18.2003",
+      "nama": "Girijati"
+    },
+    {
+      "kode": "34.03.18.2004",
+      "nama": "Giriasih"
+    },
+    {
+      "kode": "34.03.18.2005",
+      "nama": "Giritirto"
+    },
+    {
+      "kode": "34.04.01.2001",
+      "nama": "Balecatur"
+    },
+    {
+      "kode": "34.04.01.2002",
+      "nama": "Ambarketawang"
+    },
+    {
+      "kode": "34.04.01.2003",
+      "nama": "Banyuraden"
+    },
+    {
+      "kode": "34.04.01.2004",
+      "nama": "Nogotirto"
+    },
+    {
+      "kode": "34.04.01.2005",
+      "nama": "Trihanggo"
+    },
+    {
+      "kode": "34.04.02.2001",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "34.04.02.2002",
+      "nama": "Sidoluhur"
+    },
+    {
+      "kode": "34.04.02.2003",
+      "nama": "Sidomulyo"
+    },
+    {
+      "kode": "34.04.02.2004",
+      "nama": "Sidoagung"
+    },
+    {
+      "kode": "34.04.02.2005",
+      "nama": "Sidokarto"
+    },
+    {
+      "kode": "34.04.02.2006",
+      "nama": "Sidoarum"
+    },
+    {
+      "kode": "34.04.02.2007",
+      "nama": "Sidomoyo"
+    },
+    {
+      "kode": "34.04.03.2001",
+      "nama": "Sumberrahayu"
+    },
+    {
+      "kode": "34.04.03.2002",
+      "nama": "Sumbersari"
+    },
+    {
+      "kode": "34.04.03.2003",
+      "nama": "Sumberagung"
+    },
+    {
+      "kode": "34.04.03.2004",
+      "nama": "Sumberarum"
+    },
+    {
+      "kode": "34.04.04.2001",
+      "nama": "Sendangarum"
+    },
+    {
+      "kode": "34.04.04.2002",
+      "nama": "Sendangmulyo"
+    },
+    {
+      "kode": "34.04.04.2003",
+      "nama": "Sendangagung"
+    },
+    {
+      "kode": "34.04.04.2004",
+      "nama": "Sendangsari"
+    },
+    {
+      "kode": "34.04.04.2005",
+      "nama": "Sendangrejo"
+    },
+    {
+      "kode": "34.04.05.2001",
+      "nama": "Margoluwih"
+    },
+    {
+      "kode": "34.04.05.2002",
+      "nama": "Margodadi"
+    },
+    {
+      "kode": "34.04.05.2003",
+      "nama": "Margokaton"
+    },
+    {
+      "kode": "34.04.05.2004",
+      "nama": "Margomulyo"
+    },
+    {
+      "kode": "34.04.05.2005",
+      "nama": "Margoagung"
+    },
+    {
+      "kode": "34.04.06.2001",
+      "nama": "Sinduadi"
+    },
+    {
+      "kode": "34.04.06.2002",
+      "nama": "Sendangadi"
+    },
+    {
+      "kode": "34.04.06.2003",
+      "nama": "Tlogoadi"
+    },
+    {
+      "kode": "34.04.06.2004",
+      "nama": "Tirtoadi"
+    },
+    {
+      "kode": "34.04.06.2005",
+      "nama": "Sumberadi"
+    },
+    {
+      "kode": "34.04.07.2001",
+      "nama": "Caturtunggal"
+    },
+    {
+      "kode": "34.04.07.2002",
+      "nama": "Maguwoharjo"
+    },
+    {
+      "kode": "34.04.07.2003",
+      "nama": "Condongcatur"
+    },
+    {
+      "kode": "34.04.08.2001",
+      "nama": "Sendangtirto"
+    },
+    {
+      "kode": "34.04.08.2002",
+      "nama": "Tegaltirto"
+    },
+    {
+      "kode": "34.04.08.2003",
+      "nama": "Kalitirto"
+    },
+    {
+      "kode": "34.04.08.2004",
+      "nama": "Jogotirto"
+    },
+    {
+      "kode": "34.04.09.2001",
+      "nama": "Sumberharjo"
+    },
+    {
+      "kode": "34.04.09.2002",
+      "nama": "Wukirharjo"
+    },
+    {
+      "kode": "34.04.09.2003",
+      "nama": "Gayamharjo"
+    },
+    {
+      "kode": "34.04.09.2004",
+      "nama": "Sambirejo"
+    },
+    {
+      "kode": "34.04.09.2005",
+      "nama": "Madurejo"
+    },
+    {
+      "kode": "34.04.09.2006",
+      "nama": "Bokoharjo"
+    },
+    {
+      "kode": "34.04.10.2001",
+      "nama": "Purwomartani"
+    },
+    {
+      "kode": "34.04.10.2002",
+      "nama": "Tirtomartani"
+    },
+    {
+      "kode": "34.04.10.2003",
+      "nama": "Tamanmartani"
+    },
+    {
+      "kode": "34.04.10.2004",
+      "nama": "Selomartani"
+    },
+    {
+      "kode": "34.04.11.2001",
+      "nama": "Sindumartani"
+    },
+    {
+      "kode": "34.04.11.2002",
+      "nama": "Bimomartani"
+    },
+    {
+      "kode": "34.04.11.2003",
+      "nama": "Widodomartani"
+    },
+    {
+      "kode": "34.04.11.2004",
+      "nama": "Wedomartani"
+    },
+    {
+      "kode": "34.04.11.2005",
+      "nama": "Umbulmartani"
+    },
+    {
+      "kode": "34.04.12.2001",
+      "nama": "Sariharjo"
+    },
+    {
+      "kode": "34.04.12.2002",
+      "nama": "Minomartani"
+    },
+    {
+      "kode": "34.04.12.2003",
+      "nama": "Sinduharjo"
+    },
+    {
+      "kode": "34.04.12.2004",
+      "nama": "Sukoharjo"
+    },
+    {
+      "kode": "34.04.12.2005",
+      "nama": "Sardonoharjo"
+    },
+    {
+      "kode": "34.04.12.2006",
+      "nama": "Donoharjo"
+    },
+    {
+      "kode": "34.04.13.2001",
+      "nama": "Caturharjo"
+    },
+    {
+      "kode": "34.04.13.2002",
+      "nama": "Triharjo"
+    },
+    {
+      "kode": "34.04.13.2003",
+      "nama": "Tridadi"
+    },
+    {
+      "kode": "34.04.13.2004",
+      "nama": "Pandowoharjo"
+    },
+    {
+      "kode": "34.04.13.2005",
+      "nama": "Trimulyo"
+    },
+    {
+      "kode": "34.04.14.2001",
+      "nama": "Banyurejo"
+    },
+    {
+      "kode": "34.04.14.2002",
+      "nama": "Tambakrejo"
+    },
+    {
+      "kode": "34.04.14.2003",
+      "nama": "Sumberrejo"
+    },
+    {
+      "kode": "34.04.14.2004",
+      "nama": "Pondokrejo"
+    },
+    {
+      "kode": "34.04.14.2005",
+      "nama": "Mororejo"
+    },
+    {
+      "kode": "34.04.14.2006",
+      "nama": "Margorejo"
+    },
+    {
+      "kode": "34.04.14.2007",
+      "nama": "Lumbungrejo"
+    },
+    {
+      "kode": "34.04.14.2008",
+      "nama": "Merdikorejo"
+    },
+    {
+      "kode": "34.04.15.2001",
+      "nama": "Bangunkerto"
+    },
+    {
+      "kode": "34.04.15.2002",
+      "nama": "Donokerto"
+    },
+    {
+      "kode": "34.04.15.2003",
+      "nama": "Girikerto"
+    },
+    {
+      "kode": "34.04.15.2004",
+      "nama": "Wonokerto"
+    },
+    {
+      "kode": "34.04.16.2001",
+      "nama": "Purwobinangun"
+    },
+    {
+      "kode": "34.04.16.2002",
+      "nama": "Candibinangun"
+    },
+    {
+      "kode": "34.04.16.2003",
+      "nama": "Harjobinangun"
+    },
+    {
+      "kode": "34.04.16.2004",
+      "nama": "Pakembinangun"
+    },
+    {
+      "kode": "34.04.16.2005",
+      "nama": "Hargobinangun"
+    },
+    {
+      "kode": "34.04.17.2001",
+      "nama": "Argomulyo"
+    },
+    {
+      "kode": "34.04.17.2002",
+      "nama": "Wukirsari"
+    },
+    {
+      "kode": "34.04.17.2003",
+      "nama": "Glagaharjo"
+    },
+    {
+      "kode": "34.04.17.2004",
+      "nama": "Kepuharjo"
+    },
+    {
+      "kode": "34.04.17.2005",
+      "nama": "Umbulharjo"
+    },
+    {
+      "kode": "34.71.01.1001",
+      "nama": "Kricak"
+    },
+    {
+      "kode": "34.71.01.1002",
+      "nama": "Karangwaru"
+    },
+    {
+      "kode": "34.71.01.1003",
+      "nama": "Tegalrejo"
+    },
+    {
+      "kode": "34.71.01.1004",
+      "nama": "Bener"
+    },
+    {
+      "kode": "34.71.02.1001",
+      "nama": "Bumijo"
+    },
+    {
+      "kode": "34.71.02.1002",
+      "nama": "Cokrodiningratan"
+    },
+    {
+      "kode": "34.71.02.1003",
+      "nama": "Gowongan"
+    },
+    {
+      "kode": "34.71.03.1001",
+      "nama": "Demangan"
+    },
+    {
+      "kode": "34.71.03.1002",
+      "nama": "Kotabaru"
+    },
+    {
+      "kode": "34.71.03.1003",
+      "nama": "Klitren"
+    },
+    {
+      "kode": "34.71.03.1004",
+      "nama": "Baciro"
+    },
+    {
+      "kode": "34.71.03.1005",
+      "nama": "Terban"
+    },
+    {
+      "kode": "34.71.04.1001",
+      "nama": "Suryatmajan"
+    },
+    {
+      "kode": "34.71.04.1002",
+      "nama": "Tegalpanggung"
+    },
+    {
+      "kode": "34.71.04.1003",
+      "nama": "Bausasran"
+    },
+    {
+      "kode": "34.71.05.1001",
+      "nama": "Sosromenduran"
+    },
+    {
+      "kode": "34.71.05.1002",
+      "nama": "Pringgokusuman"
+    },
+    {
+      "kode": "34.71.06.1001",
+      "nama": "Ngampilan"
+    },
+    {
+      "kode": "34.71.06.1002",
+      "nama": "Notoprajan"
+    },
+    {
+      "kode": "34.71.07.1001",
+      "nama": "Pakuncen"
+    },
+    {
+      "kode": "34.71.07.1002",
+      "nama": "Wirobrajan"
+    },
+    {
+      "kode": "34.71.07.1003",
+      "nama": "Patangpuluhan"
+    },
+    {
+      "kode": "34.71.08.1001",
+      "nama": "Gedongkiwo"
+    },
+    {
+      "kode": "34.71.08.1002",
+      "nama": "Suryodiningratan"
+    },
+    {
+      "kode": "34.71.08.1003",
+      "nama": "Mantrijeron"
+    },
+    {
+      "kode": "34.71.09.1001",
+      "nama": "Patehan"
+    },
+    {
+      "kode": "34.71.09.1002",
+      "nama": "Panembahan"
+    },
+    {
+      "kode": "34.71.09.1003",
+      "nama": "Kadipaten"
+    },
+    {
+      "kode": "34.71.10.1001",
+      "nama": "Ngupasan"
+    },
+    {
+      "kode": "34.71.10.1002",
+      "nama": "Prawirodirjan"
+    },
+    {
+      "kode": "34.71.11.1001",
+      "nama": "Purwokinanti"
+    },
+    {
+      "kode": "34.71.11.1002",
+      "nama": "Gunungketur"
+    },
+    {
+      "kode": "34.71.12.1001",
+      "nama": "Keparakan"
+    },
+    {
+      "kode": "34.71.12.1002",
+      "nama": "Wirogunan"
+    },
+    {
+      "kode": "34.71.12.1003",
+      "nama": "Brontokusuman"
+    },
+    {
+      "kode": "34.71.13.1001",
+      "nama": "Semaki"
+    },
+    {
+      "kode": "34.71.13.1002",
+      "nama": "Muja Muju"
+    },
+    {
+      "kode": "34.71.13.1003",
+      "nama": "Tahunan"
+    },
+    {
+      "kode": "34.71.13.1004",
+      "nama": "Warungboto"
+    },
+    {
+      "kode": "34.71.13.1005",
+      "nama": "Pandeyan"
+    },
+    {
+      "kode": "34.71.13.1006",
+      "nama": "Sorosutan"
+    },
+    {
+      "kode": "34.71.13.1007",
+      "nama": "Giwangan"
+    },
+    {
+      "kode": "34.71.14.1001",
+      "nama": "Rejowinangun"
+    },
+    {
+      "kode": "34.71.14.1002",
+      "nama": "Prenggan"
+    },
+    {
+      "kode": "34.71.14.1003",
+      "nama": "Purbayan"
+    }
+  ]
+}

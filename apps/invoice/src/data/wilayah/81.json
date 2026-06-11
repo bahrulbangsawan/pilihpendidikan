@@ -1,0 +1,5468 @@
+{
+  "kabupaten": [
+    {
+      "kode": "81.01",
+      "nama": "Kabupaten Maluku Tengah"
+    },
+    {
+      "kode": "81.02",
+      "nama": "Kabupaten Maluku Tenggara"
+    },
+    {
+      "kode": "81.03",
+      "nama": "Kabupaten Kepulauan Tanimbar"
+    },
+    {
+      "kode": "81.04",
+      "nama": "Kabupaten Buru"
+    },
+    {
+      "kode": "81.05",
+      "nama": "Kabupaten Seram Bagian Timur"
+    },
+    {
+      "kode": "81.06",
+      "nama": "Kabupaten Seram Bagian Barat"
+    },
+    {
+      "kode": "81.07",
+      "nama": "Kabupaten Kepulauan Aru"
+    },
+    {
+      "kode": "81.08",
+      "nama": "Kabupaten Maluku Barat Daya"
+    },
+    {
+      "kode": "81.09",
+      "nama": "Kabupaten Buru Selatan"
+    },
+    {
+      "kode": "81.71",
+      "nama": "Kota Ambon"
+    },
+    {
+      "kode": "81.72",
+      "nama": "Kota Tual"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "81.01.01",
+      "nama": "Amahai"
+    },
+    {
+      "kode": "81.01.02",
+      "nama": "Teon Nila Serua"
+    },
+    {
+      "kode": "81.01.06",
+      "nama": "Seram Utara"
+    },
+    {
+      "kode": "81.01.09",
+      "nama": "Banda"
+    },
+    {
+      "kode": "81.01.11",
+      "nama": "Tehoru"
+    },
+    {
+      "kode": "81.01.12",
+      "nama": "Saparua"
+    },
+    {
+      "kode": "81.01.13",
+      "nama": "Pulau Haruku"
+    },
+    {
+      "kode": "81.01.14",
+      "nama": "Salahutu"
+    },
+    {
+      "kode": "81.01.15",
+      "nama": "Leihitu"
+    },
+    {
+      "kode": "81.01.16",
+      "nama": "Nusa Laut"
+    },
+    {
+      "kode": "81.01.17",
+      "nama": "Kota Masohi"
+    },
+    {
+      "kode": "81.01.20",
+      "nama": "Seram Utara Barat"
+    },
+    {
+      "kode": "81.01.21",
+      "nama": "Teluk Elpaputih"
+    },
+    {
+      "kode": "81.01.22",
+      "nama": "Leihitu Barat"
+    },
+    {
+      "kode": "81.01.23",
+      "nama": "Telutih"
+    },
+    {
+      "kode": "81.01.24",
+      "nama": "Seram Utara Timur Seti"
+    },
+    {
+      "kode": "81.01.25",
+      "nama": "Seram Utara Timur Kobi"
+    },
+    {
+      "kode": "81.01.26",
+      "nama": "Saparua Timur"
+    },
+    {
+      "kode": "81.02.01",
+      "nama": "Kei Kecil"
+    },
+    {
+      "kode": "81.02.03",
+      "nama": "Kei Besar"
+    },
+    {
+      "kode": "81.02.04",
+      "nama": "Kei Besar Selatan"
+    },
+    {
+      "kode": "81.02.05",
+      "nama": "Kei Besar Utara Timur"
+    },
+    {
+      "kode": "81.02.13",
+      "nama": "Kei Kecil Timur"
+    },
+    {
+      "kode": "81.02.14",
+      "nama": "Kei Kecil Barat"
+    },
+    {
+      "kode": "81.02.15",
+      "nama": "Manyeuw"
+    },
+    {
+      "kode": "81.02.16",
+      "nama": "Hoat Sorbay"
+    },
+    {
+      "kode": "81.02.17",
+      "nama": "Kei Besar Utara Barat"
+    },
+    {
+      "kode": "81.02.18",
+      "nama": "Kei Besar Selatan Barat"
+    },
+    {
+      "kode": "81.02.19",
+      "nama": "Kei Kecil Timur Selatan"
+    },
+    {
+      "kode": "81.03.01",
+      "nama": "Tanimbar Selatan"
+    },
+    {
+      "kode": "81.03.02",
+      "nama": "Selaru"
+    },
+    {
+      "kode": "81.03.03",
+      "nama": "Wertamrian"
+    },
+    {
+      "kode": "81.03.04",
+      "nama": "Wermaktian"
+    },
+    {
+      "kode": "81.03.05",
+      "nama": "Tanimbar Utara"
+    },
+    {
+      "kode": "81.03.06",
+      "nama": "Fordata"
+    },
+    {
+      "kode": "81.03.07",
+      "nama": "Wuar Labobar"
+    },
+    {
+      "kode": "81.03.08",
+      "nama": "Kormomolin"
+    },
+    {
+      "kode": "81.03.09",
+      "nama": "Nirunmas"
+    },
+    {
+      "kode": "81.03.18",
+      "nama": "Molu Maru"
+    },
+    {
+      "kode": "81.04.01",
+      "nama": "Namlea"
+    },
+    {
+      "kode": "81.04.02",
+      "nama": "Air Buaya"
+    },
+    {
+      "kode": "81.04.03",
+      "nama": "Waeapo"
+    },
+    {
+      "kode": "81.04.06",
+      "nama": "Waplau"
+    },
+    {
+      "kode": "81.04.10",
+      "nama": "Batabual"
+    },
+    {
+      "kode": "81.04.11",
+      "nama": "Lolong Guba"
+    },
+    {
+      "kode": "81.04.12",
+      "nama": "Waelata"
+    },
+    {
+      "kode": "81.04.13",
+      "nama": "Fena Leisela"
+    },
+    {
+      "kode": "81.04.14",
+      "nama": "Teluk Kaiely"
+    },
+    {
+      "kode": "81.04.15",
+      "nama": "Lilialy"
+    },
+    {
+      "kode": "81.05.01",
+      "nama": "Bula"
+    },
+    {
+      "kode": "81.05.02",
+      "nama": "Seram Timur"
+    },
+    {
+      "kode": "81.05.03",
+      "nama": "Werinama"
+    },
+    {
+      "kode": "81.05.04",
+      "nama": "Pulau Gorom"
+    },
+    {
+      "kode": "81.05.05",
+      "nama": "Wakate"
+    },
+    {
+      "kode": "81.05.06",
+      "nama": "Tutuk Tolu"
+    },
+    {
+      "kode": "81.05.07",
+      "nama": "Siwalalat"
+    },
+    {
+      "kode": "81.05.08",
+      "nama": "Kilmury"
+    },
+    {
+      "kode": "81.05.09",
+      "nama": "Pulau Panjang"
+    },
+    {
+      "kode": "81.05.10",
+      "nama": "Teor"
+    },
+    {
+      "kode": "81.05.11",
+      "nama": "Gorom Timur"
+    },
+    {
+      "kode": "81.05.12",
+      "nama": "Bula Barat"
+    },
+    {
+      "kode": "81.05.13",
+      "nama": "Kian Darat"
+    },
+    {
+      "kode": "81.05.14",
+      "nama": "Siritaun Wida Timur"
+    },
+    {
+      "kode": "81.05.15",
+      "nama": "Teluk Waru"
+    },
+    {
+      "kode": "81.05.16",
+      "nama": "Ukar Sengan"
+    },
+    {
+      "kode": "81.06.01",
+      "nama": "Kairatu"
+    },
+    {
+      "kode": "81.06.02",
+      "nama": "Seram Barat"
+    },
+    {
+      "kode": "81.06.03",
+      "nama": "Taniwel"
+    },
+    {
+      "kode": "81.06.04",
+      "nama": "Huamual Belakang"
+    },
+    {
+      "kode": "81.06.05",
+      "nama": "Amalatu"
+    },
+    {
+      "kode": "81.06.06",
+      "nama": "Inamosol"
+    },
+    {
+      "kode": "81.06.07",
+      "nama": "Kairatu Barat"
+    },
+    {
+      "kode": "81.06.08",
+      "nama": "Huamual"
+    },
+    {
+      "kode": "81.06.09",
+      "nama": "Kepulauan Manipa"
+    },
+    {
+      "kode": "81.06.10",
+      "nama": "Taniwel Timur"
+    },
+    {
+      "kode": "81.06.11",
+      "nama": "Elpaputih"
+    },
+    {
+      "kode": "81.07.01",
+      "nama": "Pulau-Pulau Aru"
+    },
+    {
+      "kode": "81.07.02",
+      "nama": "Aru Selatan"
+    },
+    {
+      "kode": "81.07.03",
+      "nama": "Aru Tengah"
+    },
+    {
+      "kode": "81.07.04",
+      "nama": "Aru Utara"
+    },
+    {
+      "kode": "81.07.05",
+      "nama": "Aru Utara Timur Batuley"
+    },
+    {
+      "kode": "81.07.06",
+      "nama": "Sir-Sir"
+    },
+    {
+      "kode": "81.07.07",
+      "nama": "Aru Tengah Timur"
+    },
+    {
+      "kode": "81.07.08",
+      "nama": "Aru Tengah Selatan"
+    },
+    {
+      "kode": "81.07.09",
+      "nama": "Aru Selatan Timur"
+    },
+    {
+      "kode": "81.07.10",
+      "nama": "Aru Selatan Utara"
+    },
+    {
+      "kode": "81.08.01",
+      "nama": "Moa"
+    },
+    {
+      "kode": "81.08.02",
+      "nama": "Damer"
+    },
+    {
+      "kode": "81.08.03",
+      "nama": "Kepulauan Luang Sermata"
+    },
+    {
+      "kode": "81.08.04",
+      "nama": "Babar Barat"
+    },
+    {
+      "kode": "81.08.05",
+      "nama": "Pulau-pulau Babar Timur"
+    },
+    {
+      "kode": "81.08.06",
+      "nama": "Wetar Selatan"
+    },
+    {
+      "kode": "81.08.07",
+      "nama": "Kisar Selatan"
+    },
+    {
+      "kode": "81.08.08",
+      "nama": "Pulau Leti"
+    },
+    {
+      "kode": "81.08.09",
+      "nama": "Pulau Masela"
+    },
+    {
+      "kode": "81.08.10",
+      "nama": "Dawelor Dawera"
+    },
+    {
+      "kode": "81.08.11",
+      "nama": "Pulau Wetang"
+    },
+    {
+      "kode": "81.08.12",
+      "nama": "Pulau Lakor"
+    },
+    {
+      "kode": "81.08.13",
+      "nama": "Wetar Utara"
+    },
+    {
+      "kode": "81.08.14",
+      "nama": "Wetar Barat"
+    },
+    {
+      "kode": "81.08.15",
+      "nama": "Wetar Timur"
+    },
+    {
+      "kode": "81.08.16",
+      "nama": "Kepulauan Roma"
+    },
+    {
+      "kode": "81.08.17",
+      "nama": "Kisar Utara"
+    },
+    {
+      "kode": "81.09.01",
+      "nama": "Namrole"
+    },
+    {
+      "kode": "81.09.02",
+      "nama": "Waesama"
+    },
+    {
+      "kode": "81.09.03",
+      "nama": "Ambalau"
+    },
+    {
+      "kode": "81.09.04",
+      "nama": "Kepala Madan"
+    },
+    {
+      "kode": "81.09.05",
+      "nama": "Leksula"
+    },
+    {
+      "kode": "81.09.06",
+      "nama": "Fena Fafan"
+    },
+    {
+      "kode": "81.71.01",
+      "nama": "Nusaniwe"
+    },
+    {
+      "kode": "81.71.02",
+      "nama": "Sirimau"
+    },
+    {
+      "kode": "81.71.03",
+      "nama": "Baguala"
+    },
+    {
+      "kode": "81.71.04",
+      "nama": "Teluk Ambon"
+    },
+    {
+      "kode": "81.71.05",
+      "nama": "Leitimur Selatan"
+    },
+    {
+      "kode": "81.72.01",
+      "nama": "Pulau Dullah Utara"
+    },
+    {
+      "kode": "81.72.02",
+      "nama": "Pulau Dullah Selatan"
+    },
+    {
+      "kode": "81.72.03",
+      "nama": "Tayando Tam"
+    },
+    {
+      "kode": "81.72.04",
+      "nama": "Pulau-Pulau Kur"
+    },
+    {
+      "kode": "81.72.05",
+      "nama": "Kur Selatan"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "81.01.01.1009",
+      "nama": "Hollo"
+    },
+    {
+      "kode": "81.01.01.2001",
+      "nama": "Tamilouw"
+    },
+    {
+      "kode": "81.01.01.2002",
+      "nama": "Sepa"
+    },
+    {
+      "kode": "81.01.01.2003",
+      "nama": "Rutah"
+    },
+    {
+      "kode": "81.01.01.2004",
+      "nama": "Soahuku"
+    },
+    {
+      "kode": "81.01.01.2005",
+      "nama": "Amahai"
+    },
+    {
+      "kode": "81.01.01.2006",
+      "nama": "Haruru"
+    },
+    {
+      "kode": "81.01.01.2007",
+      "nama": "Sehati"
+    },
+    {
+      "kode": "81.01.01.2008",
+      "nama": "Makariki"
+    },
+    {
+      "kode": "81.01.01.2010",
+      "nama": "Yafila"
+    },
+    {
+      "kode": "81.01.01.2011",
+      "nama": "Banda Baru"
+    },
+    {
+      "kode": "81.01.01.2020",
+      "nama": "Yainuelo"
+    },
+    {
+      "kode": "81.01.01.2021",
+      "nama": "Nua Nea"
+    },
+    {
+      "kode": "81.01.01.2022",
+      "nama": "Hatuhenu"
+    },
+    {
+      "kode": "81.01.01.2023",
+      "nama": "Nuweletetu"
+    },
+    {
+      "kode": "81.01.02.2001",
+      "nama": "Usliapan"
+    },
+    {
+      "kode": "81.01.02.2002",
+      "nama": "Kuralele"
+    },
+    {
+      "kode": "81.01.02.2003",
+      "nama": "Kokroman"
+    },
+    {
+      "kode": "81.01.02.2004",
+      "nama": "Messa"
+    },
+    {
+      "kode": "81.01.02.2005",
+      "nama": "Ameth"
+    },
+    {
+      "kode": "81.01.02.2006",
+      "nama": "Waru"
+    },
+    {
+      "kode": "81.01.02.2007",
+      "nama": "Bumey"
+    },
+    {
+      "kode": "81.01.02.2008",
+      "nama": "Sifluru"
+    },
+    {
+      "kode": "81.01.02.2009",
+      "nama": "Layeni"
+    },
+    {
+      "kode": "81.01.02.2010",
+      "nama": "Wotay"
+    },
+    {
+      "kode": "81.01.02.2011",
+      "nama": "Issu"
+    },
+    {
+      "kode": "81.01.02.2012",
+      "nama": "Lesluru"
+    },
+    {
+      "kode": "81.01.02.2013",
+      "nama": "Watludan"
+    },
+    {
+      "kode": "81.01.02.2014",
+      "nama": "Trana"
+    },
+    {
+      "kode": "81.01.02.2015",
+      "nama": "Jerili"
+    },
+    {
+      "kode": "81.01.02.2016",
+      "nama": "Nakupia"
+    },
+    {
+      "kode": "81.01.06.2001",
+      "nama": "Wahai"
+    },
+    {
+      "kode": "81.01.06.2002",
+      "nama": "Air Besar"
+    },
+    {
+      "kode": "81.01.06.2003",
+      "nama": "Pasahari"
+    },
+    {
+      "kode": "81.01.06.2007",
+      "nama": "Manusela"
+    },
+    {
+      "kode": "81.01.06.2009",
+      "nama": "Kaloa"
+    },
+    {
+      "kode": "81.01.06.2010",
+      "nama": "Kanikeh"
+    },
+    {
+      "kode": "81.01.06.2011",
+      "nama": "Roho"
+    },
+    {
+      "kode": "81.01.06.2012",
+      "nama": "Huaulu"
+    },
+    {
+      "kode": "81.01.06.2021",
+      "nama": "Rumahsokat"
+    },
+    {
+      "kode": "81.01.06.2022",
+      "nama": "Sawai"
+    },
+    {
+      "kode": "81.01.06.2044",
+      "nama": "Besi"
+    },
+    {
+      "kode": "81.01.06.2045",
+      "nama": "Malaku"
+    },
+    {
+      "kode": "81.01.06.2046",
+      "nama": "Maraina"
+    },
+    {
+      "kode": "81.01.06.2047",
+      "nama": "Solea"
+    },
+    {
+      "kode": "81.01.06.2048",
+      "nama": "Elemata"
+    },
+    {
+      "kode": "81.01.06.2049",
+      "nama": "Hatuolo"
+    },
+    {
+      "kode": "81.01.06.2050",
+      "nama": "Siatele"
+    },
+    {
+      "kode": "81.01.06.2051",
+      "nama": "Masihulan"
+    },
+    {
+      "kode": "81.01.06.2052",
+      "nama": "Oping"
+    },
+    {
+      "kode": "81.01.06.2053",
+      "nama": "Olong"
+    },
+    {
+      "kode": "81.01.09.2001",
+      "nama": "Nusantara"
+    },
+    {
+      "kode": "81.01.09.2002",
+      "nama": "Dwiwarna"
+    },
+    {
+      "kode": "81.01.09.2003",
+      "nama": "Merdeka"
+    },
+    {
+      "kode": "81.01.09.2004",
+      "nama": "Rajawali"
+    },
+    {
+      "kode": "81.01.09.2005",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "81.01.09.2006",
+      "nama": "Pulau Hatta"
+    },
+    {
+      "kode": "81.01.09.2007",
+      "nama": "Selamon"
+    },
+    {
+      "kode": "81.01.09.2008",
+      "nama": "Lonthoir"
+    },
+    {
+      "kode": "81.01.09.2009",
+      "nama": "Pulau Ay"
+    },
+    {
+      "kode": "81.01.09.2010",
+      "nama": "Pulau Rhun"
+    },
+    {
+      "kode": "81.01.09.2011",
+      "nama": "Tanah Rata"
+    },
+    {
+      "kode": "81.01.09.2012",
+      "nama": "Waer"
+    },
+    {
+      "kode": "81.01.09.2013",
+      "nama": "Boiyauw"
+    },
+    {
+      "kode": "81.01.09.2014",
+      "nama": "Dender"
+    },
+    {
+      "kode": "81.01.09.2015",
+      "nama": "Lautang"
+    },
+    {
+      "kode": "81.01.09.2016",
+      "nama": "Uring Tutra"
+    },
+    {
+      "kode": "81.01.09.2017",
+      "nama": "Walling Spanciby"
+    },
+    {
+      "kode": "81.01.09.2018",
+      "nama": "Combir Kasestoren"
+    },
+    {
+      "kode": "81.01.11.2011",
+      "nama": "Telutih Baru"
+    },
+    {
+      "kode": "81.01.11.2012",
+      "nama": "Mosso"
+    },
+    {
+      "kode": "81.01.11.2013",
+      "nama": "Hatumete"
+    },
+    {
+      "kode": "81.01.11.2014",
+      "nama": "Hatu"
+    },
+    {
+      "kode": "81.01.11.2015",
+      "nama": "Piliana"
+    },
+    {
+      "kode": "81.01.11.2016",
+      "nama": "Yaputih"
+    },
+    {
+      "kode": "81.01.11.2017",
+      "nama": "Saunulu"
+    },
+    {
+      "kode": "81.01.11.2018",
+      "nama": "Tehoru"
+    },
+    {
+      "kode": "81.01.11.2019",
+      "nama": "Haya"
+    },
+    {
+      "kode": "81.01.11.2020",
+      "nama": "Salamahu"
+    },
+    {
+      "kode": "81.01.12.2001",
+      "nama": "Booi"
+    },
+    {
+      "kode": "81.01.12.2002",
+      "nama": "Paperu"
+    },
+    {
+      "kode": "81.01.12.2003",
+      "nama": "Tiouw"
+    },
+    {
+      "kode": "81.01.12.2004",
+      "nama": "Haria"
+    },
+    {
+      "kode": "81.01.12.2005",
+      "nama": "Porto"
+    },
+    {
+      "kode": "81.01.12.2006",
+      "nama": "Kulur"
+    },
+    {
+      "kode": "81.01.12.2012",
+      "nama": "Saparua"
+    },
+    {
+      "kode": "81.01.13.2001",
+      "nama": "Aboru"
+    },
+    {
+      "kode": "81.01.13.2002",
+      "nama": "Wassu"
+    },
+    {
+      "kode": "81.01.13.2003",
+      "nama": "Oma"
+    },
+    {
+      "kode": "81.01.13.2004",
+      "nama": "Haruku"
+    },
+    {
+      "kode": "81.01.13.2005",
+      "nama": "Sameth"
+    },
+    {
+      "kode": "81.01.13.2006",
+      "nama": "Rohomoni"
+    },
+    {
+      "kode": "81.01.13.2007",
+      "nama": "Kabauw"
+    },
+    {
+      "kode": "81.01.13.2008",
+      "nama": "Kailolo"
+    },
+    {
+      "kode": "81.01.13.2009",
+      "nama": "Pelauw"
+    },
+    {
+      "kode": "81.01.13.2010",
+      "nama": "Kariu"
+    },
+    {
+      "kode": "81.01.13.2011",
+      "nama": "Hulaliu"
+    },
+    {
+      "kode": "81.01.14.2001",
+      "nama": "Liang"
+    },
+    {
+      "kode": "81.01.14.2002",
+      "nama": "Waai"
+    },
+    {
+      "kode": "81.01.14.2003",
+      "nama": "Tulehu"
+    },
+    {
+      "kode": "81.01.14.2004",
+      "nama": "Tial"
+    },
+    {
+      "kode": "81.01.14.2005",
+      "nama": "Tengah Tengah"
+    },
+    {
+      "kode": "81.01.14.2006",
+      "nama": "Suli"
+    },
+    {
+      "kode": "81.01.15.2006",
+      "nama": "Asilulu"
+    },
+    {
+      "kode": "81.01.15.2007",
+      "nama": "Ureng"
+    },
+    {
+      "kode": "81.01.15.2008",
+      "nama": "Negeri Lima"
+    },
+    {
+      "kode": "81.01.15.2009",
+      "nama": "Seith"
+    },
+    {
+      "kode": "81.01.15.2010",
+      "nama": "Kaitetu"
+    },
+    {
+      "kode": "81.01.15.2011",
+      "nama": "Hila"
+    },
+    {
+      "kode": "81.01.15.2012",
+      "nama": "Wakal"
+    },
+    {
+      "kode": "81.01.15.2013",
+      "nama": "Hitulama"
+    },
+    {
+      "kode": "81.01.15.2014",
+      "nama": "Hitumessing"
+    },
+    {
+      "kode": "81.01.15.2015",
+      "nama": "Mamala"
+    },
+    {
+      "kode": "81.01.15.2016",
+      "nama": "Morella"
+    },
+    {
+      "kode": "81.01.16.2001",
+      "nama": "Ameth"
+    },
+    {
+      "kode": "81.01.16.2002",
+      "nama": "Titawaai"
+    },
+    {
+      "kode": "81.01.16.2003",
+      "nama": "Abubu"
+    },
+    {
+      "kode": "81.01.16.2004",
+      "nama": "Akoon"
+    },
+    {
+      "kode": "81.01.16.2005",
+      "nama": "Nalahia"
+    },
+    {
+      "kode": "81.01.16.2006",
+      "nama": "Sila"
+    },
+    {
+      "kode": "81.01.16.2007",
+      "nama": "Leinitu"
+    },
+    {
+      "kode": "81.01.17.1001",
+      "nama": "Namaelo"
+    },
+    {
+      "kode": "81.01.17.1002",
+      "nama": "Namasina"
+    },
+    {
+      "kode": "81.01.17.1003",
+      "nama": "Ampera"
+    },
+    {
+      "kode": "81.01.17.1004",
+      "nama": "Lesane"
+    },
+    {
+      "kode": "81.01.17.1005",
+      "nama": "Letwaru"
+    },
+    {
+      "kode": "81.01.20.2001",
+      "nama": "Saleman"
+    },
+    {
+      "kode": "81.01.20.2002",
+      "nama": "Horale"
+    },
+    {
+      "kode": "81.01.20.2003",
+      "nama": "Wailulu"
+    },
+    {
+      "kode": "81.01.20.2004",
+      "nama": "Paa"
+    },
+    {
+      "kode": "81.01.20.2005",
+      "nama": "Karlutu Kara"
+    },
+    {
+      "kode": "81.01.20.2006",
+      "nama": "Pasanea"
+    },
+    {
+      "kode": "81.01.20.2007",
+      "nama": "Labuan"
+    },
+    {
+      "kode": "81.01.20.2008",
+      "nama": "Gale-gale"
+    },
+    {
+      "kode": "81.01.20.2009",
+      "nama": "Latea"
+    },
+    {
+      "kode": "81.01.20.2010",
+      "nama": "Lisabata Timur"
+    },
+    {
+      "kode": "81.01.20.2011",
+      "nama": "Rumahwey"
+    },
+    {
+      "kode": "81.01.20.2012",
+      "nama": "Warasiwa"
+    },
+    {
+      "kode": "81.01.20.2013",
+      "nama": "Herlau Pauni"
+    },
+    {
+      "kode": "81.01.21.2001",
+      "nama": "Waraka"
+    },
+    {
+      "kode": "81.01.21.2002",
+      "nama": "Tananahu"
+    },
+    {
+      "kode": "81.01.21.2003",
+      "nama": "Liang"
+    },
+    {
+      "kode": "81.01.21.2004",
+      "nama": "Sahulauw"
+    },
+    {
+      "kode": "81.01.22.2001",
+      "nama": "Larike"
+    },
+    {
+      "kode": "81.01.22.2002",
+      "nama": "Wakasihu"
+    },
+    {
+      "kode": "81.01.22.2003",
+      "nama": "Allang"
+    },
+    {
+      "kode": "81.01.22.2004",
+      "nama": "Liliboy"
+    },
+    {
+      "kode": "81.01.22.2005",
+      "nama": "Hatu"
+    },
+    {
+      "kode": "81.01.23.2001",
+      "nama": "Ulahahan"
+    },
+    {
+      "kode": "81.01.23.2002",
+      "nama": "Laha Kaba"
+    },
+    {
+      "kode": "81.01.23.2003",
+      "nama": "Lafa"
+    },
+    {
+      "kode": "81.01.23.2004",
+      "nama": "Yamalatu"
+    },
+    {
+      "kode": "81.01.23.2005",
+      "nama": "Hunisi"
+    },
+    {
+      "kode": "81.01.23.2006",
+      "nama": "Laimu"
+    },
+    {
+      "kode": "81.01.23.2007",
+      "nama": "Maneoratu"
+    },
+    {
+      "kode": "81.01.23.2008",
+      "nama": "Tehua"
+    },
+    {
+      "kode": "81.01.23.2009",
+      "nama": "Laha"
+    },
+    {
+      "kode": "81.01.23.2010",
+      "nama": "Wolu"
+    },
+    {
+      "kode": "81.01.24.2001",
+      "nama": "Seti"
+    },
+    {
+      "kode": "81.01.24.2002",
+      "nama": "Kobisonta"
+    },
+    {
+      "kode": "81.01.24.2003",
+      "nama": "Wailoping"
+    },
+    {
+      "kode": "81.01.24.2004",
+      "nama": "Tihuana"
+    },
+    {
+      "kode": "81.01.24.2005",
+      "nama": "Waitila"
+    },
+    {
+      "kode": "81.01.24.2006",
+      "nama": "Waiputih"
+    },
+    {
+      "kode": "81.01.24.2007",
+      "nama": "Waimusal"
+    },
+    {
+      "kode": "81.01.24.2008",
+      "nama": "Tanah Merah"
+    },
+    {
+      "kode": "81.01.24.2009",
+      "nama": "Aketernate"
+    },
+    {
+      "kode": "81.01.24.2010",
+      "nama": "Namto"
+    },
+    {
+      "kode": "81.01.24.2011",
+      "nama": "Loping Mulyo"
+    },
+    {
+      "kode": "81.01.24.2012",
+      "nama": "Wonosari"
+    },
+    {
+      "kode": "81.01.25.2001",
+      "nama": "Kobi"
+    },
+    {
+      "kode": "81.01.25.2002",
+      "nama": "Sariputih"
+    },
+    {
+      "kode": "81.01.25.2003",
+      "nama": "Maneo Rendah"
+    },
+    {
+      "kode": "81.01.25.2004",
+      "nama": "Kobimukti"
+    },
+    {
+      "kode": "81.01.25.2005",
+      "nama": "Leaway"
+    },
+    {
+      "kode": "81.01.25.2006",
+      "nama": "Samal"
+    },
+    {
+      "kode": "81.01.25.2007",
+      "nama": "Morokai"
+    },
+    {
+      "kode": "81.01.25.2008",
+      "nama": "Waimusi"
+    },
+    {
+      "kode": "81.01.25.2009",
+      "nama": "Way Asih"
+    },
+    {
+      "kode": "81.01.25.2010",
+      "nama": "Waitonipa"
+    },
+    {
+      "kode": "81.01.25.2011",
+      "nama": "Marasahua"
+    },
+    {
+      "kode": "81.01.25.2012",
+      "nama": "Kabauhari"
+    },
+    {
+      "kode": "81.01.26.2001",
+      "nama": "Ouw"
+    },
+    {
+      "kode": "81.01.26.2002",
+      "nama": "Ullath"
+    },
+    {
+      "kode": "81.01.26.2003",
+      "nama": "Siri Sori Islam"
+    },
+    {
+      "kode": "81.01.26.2004",
+      "nama": "Siri Sori Amalatu"
+    },
+    {
+      "kode": "81.01.26.2005",
+      "nama": "Mahu"
+    },
+    {
+      "kode": "81.01.26.2006",
+      "nama": "Tuhaha"
+    },
+    {
+      "kode": "81.01.26.2007",
+      "nama": "Ihamahu"
+    },
+    {
+      "kode": "81.01.26.2008",
+      "nama": "Iha"
+    },
+    {
+      "kode": "81.01.26.2009",
+      "nama": "Nolloth"
+    },
+    {
+      "kode": "81.01.26.2010",
+      "nama": "Itawaka"
+    },
+    {
+      "kode": "81.02.01.1013",
+      "nama": "Ohoijang Watdek"
+    },
+    {
+      "kode": "81.02.01.2014",
+      "nama": "Langgur"
+    },
+    {
+      "kode": "81.02.01.2015",
+      "nama": "Faan"
+    },
+    {
+      "kode": "81.02.01.2016",
+      "nama": "Sathean"
+    },
+    {
+      "kode": "81.02.01.2017",
+      "nama": "Ibra"
+    },
+    {
+      "kode": "81.02.01.2018",
+      "nama": "Ngabub"
+    },
+    {
+      "kode": "81.02.01.2048",
+      "nama": "Ohoidertawun"
+    },
+    {
+      "kode": "81.02.01.2049",
+      "nama": "Kelanit"
+    },
+    {
+      "kode": "81.02.01.2051",
+      "nama": "Kolser"
+    },
+    {
+      "kode": "81.02.01.2052",
+      "nama": "Letman"
+    },
+    {
+      "kode": "81.02.01.2057",
+      "nama": "Wearlilir"
+    },
+    {
+      "kode": "81.02.01.2067",
+      "nama": "Ohoider Atas"
+    },
+    {
+      "kode": "81.02.01.2068",
+      "nama": "Dudunwahan"
+    },
+    {
+      "kode": "81.02.01.2069",
+      "nama": "Loon"
+    },
+    {
+      "kode": "81.02.01.2071",
+      "nama": "Sitniohoi"
+    },
+    {
+      "kode": "81.02.03.2001",
+      "nama": "Werka"
+    },
+    {
+      "kode": "81.02.03.2002",
+      "nama": "Waur"
+    },
+    {
+      "kode": "81.02.03.2003",
+      "nama": "Ohoinangan"
+    },
+    {
+      "kode": "81.02.03.2004",
+      "nama": "Ler Ohoilim"
+    },
+    {
+      "kode": "81.02.03.2005",
+      "nama": "Rahareng"
+    },
+    {
+      "kode": "81.02.03.2006",
+      "nama": "Elat"
+    },
+    {
+      "kode": "81.02.03.2007",
+      "nama": "Depur"
+    },
+    {
+      "kode": "81.02.03.2008",
+      "nama": "Ohoilim"
+    },
+    {
+      "kode": "81.02.03.2009",
+      "nama": "El Ralang"
+    },
+    {
+      "kode": "81.02.03.2015",
+      "nama": "Reyamru"
+    },
+    {
+      "kode": "81.02.03.2016",
+      "nama": "Fako"
+    },
+    {
+      "kode": "81.02.03.2017",
+      "nama": "Yamtel"
+    },
+    {
+      "kode": "81.02.03.2018",
+      "nama": "Waur Tahit"
+    },
+    {
+      "kode": "81.02.03.2019",
+      "nama": "Ngefuit"
+    },
+    {
+      "kode": "81.02.03.2020",
+      "nama": "Ohoiel"
+    },
+    {
+      "kode": "81.02.03.2021",
+      "nama": "Ohoiwait"
+    },
+    {
+      "kode": "81.02.03.2022",
+      "nama": "Ohoiwang"
+    },
+    {
+      "kode": "81.02.03.2023",
+      "nama": "Fangamas"
+    },
+    {
+      "kode": "81.02.03.2024",
+      "nama": "Ohoinangan Atas"
+    },
+    {
+      "kode": "81.02.03.2025",
+      "nama": "Harangur"
+    },
+    {
+      "kode": "81.02.03.2026",
+      "nama": "Udar"
+    },
+    {
+      "kode": "81.02.03.2027",
+      "nama": "Daftel"
+    },
+    {
+      "kode": "81.02.03.2028",
+      "nama": "Karkarit"
+    },
+    {
+      "kode": "81.02.03.2029",
+      "nama": "Rahareng Atas"
+    },
+    {
+      "kode": "81.02.03.2030",
+      "nama": "Wulurat"
+    },
+    {
+      "kode": "81.02.03.2031",
+      "nama": "Wakol"
+    },
+    {
+      "kode": "81.02.03.2032",
+      "nama": "Ngurdu"
+    },
+    {
+      "kode": "81.02.03.2033",
+      "nama": "Soinrat"
+    },
+    {
+      "kode": "81.02.03.2034",
+      "nama": "Wermaf"
+    },
+    {
+      "kode": "81.02.03.2035",
+      "nama": "Bombay"
+    },
+    {
+      "kode": "81.02.03.2036",
+      "nama": "Watsin"
+    },
+    {
+      "kode": "81.02.03.2037",
+      "nama": "Sirbante"
+    },
+    {
+      "kode": "81.02.03.2038",
+      "nama": "Ngat"
+    },
+    {
+      "kode": "81.02.03.2039",
+      "nama": "Nabaheng"
+    },
+    {
+      "kode": "81.02.03.2040",
+      "nama": "Ngefuit Atas"
+    },
+    {
+      "kode": "81.02.03.2041",
+      "nama": "Watuar"
+    },
+    {
+      "kode": "81.02.03.2042",
+      "nama": "Mataholat"
+    },
+    {
+      "kode": "81.02.04.2001",
+      "nama": "Weduar"
+    },
+    {
+      "kode": "81.02.04.2003",
+      "nama": "Nerong"
+    },
+    {
+      "kode": "81.02.04.2004",
+      "nama": "Larat"
+    },
+    {
+      "kode": "81.02.04.2005",
+      "nama": "Tamangil Nuhuten"
+    },
+    {
+      "kode": "81.02.04.2006",
+      "nama": "Tamangil Nuhuyanat"
+    },
+    {
+      "kode": "81.02.04.2012",
+      "nama": "Kilwat"
+    },
+    {
+      "kode": "81.02.04.2013",
+      "nama": "Sather"
+    },
+    {
+      "kode": "81.02.04.2014",
+      "nama": "Tutrean"
+    },
+    {
+      "kode": "81.02.04.2015",
+      "nama": "Ohoirenan"
+    },
+    {
+      "kode": "81.02.04.2016",
+      "nama": "Soindat"
+    },
+    {
+      "kode": "81.02.05.2001",
+      "nama": "Hollat"
+    },
+    {
+      "kode": "81.02.05.2002",
+      "nama": "Ohoiraut"
+    },
+    {
+      "kode": "81.02.05.2003",
+      "nama": "Haar Ohoimel"
+    },
+    {
+      "kode": "81.02.05.2004",
+      "nama": "Langgiar Haar"
+    },
+    {
+      "kode": "81.02.05.2005",
+      "nama": "Banda Eli"
+    },
+    {
+      "kode": "81.02.05.2006",
+      "nama": "Watlaar"
+    },
+    {
+      "kode": "81.02.05.2007",
+      "nama": "Ohoifau"
+    },
+    {
+      "kode": "81.02.05.2008",
+      "nama": "Kilwair"
+    },
+    {
+      "kode": "81.02.05.2009",
+      "nama": "Renfan"
+    },
+    {
+      "kode": "81.02.05.2010",
+      "nama": "Hollat Solair"
+    },
+    {
+      "kode": "81.02.05.2011",
+      "nama": "Hoko"
+    },
+    {
+      "kode": "81.02.05.2012",
+      "nama": "Hollay"
+    },
+    {
+      "kode": "81.02.05.2013",
+      "nama": "Soin"
+    },
+    {
+      "kode": "81.02.05.2014",
+      "nama": "Haar Ohoimur GPM"
+    },
+    {
+      "kode": "81.02.05.2015",
+      "nama": "Haar Ohoimur RK"
+    },
+    {
+      "kode": "81.02.05.2016",
+      "nama": "Haar Ohoiwait"
+    },
+    {
+      "kode": "81.02.05.2017",
+      "nama": "Haar Wassar"
+    },
+    {
+      "kode": "81.02.05.2018",
+      "nama": "Haar Renrahantel"
+    },
+    {
+      "kode": "81.02.05.2019",
+      "nama": "Ur"
+    },
+    {
+      "kode": "81.02.05.2020",
+      "nama": "Ohoimajang"
+    },
+    {
+      "kode": "81.02.05.2021",
+      "nama": "Banda Efruan"
+    },
+    {
+      "kode": "81.02.05.2022",
+      "nama": "Banda Suku Tigapuluh"
+    },
+    {
+      "kode": "81.02.05.2023",
+      "nama": "Tuburlay"
+    },
+    {
+      "kode": "81.02.05.2024",
+      "nama": "Ohoifaruan"
+    },
+    {
+      "kode": "81.02.05.2025",
+      "nama": "Ohoiwirin"
+    },
+    {
+      "kode": "81.02.05.2026",
+      "nama": "Tuburngil"
+    },
+    {
+      "kode": "81.02.05.2027",
+      "nama": "Yamtimur"
+    },
+    {
+      "kode": "81.02.05.2028",
+      "nama": "Renfaan Islam"
+    },
+    {
+      "kode": "81.02.05.2029",
+      "nama": "Renfaan GPM"
+    },
+    {
+      "kode": "81.02.05.2030",
+      "nama": "Fanwav"
+    },
+    {
+      "kode": "81.02.13.2001",
+      "nama": "Wain"
+    },
+    {
+      "kode": "81.02.13.2002",
+      "nama": "Rewav"
+    },
+    {
+      "kode": "81.02.13.2003",
+      "nama": "Rumaat"
+    },
+    {
+      "kode": "81.02.13.2004",
+      "nama": "Rat"
+    },
+    {
+      "kode": "81.02.13.2005",
+      "nama": "Abean"
+    },
+    {
+      "kode": "81.02.13.2006",
+      "nama": "Mastur"
+    },
+    {
+      "kode": "81.02.13.2013",
+      "nama": "Ohoinol"
+    },
+    {
+      "kode": "81.02.13.2014",
+      "nama": "Semawi"
+    },
+    {
+      "kode": "81.02.13.2015",
+      "nama": "Iso"
+    },
+    {
+      "kode": "81.02.13.2016",
+      "nama": "Disuk"
+    },
+    {
+      "kode": "81.02.13.2017",
+      "nama": "Wain Baru"
+    },
+    {
+      "kode": "81.02.13.2018",
+      "nama": "Marfun"
+    },
+    {
+      "kode": "81.02.13.2019",
+      "nama": "Watngon"
+    },
+    {
+      "kode": "81.02.13.2020",
+      "nama": "Yafavun"
+    },
+    {
+      "kode": "81.02.13.2021",
+      "nama": "Mastur Baru"
+    },
+    {
+      "kode": "81.02.13.2022",
+      "nama": "Ohoilus"
+    },
+    {
+      "kode": "81.02.13.2023",
+      "nama": "Tenbuk"
+    },
+    {
+      "kode": "81.02.13.2024",
+      "nama": "Denwet"
+    },
+    {
+      "kode": "81.02.14.2001",
+      "nama": "Ohoidertutu"
+    },
+    {
+      "kode": "81.02.14.2002",
+      "nama": "Matwair"
+    },
+    {
+      "kode": "81.02.14.2003",
+      "nama": "Somlain"
+    },
+    {
+      "kode": "81.02.14.2004",
+      "nama": "Ohoiren"
+    },
+    {
+      "kode": "81.02.14.2005",
+      "nama": "Ohoira"
+    },
+    {
+      "kode": "81.02.14.2006",
+      "nama": "Warbal"
+    },
+    {
+      "kode": "81.02.14.2007",
+      "nama": "Ur Pulau"
+    },
+    {
+      "kode": "81.02.14.2008",
+      "nama": "Tanimbar Kei"
+    },
+    {
+      "kode": "81.02.14.2009",
+      "nama": "Ohoidertom"
+    },
+    {
+      "kode": "81.02.14.2010",
+      "nama": "Yatwav"
+    },
+    {
+      "kode": "81.02.15.2001",
+      "nama": "Rumadian"
+    },
+    {
+      "kode": "81.02.15.2002",
+      "nama": "Debut"
+    },
+    {
+      "kode": "81.02.15.2003",
+      "nama": "Namar"
+    },
+    {
+      "kode": "81.02.15.2004",
+      "nama": "Ngilngof"
+    },
+    {
+      "kode": "81.02.15.2005",
+      "nama": "Selayar"
+    },
+    {
+      "kode": "81.02.15.2006",
+      "nama": "Lairngangas"
+    },
+    {
+      "kode": "81.02.15.2007",
+      "nama": "Ohoiluk"
+    },
+    {
+      "kode": "81.02.15.2008",
+      "nama": "Ohoililir"
+    },
+    {
+      "kode": "81.02.15.2009",
+      "nama": "Ngayub"
+    },
+    {
+      "kode": "81.02.16.2001",
+      "nama": "Tetoat"
+    },
+    {
+      "kode": "81.02.16.2002",
+      "nama": "Dian Pulau"
+    },
+    {
+      "kode": "81.02.16.2003",
+      "nama": "Letvuan"
+    },
+    {
+      "kode": "81.02.16.2004",
+      "nama": "Evu"
+    },
+    {
+      "kode": "81.02.16.2005",
+      "nama": "Warwut"
+    },
+    {
+      "kode": "81.02.16.2006",
+      "nama": "Wab"
+    },
+    {
+      "kode": "81.02.16.2007",
+      "nama": "Dian Darat"
+    },
+    {
+      "kode": "81.02.16.2008",
+      "nama": "Wirin"
+    },
+    {
+      "kode": "81.02.16.2009",
+      "nama": "Ngursit"
+    },
+    {
+      "kode": "81.02.16.2010",
+      "nama": "Madwat"
+    },
+    {
+      "kode": "81.02.16.2011",
+      "nama": "Ohoibadar"
+    },
+    {
+      "kode": "81.02.16.2012",
+      "nama": "Watngil"
+    },
+    {
+      "kode": "81.02.16.2013",
+      "nama": "Arso"
+    },
+    {
+      "kode": "81.02.17.2001",
+      "nama": "Weer Ohoinam"
+    },
+    {
+      "kode": "81.02.17.2002",
+      "nama": "Weer Ohoiker"
+    },
+    {
+      "kode": "81.02.17.2003",
+      "nama": "Weer Frawaf"
+    },
+    {
+      "kode": "81.02.17.2004",
+      "nama": "Faa"
+    },
+    {
+      "kode": "81.02.17.2005",
+      "nama": "Dangarat"
+    },
+    {
+      "kode": "81.02.17.2006",
+      "nama": "Ohoituf"
+    },
+    {
+      "kode": "81.02.17.2007",
+      "nama": "Hangur"
+    },
+    {
+      "kode": "81.02.17.2008",
+      "nama": "Ngurwalek"
+    },
+    {
+      "kode": "81.02.17.2009",
+      "nama": "Uwat"
+    },
+    {
+      "kode": "81.02.17.2010",
+      "nama": "Uwat Wear"
+    },
+    {
+      "kode": "81.02.17.2011",
+      "nama": "Uwat Reyaan"
+    },
+    {
+      "kode": "81.02.17.2012",
+      "nama": "Mun Ohoiir"
+    },
+    {
+      "kode": "81.02.17.2013",
+      "nama": "Mun Essoy"
+    },
+    {
+      "kode": "81.02.17.2014",
+      "nama": "Mun Kahar"
+    },
+    {
+      "kode": "81.02.17.2015",
+      "nama": "Mun Ngurditwain"
+    },
+    {
+      "kode": "81.02.17.2016",
+      "nama": "Mun Werfan"
+    },
+    {
+      "kode": "81.02.17.2017",
+      "nama": "Ad Ngurwul"
+    },
+    {
+      "kode": "81.02.17.2018",
+      "nama": "Ad Ohoiwaf"
+    },
+    {
+      "kode": "81.02.17.2019",
+      "nama": "Laar"
+    },
+    {
+      "kode": "81.02.17.2020",
+      "nama": "Hoor Islam"
+    },
+    {
+      "kode": "81.02.17.2021",
+      "nama": "Hoor Kristen"
+    },
+    {
+      "kode": "81.02.17.2022",
+      "nama": "Waer"
+    },
+    {
+      "kode": "81.02.17.2023",
+      "nama": "Waerat"
+    },
+    {
+      "kode": "81.02.17.2024",
+      "nama": "Mun Ohoitadiun"
+    },
+    {
+      "kode": "81.02.17.2025",
+      "nama": "Ad Wear Aur"
+    },
+    {
+      "kode": "81.02.18.2001",
+      "nama": "Hoat"
+    },
+    {
+      "kode": "81.02.18.2002",
+      "nama": "Ngafan"
+    },
+    {
+      "kode": "81.02.18.2003",
+      "nama": "Feer"
+    },
+    {
+      "kode": "81.02.18.2004",
+      "nama": "Rerean"
+    },
+    {
+      "kode": "81.02.18.2005",
+      "nama": "Ngurko"
+    },
+    {
+      "kode": "81.02.18.2006",
+      "nama": "Hoko"
+    },
+    {
+      "kode": "81.02.18.2007",
+      "nama": "Weduar Fer"
+    },
+    {
+      "kode": "81.02.18.2008",
+      "nama": "Uat"
+    },
+    {
+      "kode": "81.02.18.2009",
+      "nama": "Ngan"
+    },
+    {
+      "kode": "81.02.18.2010",
+      "nama": "Watkidat"
+    },
+    {
+      "kode": "81.02.18.2011",
+      "nama": "Ohoilean"
+    },
+    {
+      "kode": "81.02.18.2012",
+      "nama": "Wafol"
+    },
+    {
+      "kode": "81.02.18.2013",
+      "nama": "Rahangiar"
+    },
+    {
+      "kode": "81.02.19.2001",
+      "nama": "Danar Ohoiseb"
+    },
+    {
+      "kode": "81.02.19.2002",
+      "nama": "Danar Ternate"
+    },
+    {
+      "kode": "81.02.19.2003",
+      "nama": "Danar Lumefar"
+    },
+    {
+      "kode": "81.02.19.2004",
+      "nama": "Elaar Ngursoin"
+    },
+    {
+      "kode": "81.02.19.2005",
+      "nama": "Elaar Lamagorang"
+    },
+    {
+      "kode": "81.02.19.2006",
+      "nama": "Elaar Let"
+    },
+    {
+      "kode": "81.02.19.2007",
+      "nama": "Sare"
+    },
+    {
+      "kode": "81.02.19.2008",
+      "nama": "Maar"
+    },
+    {
+      "kode": "81.02.19.2009",
+      "nama": "Uf"
+    },
+    {
+      "kode": "81.02.19.2010",
+      "nama": "Ngurwul"
+    },
+    {
+      "kode": "81.02.19.2011",
+      "nama": "Garara"
+    },
+    {
+      "kode": "81.03.01.1001",
+      "nama": "Saumlaki"
+    },
+    {
+      "kode": "81.03.01.1002",
+      "nama": "Saumlaki Utara"
+    },
+    {
+      "kode": "81.03.01.2002",
+      "nama": "Wowonda"
+    },
+    {
+      "kode": "81.03.01.2003",
+      "nama": "Ilngei"
+    },
+    {
+      "kode": "81.03.01.2004",
+      "nama": "Kabiarat"
+    },
+    {
+      "kode": "81.03.01.2005",
+      "nama": "Lauran"
+    },
+    {
+      "kode": "81.03.01.2006",
+      "nama": "Sifnana"
+    },
+    {
+      "kode": "81.03.01.2007",
+      "nama": "Olilit Raya"
+    },
+    {
+      "kode": "81.03.01.2008",
+      "nama": "Lermatang"
+    },
+    {
+      "kode": "81.03.01.2009",
+      "nama": "Latdalam"
+    },
+    {
+      "kode": "81.03.01.2010",
+      "nama": "Bomaki"
+    },
+    {
+      "kode": "81.03.01.2011",
+      "nama": "Matakus"
+    },
+    {
+      "kode": "81.03.02.2001",
+      "nama": "Adaut"
+    },
+    {
+      "kode": "81.03.02.2002",
+      "nama": "Namtabung"
+    },
+    {
+      "kode": "81.03.02.2003",
+      "nama": "Kandar"
+    },
+    {
+      "kode": "81.03.02.2004",
+      "nama": "Lingat"
+    },
+    {
+      "kode": "81.03.02.2005",
+      "nama": "Fursuy"
+    },
+    {
+      "kode": "81.03.02.2006",
+      "nama": "Werain"
+    },
+    {
+      "kode": "81.03.02.2007",
+      "nama": "Eliasa"
+    },
+    {
+      "kode": "81.03.03.2001",
+      "nama": "Tumbur"
+    },
+    {
+      "kode": "81.03.03.2002",
+      "nama": "Lorulun"
+    },
+    {
+      "kode": "81.03.03.2003",
+      "nama": "Atubul Dol"
+    },
+    {
+      "kode": "81.03.03.2004",
+      "nama": "Amdasa"
+    },
+    {
+      "kode": "81.03.03.2005",
+      "nama": "Sangliat Krawain"
+    },
+    {
+      "kode": "81.03.03.2006",
+      "nama": "Arui Bab"
+    },
+    {
+      "kode": "81.03.03.2007",
+      "nama": "Arui Das"
+    },
+    {
+      "kode": "81.03.03.2008",
+      "nama": "Sangliat Dol"
+    },
+    {
+      "kode": "81.03.03.2009",
+      "nama": "Atubul Da"
+    },
+    {
+      "kode": "81.03.04.2001",
+      "nama": "Kamatubun"
+    },
+    {
+      "kode": "81.03.04.2002",
+      "nama": "Rumah Salut"
+    },
+    {
+      "kode": "81.03.04.2003",
+      "nama": "Welutu"
+    },
+    {
+      "kode": "81.03.04.2004",
+      "nama": "Themin"
+    },
+    {
+      "kode": "81.03.04.2005",
+      "nama": "Weratan"
+    },
+    {
+      "kode": "81.03.04.2006",
+      "nama": "Wermatang"
+    },
+    {
+      "kode": "81.03.04.2007",
+      "nama": "Otemer"
+    },
+    {
+      "kode": "81.03.04.2008",
+      "nama": "Makatian"
+    },
+    {
+      "kode": "81.03.04.2009",
+      "nama": "Marantutul"
+    },
+    {
+      "kode": "81.03.05.2001",
+      "nama": "Lelingluan"
+    },
+    {
+      "kode": "81.03.05.2002",
+      "nama": "Ritabel"
+    },
+    {
+      "kode": "81.03.05.2003",
+      "nama": "Ridool"
+    },
+    {
+      "kode": "81.03.05.2004",
+      "nama": "Watidal"
+    },
+    {
+      "kode": "81.03.05.2005",
+      "nama": "Keliobar"
+    },
+    {
+      "kode": "81.03.05.2006",
+      "nama": "Kelaan"
+    },
+    {
+      "kode": "81.03.05.2007",
+      "nama": "Lamdesar Barat"
+    },
+    {
+      "kode": "81.03.05.2008",
+      "nama": "Lamdesar Timur"
+    },
+    {
+      "kode": "81.03.06.2001",
+      "nama": "Romean"
+    },
+    {
+      "kode": "81.03.06.2002",
+      "nama": "Rumngeur"
+    },
+    {
+      "kode": "81.03.06.2003",
+      "nama": "Awear"
+    },
+    {
+      "kode": "81.03.06.2004",
+      "nama": "Sofyanin"
+    },
+    {
+      "kode": "81.03.06.2005",
+      "nama": "Walerang"
+    },
+    {
+      "kode": "81.03.06.2006",
+      "nama": "Adodo Fordata"
+    },
+    {
+      "kode": "81.03.07.2001",
+      "nama": "Abat"
+    },
+    {
+      "kode": "81.03.07.2002",
+      "nama": "Labobar"
+    },
+    {
+      "kode": "81.03.07.2008",
+      "nama": "Watmasa"
+    },
+    {
+      "kode": "81.03.07.2009",
+      "nama": "Awear Rumngeur"
+    },
+    {
+      "kode": "81.03.07.2010",
+      "nama": "Karatat"
+    },
+    {
+      "kode": "81.03.07.2011",
+      "nama": "Wunlah"
+    },
+    {
+      "kode": "81.03.07.2012",
+      "nama": "Kiloon"
+    },
+    {
+      "kode": "81.03.07.2013",
+      "nama": "Lingada"
+    },
+    {
+      "kode": "81.03.07.2014",
+      "nama": "Teineman"
+    },
+    {
+      "kode": "81.03.07.2015",
+      "nama": "Wabar"
+    },
+    {
+      "kode": "81.03.07.2016",
+      "nama": "Romnus"
+    },
+    {
+      "kode": "81.03.08.2001",
+      "nama": "Lumasebu"
+    },
+    {
+      "kode": "81.03.08.2002",
+      "nama": "Kilmasa"
+    },
+    {
+      "kode": "81.03.08.2003",
+      "nama": "Meyano Bab"
+    },
+    {
+      "kode": "81.03.08.2004",
+      "nama": "Alusi Krawain"
+    },
+    {
+      "kode": "81.03.08.2005",
+      "nama": "Alusi Kelaan"
+    },
+    {
+      "kode": "81.03.08.2006",
+      "nama": "Alusi Bukjalim"
+    },
+    {
+      "kode": "81.03.08.2007",
+      "nama": "Alusi Tamrian"
+    },
+    {
+      "kode": "81.03.08.2008",
+      "nama": "Alusi Batjas"
+    },
+    {
+      "kode": "81.03.08.2009",
+      "nama": "Lorwembun"
+    },
+    {
+      "kode": "81.03.08.2010",
+      "nama": "Meyano Das"
+    },
+    {
+      "kode": "81.03.09.2001",
+      "nama": "Arma"
+    },
+    {
+      "kode": "81.03.09.2002",
+      "nama": "Watmuri"
+    },
+    {
+      "kode": "81.03.09.2003",
+      "nama": "Manglusi"
+    },
+    {
+      "kode": "81.03.09.2004",
+      "nama": "Tutukembong"
+    },
+    {
+      "kode": "81.03.09.2005",
+      "nama": "Waturu"
+    },
+    {
+      "kode": "81.03.18.2001",
+      "nama": "Wedangkou"
+    },
+    {
+      "kode": "81.03.18.2002",
+      "nama": "Adodo Molu"
+    },
+    {
+      "kode": "81.03.18.2003",
+      "nama": "Wulmasa"
+    },
+    {
+      "kode": "81.03.18.2004",
+      "nama": "Tutunametal"
+    },
+    {
+      "kode": "81.03.18.2005",
+      "nama": "Nurkat"
+    },
+    {
+      "kode": "81.04.01.2001",
+      "nama": "Namlea"
+    },
+    {
+      "kode": "81.04.01.2002",
+      "nama": "Lala"
+    },
+    {
+      "kode": "81.04.01.2003",
+      "nama": "Karang Jaya"
+    },
+    {
+      "kode": "81.04.01.2009",
+      "nama": "Siahoni"
+    },
+    {
+      "kode": "81.04.01.2010",
+      "nama": "Jamilu"
+    },
+    {
+      "kode": "81.04.01.2011",
+      "nama": "Sanleko"
+    },
+    {
+      "kode": "81.04.01.2012",
+      "nama": "Batu boy"
+    },
+    {
+      "kode": "81.04.02.2004",
+      "nama": "Waepure"
+    },
+    {
+      "kode": "81.04.02.2005",
+      "nama": "Waemangit"
+    },
+    {
+      "kode": "81.04.02.2006",
+      "nama": "Air Buaya"
+    },
+    {
+      "kode": "81.04.02.2007",
+      "nama": "Tanjung Karang"
+    },
+    {
+      "kode": "81.04.02.2008",
+      "nama": "Bara"
+    },
+    {
+      "kode": "81.04.02.2014",
+      "nama": "Selwadu"
+    },
+    {
+      "kode": "81.04.02.2018",
+      "nama": "Wasbaka"
+    },
+    {
+      "kode": "81.04.02.2019",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "81.04.02.2020",
+      "nama": "Batlale"
+    },
+    {
+      "kode": "81.04.02.2023",
+      "nama": "Awilinan"
+    },
+    {
+      "kode": "81.04.03.2001",
+      "nama": "Savana Jaya"
+    },
+    {
+      "kode": "81.04.03.2002",
+      "nama": "Waetele"
+    },
+    {
+      "kode": "81.04.03.2003",
+      "nama": "Waekasar"
+    },
+    {
+      "kode": "81.04.03.2004",
+      "nama": "Waenetat"
+    },
+    {
+      "kode": "81.04.03.2016",
+      "nama": "Waekerta"
+    },
+    {
+      "kode": "81.04.03.2019",
+      "nama": "Wanareja"
+    },
+    {
+      "kode": "81.04.03.2027",
+      "nama": "Gogorea"
+    },
+    {
+      "kode": "81.04.06.2001",
+      "nama": "Lamahang"
+    },
+    {
+      "kode": "81.04.06.2002",
+      "nama": "Waplau"
+    },
+    {
+      "kode": "81.04.06.2003",
+      "nama": "Waeura"
+    },
+    {
+      "kode": "81.04.06.2004",
+      "nama": "Samalagi"
+    },
+    {
+      "kode": "81.04.06.2005",
+      "nama": "Namsina"
+    },
+    {
+      "kode": "81.04.06.2006",
+      "nama": "Hatawano"
+    },
+    {
+      "kode": "81.04.06.2007",
+      "nama": "Waelihang"
+    },
+    {
+      "kode": "81.04.06.2008",
+      "nama": "Waprea"
+    },
+    {
+      "kode": "81.04.06.2009",
+      "nama": "Waepotih"
+    },
+    {
+      "kode": "81.04.06.2010",
+      "nama": "Skikilale"
+    },
+    {
+      "kode": "81.04.10.2001",
+      "nama": "Ilath"
+    },
+    {
+      "kode": "81.04.10.2002",
+      "nama": "Batu Jungku"
+    },
+    {
+      "kode": "81.04.10.2003",
+      "nama": "Pela"
+    },
+    {
+      "kode": "81.04.10.2004",
+      "nama": "Waemorat"
+    },
+    {
+      "kode": "81.04.10.2006",
+      "nama": "Namlea Ilath"
+    },
+    {
+      "kode": "81.04.11.2001",
+      "nama": "Kubalahin"
+    },
+    {
+      "kode": "81.04.11.2002",
+      "nama": "Waegeren"
+    },
+    {
+      "kode": "81.04.11.2003",
+      "nama": "Grandeng"
+    },
+    {
+      "kode": "81.04.11.2004",
+      "nama": "Lele"
+    },
+    {
+      "kode": "81.04.11.2005",
+      "nama": "Wanakarta"
+    },
+    {
+      "kode": "81.04.11.2006",
+      "nama": "Wabloy"
+    },
+    {
+      "kode": "81.04.11.2007",
+      "nama": "Ohilahin"
+    },
+    {
+      "kode": "81.04.11.2008",
+      "nama": "Tifu"
+    },
+    {
+      "kode": "81.04.11.2009",
+      "nama": "Wapsalit"
+    },
+    {
+      "kode": "81.04.11.2010",
+      "nama": "Nafrua"
+    },
+    {
+      "kode": "81.04.12.2001",
+      "nama": "Waelo"
+    },
+    {
+      "kode": "81.04.12.2002",
+      "nama": "Debowae"
+    },
+    {
+      "kode": "81.04.12.2003",
+      "nama": "Parbulu"
+    },
+    {
+      "kode": "81.04.12.2004",
+      "nama": "Waetina"
+    },
+    {
+      "kode": "81.04.12.2005",
+      "nama": "Waeleman"
+    },
+    {
+      "kode": "81.04.12.2006",
+      "nama": "Basalale"
+    },
+    {
+      "kode": "81.04.12.2007",
+      "nama": "Waflan"
+    },
+    {
+      "kode": "81.04.12.2008",
+      "nama": "Dava"
+    },
+    {
+      "kode": "81.04.12.2009",
+      "nama": "Waehata"
+    },
+    {
+      "kode": "81.04.12.2010",
+      "nama": "Widit"
+    },
+    {
+      "kode": "81.04.13.2001",
+      "nama": "Wamlana"
+    },
+    {
+      "kode": "81.04.13.2002",
+      "nama": "Balbalu"
+    },
+    {
+      "kode": "81.04.13.2003",
+      "nama": "Waspait"
+    },
+    {
+      "kode": "81.04.13.2004",
+      "nama": "Waedanga"
+    },
+    {
+      "kode": "81.04.13.2005",
+      "nama": "Lemanpoli"
+    },
+    {
+      "kode": "81.04.13.2006",
+      "nama": "Waelana-lana"
+    },
+    {
+      "kode": "81.04.13.2007",
+      "nama": "Waereman"
+    },
+    {
+      "kode": "81.04.13.2008",
+      "nama": "Waemite"
+    },
+    {
+      "kode": "81.04.13.2009",
+      "nama": "Wasi"
+    },
+    {
+      "kode": "81.04.13.2010",
+      "nama": "Waekose"
+    },
+    {
+      "kode": "81.04.13.2011",
+      "nama": "Wamana Baru"
+    },
+    {
+      "kode": "81.04.13.2012",
+      "nama": "Raheriat"
+    },
+    {
+      "kode": "81.04.13.2013",
+      "nama": "Waenibe"
+    },
+    {
+      "kode": "81.04.14.2001",
+      "nama": "Kaiely"
+    },
+    {
+      "kode": "81.04.14.2002",
+      "nama": "Masarete"
+    },
+    {
+      "kode": "81.04.14.2003",
+      "nama": "Waelapia"
+    },
+    {
+      "kode": "81.04.14.2004",
+      "nama": "Kaki Air"
+    },
+    {
+      "kode": "81.04.14.2005",
+      "nama": "Seith"
+    },
+    {
+      "kode": "81.04.15.2001",
+      "nama": "Ubung"
+    },
+    {
+      "kode": "81.04.15.2002",
+      "nama": "Jikumerasa"
+    },
+    {
+      "kode": "81.04.15.2003",
+      "nama": "Waemiting"
+    },
+    {
+      "kode": "81.04.15.2004",
+      "nama": "Sawa"
+    },
+    {
+      "kode": "81.04.15.2005",
+      "nama": "Waeperang"
+    },
+    {
+      "kode": "81.05.01.2003",
+      "nama": "Bula"
+    },
+    {
+      "kode": "81.05.01.2004",
+      "nama": "Salas"
+    },
+    {
+      "kode": "81.05.01.2010",
+      "nama": "Englas"
+    },
+    {
+      "kode": "81.05.01.2011",
+      "nama": "Bula Air Fatolo"
+    },
+    {
+      "kode": "81.05.01.2012",
+      "nama": "Sesar"
+    },
+    {
+      "kode": "81.05.01.2022",
+      "nama": "Tansi Ambon"
+    },
+    {
+      "kode": "81.05.01.2023",
+      "nama": "Kampung Wailola"
+    },
+    {
+      "kode": "81.05.01.2024",
+      "nama": "Kampung Gorom"
+    },
+    {
+      "kode": "81.05.01.2025",
+      "nama": "Limumir"
+    },
+    {
+      "kode": "81.05.01.2026",
+      "nama": "Fattolo"
+    },
+    {
+      "kode": "81.05.02.2001",
+      "nama": "Geser"
+    },
+    {
+      "kode": "81.05.02.2002",
+      "nama": "Kiltay"
+    },
+    {
+      "kode": "81.05.02.2003",
+      "nama": "Kilwaru"
+    },
+    {
+      "kode": "81.05.02.2004",
+      "nama": "Kellu"
+    },
+    {
+      "kode": "81.05.02.2005",
+      "nama": "Keffing"
+    },
+    {
+      "kode": "81.05.02.2028",
+      "nama": "Kilfura"
+    },
+    {
+      "kode": "81.05.03.2001",
+      "nama": "Batuasa"
+    },
+    {
+      "kode": "81.05.03.2002",
+      "nama": "Hatuimeten"
+    },
+    {
+      "kode": "81.05.03.2003",
+      "nama": "Werinama"
+    },
+    {
+      "kode": "81.05.03.2004",
+      "nama": "Bemo"
+    },
+    {
+      "kode": "81.05.03.2015",
+      "nama": "Tum"
+    },
+    {
+      "kode": "81.05.03.2016",
+      "nama": "Gusalaut"
+    },
+    {
+      "kode": "81.05.03.2017",
+      "nama": "Osong"
+    },
+    {
+      "kode": "81.05.03.2018",
+      "nama": "Tobo"
+    },
+    {
+      "kode": "81.05.03.2021",
+      "nama": "Bemo Perak"
+    },
+    {
+      "kode": "81.05.03.2022",
+      "nama": "Funa Naibaya"
+    },
+    {
+      "kode": "81.05.04.2001",
+      "nama": "Kataloka"
+    },
+    {
+      "kode": "81.05.04.2003",
+      "nama": "Amarsekaru"
+    },
+    {
+      "kode": "81.05.04.2004",
+      "nama": "Ondor"
+    },
+    {
+      "kode": "81.05.04.2005",
+      "nama": "Day"
+    },
+    {
+      "kode": "81.05.04.2006",
+      "nama": "Mida"
+    },
+    {
+      "kode": "81.05.04.2021",
+      "nama": "Loko"
+    },
+    {
+      "kode": "81.05.04.2022",
+      "nama": "Sera"
+    },
+    {
+      "kode": "81.05.04.2023",
+      "nama": "Kulugowa"
+    },
+    {
+      "kode": "81.05.04.2024",
+      "nama": "Rumeon"
+    },
+    {
+      "kode": "81.05.04.2031",
+      "nama": "Kelibingan"
+    },
+    {
+      "kode": "81.05.04.2032",
+      "nama": "Ilili"
+    },
+    {
+      "kode": "81.05.04.2042",
+      "nama": "Namalean"
+    },
+    {
+      "kode": "81.05.04.2043",
+      "nama": "Dulak"
+    },
+    {
+      "kode": "81.05.04.2044",
+      "nama": "Kilalir Kilwouw"
+    },
+    {
+      "kode": "81.05.04.2045",
+      "nama": "Kilotak"
+    },
+    {
+      "kode": "81.05.04.2046",
+      "nama": "Kilean"
+    },
+    {
+      "kode": "81.05.04.2047",
+      "nama": "Kaforing"
+    },
+    {
+      "kode": "81.05.04.2048",
+      "nama": "Arewang"
+    },
+    {
+      "kode": "81.05.04.2049",
+      "nama": "Usun Kataloka"
+    },
+    {
+      "kode": "81.05.04.2050",
+      "nama": "Buan Kataloka"
+    },
+    {
+      "kode": "81.05.04.2051",
+      "nama": "Rumanama Kotawouw Kataloka"
+    },
+    {
+      "kode": "81.05.04.2052",
+      "nama": "Sikaro Kataloka"
+    },
+    {
+      "kode": "81.05.04.2053",
+      "nama": "Aroa Kataloka"
+    },
+    {
+      "kode": "81.05.04.2054",
+      "nama": "Dada Kataloka"
+    },
+    {
+      "kode": "81.05.05.2001",
+      "nama": "Ilili"
+    },
+    {
+      "kode": "81.05.05.2002",
+      "nama": "Effa"
+    },
+    {
+      "kode": "81.05.05.2003",
+      "nama": "Lahema"
+    },
+    {
+      "kode": "81.05.05.2004",
+      "nama": "Utta"
+    },
+    {
+      "kode": "81.05.05.2005",
+      "nama": "Kelangan"
+    },
+    {
+      "kode": "81.05.05.2006",
+      "nama": "Amarlaut"
+    },
+    {
+      "kode": "81.05.05.2007",
+      "nama": "Tamher Warat"
+    },
+    {
+      "kode": "81.05.05.2008",
+      "nama": "Tamher Timur"
+    },
+    {
+      "kode": "81.05.05.2010",
+      "nama": "Wunin Eldedora"
+    },
+    {
+      "kode": "81.05.05.2011",
+      "nama": "Keldor"
+    },
+    {
+      "kode": "81.05.05.2021",
+      "nama": "Tanah Baru"
+    },
+    {
+      "kode": "81.05.05.2022",
+      "nama": "Guliar"
+    },
+    {
+      "kode": "81.05.05.2023",
+      "nama": "Karlomin"
+    },
+    {
+      "kode": "81.05.05.2024",
+      "nama": "Otademan"
+    },
+    {
+      "kode": "81.05.05.2025",
+      "nama": "Kurwara"
+    },
+    {
+      "kode": "81.05.05.2026",
+      "nama": "Kilbutak"
+    },
+    {
+      "kode": "81.05.05.2027",
+      "nama": "Ruma Durun"
+    },
+    {
+      "kode": "81.05.05.2028",
+      "nama": "Tana Soa"
+    },
+    {
+      "kode": "81.05.06.2001",
+      "nama": "Danama"
+    },
+    {
+      "kode": "81.05.06.2002",
+      "nama": "Kilmoy"
+    },
+    {
+      "kode": "81.05.06.2003",
+      "nama": "Kilbat"
+    },
+    {
+      "kode": "81.05.06.2004",
+      "nama": "Sesar"
+    },
+    {
+      "kode": "81.05.06.2005",
+      "nama": "Airkasar"
+    },
+    {
+      "kode": "81.05.06.2006",
+      "nama": "Waras-Waras"
+    },
+    {
+      "kode": "81.05.06.2007",
+      "nama": "Gah"
+    },
+    {
+      "kode": "81.05.06.2008",
+      "nama": "Walang Tenga"
+    },
+    {
+      "kode": "81.05.06.2009",
+      "nama": "Bati Kilwouw"
+    },
+    {
+      "kode": "81.05.06.2010",
+      "nama": "Taruy"
+    },
+    {
+      "kode": "81.05.06.2011",
+      "nama": "Kufar"
+    },
+    {
+      "kode": "81.05.07.2001",
+      "nama": "Dihil"
+    },
+    {
+      "kode": "81.05.07.2002",
+      "nama": "Liliama"
+    },
+    {
+      "kode": "81.05.07.2003",
+      "nama": "Naiwel Ahinulin"
+    },
+    {
+      "kode": "81.05.07.2004",
+      "nama": "Polin"
+    },
+    {
+      "kode": "81.05.07.2005",
+      "nama": "Tunsai"
+    },
+    {
+      "kode": "81.05.07.2006",
+      "nama": "Lapela"
+    },
+    {
+      "kode": "81.05.07.2007",
+      "nama": "Nayet"
+    },
+    {
+      "kode": "81.05.07.2008",
+      "nama": "Elnusa"
+    },
+    {
+      "kode": "81.05.07.2009",
+      "nama": "Atiahu"
+    },
+    {
+      "kode": "81.05.07.2010",
+      "nama": "Sabuai"
+    },
+    {
+      "kode": "81.05.07.2011",
+      "nama": "Abulate"
+    },
+    {
+      "kode": "81.05.07.2012",
+      "nama": "Adabai"
+    },
+    {
+      "kode": "81.05.08.2001",
+      "nama": "Selor"
+    },
+    {
+      "kode": "81.05.08.2002",
+      "nama": "Nekan"
+    },
+    {
+      "kode": "81.05.08.2003",
+      "nama": "Afang Kota"
+    },
+    {
+      "kode": "81.05.08.2004",
+      "nama": "Afang Defol"
+    },
+    {
+      "kode": "81.05.08.2005",
+      "nama": "Kumelang"
+    },
+    {
+      "kode": "81.05.08.2006",
+      "nama": "Undur"
+    },
+    {
+      "kode": "81.05.08.2007",
+      "nama": "Kamar"
+    },
+    {
+      "kode": "81.05.08.2008",
+      "nama": "Gunak"
+    },
+    {
+      "kode": "81.05.08.2009",
+      "nama": "Sumbawa"
+    },
+    {
+      "kode": "81.05.08.2010",
+      "nama": "Kilmury"
+    },
+    {
+      "kode": "81.05.08.2011",
+      "nama": "Kilbon Kway"
+    },
+    {
+      "kode": "81.05.08.2012",
+      "nama": "Mising"
+    },
+    {
+      "kode": "81.05.08.2013",
+      "nama": "Bitorik"
+    },
+    {
+      "kode": "81.05.08.2014",
+      "nama": "Taa"
+    },
+    {
+      "kode": "81.05.09.2001",
+      "nama": "Pulau Panjang"
+    },
+    {
+      "kode": "81.05.09.2002",
+      "nama": "Argam"
+    },
+    {
+      "kode": "81.05.09.2003",
+      "nama": "Lalasa"
+    },
+    {
+      "kode": "81.05.09.2004",
+      "nama": "Magat"
+    },
+    {
+      "kode": "81.05.09.2005",
+      "nama": "Ruku Ruku"
+    },
+    {
+      "kode": "81.05.09.2006",
+      "nama": "Perik Basaranggi"
+    },
+    {
+      "kode": "81.05.10.2001",
+      "nama": "Teor"
+    },
+    {
+      "kode": "81.05.10.2002",
+      "nama": "Kartutin Kartenga"
+    },
+    {
+      "kode": "81.05.10.2003",
+      "nama": "Ker Ker"
+    },
+    {
+      "kode": "81.05.10.2004",
+      "nama": "Duryar Rumoy"
+    },
+    {
+      "kode": "81.05.10.2005",
+      "nama": "Lapang Kampung Jawa"
+    },
+    {
+      "kode": "81.05.10.2006",
+      "nama": "Kampung Tengah Wermaf"
+    },
+    {
+      "kode": "81.05.10.2007",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "81.05.10.2008",
+      "nama": "Mamur"
+    },
+    {
+      "kode": "81.05.10.2009",
+      "nama": "Kiliwouw"
+    },
+    {
+      "kode": "81.05.10.2010",
+      "nama": "Karlokin"
+    },
+    {
+      "kode": "81.05.11.2001",
+      "nama": "Kilkoda"
+    },
+    {
+      "kode": "81.05.11.2002",
+      "nama": "Miran"
+    },
+    {
+      "kode": "81.05.11.2003",
+      "nama": "Kota Sirih"
+    },
+    {
+      "kode": "81.05.11.2004",
+      "nama": "Amarwatu"
+    },
+    {
+      "kode": "81.05.11.2005",
+      "nama": "Aran"
+    },
+    {
+      "kode": "81.05.11.2006",
+      "nama": "Tuha"
+    },
+    {
+      "kode": "81.05.11.2007",
+      "nama": "Bas"
+    },
+    {
+      "kode": "81.05.11.2008",
+      "nama": "Tunas Ilur"
+    },
+    {
+      "kode": "81.05.11.2009",
+      "nama": "Sagey"
+    },
+    {
+      "kode": "81.05.11.2010",
+      "nama": "Armada"
+    },
+    {
+      "kode": "81.05.11.2011",
+      "nama": "Waisalan"
+    },
+    {
+      "kode": "81.05.11.2012",
+      "nama": "Basarin"
+    },
+    {
+      "kode": "81.05.11.2013",
+      "nama": "Goha"
+    },
+    {
+      "kode": "81.05.11.2014",
+      "nama": "Rarat"
+    },
+    {
+      "kode": "81.05.11.2015",
+      "nama": "Miran Gota"
+    },
+    {
+      "kode": "81.05.11.2016",
+      "nama": "Adar"
+    },
+    {
+      "kode": "81.05.11.2017",
+      "nama": "Tinarin"
+    },
+    {
+      "kode": "81.05.11.2018",
+      "nama": "Etaralu"
+    },
+    {
+      "kode": "81.05.11.2019",
+      "nama": "Kiltufa"
+    },
+    {
+      "kode": "81.05.11.2020",
+      "nama": "Miran Kilian"
+    },
+    {
+      "kode": "81.05.11.2021",
+      "nama": "Miran Keledar"
+    },
+    {
+      "kode": "81.05.11.2022",
+      "nama": "Miran Manaban"
+    },
+    {
+      "kode": "81.05.11.2023",
+      "nama": "Miran Rumuar"
+    },
+    {
+      "kode": "81.05.12.2001",
+      "nama": "Hote"
+    },
+    {
+      "kode": "81.05.12.2002",
+      "nama": "Banggoi"
+    },
+    {
+      "kode": "81.05.12.2003",
+      "nama": "Waematakabo"
+    },
+    {
+      "kode": "81.05.12.2004",
+      "nama": "Waiketam Baru"
+    },
+    {
+      "kode": "81.05.12.2005",
+      "nama": "Waisamet"
+    },
+    {
+      "kode": "81.05.12.2006",
+      "nama": "Aki Jaya"
+    },
+    {
+      "kode": "81.05.12.2007",
+      "nama": "Jakarta Baru"
+    },
+    {
+      "kode": "81.05.12.2008",
+      "nama": "Silohan"
+    },
+    {
+      "kode": "81.05.12.2009",
+      "nama": "Sumber Agung"
+    },
+    {
+      "kode": "81.05.12.2010",
+      "nama": "Rukun Jaya"
+    },
+    {
+      "kode": "81.05.12.2011",
+      "nama": "Jembatan Basah"
+    },
+    {
+      "kode": "81.05.12.2012",
+      "nama": "Dreamland Hills"
+    },
+    {
+      "kode": "81.05.12.2013",
+      "nama": "Banggoi Pancorang"
+    },
+    {
+      "kode": "81.05.13.2001",
+      "nama": "Kian Darat"
+    },
+    {
+      "kode": "81.05.13.2002",
+      "nama": "Artafela"
+    },
+    {
+      "kode": "81.05.13.2003",
+      "nama": "Angar"
+    },
+    {
+      "kode": "81.05.13.2004",
+      "nama": "Watu Watu"
+    },
+    {
+      "kode": "81.05.13.2005",
+      "nama": "Kelaba"
+    },
+    {
+      "kode": "81.05.13.2006",
+      "nama": "Kilga Kilwouw"
+    },
+    {
+      "kode": "81.05.13.2007",
+      "nama": "Kilga Watubau"
+    },
+    {
+      "kode": "81.05.13.2008",
+      "nama": "Rumfakar"
+    },
+    {
+      "kode": "81.05.13.2009",
+      "nama": "Kileser"
+    },
+    {
+      "kode": "81.05.13.2010",
+      "nama": "Rumoga"
+    },
+    {
+      "kode": "81.05.14.2001",
+      "nama": "Kian Laut"
+    },
+    {
+      "kode": "81.05.14.2002",
+      "nama": "Kuwaos"
+    },
+    {
+      "kode": "81.05.14.2003",
+      "nama": "Salagor Air"
+    },
+    {
+      "kode": "81.05.14.2004",
+      "nama": "Salagor Kota"
+    },
+    {
+      "kode": "81.05.14.2005",
+      "nama": "Aruan Gaur"
+    },
+    {
+      "kode": "81.05.14.2006",
+      "nama": "Keta Rumadan"
+    },
+    {
+      "kode": "81.05.14.2007",
+      "nama": "Lian Tasik"
+    },
+    {
+      "kode": "81.05.14.2008",
+      "nama": "Keta"
+    },
+    {
+      "kode": "81.05.14.2009",
+      "nama": "Air Nanang"
+    },
+    {
+      "kode": "81.05.14.2010",
+      "nama": "Suru"
+    },
+    {
+      "kode": "81.05.15.2001",
+      "nama": "Waru"
+    },
+    {
+      "kode": "81.05.15.2002",
+      "nama": "Bellis"
+    },
+    {
+      "kode": "81.05.15.2003",
+      "nama": "Dawang"
+    },
+    {
+      "kode": "81.05.15.2004",
+      "nama": "Solang"
+    },
+    {
+      "kode": "81.05.15.2005",
+      "nama": "Karay"
+    },
+    {
+      "kode": "81.05.15.2006",
+      "nama": "Nama Lena"
+    },
+    {
+      "kode": "81.05.15.2007",
+      "nama": "Nama Andan"
+    },
+    {
+      "kode": "81.05.15.2008",
+      "nama": "Tubir Wasiwang"
+    },
+    {
+      "kode": "81.05.15.2009",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "81.05.15.2010",
+      "nama": "Boinfia"
+    },
+    {
+      "kode": "81.05.15.2011",
+      "nama": "Madak"
+    },
+    {
+      "kode": "81.05.16.2001",
+      "nama": "Urung"
+    },
+    {
+      "kode": "81.05.16.2002",
+      "nama": "Kwamor Kecil Mata Ata"
+    },
+    {
+      "kode": "81.05.16.2003",
+      "nama": "Kwamor Kecil Mata Wawa"
+    },
+    {
+      "kode": "81.05.16.2004",
+      "nama": "Kwamor Besar Ena"
+    },
+    {
+      "kode": "81.05.16.2005",
+      "nama": "Kwamor Besar Witau"
+    },
+    {
+      "kode": "81.05.16.2006",
+      "nama": "Guli-Guli"
+    },
+    {
+      "kode": "81.05.16.2007",
+      "nama": "Manggis"
+    },
+    {
+      "kode": "81.05.16.2008",
+      "nama": "Ainena"
+    },
+    {
+      "kode": "81.05.16.2009",
+      "nama": "Mugusinis"
+    },
+    {
+      "kode": "81.05.16.2010",
+      "nama": "Akat Fadedo"
+    },
+    {
+      "kode": "81.06.01.2008",
+      "nama": "Kamarian"
+    },
+    {
+      "kode": "81.06.01.2009",
+      "nama": "Seruawan"
+    },
+    {
+      "kode": "81.06.01.2010",
+      "nama": "Kairatu"
+    },
+    {
+      "kode": "81.06.01.2011",
+      "nama": "Waimital"
+    },
+    {
+      "kode": "81.06.01.2012",
+      "nama": "Hatusua"
+    },
+    {
+      "kode": "81.06.01.2014",
+      "nama": "Waipirit"
+    },
+    {
+      "kode": "81.06.01.2015",
+      "nama": "Uraur"
+    },
+    {
+      "kode": "81.06.02.2002",
+      "nama": "Kawa"
+    },
+    {
+      "kode": "81.06.02.2003",
+      "nama": "Piru"
+    },
+    {
+      "kode": "81.06.02.2004",
+      "nama": "Neniari"
+    },
+    {
+      "kode": "81.06.02.2005",
+      "nama": "Morekau"
+    },
+    {
+      "kode": "81.06.02.2006",
+      "nama": "Lumoli"
+    },
+    {
+      "kode": "81.06.02.2007",
+      "nama": "Eti"
+    },
+    {
+      "kode": "81.06.02.2008",
+      "nama": "Kaibobo"
+    },
+    {
+      "kode": "81.06.03.2001",
+      "nama": "Murnaten"
+    },
+    {
+      "kode": "81.06.03.2002",
+      "nama": "Nikulukan"
+    },
+    {
+      "kode": "81.06.03.2003",
+      "nama": "Niwelehu"
+    },
+    {
+      "kode": "81.06.03.2004",
+      "nama": "Nuniali"
+    },
+    {
+      "kode": "81.06.03.2005",
+      "nama": "Lisabata"
+    },
+    {
+      "kode": "81.06.03.2006",
+      "nama": "Wakolo"
+    },
+    {
+      "kode": "81.06.03.2007",
+      "nama": "Patahuwe"
+    },
+    {
+      "kode": "81.06.03.2008",
+      "nama": "Taniwel"
+    },
+    {
+      "kode": "81.06.03.2009",
+      "nama": "Hulung"
+    },
+    {
+      "kode": "81.06.03.2010",
+      "nama": "Kasieh"
+    },
+    {
+      "kode": "81.06.03.2011",
+      "nama": "Nukuhai"
+    },
+    {
+      "kode": "81.06.03.2012",
+      "nama": "Pasinalo"
+    },
+    {
+      "kode": "81.06.03.2028",
+      "nama": "Uweth"
+    },
+    {
+      "kode": "81.06.03.2029",
+      "nama": "Laturake"
+    },
+    {
+      "kode": "81.06.03.2030",
+      "nama": "Buria"
+    },
+    {
+      "kode": "81.06.03.2031",
+      "nama": "Riring"
+    },
+    {
+      "kode": "81.06.03.2032",
+      "nama": "Rumahsoal"
+    },
+    {
+      "kode": "81.06.03.2033",
+      "nama": "Lohiasapalewa"
+    },
+    {
+      "kode": "81.06.03.2034",
+      "nama": "Niniari"
+    },
+    {
+      "kode": "81.06.04.2001",
+      "nama": "Waesala"
+    },
+    {
+      "kode": "81.06.04.2002",
+      "nama": "Allang Asaude"
+    },
+    {
+      "kode": "81.06.04.2003",
+      "nama": "Sole"
+    },
+    {
+      "kode": "81.06.04.2004",
+      "nama": "Tonu Jaya"
+    },
+    {
+      "kode": "81.06.04.2005",
+      "nama": "Tahalupu"
+    },
+    {
+      "kode": "81.06.04.2006",
+      "nama": "Buano Utara"
+    },
+    {
+      "kode": "81.06.04.2007",
+      "nama": "Buano Selatan"
+    },
+    {
+      "kode": "81.06.05.2001",
+      "nama": "Tihulale"
+    },
+    {
+      "kode": "81.06.05.2002",
+      "nama": "Rumahkay"
+    },
+    {
+      "kode": "81.06.05.2003",
+      "nama": "Latu"
+    },
+    {
+      "kode": "81.06.05.2004",
+      "nama": "Tomalehu"
+    },
+    {
+      "kode": "81.06.05.2005",
+      "nama": "Hualoy"
+    },
+    {
+      "kode": "81.06.05.2006",
+      "nama": "Seriholo"
+    },
+    {
+      "kode": "81.06.05.2007",
+      "nama": "Tala"
+    },
+    {
+      "kode": "81.06.06.2001",
+      "nama": "Manusa"
+    },
+    {
+      "kode": "81.06.06.2002",
+      "nama": "Rambatu"
+    },
+    {
+      "kode": "81.06.06.2003",
+      "nama": "Rumberu"
+    },
+    {
+      "kode": "81.06.06.2004",
+      "nama": "Honitetu"
+    },
+    {
+      "kode": "81.06.06.2005",
+      "nama": "Hukuanakota"
+    },
+    {
+      "kode": "81.06.07.2001",
+      "nama": "Waihatu"
+    },
+    {
+      "kode": "81.06.07.2002",
+      "nama": "Lohiatala"
+    },
+    {
+      "kode": "81.06.07.2003",
+      "nama": "Waisamu"
+    },
+    {
+      "kode": "81.06.07.2004",
+      "nama": "Nuruwe"
+    },
+    {
+      "kode": "81.06.07.2005",
+      "nama": "Kamal"
+    },
+    {
+      "kode": "81.06.07.2006",
+      "nama": "Waisarisa"
+    },
+    {
+      "kode": "81.06.08.2001",
+      "nama": "Ariate"
+    },
+    {
+      "kode": "81.06.08.2002",
+      "nama": "Lokki"
+    },
+    {
+      "kode": "81.06.08.2003",
+      "nama": "Luhu"
+    },
+    {
+      "kode": "81.06.08.2004",
+      "nama": "Iha"
+    },
+    {
+      "kode": "81.06.08.2005",
+      "nama": "Kulur"
+    },
+    {
+      "kode": "81.06.09.2001",
+      "nama": "Luhutuban"
+    },
+    {
+      "kode": "81.06.09.2002",
+      "nama": "Masawoy"
+    },
+    {
+      "kode": "81.06.09.2003",
+      "nama": "Tuniwara"
+    },
+    {
+      "kode": "81.06.09.2004",
+      "nama": "Kelang Asaude"
+    },
+    {
+      "kode": "81.06.09.2005",
+      "nama": "Tomalehu Barat"
+    },
+    {
+      "kode": "81.06.09.2006",
+      "nama": "Tomalehu Timur"
+    },
+    {
+      "kode": "81.06.09.2007",
+      "nama": "Buano Hatuputih"
+    },
+    {
+      "kode": "81.06.10.2001",
+      "nama": "Sohuwe"
+    },
+    {
+      "kode": "81.06.10.2002",
+      "nama": "Maloang"
+    },
+    {
+      "kode": "81.06.10.2003",
+      "nama": "Lumahlatal"
+    },
+    {
+      "kode": "81.06.10.2004",
+      "nama": "Matapa"
+    },
+    {
+      "kode": "81.06.10.2005",
+      "nama": "Seakasale"
+    },
+    {
+      "kode": "81.06.10.2006",
+      "nama": "Makububui"
+    },
+    {
+      "kode": "81.06.10.2007",
+      "nama": "Sukaraja"
+    },
+    {
+      "kode": "81.06.10.2008",
+      "nama": "Uwen Pantai"
+    },
+    {
+      "kode": "81.06.10.2009",
+      "nama": "Tounussa"
+    },
+    {
+      "kode": "81.06.10.2010",
+      "nama": "Musihuwey"
+    },
+    {
+      "kode": "81.06.10.2011",
+      "nama": "Solea"
+    },
+    {
+      "kode": "81.06.10.2012",
+      "nama": "Waraloin"
+    },
+    {
+      "kode": "81.06.10.2013",
+      "nama": "Walakone"
+    },
+    {
+      "kode": "81.06.10.2014",
+      "nama": "Hatunuru"
+    },
+    {
+      "kode": "81.06.10.2015",
+      "nama": "Lumahpelu"
+    },
+    {
+      "kode": "81.06.11.2002",
+      "nama": "Sanahu"
+    },
+    {
+      "kode": "81.06.11.2003",
+      "nama": "Wasia"
+    },
+    {
+      "kode": "81.06.11.2004",
+      "nama": "Sumeith Pasinaro"
+    },
+    {
+      "kode": "81.06.11.2005",
+      "nama": "Watui"
+    },
+    {
+      "kode": "81.06.11.2006",
+      "nama": "Abio Ahiolo"
+    },
+    {
+      "kode": "81.06.11.2007",
+      "nama": "Huku Kecil"
+    },
+    {
+      "kode": "81.06.11.2008",
+      "nama": "Elpaputih"
+    },
+    {
+      "kode": "81.07.01.1012",
+      "nama": "Galai Dubu"
+    },
+    {
+      "kode": "81.07.01.1013",
+      "nama": "Siwa Lima"
+    },
+    {
+      "kode": "81.07.01.2001",
+      "nama": "Ujir"
+    },
+    {
+      "kode": "81.07.01.2002",
+      "nama": "Nafar"
+    },
+    {
+      "kode": "81.07.01.2003",
+      "nama": "Kobraur"
+    },
+    {
+      "kode": "81.07.01.2004",
+      "nama": "Lau-Lau"
+    },
+    {
+      "kode": "81.07.01.2005",
+      "nama": "Gorar"
+    },
+    {
+      "kode": "81.07.01.2006",
+      "nama": "Tungu"
+    },
+    {
+      "kode": "81.07.01.2007",
+      "nama": "Tunguwatu"
+    },
+    {
+      "kode": "81.07.01.2008",
+      "nama": "Jabulenga"
+    },
+    {
+      "kode": "81.07.01.2009",
+      "nama": "Wokam"
+    },
+    {
+      "kode": "81.07.01.2010",
+      "nama": "Karangguli"
+    },
+    {
+      "kode": "81.07.01.2011",
+      "nama": "Durjela"
+    },
+    {
+      "kode": "81.07.01.2014",
+      "nama": "Wangel"
+    },
+    {
+      "kode": "81.07.01.2015",
+      "nama": "Samang"
+    },
+    {
+      "kode": "81.07.02.2001",
+      "nama": "Jerol"
+    },
+    {
+      "kode": "81.07.02.2002",
+      "nama": "Marfenfen"
+    },
+    {
+      "kode": "81.07.02.2003",
+      "nama": "Kabalukin"
+    },
+    {
+      "kode": "81.07.02.2004",
+      "nama": "Kalar-Kalar"
+    },
+    {
+      "kode": "81.07.02.2005",
+      "nama": "Feruni"
+    },
+    {
+      "kode": "81.07.02.2006",
+      "nama": "Ngaiguli"
+    },
+    {
+      "kode": "81.07.02.2007",
+      "nama": "Fatural"
+    },
+    {
+      "kode": "81.07.02.2008",
+      "nama": "Ngaibor"
+    },
+    {
+      "kode": "81.07.02.2010",
+      "nama": "Popjetur"
+    },
+    {
+      "kode": "81.07.02.2026",
+      "nama": "Lor-lor"
+    },
+    {
+      "kode": "81.07.02.2027",
+      "nama": "Gaimar"
+    },
+    {
+      "kode": "81.07.02.2028",
+      "nama": "Laininir"
+    },
+    {
+      "kode": "81.07.02.2029",
+      "nama": "Doka Barat"
+    },
+    {
+      "kode": "81.07.02.2030",
+      "nama": "Doka Timur"
+    },
+    {
+      "kode": "81.07.02.2031",
+      "nama": "Jelia"
+    },
+    {
+      "kode": "81.07.03.2001",
+      "nama": "Benjina"
+    },
+    {
+      "kode": "81.07.03.2003",
+      "nama": "Gardakau"
+    },
+    {
+      "kode": "81.07.03.2004",
+      "nama": "Irloy"
+    },
+    {
+      "kode": "81.07.03.2005",
+      "nama": "Algadang"
+    },
+    {
+      "kode": "81.07.03.2006",
+      "nama": "Lorang"
+    },
+    {
+      "kode": "81.07.03.2007",
+      "nama": "Murai"
+    },
+    {
+      "kode": "81.07.03.2008",
+      "nama": "Manjau"
+    },
+    {
+      "kode": "81.07.03.2009",
+      "nama": "Kwarbola"
+    },
+    {
+      "kode": "81.07.03.2028",
+      "nama": "Kobadangar"
+    },
+    {
+      "kode": "81.07.03.2029",
+      "nama": "Kobasel Fara"
+    },
+    {
+      "kode": "81.07.03.2030",
+      "nama": "Kobasel Timur"
+    },
+    {
+      "kode": "81.07.03.2031",
+      "nama": "Fatlabata"
+    },
+    {
+      "kode": "81.07.03.2033",
+      "nama": "Wakua"
+    },
+    {
+      "kode": "81.07.03.2034",
+      "nama": "Jirlay"
+    },
+    {
+      "kode": "81.07.03.2035",
+      "nama": "Maririmar"
+    },
+    {
+      "kode": "81.07.03.2036",
+      "nama": "Papakula"
+    },
+    {
+      "kode": "81.07.03.2037",
+      "nama": "Tanah Miring"
+    },
+    {
+      "kode": "81.07.03.2038",
+      "nama": "Gulili"
+    },
+    {
+      "kode": "81.07.03.2039",
+      "nama": "Namara"
+    },
+    {
+      "kode": "81.07.03.2040",
+      "nama": "Selilau"
+    },
+    {
+      "kode": "81.07.03.2043",
+      "nama": "Maijuring"
+    },
+    {
+      "kode": "81.07.03.2045",
+      "nama": "Selibata-bata"
+    },
+    {
+      "kode": "81.07.04.2001",
+      "nama": "Marlasi"
+    },
+    {
+      "kode": "81.07.04.2002",
+      "nama": "Kolamar"
+    },
+    {
+      "kode": "81.07.04.2003",
+      "nama": "Kabufin"
+    },
+    {
+      "kode": "81.07.04.2004",
+      "nama": "Tasinwaha"
+    },
+    {
+      "kode": "81.07.04.2005",
+      "nama": "Foket"
+    },
+    {
+      "kode": "81.07.04.2006",
+      "nama": "Kaibolafin"
+    },
+    {
+      "kode": "81.07.04.2007",
+      "nama": "Wahangula-Ngula"
+    },
+    {
+      "kode": "81.07.04.2008",
+      "nama": "Wahayum"
+    },
+    {
+      "kode": "81.07.04.2009",
+      "nama": "Warialau"
+    },
+    {
+      "kode": "81.07.04.2010",
+      "nama": "Jerwatu"
+    },
+    {
+      "kode": "81.07.04.2013",
+      "nama": "Selmona"
+    },
+    {
+      "kode": "81.07.04.2014",
+      "nama": "Mesidang"
+    },
+    {
+      "kode": "81.07.05.2001",
+      "nama": "Kabalsiang"
+    },
+    {
+      "kode": "81.07.05.2002",
+      "nama": "Benjuring"
+    },
+    {
+      "kode": "81.07.05.2003",
+      "nama": "Batuley"
+    },
+    {
+      "kode": "81.07.05.2004",
+      "nama": "Kumul"
+    },
+    {
+      "kode": "81.07.05.2005",
+      "nama": "Waria"
+    },
+    {
+      "kode": "81.07.05.2006",
+      "nama": "Sewer"
+    },
+    {
+      "kode": "81.07.05.2007",
+      "nama": "Jursiang"
+    },
+    {
+      "kode": "81.07.05.2008",
+      "nama": "Kompane"
+    },
+    {
+      "kode": "81.07.05.2009",
+      "nama": "Kobamar"
+    },
+    {
+      "kode": "81.07.06.2002",
+      "nama": "Waifual"
+    },
+    {
+      "kode": "81.07.06.2003",
+      "nama": "Wafan"
+    },
+    {
+      "kode": "81.07.06.2004",
+      "nama": "Langhalau"
+    },
+    {
+      "kode": "81.07.06.2005",
+      "nama": "Gomsey"
+    },
+    {
+      "kode": "81.07.06.2006",
+      "nama": "Leiting"
+    },
+    {
+      "kode": "81.07.06.2007",
+      "nama": "Bardefan"
+    },
+    {
+      "kode": "81.07.06.2008",
+      "nama": "Mohongsel"
+    },
+    {
+      "kode": "81.07.06.2009",
+      "nama": "Kolaha"
+    },
+    {
+      "kode": "81.07.06.2010",
+      "nama": "Goda-Goda"
+    },
+    {
+      "kode": "81.07.07.2001",
+      "nama": "Koijabi"
+    },
+    {
+      "kode": "81.07.07.2002",
+      "nama": "Balatan"
+    },
+    {
+      "kode": "81.07.07.2003",
+      "nama": "Warloy"
+    },
+    {
+      "kode": "81.07.07.2004",
+      "nama": "Warjukur"
+    },
+    {
+      "kode": "81.07.07.2005",
+      "nama": "Kobror"
+    },
+    {
+      "kode": "81.07.07.2006",
+      "nama": "Basada"
+    },
+    {
+      "kode": "81.07.07.2007",
+      "nama": "Wailay"
+    },
+    {
+      "kode": "81.07.07.2008",
+      "nama": "Kaiwabar"
+    },
+    {
+      "kode": "81.07.07.2009",
+      "nama": "Ponom"
+    },
+    {
+      "kode": "81.07.07.2010",
+      "nama": "Lola"
+    },
+    {
+      "kode": "81.07.07.2011",
+      "nama": "Mariri"
+    },
+    {
+      "kode": "81.07.07.2012",
+      "nama": "Dosinamalau"
+    },
+    {
+      "kode": "81.07.07.2013",
+      "nama": "Karawai"
+    },
+    {
+      "kode": "81.07.08.2001",
+      "nama": "Longgar"
+    },
+    {
+      "kode": "81.07.08.2002",
+      "nama": "Apara"
+    },
+    {
+      "kode": "81.07.08.2003",
+      "nama": "Bemun"
+    },
+    {
+      "kode": "81.07.08.2004",
+      "nama": "Mesiang"
+    },
+    {
+      "kode": "81.07.08.2005",
+      "nama": "Gomo-Gomo"
+    },
+    {
+      "kode": "81.07.08.2006",
+      "nama": "Jambu Air"
+    },
+    {
+      "kode": "81.07.08.2007",
+      "nama": "Warabal"
+    },
+    {
+      "kode": "81.07.09.2001",
+      "nama": "Meror"
+    },
+    {
+      "kode": "81.07.09.2002",
+      "nama": "Dosimar"
+    },
+    {
+      "kode": "81.07.09.2003",
+      "nama": "Batugoyang"
+    },
+    {
+      "kode": "81.07.09.2004",
+      "nama": "Salarem"
+    },
+    {
+      "kode": "81.07.09.2005",
+      "nama": "Siya"
+    },
+    {
+      "kode": "81.07.09.2006",
+      "nama": "Beltubur"
+    },
+    {
+      "kode": "81.07.09.2007",
+      "nama": "Karey"
+    },
+    {
+      "kode": "81.07.09.2008",
+      "nama": "Jorang"
+    },
+    {
+      "kode": "81.07.09.2009",
+      "nama": "Gomar Sungai"
+    },
+    {
+      "kode": "81.07.09.2010",
+      "nama": "Gomar Meti"
+    },
+    {
+      "kode": "81.07.10.2001",
+      "nama": "Tabarfane"
+    },
+    {
+      "kode": "81.07.10.2002",
+      "nama": "Rebi"
+    },
+    {
+      "kode": "81.07.10.2003",
+      "nama": "Lutur"
+    },
+    {
+      "kode": "81.07.10.2004",
+      "nama": "Hokmar"
+    },
+    {
+      "kode": "81.07.10.2005",
+      "nama": "Juring"
+    },
+    {
+      "kode": "81.07.10.2006",
+      "nama": "Erersin"
+    },
+    {
+      "kode": "81.07.10.2007",
+      "nama": "Maekor"
+    },
+    {
+      "kode": "81.08.01.1001",
+      "nama": "Tiakur"
+    },
+    {
+      "kode": "81.08.01.2001",
+      "nama": "Klis"
+    },
+    {
+      "kode": "81.08.01.2002",
+      "nama": "Patti"
+    },
+    {
+      "kode": "81.08.01.2003",
+      "nama": "Wakarleli"
+    },
+    {
+      "kode": "81.08.01.2004",
+      "nama": "Kaiwatu"
+    },
+    {
+      "kode": "81.08.01.2005",
+      "nama": "Werwaru"
+    },
+    {
+      "kode": "81.08.01.2006",
+      "nama": "Tounwawan"
+    },
+    {
+      "kode": "81.08.01.2007",
+      "nama": "Moain"
+    },
+    {
+      "kode": "81.08.02.2001",
+      "nama": "Wulur"
+    },
+    {
+      "kode": "81.08.02.2002",
+      "nama": "Batu Merah"
+    },
+    {
+      "kode": "81.08.02.2003",
+      "nama": "Kuaimelu"
+    },
+    {
+      "kode": "81.08.02.2004",
+      "nama": "Kumur"
+    },
+    {
+      "kode": "81.08.02.2005",
+      "nama": "Bebar Timur"
+    },
+    {
+      "kode": "81.08.02.2006",
+      "nama": "Ilih"
+    },
+    {
+      "kode": "81.08.02.2007",
+      "nama": "Kehli"
+    },
+    {
+      "kode": "81.08.03.2001",
+      "nama": "Luang Barat"
+    },
+    {
+      "kode": "81.08.03.2002",
+      "nama": "Luang Timur"
+    },
+    {
+      "kode": "81.08.03.2003",
+      "nama": "Elo"
+    },
+    {
+      "kode": "81.08.03.2004",
+      "nama": "Rumkisar"
+    },
+    {
+      "kode": "81.08.03.2005",
+      "nama": "Lelang"
+    },
+    {
+      "kode": "81.08.03.2006",
+      "nama": "Mahaleta"
+    },
+    {
+      "kode": "81.08.03.2007",
+      "nama": "Romdara"
+    },
+    {
+      "kode": "81.08.03.2008",
+      "nama": "Rotnama"
+    },
+    {
+      "kode": "81.08.03.2009",
+      "nama": "Batugajah"
+    },
+    {
+      "kode": "81.08.03.2010",
+      "nama": "Pupliora"
+    },
+    {
+      "kode": "81.08.03.2011",
+      "nama": "Regoha"
+    },
+    {
+      "kode": "81.08.04.2001",
+      "nama": "Tepa"
+    },
+    {
+      "kode": "81.08.04.2002",
+      "nama": "Imroing"
+    },
+    {
+      "kode": "81.08.04.2003",
+      "nama": "Tela"
+    },
+    {
+      "kode": "81.08.04.2004",
+      "nama": "Yaltubung"
+    },
+    {
+      "kode": "81.08.04.2005",
+      "nama": "Wanuwui"
+    },
+    {
+      "kode": "81.08.04.2006",
+      "nama": "Letsiara"
+    },
+    {
+      "kode": "81.08.04.2015",
+      "nama": "Lewah"
+    },
+    {
+      "kode": "81.08.04.2016",
+      "nama": "Hertuti"
+    },
+    {
+      "kode": "81.08.04.2017",
+      "nama": "Sinairusi"
+    },
+    {
+      "kode": "81.08.05.2001",
+      "nama": "Letwurung"
+    },
+    {
+      "kode": "81.08.05.2002",
+      "nama": "Yatoke"
+    },
+    {
+      "kode": "81.08.05.2003",
+      "nama": "Kroing"
+    },
+    {
+      "kode": "81.08.05.2004",
+      "nama": "Nakarhamto"
+    },
+    {
+      "kode": "81.08.05.2005",
+      "nama": "Emplawas"
+    },
+    {
+      "kode": "81.08.05.2006",
+      "nama": "Kokwari"
+    },
+    {
+      "kode": "81.08.05.2007",
+      "nama": "Ahanari"
+    },
+    {
+      "kode": "81.08.05.2008",
+      "nama": "Wakpapapi"
+    },
+    {
+      "kode": "81.08.05.2009",
+      "nama": "Analutur"
+    },
+    {
+      "kode": "81.08.05.2010",
+      "nama": "Manuweri"
+    },
+    {
+      "kode": "81.08.05.2011",
+      "nama": "Tutuwawang"
+    },
+    {
+      "kode": "81.08.06.2001",
+      "nama": "Ilwaki"
+    },
+    {
+      "kode": "81.08.06.2002",
+      "nama": "Ilputih"
+    },
+    {
+      "kode": "81.08.06.2003",
+      "nama": "Mahuan"
+    },
+    {
+      "kode": "81.08.06.2004",
+      "nama": "Masapun"
+    },
+    {
+      "kode": "81.08.06.2021",
+      "nama": "Arnau"
+    },
+    {
+      "kode": "81.08.06.2023",
+      "nama": "Hiay"
+    },
+    {
+      "kode": "81.08.07.2001",
+      "nama": "Wonreli"
+    },
+    {
+      "kode": "81.08.07.2002",
+      "nama": "Lekloor"
+    },
+    {
+      "kode": "81.08.07.2003",
+      "nama": "Kota Lama"
+    },
+    {
+      "kode": "81.08.07.2004",
+      "nama": "Abusur"
+    },
+    {
+      "kode": "81.08.07.2005",
+      "nama": "Oirata Timur"
+    },
+    {
+      "kode": "81.08.07.2006",
+      "nama": "Oirata Barat"
+    },
+    {
+      "kode": "81.08.08.2001",
+      "nama": "Laitutun"
+    },
+    {
+      "kode": "81.08.08.2002",
+      "nama": "Batumiau"
+    },
+    {
+      "kode": "81.08.08.2003",
+      "nama": "Tutukey"
+    },
+    {
+      "kode": "81.08.08.2004",
+      "nama": "Tomra"
+    },
+    {
+      "kode": "81.08.08.2005",
+      "nama": "Nuwewang"
+    },
+    {
+      "kode": "81.08.08.2006",
+      "nama": "Tutuwaru"
+    },
+    {
+      "kode": "81.08.08.2007",
+      "nama": "Luhuely"
+    },
+    {
+      "kode": "81.08.09.2001",
+      "nama": "Latalola Besar"
+    },
+    {
+      "kode": "81.08.09.2002",
+      "nama": "Serili"
+    },
+    {
+      "kode": "81.08.09.2003",
+      "nama": "Latalola Kecil"
+    },
+    {
+      "kode": "81.08.09.2004",
+      "nama": "Telalora"
+    },
+    {
+      "kode": "81.08.09.2005",
+      "nama": "Marsela"
+    },
+    {
+      "kode": "81.08.09.2006",
+      "nama": "Babiotang"
+    },
+    {
+      "kode": "81.08.09.2007",
+      "nama": "Iblatmuntah"
+    },
+    {
+      "kode": "81.08.09.2008",
+      "nama": "Ilbutung"
+    },
+    {
+      "kode": "81.08.09.2009",
+      "nama": "Lawawang"
+    },
+    {
+      "kode": "81.08.09.2010",
+      "nama": "Nura"
+    },
+    {
+      "kode": "81.08.09.2011",
+      "nama": "Bululora"
+    },
+    {
+      "kode": "81.08.10.2001",
+      "nama": "Watuwei"
+    },
+    {
+      "kode": "81.08.10.2002",
+      "nama": "Ilmarang"
+    },
+    {
+      "kode": "81.08.10.2003",
+      "nama": "Letmasa"
+    },
+    {
+      "kode": "81.08.10.2004",
+      "nama": "Welora"
+    },
+    {
+      "kode": "81.08.10.2005",
+      "nama": "Wiratan"
+    },
+    {
+      "kode": "81.08.10.2006",
+      "nama": "Nurnyaman"
+    },
+    {
+      "kode": "81.08.11.2001",
+      "nama": "Herley"
+    },
+    {
+      "kode": "81.08.11.2002",
+      "nama": "Upuhupun"
+    },
+    {
+      "kode": "81.08.11.2003",
+      "nama": "Pota Besar"
+    },
+    {
+      "kode": "81.08.11.2004",
+      "nama": "Pota Kecil"
+    },
+    {
+      "kode": "81.08.11.2005",
+      "nama": "Wasarili"
+    },
+    {
+      "kode": "81.08.11.2006",
+      "nama": "Rumahlewang Kecil"
+    },
+    {
+      "kode": "81.08.11.2007",
+      "nama": "Rumahlewang Besar"
+    },
+    {
+      "kode": "81.08.11.2008",
+      "nama": "Nusiata"
+    },
+    {
+      "kode": "81.08.12.2001",
+      "nama": "Ketty"
+    },
+    {
+      "kode": "81.08.12.2002",
+      "nama": "Letoda"
+    },
+    {
+      "kode": "81.08.12.2003",
+      "nama": "Sera"
+    },
+    {
+      "kode": "81.08.12.2004",
+      "nama": "Yamluli"
+    },
+    {
+      "kode": "81.08.12.2005",
+      "nama": "Lolotuara"
+    },
+    {
+      "kode": "81.08.13.2001",
+      "nama": "Nabar"
+    },
+    {
+      "kode": "81.08.13.2002",
+      "nama": "Elsulith"
+    },
+    {
+      "kode": "81.08.13.2003",
+      "nama": "Naumatang"
+    },
+    {
+      "kode": "81.08.13.2004",
+      "nama": "Lurang"
+    },
+    {
+      "kode": "81.08.13.2005",
+      "nama": "Uhak"
+    },
+    {
+      "kode": "81.08.13.2006",
+      "nama": "Eray"
+    },
+    {
+      "kode": "81.08.14.2001",
+      "nama": "Telemar"
+    },
+    {
+      "kode": "81.08.14.2002",
+      "nama": "Karbubu"
+    },
+    {
+      "kode": "81.08.14.2003",
+      "nama": "Ustutun"
+    },
+    {
+      "kode": "81.08.14.2004",
+      "nama": "Klishatu"
+    },
+    {
+      "kode": "81.08.14.2005",
+      "nama": "Ilmamau"
+    },
+    {
+      "kode": "81.08.15.2001",
+      "nama": "Moning"
+    },
+    {
+      "kode": "81.08.15.2002",
+      "nama": "Arwala"
+    },
+    {
+      "kode": "81.08.15.2003",
+      "nama": "Ilway"
+    },
+    {
+      "kode": "81.08.15.2004",
+      "nama": "Kahilin"
+    },
+    {
+      "kode": "81.08.15.2005",
+      "nama": "Ilpokil"
+    },
+    {
+      "kode": "81.08.15.2006",
+      "nama": "Tomliapat"
+    },
+    {
+      "kode": "81.08.16.2001",
+      "nama": "Hila"
+    },
+    {
+      "kode": "81.08.16.2002",
+      "nama": "Jerusu"
+    },
+    {
+      "kode": "81.08.16.2003",
+      "nama": "Solath"
+    },
+    {
+      "kode": "81.08.17.2001",
+      "nama": "Purpura"
+    },
+    {
+      "kode": "81.08.17.2002",
+      "nama": "Nomaha"
+    },
+    {
+      "kode": "81.08.17.2003",
+      "nama": "Labelau"
+    },
+    {
+      "kode": "81.09.01.2001",
+      "nama": "Wamkana"
+    },
+    {
+      "kode": "81.09.01.2002",
+      "nama": "Waenalut"
+    },
+    {
+      "kode": "81.09.01.2003",
+      "nama": "Lektama"
+    },
+    {
+      "kode": "81.09.01.2004",
+      "nama": "Fatmite"
+    },
+    {
+      "kode": "81.09.01.2005",
+      "nama": "Elfule"
+    },
+    {
+      "kode": "81.09.01.2006",
+      "nama": "Leku"
+    },
+    {
+      "kode": "81.09.01.2007",
+      "nama": "Oki Baru"
+    },
+    {
+      "kode": "81.09.01.2008",
+      "nama": "Oki Lama"
+    },
+    {
+      "kode": "81.09.01.2009",
+      "nama": "Labuang"
+    },
+    {
+      "kode": "81.09.01.2010",
+      "nama": "Wali"
+    },
+    {
+      "kode": "81.09.01.2011",
+      "nama": "Tikbary"
+    },
+    {
+      "kode": "81.09.01.2012",
+      "nama": "Masnana"
+    },
+    {
+      "kode": "81.09.01.2013",
+      "nama": "Kamlanglale"
+    },
+    {
+      "kode": "81.09.01.2014",
+      "nama": "Waenono"
+    },
+    {
+      "kode": "81.09.01.2015",
+      "nama": "Namrinat"
+    },
+    {
+      "kode": "81.09.01.2016",
+      "nama": "Waefusi"
+    },
+    {
+      "kode": "81.09.01.2017",
+      "nama": "Batu Tulis"
+    },
+    {
+      "kode": "81.09.02.2001",
+      "nama": "Waetawa"
+    },
+    {
+      "kode": "81.09.02.2002",
+      "nama": "Waesili"
+    },
+    {
+      "kode": "81.09.02.2003",
+      "nama": "Lena"
+    },
+    {
+      "kode": "81.09.02.2004",
+      "nama": "Simi"
+    },
+    {
+      "kode": "81.09.02.2005",
+      "nama": "Waelikut"
+    },
+    {
+      "kode": "81.09.02.2006",
+      "nama": "Wamsisi"
+    },
+    {
+      "kode": "81.09.02.2007",
+      "nama": "Pohon Batu"
+    },
+    {
+      "kode": "81.09.02.2008",
+      "nama": "Waeteba"
+    },
+    {
+      "kode": "81.09.02.2009",
+      "nama": "Hote"
+    },
+    {
+      "kode": "81.09.02.2010",
+      "nama": "Waemasing"
+    },
+    {
+      "kode": "81.09.02.2011",
+      "nama": "Batu Kasa"
+    },
+    {
+      "kode": "81.09.03.2001",
+      "nama": "Lumoy"
+    },
+    {
+      "kode": "81.09.03.2002",
+      "nama": "Masawoy"
+    },
+    {
+      "kode": "81.09.03.2003",
+      "nama": "Ulima"
+    },
+    {
+      "kode": "81.09.03.2004",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "81.09.03.2005",
+      "nama": "Siwar"
+    },
+    {
+      "kode": "81.09.03.2006",
+      "nama": "Selasi"
+    },
+    {
+      "kode": "81.09.03.2007",
+      "nama": "Elara"
+    },
+    {
+      "kode": "81.09.04.2001",
+      "nama": "Balpetu"
+    },
+    {
+      "kode": "81.09.04.2002",
+      "nama": "Waekeka"
+    },
+    {
+      "kode": "81.09.04.2003",
+      "nama": "Biloro"
+    },
+    {
+      "kode": "81.09.04.2004",
+      "nama": "Nanali"
+    },
+    {
+      "kode": "81.09.04.2005",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "81.09.04.2006",
+      "nama": "Fogi"
+    },
+    {
+      "kode": "81.09.04.2007",
+      "nama": "Waepandan"
+    },
+    {
+      "kode": "81.09.04.2008",
+      "nama": "Walbele"
+    },
+    {
+      "kode": "81.09.04.2009",
+      "nama": "Air Ternate"
+    },
+    {
+      "kode": "81.09.04.2010",
+      "nama": "Sekat"
+    },
+    {
+      "kode": "81.09.04.2011",
+      "nama": "Waeha"
+    },
+    {
+      "kode": "81.09.04.2012",
+      "nama": "Bala-bala"
+    },
+    {
+      "kode": "81.09.04.2013",
+      "nama": "Batu Layar"
+    },
+    {
+      "kode": "81.09.04.2014",
+      "nama": "Siopot"
+    },
+    {
+      "kode": "81.09.04.2015",
+      "nama": "Emguhen"
+    },
+    {
+      "kode": "81.09.04.2016",
+      "nama": "Waehotong"
+    },
+    {
+      "kode": "81.09.05.2001",
+      "nama": "Waemulang"
+    },
+    {
+      "kode": "81.09.05.2002",
+      "nama": "Waeturen"
+    },
+    {
+      "kode": "81.09.05.2003",
+      "nama": "Waehaka"
+    },
+    {
+      "kode": "81.09.05.2004",
+      "nama": "Waemala"
+    },
+    {
+      "kode": "81.09.05.2005",
+      "nama": "Erwiri"
+    },
+    {
+      "kode": "81.09.05.2006",
+      "nama": "Tifu"
+    },
+    {
+      "kode": "81.09.05.2007",
+      "nama": "Mepa"
+    },
+    {
+      "kode": "81.09.05.2008",
+      "nama": "Leksula"
+    },
+    {
+      "kode": "81.09.05.2009",
+      "nama": "Nalbessy"
+    },
+    {
+      "kode": "81.09.05.2010",
+      "nama": "Kase"
+    },
+    {
+      "kode": "81.09.05.2015",
+      "nama": "Neath"
+    },
+    {
+      "kode": "81.09.05.2016",
+      "nama": "Liang"
+    },
+    {
+      "kode": "81.09.05.2018",
+      "nama": "Slealale"
+    },
+    {
+      "kode": "81.09.05.2023",
+      "nama": "Walunhelat"
+    },
+    {
+      "kode": "81.09.05.2024",
+      "nama": "Wahaolon"
+    },
+    {
+      "kode": "81.09.05.2025",
+      "nama": "Waewali"
+    },
+    {
+      "kode": "81.09.05.2026",
+      "nama": "Waenamaolon"
+    },
+    {
+      "kode": "81.09.05.2029",
+      "nama": "Grahwaen"
+    },
+    {
+      "kode": "81.09.05.2030",
+      "nama": "Terkuri"
+    },
+    {
+      "kode": "81.09.06.2001",
+      "nama": "Nusarua"
+    },
+    {
+      "kode": "81.09.06.2002",
+      "nama": "Mangeswaen"
+    },
+    {
+      "kode": "81.09.06.2003",
+      "nama": "Waekatin"
+    },
+    {
+      "kode": "81.09.06.2004",
+      "nama": "Fakal"
+    },
+    {
+      "kode": "81.09.06.2005",
+      "nama": "Uneth"
+    },
+    {
+      "kode": "81.09.06.2006",
+      "nama": "Waeraman"
+    },
+    {
+      "kode": "81.09.06.2007",
+      "nama": "Waelo"
+    },
+    {
+      "kode": "81.09.06.2008",
+      "nama": "Siwatlahin"
+    },
+    {
+      "kode": "81.09.06.2009",
+      "nama": "Trukat"
+    },
+    {
+      "kode": "81.09.06.2010",
+      "nama": "Waeken"
+    },
+    {
+      "kode": "81.09.06.2011",
+      "nama": "Batu Karang"
+    },
+    {
+      "kode": "81.71.01.1006",
+      "nama": "Nusaniwe"
+    },
+    {
+      "kode": "81.71.01.1007",
+      "nama": "Wainitu"
+    },
+    {
+      "kode": "81.71.01.1008",
+      "nama": "Benteng"
+    },
+    {
+      "kode": "81.71.01.1009",
+      "nama": "Kudamati"
+    },
+    {
+      "kode": "81.71.01.1010",
+      "nama": "Mangga Dua"
+    },
+    {
+      "kode": "81.71.01.1011",
+      "nama": "Urimessing"
+    },
+    {
+      "kode": "81.71.01.1012",
+      "nama": "Waihaong"
+    },
+    {
+      "kode": "81.71.01.1013",
+      "nama": "Silale"
+    },
+    {
+      "kode": "81.71.01.2001",
+      "nama": "Latuhalat"
+    },
+    {
+      "kode": "81.71.01.2002",
+      "nama": "Seilale"
+    },
+    {
+      "kode": "81.71.01.2003",
+      "nama": "Nusaniwe"
+    },
+    {
+      "kode": "81.71.01.2004",
+      "nama": "Amahusu"
+    },
+    {
+      "kode": "81.71.01.2005",
+      "nama": "Urimessing"
+    },
+    {
+      "kode": "81.71.02.1010",
+      "nama": "Pandan Kasturi"
+    },
+    {
+      "kode": "81.71.02.1011",
+      "nama": "Rijali"
+    },
+    {
+      "kode": "81.71.02.1012",
+      "nama": "Amantelu"
+    },
+    {
+      "kode": "81.71.02.1013",
+      "nama": "Karang Panjang"
+    },
+    {
+      "kode": "81.71.02.1014",
+      "nama": "Waihoka"
+    },
+    {
+      "kode": "81.71.02.1015",
+      "nama": "Batu Meja"
+    },
+    {
+      "kode": "81.71.02.1016",
+      "nama": "Batu Gajah"
+    },
+    {
+      "kode": "81.71.02.1017",
+      "nama": "Uritetu"
+    },
+    {
+      "kode": "81.71.02.1018",
+      "nama": "Honipopu"
+    },
+    {
+      "kode": "81.71.02.1019",
+      "nama": "Ahusen"
+    },
+    {
+      "kode": "81.71.02.2001",
+      "nama": "Hative Kecil"
+    },
+    {
+      "kode": "81.71.02.2002",
+      "nama": "Galala"
+    },
+    {
+      "kode": "81.71.02.2003",
+      "nama": "Batu Merah"
+    },
+    {
+      "kode": "81.71.02.2009",
+      "nama": "Soya"
+    },
+    {
+      "kode": "81.71.03.1018",
+      "nama": "Lateri"
+    },
+    {
+      "kode": "81.71.03.2001",
+      "nama": "Passo"
+    },
+    {
+      "kode": "81.71.03.2002",
+      "nama": "Halong"
+    },
+    {
+      "kode": "81.71.03.2003",
+      "nama": "Latta"
+    },
+    {
+      "kode": "81.71.03.2004",
+      "nama": "Negeri Lama"
+    },
+    {
+      "kode": "81.71.03.2005",
+      "nama": "Nania"
+    },
+    {
+      "kode": "81.71.03.2006",
+      "nama": "Waiheru"
+    },
+    {
+      "kode": "81.71.04.1008",
+      "nama": "Tihu"
+    },
+    {
+      "kode": "81.71.04.2001",
+      "nama": "Hunuth/Durian Patah"
+    },
+    {
+      "kode": "81.71.04.2002",
+      "nama": "Poka"
+    },
+    {
+      "kode": "81.71.04.2003",
+      "nama": "Rumah Tiga"
+    },
+    {
+      "kode": "81.71.04.2004",
+      "nama": "Wayame"
+    },
+    {
+      "kode": "81.71.04.2005",
+      "nama": "Tawiri"
+    },
+    {
+      "kode": "81.71.04.2006",
+      "nama": "Hative Besar"
+    },
+    {
+      "kode": "81.71.04.2007",
+      "nama": "Laha"
+    },
+    {
+      "kode": "81.71.05.2001",
+      "nama": "Hukurila"
+    },
+    {
+      "kode": "81.71.05.2002",
+      "nama": "Ema"
+    },
+    {
+      "kode": "81.71.05.2003",
+      "nama": "Kilang"
+    },
+    {
+      "kode": "81.71.05.2004",
+      "nama": "Naku"
+    },
+    {
+      "kode": "81.71.05.2005",
+      "nama": "Hatalai"
+    },
+    {
+      "kode": "81.71.05.2006",
+      "nama": "Hutumury"
+    },
+    {
+      "kode": "81.71.05.2007",
+      "nama": "Rutong"
+    },
+    {
+      "kode": "81.71.05.2008",
+      "nama": "Leahari"
+    },
+    {
+      "kode": "81.72.01.2001",
+      "nama": "Fiditan"
+    },
+    {
+      "kode": "81.72.01.2002",
+      "nama": "Ngadi"
+    },
+    {
+      "kode": "81.72.01.2003",
+      "nama": "Dullah"
+    },
+    {
+      "kode": "81.72.01.2004",
+      "nama": "Labetawi"
+    },
+    {
+      "kode": "81.72.01.2005",
+      "nama": "Tamedan"
+    },
+    {
+      "kode": "81.72.01.2006",
+      "nama": "Ohoitahit"
+    },
+    {
+      "kode": "81.72.01.2007",
+      "nama": "Ohoitel"
+    },
+    {
+      "kode": "81.72.01.2008",
+      "nama": "Dullah Laut"
+    },
+    {
+      "kode": "81.72.02.1003",
+      "nama": "Ketsoblak"
+    },
+    {
+      "kode": "81.72.02.1004",
+      "nama": "Masrum"
+    },
+    {
+      "kode": "81.72.02.1005",
+      "nama": "Lodar El"
+    },
+    {
+      "kode": "81.72.02.2001",
+      "nama": "Tual"
+    },
+    {
+      "kode": "81.72.02.2002",
+      "nama": "Taar"
+    },
+    {
+      "kode": "81.72.03.2001",
+      "nama": "Tam Ngurhir"
+    },
+    {
+      "kode": "81.72.03.2002",
+      "nama": "Tayando Langgiar"
+    },
+    {
+      "kode": "81.72.03.2003",
+      "nama": "Tayando Yamtel"
+    },
+    {
+      "kode": "81.72.03.2004",
+      "nama": "Tayando Ohoiel"
+    },
+    {
+      "kode": "81.72.03.2005",
+      "nama": "Tayando Yamru"
+    },
+    {
+      "kode": "81.72.04.2001",
+      "nama": "Tubyal"
+    },
+    {
+      "kode": "81.72.04.2002",
+      "nama": "Kaimear"
+    },
+    {
+      "kode": "81.72.04.2004",
+      "nama": "Lokwirin"
+    },
+    {
+      "kode": "81.72.04.2005",
+      "nama": "Finualen"
+    },
+    {
+      "kode": "81.72.04.2012",
+      "nama": "Sermaf"
+    },
+    {
+      "kode": "81.72.05.2001",
+      "nama": "Kanara"
+    },
+    {
+      "kode": "81.72.05.2002",
+      "nama": "Warkar"
+    },
+    {
+      "kode": "81.72.05.2003",
+      "nama": "Yapas"
+    },
+    {
+      "kode": "81.72.05.2004",
+      "nama": "Rumoin"
+    },
+    {
+      "kode": "81.72.05.2005",
+      "nama": "Hirit"
+    },
+    {
+      "kode": "81.72.05.2006",
+      "nama": "Tiflen"
+    },
+    {
+      "kode": "81.72.05.2007",
+      "nama": "Niela"
+    }
+  ]
+}

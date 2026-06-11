@@ -1,0 +1,6892 @@
+{
+  "kabupaten": [
+    {
+      "kode": "62.01",
+      "nama": "Kabupaten Kotawaringin Barat"
+    },
+    {
+      "kode": "62.02",
+      "nama": "Kabupaten Kotawaringin Timur"
+    },
+    {
+      "kode": "62.03",
+      "nama": "Kabupaten Kapuas"
+    },
+    {
+      "kode": "62.04",
+      "nama": "Kabupaten Barito Selatan"
+    },
+    {
+      "kode": "62.05",
+      "nama": "Kabupaten Barito Utara"
+    },
+    {
+      "kode": "62.06",
+      "nama": "Kabupaten Katingan"
+    },
+    {
+      "kode": "62.07",
+      "nama": "Kabupaten Seruyan"
+    },
+    {
+      "kode": "62.08",
+      "nama": "Kabupaten Sukamara"
+    },
+    {
+      "kode": "62.09",
+      "nama": "Kabupaten Lamandau"
+    },
+    {
+      "kode": "62.10",
+      "nama": "Kabupaten Gunung Mas"
+    },
+    {
+      "kode": "62.11",
+      "nama": "Kabupaten Pulang Pisau"
+    },
+    {
+      "kode": "62.12",
+      "nama": "Kabupaten Murung Raya"
+    },
+    {
+      "kode": "62.13",
+      "nama": "Kabupaten Barito Timur"
+    },
+    {
+      "kode": "62.71",
+      "nama": "Kota Palangkaraya"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "62.01.01",
+      "nama": "Kumai"
+    },
+    {
+      "kode": "62.01.02",
+      "nama": "Arut Selatan"
+    },
+    {
+      "kode": "62.01.03",
+      "nama": "Kotawaringin Lama"
+    },
+    {
+      "kode": "62.01.04",
+      "nama": "Arut Utara"
+    },
+    {
+      "kode": "62.01.05",
+      "nama": "Pangkalan Lada"
+    },
+    {
+      "kode": "62.01.06",
+      "nama": "Pangkalan Banteng"
+    },
+    {
+      "kode": "62.02.01",
+      "nama": "Kota Besi"
+    },
+    {
+      "kode": "62.02.02",
+      "nama": "Cempaga"
+    },
+    {
+      "kode": "62.02.03",
+      "nama": "Mentaya Hulu"
+    },
+    {
+      "kode": "62.02.04",
+      "nama": "Parenggean"
+    },
+    {
+      "kode": "62.02.05",
+      "nama": "Baamang"
+    },
+    {
+      "kode": "62.02.06",
+      "nama": "Mentawa Baru Ketapang"
+    },
+    {
+      "kode": "62.02.07",
+      "nama": "Mentaya Hilir Utara"
+    },
+    {
+      "kode": "62.02.08",
+      "nama": "Mentaya Hilir Selatan"
+    },
+    {
+      "kode": "62.02.09",
+      "nama": "Pulau Hanaut"
+    },
+    {
+      "kode": "62.02.10",
+      "nama": "Antang Kalang"
+    },
+    {
+      "kode": "62.02.11",
+      "nama": "Teluk Sampit"
+    },
+    {
+      "kode": "62.02.12",
+      "nama": "Seranau"
+    },
+    {
+      "kode": "62.02.13",
+      "nama": "Cempaga Hulu"
+    },
+    {
+      "kode": "62.02.14",
+      "nama": "Telawang"
+    },
+    {
+      "kode": "62.02.15",
+      "nama": "Bukit Santuai"
+    },
+    {
+      "kode": "62.02.16",
+      "nama": "Tualan Hulu"
+    },
+    {
+      "kode": "62.02.17",
+      "nama": "Telaga Antang"
+    },
+    {
+      "kode": "62.03.01",
+      "nama": "Selat"
+    },
+    {
+      "kode": "62.03.02",
+      "nama": "Kapuas Hilir"
+    },
+    {
+      "kode": "62.03.03",
+      "nama": "Kapuas Timur"
+    },
+    {
+      "kode": "62.03.04",
+      "nama": "Kapuas Kuala"
+    },
+    {
+      "kode": "62.03.05",
+      "nama": "Kapuas Barat"
+    },
+    {
+      "kode": "62.03.06",
+      "nama": "Pulau Petak"
+    },
+    {
+      "kode": "62.03.07",
+      "nama": "Kapuas Murung"
+    },
+    {
+      "kode": "62.03.08",
+      "nama": "Basarang"
+    },
+    {
+      "kode": "62.03.09",
+      "nama": "Mantangai"
+    },
+    {
+      "kode": "62.03.10",
+      "nama": "Timpah"
+    },
+    {
+      "kode": "62.03.11",
+      "nama": "Kapuas Tengah"
+    },
+    {
+      "kode": "62.03.12",
+      "nama": "Kapuas Hulu"
+    },
+    {
+      "kode": "62.03.13",
+      "nama": "Tamban Catur"
+    },
+    {
+      "kode": "62.03.14",
+      "nama": "Pasak Talawang"
+    },
+    {
+      "kode": "62.03.15",
+      "nama": "Mandau Talawang"
+    },
+    {
+      "kode": "62.03.16",
+      "nama": "Dadahup"
+    },
+    {
+      "kode": "62.03.17",
+      "nama": "Bataguh"
+    },
+    {
+      "kode": "62.04.01",
+      "nama": "Jenamas"
+    },
+    {
+      "kode": "62.04.02",
+      "nama": "Dusun Hilir"
+    },
+    {
+      "kode": "62.04.03",
+      "nama": "Karau Kuala"
+    },
+    {
+      "kode": "62.04.04",
+      "nama": "Dusun Utara"
+    },
+    {
+      "kode": "62.04.05",
+      "nama": "Gn. Bintang Awai"
+    },
+    {
+      "kode": "62.04.06",
+      "nama": "Dusun Selatan"
+    },
+    {
+      "kode": "62.05.01",
+      "nama": "Montallat"
+    },
+    {
+      "kode": "62.05.02",
+      "nama": "Gunung Timang"
+    },
+    {
+      "kode": "62.05.03",
+      "nama": "Gunung Purei"
+    },
+    {
+      "kode": "62.05.04",
+      "nama": "Teweh Timur"
+    },
+    {
+      "kode": "62.05.05",
+      "nama": "Teweh Tengah"
+    },
+    {
+      "kode": "62.05.06",
+      "nama": "Lahei"
+    },
+    {
+      "kode": "62.05.07",
+      "nama": "Teweh Baru"
+    },
+    {
+      "kode": "62.05.08",
+      "nama": "Teweh Selatan"
+    },
+    {
+      "kode": "62.05.09",
+      "nama": "Lahei Barat"
+    },
+    {
+      "kode": "62.06.01",
+      "nama": "Kamipang"
+    },
+    {
+      "kode": "62.06.02",
+      "nama": "Katingan Hilir"
+    },
+    {
+      "kode": "62.06.03",
+      "nama": "Tewang Sangalang Garing"
+    },
+    {
+      "kode": "62.06.04",
+      "nama": "Pulau Malan"
+    },
+    {
+      "kode": "62.06.05",
+      "nama": "Katingan Tengah"
+    },
+    {
+      "kode": "62.06.06",
+      "nama": "Sanaman Mantikei"
+    },
+    {
+      "kode": "62.06.07",
+      "nama": "Marikit"
+    },
+    {
+      "kode": "62.06.08",
+      "nama": "Katingan Hulu"
+    },
+    {
+      "kode": "62.06.09",
+      "nama": "Mendawai"
+    },
+    {
+      "kode": "62.06.10",
+      "nama": "Katingan Kuala"
+    },
+    {
+      "kode": "62.06.11",
+      "nama": "Tasik Payawan"
+    },
+    {
+      "kode": "62.06.12",
+      "nama": "Petak Malai"
+    },
+    {
+      "kode": "62.06.13",
+      "nama": "Bukit Raya"
+    },
+    {
+      "kode": "62.07.01",
+      "nama": "Seruyan Hilir"
+    },
+    {
+      "kode": "62.07.02",
+      "nama": "Seruyan Tengah"
+    },
+    {
+      "kode": "62.07.03",
+      "nama": "Danau Sembuluh"
+    },
+    {
+      "kode": "62.07.04",
+      "nama": "Hanau"
+    },
+    {
+      "kode": "62.07.05",
+      "nama": "Seruyan Hulu"
+    },
+    {
+      "kode": "62.07.06",
+      "nama": "Seruyan Hilir Timur"
+    },
+    {
+      "kode": "62.07.07",
+      "nama": "Seruyan Raya"
+    },
+    {
+      "kode": "62.07.08",
+      "nama": "Danau Seluluk"
+    },
+    {
+      "kode": "62.07.09",
+      "nama": "Batu Ampar"
+    },
+    {
+      "kode": "62.07.10",
+      "nama": "Suling Tambun"
+    },
+    {
+      "kode": "62.08.01",
+      "nama": "Sukamara"
+    },
+    {
+      "kode": "62.08.02",
+      "nama": "Jelai"
+    },
+    {
+      "kode": "62.08.03",
+      "nama": "Balai Riam"
+    },
+    {
+      "kode": "62.08.04",
+      "nama": "Pantai Lunci"
+    },
+    {
+      "kode": "62.08.05",
+      "nama": "Permata Kecubung"
+    },
+    {
+      "kode": "62.09.01",
+      "nama": "Lamandau"
+    },
+    {
+      "kode": "62.09.02",
+      "nama": "Delang"
+    },
+    {
+      "kode": "62.09.03",
+      "nama": "Bulik"
+    },
+    {
+      "kode": "62.09.04",
+      "nama": "Bulik Timur"
+    },
+    {
+      "kode": "62.09.05",
+      "nama": "Menthobi Raya"
+    },
+    {
+      "kode": "62.09.06",
+      "nama": "Sematu Jaya"
+    },
+    {
+      "kode": "62.09.07",
+      "nama": "Belantikan Raya"
+    },
+    {
+      "kode": "62.09.08",
+      "nama": "Batang Kawa"
+    },
+    {
+      "kode": "62.10.01",
+      "nama": "Sepang"
+    },
+    {
+      "kode": "62.10.02",
+      "nama": "Kurun"
+    },
+    {
+      "kode": "62.10.03",
+      "nama": "Tewah"
+    },
+    {
+      "kode": "62.10.04",
+      "nama": "Kahayan Hulu Utara"
+    },
+    {
+      "kode": "62.10.05",
+      "nama": "Rungan"
+    },
+    {
+      "kode": "62.10.06",
+      "nama": "Manuhing"
+    },
+    {
+      "kode": "62.10.07",
+      "nama": "Mihing Raya"
+    },
+    {
+      "kode": "62.10.08",
+      "nama": "Damang Batu"
+    },
+    {
+      "kode": "62.10.09",
+      "nama": "Miri Manasa"
+    },
+    {
+      "kode": "62.10.10",
+      "nama": "Rungan Hulu"
+    },
+    {
+      "kode": "62.10.11",
+      "nama": "Manuhing Raya"
+    },
+    {
+      "kode": "62.10.12",
+      "nama": "Rungan Barat"
+    },
+    {
+      "kode": "62.11.01",
+      "nama": "Pandih Batu"
+    },
+    {
+      "kode": "62.11.02",
+      "nama": "Kahayan Kuala"
+    },
+    {
+      "kode": "62.11.03",
+      "nama": "Kahayan Tengah"
+    },
+    {
+      "kode": "62.11.04",
+      "nama": "Banama Tingang"
+    },
+    {
+      "kode": "62.11.05",
+      "nama": "Kahayan Hilir"
+    },
+    {
+      "kode": "62.11.06",
+      "nama": "Maliku"
+    },
+    {
+      "kode": "62.11.07",
+      "nama": "Jabiren Raya"
+    },
+    {
+      "kode": "62.11.08",
+      "nama": "Sebangau Kuala"
+    },
+    {
+      "kode": "62.12.01",
+      "nama": "Murung"
+    },
+    {
+      "kode": "62.12.02",
+      "nama": "Tanah Siang"
+    },
+    {
+      "kode": "62.12.03",
+      "nama": "Laung Tuhup"
+    },
+    {
+      "kode": "62.12.04",
+      "nama": "Permata Intan"
+    },
+    {
+      "kode": "62.12.05",
+      "nama": "Sumber Barito"
+    },
+    {
+      "kode": "62.12.06",
+      "nama": "Barito Tuhup Raya"
+    },
+    {
+      "kode": "62.12.07",
+      "nama": "Tanah Siang Selatan"
+    },
+    {
+      "kode": "62.12.08",
+      "nama": "Sungai Babuat"
+    },
+    {
+      "kode": "62.12.09",
+      "nama": "Seribu Riam"
+    },
+    {
+      "kode": "62.12.10",
+      "nama": "Uut Murung"
+    },
+    {
+      "kode": "62.13.01",
+      "nama": "Dusun Timur"
+    },
+    {
+      "kode": "62.13.02",
+      "nama": "Banua Lima"
+    },
+    {
+      "kode": "62.13.03",
+      "nama": "Patangkep Tutui"
+    },
+    {
+      "kode": "62.13.04",
+      "nama": "Awang"
+    },
+    {
+      "kode": "62.13.05",
+      "nama": "Dusun Tengah"
+    },
+    {
+      "kode": "62.13.06",
+      "nama": "Pematang Karau"
+    },
+    {
+      "kode": "62.13.07",
+      "nama": "Paju Epat"
+    },
+    {
+      "kode": "62.13.08",
+      "nama": "Raren Batuah"
+    },
+    {
+      "kode": "62.13.09",
+      "nama": "Paku"
+    },
+    {
+      "kode": "62.13.10",
+      "nama": "Karusen Janang"
+    },
+    {
+      "kode": "62.71.01",
+      "nama": "Pahandut"
+    },
+    {
+      "kode": "62.71.02",
+      "nama": "Bukit Batu"
+    },
+    {
+      "kode": "62.71.03",
+      "nama": "Jekan Raya"
+    },
+    {
+      "kode": "62.71.04",
+      "nama": "Sabangau"
+    },
+    {
+      "kode": "62.71.05",
+      "nama": "Rakumpit"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "62.01.01.1011",
+      "nama": "Candi"
+    },
+    {
+      "kode": "62.01.01.1012",
+      "nama": "Kumai Hulu"
+    },
+    {
+      "kode": "62.01.01.1013",
+      "nama": "Kumai Hilir"
+    },
+    {
+      "kode": "62.01.01.2001",
+      "nama": "Sungai Cabang"
+    },
+    {
+      "kode": "62.01.01.2002",
+      "nama": "Teluk Pulai"
+    },
+    {
+      "kode": "62.01.01.2003",
+      "nama": "Sabuai"
+    },
+    {
+      "kode": "62.01.01.2004",
+      "nama": "Keraya"
+    },
+    {
+      "kode": "62.01.01.2005",
+      "nama": "Teluk Bogam"
+    },
+    {
+      "kode": "62.01.01.2006",
+      "nama": "Sungai Bakau"
+    },
+    {
+      "kode": "62.01.01.2007",
+      "nama": "Kubu"
+    },
+    {
+      "kode": "62.01.01.2008",
+      "nama": "Sungai Kapitan"
+    },
+    {
+      "kode": "62.01.01.2009",
+      "nama": "Batu Belaman"
+    },
+    {
+      "kode": "62.01.01.2010",
+      "nama": "Sungai Tendang"
+    },
+    {
+      "kode": "62.01.01.2014",
+      "nama": "Sungai Sekonyer"
+    },
+    {
+      "kode": "62.01.01.2015",
+      "nama": "Sungai Bedaun"
+    },
+    {
+      "kode": "62.01.01.2017",
+      "nama": "Bumi Harjo"
+    },
+    {
+      "kode": "62.01.01.2032",
+      "nama": "Pangkalan Satu"
+    },
+    {
+      "kode": "62.01.01.2034",
+      "nama": "Sabuai Timur"
+    },
+    {
+      "kode": "62.01.02.1002",
+      "nama": "Mendawai Seberang"
+    },
+    {
+      "kode": "62.01.02.1003",
+      "nama": "Mendawai"
+    },
+    {
+      "kode": "62.01.02.1005",
+      "nama": "Madurejo"
+    },
+    {
+      "kode": "62.01.02.1006",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "62.01.02.1007",
+      "nama": "Raja"
+    },
+    {
+      "kode": "62.01.02.1008",
+      "nama": "Raja Seberang"
+    },
+    {
+      "kode": "62.01.02.1009",
+      "nama": "Baru"
+    },
+    {
+      "kode": "62.01.02.2001",
+      "nama": "Tanjung Putri"
+    },
+    {
+      "kode": "62.01.02.2004",
+      "nama": "Pasir Panjang"
+    },
+    {
+      "kode": "62.01.02.2010",
+      "nama": "Rangda"
+    },
+    {
+      "kode": "62.01.02.2011",
+      "nama": "Kenambui"
+    },
+    {
+      "kode": "62.01.02.2012",
+      "nama": "Runtu"
+    },
+    {
+      "kode": "62.01.02.2013",
+      "nama": "Umpang"
+    },
+    {
+      "kode": "62.01.02.2014",
+      "nama": "Kumpai Batu Bawah"
+    },
+    {
+      "kode": "62.01.02.2015",
+      "nama": "Kumpai Batu Atas"
+    },
+    {
+      "kode": "62.01.02.2016",
+      "nama": "Natai Raya"
+    },
+    {
+      "kode": "62.01.02.2017",
+      "nama": "Medang Sari"
+    },
+    {
+      "kode": "62.01.02.2018",
+      "nama": "Natai Baru"
+    },
+    {
+      "kode": "62.01.02.2019",
+      "nama": "Tanjung Terantang"
+    },
+    {
+      "kode": "62.01.02.2020",
+      "nama": "Sulung"
+    },
+    {
+      "kode": "62.01.03.1007",
+      "nama": "Kotawaringin Hulu"
+    },
+    {
+      "kode": "62.01.03.1008",
+      "nama": "Kotawaringin Hilir"
+    },
+    {
+      "kode": "62.01.03.2001",
+      "nama": "Babual Baboti"
+    },
+    {
+      "kode": "62.01.03.2002",
+      "nama": "Tempayung"
+    },
+    {
+      "kode": "62.01.03.2003",
+      "nama": "Sakabulin"
+    },
+    {
+      "kode": "62.01.03.2004",
+      "nama": "Kinjil"
+    },
+    {
+      "kode": "62.01.03.2005",
+      "nama": "Dawak"
+    },
+    {
+      "kode": "62.01.03.2006",
+      "nama": "Riam Durian"
+    },
+    {
+      "kode": "62.01.03.2009",
+      "nama": "Lalang"
+    },
+    {
+      "kode": "62.01.03.2010",
+      "nama": "Rungun"
+    },
+    {
+      "kode": "62.01.03.2011",
+      "nama": "Kondang"
+    },
+    {
+      "kode": "62.01.03.2012",
+      "nama": "Suka Jaya"
+    },
+    {
+      "kode": "62.01.03.2013",
+      "nama": "Suka Makmur"
+    },
+    {
+      "kode": "62.01.03.2014",
+      "nama": "Sumber Mukti"
+    },
+    {
+      "kode": "62.01.03.2015",
+      "nama": "Palih Baru"
+    },
+    {
+      "kode": "62.01.03.2016",
+      "nama": "Ipuh Bangun Jaya"
+    },
+    {
+      "kode": "62.01.03.2017",
+      "nama": "Sagu Suka Mulya"
+    },
+    {
+      "kode": "62.01.04.1002",
+      "nama": "Pangkut"
+    },
+    {
+      "kode": "62.01.04.2001",
+      "nama": "Nanga Mua"
+    },
+    {
+      "kode": "62.01.04.2003",
+      "nama": "Sukarami"
+    },
+    {
+      "kode": "62.01.04.2004",
+      "nama": "Gandis"
+    },
+    {
+      "kode": "62.01.04.2005",
+      "nama": "Kerabu"
+    },
+    {
+      "kode": "62.01.04.2006",
+      "nama": "Sambi"
+    },
+    {
+      "kode": "62.01.04.2007",
+      "nama": "Penyombaan"
+    },
+    {
+      "kode": "62.01.04.2008",
+      "nama": "Pandau"
+    },
+    {
+      "kode": "62.01.04.2009",
+      "nama": "Riam"
+    },
+    {
+      "kode": "62.01.04.2010",
+      "nama": "Panahan"
+    },
+    {
+      "kode": "62.01.04.2011",
+      "nama": "Sungai Dau"
+    },
+    {
+      "kode": "62.01.05.2001",
+      "nama": "Pangkalan Tiga"
+    },
+    {
+      "kode": "62.01.05.2002",
+      "nama": "Pandu Sanjaya"
+    },
+    {
+      "kode": "62.01.05.2003",
+      "nama": "Lada Mandala Jaya"
+    },
+    {
+      "kode": "62.01.05.2004",
+      "nama": "Makarti Jaya"
+    },
+    {
+      "kode": "62.01.05.2005",
+      "nama": "Sumber Agung"
+    },
+    {
+      "kode": "62.01.05.2006",
+      "nama": "Purbasari"
+    },
+    {
+      "kode": "62.01.05.2007",
+      "nama": "Sungai Rangit Jaya"
+    },
+    {
+      "kode": "62.01.05.2008",
+      "nama": "Pangkalan Dewa"
+    },
+    {
+      "kode": "62.01.05.2009",
+      "nama": "Kadipi Atas"
+    },
+    {
+      "kode": "62.01.05.2010",
+      "nama": "Sungai Melawen"
+    },
+    {
+      "kode": "62.01.05.2011",
+      "nama": "Pangkalan Durin"
+    },
+    {
+      "kode": "62.01.06.2001",
+      "nama": "Pangkalan Banteng"
+    },
+    {
+      "kode": "62.01.06.2002",
+      "nama": "Mulya Jadi"
+    },
+    {
+      "kode": "62.01.06.2003",
+      "nama": "Karang Mulya"
+    },
+    {
+      "kode": "62.01.06.2004",
+      "nama": "Kebun Agung"
+    },
+    {
+      "kode": "62.01.06.2005",
+      "nama": "Sido Mulyo"
+    },
+    {
+      "kode": "62.01.06.2006",
+      "nama": "Marga Mulya"
+    },
+    {
+      "kode": "62.01.06.2007",
+      "nama": "Amin Jaya"
+    },
+    {
+      "kode": "62.01.06.2008",
+      "nama": "Arga Mulya"
+    },
+    {
+      "kode": "62.01.06.2009",
+      "nama": "Natai Kerbau"
+    },
+    {
+      "kode": "62.01.06.2010",
+      "nama": "Simpang Berambai"
+    },
+    {
+      "kode": "62.01.06.2011",
+      "nama": "Sungai Hijau"
+    },
+    {
+      "kode": "62.01.06.2012",
+      "nama": "Sungai Pakit"
+    },
+    {
+      "kode": "62.01.06.2013",
+      "nama": "Berambai Makmur"
+    },
+    {
+      "kode": "62.01.06.2014",
+      "nama": "Karang Sari"
+    },
+    {
+      "kode": "62.01.06.2015",
+      "nama": "Sungai Pulau"
+    },
+    {
+      "kode": "62.01.06.2016",
+      "nama": "Sungai Bengkuang"
+    },
+    {
+      "kode": "62.01.06.2017",
+      "nama": "Sungai Kuning"
+    },
+    {
+      "kode": "62.02.01.1009",
+      "nama": "Kota Besi Hulu"
+    },
+    {
+      "kode": "62.02.01.1010",
+      "nama": "Kota Besi Hilir"
+    },
+    {
+      "kode": "62.02.01.2003",
+      "nama": "Palangan"
+    },
+    {
+      "kode": "62.02.01.2004",
+      "nama": "Hanjalipan"
+    },
+    {
+      "kode": "62.02.01.2005",
+      "nama": "Simpur"
+    },
+    {
+      "kode": "62.02.01.2006",
+      "nama": "Pamalian"
+    },
+    {
+      "kode": "62.02.01.2007",
+      "nama": "Camba"
+    },
+    {
+      "kode": "62.02.01.2008",
+      "nama": "Kandan"
+    },
+    {
+      "kode": "62.02.01.2012",
+      "nama": "Bajarum"
+    },
+    {
+      "kode": "62.02.01.2015",
+      "nama": "Rasau Tumbuh"
+    },
+    {
+      "kode": "62.02.01.2017",
+      "nama": "Soren"
+    },
+    {
+      "kode": "62.02.02.2004",
+      "nama": "Rubung Buyung"
+    },
+    {
+      "kode": "62.02.02.2005",
+      "nama": "Patai"
+    },
+    {
+      "kode": "62.02.02.2006",
+      "nama": "Luwuk Ranggan"
+    },
+    {
+      "kode": "62.02.02.2007",
+      "nama": "Jemaras"
+    },
+    {
+      "kode": "62.02.02.2008",
+      "nama": "Cempaka Mulia Timur"
+    },
+    {
+      "kode": "62.02.02.2009",
+      "nama": "Cempaka Mulia Barat"
+    },
+    {
+      "kode": "62.02.02.2010",
+      "nama": "Luwuk Bunter"
+    },
+    {
+      "kode": "62.02.02.2011",
+      "nama": "Sungai Paring"
+    },
+    {
+      "kode": "62.02.03.1012",
+      "nama": "Kuala Kuayan"
+    },
+    {
+      "kode": "62.02.03.2001",
+      "nama": "Tangar"
+    },
+    {
+      "kode": "62.02.03.2002",
+      "nama": "Baampah"
+    },
+    {
+      "kode": "62.02.03.2003",
+      "nama": "Kawan Batu"
+    },
+    {
+      "kode": "62.02.03.2004",
+      "nama": "Tanjung Bantur"
+    },
+    {
+      "kode": "62.02.03.2005",
+      "nama": "Penda Durian"
+    },
+    {
+      "kode": "62.02.03.2006",
+      "nama": "Pahirangan"
+    },
+    {
+      "kode": "62.02.03.2007",
+      "nama": "Satiung"
+    },
+    {
+      "kode": "62.02.03.2008",
+      "nama": "Santilik"
+    },
+    {
+      "kode": "62.02.03.2009",
+      "nama": "Tangka Robah"
+    },
+    {
+      "kode": "62.02.03.2010",
+      "nama": "Pemantang"
+    },
+    {
+      "kode": "62.02.03.2011",
+      "nama": "Tumbang Sapiri"
+    },
+    {
+      "kode": "62.02.03.2014",
+      "nama": "Bawan"
+    },
+    {
+      "kode": "62.02.03.2015",
+      "nama": "Tanjung Jariangau"
+    },
+    {
+      "kode": "62.02.03.2031",
+      "nama": "Kapuk"
+    },
+    {
+      "kode": "62.02.03.2032",
+      "nama": "Pantap"
+    },
+    {
+      "kode": "62.02.04.1004",
+      "nama": "Parenggean"
+    },
+    {
+      "kode": "62.02.04.2001",
+      "nama": "Tehang"
+    },
+    {
+      "kode": "62.02.04.2002",
+      "nama": "Kabuau"
+    },
+    {
+      "kode": "62.02.04.2007",
+      "nama": "Barunang Miri"
+    },
+    {
+      "kode": "62.02.04.2009",
+      "nama": "Sumber Makmur"
+    },
+    {
+      "kode": "62.02.04.2010",
+      "nama": "Mekar Jaya"
+    },
+    {
+      "kode": "62.02.04.2011",
+      "nama": "Karang Tunggal"
+    },
+    {
+      "kode": "62.02.04.2012",
+      "nama": "Bandar Agung"
+    },
+    {
+      "kode": "62.02.04.2013",
+      "nama": "Beringin Tunggal Jaya"
+    },
+    {
+      "kode": "62.02.04.2015",
+      "nama": "Sari Harapan"
+    },
+    {
+      "kode": "62.02.04.2016",
+      "nama": "Karang Sari"
+    },
+    {
+      "kode": "62.02.04.2019",
+      "nama": "Bajarau"
+    },
+    {
+      "kode": "62.02.04.2023",
+      "nama": "Bukit Harapan"
+    },
+    {
+      "kode": "62.02.04.2024",
+      "nama": "Manjalin"
+    },
+    {
+      "kode": "62.02.04.2025",
+      "nama": "Karya Bersama"
+    },
+    {
+      "kode": "62.02.05.1001",
+      "nama": "Baamang Hilir"
+    },
+    {
+      "kode": "62.02.05.1002",
+      "nama": "Baamang Tengah"
+    },
+    {
+      "kode": "62.02.05.1003",
+      "nama": "Baamang Hulu"
+    },
+    {
+      "kode": "62.02.05.1007",
+      "nama": "Tanah Mas"
+    },
+    {
+      "kode": "62.02.05.1008",
+      "nama": "Baamang Barat"
+    },
+    {
+      "kode": "62.02.05.2006",
+      "nama": "Tinduk"
+    },
+    {
+      "kode": "62.02.06.1001",
+      "nama": "Mentawa Baru Hulu"
+    },
+    {
+      "kode": "62.02.06.1002",
+      "nama": "Mentawa Baru Hilir"
+    },
+    {
+      "kode": "62.02.06.1003",
+      "nama": "Ketapang"
+    },
+    {
+      "kode": "62.02.06.1007",
+      "nama": "Sawahan"
+    },
+    {
+      "kode": "62.02.06.1009",
+      "nama": "Pasir Putih"
+    },
+    {
+      "kode": "62.02.06.2005",
+      "nama": "Pelangsian"
+    },
+    {
+      "kode": "62.02.06.2006",
+      "nama": "Bapeang"
+    },
+    {
+      "kode": "62.02.06.2008",
+      "nama": "Eka Bahurui"
+    },
+    {
+      "kode": "62.02.06.2010",
+      "nama": "Telaga baru"
+    },
+    {
+      "kode": "62.02.06.2011",
+      "nama": "Bangkuang Makmur"
+    },
+    {
+      "kode": "62.02.06.2012",
+      "nama": "Bapanggang Raya"
+    },
+    {
+      "kode": "62.02.07.2001",
+      "nama": "Pondok Damar"
+    },
+    {
+      "kode": "62.02.07.2002",
+      "nama": "Bagendang Hilir"
+    },
+    {
+      "kode": "62.02.07.2003",
+      "nama": "Bagendang Tengah"
+    },
+    {
+      "kode": "62.02.07.2004",
+      "nama": "Natai Baru"
+    },
+    {
+      "kode": "62.02.07.2005",
+      "nama": "Bagendang Hulu"
+    },
+    {
+      "kode": "62.02.07.2006",
+      "nama": "Sumber Makmur"
+    },
+    {
+      "kode": "62.02.07.2007",
+      "nama": "Bagendang Permai"
+    },
+    {
+      "kode": "62.02.08.1008",
+      "nama": "Samuda Kota"
+    },
+    {
+      "kode": "62.02.08.1009",
+      "nama": "Basirih Hilir"
+    },
+    {
+      "kode": "62.02.08.2005",
+      "nama": "Sebamban"
+    },
+    {
+      "kode": "62.02.08.2006",
+      "nama": "Samuda Besar"
+    },
+    {
+      "kode": "62.02.08.2007",
+      "nama": "Samuda Kecil"
+    },
+    {
+      "kode": "62.02.08.2010",
+      "nama": "Jaya Kelapa"
+    },
+    {
+      "kode": "62.02.08.2011",
+      "nama": "Basirih Hulu"
+    },
+    {
+      "kode": "62.02.08.2012",
+      "nama": "Jaya Karet"
+    },
+    {
+      "kode": "62.02.08.2013",
+      "nama": "Handil Sohor"
+    },
+    {
+      "kode": "62.02.08.2014",
+      "nama": "Sei Ijum Raya"
+    },
+    {
+      "kode": "62.02.09.2001",
+      "nama": "Bapinang Hulu"
+    },
+    {
+      "kode": "62.02.09.2002",
+      "nama": "Bapinang Hilir"
+    },
+    {
+      "kode": "62.02.09.2003",
+      "nama": "Bapinang Hilir Laut"
+    },
+    {
+      "kode": "62.02.09.2004",
+      "nama": "Satiruk"
+    },
+    {
+      "kode": "62.02.09.2005",
+      "nama": "Makarti Jaya"
+    },
+    {
+      "kode": "62.02.09.2006",
+      "nama": "Rawa Sari"
+    },
+    {
+      "kode": "62.02.09.2007",
+      "nama": "Hanaut"
+    },
+    {
+      "kode": "62.02.09.2008",
+      "nama": "Babirah"
+    },
+    {
+      "kode": "62.02.09.2009",
+      "nama": "Serambut"
+    },
+    {
+      "kode": "62.02.09.2010",
+      "nama": "Babaung"
+    },
+    {
+      "kode": "62.02.09.2011",
+      "nama": "Bamadu"
+    },
+    {
+      "kode": "62.02.09.2012",
+      "nama": "Penyaguan"
+    },
+    {
+      "kode": "62.02.09.2013",
+      "nama": "Hantipan"
+    },
+    {
+      "kode": "62.02.09.2014",
+      "nama": "Bantian"
+    },
+    {
+      "kode": "62.02.10.2001",
+      "nama": "Tumbang Kalang"
+    },
+    {
+      "kode": "62.02.10.2002",
+      "nama": "Kuluk Telawang"
+    },
+    {
+      "kode": "62.02.10.2003",
+      "nama": "Sungai Puring"
+    },
+    {
+      "kode": "62.02.10.2004",
+      "nama": "Tumbang Ngahan"
+    },
+    {
+      "kode": "62.02.10.2005",
+      "nama": "Tumbang Ramei"
+    },
+    {
+      "kode": "62.02.10.2006",
+      "nama": "Tumbang Hejan"
+    },
+    {
+      "kode": "62.02.10.2007",
+      "nama": "Sungai Hanya"
+    },
+    {
+      "kode": "62.02.10.2008",
+      "nama": "Tumbang Sepayang"
+    },
+    {
+      "kode": "62.02.10.2016",
+      "nama": "Buntut Nusa"
+    },
+    {
+      "kode": "62.02.10.2017",
+      "nama": "Tumbang Gagu"
+    },
+    {
+      "kode": "62.02.10.2021",
+      "nama": "Tumbang Manya"
+    },
+    {
+      "kode": "62.02.10.2025",
+      "nama": "Gunung Makmur"
+    },
+    {
+      "kode": "62.02.10.2027",
+      "nama": "Mulya Agung"
+    },
+    {
+      "kode": "62.02.10.2028",
+      "nama": "Bhakti Karya"
+    },
+    {
+      "kode": "62.02.10.2029",
+      "nama": "Waringin Agung"
+    },
+    {
+      "kode": "62.02.11.2001",
+      "nama": "Parebok"
+    },
+    {
+      "kode": "62.02.11.2002",
+      "nama": "Basawang"
+    },
+    {
+      "kode": "62.02.11.2003",
+      "nama": "Lampuyang"
+    },
+    {
+      "kode": "62.02.11.2004",
+      "nama": "Ujung Pandaran"
+    },
+    {
+      "kode": "62.02.11.2005",
+      "nama": "Regei Lestari"
+    },
+    {
+      "kode": "62.02.11.2006",
+      "nama": "Kuin Permai"
+    },
+    {
+      "kode": "62.02.12.1001",
+      "nama": "Mentaya Seberang"
+    },
+    {
+      "kode": "62.02.12.2002",
+      "nama": "Terantang"
+    },
+    {
+      "kode": "62.02.12.2003",
+      "nama": "Batuah"
+    },
+    {
+      "kode": "62.02.12.2004",
+      "nama": "Terantang Hilir"
+    },
+    {
+      "kode": "62.02.12.2005",
+      "nama": "Ganepo"
+    },
+    {
+      "kode": "62.02.12.2006",
+      "nama": "Seragam Jaya"
+    },
+    {
+      "kode": "62.02.13.2001",
+      "nama": "Pundu"
+    },
+    {
+      "kode": "62.02.13.2002",
+      "nama": "Keruing"
+    },
+    {
+      "kode": "62.02.13.2003",
+      "nama": "Parit"
+    },
+    {
+      "kode": "62.02.13.2004",
+      "nama": "Pantai Harapan"
+    },
+    {
+      "kode": "62.02.13.2005",
+      "nama": "Pelantaran"
+    },
+    {
+      "kode": "62.02.13.2006",
+      "nama": "Tumbang Koling"
+    },
+    {
+      "kode": "62.02.13.2007",
+      "nama": "Sudan"
+    },
+    {
+      "kode": "62.02.13.2008",
+      "nama": "Bukit Batu"
+    },
+    {
+      "kode": "62.02.13.2009",
+      "nama": "Bukit Raya"
+    },
+    {
+      "kode": "62.02.13.2010",
+      "nama": "Selucing"
+    },
+    {
+      "kode": "62.02.13.2011",
+      "nama": "Sungai Ubar Mandiiri"
+    },
+    {
+      "kode": "62.02.14.2001",
+      "nama": "Sebabi"
+    },
+    {
+      "kode": "62.02.14.2002",
+      "nama": "Tanah Putih"
+    },
+    {
+      "kode": "62.02.14.2003",
+      "nama": "Sumber Makmur"
+    },
+    {
+      "kode": "62.02.14.2004",
+      "nama": "Kenyala"
+    },
+    {
+      "kode": "62.02.14.2005",
+      "nama": "Penyang"
+    },
+    {
+      "kode": "62.02.14.2006",
+      "nama": "Biru Maju"
+    },
+    {
+      "kode": "62.02.15.2001",
+      "nama": "Tumbang Tilap"
+    },
+    {
+      "kode": "62.02.15.2002",
+      "nama": "Tumbang Kaminting"
+    },
+    {
+      "kode": "62.02.15.2003",
+      "nama": "Tanah Haluan"
+    },
+    {
+      "kode": "62.02.15.2004",
+      "nama": "Tumbang Panyahuan"
+    },
+    {
+      "kode": "62.02.15.2005",
+      "nama": "Tumbang Sapia"
+    },
+    {
+      "kode": "62.02.15.2006",
+      "nama": "Tumbang Getas"
+    },
+    {
+      "kode": "62.02.15.2007",
+      "nama": "Tewai Hara"
+    },
+    {
+      "kode": "62.02.15.2008",
+      "nama": "Tumbang Payang"
+    },
+    {
+      "kode": "62.02.15.2009",
+      "nama": "Tumbang Kania"
+    },
+    {
+      "kode": "62.02.15.2010",
+      "nama": "Tumbang Tawan"
+    },
+    {
+      "kode": "62.02.15.2011",
+      "nama": "Lunuk Bagantung"
+    },
+    {
+      "kode": "62.02.15.2012",
+      "nama": "Tumbang Torung"
+    },
+    {
+      "kode": "62.02.15.2013",
+      "nama": "Tumbang Batu"
+    },
+    {
+      "kode": "62.02.15.2014",
+      "nama": "Tumbang Saluang"
+    },
+    {
+      "kode": "62.02.16.2001",
+      "nama": "Luwuk Sampun"
+    },
+    {
+      "kode": "62.02.16.2002",
+      "nama": "Tumbang Mujam"
+    },
+    {
+      "kode": "62.02.16.2003",
+      "nama": "Merah"
+    },
+    {
+      "kode": "62.02.16.2004",
+      "nama": "Tanjung Jorong"
+    },
+    {
+      "kode": "62.02.16.2005",
+      "nama": "Sebungsu"
+    },
+    {
+      "kode": "62.02.16.2006",
+      "nama": "Bukit Makmur"
+    },
+    {
+      "kode": "62.02.16.2007",
+      "nama": "Wonosari"
+    },
+    {
+      "kode": "62.02.16.2008",
+      "nama": "Mekar Sari"
+    },
+    {
+      "kode": "62.02.16.2009",
+      "nama": "Damar Makmur"
+    },
+    {
+      "kode": "62.02.16.2010",
+      "nama": "Cempaka Putih"
+    },
+    {
+      "kode": "62.02.16.2011",
+      "nama": "Jati Waringin"
+    },
+    {
+      "kode": "62.02.17.2001",
+      "nama": "Tumbang Boloi"
+    },
+    {
+      "kode": "62.02.17.2002",
+      "nama": "Luwuk Kowan"
+    },
+    {
+      "kode": "62.02.17.2003",
+      "nama": "Rantau Tampang"
+    },
+    {
+      "kode": "62.02.17.2004",
+      "nama": "Tumbang Mangkup"
+    },
+    {
+      "kode": "62.02.17.2005",
+      "nama": "Rantau Katang"
+    },
+    {
+      "kode": "62.02.17.2006",
+      "nama": "Tumbang Sangai"
+    },
+    {
+      "kode": "62.02.17.2007",
+      "nama": "Tukang Langit"
+    },
+    {
+      "kode": "62.02.17.2008",
+      "nama": "Beringin Agung"
+    },
+    {
+      "kode": "62.02.17.2009",
+      "nama": "Agung Mulya"
+    },
+    {
+      "kode": "62.02.17.2010",
+      "nama": "Batu Agung"
+    },
+    {
+      "kode": "62.02.17.2011",
+      "nama": "Bukit Indah"
+    },
+    {
+      "kode": "62.02.17.2012",
+      "nama": "Tumbang Puan"
+    },
+    {
+      "kode": "62.02.17.2013",
+      "nama": "Rantau Suang"
+    },
+    {
+      "kode": "62.02.17.2014",
+      "nama": "Rantau Sawang"
+    },
+    {
+      "kode": "62.02.17.2015",
+      "nama": "Tanjung Harapan"
+    },
+    {
+      "kode": "62.02.17.2016",
+      "nama": "Buana Mustika"
+    },
+    {
+      "kode": "62.02.17.2017",
+      "nama": "Tri Buana"
+    },
+    {
+      "kode": "62.02.17.2018",
+      "nama": "Tumbang Bajanei"
+    },
+    {
+      "kode": "62.03.01.1006",
+      "nama": "Murung Keramat"
+    },
+    {
+      "kode": "62.03.01.1007",
+      "nama": "Selat Hilir"
+    },
+    {
+      "kode": "62.03.01.1008",
+      "nama": "Selat Tengah"
+    },
+    {
+      "kode": "62.03.01.1009",
+      "nama": "Selat Hulu"
+    },
+    {
+      "kode": "62.03.01.1010",
+      "nama": "Selat Dalam"
+    },
+    {
+      "kode": "62.03.01.1021",
+      "nama": "Selat Utara"
+    },
+    {
+      "kode": "62.03.01.1022",
+      "nama": "Selat Barat"
+    },
+    {
+      "kode": "62.03.01.1023",
+      "nama": "Panamas"
+    },
+    {
+      "kode": "62.03.01.2011",
+      "nama": "Pulau Telo"
+    },
+    {
+      "kode": "62.03.01.2020",
+      "nama": "Pulau Telo Baru"
+    },
+    {
+      "kode": "62.03.02.1001",
+      "nama": "Mambulau"
+    },
+    {
+      "kode": "62.03.02.1002",
+      "nama": "Hampatung"
+    },
+    {
+      "kode": "62.03.02.1003",
+      "nama": "Dahirang"
+    },
+    {
+      "kode": "62.03.02.1004",
+      "nama": "Barimba"
+    },
+    {
+      "kode": "62.03.02.1005",
+      "nama": "Sei Pasah"
+    },
+    {
+      "kode": "62.03.02.2006",
+      "nama": "Bakungin"
+    },
+    {
+      "kode": "62.03.02.2007",
+      "nama": "Sei Asam"
+    },
+    {
+      "kode": "62.03.02.2008",
+      "nama": "Saka Batur"
+    },
+    {
+      "kode": "62.03.03.2001",
+      "nama": "Anjir Serapat Timur"
+    },
+    {
+      "kode": "62.03.03.2002",
+      "nama": "Anjir Serapat Tengah"
+    },
+    {
+      "kode": "62.03.03.2003",
+      "nama": "Anjir Serapat Barat"
+    },
+    {
+      "kode": "62.03.03.2004",
+      "nama": "Anjir Mambulau Timur"
+    },
+    {
+      "kode": "62.03.03.2005",
+      "nama": "Anjir Mambulau Tengah"
+    },
+    {
+      "kode": "62.03.03.2006",
+      "nama": "Anjir Mambulau Barat"
+    },
+    {
+      "kode": "62.03.03.2007",
+      "nama": "Anjir Serapat Baru"
+    },
+    {
+      "kode": "62.03.04.2001",
+      "nama": "Batanjung"
+    },
+    {
+      "kode": "62.03.04.2002",
+      "nama": "Cemara Labat"
+    },
+    {
+      "kode": "62.03.04.2003",
+      "nama": "Palampai"
+    },
+    {
+      "kode": "62.03.04.2004",
+      "nama": "Sei Teras"
+    },
+    {
+      "kode": "62.03.04.2005",
+      "nama": "Lupak Dalam"
+    },
+    {
+      "kode": "62.03.04.2008",
+      "nama": "Tamban Baru Selatan"
+    },
+    {
+      "kode": "62.03.04.2011",
+      "nama": "Tamban Lupak"
+    },
+    {
+      "kode": "62.03.04.2014",
+      "nama": "Lupak Timur"
+    },
+    {
+      "kode": "62.03.04.2015",
+      "nama": "Wargo Mulyo"
+    },
+    {
+      "kode": "62.03.04.2016",
+      "nama": "Sei Bakut"
+    },
+    {
+      "kode": "62.03.04.2018",
+      "nama": "Pematang"
+    },
+    {
+      "kode": "62.03.04.2019",
+      "nama": "Simpang Bunga Tanjung"
+    },
+    {
+      "kode": "62.03.04.2020",
+      "nama": "Baranggau"
+    },
+    {
+      "kode": "62.03.05.1004",
+      "nama": "Mandomai"
+    },
+    {
+      "kode": "62.03.05.2001",
+      "nama": "Sei Kayu"
+    },
+    {
+      "kode": "62.03.05.2002",
+      "nama": "Saka Mangkahai"
+    },
+    {
+      "kode": "62.03.05.2003",
+      "nama": "Anjir Kalampan"
+    },
+    {
+      "kode": "62.03.05.2005",
+      "nama": "Pantai"
+    },
+    {
+      "kode": "62.03.05.2006",
+      "nama": "Saka Tamiang"
+    },
+    {
+      "kode": "62.03.05.2007",
+      "nama": "Penda Katapi"
+    },
+    {
+      "kode": "62.03.05.2008",
+      "nama": "Teluk Hiri"
+    },
+    {
+      "kode": "62.03.05.2009",
+      "nama": "Sei Dusun"
+    },
+    {
+      "kode": "62.03.05.2010",
+      "nama": "Sei Pitung"
+    },
+    {
+      "kode": "62.03.05.2011",
+      "nama": "Maju Bersama"
+    },
+    {
+      "kode": "62.03.05.2012",
+      "nama": "Basuta Raya"
+    },
+    {
+      "kode": "62.03.06.2001",
+      "nama": "Saka Lagon"
+    },
+    {
+      "kode": "62.03.06.2002",
+      "nama": "Bunga Mawar"
+    },
+    {
+      "kode": "62.03.06.2003",
+      "nama": "Sei Tatas"
+    },
+    {
+      "kode": "62.03.06.2004",
+      "nama": "Narahan"
+    },
+    {
+      "kode": "62.03.06.2005",
+      "nama": "Handiwung"
+    },
+    {
+      "kode": "62.03.06.2006",
+      "nama": "Anjir Palambang"
+    },
+    {
+      "kode": "62.03.06.2007",
+      "nama": "Palangkai"
+    },
+    {
+      "kode": "62.03.06.2008",
+      "nama": "Teluk Palinget"
+    },
+    {
+      "kode": "62.03.06.2009",
+      "nama": "Sei Tatas Hilir"
+    },
+    {
+      "kode": "62.03.06.2010",
+      "nama": "Mawar Mekar"
+    },
+    {
+      "kode": "62.03.06.2011",
+      "nama": "Banama"
+    },
+    {
+      "kode": "62.03.06.2012",
+      "nama": "Narahan Baru"
+    },
+    {
+      "kode": "62.03.07.1001",
+      "nama": "Palingkau Baru"
+    },
+    {
+      "kode": "62.03.07.1002",
+      "nama": "Palingkau Lama"
+    },
+    {
+      "kode": "62.03.07.2003",
+      "nama": "Tajepan"
+    },
+    {
+      "kode": "62.03.07.2004",
+      "nama": "Mampai"
+    },
+    {
+      "kode": "62.03.07.2005",
+      "nama": "Muara Dadahup"
+    },
+    {
+      "kode": "62.03.07.2006",
+      "nama": "Belawang"
+    },
+    {
+      "kode": "62.03.07.2008",
+      "nama": "Palangkau Lama"
+    },
+    {
+      "kode": "62.03.07.2010",
+      "nama": "Palangkau Baru"
+    },
+    {
+      "kode": "62.03.07.2014",
+      "nama": "Talekung Punei"
+    },
+    {
+      "kode": "62.03.07.2015",
+      "nama": "Karya Bersama"
+    },
+    {
+      "kode": "62.03.07.2016",
+      "nama": "Palingkau Jaya"
+    },
+    {
+      "kode": "62.03.07.2017",
+      "nama": "Palingkau Asri"
+    },
+    {
+      "kode": "62.03.07.2018",
+      "nama": "Palingkau Sejahtera"
+    },
+    {
+      "kode": "62.03.07.2019",
+      "nama": "Saka Binjai"
+    },
+    {
+      "kode": "62.03.07.2020",
+      "nama": "Bina Sejahtera"
+    },
+    {
+      "kode": "62.03.07.2021",
+      "nama": "Suka Reja"
+    },
+    {
+      "kode": "62.03.07.2022",
+      "nama": "Suka Mukti"
+    },
+    {
+      "kode": "62.03.07.2023",
+      "nama": "Bina Karya"
+    },
+    {
+      "kode": "62.03.07.2024",
+      "nama": "Bina Mekar"
+    },
+    {
+      "kode": "62.03.07.2025",
+      "nama": "Rawa Subur"
+    },
+    {
+      "kode": "62.03.07.2026",
+      "nama": "Sumber Mulya"
+    },
+    {
+      "kode": "62.03.07.2027",
+      "nama": "Bumi Rahayu"
+    },
+    {
+      "kode": "62.03.07.2028",
+      "nama": "Manggala Permai"
+    },
+    {
+      "kode": "62.03.08.2001",
+      "nama": "Pangkalan Rekan"
+    },
+    {
+      "kode": "62.03.08.2002",
+      "nama": "Batuah"
+    },
+    {
+      "kode": "62.03.08.2003",
+      "nama": "Basarang"
+    },
+    {
+      "kode": "62.03.08.2004",
+      "nama": "Basungkai"
+    },
+    {
+      "kode": "62.03.08.2005",
+      "nama": "Maluen"
+    },
+    {
+      "kode": "62.03.08.2006",
+      "nama": "Pangkalan Sari"
+    },
+    {
+      "kode": "62.03.08.2007",
+      "nama": "Lunuk Ramba"
+    },
+    {
+      "kode": "62.03.08.2008",
+      "nama": "Batu Nindan"
+    },
+    {
+      "kode": "62.03.08.2009",
+      "nama": "Basarang Jaya"
+    },
+    {
+      "kode": "62.03.08.2010",
+      "nama": "Bungai Jaya"
+    },
+    {
+      "kode": "62.03.08.2011",
+      "nama": "Panarung"
+    },
+    {
+      "kode": "62.03.08.2012",
+      "nama": "Tarung Manuah"
+    },
+    {
+      "kode": "62.03.08.2013",
+      "nama": "Tambun Raya"
+    },
+    {
+      "kode": "62.03.08.2014",
+      "nama": "Naning"
+    },
+    {
+      "kode": "62.03.09.2001",
+      "nama": "Manusup"
+    },
+    {
+      "kode": "62.03.09.2002",
+      "nama": "Sei Kapar"
+    },
+    {
+      "kode": "62.03.09.2003",
+      "nama": "Tarantang"
+    },
+    {
+      "kode": "62.03.09.2004",
+      "nama": "Lamunti"
+    },
+    {
+      "kode": "62.03.09.2005",
+      "nama": "Pulau Kaladan"
+    },
+    {
+      "kode": "62.03.09.2006",
+      "nama": "Mantangai Hilir"
+    },
+    {
+      "kode": "62.03.09.2007",
+      "nama": "Mantangai Tengah"
+    },
+    {
+      "kode": "62.03.09.2008",
+      "nama": "Mantangai Hulu"
+    },
+    {
+      "kode": "62.03.09.2009",
+      "nama": "Kalumpang"
+    },
+    {
+      "kode": "62.03.09.2010",
+      "nama": "Sei Ahas"
+    },
+    {
+      "kode": "62.03.09.2011",
+      "nama": "Katunjung"
+    },
+    {
+      "kode": "62.03.09.2012",
+      "nama": "Lahei Mangkutup"
+    },
+    {
+      "kode": "62.03.09.2013",
+      "nama": "Tumbang Muroi"
+    },
+    {
+      "kode": "62.03.09.2014",
+      "nama": "Danau Rawah"
+    },
+    {
+      "kode": "62.03.09.2015",
+      "nama": "Muroi Raya"
+    },
+    {
+      "kode": "62.03.09.2016",
+      "nama": "Katimpun"
+    },
+    {
+      "kode": "62.03.09.2017",
+      "nama": "Manusup Hilir"
+    },
+    {
+      "kode": "62.03.09.2018",
+      "nama": "Sei Gita"
+    },
+    {
+      "kode": "62.03.09.2019",
+      "nama": "Bukit Batu"
+    },
+    {
+      "kode": "62.03.09.2020",
+      "nama": "Sei Gawing"
+    },
+    {
+      "kode": "62.03.09.2021",
+      "nama": "Humbang Raya"
+    },
+    {
+      "kode": "62.03.09.2022",
+      "nama": "Tabore"
+    },
+    {
+      "kode": "62.03.09.2023",
+      "nama": "Tumbang Mangkutup"
+    },
+    {
+      "kode": "62.03.09.2024",
+      "nama": "Lapetan"
+    },
+    {
+      "kode": "62.03.09.2025",
+      "nama": "Lamunti Permai"
+    },
+    {
+      "kode": "62.03.09.2026",
+      "nama": "Manyahi"
+    },
+    {
+      "kode": "62.03.09.2027",
+      "nama": "Sekata Makmur"
+    },
+    {
+      "kode": "62.03.09.2028",
+      "nama": "Kaladan Jaya"
+    },
+    {
+      "kode": "62.03.09.2029",
+      "nama": "Rantau Jaya"
+    },
+    {
+      "kode": "62.03.09.2030",
+      "nama": "Warga Mulya"
+    },
+    {
+      "kode": "62.03.09.2031",
+      "nama": "Lamunti Baru"
+    },
+    {
+      "kode": "62.03.09.2032",
+      "nama": "Sriwidadi"
+    },
+    {
+      "kode": "62.03.09.2033",
+      "nama": "Sumber Makmur"
+    },
+    {
+      "kode": "62.03.09.2034",
+      "nama": "Sidomulyo"
+    },
+    {
+      "kode": "62.03.09.2035",
+      "nama": "Harapan Jaya"
+    },
+    {
+      "kode": "62.03.09.2036",
+      "nama": "Sekata Bangun"
+    },
+    {
+      "kode": "62.03.09.2037",
+      "nama": "Sari Makmur"
+    },
+    {
+      "kode": "62.03.09.2038",
+      "nama": "Suka Maju"
+    },
+    {
+      "kode": "62.03.10.2001",
+      "nama": "Petak Puti"
+    },
+    {
+      "kode": "62.03.10.2002",
+      "nama": "Aruk"
+    },
+    {
+      "kode": "62.03.10.2003",
+      "nama": "Lawang Kajang"
+    },
+    {
+      "kode": "62.03.10.2004",
+      "nama": "Timpah"
+    },
+    {
+      "kode": "62.03.10.2005",
+      "nama": "Lungkuh Layang"
+    },
+    {
+      "kode": "62.03.10.2006",
+      "nama": "Lawang Kamah"
+    },
+    {
+      "kode": "62.03.10.2007",
+      "nama": "Tumbang Randang"
+    },
+    {
+      "kode": "62.03.10.2008",
+      "nama": "Batapah"
+    },
+    {
+      "kode": "62.03.10.2009",
+      "nama": "Danau Pantau"
+    },
+    {
+      "kode": "62.03.11.2001",
+      "nama": "Masaran"
+    },
+    {
+      "kode": "62.03.11.2002",
+      "nama": "Kayu Bulan"
+    },
+    {
+      "kode": "62.03.11.2003",
+      "nama": "Kota Baru"
+    },
+    {
+      "kode": "62.03.11.2004",
+      "nama": "Penda Muntei"
+    },
+    {
+      "kode": "62.03.11.2005",
+      "nama": "Tapen"
+    },
+    {
+      "kode": "62.03.11.2006",
+      "nama": "Pujon"
+    },
+    {
+      "kode": "62.03.11.2007",
+      "nama": "Marapit"
+    },
+    {
+      "kode": "62.03.11.2008",
+      "nama": "Manis"
+    },
+    {
+      "kode": "62.03.11.2009",
+      "nama": "Karukus"
+    },
+    {
+      "kode": "62.03.11.2010",
+      "nama": "Bajuh"
+    },
+    {
+      "kode": "62.03.11.2011",
+      "nama": "Barunang"
+    },
+    {
+      "kode": "62.03.11.2019",
+      "nama": "Buhut Jaya"
+    },
+    {
+      "kode": "62.03.11.2021",
+      "nama": "Hurung Pukung"
+    },
+    {
+      "kode": "62.03.12.2001",
+      "nama": "Sei Hanyo"
+    },
+    {
+      "kode": "62.03.12.2002",
+      "nama": "Hurung Tabengan"
+    },
+    {
+      "kode": "62.03.12.2003",
+      "nama": "Rahung Bungai"
+    },
+    {
+      "kode": "62.03.12.2005",
+      "nama": "Bulau Ngandung"
+    },
+    {
+      "kode": "62.03.12.2006",
+      "nama": "Tumbang Puroh"
+    },
+    {
+      "kode": "62.03.12.2008",
+      "nama": "Tangirang"
+    },
+    {
+      "kode": "62.03.12.2013",
+      "nama": "Barunang II"
+    },
+    {
+      "kode": "62.03.12.2014",
+      "nama": "Hurung Tampang"
+    },
+    {
+      "kode": "62.03.12.2015",
+      "nama": "Supang"
+    },
+    {
+      "kode": "62.03.12.2016",
+      "nama": "Katanjung"
+    },
+    {
+      "kode": "62.03.12.2018",
+      "nama": "Jakatan Pari"
+    },
+    {
+      "kode": "62.03.12.2019",
+      "nama": "Tumbang Sirat"
+    },
+    {
+      "kode": "62.03.12.2021",
+      "nama": "Dirung Koram"
+    },
+    {
+      "kode": "62.03.12.2022",
+      "nama": "Mampai Jaya"
+    },
+    {
+      "kode": "62.03.13.2001",
+      "nama": "Tamban Baru Timur"
+    },
+    {
+      "kode": "62.03.13.2002",
+      "nama": "Tamban Baru Tengah"
+    },
+    {
+      "kode": "62.03.13.2003",
+      "nama": "Tamban Baru Mekar"
+    },
+    {
+      "kode": "62.03.13.2004",
+      "nama": "Bandaraya"
+    },
+    {
+      "kode": "62.03.13.2005",
+      "nama": "Sidorejo"
+    },
+    {
+      "kode": "62.03.13.2006",
+      "nama": "Warna Sari"
+    },
+    {
+      "kode": "62.03.13.2007",
+      "nama": "Bandar Mekar"
+    },
+    {
+      "kode": "62.03.13.2008",
+      "nama": "Tamban Makmur"
+    },
+    {
+      "kode": "62.03.13.2009",
+      "nama": "Sidomulyo"
+    },
+    {
+      "kode": "62.03.13.2010",
+      "nama": "Tamban Jaya"
+    },
+    {
+      "kode": "62.03.14.2001",
+      "nama": "Jangkang"
+    },
+    {
+      "kode": "62.03.14.2002",
+      "nama": "Tumbang Tukun"
+    },
+    {
+      "kode": "62.03.14.2003",
+      "nama": "Sei Ringin"
+    },
+    {
+      "kode": "62.03.14.2004",
+      "nama": "Kaburan"
+    },
+    {
+      "kode": "62.03.14.2005",
+      "nama": "Balai Banjang"
+    },
+    {
+      "kode": "62.03.14.2006",
+      "nama": "Tumbang Diring"
+    },
+    {
+      "kode": "62.03.14.2007",
+      "nama": "Dandang"
+    },
+    {
+      "kode": "62.03.14.2008",
+      "nama": "Hurung Kampin"
+    },
+    {
+      "kode": "62.03.14.2009",
+      "nama": "Batu Sambung"
+    },
+    {
+      "kode": "62.03.14.2010",
+      "nama": "Tumbang Nusa"
+    },
+    {
+      "kode": "62.03.15.2001",
+      "nama": "Masaha"
+    },
+    {
+      "kode": "62.03.15.2002",
+      "nama": "Sei Pinang"
+    },
+    {
+      "kode": "62.03.15.2003",
+      "nama": "Lawang Tamang"
+    },
+    {
+      "kode": "62.03.15.2004",
+      "nama": "Karetau Manta'a"
+    },
+    {
+      "kode": "62.03.15.2005",
+      "nama": "Tumbang Bukoi"
+    },
+    {
+      "kode": "62.03.15.2006",
+      "nama": "Tumbang Tihis"
+    },
+    {
+      "kode": "62.03.15.2007",
+      "nama": "Tumbang Manyarung"
+    },
+    {
+      "kode": "62.03.15.2008",
+      "nama": "Tanjung Rendan"
+    },
+    {
+      "kode": "62.03.15.2009",
+      "nama": "Jakatan Masaha"
+    },
+    {
+      "kode": "62.03.15.2010",
+      "nama": "Masupa Ria"
+    },
+    {
+      "kode": "62.03.16.2001",
+      "nama": "Dadahup"
+    },
+    {
+      "kode": "62.03.16.2002",
+      "nama": "Tambak Bajai"
+    },
+    {
+      "kode": "62.03.16.2003",
+      "nama": "Bina Jaya"
+    },
+    {
+      "kode": "62.03.16.2004",
+      "nama": "Harapan Baru"
+    },
+    {
+      "kode": "62.03.16.2005",
+      "nama": "Bentuk Jaya"
+    },
+    {
+      "kode": "62.03.16.2006",
+      "nama": "Sumber Agung"
+    },
+    {
+      "kode": "62.03.16.2007",
+      "nama": "Petak Batuah"
+    },
+    {
+      "kode": "62.03.16.2008",
+      "nama": "Manuntung"
+    },
+    {
+      "kode": "62.03.16.2009",
+      "nama": "Sumber Alaska"
+    },
+    {
+      "kode": "62.03.16.2010",
+      "nama": "Menteng Karya"
+    },
+    {
+      "kode": "62.03.16.2011",
+      "nama": "Tanjung Harapan"
+    },
+    {
+      "kode": "62.03.16.2012",
+      "nama": "Kahuripan Permai"
+    },
+    {
+      "kode": "62.03.16.2013",
+      "nama": "Dadahup Raya"
+    },
+    {
+      "kode": "62.03.17.1001",
+      "nama": "Pulau Kupang"
+    },
+    {
+      "kode": "62.03.17.2002",
+      "nama": "Pulau Mambulau"
+    },
+    {
+      "kode": "62.03.17.2003",
+      "nama": "Sei Lunuk"
+    },
+    {
+      "kode": "62.03.17.2004",
+      "nama": "Sei Jangkit"
+    },
+    {
+      "kode": "62.03.17.2005",
+      "nama": "Tamban Luar"
+    },
+    {
+      "kode": "62.03.17.2006",
+      "nama": "Terusan Raya"
+    },
+    {
+      "kode": "62.03.17.2007",
+      "nama": "Terusan Karya"
+    },
+    {
+      "kode": "62.03.17.2008",
+      "nama": "Terusan Makmur"
+    },
+    {
+      "kode": "62.03.17.2009",
+      "nama": "Terusan Mulya"
+    },
+    {
+      "kode": "62.03.17.2010",
+      "nama": "Bamban Raya"
+    },
+    {
+      "kode": "62.03.17.2011",
+      "nama": "Bangun Harjo"
+    },
+    {
+      "kode": "62.03.17.2012",
+      "nama": "Terusan Baguntan Raya"
+    },
+    {
+      "kode": "62.03.17.2013",
+      "nama": "Terusan Raya Barat"
+    },
+    {
+      "kode": "62.03.17.2014",
+      "nama": "Terusan Raya Hulu"
+    },
+    {
+      "kode": "62.03.17.2015",
+      "nama": "Budi Mufakat"
+    },
+    {
+      "kode": "62.04.01.1003",
+      "nama": "Rantau Kujang"
+    },
+    {
+      "kode": "62.04.01.2001",
+      "nama": "Tampulang"
+    },
+    {
+      "kode": "62.04.01.2002",
+      "nama": "Rantau Bahuang"
+    },
+    {
+      "kode": "62.04.01.2004",
+      "nama": "Rangga Ilung"
+    },
+    {
+      "kode": "62.04.01.2005",
+      "nama": "Tabatan"
+    },
+    {
+      "kode": "62.04.02.1003",
+      "nama": "Mengkatip"
+    },
+    {
+      "kode": "62.04.02.2001",
+      "nama": "Sungai Jaya"
+    },
+    {
+      "kode": "62.04.02.2002",
+      "nama": "Mahajandau"
+    },
+    {
+      "kode": "62.04.02.2004",
+      "nama": "Kalanis"
+    },
+    {
+      "kode": "62.04.02.2005",
+      "nama": "Lehai"
+    },
+    {
+      "kode": "62.04.02.2006",
+      "nama": "Damparan"
+    },
+    {
+      "kode": "62.04.02.2007",
+      "nama": "Teluk Timbau"
+    },
+    {
+      "kode": "62.04.02.2008",
+      "nama": "Batilap"
+    },
+    {
+      "kode": "62.04.02.2009",
+      "nama": "Batampang"
+    },
+    {
+      "kode": "62.04.02.2010",
+      "nama": "Mangkatir"
+    },
+    {
+      "kode": "62.04.03.1002",
+      "nama": "Bangkuang"
+    },
+    {
+      "kode": "62.04.03.2001",
+      "nama": "Salat Baru"
+    },
+    {
+      "kode": "62.04.03.2003",
+      "nama": "Teluk Betung"
+    },
+    {
+      "kode": "62.04.03.2004",
+      "nama": "Babai"
+    },
+    {
+      "kode": "62.04.03.2005",
+      "nama": "Janggi"
+    },
+    {
+      "kode": "62.04.03.2006",
+      "nama": "Malitin"
+    },
+    {
+      "kode": "62.04.03.2007",
+      "nama": "Muara Arai"
+    },
+    {
+      "kode": "62.04.03.2008",
+      "nama": "Talio"
+    },
+    {
+      "kode": "62.04.03.2009",
+      "nama": "Tampijak"
+    },
+    {
+      "kode": "62.04.03.2010",
+      "nama": "Bintang Kurung"
+    },
+    {
+      "kode": "62.04.03.2011",
+      "nama": "Teluk Sampudau"
+    },
+    {
+      "kode": "62.04.04.1005",
+      "nama": "Pendang"
+    },
+    {
+      "kode": "62.04.04.2001",
+      "nama": "Sungai Telang"
+    },
+    {
+      "kode": "62.04.04.2002",
+      "nama": "Majundre"
+    },
+    {
+      "kode": "62.04.04.2003",
+      "nama": "Bundar"
+    },
+    {
+      "kode": "62.04.04.2004",
+      "nama": "Talekoi"
+    },
+    {
+      "kode": "62.04.04.2006",
+      "nama": "Marawan Lama"
+    },
+    {
+      "kode": "62.04.04.2007",
+      "nama": "Marawan Baru"
+    },
+    {
+      "kode": "62.04.04.2008",
+      "nama": "Reong"
+    },
+    {
+      "kode": "62.04.04.2009",
+      "nama": "Tarusan"
+    },
+    {
+      "kode": "62.04.04.2010",
+      "nama": "Panarukan"
+    },
+    {
+      "kode": "62.04.04.2011",
+      "nama": "Maruga"
+    },
+    {
+      "kode": "62.04.04.2012",
+      "nama": "Hingan"
+    },
+    {
+      "kode": "62.04.04.2013",
+      "nama": "Danau Bambure"
+    },
+    {
+      "kode": "62.04.04.2014",
+      "nama": "Tamparak"
+    },
+    {
+      "kode": "62.04.04.2015",
+      "nama": "Hulu Tampang"
+    },
+    {
+      "kode": "62.04.04.2016",
+      "nama": "Bantai Bambure"
+    },
+    {
+      "kode": "62.04.04.2017",
+      "nama": "Rampa Mea"
+    },
+    {
+      "kode": "62.04.04.2018",
+      "nama": "Gunung Rantau"
+    },
+    {
+      "kode": "62.04.04.2019",
+      "nama": "Tamparak Layung"
+    },
+    {
+      "kode": "62.04.05.2001",
+      "nama": "Baruang"
+    },
+    {
+      "kode": "62.04.05.2002",
+      "nama": "Kayumban"
+    },
+    {
+      "kode": "62.04.05.2003",
+      "nama": "Tabak Kanilan"
+    },
+    {
+      "kode": "62.04.05.2004",
+      "nama": "Sarimbuah"
+    },
+    {
+      "kode": "62.04.05.2005",
+      "nama": "Gagutur"
+    },
+    {
+      "kode": "62.04.05.2006",
+      "nama": "Muka Haji"
+    },
+    {
+      "kode": "62.04.05.2007",
+      "nama": "Sire"
+    },
+    {
+      "kode": "62.04.05.2008",
+      "nama": "Muara Singan"
+    },
+    {
+      "kode": "62.04.05.2009",
+      "nama": "Patas I"
+    },
+    {
+      "kode": "62.04.05.2010",
+      "nama": "Patas II"
+    },
+    {
+      "kode": "62.04.05.2011",
+      "nama": "Bintang Ara"
+    },
+    {
+      "kode": "62.04.05.2012",
+      "nama": "Ugang Sayu"
+    },
+    {
+      "kode": "62.04.05.2013",
+      "nama": "Ngurit"
+    },
+    {
+      "kode": "62.04.05.2014",
+      "nama": "Wungkur Baru"
+    },
+    {
+      "kode": "62.04.05.2015",
+      "nama": "Bipak Kali"
+    },
+    {
+      "kode": "62.04.05.2016",
+      "nama": "Malungai Raya"
+    },
+    {
+      "kode": "62.04.05.2017",
+      "nama": "Sei Paken"
+    },
+    {
+      "kode": "62.04.05.2018",
+      "nama": "Palu Rejo"
+    },
+    {
+      "kode": "62.04.05.2019",
+      "nama": "Wayun"
+    },
+    {
+      "kode": "62.04.05.2020",
+      "nama": "Marga Jaya"
+    },
+    {
+      "kode": "62.04.05.2021",
+      "nama": "Ruhing Raya"
+    },
+    {
+      "kode": "62.04.06.1006",
+      "nama": "Jelapat"
+    },
+    {
+      "kode": "62.04.06.1007",
+      "nama": "Hilir Seper"
+    },
+    {
+      "kode": "62.04.06.1008",
+      "nama": "Buntok Kota"
+    },
+    {
+      "kode": "62.04.06.2001",
+      "nama": "Danau Ganting"
+    },
+    {
+      "kode": "62.04.06.2002",
+      "nama": "Muara Talang"
+    },
+    {
+      "kode": "62.04.06.2003",
+      "nama": "Teluk Telaga"
+    },
+    {
+      "kode": "62.04.06.2004",
+      "nama": "Baru"
+    },
+    {
+      "kode": "62.04.06.2005",
+      "nama": "Danau Sadar"
+    },
+    {
+      "kode": "62.04.06.2009",
+      "nama": "Pamait"
+    },
+    {
+      "kode": "62.04.06.2010",
+      "nama": "Sababilah"
+    },
+    {
+      "kode": "62.04.06.2011",
+      "nama": "Mangaris"
+    },
+    {
+      "kode": "62.04.06.2012",
+      "nama": "Tetei Lanan"
+    },
+    {
+      "kode": "62.04.06.2013",
+      "nama": "Pamangka"
+    },
+    {
+      "kode": "62.04.06.2014",
+      "nama": "Sanggu"
+    },
+    {
+      "kode": "62.04.06.2015",
+      "nama": "Lembeng"
+    },
+    {
+      "kode": "62.04.06.2016",
+      "nama": "Muara Ripung"
+    },
+    {
+      "kode": "62.04.06.2017",
+      "nama": "Madara"
+    },
+    {
+      "kode": "62.04.06.2018",
+      "nama": "Murung Paken"
+    },
+    {
+      "kode": "62.04.06.2019",
+      "nama": "Mabuan"
+    },
+    {
+      "kode": "62.04.06.2020",
+      "nama": "Kalahien"
+    },
+    {
+      "kode": "62.04.06.2021",
+      "nama": "Penda Asam"
+    },
+    {
+      "kode": "62.04.06.2022",
+      "nama": "Pararapak"
+    },
+    {
+      "kode": "62.04.06.2023",
+      "nama": "Teluk Mampun"
+    },
+    {
+      "kode": "62.04.06.2024",
+      "nama": "Tanjung Jawa"
+    },
+    {
+      "kode": "62.04.06.2025",
+      "nama": "Telang Andrau"
+    },
+    {
+      "kode": "62.04.06.2026",
+      "nama": "Dangka"
+    },
+    {
+      "kode": "62.04.06.2027",
+      "nama": "Danau Masura"
+    },
+    {
+      "kode": "62.05.01.1001",
+      "nama": "Montallat I"
+    },
+    {
+      "kode": "62.05.01.1002",
+      "nama": "Montallat II"
+    },
+    {
+      "kode": "62.05.01.1003",
+      "nama": "Tumpung Laung I"
+    },
+    {
+      "kode": "62.05.01.1004",
+      "nama": "Tumpung Laung II"
+    },
+    {
+      "kode": "62.05.01.2005",
+      "nama": "Sikan"
+    },
+    {
+      "kode": "62.05.01.2006",
+      "nama": "Rubei"
+    },
+    {
+      "kode": "62.05.01.2007",
+      "nama": "Pepas"
+    },
+    {
+      "kode": "62.05.01.2008",
+      "nama": "Ruji"
+    },
+    {
+      "kode": "62.05.01.2009",
+      "nama": "Paring Lahung"
+    },
+    {
+      "kode": "62.05.01.2010",
+      "nama": "Kamawen"
+    },
+    {
+      "kode": "62.05.02.2001",
+      "nama": "Malungai"
+    },
+    {
+      "kode": "62.05.02.2002",
+      "nama": "Rarawa"
+    },
+    {
+      "kode": "62.05.02.2003",
+      "nama": "Ketapang"
+    },
+    {
+      "kode": "62.05.02.2004",
+      "nama": "Walur"
+    },
+    {
+      "kode": "62.05.02.2005",
+      "nama": "Baliti"
+    },
+    {
+      "kode": "62.05.02.2006",
+      "nama": "Majangkan"
+    },
+    {
+      "kode": "62.05.02.2007",
+      "nama": "Kandui"
+    },
+    {
+      "kode": "62.05.02.2008",
+      "nama": "Payang Ara"
+    },
+    {
+      "kode": "62.05.02.2009",
+      "nama": "Jaman"
+    },
+    {
+      "kode": "62.05.02.2010",
+      "nama": "Pelari"
+    },
+    {
+      "kode": "62.05.02.2011",
+      "nama": "Sangkorang"
+    },
+    {
+      "kode": "62.05.02.2012",
+      "nama": "Siwau"
+    },
+    {
+      "kode": "62.05.02.2013",
+      "nama": "Tongka"
+    },
+    {
+      "kode": "62.05.02.2014",
+      "nama": "Batu Raya I"
+    },
+    {
+      "kode": "62.05.02.2015",
+      "nama": "Batu Raya II"
+    },
+    {
+      "kode": "62.05.02.2016",
+      "nama": "Tapen Raya"
+    },
+    {
+      "kode": "62.05.03.2001",
+      "nama": "Tanjung Harapan"
+    },
+    {
+      "kode": "62.05.03.2002",
+      "nama": "Linon Besi I"
+    },
+    {
+      "kode": "62.05.03.2003",
+      "nama": "Linon Besi II"
+    },
+    {
+      "kode": "62.05.03.2004",
+      "nama": "Muara Mea"
+    },
+    {
+      "kode": "62.05.03.2005",
+      "nama": "Lawarang"
+    },
+    {
+      "kode": "62.05.03.2006",
+      "nama": "Lampeong I"
+    },
+    {
+      "kode": "62.05.03.2007",
+      "nama": "Lampeong II"
+    },
+    {
+      "kode": "62.05.03.2008",
+      "nama": "Payang"
+    },
+    {
+      "kode": "62.05.03.2009",
+      "nama": "Berong"
+    },
+    {
+      "kode": "62.05.03.2010",
+      "nama": "Baok"
+    },
+    {
+      "kode": "62.05.03.2011",
+      "nama": "Tambaba"
+    },
+    {
+      "kode": "62.05.04.2001",
+      "nama": "Sampirang I"
+    },
+    {
+      "kode": "62.05.04.2002",
+      "nama": "Sampirang II"
+    },
+    {
+      "kode": "62.05.04.2003",
+      "nama": "Liju"
+    },
+    {
+      "kode": "62.05.04.2004",
+      "nama": "Benangin III"
+    },
+    {
+      "kode": "62.05.04.2005",
+      "nama": "Benangin II"
+    },
+    {
+      "kode": "62.05.04.2006",
+      "nama": "Benangin V"
+    },
+    {
+      "kode": "62.05.04.2007",
+      "nama": "Benangin I"
+    },
+    {
+      "kode": "62.05.04.2008",
+      "nama": "Muara Wakat"
+    },
+    {
+      "kode": "62.05.04.2012",
+      "nama": "Mampuak I"
+    },
+    {
+      "kode": "62.05.04.2013",
+      "nama": "Jamut"
+    },
+    {
+      "kode": "62.05.04.2014",
+      "nama": "Sei Liju"
+    },
+    {
+      "kode": "62.05.04.2015",
+      "nama": "Mampuak II"
+    },
+    {
+      "kode": "62.05.05.1013",
+      "nama": "Lanjas"
+    },
+    {
+      "kode": "62.05.05.1014",
+      "nama": "Melayu"
+    },
+    {
+      "kode": "62.05.05.2010",
+      "nama": "Lemo I"
+    },
+    {
+      "kode": "62.05.05.2011",
+      "nama": "Lemo II"
+    },
+    {
+      "kode": "62.05.05.2012",
+      "nama": "Pendreh"
+    },
+    {
+      "kode": "62.05.05.2017",
+      "nama": "Rimba Sari"
+    },
+    {
+      "kode": "62.05.05.2018",
+      "nama": "Sei Rahayu I"
+    },
+    {
+      "kode": "62.05.05.2022",
+      "nama": "Sei Rahayu II"
+    },
+    {
+      "kode": "62.05.05.2024",
+      "nama": "Beringin Raya"
+    },
+    {
+      "kode": "62.05.05.2025",
+      "nama": "Datai Nirui"
+    },
+    {
+      "kode": "62.05.06.1015",
+      "nama": "Lahei I"
+    },
+    {
+      "kode": "62.05.06.1016",
+      "nama": "Lahei II"
+    },
+    {
+      "kode": "62.05.06.2001",
+      "nama": "Ipu"
+    },
+    {
+      "kode": "62.05.06.2002",
+      "nama": "Mukut"
+    },
+    {
+      "kode": "62.05.06.2014",
+      "nama": "Muara Bakah"
+    },
+    {
+      "kode": "62.05.06.2017",
+      "nama": "Juju Baru"
+    },
+    {
+      "kode": "62.05.06.2018",
+      "nama": "Muara Inu"
+    },
+    {
+      "kode": "62.05.06.2019",
+      "nama": "Bengahon"
+    },
+    {
+      "kode": "62.05.06.2020",
+      "nama": "Rahaden"
+    },
+    {
+      "kode": "62.05.06.2021",
+      "nama": "Muara Pari"
+    },
+    {
+      "kode": "62.05.06.2022",
+      "nama": "Haragandang"
+    },
+    {
+      "kode": "62.05.06.2023",
+      "nama": "Karendan"
+    },
+    {
+      "kode": "62.05.06.2024",
+      "nama": "Hurung Enep"
+    },
+    {
+      "kode": "62.05.07.1001",
+      "nama": "Jingah"
+    },
+    {
+      "kode": "62.05.07.1002",
+      "nama": "Jambu"
+    },
+    {
+      "kode": "62.05.07.2003",
+      "nama": "Liang Naga"
+    },
+    {
+      "kode": "62.05.07.2004",
+      "nama": "Sabuh"
+    },
+    {
+      "kode": "62.05.07.2005",
+      "nama": "Hajak"
+    },
+    {
+      "kode": "62.05.07.2006",
+      "nama": "Malawaken"
+    },
+    {
+      "kode": "62.05.07.2007",
+      "nama": "Sikui"
+    },
+    {
+      "kode": "62.05.07.2008",
+      "nama": "Panaen"
+    },
+    {
+      "kode": "62.05.07.2009",
+      "nama": "Liang Buah"
+    },
+    {
+      "kode": "62.05.07.2010",
+      "nama": "Gandring"
+    },
+    {
+      "kode": "62.05.08.2001",
+      "nama": "Trahean"
+    },
+    {
+      "kode": "62.05.08.2002",
+      "nama": "Trinsing"
+    },
+    {
+      "kode": "62.05.08.2003",
+      "nama": "Bintang Ninggi I"
+    },
+    {
+      "kode": "62.05.08.2004",
+      "nama": "Bintang Ninggi II"
+    },
+    {
+      "kode": "62.05.08.2005",
+      "nama": "Butong"
+    },
+    {
+      "kode": "62.05.08.2006",
+      "nama": "Buntok Baru"
+    },
+    {
+      "kode": "62.05.08.2007",
+      "nama": "Bukit Sawit"
+    },
+    {
+      "kode": "62.05.08.2008",
+      "nama": "Tawan Jaya"
+    },
+    {
+      "kode": "62.05.08.2009",
+      "nama": "Pandran Raya"
+    },
+    {
+      "kode": "62.05.08.2010",
+      "nama": "Pandran Permai"
+    },
+    {
+      "kode": "62.05.09.2001",
+      "nama": "Nihan Hilir"
+    },
+    {
+      "kode": "62.05.09.2002",
+      "nama": "Nihan Hulu"
+    },
+    {
+      "kode": "62.05.09.2003",
+      "nama": "Luwe Hilir"
+    },
+    {
+      "kode": "62.05.09.2004",
+      "nama": "Luwe Hulu"
+    },
+    {
+      "kode": "62.05.09.2005",
+      "nama": "Jangkang Baru"
+    },
+    {
+      "kode": "62.05.09.2006",
+      "nama": "Jangkang Lama"
+    },
+    {
+      "kode": "62.05.09.2007",
+      "nama": "Papar Pujung"
+    },
+    {
+      "kode": "62.05.09.2008",
+      "nama": "Teluk Malewai"
+    },
+    {
+      "kode": "62.05.09.2009",
+      "nama": "Benao Hilir"
+    },
+    {
+      "kode": "62.05.09.2010",
+      "nama": "Benao Hulu"
+    },
+    {
+      "kode": "62.05.09.2011",
+      "nama": "Karamuan"
+    },
+    {
+      "kode": "62.06.01.2001",
+      "nama": "Galinggang"
+    },
+    {
+      "kode": "62.06.01.2002",
+      "nama": "Tampelas"
+    },
+    {
+      "kode": "62.06.01.2003",
+      "nama": "Telaga"
+    },
+    {
+      "kode": "62.06.01.2004",
+      "nama": "Parupuk"
+    },
+    {
+      "kode": "62.06.01.2005",
+      "nama": "Karuing"
+    },
+    {
+      "kode": "62.06.01.2006",
+      "nama": "Jahanjang"
+    },
+    {
+      "kode": "62.06.01.2007",
+      "nama": "Tumbang Runen"
+    },
+    {
+      "kode": "62.06.01.2008",
+      "nama": "Baun Bango"
+    },
+    {
+      "kode": "62.06.01.2009",
+      "nama": "Asem Kumbang"
+    },
+    {
+      "kode": "62.06.02.1003",
+      "nama": "Kasongan Baru"
+    },
+    {
+      "kode": "62.06.02.1004",
+      "nama": "Kasongan Lama"
+    },
+    {
+      "kode": "62.06.02.2001",
+      "nama": "Tewang Kadamba"
+    },
+    {
+      "kode": "62.06.02.2002",
+      "nama": "Tumbang Liting"
+    },
+    {
+      "kode": "62.06.02.2005",
+      "nama": "Talian Kereng"
+    },
+    {
+      "kode": "62.06.02.2006",
+      "nama": "Banut Kalanaman"
+    },
+    {
+      "kode": "62.06.02.2007",
+      "nama": "Talangkah"
+    },
+    {
+      "kode": "62.06.02.2008",
+      "nama": "Hampalit"
+    },
+    {
+      "kode": "62.06.03.1006",
+      "nama": "Pendahara"
+    },
+    {
+      "kode": "62.06.03.2001",
+      "nama": "Tewang Baringin"
+    },
+    {
+      "kode": "62.06.03.2002",
+      "nama": "Hapalam"
+    },
+    {
+      "kode": "62.06.03.2003",
+      "nama": "Tewang Rangas"
+    },
+    {
+      "kode": "62.06.03.2004",
+      "nama": "Bangkuang"
+    },
+    {
+      "kode": "62.06.03.2005",
+      "nama": "Tarusan Danum"
+    },
+    {
+      "kode": "62.06.03.2007",
+      "nama": "Tumbang Tarusan"
+    },
+    {
+      "kode": "62.06.03.2008",
+      "nama": "Tewang Rangkang"
+    },
+    {
+      "kode": "62.06.03.2009",
+      "nama": "Tewang Manyangen"
+    },
+    {
+      "kode": "62.06.03.2010",
+      "nama": "Karya Unggang"
+    },
+    {
+      "kode": "62.06.04.2001",
+      "nama": "Tewang Papari"
+    },
+    {
+      "kode": "62.06.04.2002",
+      "nama": "Tewang Darayu"
+    },
+    {
+      "kode": "62.06.04.2003",
+      "nama": "Buntut Bali"
+    },
+    {
+      "kode": "62.06.04.2004",
+      "nama": "Kuluk Bali"
+    },
+    {
+      "kode": "62.06.04.2005",
+      "nama": "Manduing Taheta"
+    },
+    {
+      "kode": "62.06.04.2006",
+      "nama": "Manduing Lama"
+    },
+    {
+      "kode": "62.06.04.2007",
+      "nama": "Tumbang Banjang"
+    },
+    {
+      "kode": "62.06.04.2008",
+      "nama": "Tumbang Lawang"
+    },
+    {
+      "kode": "62.06.04.2009",
+      "nama": "Dahian Tunggal"
+    },
+    {
+      "kode": "62.06.04.2010",
+      "nama": "Tewang Karangan"
+    },
+    {
+      "kode": "62.06.04.2011",
+      "nama": "Tumbang Tungku"
+    },
+    {
+      "kode": "62.06.04.2012",
+      "nama": "Geragu"
+    },
+    {
+      "kode": "62.06.04.2013",
+      "nama": "Tumbang Tanjung"
+    },
+    {
+      "kode": "62.06.04.2014",
+      "nama": "Tura"
+    },
+    {
+      "kode": "62.06.05.1009",
+      "nama": "Samba Kahayan"
+    },
+    {
+      "kode": "62.06.05.2001",
+      "nama": "Tumbang Lahang"
+    },
+    {
+      "kode": "62.06.05.2002",
+      "nama": "Tewang Panjang"
+    },
+    {
+      "kode": "62.06.05.2003",
+      "nama": "Petak Puti"
+    },
+    {
+      "kode": "62.06.05.2004",
+      "nama": "Telok"
+    },
+    {
+      "kode": "62.06.05.2005",
+      "nama": "Samba Danum"
+    },
+    {
+      "kode": "62.06.05.2006",
+      "nama": "Samba Bakumpai"
+    },
+    {
+      "kode": "62.06.05.2007",
+      "nama": "Samba Katung"
+    },
+    {
+      "kode": "62.06.05.2008",
+      "nama": "Napu Sahur"
+    },
+    {
+      "kode": "62.06.05.2010",
+      "nama": "Batu Badinding"
+    },
+    {
+      "kode": "62.06.05.2011",
+      "nama": "Rantau Asem"
+    },
+    {
+      "kode": "62.06.05.2012",
+      "nama": "Mirah Kalanaman"
+    },
+    {
+      "kode": "62.06.05.2013",
+      "nama": "Tumbang Kalemei"
+    },
+    {
+      "kode": "62.06.05.2014",
+      "nama": "Tumbang Marak"
+    },
+    {
+      "kode": "62.06.05.2015",
+      "nama": "Tumbang Hangei"
+    },
+    {
+      "kode": "62.06.05.2016",
+      "nama": "Tumbang Pariyei"
+    },
+    {
+      "kode": "62.06.06.2001",
+      "nama": "Dehes"
+    },
+    {
+      "kode": "62.06.06.2002",
+      "nama": "Tumbang Labehu"
+    },
+    {
+      "kode": "62.06.06.2003",
+      "nama": "Tumbang Kaman"
+    },
+    {
+      "kode": "62.06.06.2004",
+      "nama": "Tumbang Manggo"
+    },
+    {
+      "kode": "62.06.06.2005",
+      "nama": "Kamanto"
+    },
+    {
+      "kode": "62.06.06.2006",
+      "nama": "Kuluk Habuhus"
+    },
+    {
+      "kode": "62.06.06.2007",
+      "nama": "Tumbang Kanei"
+    },
+    {
+      "kode": "62.06.06.2008",
+      "nama": "Tumbang Taranei"
+    },
+    {
+      "kode": "62.06.06.2009",
+      "nama": "Tumbang Kawei"
+    },
+    {
+      "kode": "62.06.06.2010",
+      "nama": "Tumbang Mangara"
+    },
+    {
+      "kode": "62.06.06.2011",
+      "nama": "Tumbang Pangka"
+    },
+    {
+      "kode": "62.06.06.2012",
+      "nama": "Tumbang Atei"
+    },
+    {
+      "kode": "62.06.06.2020",
+      "nama": "Daya Manunggal"
+    },
+    {
+      "kode": "62.06.06.2021",
+      "nama": "Rantau Bangkiang"
+    },
+    {
+      "kode": "62.06.07.2001",
+      "nama": "Tumbang Mandurei"
+    },
+    {
+      "kode": "62.06.07.2002",
+      "nama": "Tumbang Paku"
+    },
+    {
+      "kode": "62.06.07.2003",
+      "nama": "Buntut Leleng"
+    },
+    {
+      "kode": "62.06.07.2004",
+      "nama": "Kuluk Leleng"
+    },
+    {
+      "kode": "62.06.07.2005",
+      "nama": "Sabaung"
+    },
+    {
+      "kode": "62.06.07.2006",
+      "nama": "Tumbang Malawan"
+    },
+    {
+      "kode": "62.06.07.2007",
+      "nama": "Tumbang Taei"
+    },
+    {
+      "kode": "62.06.07.2008",
+      "nama": "Rangan Surai"
+    },
+    {
+      "kode": "62.06.07.2009",
+      "nama": "Tumbang Hiran"
+    },
+    {
+      "kode": "62.06.07.2010",
+      "nama": "Tumbang Pahanei"
+    },
+    {
+      "kode": "62.06.07.2011",
+      "nama": "Tumbang Dakei"
+    },
+    {
+      "kode": "62.06.07.2012",
+      "nama": "Rangan Burih"
+    },
+    {
+      "kode": "62.06.07.2013",
+      "nama": "Tumbang Bemban"
+    },
+    {
+      "kode": "62.06.07.2014",
+      "nama": "Tumbang Lambi"
+    },
+    {
+      "kode": "62.06.07.2015",
+      "nama": "Rangan Tangko"
+    },
+    {
+      "kode": "62.06.07.2016",
+      "nama": "Tumbang Tundu"
+    },
+    {
+      "kode": "62.06.07.2017",
+      "nama": "Batu Panahan"
+    },
+    {
+      "kode": "62.06.07.2018",
+      "nama": "Tumbang Tabulus"
+    },
+    {
+      "kode": "62.06.08.1014",
+      "nama": "Tumbang Sanamang"
+    },
+    {
+      "kode": "62.06.08.2001",
+      "nama": "Kiham Batang"
+    },
+    {
+      "kode": "62.06.08.2002",
+      "nama": "Tumbang Kabayan"
+    },
+    {
+      "kode": "62.06.08.2003",
+      "nama": "Rangan Kawit"
+    },
+    {
+      "kode": "62.06.08.2004",
+      "nama": "Dehes Asem"
+    },
+    {
+      "kode": "62.06.08.2005",
+      "nama": "Kuluk Sapangi"
+    },
+    {
+      "kode": "62.06.08.2006",
+      "nama": "Tumbang Kuai"
+    },
+    {
+      "kode": "62.06.08.2007",
+      "nama": "Tumbang Salaman"
+    },
+    {
+      "kode": "62.06.08.2008",
+      "nama": "Rantau Puka"
+    },
+    {
+      "kode": "62.06.08.2009",
+      "nama": "Rantau Bahai"
+    },
+    {
+      "kode": "62.06.08.2010",
+      "nama": "Rangan Ranjing"
+    },
+    {
+      "kode": "62.06.08.2011",
+      "nama": "Tumbang Labaning"
+    },
+    {
+      "kode": "62.06.08.2012",
+      "nama": "Batu Bango"
+    },
+    {
+      "kode": "62.06.08.2013",
+      "nama": "Tumbang Hangei II"
+    },
+    {
+      "kode": "62.06.08.2015",
+      "nama": "Sei Nanjan"
+    },
+    {
+      "kode": "62.06.08.2016",
+      "nama": "Tumbang Jiga"
+    },
+    {
+      "kode": "62.06.08.2017",
+      "nama": "Tumbang Mangketai"
+    },
+    {
+      "kode": "62.06.08.2019",
+      "nama": "Tumbang Mahop"
+    },
+    {
+      "kode": "62.06.08.2020",
+      "nama": "Tumbang Sabetung"
+    },
+    {
+      "kode": "62.06.08.2030",
+      "nama": "Penda Tanggaring Lama"
+    },
+    {
+      "kode": "62.06.08.2031",
+      "nama": "Penda Tanggaring Baru"
+    },
+    {
+      "kode": "62.06.08.2032",
+      "nama": "Teluk Tampang"
+    },
+    {
+      "kode": "62.06.08.2033",
+      "nama": "Tumbang Manangei"
+    },
+    {
+      "kode": "62.06.09.2001",
+      "nama": "Mendawai"
+    },
+    {
+      "kode": "62.06.09.2002",
+      "nama": "Teluk Sebulu"
+    },
+    {
+      "kode": "62.06.09.2003",
+      "nama": "Kampung Melayu"
+    },
+    {
+      "kode": "62.06.09.2004",
+      "nama": "Tewang Kampung"
+    },
+    {
+      "kode": "62.06.09.2005",
+      "nama": "Perigi"
+    },
+    {
+      "kode": "62.06.09.2006",
+      "nama": "Mekar Tani"
+    },
+    {
+      "kode": "62.06.09.2007",
+      "nama": "Tumbang Bulan"
+    },
+    {
+      "kode": "62.06.10.1001",
+      "nama": "Pagatan Hilir"
+    },
+    {
+      "kode": "62.06.10.1002",
+      "nama": "Pagatan Hulu"
+    },
+    {
+      "kode": "62.06.10.2003",
+      "nama": "Kampung Keramat"
+    },
+    {
+      "kode": "62.06.10.2004",
+      "nama": "Kampung Tengah"
+    },
+    {
+      "kode": "62.06.10.2005",
+      "nama": "Jaya Makmur"
+    },
+    {
+      "kode": "62.06.10.2006",
+      "nama": "Subur Indah"
+    },
+    {
+      "kode": "62.06.10.2007",
+      "nama": "Kampung Baru"
+    },
+    {
+      "kode": "62.06.10.2008",
+      "nama": "Bangun Jaya"
+    },
+    {
+      "kode": "62.06.10.2009",
+      "nama": "Setia Mulia"
+    },
+    {
+      "kode": "62.06.10.2010",
+      "nama": "Singam Raya"
+    },
+    {
+      "kode": "62.06.10.2011",
+      "nama": "Sebangau Jaya"
+    },
+    {
+      "kode": "62.06.10.2012",
+      "nama": "Sungai Kaki"
+    },
+    {
+      "kode": "62.06.10.2013",
+      "nama": "Selat Baning"
+    },
+    {
+      "kode": "62.06.10.2014",
+      "nama": "Makmur Utama"
+    },
+    {
+      "kode": "62.06.10.2015",
+      "nama": "Bumi Subur"
+    },
+    {
+      "kode": "62.06.10.2016",
+      "nama": "Bakung Raya"
+    },
+    {
+      "kode": "62.06.11.2001",
+      "nama": "Talingke"
+    },
+    {
+      "kode": "62.06.11.2002",
+      "nama": "Hiyang Bana"
+    },
+    {
+      "kode": "62.06.11.2003",
+      "nama": "Petak Bahandang"
+    },
+    {
+      "kode": "62.06.11.2004",
+      "nama": "Handiwung"
+    },
+    {
+      "kode": "62.06.11.2005",
+      "nama": "Tumbang Panggo"
+    },
+    {
+      "kode": "62.06.11.2006",
+      "nama": "Tewang Tampang"
+    },
+    {
+      "kode": "62.06.11.2007",
+      "nama": "Luwuk Kanan"
+    },
+    {
+      "kode": "62.06.11.2008",
+      "nama": "Luwuk Kiri"
+    },
+    {
+      "kode": "62.06.12.2001",
+      "nama": "Tumbang Baraoi"
+    },
+    {
+      "kode": "62.06.12.2002",
+      "nama": "Tumbang Jala"
+    },
+    {
+      "kode": "62.06.12.2003",
+      "nama": "Batu Badak"
+    },
+    {
+      "kode": "62.06.12.2004",
+      "nama": "Batu Tukan"
+    },
+    {
+      "kode": "62.06.12.2005",
+      "nama": "Tumbang Tangoi"
+    },
+    {
+      "kode": "62.06.12.2006",
+      "nama": "Nusa Kutau"
+    },
+    {
+      "kode": "62.06.12.2007",
+      "nama": "Tumbang Habangoi"
+    },
+    {
+      "kode": "62.06.13.2001",
+      "nama": "Tumbang Gaei"
+    },
+    {
+      "kode": "62.06.13.2002",
+      "nama": "Tumbang Kataei"
+    },
+    {
+      "kode": "62.06.13.2003",
+      "nama": "Tumbang Karuei"
+    },
+    {
+      "kode": "62.06.13.2004",
+      "nama": "Tumbang Dahuei"
+    },
+    {
+      "kode": "62.06.13.2005",
+      "nama": "Rantau Pandan"
+    },
+    {
+      "kode": "62.06.13.2006",
+      "nama": "Rangan Rondan"
+    },
+    {
+      "kode": "62.06.13.2007",
+      "nama": "Rangan Bahekang"
+    },
+    {
+      "kode": "62.06.13.2008",
+      "nama": "Tumbang Kajamei"
+    },
+    {
+      "kode": "62.06.13.2009",
+      "nama": "Tumbang Kaburai"
+    },
+    {
+      "kode": "62.06.13.2010",
+      "nama": "Tanjung Batik"
+    },
+    {
+      "kode": "62.06.13.2011",
+      "nama": "Penda Nange"
+    },
+    {
+      "kode": "62.07.01.1001",
+      "nama": "Kuala Pembuang I"
+    },
+    {
+      "kode": "62.07.01.1002",
+      "nama": "Kuala Pembuang II"
+    },
+    {
+      "kode": "62.07.01.2005",
+      "nama": "Pematang Limau"
+    },
+    {
+      "kode": "62.07.01.2006",
+      "nama": "Sungai Perlu"
+    },
+    {
+      "kode": "62.07.01.2007",
+      "nama": "Tanjung Rangas"
+    },
+    {
+      "kode": "62.07.01.2008",
+      "nama": "Muara Dua"
+    },
+    {
+      "kode": "62.07.01.2009",
+      "nama": "Jahitan"
+    },
+    {
+      "kode": "62.07.01.2010",
+      "nama": "Baung"
+    },
+    {
+      "kode": "62.07.01.2015",
+      "nama": "Persil Raya"
+    },
+    {
+      "kode": "62.07.01.2016",
+      "nama": "Sungai Undang"
+    },
+    {
+      "kode": "62.07.02.1016",
+      "nama": "Rantau Pulut"
+    },
+    {
+      "kode": "62.07.02.2008",
+      "nama": "Gantung Pangayuh"
+    },
+    {
+      "kode": "62.07.02.2009",
+      "nama": "Teluk Bayur"
+    },
+    {
+      "kode": "62.07.02.2010",
+      "nama": "Suka Mandang"
+    },
+    {
+      "kode": "62.07.02.2011",
+      "nama": "Ayawan"
+    },
+    {
+      "kode": "62.07.02.2012",
+      "nama": "Mugi Panyuhu"
+    },
+    {
+      "kode": "62.07.02.2013",
+      "nama": "Bukit Buluh"
+    },
+    {
+      "kode": "62.07.02.2014",
+      "nama": "Tumbang Bai"
+    },
+    {
+      "kode": "62.07.02.2015",
+      "nama": "Durian Tunggal"
+    },
+    {
+      "kode": "62.07.02.2017",
+      "nama": "Pangke"
+    },
+    {
+      "kode": "62.07.02.2018",
+      "nama": "Panyumpa"
+    },
+    {
+      "kode": "62.07.02.2022",
+      "nama": "Sukorejo"
+    },
+    {
+      "kode": "62.07.02.2023",
+      "nama": "Bumi Jaya"
+    },
+    {
+      "kode": "62.07.02.2024",
+      "nama": "Suka Jaya"
+    },
+    {
+      "kode": "62.07.02.2026",
+      "nama": "Panca Jaya"
+    },
+    {
+      "kode": "62.07.02.2029",
+      "nama": "Tangga Batu"
+    },
+    {
+      "kode": "62.07.02.2030",
+      "nama": "Ringin Agung"
+    },
+    {
+      "kode": "62.07.02.2031",
+      "nama": "Batu Agung"
+    },
+    {
+      "kode": "62.07.02.2032",
+      "nama": "Suka Makmur"
+    },
+    {
+      "kode": "62.07.02.2033",
+      "nama": "Suka Maju"
+    },
+    {
+      "kode": "62.07.03.2001",
+      "nama": "Telaga Pulang"
+    },
+    {
+      "kode": "62.07.03.2002",
+      "nama": "Cempaka Baru"
+    },
+    {
+      "kode": "62.07.03.2003",
+      "nama": "Palingkau"
+    },
+    {
+      "kode": "62.07.03.2004",
+      "nama": "Ulak Batu"
+    },
+    {
+      "kode": "62.07.03.2005",
+      "nama": "Paren"
+    },
+    {
+      "kode": "62.07.03.2006",
+      "nama": "Banua Usang"
+    },
+    {
+      "kode": "62.07.03.2013",
+      "nama": "Sembuluh I"
+    },
+    {
+      "kode": "62.07.03.2014",
+      "nama": "Sembuluh II"
+    },
+    {
+      "kode": "62.07.04.2001",
+      "nama": "Tanjung Hanau"
+    },
+    {
+      "kode": "62.07.04.2002",
+      "nama": "Parang Batang"
+    },
+    {
+      "kode": "62.07.04.2003",
+      "nama": "Bahaur"
+    },
+    {
+      "kode": "62.07.04.2004",
+      "nama": "Pembuang Hulu I"
+    },
+    {
+      "kode": "62.07.04.2005",
+      "nama": "Pembuang Hulu II"
+    },
+    {
+      "kode": "62.07.04.2006",
+      "nama": "Derangga"
+    },
+    {
+      "kode": "62.07.04.2011",
+      "nama": "Paring Raya"
+    },
+    {
+      "kode": "62.07.05.2020",
+      "nama": "Tumbang Bahan"
+    },
+    {
+      "kode": "62.07.05.2021",
+      "nama": "Tumbang Kalang"
+    },
+    {
+      "kode": "62.07.05.2022",
+      "nama": "Tusuk Belawan"
+    },
+    {
+      "kode": "62.07.05.2023",
+      "nama": "Marandang"
+    },
+    {
+      "kode": "62.07.05.2024",
+      "nama": "Tumbang Suei"
+    },
+    {
+      "kode": "62.07.05.2025",
+      "nama": "Tumbang Manjul"
+    },
+    {
+      "kode": "62.07.05.2026",
+      "nama": "Mojang Baru"
+    },
+    {
+      "kode": "62.07.05.2027",
+      "nama": "Rantau Panjang"
+    },
+    {
+      "kode": "62.07.05.2028",
+      "nama": "Mongoh Juoi"
+    },
+    {
+      "kode": "62.07.05.2030",
+      "nama": "Sepundu Hantu"
+    },
+    {
+      "kode": "62.07.05.2031",
+      "nama": "Tumbang Kubang"
+    },
+    {
+      "kode": "62.07.05.2032",
+      "nama": "Tumbang Laku"
+    },
+    {
+      "kode": "62.07.05.2033",
+      "nama": "Tanjung Paku"
+    },
+    {
+      "kode": "62.07.05.2034",
+      "nama": "Buntut Sapau"
+    },
+    {
+      "kode": "62.07.05.2035",
+      "nama": "Tumbang Taberau"
+    },
+    {
+      "kode": "62.07.05.2036",
+      "nama": "Riam Batang"
+    },
+    {
+      "kode": "62.07.05.2037",
+      "nama": "Tumbang Sepan"
+    },
+    {
+      "kode": "62.07.05.2038",
+      "nama": "Tumbang Setawai"
+    },
+    {
+      "kode": "62.07.05.2039",
+      "nama": "Tumbang Kasai"
+    },
+    {
+      "kode": "62.07.05.2040",
+      "nama": "Tumbang Darap"
+    },
+    {
+      "kode": "62.07.06.2001",
+      "nama": "Mekar Indah"
+    },
+    {
+      "kode": "62.07.06.2002",
+      "nama": "Halimaung Jaya"
+    },
+    {
+      "kode": "62.07.06.2003",
+      "nama": "Bangun Harja"
+    },
+    {
+      "kode": "62.07.06.2004",
+      "nama": "Kartika Bhakti"
+    },
+    {
+      "kode": "62.07.06.2005",
+      "nama": "Pematang Panjang"
+    },
+    {
+      "kode": "62.07.06.2006",
+      "nama": "Sungai Bakau"
+    },
+    {
+      "kode": "62.07.07.2001",
+      "nama": "Terawan"
+    },
+    {
+      "kode": "62.07.07.2002",
+      "nama": "Selunuk"
+    },
+    {
+      "kode": "62.07.07.2003",
+      "nama": "Lanpasa"
+    },
+    {
+      "kode": "62.07.07.2005",
+      "nama": "Bangkal"
+    },
+    {
+      "kode": "62.07.07.2006",
+      "nama": "Tabiku"
+    },
+    {
+      "kode": "62.07.08.2001",
+      "nama": "Asam Baru"
+    },
+    {
+      "kode": "62.07.08.2002",
+      "nama": "Tanjung Hara"
+    },
+    {
+      "kode": "62.07.08.2003",
+      "nama": "Tanjung Paring"
+    },
+    {
+      "kode": "62.07.08.2004",
+      "nama": "Tanjung Rangas II"
+    },
+    {
+      "kode": "62.07.08.2005",
+      "nama": "Panimba Raya"
+    },
+    {
+      "kode": "62.07.08.2006",
+      "nama": "Rungau Raya"
+    },
+    {
+      "kode": "62.07.09.2001",
+      "nama": "Sebabi"
+    },
+    {
+      "kode": "62.07.09.2002",
+      "nama": "Sandul"
+    },
+    {
+      "kode": "62.07.09.2003",
+      "nama": "Kalang"
+    },
+    {
+      "kode": "62.07.09.2004",
+      "nama": "Derawa"
+    },
+    {
+      "kode": "62.07.09.2005",
+      "nama": "Wana Tirta"
+    },
+    {
+      "kode": "62.07.09.2006",
+      "nama": "Suka Mulya"
+    },
+    {
+      "kode": "62.07.09.2007",
+      "nama": "Durian Kait"
+    },
+    {
+      "kode": "62.07.09.2008",
+      "nama": "Sahabu"
+    },
+    {
+      "kode": "62.07.09.2009",
+      "nama": "Batu Menangis"
+    },
+    {
+      "kode": "62.07.10.2001",
+      "nama": "Tumbang Magin"
+    },
+    {
+      "kode": "62.07.10.2002",
+      "nama": "Tumbang Setoli"
+    },
+    {
+      "kode": "62.07.10.2003",
+      "nama": "Tumbang Hentas"
+    },
+    {
+      "kode": "62.07.10.2004",
+      "nama": "Tumbang Langkai"
+    },
+    {
+      "kode": "62.07.10.2005",
+      "nama": "Tumbang Salau"
+    },
+    {
+      "kode": "62.07.10.2006",
+      "nama": "Tumbang Gugup"
+    },
+    {
+      "kode": "62.07.10.2007",
+      "nama": "Rangkang Munduk"
+    },
+    {
+      "kode": "62.07.10.2008",
+      "nama": "Tanjung Tukal"
+    },
+    {
+      "kode": "62.07.10.2009",
+      "nama": "Rantau Betung"
+    },
+    {
+      "kode": "62.08.01.1003",
+      "nama": "Mendawai"
+    },
+    {
+      "kode": "62.08.01.1004",
+      "nama": "Padang"
+    },
+    {
+      "kode": "62.08.01.2001",
+      "nama": "Natai Sedawak"
+    },
+    {
+      "kode": "62.08.01.2002",
+      "nama": "Pudu"
+    },
+    {
+      "kode": "62.08.01.2005",
+      "nama": "Kartamulia"
+    },
+    {
+      "kode": "62.08.01.2006",
+      "nama": "Sukaraja"
+    },
+    {
+      "kode": "62.08.01.2007",
+      "nama": "Pangkalan Muntai"
+    },
+    {
+      "kode": "62.08.01.2008",
+      "nama": "Petarikan"
+    },
+    {
+      "kode": "62.08.02.1001",
+      "nama": "Kuala Jelai"
+    },
+    {
+      "kode": "62.08.02.2002",
+      "nama": "Pulau Nibung"
+    },
+    {
+      "kode": "62.08.02.2003",
+      "nama": "Sungai Baru"
+    },
+    {
+      "kode": "62.08.02.2004",
+      "nama": "Sungai Bundung"
+    },
+    {
+      "kode": "62.08.02.2005",
+      "nama": "Sungai Raja"
+    },
+    {
+      "kode": "62.08.03.2001",
+      "nama": "Jihing"
+    },
+    {
+      "kode": "62.08.03.2002",
+      "nama": "Air Dua"
+    },
+    {
+      "kode": "62.08.03.2005",
+      "nama": "Lupu Peruca"
+    },
+    {
+      "kode": "62.08.03.2006",
+      "nama": "Balai Riam"
+    },
+    {
+      "kode": "62.08.03.2007",
+      "nama": "Pempaning"
+    },
+    {
+      "kode": "62.08.03.2011",
+      "nama": "Sekuningan Baru"
+    },
+    {
+      "kode": "62.08.03.2012",
+      "nama": "Bangun Jaya"
+    },
+    {
+      "kode": "62.08.03.2013",
+      "nama": "Bukit Sungkai"
+    },
+    {
+      "kode": "62.08.04.2001",
+      "nama": "Sungai Damar"
+    },
+    {
+      "kode": "62.08.04.2002",
+      "nama": "Sungai Tabuk"
+    },
+    {
+      "kode": "62.08.04.2003",
+      "nama": "Sungai Cabang Barat"
+    },
+    {
+      "kode": "62.08.04.2004",
+      "nama": "Sungai Pasir"
+    },
+    {
+      "kode": "62.08.05.2001",
+      "nama": "Kenawan"
+    },
+    {
+      "kode": "62.08.05.2002",
+      "nama": "Laman Baru"
+    },
+    {
+      "kode": "62.08.05.2003",
+      "nama": "Ajang"
+    },
+    {
+      "kode": "62.08.05.2004",
+      "nama": "Semantun"
+    },
+    {
+      "kode": "62.08.05.2005",
+      "nama": "Nibung Terjun"
+    },
+    {
+      "kode": "62.08.05.2006",
+      "nama": "Natai Kondang"
+    },
+    {
+      "kode": "62.08.05.2007",
+      "nama": "Sembikuan"
+    },
+    {
+      "kode": "62.09.01.1012",
+      "nama": "Tapin Bini"
+    },
+    {
+      "kode": "62.09.01.2001",
+      "nama": "Sungai Tuat"
+    },
+    {
+      "kode": "62.09.01.2002",
+      "nama": "Tanjung Beringin"
+    },
+    {
+      "kode": "62.09.01.2003",
+      "nama": "Cuhai"
+    },
+    {
+      "kode": "62.09.01.2004",
+      "nama": "Kawa"
+    },
+    {
+      "kode": "62.09.01.2005",
+      "nama": "Karang Taba"
+    },
+    {
+      "kode": "62.09.01.2006",
+      "nama": "Penopa"
+    },
+    {
+      "kode": "62.09.01.2007",
+      "nama": "Suja"
+    },
+    {
+      "kode": "62.09.01.2008",
+      "nama": "Sekoban"
+    },
+    {
+      "kode": "62.09.01.2009",
+      "nama": "Bakonsu"
+    },
+    {
+      "kode": "62.09.01.2022",
+      "nama": "Samu Jaya"
+    },
+    {
+      "kode": "62.09.02.1017",
+      "nama": "Kudangan"
+    },
+    {
+      "kode": "62.09.02.2004",
+      "nama": "Riam Panahan"
+    },
+    {
+      "kode": "62.09.02.2005",
+      "nama": "Sepoyu"
+    },
+    {
+      "kode": "62.09.02.2010",
+      "nama": "Nyalang"
+    },
+    {
+      "kode": "62.09.02.2011",
+      "nama": "Riam Tinggi"
+    },
+    {
+      "kode": "62.09.02.2012",
+      "nama": "Landau Kantu"
+    },
+    {
+      "kode": "62.09.02.2013",
+      "nama": "Lopus"
+    },
+    {
+      "kode": "62.09.02.2014",
+      "nama": "Kubung"
+    },
+    {
+      "kode": "62.09.02.2015",
+      "nama": "Sekombulan"
+    },
+    {
+      "kode": "62.09.02.2016",
+      "nama": "Penyombaan"
+    },
+    {
+      "kode": "62.09.02.2020",
+      "nama": "Hulu Jojabo"
+    },
+    {
+      "kode": "62.09.03.1005",
+      "nama": "Nanga Bulik"
+    },
+    {
+      "kode": "62.09.03.2001",
+      "nama": "Sungai Mentawa"
+    },
+    {
+      "kode": "62.09.03.2002",
+      "nama": "Guci"
+    },
+    {
+      "kode": "62.09.03.2003",
+      "nama": "Batu Kotam"
+    },
+    {
+      "kode": "62.09.03.2004",
+      "nama": "Kujan"
+    },
+    {
+      "kode": "62.09.03.2006",
+      "nama": "Bunut"
+    },
+    {
+      "kode": "62.09.03.2007",
+      "nama": "Beruta"
+    },
+    {
+      "kode": "62.09.03.2008",
+      "nama": "Tamiang"
+    },
+    {
+      "kode": "62.09.03.2031",
+      "nama": "Bumi Agung"
+    },
+    {
+      "kode": "62.09.03.2032",
+      "nama": "Sumber Mulya"
+    },
+    {
+      "kode": "62.09.03.2036",
+      "nama": "Bukit Indah"
+    },
+    {
+      "kode": "62.09.03.2037",
+      "nama": "Arga Mulya"
+    },
+    {
+      "kode": "62.09.03.2043",
+      "nama": "Perigi Raya"
+    },
+    {
+      "kode": "62.09.03.2044",
+      "nama": "Nanga Pamalontian"
+    },
+    {
+      "kode": "62.09.04.2001",
+      "nama": "Nanga Palikodan"
+    },
+    {
+      "kode": "62.09.04.2002",
+      "nama": "Sungkup"
+    },
+    {
+      "kode": "62.09.04.2003",
+      "nama": "Nuangan"
+    },
+    {
+      "kode": "62.09.04.2004",
+      "nama": "Nanga Koring"
+    },
+    {
+      "kode": "62.09.04.2005",
+      "nama": "Toka"
+    },
+    {
+      "kode": "62.09.04.2006",
+      "nama": "Sepondam"
+    },
+    {
+      "kode": "62.09.04.2007",
+      "nama": "Merambang"
+    },
+    {
+      "kode": "62.09.04.2008",
+      "nama": "Pedongatan"
+    },
+    {
+      "kode": "62.09.04.2009",
+      "nama": "Batu Tunggal"
+    },
+    {
+      "kode": "62.09.04.2010",
+      "nama": "Nanga Kemujan"
+    },
+    {
+      "kode": "62.09.04.2011",
+      "nama": "Bukit Jaya"
+    },
+    {
+      "kode": "62.09.04.2012",
+      "nama": "Suka Maju"
+    },
+    {
+      "kode": "62.09.05.2001",
+      "nama": "Melata"
+    },
+    {
+      "kode": "62.09.05.2002",
+      "nama": "Nanuah"
+    },
+    {
+      "kode": "62.09.05.2003",
+      "nama": "Batu Ampar"
+    },
+    {
+      "kode": "62.09.05.2004",
+      "nama": "Lubuk Hiju"
+    },
+    {
+      "kode": "62.09.05.2005",
+      "nama": "Topalan"
+    },
+    {
+      "kode": "62.09.05.2006",
+      "nama": "Bukit Makmur"
+    },
+    {
+      "kode": "62.09.05.2007",
+      "nama": "Modang Mas"
+    },
+    {
+      "kode": "62.09.05.2008",
+      "nama": "Bukit Raya"
+    },
+    {
+      "kode": "62.09.05.2009",
+      "nama": "Mukti Manunggal"
+    },
+    {
+      "kode": "62.09.05.2010",
+      "nama": "Sumber Jaya"
+    },
+    {
+      "kode": "62.09.05.2011",
+      "nama": "Bukit Harum"
+    },
+    {
+      "kode": "62.09.06.2001",
+      "nama": "Bina Bhakti"
+    },
+    {
+      "kode": "62.09.06.2002",
+      "nama": "Wonorejo"
+    },
+    {
+      "kode": "62.09.06.2003",
+      "nama": "Mekar Mulya"
+    },
+    {
+      "kode": "62.09.06.2004",
+      "nama": "Jangkar Prima"
+    },
+    {
+      "kode": "62.09.06.2005",
+      "nama": "Purwareja"
+    },
+    {
+      "kode": "62.09.06.2006",
+      "nama": "Tri Tunggal"
+    },
+    {
+      "kode": "62.09.06.2007",
+      "nama": "Batu Hambawang"
+    },
+    {
+      "kode": "62.09.06.2008",
+      "nama": "Rimba Jaya"
+    },
+    {
+      "kode": "62.09.07.2001",
+      "nama": "Nanga Belantikan"
+    },
+    {
+      "kode": "62.09.07.2002",
+      "nama": "Sungai Buluh"
+    },
+    {
+      "kode": "62.09.07.2003",
+      "nama": "Tangga Batu"
+    },
+    {
+      "kode": "62.09.07.2004",
+      "nama": "Belibi"
+    },
+    {
+      "kode": "62.09.07.2005",
+      "nama": "Bayat"
+    },
+    {
+      "kode": "62.09.07.2006",
+      "nama": "Karang Besi"
+    },
+    {
+      "kode": "62.09.07.2007",
+      "nama": "Benuatan"
+    },
+    {
+      "kode": "62.09.07.2008",
+      "nama": "Kahingai"
+    },
+    {
+      "kode": "62.09.07.2009",
+      "nama": "Nanga Matu"
+    },
+    {
+      "kode": "62.09.07.2010",
+      "nama": "Bintang Mangalih"
+    },
+    {
+      "kode": "62.09.07.2011",
+      "nama": "Petarikan"
+    },
+    {
+      "kode": "62.09.07.2012",
+      "nama": "Sumber Cahaya"
+    },
+    {
+      "kode": "62.09.08.2001",
+      "nama": "Batu Tambun"
+    },
+    {
+      "kode": "62.09.08.2002",
+      "nama": "Kinipan"
+    },
+    {
+      "kode": "62.09.08.2003",
+      "nama": "Ginih"
+    },
+    {
+      "kode": "62.09.08.2004",
+      "nama": "Benakitan"
+    },
+    {
+      "kode": "62.09.08.2005",
+      "nama": "Liku"
+    },
+    {
+      "kode": "62.09.08.2006",
+      "nama": "Mengkalang"
+    },
+    {
+      "kode": "62.09.08.2007",
+      "nama": "Karang Mas"
+    },
+    {
+      "kode": "62.09.08.2008",
+      "nama": "Kina"
+    },
+    {
+      "kode": "62.09.08.2009",
+      "nama": "Jamuat"
+    },
+    {
+      "kode": "62.10.01.1001",
+      "nama": "Sepang Simin"
+    },
+    {
+      "kode": "62.10.01.2002",
+      "nama": "Sepang Kota"
+    },
+    {
+      "kode": "62.10.01.2003",
+      "nama": "Tewai Baru"
+    },
+    {
+      "kode": "62.10.01.2004",
+      "nama": "Tanjung Karitak"
+    },
+    {
+      "kode": "62.10.01.2011",
+      "nama": "Pamatang Limau"
+    },
+    {
+      "kode": "62.10.01.2012",
+      "nama": "Tampelas"
+    },
+    {
+      "kode": "62.10.01.2014",
+      "nama": "Rabauh"
+    },
+    {
+      "kode": "62.10.02.1001",
+      "nama": "Tampang Tumbang Anjir"
+    },
+    {
+      "kode": "62.10.02.1012",
+      "nama": "Kurun"
+    },
+    {
+      "kode": "62.10.02.2002",
+      "nama": "Petak Bahandang"
+    },
+    {
+      "kode": "62.10.02.2003",
+      "nama": "Tanjung Riu"
+    },
+    {
+      "kode": "62.10.02.2004",
+      "nama": "Teluk Nyatu"
+    },
+    {
+      "kode": "62.10.02.2005",
+      "nama": "Tumbang Lampahung"
+    },
+    {
+      "kode": "62.10.02.2006",
+      "nama": "Tewang Pajangan"
+    },
+    {
+      "kode": "62.10.02.2007",
+      "nama": "Tumbang Tariak"
+    },
+    {
+      "kode": "62.10.02.2008",
+      "nama": "Tumbang Miwan"
+    },
+    {
+      "kode": "62.10.02.2009",
+      "nama": "Hurung Bunut"
+    },
+    {
+      "kode": "62.10.02.2010",
+      "nama": "Tumbang Hakau"
+    },
+    {
+      "kode": "62.10.02.2011",
+      "nama": "Pilang Munduk"
+    },
+    {
+      "kode": "62.10.02.2013",
+      "nama": "Tumbang Manyangan"
+    },
+    {
+      "kode": "62.10.02.2014",
+      "nama": "Penda Pilang"
+    },
+    {
+      "kode": "62.10.02.2015",
+      "nama": "Tumbang Tambirah"
+    },
+    {
+      "kode": "62.10.03.1005",
+      "nama": "Tewah"
+    },
+    {
+      "kode": "62.10.03.2001",
+      "nama": "Sare Rangan"
+    },
+    {
+      "kode": "62.10.03.2002",
+      "nama": "Tumbang Pajangei"
+    },
+    {
+      "kode": "62.10.03.2003",
+      "nama": "Kasintu"
+    },
+    {
+      "kode": "62.10.03.2004",
+      "nama": "Batu Nyiwuh"
+    },
+    {
+      "kode": "62.10.03.2006",
+      "nama": "Tumbang Habaon"
+    },
+    {
+      "kode": "62.10.03.2007",
+      "nama": "Sei Riang"
+    },
+    {
+      "kode": "62.10.03.2008",
+      "nama": "Sandung Tambun"
+    },
+    {
+      "kode": "62.10.03.2009",
+      "nama": "Tanjung Untung"
+    },
+    {
+      "kode": "62.10.03.2010",
+      "nama": "Upon Batu"
+    },
+    {
+      "kode": "62.10.03.2011",
+      "nama": "Sumur Mas"
+    },
+    {
+      "kode": "62.10.03.2012",
+      "nama": "Batu Nyapau"
+    },
+    {
+      "kode": "62.10.03.2013",
+      "nama": "Taja Urap"
+    },
+    {
+      "kode": "62.10.03.2014",
+      "nama": "Teluk Lawah"
+    },
+    {
+      "kode": "62.10.03.2015",
+      "nama": "Karason Raya"
+    },
+    {
+      "kode": "62.10.03.2016",
+      "nama": "Rangan Mihing"
+    },
+    {
+      "kode": "62.10.04.1001",
+      "nama": "Tumbang Miri"
+    },
+    {
+      "kode": "62.10.04.2002",
+      "nama": "Batu Tangkoi"
+    },
+    {
+      "kode": "62.10.04.2005",
+      "nama": "Penda Rangas"
+    },
+    {
+      "kode": "62.10.04.2006",
+      "nama": "Tumbang Sian"
+    },
+    {
+      "kode": "62.10.04.2008",
+      "nama": "Tumbang Pasangon"
+    },
+    {
+      "kode": "62.10.04.2012",
+      "nama": "Tumbang Korik"
+    },
+    {
+      "kode": "62.10.04.2014",
+      "nama": "Tumbang Ponyoi"
+    },
+    {
+      "kode": "62.10.04.2019",
+      "nama": "Dandang"
+    },
+    {
+      "kode": "62.10.04.2020",
+      "nama": "Tumbang Hamputung"
+    },
+    {
+      "kode": "62.10.04.2021",
+      "nama": "Tumbang Tajungan"
+    },
+    {
+      "kode": "62.10.04.2028",
+      "nama": "Tumbang Takaoi"
+    },
+    {
+      "kode": "62.10.04.2029",
+      "nama": "Teluk Kanduri"
+    },
+    {
+      "kode": "62.10.05.1021",
+      "nama": "Jakatan Raya"
+    },
+    {
+      "kode": "62.10.05.2001",
+      "nama": "Tumbang Jutuh"
+    },
+    {
+      "kode": "62.10.05.2002",
+      "nama": "Tumbang Baringei"
+    },
+    {
+      "kode": "62.10.05.2009",
+      "nama": "Tumbang Malahoi"
+    },
+    {
+      "kode": "62.10.05.2014",
+      "nama": "Tumbang Bunut"
+    },
+    {
+      "kode": "62.10.05.2015",
+      "nama": "Tumbang Kajuei"
+    },
+    {
+      "kode": "62.10.05.2016",
+      "nama": "Luwuk Kantor"
+    },
+    {
+      "kode": "62.10.05.2017",
+      "nama": "Luwuk Langkuas"
+    },
+    {
+      "kode": "62.10.05.2018",
+      "nama": "Talangkah"
+    },
+    {
+      "kode": "62.10.05.2019",
+      "nama": "Parempei"
+    },
+    {
+      "kode": "62.10.05.2020",
+      "nama": "Linau"
+    },
+    {
+      "kode": "62.10.05.2022",
+      "nama": "Bereng Baru"
+    },
+    {
+      "kode": "62.10.05.2023",
+      "nama": "Bereng Malaka"
+    },
+    {
+      "kode": "62.10.05.2027",
+      "nama": "Karya Bhakti"
+    },
+    {
+      "kode": "62.10.06.1001",
+      "nama": "Tumbang Talaken"
+    },
+    {
+      "kode": "62.10.06.2002",
+      "nama": "Tumbang Sepan"
+    },
+    {
+      "kode": "62.10.06.2003",
+      "nama": "Tangki Dahuyan"
+    },
+    {
+      "kode": "62.10.06.2004",
+      "nama": "Bereng Balawan"
+    },
+    {
+      "kode": "62.10.06.2005",
+      "nama": "Bereng Jun"
+    },
+    {
+      "kode": "62.10.06.2006",
+      "nama": "Takaras"
+    },
+    {
+      "kode": "62.10.06.2012",
+      "nama": "Belawan Mulia"
+    },
+    {
+      "kode": "62.10.06.2013",
+      "nama": "Taringen"
+    },
+    {
+      "kode": "62.10.06.2014",
+      "nama": "Bangun Sari"
+    },
+    {
+      "kode": "62.10.06.2015",
+      "nama": "Fajar Harapan"
+    },
+    {
+      "kode": "62.10.06.2017",
+      "nama": "Gohong"
+    },
+    {
+      "kode": "62.10.06.2018",
+      "nama": "Tumbang Jalemu"
+    },
+    {
+      "kode": "62.10.07.1005",
+      "nama": "Kampuri"
+    },
+    {
+      "kode": "62.10.07.2001",
+      "nama": "Tuyun"
+    },
+    {
+      "kode": "62.10.07.2002",
+      "nama": "Tumbang Empas"
+    },
+    {
+      "kode": "62.10.07.2003",
+      "nama": "Rangan Tate"
+    },
+    {
+      "kode": "62.10.07.2004",
+      "nama": "Dahian Tambuk"
+    },
+    {
+      "kode": "62.10.07.2006",
+      "nama": "Tumbang Danau"
+    },
+    {
+      "kode": "62.10.08.1008",
+      "nama": "Tumbang Marikoi"
+    },
+    {
+      "kode": "62.10.08.2001",
+      "nama": "Lawang Kanji"
+    },
+    {
+      "kode": "62.10.08.2002",
+      "nama": "Tumbang Mahuroi"
+    },
+    {
+      "kode": "62.10.08.2003",
+      "nama": "Karetau Rambangun"
+    },
+    {
+      "kode": "62.10.08.2004",
+      "nama": "Karetau Sarian"
+    },
+    {
+      "kode": "62.10.08.2005",
+      "nama": "Tumbang Posu"
+    },
+    {
+      "kode": "62.10.08.2006",
+      "nama": "Tumbang Maraya"
+    },
+    {
+      "kode": "62.10.08.2007",
+      "nama": "Tumbang Anoi"
+    },
+    {
+      "kode": "62.10.09.1003",
+      "nama": "Tumbang Napoi"
+    },
+    {
+      "kode": "62.10.09.2001",
+      "nama": "Tumbang Siruk"
+    },
+    {
+      "kode": "62.10.09.2002",
+      "nama": "Mangkuhung"
+    },
+    {
+      "kode": "62.10.09.2004",
+      "nama": "Tumbang Masukih"
+    },
+    {
+      "kode": "62.10.09.2005",
+      "nama": "Rangan Hiran"
+    },
+    {
+      "kode": "62.10.09.2006",
+      "nama": "Harowu"
+    },
+    {
+      "kode": "62.10.09.2007",
+      "nama": "Tumbang Manyoi"
+    },
+    {
+      "kode": "62.10.09.2008",
+      "nama": "Tumbang Lapan"
+    },
+    {
+      "kode": "62.10.09.2009",
+      "nama": "Buntoi"
+    },
+    {
+      "kode": "62.10.09.2010",
+      "nama": "Tumbang Koroi"
+    },
+    {
+      "kode": "62.10.09.2011",
+      "nama": "Tumbang Hatung"
+    },
+    {
+      "kode": "62.10.10.1004",
+      "nama": "Tumbang Rahuyan"
+    },
+    {
+      "kode": "62.10.10.2001",
+      "nama": "Jangkit"
+    },
+    {
+      "kode": "62.10.10.2002",
+      "nama": "Tumbang Lapan"
+    },
+    {
+      "kode": "62.10.10.2003",
+      "nama": "Batu Puter"
+    },
+    {
+      "kode": "62.10.10.2005",
+      "nama": "Sei Antai"
+    },
+    {
+      "kode": "62.10.10.2006",
+      "nama": "Hantapang"
+    },
+    {
+      "kode": "62.10.10.2007",
+      "nama": "Sangal"
+    },
+    {
+      "kode": "62.10.10.2008",
+      "nama": "Tumbang Tuwe Hantapang"
+    },
+    {
+      "kode": "62.10.10.2012",
+      "nama": "Tumbang Mujai"
+    },
+    {
+      "kode": "62.10.11.1005",
+      "nama": "Tehang"
+    },
+    {
+      "kode": "62.10.11.2002",
+      "nama": "Tumbang Samui"
+    },
+    {
+      "kode": "62.10.11.2003",
+      "nama": "Tumbang Oroi"
+    },
+    {
+      "kode": "62.10.11.2004",
+      "nama": "Luwuk Tukau"
+    },
+    {
+      "kode": "62.10.11.2006",
+      "nama": "Putat Durei"
+    },
+    {
+      "kode": "62.10.11.2007",
+      "nama": "Tumbang Mantuhe"
+    },
+    {
+      "kode": "62.10.12.1006",
+      "nama": "Rabambang"
+    },
+    {
+      "kode": "62.10.12.2001",
+      "nama": "Hujung Pata"
+    },
+    {
+      "kode": "62.10.12.2002",
+      "nama": "Tumbang Jalemu Kajuei"
+    },
+    {
+      "kode": "62.10.12.2003",
+      "nama": "Jalemu Raya"
+    },
+    {
+      "kode": "62.10.12.2004",
+      "nama": "Jalemu Masulan"
+    },
+    {
+      "kode": "62.10.12.2005",
+      "nama": "Mangkawuk"
+    },
+    {
+      "kode": "62.10.12.2007",
+      "nama": "Tajah Antang Raya"
+    },
+    {
+      "kode": "62.10.12.2008",
+      "nama": "Tumbang Kuayan"
+    },
+    {
+      "kode": "62.10.12.2009",
+      "nama": "Tumbang Langgah"
+    },
+    {
+      "kode": "62.10.12.2010",
+      "nama": "Tusang Raya"
+    },
+    {
+      "kode": "62.10.12.2011",
+      "nama": "Tumbang Bahanei"
+    },
+    {
+      "kode": "62.11.01.2001",
+      "nama": "Dandang"
+    },
+    {
+      "kode": "62.11.01.2002",
+      "nama": "Talio"
+    },
+    {
+      "kode": "62.11.01.2003",
+      "nama": "Pangkoh Hilir"
+    },
+    {
+      "kode": "62.11.01.2004",
+      "nama": "Pangkoh Hulu"
+    },
+    {
+      "kode": "62.11.01.2005",
+      "nama": "Kantan Muara"
+    },
+    {
+      "kode": "62.11.01.2006",
+      "nama": "Talio Muara"
+    },
+    {
+      "kode": "62.11.01.2007",
+      "nama": "Talio Hulu"
+    },
+    {
+      "kode": "62.11.01.2008",
+      "nama": "Pangkoh Sari"
+    },
+    {
+      "kode": "62.11.01.2009",
+      "nama": "Sanggang"
+    },
+    {
+      "kode": "62.11.01.2010",
+      "nama": "Pantik"
+    },
+    {
+      "kode": "62.11.01.2011",
+      "nama": "Belanti Siam"
+    },
+    {
+      "kode": "62.11.01.2012",
+      "nama": "Gadabung"
+    },
+    {
+      "kode": "62.11.01.2013",
+      "nama": "Mulyasari"
+    },
+    {
+      "kode": "62.11.01.2014",
+      "nama": "Kantan Dalam"
+    },
+    {
+      "kode": "62.11.01.2015",
+      "nama": "Kantan Atas"
+    },
+    {
+      "kode": "62.11.01.2016",
+      "nama": "Karya Bersama"
+    },
+    {
+      "kode": "62.11.02.1018",
+      "nama": "Bahaur Basantan"
+    },
+    {
+      "kode": "62.11.02.2001",
+      "nama": "Cemantan"
+    },
+    {
+      "kode": "62.11.02.2002",
+      "nama": "Papuyu II Sei. Barunai"
+    },
+    {
+      "kode": "62.11.02.2003",
+      "nama": "Kiapak"
+    },
+    {
+      "kode": "62.11.02.2005",
+      "nama": "Papuyu I Sei Pasaman"
+    },
+    {
+      "kode": "62.11.02.2006",
+      "nama": "Sei. Rungun"
+    },
+    {
+      "kode": "62.11.02.2007",
+      "nama": "Bahaur Hilir"
+    },
+    {
+      "kode": "62.11.02.2008",
+      "nama": "Bahaur Tengah"
+    },
+    {
+      "kode": "62.11.02.2009",
+      "nama": "Bahaur Hulu"
+    },
+    {
+      "kode": "62.11.02.2014",
+      "nama": "Papuyu III Sei. Pudak"
+    },
+    {
+      "kode": "62.11.02.2015",
+      "nama": "Tanjung Perawan"
+    },
+    {
+      "kode": "62.11.02.2016",
+      "nama": "Bahaur Hulu Permai"
+    },
+    {
+      "kode": "62.11.02.2017",
+      "nama": "Bahaur Batu Raya"
+    },
+    {
+      "kode": "62.11.03.2001",
+      "nama": "Tanjung Sangalang"
+    },
+    {
+      "kode": "62.11.03.2002",
+      "nama": "Penda Barania"
+    },
+    {
+      "kode": "62.11.03.2003",
+      "nama": "Bukit Rawi"
+    },
+    {
+      "kode": "62.11.03.2004",
+      "nama": "Tuwung"
+    },
+    {
+      "kode": "62.11.03.2005",
+      "nama": "Sigi"
+    },
+    {
+      "kode": "62.11.03.2006",
+      "nama": "Petuk Liti"
+    },
+    {
+      "kode": "62.11.03.2007",
+      "nama": "Bukit Liti"
+    },
+    {
+      "kode": "62.11.03.2008",
+      "nama": "Bahu Palawa"
+    },
+    {
+      "kode": "62.11.03.2009",
+      "nama": "Pamarunan"
+    },
+    {
+      "kode": "62.11.03.2010",
+      "nama": "Balukon"
+    },
+    {
+      "kode": "62.11.03.2011",
+      "nama": "Bukit Bamba"
+    },
+    {
+      "kode": "62.11.03.2012",
+      "nama": "Tahawa"
+    },
+    {
+      "kode": "62.11.03.2013",
+      "nama": "Parahangan"
+    },
+    {
+      "kode": "62.11.03.2014",
+      "nama": "Bereng Rambang"
+    },
+    {
+      "kode": "62.11.04.2001",
+      "nama": "Manen Paduran"
+    },
+    {
+      "kode": "62.11.04.2002",
+      "nama": "Manen Kaleka"
+    },
+    {
+      "kode": "62.11.04.2003",
+      "nama": "Lawang Uru"
+    },
+    {
+      "kode": "62.11.04.2004",
+      "nama": "Hurung"
+    },
+    {
+      "kode": "62.11.04.2005",
+      "nama": "Hanua"
+    },
+    {
+      "kode": "62.11.04.2006",
+      "nama": "Ramang"
+    },
+    {
+      "kode": "62.11.04.2007",
+      "nama": "Tambak"
+    },
+    {
+      "kode": "62.11.04.2008",
+      "nama": "Pahawan"
+    },
+    {
+      "kode": "62.11.04.2009",
+      "nama": "Goha"
+    },
+    {
+      "kode": "62.11.04.2010",
+      "nama": "Bawan"
+    },
+    {
+      "kode": "62.11.04.2011",
+      "nama": "Tumbang Tarusan"
+    },
+    {
+      "kode": "62.11.04.2012",
+      "nama": "Pandawei"
+    },
+    {
+      "kode": "62.11.04.2013",
+      "nama": "Pangi"
+    },
+    {
+      "kode": "62.11.04.2014",
+      "nama": "Tangkahen"
+    },
+    {
+      "kode": "62.11.04.2015",
+      "nama": "Kasali Baru"
+    },
+    {
+      "kode": "62.11.05.1005",
+      "nama": "Pulang Pisau"
+    },
+    {
+      "kode": "62.11.05.1015",
+      "nama": "Kalawa"
+    },
+    {
+      "kode": "62.11.05.1016",
+      "nama": "Bereng"
+    },
+    {
+      "kode": "62.11.05.2001",
+      "nama": "Buntoi"
+    },
+    {
+      "kode": "62.11.05.2002",
+      "nama": "Mintin"
+    },
+    {
+      "kode": "62.11.05.2003",
+      "nama": "Mantaren I"
+    },
+    {
+      "kode": "62.11.05.2004",
+      "nama": "Anjir Pulang Pisau"
+    },
+    {
+      "kode": "62.11.05.2006",
+      "nama": "Gohong"
+    },
+    {
+      "kode": "62.11.05.2014",
+      "nama": "Mantaren II"
+    },
+    {
+      "kode": "62.11.05.2017",
+      "nama": "Hanjak Maju"
+    },
+    {
+      "kode": "62.11.06.2001",
+      "nama": "Tahai Jaya"
+    },
+    {
+      "kode": "62.11.06.2002",
+      "nama": "Purwodadi"
+    },
+    {
+      "kode": "62.11.06.2003",
+      "nama": "Wono Agung"
+    },
+    {
+      "kode": "62.11.06.2004",
+      "nama": "Kanamit Barat"
+    },
+    {
+      "kode": "62.11.06.2005",
+      "nama": "Sei Baru Tewu"
+    },
+    {
+      "kode": "62.11.06.2006",
+      "nama": "Kanamit"
+    },
+    {
+      "kode": "62.11.06.2007",
+      "nama": "Garantung"
+    },
+    {
+      "kode": "62.11.06.2008",
+      "nama": "Gandang"
+    },
+    {
+      "kode": "62.11.06.2009",
+      "nama": "Badirih"
+    },
+    {
+      "kode": "62.11.06.2010",
+      "nama": "Tahai Baru"
+    },
+    {
+      "kode": "62.11.06.2011",
+      "nama": "Maliku Baru"
+    },
+    {
+      "kode": "62.11.06.2012",
+      "nama": "Sidodadi"
+    },
+    {
+      "kode": "62.11.06.2013",
+      "nama": "Kanamit Jaya"
+    },
+    {
+      "kode": "62.11.06.2014",
+      "nama": "Gandang Barat"
+    },
+    {
+      "kode": "62.11.06.2015",
+      "nama": "Maliku Mulia"
+    },
+    {
+      "kode": "62.11.07.2001",
+      "nama": "Garung"
+    },
+    {
+      "kode": "62.11.07.2002",
+      "nama": "Henda"
+    },
+    {
+      "kode": "62.11.07.2003",
+      "nama": "Simpur"
+    },
+    {
+      "kode": "62.11.07.2004",
+      "nama": "Sakakajang"
+    },
+    {
+      "kode": "62.11.07.2005",
+      "nama": "Jabiren"
+    },
+    {
+      "kode": "62.11.07.2006",
+      "nama": "Pilang"
+    },
+    {
+      "kode": "62.11.07.2007",
+      "nama": "Tumbang Nusa"
+    },
+    {
+      "kode": "62.11.07.2008",
+      "nama": "Tanjung Taruna"
+    },
+    {
+      "kode": "62.11.08.2001",
+      "nama": "Paduran Sebangau"
+    },
+    {
+      "kode": "62.11.08.2002",
+      "nama": "Paduran Mulya"
+    },
+    {
+      "kode": "62.11.08.2003",
+      "nama": "Sebangau Mulya"
+    },
+    {
+      "kode": "62.11.08.2004",
+      "nama": "Sebangau Permai"
+    },
+    {
+      "kode": "62.11.08.2005",
+      "nama": "Mekar Jaya"
+    },
+    {
+      "kode": "62.11.08.2006",
+      "nama": "Sebangau Jaya"
+    },
+    {
+      "kode": "62.11.08.2007",
+      "nama": "Sei Hambawang"
+    },
+    {
+      "kode": "62.11.08.2008",
+      "nama": "Sei Bakau"
+    },
+    {
+      "kode": "62.12.01.1012",
+      "nama": "Puruk Cahu"
+    },
+    {
+      "kode": "62.12.01.1013",
+      "nama": "Beriwit"
+    },
+    {
+      "kode": "62.12.01.2001",
+      "nama": "Dirung"
+    },
+    {
+      "kode": "62.12.01.2002",
+      "nama": "Malasan"
+    },
+    {
+      "kode": "62.12.01.2003",
+      "nama": "Batu Putih"
+    },
+    {
+      "kode": "62.12.01.2004",
+      "nama": "Mangkahui"
+    },
+    {
+      "kode": "62.12.01.2005",
+      "nama": "Panu'ut"
+    },
+    {
+      "kode": "62.12.01.2006",
+      "nama": "Muara Untu"
+    },
+    {
+      "kode": "62.12.01.2007",
+      "nama": "Muara Ja'an"
+    },
+    {
+      "kode": "62.12.01.2008",
+      "nama": "Bahitom"
+    },
+    {
+      "kode": "62.12.01.2009",
+      "nama": "Danau Usung"
+    },
+    {
+      "kode": "62.12.01.2010",
+      "nama": "Juking Pajang"
+    },
+    {
+      "kode": "62.12.01.2011",
+      "nama": "Muara Sumpoi"
+    },
+    {
+      "kode": "62.12.01.2014",
+      "nama": "Muara Bumban"
+    },
+    {
+      "kode": "62.12.01.2015",
+      "nama": "Penyang"
+    },
+    {
+      "kode": "62.12.02.1014",
+      "nama": "Saripoi"
+    },
+    {
+      "kode": "62.12.02.2007",
+      "nama": "Sungai Lunuk"
+    },
+    {
+      "kode": "62.12.02.2008",
+      "nama": "Konut"
+    },
+    {
+      "kode": "62.12.02.2009",
+      "nama": "Belawan"
+    },
+    {
+      "kode": "62.12.02.2010",
+      "nama": "Mangkolisoi"
+    },
+    {
+      "kode": "62.12.02.2011",
+      "nama": "Kalang Kaluh"
+    },
+    {
+      "kode": "62.12.02.2012",
+      "nama": "Mantiat Pari"
+    },
+    {
+      "kode": "62.12.02.2013",
+      "nama": "Olung Ulu"
+    },
+    {
+      "kode": "62.12.02.2015",
+      "nama": "Puruk Batu"
+    },
+    {
+      "kode": "62.12.02.2016",
+      "nama": "Olung Siron"
+    },
+    {
+      "kode": "62.12.02.2017",
+      "nama": "Tino Talih"
+    },
+    {
+      "kode": "62.12.02.2018",
+      "nama": "Olung Nango"
+    },
+    {
+      "kode": "62.12.02.2019",
+      "nama": "Mahanyan"
+    },
+    {
+      "kode": "62.12.02.2020",
+      "nama": "Dirung Bakung"
+    },
+    {
+      "kode": "62.12.02.2021",
+      "nama": "Tabulang"
+    },
+    {
+      "kode": "62.12.02.2022",
+      "nama": "Cangkang"
+    },
+    {
+      "kode": "62.12.02.2023",
+      "nama": "Olung Dojou"
+    },
+    {
+      "kode": "62.12.02.2024",
+      "nama": "Doan Arung"
+    },
+    {
+      "kode": "62.12.02.2025",
+      "nama": "Muwun"
+    },
+    {
+      "kode": "62.12.02.2026",
+      "nama": "Nono Kliwon"
+    },
+    {
+      "kode": "62.12.02.2027",
+      "nama": "Kolam"
+    },
+    {
+      "kode": "62.12.02.2028",
+      "nama": "Saruhung"
+    },
+    {
+      "kode": "62.12.02.2029",
+      "nama": "Olung Soloi"
+    },
+    {
+      "kode": "62.12.02.2030",
+      "nama": "Tokung"
+    },
+    {
+      "kode": "62.12.02.2031",
+      "nama": "Olung Balo"
+    },
+    {
+      "kode": "62.12.02.2032",
+      "nama": "Karali"
+    },
+    {
+      "kode": "62.12.02.2033",
+      "nama": "Osom Tompok"
+    },
+    {
+      "kode": "62.12.03.1003",
+      "nama": "Muara Laung I"
+    },
+    {
+      "kode": "62.12.03.1006",
+      "nama": "Muara Tuhup"
+    },
+    {
+      "kode": "62.12.03.1031",
+      "nama": "Batu Bua I"
+    },
+    {
+      "kode": "62.12.03.2001",
+      "nama": "Batu Tuhup"
+    },
+    {
+      "kode": "62.12.03.2002",
+      "nama": "Tumbang Bahan"
+    },
+    {
+      "kode": "62.12.03.2004",
+      "nama": "Muara Laung II"
+    },
+    {
+      "kode": "62.12.03.2005",
+      "nama": "Beras Balange"
+    },
+    {
+      "kode": "62.12.03.2010",
+      "nama": "Pelaci"
+    },
+    {
+      "kode": "62.12.03.2011",
+      "nama": "Biha"
+    },
+    {
+      "kode": "62.12.03.2012",
+      "nama": "Dirung Pundu"
+    },
+    {
+      "kode": "62.12.03.2013",
+      "nama": "Dirung Pinang"
+    },
+    {
+      "kode": "62.12.03.2014",
+      "nama": "Muara Tupuh"
+    },
+    {
+      "kode": "62.12.03.2015",
+      "nama": "Narui"
+    },
+    {
+      "kode": "62.12.03.2016",
+      "nama": "Tumbang Bana"
+    },
+    {
+      "kode": "62.12.03.2017",
+      "nama": "Lakutan"
+    },
+    {
+      "kode": "62.12.03.2018",
+      "nama": "Tawai Haui"
+    },
+    {
+      "kode": "62.12.03.2026",
+      "nama": "Penda Siron"
+    },
+    {
+      "kode": "62.12.03.2027",
+      "nama": "Muara Maruwei I"
+    },
+    {
+      "kode": "62.12.03.2028",
+      "nama": "Muara Maruwei II"
+    },
+    {
+      "kode": "62.12.03.2029",
+      "nama": "Beralang"
+    },
+    {
+      "kode": "62.12.03.2030",
+      "nama": "Kalang Dohong"
+    },
+    {
+      "kode": "62.12.03.2032",
+      "nama": "Batu Bua II"
+    },
+    {
+      "kode": "62.12.03.2033",
+      "nama": "Tahujan Laung"
+    },
+    {
+      "kode": "62.12.03.2034",
+      "nama": "Tumbang Bondang"
+    },
+    {
+      "kode": "62.12.03.2035",
+      "nama": "Tumbang Tonduk"
+    },
+    {
+      "kode": "62.12.03.2037",
+      "nama": "Batu Karang"
+    },
+    {
+      "kode": "62.12.04.1004",
+      "nama": "Muara Bakanon"
+    },
+    {
+      "kode": "62.12.04.1006",
+      "nama": "Tumbang Lahung"
+    },
+    {
+      "kode": "62.12.04.2001",
+      "nama": "Sungai Gula"
+    },
+    {
+      "kode": "62.12.04.2002",
+      "nama": "Sungai Batang"
+    },
+    {
+      "kode": "62.12.04.2003",
+      "nama": "Tumbang Salio"
+    },
+    {
+      "kode": "62.12.04.2005",
+      "nama": "Purnama"
+    },
+    {
+      "kode": "62.12.04.2007",
+      "nama": "Sungai Lobang"
+    },
+    {
+      "kode": "62.12.04.2008",
+      "nama": "Pantai Laga"
+    },
+    {
+      "kode": "62.12.04.2009",
+      "nama": "Baratu"
+    },
+    {
+      "kode": "62.12.04.2010",
+      "nama": "Juking Sopan"
+    },
+    {
+      "kode": "62.12.04.2011",
+      "nama": "Muara Babuat"
+    },
+    {
+      "kode": "62.12.04.2018",
+      "nama": "Sungai Bakanon"
+    },
+    {
+      "kode": "62.12.05.1004",
+      "nama": "Tumbang Kunyi"
+    },
+    {
+      "kode": "62.12.05.2001",
+      "nama": "Kalapeh Baru"
+    },
+    {
+      "kode": "62.12.05.2002",
+      "nama": "Tumbang Masao"
+    },
+    {
+      "kode": "62.12.05.2003",
+      "nama": "Batu Makap"
+    },
+    {
+      "kode": "62.12.05.2005",
+      "nama": "Olong Liko"
+    },
+    {
+      "kode": "62.12.05.2006",
+      "nama": "Teluk Jolo"
+    },
+    {
+      "kode": "62.12.05.2007",
+      "nama": "Laas Baru"
+    },
+    {
+      "kode": "62.12.05.2018",
+      "nama": "Tumbang Molut"
+    },
+    {
+      "kode": "62.12.05.2020",
+      "nama": "Tumbang Tuan"
+    },
+    {
+      "kode": "62.12.06.2001",
+      "nama": "Bumban Tuhup"
+    },
+    {
+      "kode": "62.12.06.2002",
+      "nama": "Makunjung"
+    },
+    {
+      "kode": "62.12.06.2003",
+      "nama": "Dirung Sararong"
+    },
+    {
+      "kode": "62.12.06.2004",
+      "nama": "Kohong"
+    },
+    {
+      "kode": "62.12.06.2005",
+      "nama": "Hingan Tokung"
+    },
+    {
+      "kode": "62.12.06.2006",
+      "nama": "Liang Nyaling"
+    },
+    {
+      "kode": "62.12.06.2007",
+      "nama": "Tumbang Bauh"
+    },
+    {
+      "kode": "62.12.06.2008",
+      "nama": "Tumbang Masalo"
+    },
+    {
+      "kode": "62.12.06.2009",
+      "nama": "Batu Tojah"
+    },
+    {
+      "kode": "62.12.06.2010",
+      "nama": "Tumbang Baloi"
+    },
+    {
+      "kode": "62.12.06.2011",
+      "nama": "Cinta Budiman"
+    },
+    {
+      "kode": "62.12.07.2001",
+      "nama": "Oreng"
+    },
+    {
+      "kode": "62.12.07.2002",
+      "nama": "Olung Muro"
+    },
+    {
+      "kode": "62.12.07.2003",
+      "nama": "Olung Hanangan"
+    },
+    {
+      "kode": "62.12.07.2004",
+      "nama": "Dirung Lingkin"
+    },
+    {
+      "kode": "62.12.07.2005",
+      "nama": "Datah Kotou"
+    },
+    {
+      "kode": "62.12.07.2006",
+      "nama": "Tahujan Ontu"
+    },
+    {
+      "kode": "62.12.07.2007",
+      "nama": "Puruk Kambang"
+    },
+    {
+      "kode": "62.12.08.2001",
+      "nama": "Batu Mirau"
+    },
+    {
+      "kode": "62.12.08.2002",
+      "nama": "Tambelum"
+    },
+    {
+      "kode": "62.12.08.2003",
+      "nama": "Tumbang Bantian"
+    },
+    {
+      "kode": "62.12.08.2004",
+      "nama": "Tumbang Saan"
+    },
+    {
+      "kode": "62.12.08.2005",
+      "nama": "Tumbang Kolon"
+    },
+    {
+      "kode": "62.12.08.2006",
+      "nama": "Tumbang Apat"
+    },
+    {
+      "kode": "62.12.09.2001",
+      "nama": "Tumbang Tohan"
+    },
+    {
+      "kode": "62.12.09.2002",
+      "nama": "Tumbang Naan"
+    },
+    {
+      "kode": "62.12.09.2003",
+      "nama": "Muara Joloi I"
+    },
+    {
+      "kode": "62.12.09.2004",
+      "nama": "Muara Joloi II"
+    },
+    {
+      "kode": "62.12.09.2005",
+      "nama": "Parahau"
+    },
+    {
+      "kode": "62.12.09.2006",
+      "nama": "Tumbang Jojang"
+    },
+    {
+      "kode": "62.12.09.2007",
+      "nama": "Takajung"
+    },
+    {
+      "kode": "62.12.10.2001",
+      "nama": "Tumbang Tujang"
+    },
+    {
+      "kode": "62.12.10.2002",
+      "nama": "Tumbang Olong I"
+    },
+    {
+      "kode": "62.12.10.2003",
+      "nama": "Kalasin"
+    },
+    {
+      "kode": "62.12.10.2004",
+      "nama": "Tumbang Topus"
+    },
+    {
+      "kode": "62.12.10.2005",
+      "nama": "Tumbang Olong II"
+    },
+    {
+      "kode": "62.13.01.1012",
+      "nama": "Tamiang Layang"
+    },
+    {
+      "kode": "62.13.01.2003",
+      "nama": "Pulau Patai"
+    },
+    {
+      "kode": "62.13.01.2004",
+      "nama": "Sarapat"
+    },
+    {
+      "kode": "62.13.01.2005",
+      "nama": "Magantis"
+    },
+    {
+      "kode": "62.13.01.2006",
+      "nama": "Jaar"
+    },
+    {
+      "kode": "62.13.01.2007",
+      "nama": "Matabu"
+    },
+    {
+      "kode": "62.13.01.2008",
+      "nama": "Dorong"
+    },
+    {
+      "kode": "62.13.01.2009",
+      "nama": "Didi"
+    },
+    {
+      "kode": "62.13.01.2010",
+      "nama": "Karang Langit"
+    },
+    {
+      "kode": "62.13.01.2011",
+      "nama": "Haringen"
+    },
+    {
+      "kode": "62.13.01.2018",
+      "nama": "Jaweten"
+    },
+    {
+      "kode": "62.13.01.2019",
+      "nama": "Matarah"
+    },
+    {
+      "kode": "62.13.01.2020",
+      "nama": "Maragut"
+    },
+    {
+      "kode": "62.13.01.2021",
+      "nama": "Mangkarap"
+    },
+    {
+      "kode": "62.13.01.2022",
+      "nama": "Gumpa"
+    },
+    {
+      "kode": "62.13.01.2023",
+      "nama": "Sumur"
+    },
+    {
+      "kode": "62.13.01.2024",
+      "nama": "Harara"
+    },
+    {
+      "kode": "62.13.02.1001",
+      "nama": "Pasar Panas/Taniran"
+    },
+    {
+      "kode": "62.13.02.2002",
+      "nama": "Kandris"
+    },
+    {
+      "kode": "62.13.02.2003",
+      "nama": "Banyu Landas"
+    },
+    {
+      "kode": "62.13.02.2004",
+      "nama": "Bagok"
+    },
+    {
+      "kode": "62.13.02.2005",
+      "nama": "Bamban"
+    },
+    {
+      "kode": "62.13.02.2006",
+      "nama": "Tewah Pupuh"
+    },
+    {
+      "kode": "62.13.02.2007",
+      "nama": "Gudang Seng"
+    },
+    {
+      "kode": "62.13.03.2001",
+      "nama": "Pulau Padang"
+    },
+    {
+      "kode": "62.13.03.2002",
+      "nama": "Kambitin"
+    },
+    {
+      "kode": "62.13.03.2003",
+      "nama": "Ramania"
+    },
+    {
+      "kode": "62.13.03.2004",
+      "nama": "Bentot"
+    },
+    {
+      "kode": "62.13.03.2005",
+      "nama": "Ampari Bura"
+    },
+    {
+      "kode": "62.13.03.2006",
+      "nama": "Kotam"
+    },
+    {
+      "kode": "62.13.03.2008",
+      "nama": "Betang Nalong"
+    },
+    {
+      "kode": "62.13.03.2009",
+      "nama": "Mawani"
+    },
+    {
+      "kode": "62.13.03.2010",
+      "nama": "Jango"
+    },
+    {
+      "kode": "62.13.03.2011",
+      "nama": "Lalap"
+    },
+    {
+      "kode": "62.13.04.2001",
+      "nama": "Janah Jari"
+    },
+    {
+      "kode": "62.13.04.2002",
+      "nama": "Bangkirayen"
+    },
+    {
+      "kode": "62.13.04.2003",
+      "nama": "Hayaping"
+    },
+    {
+      "kode": "62.13.04.2004",
+      "nama": "Tangkan"
+    },
+    {
+      "kode": "62.13.04.2005",
+      "nama": "Wungkur Nanakan"
+    },
+    {
+      "kode": "62.13.04.2006",
+      "nama": "Ampari"
+    },
+    {
+      "kode": "62.13.04.2007",
+      "nama": "Apar Batu"
+    },
+    {
+      "kode": "62.13.04.2008",
+      "nama": "Biwan"
+    },
+    {
+      "kode": "62.13.04.2009",
+      "nama": "Janah Mansiwui"
+    },
+    {
+      "kode": "62.13.04.2010",
+      "nama": "Danau"
+    },
+    {
+      "kode": "62.13.04.2011",
+      "nama": "Pianggu"
+    },
+    {
+      "kode": "62.13.05.1011",
+      "nama": "Ampah Kota"
+    },
+    {
+      "kode": "62.13.05.2008",
+      "nama": "Saing"
+    },
+    {
+      "kode": "62.13.05.2009",
+      "nama": "Rodok"
+    },
+    {
+      "kode": "62.13.05.2010",
+      "nama": "Ampah II"
+    },
+    {
+      "kode": "62.13.05.2012",
+      "nama": "Putai"
+    },
+    {
+      "kode": "62.13.05.2018",
+      "nama": "Netampin"
+    },
+    {
+      "kode": "62.13.05.2024",
+      "nama": "Sumber Garunggung"
+    },
+    {
+      "kode": "62.13.05.2025",
+      "nama": "Muara Awang"
+    },
+    {
+      "kode": "62.13.06.2001",
+      "nama": "Muara Palantau"
+    },
+    {
+      "kode": "62.13.06.2002",
+      "nama": "Ketab"
+    },
+    {
+      "kode": "62.13.06.2003",
+      "nama": "Kupang Bersih"
+    },
+    {
+      "kode": "62.13.06.2004",
+      "nama": "Tuyau"
+    },
+    {
+      "kode": "62.13.06.2005",
+      "nama": "Pinang Tunggal"
+    },
+    {
+      "kode": "62.13.06.2006",
+      "nama": "Nagaleah"
+    },
+    {
+      "kode": "62.13.06.2007",
+      "nama": "Lampeong"
+    },
+    {
+      "kode": "62.13.06.2008",
+      "nama": "Bararawa"
+    },
+    {
+      "kode": "62.13.06.2009",
+      "nama": "Bambulung"
+    },
+    {
+      "kode": "62.13.06.2010",
+      "nama": "Lebo"
+    },
+    {
+      "kode": "62.13.06.2011",
+      "nama": "Muru Duyung"
+    },
+    {
+      "kode": "62.13.06.2012",
+      "nama": "Tumpung Ulung"
+    },
+    {
+      "kode": "62.13.06.2013",
+      "nama": "Sumber Rejo"
+    },
+    {
+      "kode": "62.13.07.2001",
+      "nama": "Juru Banu"
+    },
+    {
+      "kode": "62.13.07.2002",
+      "nama": "Telang Baru"
+    },
+    {
+      "kode": "62.13.07.2003",
+      "nama": "Tampu Langit"
+    },
+    {
+      "kode": "62.13.07.2004",
+      "nama": "Telang"
+    },
+    {
+      "kode": "62.13.07.2005",
+      "nama": "Maipe"
+    },
+    {
+      "kode": "62.13.07.2006",
+      "nama": "Murutuwu"
+    },
+    {
+      "kode": "62.13.07.2007",
+      "nama": "Balawa"
+    },
+    {
+      "kode": "62.13.07.2008",
+      "nama": "Kali Napu"
+    },
+    {
+      "kode": "62.13.07.2009",
+      "nama": "Siong"
+    },
+    {
+      "kode": "62.13.08.2001",
+      "nama": "Puri"
+    },
+    {
+      "kode": "62.13.08.2002",
+      "nama": "Lenggang"
+    },
+    {
+      "kode": "62.13.08.2003",
+      "nama": "Batuah"
+    },
+    {
+      "kode": "62.13.08.2004",
+      "nama": "Unsum"
+    },
+    {
+      "kode": "62.13.08.2005",
+      "nama": "Baruyan"
+    },
+    {
+      "kode": "62.13.08.2006",
+      "nama": "Turan Amis"
+    },
+    {
+      "kode": "62.13.08.2007",
+      "nama": "Malintut"
+    },
+    {
+      "kode": "62.13.08.2008",
+      "nama": "Tangkum"
+    },
+    {
+      "kode": "62.13.08.2009",
+      "nama": "Sibung"
+    },
+    {
+      "kode": "62.13.09.2001",
+      "nama": "Tampa"
+    },
+    {
+      "kode": "62.13.09.2002",
+      "nama": "Kalamus"
+    },
+    {
+      "kode": "62.13.09.2003",
+      "nama": "Simpang Bingkuang"
+    },
+    {
+      "kode": "62.13.09.2004",
+      "nama": "Patung"
+    },
+    {
+      "kode": "62.13.09.2005",
+      "nama": "Runggu Raya"
+    },
+    {
+      "kode": "62.13.09.2006",
+      "nama": "Bantai Napu"
+    },
+    {
+      "kode": "62.13.09.2007",
+      "nama": "Tarinsing"
+    },
+    {
+      "kode": "62.13.09.2008",
+      "nama": "Paku Beto"
+    },
+    {
+      "kode": "62.13.09.2009",
+      "nama": "Gandrung"
+    },
+    {
+      "kode": "62.13.09.2010",
+      "nama": "Pangkan"
+    },
+    {
+      "kode": "62.13.09.2011",
+      "nama": "Kupang Baru"
+    },
+    {
+      "kode": "62.13.09.2012",
+      "nama": "Luau Jawuk"
+    },
+    {
+      "kode": "62.13.10.2001",
+      "nama": "Dayu"
+    },
+    {
+      "kode": "62.13.10.2002",
+      "nama": "Wuran"
+    },
+    {
+      "kode": "62.13.10.2003",
+      "nama": "Ipu Mea"
+    },
+    {
+      "kode": "62.13.10.2004",
+      "nama": "Lagan"
+    },
+    {
+      "kode": "62.13.10.2005",
+      "nama": "Putut Tawuluh"
+    },
+    {
+      "kode": "62.13.10.2006",
+      "nama": "Simpang Naneng"
+    },
+    {
+      "kode": "62.13.10.2007",
+      "nama": "Kandris"
+    },
+    {
+      "kode": "62.71.01.1001",
+      "nama": "Pahandut"
+    },
+    {
+      "kode": "62.71.01.1002",
+      "nama": "Panarung"
+    },
+    {
+      "kode": "62.71.01.1003",
+      "nama": "Langkai"
+    },
+    {
+      "kode": "62.71.01.1004",
+      "nama": "Tumbang Rungan"
+    },
+    {
+      "kode": "62.71.01.1005",
+      "nama": "Pahandut Seberang"
+    },
+    {
+      "kode": "62.71.01.1006",
+      "nama": "Tanjung Pinang"
+    },
+    {
+      "kode": "62.71.02.1001",
+      "nama": "Marang"
+    },
+    {
+      "kode": "62.71.02.1002",
+      "nama": "Tumbang Tahai"
+    },
+    {
+      "kode": "62.71.02.1003",
+      "nama": "Banturung"
+    },
+    {
+      "kode": "62.71.02.1004",
+      "nama": "Tangkiling"
+    },
+    {
+      "kode": "62.71.02.1005",
+      "nama": "Sei Gohong"
+    },
+    {
+      "kode": "62.71.02.1006",
+      "nama": "Kanarakan"
+    },
+    {
+      "kode": "62.71.02.1007",
+      "nama": "Habaring Hurung"
+    },
+    {
+      "kode": "62.71.03.1001",
+      "nama": "Palangka"
+    },
+    {
+      "kode": "62.71.03.1002",
+      "nama": "Menteng"
+    },
+    {
+      "kode": "62.71.03.1003",
+      "nama": "Bukit Tunggal"
+    },
+    {
+      "kode": "62.71.03.1004",
+      "nama": "Petuk Katimpun"
+    },
+    {
+      "kode": "62.71.04.1001",
+      "nama": "Bereng Bengkel"
+    },
+    {
+      "kode": "62.71.04.1002",
+      "nama": "Kalampangan"
+    },
+    {
+      "kode": "62.71.04.1003",
+      "nama": "Kereng Bangkirai"
+    },
+    {
+      "kode": "62.71.04.1004",
+      "nama": "Kameloh Baru"
+    },
+    {
+      "kode": "62.71.04.1005",
+      "nama": "Danau Tundai"
+    },
+    {
+      "kode": "62.71.04.1006",
+      "nama": "Sabaru"
+    },
+    {
+      "kode": "62.71.05.1001",
+      "nama": "Petuk Bukit"
+    },
+    {
+      "kode": "62.71.05.1002",
+      "nama": "Panjehang"
+    },
+    {
+      "kode": "62.71.05.1003",
+      "nama": "Petuk Barunai"
+    },
+    {
+      "kode": "62.71.05.1004",
+      "nama": "Mungku Baru"
+    },
+    {
+      "kode": "62.71.05.1005",
+      "nama": "Pager"
+    },
+    {
+      "kode": "62.71.05.1006",
+      "nama": "Gaung Baru"
+    },
+    {
+      "kode": "62.71.05.1007",
+      "nama": "Bukit Sua"
+    }
+  ]
+}

@@ -1,0 +1,1276 @@
+{
+  "kabupaten": [
+    {
+      "kode": "31.01",
+      "nama": "Kabupaten Administrasi Kepulauan Seribu"
+    },
+    {
+      "kode": "31.71",
+      "nama": "Kota Administrasi Jakarta Pusat"
+    },
+    {
+      "kode": "31.72",
+      "nama": "Kota Administrasi Jakarta Utara "
+    },
+    {
+      "kode": "31.73",
+      "nama": "Kota Administrasi Jakarta Barat"
+    },
+    {
+      "kode": "31.74",
+      "nama": "Kota Administrasi Jakarta Selatan"
+    },
+    {
+      "kode": "31.75",
+      "nama": "Kota Administrasi Jakarta Timur"
+    }
+  ],
+  "kecamatan": [
+    {
+      "kode": "31.01.01",
+      "nama": "Kepulauan Seribu Utara"
+    },
+    {
+      "kode": "31.01.02",
+      "nama": "Kepulauan Seribu Selatan"
+    },
+    {
+      "kode": "31.71.01",
+      "nama": "Gambir"
+    },
+    {
+      "kode": "31.71.02",
+      "nama": "Sawah Besar"
+    },
+    {
+      "kode": "31.71.03",
+      "nama": "Kemayoran"
+    },
+    {
+      "kode": "31.71.04",
+      "nama": "Senen"
+    },
+    {
+      "kode": "31.71.05",
+      "nama": "Cempaka Putih"
+    },
+    {
+      "kode": "31.71.06",
+      "nama": "Menteng"
+    },
+    {
+      "kode": "31.71.07",
+      "nama": "Tanah Abang"
+    },
+    {
+      "kode": "31.71.08",
+      "nama": "Johar Baru"
+    },
+    {
+      "kode": "31.72.01",
+      "nama": "Penjaringan"
+    },
+    {
+      "kode": "31.72.02",
+      "nama": "Tanjung Priok"
+    },
+    {
+      "kode": "31.72.03",
+      "nama": "Koja"
+    },
+    {
+      "kode": "31.72.04",
+      "nama": "Cilincing"
+    },
+    {
+      "kode": "31.72.05",
+      "nama": "Pademangan"
+    },
+    {
+      "kode": "31.72.06",
+      "nama": "Kelapa Gading"
+    },
+    {
+      "kode": "31.73.01",
+      "nama": "Cengkareng"
+    },
+    {
+      "kode": "31.73.02",
+      "nama": "Grogol Petamburan"
+    },
+    {
+      "kode": "31.73.03",
+      "nama": "Taman Sari"
+    },
+    {
+      "kode": "31.73.04",
+      "nama": "Tambora"
+    },
+    {
+      "kode": "31.73.05",
+      "nama": "Kebon Jeruk"
+    },
+    {
+      "kode": "31.73.06",
+      "nama": "Kalideres"
+    },
+    {
+      "kode": "31.73.07",
+      "nama": "Pal Merah"
+    },
+    {
+      "kode": "31.73.08",
+      "nama": "Kembangan"
+    },
+    {
+      "kode": "31.74.01",
+      "nama": "Tebet"
+    },
+    {
+      "kode": "31.74.02",
+      "nama": "Setiabudi"
+    },
+    {
+      "kode": "31.74.03",
+      "nama": "Mampang Prapatan"
+    },
+    {
+      "kode": "31.74.04",
+      "nama": "Pasar Minggu"
+    },
+    {
+      "kode": "31.74.05",
+      "nama": "Kebayoran Lama"
+    },
+    {
+      "kode": "31.74.06",
+      "nama": "Cilandak"
+    },
+    {
+      "kode": "31.74.07",
+      "nama": "Kebayoran Baru"
+    },
+    {
+      "kode": "31.74.08",
+      "nama": "Pancoran"
+    },
+    {
+      "kode": "31.74.09",
+      "nama": "Jagakarsa"
+    },
+    {
+      "kode": "31.74.10",
+      "nama": "Pesanggrahan"
+    },
+    {
+      "kode": "31.75.01",
+      "nama": "Matraman"
+    },
+    {
+      "kode": "31.75.02",
+      "nama": "Pulogadung"
+    },
+    {
+      "kode": "31.75.03",
+      "nama": "Jatinegara"
+    },
+    {
+      "kode": "31.75.04",
+      "nama": "Kramatjati"
+    },
+    {
+      "kode": "31.75.05",
+      "nama": "Pasar Rebo"
+    },
+    {
+      "kode": "31.75.06",
+      "nama": "Cakung"
+    },
+    {
+      "kode": "31.75.07",
+      "nama": "Duren Sawit"
+    },
+    {
+      "kode": "31.75.08",
+      "nama": "Makasar"
+    },
+    {
+      "kode": "31.75.09",
+      "nama": "Ciracas"
+    },
+    {
+      "kode": "31.75.10",
+      "nama": "Cipayung"
+    }
+  ],
+  "kelurahan": [
+    {
+      "kode": "31.01.01.1001",
+      "nama": "Pulau Panggang"
+    },
+    {
+      "kode": "31.01.01.1002",
+      "nama": "Pulau Kelapa"
+    },
+    {
+      "kode": "31.01.01.1003",
+      "nama": "Pulau Harapan"
+    },
+    {
+      "kode": "31.01.02.1001",
+      "nama": "Pulau Untung Jawa"
+    },
+    {
+      "kode": "31.01.02.1002",
+      "nama": "Pulau Tidung"
+    },
+    {
+      "kode": "31.01.02.1003",
+      "nama": "Pulau Pari"
+    },
+    {
+      "kode": "31.71.01.1001",
+      "nama": "Gambir"
+    },
+    {
+      "kode": "31.71.01.1002",
+      "nama": "Cideng"
+    },
+    {
+      "kode": "31.71.01.1003",
+      "nama": "Petojo Utara"
+    },
+    {
+      "kode": "31.71.01.1004",
+      "nama": "Petojo Selatan"
+    },
+    {
+      "kode": "31.71.01.1005",
+      "nama": "Kebon Kelapa"
+    },
+    {
+      "kode": "31.71.01.1006",
+      "nama": "Duri Pulo"
+    },
+    {
+      "kode": "31.71.02.1001",
+      "nama": "Pasar Baru"
+    },
+    {
+      "kode": "31.71.02.1002",
+      "nama": "Karang Anyar"
+    },
+    {
+      "kode": "31.71.02.1003",
+      "nama": "Kartini"
+    },
+    {
+      "kode": "31.71.02.1004",
+      "nama": "Gunung Sahari Utara"
+    },
+    {
+      "kode": "31.71.02.1005",
+      "nama": "Mangga Dua Selatan"
+    },
+    {
+      "kode": "31.71.03.1001",
+      "nama": "Kemayoran"
+    },
+    {
+      "kode": "31.71.03.1002",
+      "nama": "Kebon Kosong"
+    },
+    {
+      "kode": "31.71.03.1003",
+      "nama": "Harapan Mulia"
+    },
+    {
+      "kode": "31.71.03.1004",
+      "nama": "Serdang"
+    },
+    {
+      "kode": "31.71.03.1005",
+      "nama": "Gunung Sahari Selatan"
+    },
+    {
+      "kode": "31.71.03.1006",
+      "nama": "Cempaka Baru"
+    },
+    {
+      "kode": "31.71.03.1007",
+      "nama": "Sumur Batu"
+    },
+    {
+      "kode": "31.71.03.1008",
+      "nama": "Utan Panjang"
+    },
+    {
+      "kode": "31.71.04.1001",
+      "nama": "Senen"
+    },
+    {
+      "kode": "31.71.04.1002",
+      "nama": "Kenari"
+    },
+    {
+      "kode": "31.71.04.1003",
+      "nama": "Paseban"
+    },
+    {
+      "kode": "31.71.04.1004",
+      "nama": "Kramat"
+    },
+    {
+      "kode": "31.71.04.1005",
+      "nama": "Kwitang"
+    },
+    {
+      "kode": "31.71.04.1006",
+      "nama": "Bungur"
+    },
+    {
+      "kode": "31.71.05.1001",
+      "nama": "Cempaka Putih Timur"
+    },
+    {
+      "kode": "31.71.05.1002",
+      "nama": "Cempaka Putih Barat"
+    },
+    {
+      "kode": "31.71.05.1003",
+      "nama": "Rawasari"
+    },
+    {
+      "kode": "31.71.06.1001",
+      "nama": "Menteng"
+    },
+    {
+      "kode": "31.71.06.1002",
+      "nama": "Pegangsaan"
+    },
+    {
+      "kode": "31.71.06.1003",
+      "nama": "Cikini"
+    },
+    {
+      "kode": "31.71.06.1004",
+      "nama": "Gondangdia"
+    },
+    {
+      "kode": "31.71.06.1005",
+      "nama": "Kebon Sirih"
+    },
+    {
+      "kode": "31.71.07.1001",
+      "nama": "Gelora"
+    },
+    {
+      "kode": "31.71.07.1002",
+      "nama": "Bendungan Hilir"
+    },
+    {
+      "kode": "31.71.07.1003",
+      "nama": "Karet Tengsin"
+    },
+    {
+      "kode": "31.71.07.1004",
+      "nama": "Petamburan"
+    },
+    {
+      "kode": "31.71.07.1005",
+      "nama": "Kebon Melati"
+    },
+    {
+      "kode": "31.71.07.1006",
+      "nama": "Kebon Kacang"
+    },
+    {
+      "kode": "31.71.07.1007",
+      "nama": "Kampung Bali"
+    },
+    {
+      "kode": "31.71.08.1001",
+      "nama": "Johar Baru"
+    },
+    {
+      "kode": "31.71.08.1002",
+      "nama": "Kampung Rawa"
+    },
+    {
+      "kode": "31.71.08.1003",
+      "nama": "Galur"
+    },
+    {
+      "kode": "31.71.08.1004",
+      "nama": "Tanah Tinggi"
+    },
+    {
+      "kode": "31.72.01.1001",
+      "nama": "Penjaringan"
+    },
+    {
+      "kode": "31.72.01.1002",
+      "nama": "Kamal Muara"
+    },
+    {
+      "kode": "31.72.01.1003",
+      "nama": "Kapuk Muara"
+    },
+    {
+      "kode": "31.72.01.1004",
+      "nama": "Pejagalan"
+    },
+    {
+      "kode": "31.72.01.1005",
+      "nama": "Pluit"
+    },
+    {
+      "kode": "31.72.02.1001",
+      "nama": "Tanjung Priok"
+    },
+    {
+      "kode": "31.72.02.1002",
+      "nama": "Sunter Jaya"
+    },
+    {
+      "kode": "31.72.02.1003",
+      "nama": "Papanggo"
+    },
+    {
+      "kode": "31.72.02.1004",
+      "nama": "Sungai Bambu"
+    },
+    {
+      "kode": "31.72.02.1005",
+      "nama": "Kebon Bawang"
+    },
+    {
+      "kode": "31.72.02.1006",
+      "nama": "Sunter Agung"
+    },
+    {
+      "kode": "31.72.02.1007",
+      "nama": "Warakas"
+    },
+    {
+      "kode": "31.72.03.1001",
+      "nama": "Koja"
+    },
+    {
+      "kode": "31.72.03.1002",
+      "nama": "Tugu Utara"
+    },
+    {
+      "kode": "31.72.03.1003",
+      "nama": "Lagoa"
+    },
+    {
+      "kode": "31.72.03.1004",
+      "nama": "Rawa Badak Utara"
+    },
+    {
+      "kode": "31.72.03.1005",
+      "nama": "Tugu Selatan"
+    },
+    {
+      "kode": "31.72.03.1006",
+      "nama": "Rawa Badak Selatan"
+    },
+    {
+      "kode": "31.72.04.1001",
+      "nama": "Cilincing"
+    },
+    {
+      "kode": "31.72.04.1002",
+      "nama": "Sukapura"
+    },
+    {
+      "kode": "31.72.04.1003",
+      "nama": "Marunda"
+    },
+    {
+      "kode": "31.72.04.1004",
+      "nama": "Kalibaru"
+    },
+    {
+      "kode": "31.72.04.1005",
+      "nama": "Semper Timur"
+    },
+    {
+      "kode": "31.72.04.1006",
+      "nama": "Rorotan"
+    },
+    {
+      "kode": "31.72.04.1007",
+      "nama": "Semper Barat"
+    },
+    {
+      "kode": "31.72.05.1001",
+      "nama": "Pademangan Timur"
+    },
+    {
+      "kode": "31.72.05.1002",
+      "nama": "Pademangan Barat"
+    },
+    {
+      "kode": "31.72.05.1003",
+      "nama": "Ancol"
+    },
+    {
+      "kode": "31.72.06.1001",
+      "nama": "Kelapa Gading Timur"
+    },
+    {
+      "kode": "31.72.06.1002",
+      "nama": "Pegangsaan Dua"
+    },
+    {
+      "kode": "31.72.06.1003",
+      "nama": "Kelapa Gading Barat"
+    },
+    {
+      "kode": "31.73.01.1001",
+      "nama": "Cengkareng Barat"
+    },
+    {
+      "kode": "31.73.01.1002",
+      "nama": "Duri Kosambi"
+    },
+    {
+      "kode": "31.73.01.1003",
+      "nama": "Rawa Buaya"
+    },
+    {
+      "kode": "31.73.01.1004",
+      "nama": "Kedaung Kali Angke"
+    },
+    {
+      "kode": "31.73.01.1005",
+      "nama": "Kapuk"
+    },
+    {
+      "kode": "31.73.01.1006",
+      "nama": "Cengkareng Timur"
+    },
+    {
+      "kode": "31.73.02.1001",
+      "nama": "Grogol"
+    },
+    {
+      "kode": "31.73.02.1002",
+      "nama": "Tanjung Duren Utara"
+    },
+    {
+      "kode": "31.73.02.1003",
+      "nama": "Tomang"
+    },
+    {
+      "kode": "31.73.02.1004",
+      "nama": "Jelambar"
+    },
+    {
+      "kode": "31.73.02.1005",
+      "nama": "Tanjung Duren Selatan"
+    },
+    {
+      "kode": "31.73.02.1006",
+      "nama": "Jelambar Baru"
+    },
+    {
+      "kode": "31.73.02.1007",
+      "nama": "Wijaya Kusuma"
+    },
+    {
+      "kode": "31.73.03.1001",
+      "nama": "Taman Sari"
+    },
+    {
+      "kode": "31.73.03.1002",
+      "nama": "Krukut"
+    },
+    {
+      "kode": "31.73.03.1003",
+      "nama": "Maphar"
+    },
+    {
+      "kode": "31.73.03.1004",
+      "nama": "Tangki"
+    },
+    {
+      "kode": "31.73.03.1005",
+      "nama": "Mangga Besar"
+    },
+    {
+      "kode": "31.73.03.1006",
+      "nama": "Keagungan"
+    },
+    {
+      "kode": "31.73.03.1007",
+      "nama": "Glodok"
+    },
+    {
+      "kode": "31.73.03.1008",
+      "nama": "Pinangsia"
+    },
+    {
+      "kode": "31.73.04.1001",
+      "nama": "Tambora"
+    },
+    {
+      "kode": "31.73.04.1002",
+      "nama": "Kali Anyar"
+    },
+    {
+      "kode": "31.73.04.1003",
+      "nama": "Duri Utara"
+    },
+    {
+      "kode": "31.73.04.1004",
+      "nama": "Tanah Sereal"
+    },
+    {
+      "kode": "31.73.04.1005",
+      "nama": "Krendang"
+    },
+    {
+      "kode": "31.73.04.1006",
+      "nama": "Jembatan Besi"
+    },
+    {
+      "kode": "31.73.04.1007",
+      "nama": "Angke"
+    },
+    {
+      "kode": "31.73.04.1008",
+      "nama": "Jembatan Lima"
+    },
+    {
+      "kode": "31.73.04.1009",
+      "nama": "Pekojan"
+    },
+    {
+      "kode": "31.73.04.1010",
+      "nama": "Roa Malaka"
+    },
+    {
+      "kode": "31.73.04.1011",
+      "nama": "Duri Selatan"
+    },
+    {
+      "kode": "31.73.05.1001",
+      "nama": "Kebon Jeruk"
+    },
+    {
+      "kode": "31.73.05.1002",
+      "nama": "Sukabumi Utara"
+    },
+    {
+      "kode": "31.73.05.1003",
+      "nama": "Sukabumi Selatan"
+    },
+    {
+      "kode": "31.73.05.1004",
+      "nama": "Kelapa Dua"
+    },
+    {
+      "kode": "31.73.05.1005",
+      "nama": "Duri Kepa"
+    },
+    {
+      "kode": "31.73.05.1006",
+      "nama": "Kedoya Utara"
+    },
+    {
+      "kode": "31.73.05.1007",
+      "nama": "Kedoya Selatan"
+    },
+    {
+      "kode": "31.73.06.1001",
+      "nama": "Kalideres"
+    },
+    {
+      "kode": "31.73.06.1002",
+      "nama": "Semanan"
+    },
+    {
+      "kode": "31.73.06.1003",
+      "nama": "Tegal Alur"
+    },
+    {
+      "kode": "31.73.06.1004",
+      "nama": "Kamal"
+    },
+    {
+      "kode": "31.73.06.1005",
+      "nama": "Pegadungan"
+    },
+    {
+      "kode": "31.73.07.1001",
+      "nama": "Palmerah"
+    },
+    {
+      "kode": "31.73.07.1002",
+      "nama": "Slipi"
+    },
+    {
+      "kode": "31.73.07.1003",
+      "nama": "Kota Bambu Utara"
+    },
+    {
+      "kode": "31.73.07.1004",
+      "nama": "Jatipulo"
+    },
+    {
+      "kode": "31.73.07.1005",
+      "nama": "Kemanggisan"
+    },
+    {
+      "kode": "31.73.07.1006",
+      "nama": "Kota Bambu Selatan"
+    },
+    {
+      "kode": "31.73.08.1001",
+      "nama": "Kembangan Utara"
+    },
+    {
+      "kode": "31.73.08.1002",
+      "nama": "Meruya Utara"
+    },
+    {
+      "kode": "31.73.08.1003",
+      "nama": "Meruya Selatan"
+    },
+    {
+      "kode": "31.73.08.1004",
+      "nama": "Srengseng"
+    },
+    {
+      "kode": "31.73.08.1005",
+      "nama": "Joglo"
+    },
+    {
+      "kode": "31.73.08.1006",
+      "nama": "Kembangan Selatan"
+    },
+    {
+      "kode": "31.74.01.1001",
+      "nama": "Tebet Timur"
+    },
+    {
+      "kode": "31.74.01.1002",
+      "nama": "Tebet Barat"
+    },
+    {
+      "kode": "31.74.01.1003",
+      "nama": "Menteng Dalam"
+    },
+    {
+      "kode": "31.74.01.1004",
+      "nama": "Kebon Baru"
+    },
+    {
+      "kode": "31.74.01.1005",
+      "nama": "Bukit Duri"
+    },
+    {
+      "kode": "31.74.01.1006",
+      "nama": "Manggarai Selatan"
+    },
+    {
+      "kode": "31.74.01.1007",
+      "nama": "Manggarai"
+    },
+    {
+      "kode": "31.74.02.1001",
+      "nama": "Setia Budi"
+    },
+    {
+      "kode": "31.74.02.1002",
+      "nama": "Karet Semanggi"
+    },
+    {
+      "kode": "31.74.02.1003",
+      "nama": "Karet Kuningan"
+    },
+    {
+      "kode": "31.74.02.1004",
+      "nama": "Karet"
+    },
+    {
+      "kode": "31.74.02.1005",
+      "nama": "Menteng Atas"
+    },
+    {
+      "kode": "31.74.02.1006",
+      "nama": "Pasar Manggis"
+    },
+    {
+      "kode": "31.74.02.1007",
+      "nama": "Guntur"
+    },
+    {
+      "kode": "31.74.02.1008",
+      "nama": "Kuningan Timur"
+    },
+    {
+      "kode": "31.74.03.1001",
+      "nama": "Mampang Prapatan"
+    },
+    {
+      "kode": "31.74.03.1002",
+      "nama": "Bangka"
+    },
+    {
+      "kode": "31.74.03.1003",
+      "nama": "Pela Mampang"
+    },
+    {
+      "kode": "31.74.03.1004",
+      "nama": "Tegal Parang"
+    },
+    {
+      "kode": "31.74.03.1005",
+      "nama": "Kuningan Barat"
+    },
+    {
+      "kode": "31.74.04.1001",
+      "nama": "Pasar Minggu"
+    },
+    {
+      "kode": "31.74.04.1002",
+      "nama": "Jati Padang"
+    },
+    {
+      "kode": "31.74.04.1003",
+      "nama": "Cilandak Timur"
+    },
+    {
+      "kode": "31.74.04.1004",
+      "nama": "Ragunan"
+    },
+    {
+      "kode": "31.74.04.1005",
+      "nama": "Pejaten Timur"
+    },
+    {
+      "kode": "31.74.04.1006",
+      "nama": "Pejaten Barat"
+    },
+    {
+      "kode": "31.74.04.1007",
+      "nama": "Kebagusan"
+    },
+    {
+      "kode": "31.74.05.1001",
+      "nama": "Kebayoran Lama Utara"
+    },
+    {
+      "kode": "31.74.05.1002",
+      "nama": "Pondok Pinang"
+    },
+    {
+      "kode": "31.74.05.1003",
+      "nama": "Cipulir"
+    },
+    {
+      "kode": "31.74.05.1004",
+      "nama": "Grogol Utara"
+    },
+    {
+      "kode": "31.74.05.1005",
+      "nama": "Grogol Selatan"
+    },
+    {
+      "kode": "31.74.05.1006",
+      "nama": "Kebayoran Lama Selatan"
+    },
+    {
+      "kode": "31.74.06.1001",
+      "nama": "Cilandak Barat"
+    },
+    {
+      "kode": "31.74.06.1002",
+      "nama": "Lebak Bulus"
+    },
+    {
+      "kode": "31.74.06.1003",
+      "nama": "Pondok Labu"
+    },
+    {
+      "kode": "31.74.06.1004",
+      "nama": "Gandaria Selatan"
+    },
+    {
+      "kode": "31.74.06.1005",
+      "nama": "Cipete Selatan"
+    },
+    {
+      "kode": "31.74.07.1001",
+      "nama": "Melawai"
+    },
+    {
+      "kode": "31.74.07.1002",
+      "nama": "Gunung"
+    },
+    {
+      "kode": "31.74.07.1003",
+      "nama": "Kramat Pela"
+    },
+    {
+      "kode": "31.74.07.1004",
+      "nama": "Selong"
+    },
+    {
+      "kode": "31.74.07.1005",
+      "nama": "Rawa Barat"
+    },
+    {
+      "kode": "31.74.07.1006",
+      "nama": "Senayan"
+    },
+    {
+      "kode": "31.74.07.1007",
+      "nama": "Pulo"
+    },
+    {
+      "kode": "31.74.07.1008",
+      "nama": "Petogogan"
+    },
+    {
+      "kode": "31.74.07.1009",
+      "nama": "Gandaria Utara"
+    },
+    {
+      "kode": "31.74.07.1010",
+      "nama": "Cipete Utara"
+    },
+    {
+      "kode": "31.74.08.1001",
+      "nama": "Pancoran"
+    },
+    {
+      "kode": "31.74.08.1002",
+      "nama": "Kalibata"
+    },
+    {
+      "kode": "31.74.08.1003",
+      "nama": "Rawajati"
+    },
+    {
+      "kode": "31.74.08.1004",
+      "nama": "Duren Tiga"
+    },
+    {
+      "kode": "31.74.08.1005",
+      "nama": "Pengadegan"
+    },
+    {
+      "kode": "31.74.08.1006",
+      "nama": "Cikoko"
+    },
+    {
+      "kode": "31.74.09.1001",
+      "nama": "Jagakarsa"
+    },
+    {
+      "kode": "31.74.09.1002",
+      "nama": "Srengseng Sawah"
+    },
+    {
+      "kode": "31.74.09.1003",
+      "nama": "Ciganjur"
+    },
+    {
+      "kode": "31.74.09.1004",
+      "nama": "Lenteng Agung"
+    },
+    {
+      "kode": "31.74.09.1005",
+      "nama": "Tanjung Barat"
+    },
+    {
+      "kode": "31.74.09.1006",
+      "nama": "Cipedak"
+    },
+    {
+      "kode": "31.74.10.1001",
+      "nama": "Pesanggrahan"
+    },
+    {
+      "kode": "31.74.10.1002",
+      "nama": "Bintaro"
+    },
+    {
+      "kode": "31.74.10.1003",
+      "nama": "Petukangan Utara"
+    },
+    {
+      "kode": "31.74.10.1004",
+      "nama": "Petukangan Selatan"
+    },
+    {
+      "kode": "31.74.10.1005",
+      "nama": "Ulujami"
+    },
+    {
+      "kode": "31.75.01.1001",
+      "nama": "Pisangan Baru"
+    },
+    {
+      "kode": "31.75.01.1002",
+      "nama": "Utan Kayu Utara"
+    },
+    {
+      "kode": "31.75.01.1003",
+      "nama": "Kayu Manis"
+    },
+    {
+      "kode": "31.75.01.1004",
+      "nama": "Palmeriam"
+    },
+    {
+      "kode": "31.75.01.1005",
+      "nama": "Kebon Manggis"
+    },
+    {
+      "kode": "31.75.01.1006",
+      "nama": "Utan Kayu Selatan"
+    },
+    {
+      "kode": "31.75.02.1001",
+      "nama": "Pulo Gadung"
+    },
+    {
+      "kode": "31.75.02.1002",
+      "nama": "Pisangan Timur"
+    },
+    {
+      "kode": "31.75.02.1003",
+      "nama": "Cipinang"
+    },
+    {
+      "kode": "31.75.02.1004",
+      "nama": "Jatinegara Kaum"
+    },
+    {
+      "kode": "31.75.02.1005",
+      "nama": "Rawamangun"
+    },
+    {
+      "kode": "31.75.02.1006",
+      "nama": "Kayu Putih"
+    },
+    {
+      "kode": "31.75.02.1007",
+      "nama": "Jati"
+    },
+    {
+      "kode": "31.75.03.1001",
+      "nama": "Kampung Melayu"
+    },
+    {
+      "kode": "31.75.03.1002",
+      "nama": "Bidara Cina"
+    },
+    {
+      "kode": "31.75.03.1003",
+      "nama": "Bali Mester"
+    },
+    {
+      "kode": "31.75.03.1004",
+      "nama": "Rawa Bunga"
+    },
+    {
+      "kode": "31.75.03.1005",
+      "nama": "Cipinang Cempedak"
+    },
+    {
+      "kode": "31.75.03.1006",
+      "nama": "Cipinang Muara"
+    },
+    {
+      "kode": "31.75.03.1007",
+      "nama": "Cipinang Besar Selatan"
+    },
+    {
+      "kode": "31.75.03.1008",
+      "nama": "Cipinang Besar Utara"
+    },
+    {
+      "kode": "31.75.04.1001",
+      "nama": "Kramatjati"
+    },
+    {
+      "kode": "31.75.04.1002",
+      "nama": "Tengah"
+    },
+    {
+      "kode": "31.75.04.1003",
+      "nama": "Dukuh"
+    },
+    {
+      "kode": "31.75.04.1004",
+      "nama": "Batu Ampar"
+    },
+    {
+      "kode": "31.75.04.1005",
+      "nama": "Balekambang"
+    },
+    {
+      "kode": "31.75.04.1006",
+      "nama": "Cililitan"
+    },
+    {
+      "kode": "31.75.04.1007",
+      "nama": "Cawang"
+    },
+    {
+      "kode": "31.75.05.1001",
+      "nama": "Gedong"
+    },
+    {
+      "kode": "31.75.05.1002",
+      "nama": "Baru"
+    },
+    {
+      "kode": "31.75.05.1003",
+      "nama": "Cijantung"
+    },
+    {
+      "kode": "31.75.05.1004",
+      "nama": "Kalisari"
+    },
+    {
+      "kode": "31.75.05.1005",
+      "nama": "Pekayon"
+    },
+    {
+      "kode": "31.75.06.1001",
+      "nama": "Jatinegara"
+    },
+    {
+      "kode": "31.75.06.1002",
+      "nama": "Rawa Terate"
+    },
+    {
+      "kode": "31.75.06.1003",
+      "nama": "Penggilingan"
+    },
+    {
+      "kode": "31.75.06.1004",
+      "nama": "Cakung Timur"
+    },
+    {
+      "kode": "31.75.06.1005",
+      "nama": "Pulo Gebang"
+    },
+    {
+      "kode": "31.75.06.1006",
+      "nama": "Ujung Menteng"
+    },
+    {
+      "kode": "31.75.06.1007",
+      "nama": "Cakung Barat"
+    },
+    {
+      "kode": "31.75.07.1001",
+      "nama": "Duren Sawit"
+    },
+    {
+      "kode": "31.75.07.1002",
+      "nama": "Pondok Bambu"
+    },
+    {
+      "kode": "31.75.07.1003",
+      "nama": "Klender"
+    },
+    {
+      "kode": "31.75.07.1004",
+      "nama": "Pondok Kelapa"
+    },
+    {
+      "kode": "31.75.07.1005",
+      "nama": "Malaka Sari"
+    },
+    {
+      "kode": "31.75.07.1006",
+      "nama": "Malaka Jaya"
+    },
+    {
+      "kode": "31.75.07.1007",
+      "nama": "Pondok Kopi"
+    },
+    {
+      "kode": "31.75.08.1001",
+      "nama": "Makasar"
+    },
+    {
+      "kode": "31.75.08.1002",
+      "nama": "Pinangranti"
+    },
+    {
+      "kode": "31.75.08.1003",
+      "nama": "Kebon Pala"
+    },
+    {
+      "kode": "31.75.08.1004",
+      "nama": "Halim Perdana Kusuma"
+    },
+    {
+      "kode": "31.75.08.1005",
+      "nama": "Cipinang Melayu"
+    },
+    {
+      "kode": "31.75.09.1001",
+      "nama": "Ciracas"
+    },
+    {
+      "kode": "31.75.09.1002",
+      "nama": "Cibubur"
+    },
+    {
+      "kode": "31.75.09.1003",
+      "nama": "Kelapa Dua Wetan"
+    },
+    {
+      "kode": "31.75.09.1004",
+      "nama": "Susukan"
+    },
+    {
+      "kode": "31.75.09.1005",
+      "nama": "Rambutan"
+    },
+    {
+      "kode": "31.75.10.1001",
+      "nama": "Cipayung"
+    },
+    {
+      "kode": "31.75.10.1002",
+      "nama": "Cilangkap"
+    },
+    {
+      "kode": "31.75.10.1003",
+      "nama": "Pondok Ranggon"
+    },
+    {
+      "kode": "31.75.10.1004",
+      "nama": "Munjul"
+    },
+    {
+      "kode": "31.75.10.1005",
+      "nama": "Setu"
+    },
+    {
+      "kode": "31.75.10.1006",
+      "nama": "Bambu Apus"
+    },
+    {
+      "kode": "31.75.10.1007",
+      "nama": "Lubang Buaya"
+    },
+    {
+      "kode": "31.75.10.1008",
+      "nama": "Ceger"
+    }
+  ]
+}

@@ -2,7 +2,13 @@
  * Parse wilayah.sql and generate per-province TypeScript data files.
  * Run: bun run scripts/parse-wilayah.ts
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs"
 import { join } from "node:path"
 
 const ROOT = join(import.meta.dirname, "..")
@@ -70,6 +76,17 @@ console.log(`Province chunks to generate: ${byProvince.size}`)
 // Ensure output directory exists
 mkdirSync(OUT_DIR, { recursive: true })
 
+// Remove stale per-province `.ts` data files from the old format. These were
+// migrated to `.json` (see the per-province loop below) because 366K+ lines of
+// static data as TypeScript source forced Vite/Rollup to build a full JS AST
+// for every row in BOTH the client and ssr builds — peaking ~570MB of extra
+// heap and OOM-ing the memory-constrained Cloudflare build container (exit 137).
+for (const file of readdirSync(OUT_DIR)) {
+  if (/^\d+\.ts$/.test(file)) {
+    rmSync(join(OUT_DIR, file))
+  }
+}
+
 // Generate provinces.ts
 const provincesContent = `// Auto-generated from wilayah.sql — do not edit manually
 import type { WilayahEntry } from "./index"
@@ -93,18 +110,22 @@ for (const [code, data] of byProvince) {
   totalKec += data.kecamatan.length
   totalKel += data.kelurahan.length
 
-  const content = `// Auto-generated from wilayah.sql — do not edit manually
-import type { ProvinceData } from "./index"
-
-const data: ProvinceData = {
-  kabupaten: ${JSON.stringify(data.kabupaten, null, 2)},
-  kecamatan: ${JSON.stringify(data.kecamatan, null, 2)},
-  kelurahan: ${JSON.stringify(data.kelurahan, null, 2)},
-}
-
-export default data
-`
-  writeFileSync(join(OUT_DIR, `${code}.ts`), content)
+  // Emit raw JSON, NOT a `.ts` module. As a `.json` file the bundler parses it
+  // natively (JSON.parse) with no per-row AST, and `json.stringify` in
+  // vite.config.ts keeps it a single string literal through Rollup — this is
+  // what keeps the Cloudflare build under its Node heap limit. Loaded lazily,
+  // one chunk per province, via the dynamic `import("./NN.json")` map in
+  // index.ts. JSON forbids comments, so provenance lives in this generator.
+  const content = JSON.stringify(
+    {
+      kabupaten: data.kabupaten,
+      kecamatan: data.kecamatan,
+      kelurahan: data.kelurahan,
+    },
+    null,
+    2
+  )
+  writeFileSync(join(OUT_DIR, `${code}.json`), content)
 }
 
 console.log(
