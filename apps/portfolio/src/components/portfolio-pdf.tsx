@@ -114,8 +114,12 @@ const COVER_BG = "#121212"
 const OFF_WHITE = "#faf9f6"
 const PALE_STONE = "#b4b4b2"
 
-const FIGURE_W = 400
-const FIGURE_H = 225 // 16:9 — sized so one project always fits one A4 page
+// Project image — a TRUE 16:9 card (never cropped). Height is the limiting
+// dimension on A4 landscape (a full-content-width 16:9 would be 317pt tall and
+// overflow once you add the text + reflect strip + footer), so the card is the
+// largest exact-16:9 that fits and is centered in the content column.
+const FIGURE_H = 261
+const FIGURE_W = Math.round((FIGURE_H * 16) / 9) // 464 — exact 16:9
 
 const s = StyleSheet.create({
   cover: {
@@ -180,18 +184,18 @@ const s = StyleSheet.create({
   coverLink: { color: ACCENT, fontSize: 9, textDecoration: "none" },
 
   project: {
+    paddingTop: 40,
+    paddingBottom: 16, // tight bottom gutter so the footer sits flush at the edge
     paddingHorizontal: 40,
-    paddingVertical: 40,
     backgroundColor: "#ffffff",
     fontFamily: "Helvetica",
   },
-  // maxHeight caps the rail+content row so it + the reflection strip + footer
-  // always fit one fixed A4 page (no continuation sheet, no auto-grown page).
-  // overflow:hidden clips any rare excess; the 1-line rail clamps keep real
-  // content within the cap. 384 = 595 page − 80 padding − ~131 (reflect+footer).
-  body: { flexDirection: "row", gap: 28, maxHeight: 384, overflow: "hidden" },
-  // Absorbs the slack between the content block and the reflection strip so the
-  // reflect + footer always pack at the bottom of the (single) page.
+  // Fixed-height rail+content row = the text block + the 16:9 figure below it
+  // (406 = 131 text + 14 gap + 261 figure). Fixed (not flexGrow) keeps one
+  // project on exactly one A4 page; the spacer below pins the reflect strip +
+  // footer flush to the bottom.
+  body: { flexDirection: "row", gap: 28, height: 406, overflow: "hidden" },
+  // Absorbs leftover slack so the reflect strip + footer pack flush at the bottom.
   spacer: { flexGrow: 1 },
   rail: { width: 170, flexDirection: "column" },
   field: { marginBottom: 16 },
@@ -281,9 +285,14 @@ const s = StyleSheet.create({
     fontSize: 10,
     lineHeight: 1.5,
   },
+  // Exact 16:9 card (FIGURE_W × FIGURE_H), left-aligned in the content column.
+  // The image is pre-validated 16:9, so objectFit:cover fills it edge-to-edge
+  // with NO crop. Sized below full width because a full-width 16:9 would be too
+  // tall for one A4 page.
   figure: {
     width: FIGURE_W,
     height: FIGURE_H,
+    alignSelf: "flex-start",
     marginTop: 14,
     borderWidth: 1,
     borderColor: LINE,

@@ -147,5 +147,8 @@
     "dragToReorder": "Seret untuk mengurutkan ulang",
     "generatingPdf": "Membuat PDF, mohon tunggu",
     "pdfReady": "PDF berhasil dibuat"
+  },
+  "errors": {
+    "logoProcess": "Tidak dapat memproses gambar itu. Coba berkas lain."
   }
 }

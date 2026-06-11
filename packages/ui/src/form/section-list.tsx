@@ -121,7 +121,7 @@ export function SectionList<T extends { id: string }>({
           )}
           <input
             aria-label={placeholder}
-            className="min-w-0 flex-1 bg-transparent font-medium text-base outline-none placeholder:text-muted-foreground md:text-sm"
+            className="min-w-0 flex-1 bg-transparent font-medium text-body-sm outline-none placeholder:text-muted-foreground"
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder={placeholder}
             value={title}
@@ -171,7 +171,7 @@ export function SectionList<T extends { id: string }>({
                           {/* biome-ignore lint/a11y/useKeyWithClickEvents: visual button nested in parent <button>; keyboard delete handled by accordion remove flow */}
                           {/* biome-ignore lint/a11y/useSemanticElements: cannot nest <button> inside AccordionTrigger which is already a button */}
                           <span
-                            className="inline-flex size-8 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground md:size-5"
+                            className="inline-flex size-5 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground"
                             onClick={(e) => {
                               e.stopPropagation();
                               onRemove(entry.id);
@@ -179,7 +179,7 @@ export function SectionList<T extends { id: string }>({
                             role="button"
                             tabIndex={-1}
                           >
-                            <X className="size-4 md:size-3" />
+                            <X className="size-3" />
                           </span>
                         </AccordionTrigger>
                         <AccordionContent>

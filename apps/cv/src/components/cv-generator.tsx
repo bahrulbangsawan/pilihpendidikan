@@ -484,7 +484,7 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
   return (
     <>
       <a
-        className="sr-only rounded-md bg-background px-4 py-2 text-sm font-medium outline-none focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
+        className="sr-only rounded-md bg-background px-4 py-2 text-body-sm font-medium outline-none focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
         href="#cv-main"
       >
         {t("a11y.skipToContent")}

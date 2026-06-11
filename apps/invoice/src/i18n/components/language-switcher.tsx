@@ -69,7 +69,7 @@ export function LanguageSwitcher() {
   return (
     <div
       aria-label={t("a11y.switchLanguage")}
-      className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background md:h-7"
+      className="flex h-7 items-center overflow-hidden rounded-md border border-input bg-background"
       role="group"
     >
       {SUPPORTED_LOCALES.map((lang, i) => {

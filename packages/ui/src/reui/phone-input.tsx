@@ -157,7 +157,7 @@ function CountrySelect({
               disabled && "opacity-50"
             )}
             disabled={disabled}
-            size={variant}
+            size={variant === "sm" ? "sm" : "lg"}
             variant="outline"
           >
             <span className="sr-only">
@@ -184,7 +184,7 @@ function CountrySelect({
           value={searchValue}
         />
         <ComboboxSeparator />
-        <ComboboxEmpty className="px-4 py-2.5 text-sm">
+        <ComboboxEmpty className="px-4 py-2.5 text-xs">
           No country found.
         </ComboboxEmpty>
         <ComboboxList>
@@ -202,8 +202,8 @@ function CountrySelect({
                         country={item.value}
                         countryName={item.label}
                       />
-                      <span className="flex-1 text-sm">{item.label}</span>
-                      <span className="text-foreground/50 text-sm">
+                      <span className="flex-1 text-xs">{item.label}</span>
+                      <span className="text-foreground/50 text-xs">
                         {`+${getCountryCallingCode(item.value)}`}
                       </span>
                     </ComboboxItem>

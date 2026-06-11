@@ -194,7 +194,8 @@
     "institutionRequired": "Institution is required",
     "degreeRequired": "Degree is required",
     "invalidUrl": "Must start with http:// or https://",
-    "maxFileSize": "Max file size is 2MB"
+    "maxFileSize": "Max file size is 2MB",
+    "imageProcess": "Couldn't process that image. Try a different file."
   },
   "options": {
     "notSpecified": "Not specified",

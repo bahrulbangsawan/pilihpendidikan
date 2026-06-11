@@ -117,7 +117,7 @@ export function PeriodRangePicker({
         <PopoverTrigger asChild>
           <Button
             className={cn(
-              "h-7 w-full justify-start border-input bg-input/20 px-2 text-left text-sm font-normal md:text-xs/relaxed dark:bg-input/30",
+              "h-8 w-full justify-start border-input bg-input/20 px-2.5 text-left text-xs font-normal dark:bg-input/30",
               !value && "text-muted-foreground"
             )}
             disabled={disabled}

@@ -373,7 +373,9 @@
   display: flex;
   flex-direction: column;
   height: var(--pf-page-h);
-  padding: var(--pf-gutter);
+  /* Tight bottom gutter (matches the PDF's 16pt) so the reflect strip + footer
+     pack flush at the bottom edge. */
+  padding: var(--pf-gutter) var(--pf-gutter) 6mm;
 }
 /* rail + content row — grows to absorb all vertical slack on the page. */
 .pf-project-main {
@@ -494,10 +496,11 @@
   -webkit-line-clamp: 3;
 }
 .pf-figure {
-  /* 16:9 image slot that GROWS to fill the empty space below the text block.
-     flex-grow drives the height; aspect-ratio derives the width (capped at the
-     column). Uploads are pre-validated 16:9, so object-fit: cover never crops
-     and the slot stays an exact 16:9 rectangle at any size. */
+  /* TRUE 16:9 card (aspect-ratio drives the shape), left-aligned in the content
+     column and grown as large as fits (flex-grow drives the height; width
+     follows at 16:9, capped at the column). The image is pre-validated 16:9, so
+     object-fit: cover fills it with NO crop. Matches the PDF renderer's fixed
+     16:9 card. Sized below full width because a full-width 16:9 is too tall. */
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -520,7 +523,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ratio is pre-validated, so cover never crops */
+  object-fit: cover;
 }
 .pf-figure .pf-ph-title {
   color: var(--pf-ink-soft);
@@ -560,6 +563,8 @@
 }
 .pf-reflect p {
   display: -webkit-box;
+  min-height: 60px; /* reserve 3 lines (matches the PDF's fixed reflect height) so
+                       the figure above ends at the same Y as the PDF renderer */
   margin: 0;
   overflow: hidden;
   color: var(--pf-ink-soft);

@@ -147,5 +147,8 @@
     "dragToReorder": "Drag to reorder",
     "generatingPdf": "Generating PDF, please wait",
     "pdfReady": "PDF generated successfully"
+  },
+  "errors": {
+    "logoProcess": "Couldn't process that image. Try a different file."
   }
 }

@@ -194,7 +194,8 @@
     "institutionRequired": "Institusi wajib diisi",
     "degreeRequired": "Gelar wajib diisi",
     "invalidUrl": "Harus diawali http:// atau https://",
-    "maxFileSize": "Ukuran berkas maksimal 2MB"
+    "maxFileSize": "Ukuran berkas maksimal 2MB",
+    "imageProcess": "Tidak dapat memproses gambar itu. Coba berkas lain."
   },
   "options": {
     "notSpecified": "Tidak ditentukan",

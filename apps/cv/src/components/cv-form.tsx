@@ -47,6 +47,11 @@ import {
 import { GripVertical, Info, Trash2, Upload, X } from "lucide-react"
 import { type ReactNode, useId, useMemo, useState } from "react"
 import { useTranslation } from "@/i18n"
+import { preprocessImage } from "@/lib/preprocess-image"
+
+// Profile photos render into a ~64px avatar in the preview and a small fixed box
+// in every PDF template, so 480px on the long edge is retina-sharp yet tiny.
+const PHOTO_MAX_EDGE = 480
 
 type Translate = (
   key: string,
@@ -297,6 +302,19 @@ export function CVForm({ data, onChange }: CVFormProps) {
       delete next[key]
       return next
     })
+  }
+
+  async function handlePhotoFile(file: File) {
+    try {
+      const photoUrl = await preprocessImage(file, { maxEdge: PHOTO_MAX_EDGE })
+      updateError("photo", undefined)
+      onChange({
+        ...data,
+        personalInfo: { ...data.personalInfo, photoUrl },
+      })
+    } catch {
+      updateError("photo", t("errors.imageProcess"))
+    }
   }
 
   // --- Personal info ---
@@ -748,7 +766,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           <section>
             <input
               aria-label={t("a11y2.summarySectionTitle")}
-              className="w-full bg-transparent text-base font-medium outline-none placeholder:text-muted-foreground md:text-sm"
+              className="w-full bg-transparent text-body-sm font-medium outline-none placeholder:text-muted-foreground"
               onChange={(e) =>
                 onChange({ ...data, summaryTitle: e.target.value })
               }
@@ -815,7 +833,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
     <div className="space-y-6">
       {/* ── Personal Info ── */}
       <section>
-        <h2 className="text-base font-medium md:text-sm">
+        <h2 className="text-body-sm font-medium">
           {t("form.personalInformation")}
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -977,7 +995,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     </Button>
                   </>
                 ) : (
-                  <label className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-base text-muted-foreground hover:border-foreground/30 md:min-h-0 md:text-sm">
+                  <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-xs text-muted-foreground hover:border-foreground/30">
                     <Upload className="size-4" />
                     {t("form.uploadPhoto")}
                     <input
@@ -986,25 +1004,10 @@ export function CVForm({ data, onChange }: CVFormProps) {
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0]
-                        if (!file) {
-                          return
+                        e.target.value = ""
+                        if (file) {
+                          void handlePhotoFile(file)
                         }
-                        if (file.size > 2 * 1024 * 1024) {
-                          updateError("photo", t("errors.maxFileSize"))
-                          return
-                        }
-                        updateError("photo", undefined)
-                        const reader = new FileReader()
-                        reader.onload = () => {
-                          onChange({
-                            ...data,
-                            personalInfo: {
-                              ...data.personalInfo,
-                              photoUrl: reader.result as string,
-                            },
-                          })
-                        }
-                        reader.readAsDataURL(file)
                       }}
                       type="file"
                     />

@@ -28,6 +28,7 @@ import {
   Upload,
   UserRound,
 } from "lucide-react"
+import { useState } from "react"
 import { AddressFields } from "@/components/form/address-fields"
 import { DatePicker } from "@/components/form/date-picker"
 import { PeriodRangePicker } from "@/components/form/period-range-picker"
@@ -41,6 +42,7 @@ import type {
 } from "@/components/invoice-form-utils"
 import { formatCurrency } from "@/components/invoice-form-utils"
 import { useTranslation } from "@/i18n"
+import { preprocessImage } from "@/lib/preprocess-image"
 
 // Re-export types for consumers that import from this module
 export type {
@@ -52,6 +54,10 @@ export type {
   RecipientInfo,
   SenderInfo,
 } from "@/components/invoice-form-utils"
+
+// Logos render at ~h-8 in the editor and small in the PDF, so 320px on the long
+// edge stays crisp while keeping the embed tiny. PNG logos keep their alpha.
+const LOGO_MAX_EDGE = 320
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -75,6 +81,8 @@ interface InvoiceFormProps {
 
 export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   const { t } = useTranslation()
+  const [logoError, setLogoError] = useState<string | undefined>(undefined)
+
   function updateField<K extends keyof InvoiceData>(
     field: K,
     value: InvoiceData[K]
@@ -283,24 +291,26 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
   // ── Logo upload ──
 
-  function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
+    e.target.value = ""
     if (!file) {
       return
     }
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      updateFrom("logoUrl", ev.target?.result as string)
+    try {
+      const logoUrl = await preprocessImage(file, { maxEdge: LOGO_MAX_EDGE })
+      setLogoError(undefined)
+      updateFrom("logoUrl", logoUrl)
+    } catch {
+      setLogoError(t("errors.logoProcess"))
     }
-    reader.readAsDataURL(file)
-    e.target.value = ""
   }
 
   return (
     <div className="space-y-6">
       {/* ── Invoice Details ── */}
       <section>
-        <h2 className="flex items-center gap-2 text-sm font-medium">
+        <h2 className="flex items-center gap-2 text-body-sm font-medium">
           <FileText className="size-4 text-muted-foreground" />{" "}
           {t("form.invoiceDetails")}
         </h2>
@@ -393,7 +403,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── From (Sender) ── */}
       <Collapsible defaultOpen>
-        <CollapsibleTrigger className="flex w-full items-center justify-between text-sm font-medium [&[data-state=open]>.chevron]:rotate-180">
+        <CollapsibleTrigger className="flex w-full items-center justify-between text-body-sm font-medium [&[data-state=open]>.chevron]:rotate-180">
           <span className="flex items-center gap-2">
             <Building2 className="size-4 text-muted-foreground" />{" "}
             {t("form.fromSection")}
@@ -459,7 +469,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                       data.from.logoUrl ? t("form.change") : t("form.upload")
                     }
                     className="hidden"
-                    onChange={handleLogoUpload}
+                    onChange={(e) => void handleLogoUpload(e)}
                     type="file"
                   />
                 </label>
@@ -477,6 +487,9 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   </Button>
                 )}
               </div>
+              {logoError && (
+                <p className="text-xs text-destructive">{logoError}</p>
+              )}
             </div>
           </div>
         </CollapsibleContent>
@@ -486,7 +499,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── Bill To ── */}
       <Collapsible defaultOpen>
-        <CollapsibleTrigger className="flex w-full items-center justify-between text-sm font-medium [&[data-state=open]>.chevron]:rotate-180">
+        <CollapsibleTrigger className="flex w-full items-center justify-between text-body-sm font-medium [&[data-state=open]>.chevron]:rotate-180">
           <span className="flex items-center gap-2">
             <UserRound className="size-4 text-muted-foreground" />{" "}
             {t("form.billToSection")}
@@ -672,7 +685,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── Adjustments ── */}
       <section>
-        <h2 className="flex items-center gap-2 text-sm font-medium">
+        <h2 className="flex items-center gap-2 text-body-sm font-medium">
           <SlidersHorizontal className="size-4 text-muted-foreground" />{" "}
           {t("form.adjustments")}
         </h2>
@@ -765,7 +778,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── Notes & Settings ── */}
       <section>
-        <h2 className="flex items-center gap-2 text-sm font-medium">
+        <h2 className="flex items-center gap-2 text-body-sm font-medium">
           <StickyNote className="size-4 text-muted-foreground" />{" "}
           {t("form.notesSettings")}
         </h2>

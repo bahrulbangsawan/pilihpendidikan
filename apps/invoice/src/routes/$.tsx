@@ -1,11 +1,10 @@
-import { createFileRoute, redirect } from "@tanstack/react-router"
+import { createFileRoute, notFound } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/$")({
-  beforeLoad: ({ params }) => {
-    // Allow /id route to pass through (handled by id.tsx)
-    if (params._splat === "id") {
-      return
-    }
-    throw redirect({ to: "/" })
+  beforeLoad: () => {
+    // Unknown URL → render the app's not-found screen (wired as the router's
+    // `defaultNotFoundComponent`) with a real 404 status, instead of silently
+    // redirecting to `/`. The more-specific `/id` route still wins for `/id`.
+    throw notFound()
   },
 })

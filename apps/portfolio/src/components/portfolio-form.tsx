@@ -36,6 +36,7 @@ import {
   SUBMISSION_TARGET,
   type Track,
 } from "@/components/portfolio-data-model"
+import { preprocessImage } from "@/lib/preprocess-image"
 
 // Owner-side affiliation/track/collaboration option lists. Concrete values
 // only (no empty option) — every list maps onto a required discriminant.
@@ -74,6 +75,9 @@ const COLLABORATION_OPTIONS: {
 // fits under this; the ratio guard (16:9) is the real gate.
 const MAX_IMAGE_MB = 5
 const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024
+// Project media fills a 16:9 slot up to ~half an A4-landscape page, so 1200px on
+// the long edge (→ 1200×675) covers print resolution without bloating the embed.
+const MEDIA_MAX_EDGE = 1200
 
 // ── Factories ──────────────────────────────────────────────
 
@@ -324,7 +328,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   }
 
   // ── Image upload (strict 16:9 guard) ─────────────────────
-  function handleImageUpload(project: Project, file: File | undefined) {
+  async function handleImageUpload(project: Project, file: File | undefined) {
     if (!file) {
       return
     }
@@ -332,42 +336,43 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       setImageError(project.id, t("errors.maxFileSize", { mb: MAX_IMAGE_MB }))
       return
     }
-    const reader = new FileReader()
-    reader.onload = () => {
-      const dataUrl = reader.result as string
-      const img = new Image()
-      img.onload = () => {
-        const { naturalWidth: w, naturalHeight: h } = img
-        if (!isValidImageRatio(w, h)) {
-          setImageError(
-            project.id,
-            t("errors.imageRatio", {
-              w: RECOMMENDED_IMAGE_SIZE.width,
-              h: RECOMMENDED_IMAGE_SIZE.height,
-            })
-          )
-          return
-        }
-        setImageError(project.id, undefined)
-        const existing = project.media[0]
-        updateProject(project.id, {
-          media: [
-            {
-              type: "image",
-              url: dataUrl,
-              alt: existing?.alt ?? "",
-              caption: existing?.caption,
-              width: w,
-              height: h,
-            },
-          ],
-        })
+    try {
+      // Probe the EXIF-oriented bitmap to enforce the locked 16:9 ratio against
+      // the same orientation preprocessImage bakes into the output.
+      const probe = await createImageBitmap(file, {
+        imageOrientation: "from-image",
+      })
+      const w = probe.width
+      const h = probe.height
+      probe.close()
+      if (!isValidImageRatio(w, h)) {
+        setImageError(
+          project.id,
+          t("errors.imageRatio", {
+            w: RECOMMENDED_IMAGE_SIZE.width,
+            h: RECOMMENDED_IMAGE_SIZE.height,
+          })
+        )
+        return
       }
-      img.onerror = () => setImageError(project.id, t("errors.imageDecode"))
-      img.src = dataUrl
+      const url = await preprocessImage(file, { maxEdge: MEDIA_MAX_EDGE })
+      setImageError(project.id, undefined)
+      const existing = project.media[0]
+      updateProject(project.id, {
+        media: [
+          {
+            type: "image",
+            url,
+            alt: existing?.alt ?? "",
+            caption: existing?.caption,
+            width: w,
+            height: h,
+          },
+        ],
+      })
+    } catch {
+      setImageError(project.id, t("errors.imageDecode"))
     }
-    reader.onerror = () => setImageError(project.id, t("errors.imageDecode"))
-    reader.readAsDataURL(file)
   }
 
   function updateMediaField(
@@ -839,7 +844,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </div>
           ) : (
-            <label className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-base text-muted-foreground hover:border-foreground/30 md:min-h-0 md:text-sm">
+            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-xs text-muted-foreground hover:border-foreground/30">
               <Upload className="size-4" />
               {t("form.uploadImage")}
               <input
@@ -847,8 +852,9 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 aria-label={t("form.uploadImage")}
                 className="hidden"
                 onChange={(e) => {
-                  handleImageUpload(project, e.target.files?.[0])
+                  const file = e.target.files?.[0]
                   e.target.value = ""
+                  void handleImageUpload(project, file)
                 }}
                 type="file"
               />
@@ -874,7 +880,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     <div className="space-y-6">
       {/* ── Profile ── */}
       <section className="space-y-3">
-        <h2 className="text-base font-medium md:text-sm">
+        <h2 className="text-body-sm font-medium">
           {t("form.profile")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -938,7 +944,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
       {/* ── Contact ── */}
       <section className="space-y-3">
-        <h2 className="text-base font-medium md:text-sm">
+        <h2 className="text-body-sm font-medium">
           {t("form.contact")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-3">
@@ -1037,7 +1043,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
       {/* ── Submission ── */}
       <section className="space-y-3">
-        <h2 className="text-base font-medium md:text-sm">
+        <h2 className="text-body-sm font-medium">
           {t("form.submission")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
