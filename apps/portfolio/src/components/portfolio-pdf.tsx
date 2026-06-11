@@ -7,7 +7,9 @@ import {
   Image,
   Link,
   Page,
+  Path,
   StyleSheet,
+  Svg,
   Text,
   View,
 } from "@react-pdf/renderer"
@@ -112,8 +114,8 @@ const COVER_BG = "#121212"
 const OFF_WHITE = "#faf9f6"
 const PALE_STONE = "#b4b4b2"
 
-const FIGURE_W = 360
-const FIGURE_H = 202.5 // 16:9
+const FIGURE_W = 400
+const FIGURE_H = 225 // 16:9 — sized so one project always fits one A4 page
 
 const s = StyleSheet.create({
   cover: {
@@ -123,6 +125,20 @@ const s = StyleSheet.create({
     paddingHorizontal: 40,
     paddingVertical: 40,
     fontFamily: "Helvetica",
+  },
+  coverKickerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  coverDot: {
+    width: 16,
+    height: 16,
+    borderWidth: 1,
+    borderColor: OFF_WHITE,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
   coverKicker: {
     color: PALE_STONE,
@@ -169,16 +185,14 @@ const s = StyleSheet.create({
     backgroundColor: "#ffffff",
     fontFamily: "Helvetica",
   },
-  index: {
-    position: "absolute",
-    top: 40,
-    right: 40,
-    color: INK_FAINT,
-    fontSize: 8,
-    letterSpacing: 1,
-    textTransform: "uppercase",
-  },
-  body: { flexDirection: "row", gap: 28 },
+  // maxHeight caps the rail+content row so it + the reflection strip + footer
+  // always fit one fixed A4 page (no continuation sheet, no auto-grown page).
+  // overflow:hidden clips any rare excess; the 1-line rail clamps keep real
+  // content within the cap. 384 = 595 page − 80 padding − ~131 (reflect+footer).
+  body: { flexDirection: "row", gap: 28, maxHeight: 384, overflow: "hidden" },
+  // Absorbs the slack between the content block and the reflection strip so the
+  // reflect + footer always pack at the bottom of the (single) page.
+  spacer: { flexGrow: 1 },
   rail: { width: 170, flexDirection: "column" },
   field: { marginBottom: 16 },
   fieldLabel: {
@@ -189,8 +203,16 @@ const s = StyleSheet.create({
     letterSpacing: 1.1,
     textTransform: "uppercase",
   },
-  fieldValue: { color: INK_SOFT, fontSize: 10 },
-  fieldLink: { color: ACCENT, fontSize: 10, textDecoration: "none" },
+  // 1-line clamps mirror the HTML preview's nowrap/ellipsis rail rows so a long
+  // value can't wrap to 2 lines and balloon the rail past the A4 page height.
+  fieldValue: { height: 13, overflow: "hidden", color: INK_SOFT, fontSize: 10 },
+  fieldLink: {
+    height: 13,
+    overflow: "hidden",
+    color: ACCENT,
+    fontSize: 10,
+    textDecoration: "none",
+  },
   badgeRow: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
   badge: {
     paddingHorizontal: 6,
@@ -223,22 +245,42 @@ const s = StyleSheet.create({
     fontSize: 10,
   },
   sowDot: { width: 10, color: INK_FAINT },
-  sowText: { flex: 1, color: INK_SOFT, fontSize: 10, lineHeight: 1.4 },
+  sowText: {
+    height: 14,
+    overflow: "hidden",
+    flex: 1,
+    color: INK_SOFT,
+    fontSize: 10,
+    lineHeight: 1.4,
+  },
   content: { flex: 1 },
+  // Fixed heights + overflow:hidden clamp each block to its line budget so the
+  // figure/reflect/footer below always sit at the same Y — one project, one page.
   title: {
+    height: 30, // 1 line
+    overflow: "hidden",
     color: INK,
     fontSize: 24,
     fontFamily: "Helvetica-Bold",
     letterSpacing: -0.6,
   },
   lede: {
+    height: 36, // 2 lines
+    overflow: "hidden",
     marginTop: 10,
     color: INK,
     fontSize: 12,
     fontFamily: "Helvetica-Bold",
     lineHeight: 1.4,
   },
-  bodyText: { marginTop: 8, color: INK_SOFT, fontSize: 10, lineHeight: 1.5 },
+  bodyText: {
+    height: 47, // 3 lines
+    overflow: "hidden",
+    marginTop: 8,
+    color: INK_SOFT,
+    fontSize: 10,
+    lineHeight: 1.5,
+  },
   figure: {
     width: FIGURE_W,
     height: FIGURE_H,
@@ -270,20 +312,30 @@ const s = StyleSheet.create({
     letterSpacing: 1.1,
     textTransform: "uppercase",
   },
-  reflectText: { color: INK_SOFT, fontSize: 10, lineHeight: 1.5 },
+  reflectText: {
+    height: 47, // 3 lines
+    overflow: "hidden",
+    color: INK_SOFT,
+    fontSize: 10,
+    lineHeight: 1.5,
+  },
   pagefoot: {
-    position: "absolute",
-    left: 40,
-    right: 40,
-    bottom: 24,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 14,
     paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: LINE,
   },
   pagefootText: { color: INK_FAINT, fontSize: 8 },
   pagefootStrong: { color: INK_SOFT, fontFamily: "Helvetica-Bold" },
+  pagefootRight: { flexDirection: "row", alignItems: "center", gap: 12 },
+  pagefootIndex: {
+    color: INK_FAINT,
+    fontSize: 8,
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
 })
 
 function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
@@ -307,10 +359,21 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
 
   return (
     <Page orientation="landscape" size="A4" style={s.cover}>
-      <Text style={s.coverKicker}>
-        {"→  "}
-        {t("preview.kicker", { year: data.cohortYear ?? "" })}
-      </Text>
+      <View style={s.coverKickerRow}>
+        <View style={s.coverDot}>
+          <Svg height={9} viewBox="0 0 24 24" width={9}>
+            <Path
+              d="M4 12 L20 12 M13 5 L20 12 L13 19"
+              fill="none"
+              stroke={OFF_WHITE}
+              strokeWidth={2.5}
+            />
+          </Svg>
+        </View>
+        <Text style={s.coverKicker}>
+          {t("preview.kicker", { year: data.cohortYear ?? "" })}
+        </Text>
+      </View>
       <View>
         <Text style={s.coverTitle}>
           {t("preview.portfolio")}
@@ -387,9 +450,6 @@ function ProjectPage({
 
   return (
     <Page orientation="landscape" size="A4" style={s.project}>
-      <Text style={s.index}>
-        {t("preview.projectIndex", { n: index + 1, total })}
-      </Text>
       <View style={s.body}>
         <View style={s.rail}>
           <View style={s.field}>
@@ -449,12 +509,8 @@ function ProjectPage({
           <Text style={s.title}>
             {project.title || t("preview.untitledProject")}
           </Text>
-          {project.summary ? (
-            <Text style={s.lede}>{project.summary}</Text>
-          ) : null}
-          {project.description ? (
-            <Text style={s.bodyText}>{project.description}</Text>
-          ) : null}
+          <Text style={s.lede}>{project.summary}</Text>
+          <Text style={s.bodyText}>{project.description}</Text>
           <View style={s.figure}>
             {media?.url ? (
               <Image src={media.url} style={s.figureImage} />
@@ -466,6 +522,7 @@ function ProjectPage({
           </View>
         </View>
       </View>
+      <View style={s.spacer} />
       <View style={s.reflect}>
         <View style={s.reflectCol}>
           <Text style={s.reflectLabel}>{t("preview.impact")}</Text>
@@ -484,14 +541,19 @@ function ProjectPage({
           {" · "}
           {affiliationFootnote(owner, t)}
         </Text>
-        <Text style={s.pagefootText}>
-          {[
-            owner.contact.email,
-            data.submissionTarget || t("preview.defaultTarget"),
-          ]
-            .filter(Boolean)
-            .join(" · ")}
-        </Text>
+        <View style={s.pagefootRight}>
+          <Text style={s.pagefootText}>
+            {[
+              owner.contact.email,
+              data.submissionTarget || t("preview.defaultTarget"),
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </Text>
+          <Text style={s.pagefootIndex}>
+            {t("preview.projectIndex", { n: index + 1, total })}
+          </Text>
+        </View>
       </View>
     </Page>
   )

@@ -1,8 +1,15 @@
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field"
 import { SectionList } from "@rulisme/ui/form/section-list"
+import { PhoneInput } from "@rulisme/ui/reui/phone-input"
 import { Badge } from "@rulisme/ui/ui/badge"
 import { Button } from "@rulisme/ui/ui/button"
 import { Input } from "@rulisme/ui/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@rulisme/ui/ui/input-group"
 import { Label } from "@rulisme/ui/ui/label"
 import {
   Select,
@@ -111,6 +118,14 @@ export function makeEmptyPortfolio(): Portfolio {
 // boundary so a field can never exceed its slot in the locked layout.
 function clamp(value: string, max: number): string {
   return value.length > max ? value.slice(0, max) : value
+}
+
+// The website field shows a fixed "https://" prefix addon, so the input itself
+// only edits the part after the protocol. Strip any protocol the user types or
+// pastes; the stored value is re-composed with https:// on change.
+const PROTOCOL_RE = /^https?:\/\//i
+function stripProtocol(value: string): string {
+  return value.replace(PROTOCOL_RE, "")
 }
 
 // ── Reusable chip field (scope of work / technologies / skills) ───
@@ -375,7 +390,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   function renderAffiliationFields() {
     if (affiliation.kind === "student" || affiliation.kind === "alumni") {
       return (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-3">
           <FormField
             label={t("form.institution")}
             onChange={(v) =>
@@ -443,7 +458,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
     if (affiliation.kind === "professional") {
       return (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-3">
           <FormField
             label={t("form.organization")}
             onChange={(v) =>
@@ -862,22 +877,24 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
         <h2 className="text-base font-medium md:text-sm">
           {t("form.profile")}
         </h2>
-        <FormField
-          label={t("form.fullName")}
-          onChange={(v) =>
-            updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
-          }
-          placeholder={t("placeholders.fullName")}
-          value={owner.fullName}
-        />
-        <FormField
-          label={t("form.headline")}
-          onChange={(v) =>
-            updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
-          }
-          placeholder={t("placeholders.headline")}
-          value={owner.headline ?? ""}
-        />
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormField
+            label={t("form.fullName")}
+            onChange={(v) =>
+              updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
+            }
+            placeholder={t("placeholders.fullName")}
+            value={owner.fullName}
+          />
+          <FormField
+            label={t("form.headline")}
+            onChange={(v) =>
+              updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
+            }
+            placeholder={t("placeholders.headline")}
+            value={owner.headline ?? ""}
+          />
+        </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormFieldCustom label={t("form.track")}>
             <Select
@@ -924,7 +941,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
         <h2 className="text-base font-medium md:text-sm">
           {t("form.contact")}
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-3">
           <FormField
             label={t("form.email")}
             onChange={(v) =>
@@ -934,23 +951,40 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             type="email"
             value={contact.email}
           />
-          <FormField
-            label={t("form.phone")}
-            onChange={(v) =>
-              updateContact({ phone: clamp(v, LIMITS.contact.phone) })
-            }
-            placeholder={t("placeholders.phone")}
-            value={contact.phone ?? ""}
-          />
+          <div className="space-y-1.5">
+            <Label>{t("form.phone")}</Label>
+            <PhoneInput
+              defaultCountry="ID"
+              onChange={(value) =>
+                updateContact({
+                  phone: clamp(String(value ?? ""), LIMITS.contact.phone),
+                })
+              }
+              placeholder={t("placeholders.phone")}
+              value={contact.phone || undefined}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>{t("form.websiteUrl")}</Label>
+            <InputGroup>
+              <InputGroupAddon align="inline-start">
+                <InputGroupText>https://</InputGroupText>
+              </InputGroupAddon>
+              <InputGroupInput
+                onChange={(e) => {
+                  const bare = stripProtocol(e.target.value)
+                  updateContact({
+                    websiteUrl: bare
+                      ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
+                      : "",
+                  })
+                }}
+                placeholder={t("placeholders.websiteBare")}
+                value={stripProtocol(contact.websiteUrl ?? "")}
+              />
+            </InputGroup>
+          </div>
         </div>
-        <FormField
-          label={t("form.websiteUrl")}
-          onChange={(v) =>
-            updateContact({ websiteUrl: clamp(v, LIMITS.contact.websiteUrl) })
-          }
-          placeholder={t("placeholders.url")}
-          value={contact.websiteUrl ?? ""}
-        />
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-2">
             <Label>{t("form.socials")}</Label>

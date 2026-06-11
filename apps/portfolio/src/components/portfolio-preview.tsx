@@ -220,84 +220,85 @@ function ProjectPage({
 
   return (
     <section className="pf-page pf-project">
-      <span className="pf-project__index">
-        {t("preview.projectIndex", { n: index + 1, total })}
-      </span>
-
-      <aside className="pf-rail">
-        <div className="pf-field">
-          <h5>{t("preview.yearAccomplished")}</h5>
-          <p>{project.yearAccomplished || "—"}</p>
-        </div>
-        <div className="pf-field">
-          <h5>{t("preview.rolePosition")}</h5>
-          <p>{project.role || "—"}</p>
-        </div>
-        <div className="pf-field">
-          <h5>{t("preview.type")}</h5>
-          <p>
-            <span className="pf-badge">
-              {projectTypeLabel(project.projectType, t)}
-            </span>
-            {isGroup && (
-              <>
-                {" "}
-                <span className="pf-badge pf-badge--group">
-                  {t("preview.groupProject")}
-                </span>
-              </>
-            )}
-          </p>
-        </div>
-        {project.publicationUrl && (
+      <div className="pf-project-main">
+        <aside className="pf-rail">
           <div className="pf-field">
-            <h5>{t("preview.publicationLink")}</h5>
+            <h5>{t("preview.yearAccomplished")}</h5>
+            <p>{project.yearAccomplished || "—"}</p>
+          </div>
+          <div className="pf-field">
+            <h5>{t("preview.rolePosition")}</h5>
+            <p>{project.role || "—"}</p>
+          </div>
+          <div className="pf-field">
+            <h5>{t("preview.type")}</h5>
             <p>
-              <a href={project.publicationUrl} rel="noreferrer" target="_blank">
-                {displayUrl(project.publicationUrl)}
-              </a>
+              <span className="pf-badge">
+                {projectTypeLabel(project.projectType, t)}
+              </span>
+              {isGroup && (
+                <>
+                  {" "}
+                  <span className="pf-badge pf-badge--group">
+                    {t("preview.groupProject")}
+                  </span>
+                </>
+              )}
             </p>
           </div>
-        )}
-        {sow.length > 0 && (
-          <div className="pf-field pf-field--sow">
-            <h5>{t("preview.scopeOfWork")}</h5>
-            <ul className="pf-sow">
-              {sow.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {tags.length > 0 && (
-          <div className="pf-field pf-field--tech">
-            <h5>{tagLabel}</h5>
-            <div className="pf-tag-row">
-              {tags.map((tag) => (
-                <span className="pf-tag" key={tag}>
-                  {tag}
-                </span>
-              ))}
+          {project.publicationUrl && (
+            <div className="pf-field">
+              <h5>{t("preview.publicationLink")}</h5>
+              <p>
+                <a
+                  href={project.publicationUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {displayUrl(project.publicationUrl)}
+                </a>
+              </p>
             </div>
+          )}
+          {sow.length > 0 && (
+            <div className="pf-field pf-field--sow">
+              <h5>{t("preview.scopeOfWork")}</h5>
+              <ul className="pf-sow">
+                {sow.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {tags.length > 0 && (
+            <div className="pf-field pf-field--tech">
+              <h5>{tagLabel}</h5>
+              <div className="pf-tag-row">
+                {tags.map((tag) => (
+                  <span className="pf-tag" key={tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+
+        <div className="pf-content">
+          <h2>{project.title || t("preview.untitledProject")}</h2>
+          <p className="pf-lede">{project.summary}</p>
+          <p className="pf-body">{project.description}</p>
+          <div className="pf-figure">
+            {media?.url ? (
+              <img alt={media.alt || project.title} src={media.url} />
+            ) : (
+              <>
+                <div className="pf-ph-title">{t("preview.artworkTitle")}</div>
+                <div className="pf-ph-note">{t("preview.artworkNote")}</div>
+              </>
+            )}
           </div>
-        )}
-      </aside>
-
-      <div className="pf-content">
-        <h2>{project.title || t("preview.untitledProject")}</h2>
-        <p className="pf-lede">{project.summary}</p>
-        <p className="pf-body">{project.description}</p>
-      </div>
-
-      <div className="pf-figure">
-        {media?.url ? (
-          <img alt={media.alt || project.title} src={media.url} />
-        ) : (
-          <>
-            <div className="pf-ph-title">{t("preview.artworkTitle")}</div>
-            <div className="pf-ph-note">{t("preview.artworkNote")}</div>
-          </>
-        )}
+        </div>
       </div>
 
       <div className="pf-reflect">
@@ -317,13 +318,18 @@ function ProjectPage({
           {" · "}
           {affiliationFootnote(owner, t)}
         </span>
-        <span>
-          {[
-            owner.contact.email,
-            data.submissionTarget || t("preview.defaultTarget"),
-          ]
-            .filter(Boolean)
-            .join(" · ")}
+        <span className="pf-pagefoot__right">
+          <span>
+            {[
+              owner.contact.email,
+              data.submissionTarget || t("preview.defaultTarget"),
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </span>
+          <span className="pf-pagefoot__index">
+            {t("preview.projectIndex", { n: index + 1, total })}
+          </span>
         </span>
       </div>
     </section>

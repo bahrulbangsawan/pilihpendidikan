@@ -48,10 +48,14 @@ Host: `portfolio.bahrul.me`.
 
 ## Locked layout (do not loosen)
 
-The portfolio is a **fixed-footprint** print artifact. Every locked rule from
-`portfolio-mock/index.html` is preserved in the `.pf-*` block of `src/styles.css`:
-fixed 16:9 image slot (150mm), bounded Scope-of-Work list, `-webkit-line-clamp`
-per `LINES`, `align-content: start`, equal 12px rhythm, char caps per `LIMITS`.
+The portfolio is a **fixed-footprint** print artifact. The `.pf-*` block of
+`src/styles.css` keeps every locked rule from `portfolio-mock/index.html`:
+bounded Scope-of-Work list, `-webkit-line-clamp` per `LINES`, char caps per
+`LIMITS`. The project page is a flex column that **fills the A4 page**: the
+rail+content row (`.pf-project-main`) grows to absorb slack, so the **16:9
+image slot grows (height-driven, never cropped)** to fill the empty space, and
+the reflection strip + footer pack flush at the bottom. Keep the slot exactly
+16:9 (uploads are pre-validated 16:9) and never let content overflow the page.
 
 ## Design system — Warp (see `DESIGN.md`)
 

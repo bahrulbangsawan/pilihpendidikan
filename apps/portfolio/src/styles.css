@@ -365,31 +365,30 @@
   text-decoration: none;
 }
 
-/* ---- Project page ---- */
+/* ---- Project page ----
+   Flex column that fills the whole A4 page: the rail+content row grows to take
+   all vertical slack (so the 16:9 figure can fill the empty space), while the
+   reflection strip and footer pack tight against the bottom. */
 .pf-project {
-  display: grid;
-  grid-template-columns: 248px 1fr;
-  grid-template-rows: auto auto auto;
-  align-content: start; /* don't stretch rows to fill A4 — slack at page bottom */
-  gap: 0 48px;
+  display: flex;
+  flex-direction: column;
+  height: var(--pf-page-h);
   padding: var(--pf-gutter);
 }
-.pf-project__index {
-  position: absolute;
-  top: var(--pf-gutter);
-  right: var(--pf-gutter);
-  color: var(--pf-ink-faint);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+/* rail + content row — grows to absorb all vertical slack on the page. */
+.pf-project-main {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 48px;
+  min-height: 0;
 }
 
 /* left meta rail */
 .pf-rail {
   display: flex;
+  flex: 0 0 232px;
   flex-direction: column;
-  grid-column: 1;
-  grid-row: 1 / span 2;
+  width: 232px;
 }
 .pf-field {
   margin-bottom: 26px;
@@ -449,16 +448,19 @@
   color: var(--pf-ink);
 }
 
-/* right content column */
+/* right content column — flex column holding the text block then the figure,
+   which grows to fill the remaining height. */
 .pf-content {
-  grid-column: 2;
-  grid-row: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
 }
 .pf-content h2 {
   display: -webkit-box;
   min-height: 44px; /* reserves exactly 1 line */
   margin: 0;
-  padding-right: 104px; /* reserve space for the "Project N of N" index */
   overflow: hidden;
   font-size: 40px;
   font-weight: 500;
@@ -492,16 +494,19 @@
   -webkit-line-clamp: 3;
 }
 .pf-figure {
-  /* FIXED 16:9 image slot. Uploads must match this ratio exactly; the box never
-     resizes, so every project image is identical in size. */
+  /* 16:9 image slot that GROWS to fill the empty space below the text block.
+     flex-grow drives the height; aspect-ratio derives the width (capped at the
+     column). Uploads are pre-validated 16:9, so object-fit: cover never crops
+     and the slot stays an exact 16:9 rectangle at any size. */
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
+  align-self: flex-start;
   justify-content: center;
-  grid-column: 2;
-  grid-row: 2;
-  width: 150mm;
-  height: 84.375mm; /* 150 × 9/16 = exact 16:9 */
+  width: auto;
+  max-width: 100%;
+  min-height: 0;
   margin-top: 12px;
   overflow: hidden;
   border: 1px solid var(--pf-line);
@@ -533,16 +538,16 @@
   -webkit-line-clamp: 2;
 }
 
-/* reflection strip */
+/* reflection strip — sits directly above the footer (the growing main row
+   above pushes it to the bottom of the page). */
 .pf-reflect {
   display: grid;
+  flex: 0 0 auto;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  grid-column: 1 / span 2;
-  grid-row: 3;
   gap: 28px;
-  margin-top: 22px;
-  padding-top: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
   border-top: 1px solid var(--pf-line);
 }
 .pf-reflect h6 {
@@ -564,15 +569,14 @@
   -webkit-line-clamp: 3;
 }
 
-/* page footer (repeats template footer) */
+/* page footer (repeats template footer) — the last flex child, so it always
+   sits flush at the bottom of the page with the reflection strip just above it. */
 .pf-pagefoot {
-  position: absolute;
-  right: var(--pf-gutter);
-  bottom: 28px;
-  left: var(--pf-gutter);
   display: flex;
+  flex: 0 0 auto;
   align-items: baseline;
   justify-content: space-between;
+  margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--pf-line);
   color: var(--pf-ink-faint);
@@ -587,6 +591,21 @@
   color: var(--pf-ink-soft);
   font-weight: 500;
 }
+/* Right cluster: contact line (ellipsis-able) + the relocated page index. */
+.pf-pagefoot__right {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+  overflow: hidden;
+}
+.pf-pagefoot__index {
+  flex-shrink: 0;
+  color: var(--pf-ink-faint);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
 /* Scope of Work — bullet list, the only flexible field. Bounded so it can never
    push Technologies past the page divider. */
@@ -597,12 +616,16 @@
 .pf-sow {
   max-height: 116px; /* ~6 single-line items; clipped on the UL, not the LI */
   margin: 0;
-  padding-left: 18px;
+  padding-left: 0;
   overflow: hidden;
-  list-style: disc outside;
+  list-style: none; /* a native `disc outside` marker is clipped by the per-item
+                       overflow:hidden below — draw the bullet with ::before so it
+                       lives inside the item box and survives the clip + print/PDF */
 }
 .pf-sow li {
+  position: relative;
   margin-bottom: 2px;
+  padding-left: 14px; /* hanging indent that reserves room for the ::before bullet */
   overflow: hidden;
   color: var(--pf-ink-soft);
   font-size: 13px;
@@ -610,7 +633,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.pf-sow li::marker {
+.pf-sow li::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
   color: var(--pf-ink-faint);
 }
 /* Technologies block pins to the bottom of the rail so it holds its position
