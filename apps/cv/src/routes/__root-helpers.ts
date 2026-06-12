@@ -17,7 +17,7 @@ export const jsonLd = {
   author: {
     "@type": "Person",
     name: "Bahrul Bangsawan",
-    url: "https://work.bahrul.me",
+    url: "https://bahrul.me",
     sameAs: [
       "https://www.linkedin.com/in/bahrulbangsawan",
       "https://github.com/bahrulbangsawan",

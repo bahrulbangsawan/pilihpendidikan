@@ -174,7 +174,7 @@ This is insufficient for AI citation. AI systems need self-contained, informatio
 | ----------------- | ------------------------------------------------------------------- |
 | LinkedIn          | Active (Growth Marketing at KYZN, Founder at Growthacker Indonesia) |
 | GitHub            | Referenced but not discoverable in search                           |
-| Personal site     | work.bahrul.me exists and is indexed                                |
+| Personal site     | bahrul.me exists and is indexed                                     |
 | invoice.bahrul.me | **Not indexed** -- zero search results                              |
 | YouTube           | No presence                                                         |
 | Reddit            | No mentions                                                         |
