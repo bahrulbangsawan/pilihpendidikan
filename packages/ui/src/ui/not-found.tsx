@@ -65,7 +65,7 @@ export function NotFound({
           {logo}
         </span>
         <div className="flex flex-col items-center gap-2">
-          <p className="font-medium text-heading-lg text-muted-foreground tabular-nums">
+          <p className="font-medium text-heading text-muted-foreground tabular-nums sm:text-heading-lg">
             {code}
           </p>
           <h1 className="font-medium text-foreground text-heading">{title}</h1>
