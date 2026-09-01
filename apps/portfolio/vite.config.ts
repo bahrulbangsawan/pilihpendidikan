@@ -5,10 +5,13 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import viteReact from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import viteTsConfigPaths from "vite-tsconfig-paths"
+const isVitest = Boolean(process.env.VITEST)
 
 const config = defineConfig({
   plugins: [
-    cloudflare({ viteEnvironment: { name: "ssr" }, inspectorPort: false }),
+    ...(!isVitest
+      ? [cloudflare({ viteEnvironment: { name: "ssr" }, inspectorPort: false })]
+      : []),
     devtools(),
     // this is the plugin that enables path aliases
     viteTsConfigPaths({
@@ -21,14 +24,19 @@ const config = defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-router": ["@tanstack/react-router", "@tanstack/react-start"],
-          "vendor-dnd": [
-            "@dnd-kit/core",
-            "@dnd-kit/sortable",
-            "@dnd-kit/utilities",
-          ],
-          "vendor-icons": ["lucide-react"],
+        manualChunks(id) {
+          if (
+            id.includes("@tanstack/react-router") ||
+            id.includes("@tanstack/react-start")
+          ) {
+            return "vendor-router";
+          }
+          if (id.includes("@dnd-kit/")) {
+            return "vendor-dnd";
+          }
+          if (id.includes("lucide-react")) {
+            return "vendor-icons";
+          }
         },
       },
     },

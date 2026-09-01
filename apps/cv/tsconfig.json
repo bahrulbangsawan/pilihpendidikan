@@ -33,7 +33,6 @@
     "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@rulisme/ui/*": ["../../packages/ui/src/*"]
