@@ -86,6 +86,67 @@ describe("migrate-cv-kv", () => {
     expect(source.data.size).toBe(5);
   });
 
+  it("keeps re-reading while the destination is eventually consistent", async () => {
+    // Workers KV REST reads can serve a cached miss (or the old value) for up
+    // to ~60s after a write, so the first reads after putMany lag behind.
+    const source = sourceFixture();
+    const dest = fakeStore();
+    const staleReadsLeft = new Map<string, number>();
+    const read = dest.get.bind(dest);
+    const put = dest.putMany.bind(dest);
+    dest.putMany = async (entries) => {
+      await put(entries);
+      for (const entry of entries) {
+        staleReadsLeft.set(entry.key, 2);
+      }
+    };
+    dest.get = (key) => {
+      const left = staleReadsLeft.get(key) ?? 0;
+      if (left > 0) {
+        staleReadsLeft.set(key, left - 1);
+        return Promise.resolve(null);
+      }
+      return read(key);
+    };
+    const waits: number[] = [];
+    const report = await migrateCvKv({
+      source,
+      dest,
+      execute: true,
+      wait: (ms) => {
+        waits.push(ms);
+        return Promise.resolve();
+      },
+    });
+    expect(report.verified).toBe(3);
+    expect(report.mismatches).toEqual([]);
+    expect(waits.length).toBe(2);
+  });
+
+  it("reports a mismatch only after the verify attempts run out", async () => {
+    const source = sourceFixture();
+    const dest = fakeStore();
+    dest.get = () => Promise.resolve(null);
+    let waited = 0;
+    const report = await migrateCvKv({
+      source,
+      dest,
+      execute: true,
+      verifyAttempts: 4,
+      wait: () => {
+        waited += 1;
+        return Promise.resolve();
+      },
+    });
+    expect(report.verified).toBe(0);
+    expect(report.mismatches.sort()).toEqual([
+      "cv:alice",
+      "cv:legacy",
+      "owner:cv:alice",
+    ]);
+    expect(waited).toBe(3);
+  });
+
   it("is re-runnable and refuses to overwrite a different destination value", async () => {
     const source = sourceFixture();
     const dest = fakeStore();

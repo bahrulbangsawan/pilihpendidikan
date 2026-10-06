@@ -6,7 +6,9 @@
 //
 // Dry run by default: it lists and reads, reports what it would copy, and
 // writes nothing. Only `--execute` writes, and it then re-reads every copied
-// key from the destination to verify it. The source is never modified or
+// key from the destination to verify it. KV reads are eventually consistent
+// (a miss from the pre-write conflict check can be served for ~60s), so the
+// verify step re-reads for up to ~90s before calling a key a mismatch. The source is never modified or
 // deleted — removing the old keys is a separate, later decision.
 //
 //   bun scripts/migrate-cv-kv.ts --dest <CV_KV namespace id>
@@ -31,6 +33,18 @@ export interface CvMigrationOptions {
   // Replace destination keys whose value differs from the source.
   overwrite?: boolean;
   log?: (line: string) => void;
+  // Read passes over the copied keys before a lagging one counts as a
+  // mismatch, and the pause between passes (injectable for tests).
+  verifyAttempts?: number;
+  verifyIntervalMs?: number;
+  wait?: (ms: number) => Promise<void>;
+}
+
+const DEFAULT_VERIFY_ATTEMPTS = 10;
+const DEFAULT_VERIFY_INTERVAL_MS = 10_000;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export interface CvMigrationReport {
@@ -64,6 +78,33 @@ async function readAll(
     }
   }
   return out;
+}
+
+// Re-reads every copied key until it matches the source or the attempts run
+// out; returns the keys that never became readable with the right value.
+async function verifyCopies(
+  options: CvMigrationOptions,
+  entries: Array<{ key: KvKey; value: string }>,
+  log: (line: string) => void
+): Promise<string[]> {
+  const attempts = options.verifyAttempts ?? DEFAULT_VERIFY_ATTEMPTS;
+  const interval = options.verifyIntervalMs ?? DEFAULT_VERIFY_INTERVAL_MS;
+  const wait = options.wait ?? sleep;
+  let pending = entries;
+  for (let attempt = 1; attempt <= attempts && pending.length > 0; attempt++) {
+    if (attempt > 1) {
+      log(`Waiting for ${pending.length} keys to become readable…`);
+      await wait(interval);
+    }
+    const lagging: typeof entries = [];
+    for (const entry of pending) {
+      if ((await options.dest.get(entry.key.name)) !== entry.value) {
+        lagging.push(entry);
+      }
+    }
+    pending = lagging;
+  }
+  return pending.map((entry) => entry.key.name);
 }
 
 export async function migrateCvKv(
@@ -114,14 +155,9 @@ export async function migrateCvKv(
     }))
   );
   report.copied = entries.length;
-  for (const entry of entries) {
-    const copied = await options.dest.get(entry.key.name);
-    if (copied === entry.value) {
-      report.verified += 1;
-    } else {
-      report.mismatches.push(entry.key.name);
-    }
-  }
+  const lagging = await verifyCopies(options, entries, log);
+  report.verified = entries.length - lagging.length;
+  report.mismatches = lagging;
   log(
     `Copied ${report.copied} keys; verified ${report.verified}; ${report.mismatches.length} mismatches. Source left untouched.`
   );
