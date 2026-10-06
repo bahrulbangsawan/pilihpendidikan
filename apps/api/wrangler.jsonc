@@ -1,10 +1,9 @@
 // apps/api — backend Worker for cv / invoice / portfolio.pilihpendidikan.com.
 //
-// Resource ids marked `REPLACE_WITH_…` are placeholders: those resources do
-// not exist yet. Create them at provisioning time (see DEPLOY.md at the repo
-// root) and paste the ids printed by wrangler over the placeholders before the
-// first `wrangler deploy`. `wrangler dev` works with the placeholders as they
-// are, because local mode keys its on-disk state by binding name.
+// The D1 database and the AUTH_KV / CV_KV / RATE_LIMIT_KV namespaces were
+// created on 2026-10-06 in the bisa.digital account (DEPLOY.md step 1; KV
+// titles pilihpendidikan-auth, -cv, -rate-limit). `wrangler dev` does not
+// touch them: local mode keys its on-disk state by binding name.
 //
 // INVOICE_KV, PORTFOLIO_KV and JOBS_KV are REBOUND: they point at the existing
 // namespaces the documents already live in, so no invoice / portfolio / job
@@ -48,8 +47,7 @@
     {
       "binding": "DB",
       "database_name": "pilihpendidikan",
-      // Placeholder: `wrangler d1 create pilihpendidikan` prints the real id.
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "d71a1734-01e5-435d-8c73-1b6b58a20b70",
       "migrations_dir": "migrations"
     }
   ],
@@ -57,13 +55,13 @@
     // Sessions, magic-link tokens, one-time codes and OAuth state. New.
     {
       "binding": "AUTH_KV",
-      "id": "REPLACE_WITH_AUTH_KV_ID"
+      "id": "b55e97957a2d43aa9edd025749c45b9e"
     },
     // CV documents (`cv:{id}`) + owner stamps (`owner:cv:{id}`). New; filled
     // by scripts/migrate-cv-kv.ts from the old shared auth namespace.
     {
       "binding": "CV_KV",
-      "id": "REPLACE_WITH_CV_KV_ID"
+      "id": "a3521252ce5a4d5698f2001deb309076"
     },
     // Existing invoice namespace (`invoice:{id}`, `owner:inv:{id}`).
     {
@@ -85,7 +83,7 @@
     // Per-IP / per-email rate-limit counters. New.
     {
       "binding": "RATE_LIMIT_KV",
-      "id": "REPLACE_WITH_RATE_LIMIT_KV_ID"
+      "id": "239f7033653145b489b400663dd9fe1a"
     }
   ],
   "durable_objects": {

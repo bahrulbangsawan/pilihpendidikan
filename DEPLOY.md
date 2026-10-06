@@ -72,10 +72,16 @@ again, remove the two custom domains (Workers & Pages → `home-pilihpendidikan`
 ```sh
 cd apps/api
 bunx wrangler d1 create pilihpendidikan
-bunx wrangler kv namespace create AUTH_KV
-bunx wrangler kv namespace create CV_KV
-bunx wrangler kv namespace create RATE_LIMIT_KV
+bunx wrangler kv namespace create pilihpendidikan-auth
+bunx wrangler kv namespace create pilihpendidikan-cv
+bunx wrangler kv namespace create pilihpendidikan-rate-limit
 ```
+
+The titles are prefixed because KV titles are unique per account and the
+account already has namespaces titled `CV_KV` (the old CV source) and
+`RATE_LIMIT_KV`. The binding names in `wrangler.jsonc` stay `AUTH_KV`,
+`CV_KV` and `RATE_LIMIT_KV`. If wrangler offers to add a binding to the
+config, answer no: paste the ids over the placeholders instead.
 
 Paste each printed id over its placeholder in `apps/api/wrangler.jsonc`:
 
