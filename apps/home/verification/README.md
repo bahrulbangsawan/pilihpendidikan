@@ -29,3 +29,11 @@ service as `"soon"`.
 `wrangler deploy`. Same checks: no horizontal scroll, links only `/`, `/id` and
 `https://bahrul.me`, no JavaScript errors, and `https://www.pilihpendidikan.com/id`
 lands on `https://pilihpendidikan.com/id`.
+
+## All services live (2026-10-06)
+
+`all-live-{en,id}-{1440,390}.png` show the production build with `cv`,
+`invoice`, `portfolio` and `api` all `"live"`, taken after each subdomain was
+deployed and smoke-tested (DEPLOY.md → Going live). No horizontal scroll, no
+JavaScript errors. Links: each builder (its `/id` page on the Indonesian hub),
+`https://api.pilihpendidikan.com/connect`, `/`, `/id` and `https://bahrul.me`.

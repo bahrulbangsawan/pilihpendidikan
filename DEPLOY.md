@@ -5,6 +5,12 @@ off the old `bahrul` Worker onto `apps/api` at `api.pilihpendidikan.com`. The
 steps below run in order. Every step that creates a resource, writes data or
 deploys needs the owner's go-ahead; nothing here has been run yet.
 
+**Status (2026-10-06):** steps 1–6 are done in the bisa.digital account (api
+`026077ee`, cv `58507e9a`, invoice `8fd4838f`, portfolio `55b5bfc2`), and all
+four services are flipped live on the hub. The CV copy found 3 documents (one,
+`bahrul-dm`, has no owner stamp) and the token copy 1 personal token. Step 7
+(bahrul repo) is still open.
+
 Order in one line: **resources → ids into config → D1 schema → deploy api →
 copy data (dry run, then execute) → deploy the three apps → retire the old
 backend.** After each deploy, the hub picks the service up through

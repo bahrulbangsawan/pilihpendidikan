@@ -15,10 +15,10 @@ export interface Service {
 export type Services = Record<ServiceId, Service>;
 
 export const SERVICES = {
-  cv: { status: "soon", url: "https://cv.pilihpendidikan.com" },
-  invoice: { status: "soon", url: "https://invoice.pilihpendidikan.com" },
-  portfolio: { status: "soon", url: "https://portfolio.pilihpendidikan.com" },
-  api: { status: "soon", url: "https://api.pilihpendidikan.com" },
+  cv: { status: "live", url: "https://cv.pilihpendidikan.com" },
+  invoice: { status: "live", url: "https://invoice.pilihpendidikan.com" },
+  portfolio: { status: "live", url: "https://portfolio.pilihpendidikan.com" },
+  api: { status: "live", url: "https://api.pilihpendidikan.com" },
 } as const satisfies Services;
 
 /** The document builders, in display order. `api` is shown as the MCP item. */

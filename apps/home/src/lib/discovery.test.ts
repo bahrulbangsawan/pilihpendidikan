@@ -5,10 +5,11 @@ import { buildJsonLd, buildLlmsTxt } from "./discovery";
 
 const SUBDOMAINS = ["cv.", "invoice.", "portfolio.", "api."];
 
+/** Only `live` services are live, whatever the shipped config says. */
 function services(live: (keyof Services)[]): Services {
   const copy = structuredClone(SERVICES) as unknown as Services;
-  for (const serviceId of live) {
-    copy[serviceId].status = "live";
+  for (const serviceId of Object.keys(copy) as (keyof Services)[]) {
+    copy[serviceId].status = live.includes(serviceId) ? "live" : "soon";
   }
   return copy;
 }
