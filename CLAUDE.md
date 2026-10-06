@@ -32,7 +32,7 @@ This repo is self-contained: it installs, checks and builds on its own.
 - `apps/cv` — CV builder (TanStack Start SSR, dev port `4003`) → `cv.pilihpendidikan.com` (Worker `cv-pilihpendidikan`)
 - `apps/invoice` — invoice builder with Indonesian region data (dev port `4004`) → `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`)
 - `apps/portfolio` — Apple Developer Academy portfolio builder, A4 landscape (dev port `4005`) → `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`)
-- `apps/api` — backend Worker at `api.pilihpendidikan.com` (dev `wrangler dev` on `localhost:8788`): cloud save and public reads for cv/invoice/portfolio/jobs, email-link sign-in, personal tokens (`/connect`), PDF print redirects and the MCP server (`/sse`, `/mcp`). Added by a follow-up change; the three apps already point at it
+- `apps/api` — backend Worker at `api.pilihpendidikan.com` (dev `wrangler dev` on `localhost:8788`): cloud save and public reads for cv/invoice/portfolio/jobs, email-link sign-in, personal tokens (`/connect`), PDF print redirects and the MCP server (`/mcp`, `/sse`). Hand-written router, D1 `pilihpendidikan` + KV (`AUTH_KV`, `CV_KV`, rebound `INVOICE_KV` / `PORTFOLIO_KV` / `JOBS_KV`, `RATE_LIMIT_KV`), Durable Object `PilihMcpServer`, tests with `bun test`. See `apps/api/CLAUDE.md`
 - `packages/ui` — `@rulisme/ui`, the shared React 19 component library (built to `dist/`, consumed by all three apps)
 - `packages/config` — `@pilihpendidikan/config`: shared `tsconfig.base.json` and `motion.css`
 - `openspec/` — spec-driven change management (see `openspec/AGENTS.md`)
@@ -51,15 +51,16 @@ The apps talk to the backend through one constant per app (`MCP_API` in
 - **UI**: shadcn/ui + `@base-ui/react` / Radix primitives + CVA variants, via `@rulisme/ui`
 - **PDF**: `@react-pdf/renderer` (one `*-pdf.tsx` renderer per document type)
 - **Lint/format**: Biome 2.5 with the Ultracite rule set (`biome.jsonc`)
-- **Tests**: Vitest per app
+- **Tests**: Vitest per app; `bun test` for `apps/api`
 - **Icons**: lucide-react
 - **Font**: Inter 400/500 and Geist Mono 400, self-hosted via `@fontsource` in each app's `src/styles.css`. `--font-sans` lists "Matter" first, but Matter is not loaded, so Inter renders
 
 ## Commands
 
 - `bun install` — install the workspace
-- `bun dev` — Turborepo fan-out (`@rulisme/ui` watch build + the three apps)
+- `bun dev` — Turborepo fan-out (`@rulisme/ui` watch build + the three apps + the api Worker on `:8788`)
 - `bun run dev:cv` / `dev:invoice` / `dev:portfolio` — one app plus the `@rulisme/ui` watch build it depends on
+- `bun run dev:api` — only the api Worker (`wrangler dev` on `:8788`; run `bun run db:migrate:local` in `apps/api` once first)
 - `bun run build` — build `packages/ui`, then every app (`wrangler types` + `vite build`)
 - `bun run check` — full chain: `biome check` → `turbo lint` → `lint:typography` → `parity:typography` → `parity:twmerge` → `test` → `audit`
 - `bun x ultracite fix` (or `bun run fix`) — format and autofix
@@ -75,7 +76,10 @@ Run `bun x ultracite fix && bun run check` before committing.
 Each app deploys with `bun run deploy` (`wrangler deploy`) from its directory
 after `bun run build`. Every `wrangler.jsonc` binds its Worker to a custom
 domain (`routes: [{ pattern: "<app>.pilihpendidikan.com", custom_domain: true }]`).
-Deploys, DNS and Cloudflare resources need the owner's go-ahead.
+The first deploy follows `DEPLOY.md`: create the D1/KV/Email resources, fill
+the `REPLACE_WITH_…` ids in `apps/api/wrangler.jsonc`, migrate data (dry run,
+then `--execute`), deploy `apps/api`, then the three apps.
+Deploys, DNS, Cloudflare resources and data migrations need the owner's go-ahead.
 
 ## Conventions
 

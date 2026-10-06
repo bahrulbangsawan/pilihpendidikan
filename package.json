@@ -20,6 +20,7 @@
     "dev:cv": "turbo dev -F cv...",
     "dev:invoice": "turbo dev -F invoice...",
     "dev:portfolio": "turbo dev -F portfolio...",
+    "dev:api": "turbo dev -F api",
     "check": "biome check && turbo lint && bun run lint:typography && bun run parity:typography && bun run parity:twmerge && bun run test && bun run audit",
     "audit": "bun audit",
     "audit:ci": "bun audit --prod",

@@ -1,0 +1,109 @@
+// apps/api — backend Worker for cv / invoice / portfolio.pilihpendidikan.com.
+//
+// Resource ids marked `REPLACE_WITH_…` are placeholders: those resources do
+// not exist yet. Create them at provisioning time (see DEPLOY.md at the repo
+// root) and paste the ids printed by wrangler over the placeholders before the
+// first `wrangler deploy`. `wrangler dev` works with the placeholders as they
+// are, because local mode keys its on-disk state by binding name.
+//
+// INVOICE_KV, PORTFOLIO_KV and JOBS_KV are REBOUND: they point at the existing
+// namespaces the documents already live in, so no invoice / portfolio / job
+// data moves. CV_KV is new; its keys are copied in by scripts/migrate-cv-kv.ts.
+//
+// Secrets never live in this file — `.dev.vars` locally (see
+// `.dev.vars.example`), `wrangler secret put` in production.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "api-pilihpendidikan",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [{ "pattern": "api.pilihpendidikan.com", "custom_domain": true }],
+  "observability": {
+    "enabled": true
+  },
+  // `wrangler dev` would otherwise rewrite every request URL to the route's
+  // host (api.pilihpendidikan.com), so emailed links and the OAuth issuer
+  // would point at production while testing locally.
+  "dev": {
+    "port": 8788,
+    "host": "localhost:8788"
+  },
+  "vars": {
+    // Comma-separated emails that bypass per-owner scoping (support access).
+    // Empty means nobody does.
+    "ADMIN_EMAILS": "",
+    // Sender for sign-in emails. The pilihpendidikan.com domain must be
+    // onboarded to Cloudflare Email Sending before this delivers.
+    "EMAIL_FROM": "noreply@pilihpendidikan.com",
+    "LOG_RETENTION_DAYS": "90"
+  },
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": ["noreply@pilihpendidikan.com"]
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pilihpendidikan",
+      // Placeholder: `wrangler d1 create pilihpendidikan` prints the real id.
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    // Sessions, magic-link tokens, one-time codes and OAuth state. New.
+    {
+      "binding": "AUTH_KV",
+      "id": "REPLACE_WITH_AUTH_KV_ID"
+    },
+    // CV documents (`cv:{id}`) + owner stamps (`owner:cv:{id}`). New; filled
+    // by scripts/migrate-cv-kv.ts from the old shared auth namespace.
+    {
+      "binding": "CV_KV",
+      "id": "REPLACE_WITH_CV_KV_ID"
+    },
+    // Existing invoice namespace (`invoice:{id}`, `owner:inv:{id}`).
+    {
+      "binding": "INVOICE_KV",
+      "id": "5c3724f8c1c340cf9dc0230217e98a4b"
+    },
+    // Existing portfolio namespace (`portfolio:{id}`, `owner:portfolio:{id}`).
+    {
+      "binding": "PORTFOLIO_KV",
+      "id": "ffd22e60a94742f3bb484f0f0d2d2f95",
+      "preview_id": "981ccf32fa074260b33f8f152c906490"
+    },
+    // Existing jobs namespace (`job:{id}`, `owner:job:{id}`).
+    {
+      "binding": "JOBS_KV",
+      "id": "73682a585fbd48dcbc996d90e7ea4511",
+      "preview_id": "beeb69315ddb44819808a1a4166d0796"
+    },
+    // Per-IP / per-email rate-limit counters. New.
+    {
+      "binding": "RATE_LIMIT_KV",
+      "id": "REPLACE_WITH_RATE_LIMIT_KV_ID"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MCP_OBJECT",
+        "class_name": "PilihMcpServer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["PilihMcpServer"]
+    }
+  ],
+  // Daily purge of request_log rows past their retention window.
+  "triggers": {
+    "crons": ["0 3 * * *"]
+  }
+}

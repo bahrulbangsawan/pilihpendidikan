@@ -21,7 +21,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 - **Icons**: lucide-react
 - **Font**: Inter 400/500 + Geist Mono 400 via `@fontsource`
 - **Lint/format**: Biome 2.5 with the Ultracite rule set
-- **Tests**: Vitest
+- **Tests**: Vitest (apps), `bun test` (`apps/api`)
 - **Language**: TypeScript throughout
 
 ## Workspace Apps & Packages
@@ -56,7 +56,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 
 ### Testing Strategy
 
-- Vitest per app (`bun run test` fans out through Turborepo)
+- Vitest per app, `bun test` for `apps/api` (`bun run test` fans out through Turborepo)
 - `bun run check` must pass before committing; `bun run build` must succeed for every app
 - Browser checks with `agent-browser` against the dev servers
 

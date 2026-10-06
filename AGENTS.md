@@ -42,11 +42,19 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 | `packages/ui/src/` | `@rulisme/ui` primitives (`ui/`, `form/`, `reui/`, `lib/`) |
 | `packages/config/` | `tsconfig.base.json`, `motion.css` |
 | `scripts/` | Typography lint and parity checks |
+| `apps/api/src/app.ts` | Backend router and dispatch order (`apps/api/CLAUDE.md` has the route table) |
+| `apps/api/src/mcp-tools.ts` | MCP tool registration (`cv_*`, `invoice_*`, `portfolio_*`, `jobs_*`, aliases, scope filter) |
+| `apps/api/src/auth.ts` / `src/routes/connect.ts` | Bearer resolution and `mcp_tokens`; the `/connect` token page |
+| `apps/api/migrations/` | D1 schema for the api Worker |
+| `apps/api/scripts/migrate-*.ts` | Gated data migrations (dry run unless `--execute`) |
+| `DEPLOY.md` | Ordered provisioning, migration and deploy plan |
 
 ## Workflow
 
 - Run `bun x ultracite fix && bun run check` before committing
 - Run `bun run build` after changing `packages/ui` so the apps resolve the new `dist/`
+- Run the api locally with `bun run dev:api` (port 8788) so the apps' cloud save works in dev
+- Never run `apps/api/scripts/migrate-*.ts --execute`, `wrangler deploy` or any `--remote` command without the owner's go-ahead
 - Use `openspec validate <change-id> --strict` after writing proposals
 - UI primitives live in `packages/ui` — check existing components before creating new ones
 - Keep each `*-preview.tsx` and its `*-pdf.tsx` in sync by hand; they are separate renderers

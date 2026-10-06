@@ -1,0 +1,17 @@
+# Local overrides for `wrangler dev` (apps/api). Copy to `.dev.vars` (gitignored).
+# Values here replace the same-named `vars` in wrangler.jsonc while running
+# locally. apps/api needs no secrets: every credential it accepts is minted by
+# the Worker itself and stored hashed in D1 / KV.
+#
+# Restart `wrangler dev` after editing; it does not hot-reload vars.
+
+# Comma-separated emails that may read and edit every user's documents.
+# Leave empty unless you are testing admin behaviour.
+ADMIN_EMAILS=
+
+# Sender for sign-in emails. In local dev the EMAIL binding is simulated:
+# wrangler prints each message (and the sign-in link) instead of sending it.
+EMAIL_FROM=noreply@pilihpendidikan.com
+
+# Days to keep request_log rows before the daily purge.
+LOG_RETENTION_DAYS=90

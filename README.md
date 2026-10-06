@@ -12,11 +12,8 @@ Document builders that run in the browser and export print-ready PDFs:
 Every app is bilingual (English at `/`, Indonesian at `/id`), keeps a local
 draft in the browser, and can save to the cloud with a personal token minted at
 <https://api.pilihpendidikan.com/connect>. AI assistants can edit the same
-documents through the MCP server at `https://api.pilihpendidikan.com/sse`.
-
-`apps/api` arrives in a follow-up change. Until it runs locally, the editors,
-local drafts and PDF/JSON export work; loading and saving cloud documents
-does not.
+documents through the MCP server at `https://api.pilihpendidikan.com/mcp`
+(Streamable HTTP; legacy clients use `/sse`).
 
 ## Requirements
 
@@ -27,9 +24,25 @@ does not.
 
 ```sh
 bun install
-bun dev            # builds @rulisme/ui, then runs every app
-bun run dev:cv     # or one app: dev:cv, dev:invoice, dev:portfolio
+bun dev            # builds @rulisme/ui, then runs every app and the api Worker
+bun run dev:cv     # or one app: dev:cv, dev:invoice, dev:portfolio, dev:api
 ```
+
+### Running the API locally
+
+The apps call `http://localhost:8788` in dev. `bun dev` starts the api
+Worker there alongside them; to run it on its own:
+
+```sh
+cd apps/api
+bun run db:migrate:local   # once: create the local D1 tables
+bun run dev                # wrangler dev on http://localhost:8788
+```
+
+Open <http://localhost:8788/connect>, enter any email address and follow the
+sign-in link wrangler prints in the terminal (local email is simulated). Mint
+a token there and paste it into an app's "Connect via MCP" dialog to try
+cloud save. No Cloudflare login is needed for local development.
 
 The apps import `@rulisme/ui` from its built `dist/`. `bun dev` and
 `bun run build` build it first; if you run an app on its own, run
@@ -47,7 +60,7 @@ bun run build         # packages/ui, then each app (wrangler types + vite build)
 
 ```
 apps/cv  apps/invoice  apps/portfolio   TanStack Start apps on Cloudflare Workers
-apps/api                                backend Worker (follow-up change)
+apps/api                                backend Worker (api.pilihpendidikan.com)
 packages/ui                             @rulisme/ui component library
 packages/config                         @pilihpendidikan/config (tsconfig base, motion.css)
 scripts/                                typography lint + parity checks
@@ -58,13 +71,18 @@ portfolio-mock/                         the static mock the portfolio app was bu
 
 ## Deploy
 
+The first deploy needs Cloudflare resources created and data migrated, in a
+fixed order: see [`DEPLOY.md`](DEPLOY.md). After that:
+
 ```sh
 bun run build
-cd apps/cv && bun run deploy   # likewise apps/invoice, apps/portfolio
+cd apps/api && bun run deploy  # the backend first
+cd apps/cv && bun run deploy   # then apps/invoice, apps/portfolio
 ```
 
-Each `wrangler.jsonc` binds its Worker (`cv-pilihpendidikan`,
-`invoice-pilihpendidikan`, `portfolio-pilihpendidikan`) to its custom domain.
+Each `wrangler.jsonc` binds its Worker (`api-pilihpendidikan`,
+`cv-pilihpendidikan`, `invoice-pilihpendidikan`, `portfolio-pilihpendidikan`)
+to its custom domain.
 
 ## History
 
