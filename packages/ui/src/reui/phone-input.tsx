@@ -1,19 +1,14 @@
-"use client";
-
 import { GlobeIcon } from "lucide-react";
-import {
-  type ComponentProps,
-  createContext,
-  use,
-  useMemo,
-  useState,
-} from "react";
+import type { ComponentProps } from "react";
+import { createContext, use, useMemo, useState } from "react";
 import BasePhoneInput, {
-  type Props as BasePhoneInputProps,
-  type Country,
-  type FlagProps,
   getCountryCallingCode,
-  type Value,
+} from "react-phone-number-input";
+import type {
+  Props as BasePhoneInputProps,
+  Country,
+  FlagProps,
+  Value,
 } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import { cn } from "../lib/utils";

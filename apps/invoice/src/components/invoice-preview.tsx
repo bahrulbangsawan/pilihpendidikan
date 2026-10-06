@@ -1,4 +1,5 @@
-import type { InvoiceData } from "@/components/invoice-form-utils"
+import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import type { InvoiceData } from "@/components/invoice-form-utils";
 import {
   calcAdjustmentAmount,
   calcSubtotal,
@@ -7,24 +8,49 @@ import {
   formatCurrency,
   formatInvoiceDate,
   lineItemTotal,
-} from "@/components/invoice-form-utils"
-import { useTranslation } from "@/i18n"
+} from "@/components/invoice-form-utils";
+import { useTranslation } from "@/i18n";
+
+interface LocalityLineProps {
+  city: string;
+  kecamatan: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+function LocalityLine({
+  city,
+  kecamatan,
+  state,
+  postalCode,
+  country,
+}: LocalityLineProps) {
+  if (!(city || kecamatan || state || postalCode)) {
+    return null;
+  }
+  const parts =
+    country === "Indonesia"
+      ? [kecamatan, city, state, postalCode]
+      : [city, state, postalCode];
+  return <p>{parts.filter(Boolean).join(", ")}</p>;
+}
 
 export function InvoicePreview({ data }: { data: InvoiceData }) {
-  const { t } = useTranslation()
-  const { from, billTo, items, adjustments, currency, taxRate } = data
-  const subtotal = calcSubtotal(items)
-  const tax = calcTax(subtotal, taxRate)
-  const total = calcTotal(items, taxRate, adjustments)
+  const { t } = useTranslation();
+  const { from, billTo, items, adjustments, currency, taxRate } = data;
+  const subtotal = calcSubtotal(items);
+  const tax = calcTax(subtotal, taxRate);
+  const total = calcTotal(items, taxRate, adjustments);
 
-  const isEmpty = !from.companyName && items.length === 0
+  const isEmpty = !from.companyName && items.length === 0;
 
   if (isEmpty) {
     return (
       <div className="flex min-h-[37.5rem] items-center justify-center text-center text-muted-foreground">
         {t("preview.emptyState")}
       </div>
-    )
+    );
   }
 
   return (
@@ -38,14 +64,19 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
       <div className="p-4 sm:p-6 md:p-8">
         {/* Header: Invoice title + logo */}
         <div className="flex items-start justify-between gap-3">
-          <h1 className="text-lg font-semibold sm:text-xl">
+          <h1 className="font-semibold text-lg sm:text-xl">
             {t("preview.invoice")}
           </h1>
           {from.logoUrl && (
             <img
               alt={from.companyName}
-              className="max-h-12 object-contain"
+              className="image-fade h-auto max-h-12 w-auto object-contain"
+              decoding="async"
+              height={48}
+              loading="eager"
+              ref={fadeInOnLoad}
               src={from.logoUrl}
+              width={48}
             />
           )}
         </div>
@@ -61,7 +92,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         </div>
 
         {/* Separator */}
-        <div className="my-4 border-t border-gray-300 sm:my-6" />
+        <div className="my-4 border-gray-300 border-t sm:my-6" />
 
         {/* Sender / Recipient two-column */}
         <div className="grid grid-cols-1 gap-4 text-xs sm:grid-cols-2 sm:gap-8">
@@ -71,16 +102,13 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
               <p className="font-bold">{from.companyName}</p>
             )}
             {from.address && <p>{from.address}</p>}
-            {(from.city || from.kecamatan || from.state || from.postalCode) && (
-              <p>
-                {(from.country === "Indonesia"
-                  ? [from.kecamatan, from.city, from.state, from.postalCode]
-                  : [from.city, from.state, from.postalCode]
-                )
-                  .filter(Boolean)
-                  .join(", ")}
-              </p>
-            )}
+            <LocalityLine
+              city={from.city}
+              country={from.country}
+              kecamatan={from.kecamatan}
+              postalCode={from.postalCode}
+              state={from.state}
+            />
             {from.country && <p>{from.country}</p>}
             {from.email && <p>{from.email}</p>}
           </div>
@@ -90,31 +118,20 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
             <p className="font-bold">{t("preview.billTo")}</p>
             {billTo.name && <p>{billTo.name}</p>}
             {billTo.address && <p>{billTo.address}</p>}
-            {(billTo.city ||
-              billTo.kecamatan ||
-              billTo.stateRegion ||
-              billTo.postalCode) && (
-              <p>
-                {(billTo.country === "Indonesia"
-                  ? [
-                      billTo.kecamatan,
-                      billTo.city,
-                      billTo.stateRegion,
-                      billTo.postalCode,
-                    ]
-                  : [billTo.city, billTo.stateRegion, billTo.postalCode]
-                )
-                  .filter(Boolean)
-                  .join(", ")}
-              </p>
-            )}
+            <LocalityLine
+              city={billTo.city}
+              country={billTo.country}
+              kecamatan={billTo.kecamatan}
+              postalCode={billTo.postalCode}
+              state={billTo.stateRegion}
+            />
             {billTo.country && <p>{billTo.country}</p>}
             {billTo.email && <p>{billTo.email}</p>}
           </div>
         </div>
 
         {/* Amount due banner */}
-        <p className="mt-4 text-sm font-bold sm:mt-6 sm:text-base">
+        <p className="mt-4 font-bold text-sm sm:mt-6 sm:text-base">
           {formatCurrency(total, currency)} {currency} {t("preview.due")}{" "}
           {formatInvoiceDate(data.dateDue)}
         </p>
@@ -123,7 +140,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         {items.length > 0 && (
           <div className="-mx-4 mt-4 overflow-x-auto px-4 sm:-mx-0 sm:mt-6 sm:px-0">
             {/* Column headers */}
-            <div className="grid min-w-[20rem] grid-cols-[1fr_2.5rem_auto_auto] gap-2 border-b border-gray-300 pb-2 text-[0.625rem] font-medium text-gray-500 sm:grid-cols-[1fr_3rem_5rem_5rem] sm:gap-4">
+            <div className="grid min-w-[20rem] grid-cols-[1fr_2.5rem_auto_auto] gap-2 border-gray-300 border-b pb-2 font-medium text-[0.625rem] text-gray-500 sm:grid-cols-[1fr_3rem_5rem_5rem] sm:gap-4">
               <span>{t("preview.description")}</span>
               <span className="text-right">{t("preview.qty")}</span>
               <span className="text-right">{t("preview.unitPrice")}</span>
@@ -194,7 +211,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
               </div>
             )}
             {adjustments.map((adj) => {
-              const amount = calcAdjustmentAmount(adj, subtotal)
+              const amount = calcAdjustmentAmount(adj, subtotal);
               return (
                 <div className="flex justify-between" key={adj.id}>
                   <span>
@@ -204,7 +221,7 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
                   </span>
                   <span>{formatCurrency(amount, currency)}</span>
                 </div>
-              )
+              );
             })}
             <div className="flex justify-between border-t pt-2">
               <span>{t("preview.total")}</span>
@@ -243,5 +260,5 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
         )}
       </div>
     </article>
-  )
+  );
 }

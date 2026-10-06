@@ -8,73 +8,74 @@ import {
   readFileSync,
   rmSync,
   writeFileSync,
-} from "node:fs"
-import { join } from "node:path"
+} from "node:fs";
+import { join } from "node:path";
 
-const ROOT = join(import.meta.dirname, "..")
-const SQL_PATH = join(ROOT, "wilayah.sql")
-const OUT_DIR = join(ROOT, "src/data/wilayah")
+const ROOT = join(import.meta.dirname, "..");
+const SQL_PATH = join(ROOT, "wilayah.sql");
+const OUT_DIR = join(ROOT, "src/data/wilayah");
 
 interface Entry {
-  kode: string
-  nama: string
+  kode: string;
+  nama: string;
 }
 
 // Parse all (kode, nama) pairs from the SQL file
-const sql = readFileSync(SQL_PATH, "utf-8")
-const regex = /\('([^']+)','([^']*(?:''[^']*)*)'\)/g
-const entries: Array<Entry> = []
+const sql = readFileSync(SQL_PATH, "utf-8");
+const regex = /\('([^']+)','([^']*(?:''[^']*)*)'\)/g;
+const entries: Entry[] = [];
 
-let match: RegExpExecArray | null
-while ((match = regex.exec(sql)) !== null) {
+let match = regex.exec(sql);
+while (match !== null) {
   entries.push({
     kode: match[1],
     nama: match[2].replace(/''/g, "'"),
-  })
+  });
+  match = regex.exec(sql);
 }
 
-console.log(`Parsed ${entries.length} entries`)
+console.log(`Parsed ${entries.length} entries`);
 
 // Categorize by hierarchy level based on dot-separated code segments
-const provinces: Array<Entry> = []
+const provinces: Entry[] = [];
 const byProvince = new Map<
   string,
-  { kabupaten: Array<Entry>; kecamatan: Array<Entry>; kelurahan: Array<Entry> }
->()
+  { kabupaten: Entry[]; kecamatan: Entry[]; kelurahan: Entry[] }
+>();
 
 for (const entry of entries) {
-  const dots = entry.kode.split(".").length - 1
+  const dots = entry.kode.split(".").length - 1;
 
   if (dots === 0) {
     // Province: 2-digit code (no dots)
-    provinces.push(entry)
+    provinces.push(entry);
     byProvince.set(entry.kode, {
       kabupaten: [],
       kecamatan: [],
       kelurahan: [],
-    })
+    });
   } else {
-    const provinceCode = entry.kode.split(".")[0]
-    const bucket = byProvince.get(provinceCode)
+    const provinceCode = entry.kode.split(".")[0];
+    const bucket = byProvince.get(provinceCode);
     if (!bucket) {
-      continue
+      continue;
     }
 
     if (dots === 1) {
-      bucket.kabupaten.push(entry)
+      bucket.kabupaten.push(entry);
     } else if (dots === 2) {
-      bucket.kecamatan.push(entry)
+      bucket.kecamatan.push(entry);
     } else if (dots === 3) {
-      bucket.kelurahan.push(entry)
+      bucket.kelurahan.push(entry);
     }
   }
 }
 
-console.log(`Provinces: ${provinces.length}`)
-console.log(`Province chunks to generate: ${byProvince.size}`)
+console.log(`Provinces: ${provinces.length}`);
+console.log(`Province chunks to generate: ${byProvince.size}`);
 
 // Ensure output directory exists
-mkdirSync(OUT_DIR, { recursive: true })
+mkdirSync(OUT_DIR, { recursive: true });
 
 // Remove stale per-province `.ts` data files from the old format. These were
 // migrated to `.json` (see the per-province loop below) because 366K+ lines of
@@ -83,7 +84,7 @@ mkdirSync(OUT_DIR, { recursive: true })
 // heap and OOM-ing the memory-constrained Cloudflare build container (exit 137).
 for (const file of readdirSync(OUT_DIR)) {
   if (/^\d+\.ts$/.test(file)) {
-    rmSync(join(OUT_DIR, file))
+    rmSync(join(OUT_DIR, file));
   }
 }
 
@@ -96,19 +97,19 @@ export const provinces: WilayahEntry[] = ${JSON.stringify(
   null,
   2
 )}
-`
-writeFileSync(join(OUT_DIR, "provinces.ts"), provincesContent)
-console.log(`Generated provinces.ts (${provinces.length} entries)`)
+`;
+writeFileSync(join(OUT_DIR, "provinces.ts"), provincesContent);
+console.log(`Generated provinces.ts (${provinces.length} entries)`);
 
 // Generate per-province chunk files
-let totalKab = 0
-let totalKec = 0
-let totalKel = 0
+let totalKab = 0;
+let totalKec = 0;
+let totalKel = 0;
 
 for (const [code, data] of byProvince) {
-  totalKab += data.kabupaten.length
-  totalKec += data.kecamatan.length
-  totalKel += data.kelurahan.length
+  totalKab += data.kabupaten.length;
+  totalKec += data.kecamatan.length;
+  totalKel += data.kelurahan.length;
 
   // Emit raw JSON, NOT a `.ts` module. As a `.json` file the bundler parses it
   // natively (JSON.parse) with no per-row AST, and `json.stringify` in
@@ -124,11 +125,11 @@ for (const [code, data] of byProvince) {
     },
     null,
     2
-  )
-  writeFileSync(join(OUT_DIR, `${code}.json`), content)
+  );
+  writeFileSync(join(OUT_DIR, `${code}.json`), content);
 }
 
 console.log(
   `Generated ${byProvince.size} province files (${totalKab} kab, ${totalKec} kec, ${totalKel} kel)`
-)
-console.log("Done!")
+);
+console.log("Done!");

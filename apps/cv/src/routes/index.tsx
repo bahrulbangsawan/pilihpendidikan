@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router"
-import type { CVStyle } from "@/components/cv-form"
-import { CVGenerator } from "@/components/cv-generator"
-import { headForLocale } from "@/i18n"
+import { createFileRoute } from "@tanstack/react-router";
+import type { CVStyle } from "@/components/cv-form";
+import { CVGenerator } from "@/components/cv-generator";
+import { headForLocale } from "@/i18n";
 
-const BASE_URL = "https://cv.bahrul.me"
+const BASE_URL = "https://cv.bahrul.me";
 
 export const Route = createFileRoute("/")({
   head: () => headForLocale("en", BASE_URL),
@@ -22,9 +22,9 @@ export const Route = createFileRoute("/")({
       undefined,
     template: (search.template as CVStyle) || undefined,
   }),
-})
+});
 
 function RouteComponent() {
-  const { id, cv, print, template } = Route.useSearch()
-  return <CVGenerator cvId={id ?? cv} print={print} template={template} />
+  const { id, cv, print, template } = Route.useSearch();
+  return <CVGenerator cvId={id ?? cv} print={print} template={template} />;
 }

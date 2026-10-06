@@ -1,11 +1,19 @@
-import { createRootRoute } from "@tanstack/react-router"
-import { RootComponent, RootDocument } from "@/routes/__root-shell"
-import appCss from "../styles.css?url"
+import { createRootRoute } from "@tanstack/react-router";
+import { jsonLd } from "@/routes/-root-helpers";
+import { RootComponent, RootDocument } from "@/routes/-root-shell";
+import appCss from "../styles.css?url";
 
-const BASE_URL = "https://invoice.bahrul.me"
+const BASE_URL = "https://invoice.bahrul.me";
+
+// Runs in the document head before paint, matching next-themes' system theme.
+const themeScript = `(function(){try{var d=document.documentElement,e=localStorage.getItem("theme"),m=window.matchMedia("(prefers-color-scheme: dark)").matches,k=e==="dark"||((e==="system"||!e)&&m);d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
 
 export const Route = createRootRoute({
   head: () => ({
+    scripts: [
+      { children: themeScript, suppressHydrationWarning: true },
+      { type: "application/ld+json", children: JSON.stringify(jsonLd) },
+    ],
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -45,4 +53,4 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   shellComponent: RootDocument,
-})
+});

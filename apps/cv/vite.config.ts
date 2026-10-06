@@ -1,47 +1,48 @@
-import { cloudflare } from "@cloudflare/vite-plugin"
-import tailwindcss from "@tailwindcss/vite"
-import { devtools } from "@tanstack/devtools-vite"
-import { tanstackStart } from "@tanstack/react-start/plugin/vite"
-import viteReact from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
-import viteTsConfigPaths from "vite-tsconfig-paths"
-const isVitest = Boolean(process.env.VITEST)
+import { cloudflare } from "@cloudflare/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+const isVitest = Boolean(process.env.VITEST);
 
 const config = defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     ...(!isVitest
       ? [cloudflare({ viteEnvironment: { name: "ssr" }, inspectorPort: false })]
       : []),
     devtools(),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),
   ],
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks(id) {
-          if (
-            id.includes("@tanstack/react-router") ||
-            id.includes("@tanstack/react-start")
-          ) {
-            return "vendor-router";
-          }
-          if (id.includes("@dnd-kit/")) {
-            return "vendor-dnd";
-          }
-          if (id.includes("lucide-react")) {
-            return "vendor-icons";
-          }
+        codeSplitting: {
+          groups: [
+            {
+              name: "vendor-router",
+              test: (id) =>
+                id.includes("@tanstack/react-router") ||
+                id.includes("@tanstack/react-start"),
+            },
+            {
+              name: "vendor-dnd",
+              test: (id) => id.includes("@dnd-kit/"),
+            },
+            {
+              name: "vendor-icons",
+              test: (id) => id.includes("lucide-react"),
+            },
+          ],
         },
       },
     },
   },
-})
+});
 
-export default config
-
+export default config;

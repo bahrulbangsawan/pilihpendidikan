@@ -1,9 +1,13 @@
-import { createRootRoute } from "@tanstack/react-router"
+import { createRootRoute } from "@tanstack/react-router";
 
-import appCss from "../styles.css?url"
-import { RootComponent, RootDocument } from "./__root-components"
+import appCss from "../styles.css?url";
+import { RootComponent, RootDocument } from "./-root-components";
+import { jsonLd } from "./-root-helpers";
 
-const BASE_URL = "https://cv.bahrul.me"
+const BASE_URL = "https://cv.bahrul.me";
+
+// Resolve the theme before body content paints, matching next-themes.
+const themeScript = `(function(){try{var d=document.documentElement,e=localStorage.getItem("theme"),m=window.matchMedia("(prefers-color-scheme: dark)").matches,k=e==="dark"||((e==="system"||!e)&&m);d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -54,7 +58,14 @@ export const Route = createRootRoute({
       },
       { rel: "manifest", href: "/favicon-active/site.webmanifest" },
     ],
+    scripts: [
+      { children: themeScript },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(jsonLd),
+      },
+    ],
   }),
   component: RootComponent,
   shellComponent: RootDocument,
-})
+});

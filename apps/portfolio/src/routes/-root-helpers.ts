@@ -1,7 +1,7 @@
 // Sibling file extracted to satisfy only-export-components:
 // jsonLd, FAVICON_SELECTORS, and useFaviconVisibility are not components.
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 export const jsonLd = {
   "@context": "https://schema.org",
@@ -23,7 +23,7 @@ export const jsonLd = {
       "https://github.com/bahrulbangsawan",
     ],
   },
-}
+};
 
 export const FAVICON_SELECTORS = [
   { selector: 'link[rel="icon"][sizes="32x32"]', file: "favicon-32x32.png" },
@@ -33,21 +33,21 @@ export const FAVICON_SELECTORS = [
     file: "favicon.ico",
   },
   { selector: 'link[rel="apple-touch-icon"]', file: "apple-touch-icon.png" },
-]
+];
 
 export function useFaviconVisibility() {
   useEffect(() => {
     function swapFavicons() {
-      const folder = document.hidden ? "favicon-inactive" : "favicon-active"
+      const folder = document.hidden ? "favicon-inactive" : "favicon-active";
       for (const { selector, file } of FAVICON_SELECTORS) {
-        const link = document.querySelector<HTMLLinkElement>(selector)
+        const link = document.querySelector<HTMLLinkElement>(selector);
         if (link) {
-          link.href = `/${folder}/${file}`
+          link.href = `/${folder}/${file}`;
         }
       }
     }
 
-    document.addEventListener("visibilitychange", swapFavicons)
-    return () => document.removeEventListener("visibilitychange", swapFavicons)
-  }, [])
+    document.addEventListener("visibilitychange", swapFavicons);
+    return () => document.removeEventListener("visibilitychange", swapFavicons);
+  }, []);
 }

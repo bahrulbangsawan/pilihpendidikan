@@ -41,7 +41,7 @@ function AccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "group/accordion-trigger relative flex flex-1 items-start justify-between gap-6 border border-transparent p-2 text-left font-medium text-xs/relaxed outline-none transition-all hover:underline disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:shrink-0 **:data-[slot=accordion-trigger-icon]:translate-y-0.5 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger relative flex flex-1 items-start justify-between gap-6 border border-transparent p-2 text-left font-medium text-xs/relaxed outline-hidden transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard hover:underline focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:shrink-0 **:data-[slot=accordion-trigger-icon]:translate-y-0.5 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className
         )}
         data-slot="accordion-trigger"
@@ -68,7 +68,7 @@ function AccordionContent({
 }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
-      className="overflow-hidden px-2 text-xs/relaxed data-closed:animate-accordion-up data-open:animate-accordion-down"
+      className="overflow-hidden px-2 text-xs/relaxed duration-200 ease-standard data-closed:animate-accordion-up data-open:animate-accordion-down"
       data-slot="accordion-content"
       {...props}
     >

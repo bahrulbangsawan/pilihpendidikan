@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar as AvatarPrimitive } from "radix-ui";
 import type * as React from "react";
 
@@ -32,7 +30,7 @@ function AvatarImage({
   return (
     <AvatarPrimitive.Image
       className={cn(
-        "aspect-square size-full rounded-full object-cover",
+        "fade-in-0 aspect-square size-full animate-in rounded-full object-cover duration-300 ease-standard",
         className
       )}
       data-slot="avatar-image"

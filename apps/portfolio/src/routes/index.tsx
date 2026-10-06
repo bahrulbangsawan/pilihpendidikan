@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PortfolioGenerator } from "@/components/portfolio-generator"
-import { headForLocale } from "@/i18n"
+import { createFileRoute } from "@tanstack/react-router";
+import { PortfolioGenerator } from "@/components/portfolio-generator";
+import { headForLocale } from "@/i18n";
 
-const BASE_URL = "https://portfolio.bahrul.me"
+const BASE_URL = "https://portfolio.bahrul.me";
 
 export const Route = createFileRoute("/")({
   head: () => headForLocale("en", BASE_URL),
@@ -21,9 +21,9 @@ export const Route = createFileRoute("/")({
       undefined,
     template: (search.template as string) || undefined,
   }),
-})
+});
 
 function RouteComponent() {
-  const { id, portfolio, print } = Route.useSearch()
-  return <PortfolioGenerator portfolioId={id ?? portfolio} print={print} />
+  const { id, portfolio, print } = Route.useSearch();
+  return <PortfolioGenerator portfolioId={id ?? portfolio} print={print} />;
 }

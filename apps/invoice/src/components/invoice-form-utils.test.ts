@@ -1,10 +1,10 @@
-import { describe, expect, it } from "vitest"
-import type { InvoiceLineItem } from "./invoice-form-utils"
+import { describe, expect, it } from "vitest";
+import type { InvoiceLineItem } from "./invoice-form-utils";
 import {
   calcSubtotal,
   formatInvoiceDate,
   lineItemTotal,
-} from "./invoice-form-utils"
+} from "./invoice-form-utils";
 
 // Regression tests mirroring the mcp `invoice-totals.test.ts`: the rendered
 // subtotal must equal the true sum of every line's own (qty × unitPrice) plus
@@ -22,7 +22,7 @@ function line(
     unitPrice: partial.unitPrice,
     amount: partial.amount ?? partial.qty * partial.unitPrice,
     subItems: partial.subItems ?? [],
-  }
+  };
 }
 
 describe("lineItemTotal", () => {
@@ -40,10 +40,10 @@ describe("lineItemTotal", () => {
           amount: 15_000_000,
         },
       ],
-    })
-    expect(lineItemTotal(item)).toBe(20_000_000)
-  })
-})
+    });
+    expect(lineItemTotal(item)).toBe(20_000_000);
+  });
+});
 
 describe("calcSubtotal", () => {
   it("matches the true line-item sum despite stale parent amounts", () => {
@@ -66,21 +66,21 @@ describe("calcSubtotal", () => {
           },
         ],
       }),
-    ]
-    expect(calcSubtotal(items)).toBe(100_500_000)
-  })
-})
+    ];
+    expect(calcSubtotal(items)).toBe(100_500_000);
+  });
+});
 
 describe("formatInvoiceDate", () => {
   it("renders canonical ISO as a friendly date", () => {
-    expect(formatInvoiceDate("2026-07-11")).toBe("11 Jul 2026")
-  })
+    expect(formatInvoiceDate("2026-07-11")).toBe("11 Jul 2026");
+  });
 
   it("tolerates a legacy 'dd MMM yyyy' value", () => {
-    expect(formatInvoiceDate("11 Jul 2026")).toBe("11 Jul 2026")
-  })
+    expect(formatInvoiceDate("11 Jul 2026")).toBe("11 Jul 2026");
+  });
 
   it("returns an empty string unchanged", () => {
-    expect(formatInvoiceDate("")).toBe("")
-  })
-})
+    expect(formatInvoiceDate("")).toBe("");
+  });
+});

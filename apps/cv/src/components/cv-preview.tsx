@@ -1,12 +1,12 @@
-import type { CVData, CVStyle } from "@/components/cv-form"
-import { BasicPreview } from "@/components/templates/basic-preview"
-import { HarvardPreview } from "@/components/templates/harvard-preview"
-import { SimplePreview } from "@/components/templates/simple-preview"
-import { StandardPreview } from "@/components/templates/standard-preview"
+import type { CVData, CVStyle } from "@/components/cv-form";
+import { BasicPreview } from "@/components/templates/basic-preview";
+import { HarvardPreview } from "@/components/templates/harvard-preview";
+import { SimplePreview } from "@/components/templates/simple-preview";
+import { StandardPreview } from "@/components/templates/standard-preview";
 
 interface CVPreviewProps {
-  data: CVData
-  style: CVStyle
+  data: CVData;
+  style: CVStyle;
 }
 
 export function CVPreview({ data, style }: CVPreviewProps) {
@@ -20,24 +20,24 @@ export function CVPreview({ data, style }: CVPreviewProps) {
     data.certificates.some((e) => e.name) ||
     data.languages.some((e) => e.language) ||
     data.projects.some((e) => e.name) ||
-    data.volunteer.some((e) => e.organization || e.role)
+    data.volunteer.some((e) => e.organization || e.role);
 
   if (!hasContent) {
     return (
-      <p className="py-20 text-center text-sm text-muted-foreground">
+      <p className="py-20 text-center text-muted-foreground text-sm">
         Start filling in the form to see your CV preview
       </p>
-    )
+    );
   }
 
   switch (style) {
     case "harvard":
-      return <HarvardPreview data={data} />
+      return <HarvardPreview data={data} />;
     case "simple":
-      return <SimplePreview data={data} />
+      return <SimplePreview data={data} />;
     case "standard":
-      return <StandardPreview data={data} />
+      return <StandardPreview data={data} />;
     default:
-      return <BasicPreview data={data} />
+      return <BasicPreview data={data} />;
   }
 }

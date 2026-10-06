@@ -1,7 +1,5 @@
-// prefer-dynamic-import for @react-pdf/renderer is skipped: this module is
-// loaded via dynamic import() at the call site (portfolio-generator.tsx
-// handleDownloadPDF). The static import here is required for @react-pdf JSX
-// primitives to work.
+// Static JSX primitives are loaded only behind portfolio-generator's compile-
+// time SSR guard; this browser PDF template never enters the Workers graph.
 import {
   Document,
   Image,
@@ -12,49 +10,49 @@ import {
   Svg,
   Text,
   View,
-} from "@react-pdf/renderer"
-import { ensureUrl } from "@rulisme/ui/lib/utils"
-import {
-  type Portfolio,
-  type PortfolioOwner,
-  type Project,
-  type ProjectType,
-  type Track,
-} from "@/components/portfolio-data-model"
+} from "@react-pdf/renderer";
+import { ensureUrl } from "@rulisme/ui/lib/utils";
+import type {
+  Portfolio,
+  PortfolioOwner,
+  Project,
+  ProjectType,
+  Track,
+} from "@/components/portfolio-data-model";
 
 type Translate = (
   key: string,
   params?: Record<string, string | number>
-) => string
+) => string;
 
-const PROTOCOL_RE = /^https?:\/\//i
-const WWW_RE = /^www\./i
-const TRAILING_SLASH_RE = /\/$/
+const PROTOCOL_RE = /^https?:\/\//i;
+const WWW_RE = /^www\./i;
+const TRAILING_SLASH_RE = /\/$/;
 
 function displayUrl(url: string): string {
   return url
     .replace(PROTOCOL_RE, "")
     .replace(WWW_RE, "")
-    .replace(TRAILING_SLASH_RE, "")
+    .replace(TRAILING_SLASH_RE, "");
 }
 
 function trackLabel(track: Track, t: Translate): string {
-  return t(`options.track.${track}`)
+  return t(`options.track.${track}`);
 }
 
 function projectTypeLabel(type: ProjectType, t: Translate): string {
   switch (type) {
     case "class-assignment":
-      return t("preview.classAssignment")
+      return t("preview.classAssignment");
     case "work-assignment":
-      return t("preview.workAssignment")
+      return t("preview.workAssignment");
     default:
-      return t("preview.selfInitiated")
+      return t("preview.selfInitiated");
   }
 }
 
 function backgroundLines(owner: PortfolioOwner, t: Translate): string[] {
-  const { affiliation } = owner
+  const { affiliation } = owner;
   switch (affiliation.kind) {
     case "student":
       return [
@@ -63,7 +61,7 @@ function backgroundLines(owner: PortfolioOwner, t: Translate): string[] {
           ? `${t("preview.student")} · ${t("preview.semester")} ${affiliation.semester}`
           : t("preview.student"),
         affiliation.program ?? "",
-      ].filter(Boolean)
+      ].filter(Boolean);
     case "alumni":
       return [
         affiliation.institution,
@@ -71,55 +69,55 @@ function backgroundLines(owner: PortfolioOwner, t: Translate): string[] {
           ? `${t("preview.alumni")} · ${affiliation.graduationYear}`
           : t("preview.alumni"),
         affiliation.program ?? "",
-      ].filter(Boolean)
+      ].filter(Boolean);
     case "professional":
       return [
         affiliation.organization ?? "",
         affiliation.yearsExperience
           ? `${affiliation.jobTitle ?? ""} · ${affiliation.yearsExperience} ${t("preview.years")}`
           : (affiliation.jobTitle ?? ""),
-      ].filter(Boolean)
+      ].filter(Boolean);
     default:
-      return [affiliation.note || t("preview.independent")]
+      return [affiliation.note || t("preview.independent")];
   }
 }
 
 function affiliationFootnote(owner: PortfolioOwner, t: Translate): string {
-  const { affiliation } = owner
+  const { affiliation } = owner;
   switch (affiliation.kind) {
     case "student":
       return [affiliation.institution, t("preview.student")]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     case "alumni":
       return [affiliation.institution, t("preview.alumni")]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     case "professional":
       return [affiliation.organization, affiliation.jobTitle]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     default:
-      return affiliation.note || t("preview.independent")
+      return affiliation.note || t("preview.independent");
   }
 }
 
-const INK = "#1d1d1f"
-const INK_SOFT = "#6e6e73"
-const INK_FAINT = "#a1a1a6"
-const LINE = "#e3e3e6"
-const PANEL = "#f5f5f7"
-const ACCENT = "#6f839f"
-const COVER_BG = "#121212"
-const OFF_WHITE = "#faf9f6"
-const PALE_STONE = "#b4b4b2"
+const INK = "#1d1d1f";
+const INK_SOFT = "#6e6e73";
+const INK_FAINT = "#a1a1a6";
+const LINE = "#e3e3e6";
+const PANEL = "#f5f5f7";
+const ACCENT = "#6f839f";
+const COVER_BG = "#121212";
+const OFF_WHITE = "#faf9f6";
+const PALE_STONE = "#b4b4b2";
 
 // Project image — a TRUE 16:9 card (never cropped). Height is the limiting
 // dimension on A4 landscape (a full-content-width 16:9 would be 317pt tall and
 // overflow once you add the text + reflect strip + footer), so the card is the
 // largest exact-16:9 that fits and is centered in the content column.
-const FIGURE_H = 261
-const FIGURE_W = Math.round((FIGURE_H * 16) / 9) // 464 — exact 16:9
+const FIGURE_H = 261;
+const FIGURE_W = Math.round((FIGURE_H * 16) / 9); // 464 — exact 16:9
 
 const s = StyleSheet.create({
   cover: {
@@ -345,26 +343,26 @@ const s = StyleSheet.create({
     letterSpacing: 1,
     textTransform: "uppercase",
   },
-})
+});
 
 function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
-  const { owner } = data
-  const sub = [owner.fullName, owner.headline].filter(Boolean).join(" · ")
+  const { owner } = data;
+  const sub = [owner.fullName, owner.headline].filter(Boolean).join(" · ");
   const years = data.projects
     .map((p) => p.yearAccomplished)
-    .filter((y) => y > 0)
-  const minY = years.length ? Math.min(...years) : undefined
-  const maxY = years.length ? Math.max(...years) : undefined
+    .filter((y) => y > 0);
+  const minY = years.length ? Math.min(...years) : undefined;
+  const maxY = years.length ? Math.max(...years) : undefined;
   const worksLine =
     minY === undefined
       ? t("preview.selectedWorks")
       : t("preview.selectedWorksRange", {
           range: minY === maxY ? String(minY) : `${minY}–${maxY}`,
-        })
-  const background = backgroundLines(owner, t)
-  const { contact } = owner
-  const website = contact.websiteUrl?.trim()
-  const social = contact.socials?.find((sl) => sl.url.trim())
+        });
+  const background = backgroundLines(owner, t);
+  const { contact } = owner;
+  const website = contact.websiteUrl?.trim();
+  const social = contact.socials?.find((sl) => sl.url.trim());
 
   return (
     <Page orientation="landscape" size="A4" style={s.cover}>
@@ -414,15 +412,16 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
               {contact.email}
             </Link>
           ) : null}
-          {website ? (
+          {website && (
             <Link src={ensureUrl(website)} style={s.coverLink}>
               {displayUrl(website)}
             </Link>
-          ) : social ? (
+          )}
+          {!website && social && (
             <Link src={ensureUrl(social.url)} style={s.coverLink}>
               {social.label || displayUrl(social.url)}
             </Link>
-          ) : null}
+          )}
         </View>
         <View style={s.coverCol}>
           <Text style={s.coverH4}>{t("preview.submissionFor")}</Text>
@@ -432,7 +431,7 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
         </View>
       </View>
     </Page>
-  )
+  );
 }
 
 function ProjectPage({
@@ -442,20 +441,22 @@ function ProjectPage({
   total,
   t,
 }: {
-  data: Portfolio
-  project: Project
-  index: number
-  total: number
-  t: Translate
+  data: Portfolio;
+  project: Project;
+  index: number;
+  total: number;
+  t: Translate;
 }) {
-  const { owner } = data
-  const media = project.media[0]
-  const sow = (project.scopeOfWork ?? []).slice(0, 6)
-  const track = project.track ?? owner.track
-  const isTech = track === "tech"
-  const tags = (isTech ? project.technologies : project.skills) ?? []
-  const tagLabel = isTech ? t("preview.technologies") : t("preview.disciplines")
-  const isGroup = project.collaboration.kind === "group"
+  const { owner } = data;
+  const media = project.media[0];
+  const sow = (project.scopeOfWork ?? []).slice(0, 6);
+  const track = project.track ?? owner.track;
+  const isTech = track === "tech";
+  const tags = (isTech ? project.technologies : project.skills) ?? [];
+  const tagLabel = isTech
+    ? t("preview.technologies")
+    : t("preview.disciplines");
+  const isGroup = project.collaboration.kind === "group";
 
   return (
     <Page orientation="landscape" size="A4" style={s.project}>
@@ -565,15 +566,15 @@ function ProjectPage({
         </View>
       </View>
     </Page>
-  )
+  );
 }
 
 export function PortfolioDocument({
   data,
   t,
 }: {
-  data: Portfolio
-  t: Translate
+  data: Portfolio;
+  t: Translate;
 }) {
   return (
     <Document>
@@ -589,5 +590,5 @@ export function PortfolioDocument({
         />
       ))}
     </Document>
-  )
+  );
 }

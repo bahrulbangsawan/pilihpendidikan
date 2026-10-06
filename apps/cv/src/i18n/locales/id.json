@@ -54,8 +54,10 @@
   "a11y": {
     "switchLanguage": "Ganti bahasa",
     "skipToContent": "Langsung ke konten utama",
+    "loadingDocument": "Memuat CV",
     "downloadCv": "Unduh CV",
-    "importCv": "Impor CV dari berkas JSON"
+    "importCv": "Impor CV dari berkas JSON",
+    "removeItem": "Hapus {item}"
   },
   "alert": {
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON CV yang valid.",

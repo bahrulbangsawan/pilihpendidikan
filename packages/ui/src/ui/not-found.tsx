@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { useFirstPaintEntrance } from "../lib/use-first-paint-entrance";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 
@@ -50,10 +51,12 @@ export function NotFound({
   showBack = true,
   className,
 }: NotFoundProps) {
+  const animateEntrance = useFirstPaintEntrance();
   return (
     <main
       className={cn(
-        "flex min-h-dvh w-full flex-col items-center justify-center gap-6 bg-background px-6 py-16 text-center",
+        "route-view flex min-h-dvh w-full flex-col items-center justify-center gap-6 bg-background px-6 py-16 text-center",
+        animateEntrance && "motion-enter",
         className
       )}
     >

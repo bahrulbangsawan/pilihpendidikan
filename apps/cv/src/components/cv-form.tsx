@@ -1,91 +1,95 @@
+import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import type { DragEndEvent } from "@dnd-kit/core";
 import {
   closestCenter,
   DndContext,
-  type DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-} from "@dnd-kit/core"
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { FormField } from "@rulisme/ui/form/form-field"
-import { MonthPicker } from "@rulisme/ui/form/month-picker"
-import { SectionList } from "@rulisme/ui/form/section-list"
-import { PhoneInput } from "@rulisme/ui/reui/phone-input"
-import { Badge } from "@rulisme/ui/ui/badge"
-import { Button } from "@rulisme/ui/ui/button"
-import { Input } from "@rulisme/ui/ui/input"
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { FormField } from "@rulisme/ui/form/form-field";
+import { MonthPicker } from "@rulisme/ui/form/month-picker";
+import { SectionList } from "@rulisme/ui/form/section-list";
+import { PhoneInput } from "@rulisme/ui/reui/phone-input";
+import { Badge } from "@rulisme/ui/ui/badge";
+import { Button } from "@rulisme/ui/ui/button";
+import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
-} from "@rulisme/ui/ui/input-group"
-import { Label } from "@rulisme/ui/ui/label"
+} from "@rulisme/ui/ui/input-group";
+import { Label } from "@rulisme/ui/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@rulisme/ui/ui/select"
-import { Separator } from "@rulisme/ui/ui/separator"
-import { Switch } from "@rulisme/ui/ui/switch"
-import { Textarea } from "@rulisme/ui/ui/textarea"
+} from "@rulisme/ui/ui/select";
+import { Separator } from "@rulisme/ui/ui/separator";
+import { Switch } from "@rulisme/ui/ui/switch";
+import { Textarea } from "@rulisme/ui/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@rulisme/ui/ui/tooltip"
-import { GripVertical, Info, Trash2, Upload, X } from "lucide-react"
-import { type ReactNode, useId, useMemo, useState } from "react"
-import { useTranslation } from "@/i18n"
-import { preprocessImage } from "@/lib/preprocess-image"
+} from "@rulisme/ui/ui/tooltip";
+import { GripVertical, Info, Trash2, Upload, X } from "lucide-react";
+import type { ReactNode } from "react";
+import { useId, useMemo, useState } from "react";
+import { useTranslation } from "@/i18n";
+import { preprocessImage } from "@/lib/preprocess-image";
 
 // Profile photos render into a ~64px avatar in the preview and a small fixed box
 // in every PDF template, so 480px on the long edge is retina-sharp yet tiny.
-const PHOTO_MAX_EDGE = 480
+const PHOTO_MAX_EDGE = 480;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const HTTP_URL_PATTERN = /^https?:\/\/.+/;
 
 type Translate = (
   key: string,
   params?: Record<string, string | number>
-) => string
+) => string;
 
 export interface PersonalInfo {
-  fullName: string
-  jobTitle: string
-  email: string
-  phone: string
-  location: string
-  linkedIn: string
-  photoUrl: string
-  usePhoto: boolean
+  fullName: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  location: string;
+  linkedIn: string;
+  photoUrl: string;
+  usePhoto: boolean;
 }
 
-export type WorkType = "" | "full-time" | "part-time" | "internship"
+export type WorkType = "" | "full-time" | "part-time" | "internship";
 export type LocationPolicy =
   | ""
   | "work-from-office"
   | "work-from-anywhere"
-  | "hybrid"
+  | "hybrid";
 
 const WORK_TYPE_OPTIONS: { value: WorkType; labelKey: string }[] = [
   { value: "", labelKey: "options.notSpecified" },
   { value: "full-time", labelKey: "options.workType.fullTime" },
   { value: "part-time", labelKey: "options.workType.partTime" },
   { value: "internship", labelKey: "options.workType.internship" },
-]
+];
 
 const LOCATION_POLICY_OPTIONS: {
-  value: LocationPolicy
-  labelKey: string
+  value: LocationPolicy;
+  labelKey: string;
 }[] = [
   { value: "", labelKey: "options.notSpecified" },
   {
@@ -97,19 +101,19 @@ const LOCATION_POLICY_OPTIONS: {
     labelKey: "options.locationPolicy.workFromAnywhere",
   },
   { value: "hybrid", labelKey: "options.locationPolicy.hybrid" },
-]
+];
 
 export interface ExperienceEntry {
-  id: string
-  company: string
-  url: string
-  title: string
-  workType: WorkType
-  locationPolicy: LocationPolicy
-  startDate: string
-  endDate: string
-  current: boolean
-  description: string
+  id: string;
+  company: string;
+  url: string;
+  title: string;
+  workType: WorkType;
+  locationPolicy: LocationPolicy;
+  startDate: string;
+  endDate: string;
+  current: boolean;
+  description: string;
 }
 
 export type EducationCategory =
@@ -121,11 +125,11 @@ export type EducationCategory =
   | "academy"
   | "language-center"
   | "online-platform"
-  | "professional-association"
+  | "professional-association";
 
 const EDUCATION_CATEGORY_OPTIONS: {
-  value: EducationCategory
-  labelKey: string
+  value: EducationCategory;
+  labelKey: string;
 }[] = [
   { value: "", labelKey: "options.notSpecified" },
   { value: "university", labelKey: "options.educationCategory.university" },
@@ -145,67 +149,67 @@ const EDUCATION_CATEGORY_OPTIONS: {
     value: "professional-association",
     labelKey: "options.educationCategory.professionalAssociation",
   },
-]
+];
 
 export interface EducationEntry {
-  id: string
-  category: EducationCategory
-  institution: string
-  degree: string
-  gpa: string
-  startDate: string
-  endDate: string
-  current: boolean
+  id: string;
+  category: EducationCategory;
+  institution: string;
+  degree: string;
+  gpa: string;
+  startDate: string;
+  endDate: string;
+  current: boolean;
 }
 
 export interface AwardEntry {
-  id: string
-  title: string
-  issuer: string
-  date: string
-  description: string
-  url: string
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  description: string;
+  url: string;
 }
 
 export interface CertificateEntry {
-  id: string
-  name: string
-  issuer: string
-  date: string
-  expiryDate: string
-  credentialId: string
-  url: string
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  expiryDate: string;
+  credentialId: string;
+  url: string;
 }
 
 export interface LanguageEntry {
-  id: string
-  language: string
-  proficiency: string
+  id: string;
+  language: string;
+  proficiency: string;
 }
 
 export interface ProjectEntry {
-  id: string
-  name: string
-  url: string
-  description: string
+  id: string;
+  name: string;
+  url: string;
+  description: string;
 }
 
 export interface VolunteerEntry {
-  id: string
-  organization: string
-  role: string
-  startDate: string
-  endDate: string
-  current: boolean
-  description: string
+  id: string;
+  organization: string;
+  role: string;
+  startDate: string;
+  endDate: string;
+  current: boolean;
+  description: string;
 }
 
-export type CVStyle = "basic" | "harvard" | "simple" | "standard"
+export type CVStyle = "basic" | "harvard" | "simple" | "standard";
 
 export interface SkillCategory {
-  id: string
-  name: string
-  items: string[]
+  id: string;
+  name: string;
+  items: string[];
 }
 
 export type CVSectionId =
@@ -217,7 +221,7 @@ export type CVSectionId =
   | "certificates"
   | "languages"
   | "projects"
-  | "volunteer"
+  | "volunteer";
 
 export interface CVData {
   /**
@@ -226,94 +230,94 @@ export interface CVData {
    * here). Optional for backwards-compat with documents stored before the
    * field existed — consumers default to "basic".
    */
-  style?: CVStyle
-  personalInfo: PersonalInfo
-  sectionOrder: CVSectionId[]
-  summaryTitle: string
-  summary: string
-  experienceTitle: string
-  experience: ExperienceEntry[]
-  educationTitle: string
-  education: EducationEntry[]
-  skillsTitle: string
-  skills: SkillCategory[]
-  awardsTitle: string
-  awards: AwardEntry[]
-  certificatesTitle: string
-  certificates: CertificateEntry[]
-  languagesTitle: string
-  languages: LanguageEntry[]
-  projectsTitle: string
-  projects: ProjectEntry[]
-  volunteerTitle: string
-  volunteer: VolunteerEntry[]
+  style?: CVStyle;
+  personalInfo: PersonalInfo;
+  sectionOrder: CVSectionId[];
+  summaryTitle: string;
+  summary: string;
+  experienceTitle: string;
+  experience: ExperienceEntry[];
+  educationTitle: string;
+  education: EducationEntry[];
+  skillsTitle: string;
+  skills: SkillCategory[];
+  awardsTitle: string;
+  awards: AwardEntry[];
+  certificatesTitle: string;
+  certificates: CertificateEntry[];
+  languagesTitle: string;
+  languages: LanguageEntry[];
+  projectsTitle: string;
+  projects: ProjectEntry[];
+  volunteerTitle: string;
+  volunteer: VolunteerEntry[];
 }
 
 function dateDiffLabel(from: Date, to: Date, t: Translate) {
-  let y = to.getFullYear() - from.getFullYear()
-  let m = to.getMonth() - from.getMonth()
-  let d = to.getDate() - from.getDate()
+  let y = to.getFullYear() - from.getFullYear();
+  let m = to.getMonth() - from.getMonth();
+  let d = to.getDate() - from.getDate();
   if (d < 0) {
-    m--
-    d += new Date(to.getFullYear(), to.getMonth(), 0).getDate()
+    m--;
+    d += new Date(to.getFullYear(), to.getMonth(), 0).getDate();
   }
   if (m < 0) {
-    y--
-    m += 12
+    y--;
+    m += 12;
   }
-  const p: string[] = []
+  const p: string[] = [];
   if (y > 0) {
-    p.push(t(y === 1 ? "form.year" : "form.years", { n: y }))
+    p.push(t(y === 1 ? "form.year" : "form.years", { n: y }));
   }
   if (m > 0) {
-    p.push(t(m === 1 ? "form.month" : "form.months", { n: m }))
+    p.push(t(m === 1 ? "form.month" : "form.months", { n: m }));
   }
   if (d > 0) {
-    p.push(t(d === 1 ? "form.day" : "form.days", { n: d }))
+    p.push(t(d === 1 ? "form.day" : "form.days", { n: d }));
   }
-  return p.join(", ") || t("form.zeroDays")
+  return p.join(", ") || t("form.zeroDays");
 }
 
 interface CVFormProps {
-  data: CVData
-  onChange: (data: CVData) => void
+  data: CVData;
+  onChange: (data: CVData) => void;
 }
 
 const currentMonth = (() => {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
-})()
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+})();
 
 export function CVForm({ data, onChange }: CVFormProps) {
-  const { t } = useTranslation()
-  const [skillInputs, setSkillInputs] = useState<Record<string, string>>({})
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const { t } = useTranslation();
+  const [skillInputs, setSkillInputs] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // --- Error management ---
   function updateError(key: string, error: string | undefined) {
     setErrors((prev) => {
       if (error) {
-        return { ...prev, [key]: error }
+        return { ...prev, [key]: error };
       }
       if (!(key in prev)) {
-        return prev
+        return prev;
       }
-      const next = { ...prev }
-      delete next[key]
-      return next
-    })
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
   }
 
   async function handlePhotoFile(file: File) {
     try {
-      const photoUrl = await preprocessImage(file, { maxEdge: PHOTO_MAX_EDGE })
-      updateError("photo", undefined)
+      const photoUrl = await preprocessImage(file, { maxEdge: PHOTO_MAX_EDGE });
+      updateError("photo", undefined);
       onChange({
         ...data,
         personalInfo: { ...data.personalInfo, photoUrl },
-      })
+      });
     } catch {
-      updateError("photo", t("errors.imageProcess"))
+      updateError("photo", t("errors.imageProcess"));
     }
   }
 
@@ -322,12 +326,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
     onChange({
       ...data,
       personalInfo: { ...data.personalInfo, [field]: value },
-    })
+    });
   }
 
   // --- Experience ---
   function addExperience() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       experience: [
@@ -345,21 +349,21 @@ export function CVForm({ data, onChange }: CVFormProps) {
           description: "",
         },
       ],
-    })
+    });
   }
 
   function removeExperience(id: string) {
     onChange({
       ...data,
       experience: data.experience.filter((e) => e.id !== id),
-    })
+    });
     setErrors((prev) => {
-      const next = { ...prev }
-      delete next[`exp-${id}-company`]
-      delete next[`exp-${id}-title`]
-      delete next[`exp-${id}-url`]
-      return next
-    })
+      const next = { ...prev };
+      delete next[`exp-${id}-company`];
+      delete next[`exp-${id}-title`];
+      delete next[`exp-${id}-url`];
+      return next;
+    });
   }
 
   function updateExperience(
@@ -372,12 +376,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
       experience: data.experience.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Education ---
   function addEducation() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       education: [
@@ -393,20 +397,20 @@ export function CVForm({ data, onChange }: CVFormProps) {
           current: false,
         },
       ],
-    })
+    });
   }
 
   function removeEducation(id: string) {
     onChange({
       ...data,
       education: data.education.filter((e) => e.id !== id),
-    })
+    });
     setErrors((prev) => {
-      const next = { ...prev }
-      delete next[`edu-${id}-institution`]
-      delete next[`edu-${id}-degree`]
-      return next
-    })
+      const next = { ...prev };
+      delete next[`edu-${id}-institution`];
+      delete next[`edu-${id}-degree`];
+      return next;
+    });
   }
 
   function updateEducation(
@@ -419,32 +423,32 @@ export function CVForm({ data, onChange }: CVFormProps) {
       education: data.education.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Skills ---
   function addSkillCategory() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       skills: [...data.skills, { id, name: "", items: [] }],
-    })
+    });
   }
 
   function removeSkillCategory(id: string) {
-    onChange({ ...data, skills: data.skills.filter((c) => c.id !== id) })
+    onChange({ ...data, skills: data.skills.filter((c) => c.id !== id) });
     setSkillInputs((prev) => {
-      const next = { ...prev }
-      delete next[id]
-      return next
-    })
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
   }
 
   function updateSkillCategoryName(id: string, name: string) {
     onChange({
       ...data,
       skills: data.skills.map((c) => (c.id === id ? { ...c, name } : c)),
-    })
+    });
   }
 
   function handleCategorySkillKeyDown(
@@ -452,17 +456,17 @@ export function CVForm({ data, onChange }: CVFormProps) {
     e: React.KeyboardEvent<HTMLInputElement>
   ) {
     if (e.key === "Enter") {
-      e.preventDefault()
-      const trimmed = (skillInputs[categoryId] ?? "").trim()
-      const category = data.skills.find((c) => c.id === categoryId)
+      e.preventDefault();
+      const trimmed = (skillInputs[categoryId] ?? "").trim();
+      const category = data.skills.find((c) => c.id === categoryId);
       if (trimmed && category && !category.items.includes(trimmed)) {
         onChange({
           ...data,
           skills: data.skills.map((c) =>
             c.id === categoryId ? { ...c, items: [...c.items, trimmed] } : c
           ),
-        })
-        setSkillInputs((prev) => ({ ...prev, [categoryId]: "" }))
+        });
+        setSkillInputs((prev) => ({ ...prev, [categoryId]: "" }));
       }
     }
   }
@@ -475,23 +479,23 @@ export function CVForm({ data, onChange }: CVFormProps) {
           ? { ...c, items: c.items.filter((s) => s !== skill) }
           : c
       ),
-    })
+    });
   }
 
   // --- Awards ---
   function addAward() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       awards: [
         ...data.awards,
         { id, title: "", issuer: "", date: "", description: "", url: "" },
       ],
-    })
+    });
   }
 
   function removeAward(id: string) {
-    onChange({ ...data, awards: data.awards.filter((e) => e.id !== id) })
+    onChange({ ...data, awards: data.awards.filter((e) => e.id !== id) });
   }
 
   function updateAward(
@@ -504,12 +508,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
       awards: data.awards.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Certificates ---
   function addCertificate() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       certificates: [
@@ -524,14 +528,14 @@ export function CVForm({ data, onChange }: CVFormProps) {
           url: "",
         },
       ],
-    })
+    });
   }
 
   function removeCertificate(id: string) {
     onChange({
       ...data,
       certificates: data.certificates.filter((e) => e.id !== id),
-    })
+    });
   }
 
   function updateCertificate(
@@ -544,23 +548,23 @@ export function CVForm({ data, onChange }: CVFormProps) {
       certificates: data.certificates.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Languages ---
   function addLanguage() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       languages: [...data.languages, { id, language: "", proficiency: "" }],
-    })
+    });
   }
 
   function removeLanguage(id: string) {
     onChange({
       ...data,
       languages: data.languages.filter((e) => e.id !== id),
-    })
+    });
   }
 
   function updateLanguage(
@@ -573,22 +577,22 @@ export function CVForm({ data, onChange }: CVFormProps) {
       languages: data.languages.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   function addProject() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       projects: [...data.projects, { id, name: "", url: "", description: "" }],
-    })
+    });
   }
 
   function removeProject(id: string) {
     onChange({
       ...data,
       projects: data.projects.filter((e) => e.id !== id),
-    })
+    });
   }
 
   function updateProject(
@@ -601,12 +605,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
       projects: data.projects.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Volunteer ---
   function addVolunteer() {
-    const id = crypto.randomUUID()
+    const id = crypto.randomUUID();
     onChange({
       ...data,
       volunteer: [
@@ -621,14 +625,14 @@ export function CVForm({ data, onChange }: CVFormProps) {
           description: "",
         },
       ],
-    })
+    });
   }
 
   function removeVolunteer(id: string) {
     onChange({
       ...data,
       volunteer: data.volunteer.filter((e) => e.id !== id),
-    })
+    });
   }
 
   function updateVolunteer(
@@ -641,122 +645,125 @@ export function CVForm({ data, onChange }: CVFormProps) {
       volunteer: data.volunteer.map((e) =>
         e.id === id ? { ...e, [field]: value } : e
       ),
-    })
+    });
   }
 
   // --- Accordion summaries ---
   function experienceSummary(entry: ExperienceEntry, index: number) {
     if (entry.title && entry.company) {
-      return t("form.summaryAt", { title: entry.title, company: entry.company })
+      return t("form.summaryAt", {
+        title: entry.title,
+        company: entry.company,
+      });
     }
     return (
       entry.title ||
       entry.company ||
       t("form.experienceFallback", { index: index + 1 })
-    )
+    );
   }
 
   const totalExperience = useMemo(() => {
-    const now = new Date()
+    const now = new Date();
     const intervals = data.experience.reduce<{ start: Date; end: Date }[]>(
       (acc, e) => {
         if (!e.startDate) {
-          return acc
+          return acc;
         }
-        const start = new Date(`${e.startDate}-01`)
-        const end = e.current || !e.endDate ? now : new Date(`${e.endDate}-01`)
+        const start = new Date(`${e.startDate}-01`);
+        const end = e.current || !e.endDate ? now : new Date(`${e.endDate}-01`);
         if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-          return acc
+          return acc;
         }
-        acc.push({ start, end })
-        return acc
+        acc.push({ start, end });
+        return acc;
       },
       []
-    )
+    );
     if (intervals.length === 0) {
-      return null
+      return null;
     }
 
     const earliest = new Date(
       Math.min(...intervals.map((i) => i.start.getTime()))
-    )
+    );
     const since = earliest.toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
-    })
-    const spanLabel = dateDiffLabel(earliest, now, t)
+    });
+    const spanLabel = dateDiffLabel(earliest, now, t);
 
     const sorted = [...intervals].sort(
       (a, b) => a.start.getTime() - b.start.getTime()
-    )
-    const merged: { start: Date; end: Date }[] = []
+    );
+    const merged: { start: Date; end: Date }[] = [];
     for (const iv of sorted) {
-      const last = merged.at(-1)
+      const last = merged.at(-1);
       if (last && iv.start <= last.end) {
         if (iv.end > last.end) {
-          last.end = iv.end
+          last.end = iv.end;
         }
       } else {
-        merged.push({ start: new Date(iv.start), end: new Date(iv.end) })
+        merged.push({ start: new Date(iv.start), end: new Date(iv.end) });
       }
     }
-    let totalMs = 0
+    let totalMs = 0;
     for (const block of merged) {
-      totalMs += block.end.getTime() - block.start.getTime()
+      totalMs += block.end.getTime() - block.start.getTime();
     }
-    const totalDays = Math.floor(totalMs / (1000 * 60 * 60 * 24))
-    const refEnd = new Date(totalDays * 24 * 60 * 60 * 1000)
-    const actualLabel = dateDiffLabel(new Date(0), refEnd, t)
+    const totalDays = Math.floor(totalMs / (1000 * 60 * 60 * 24));
+    const refEnd = new Date(totalDays * 24 * 60 * 60 * 1000);
+    const actualLabel = dateDiffLabel(new Date(0), refEnd, t);
 
-    return { label: spanLabel, since, actualLabel }
-  }, [data.experience, t])
+    return { label: spanLabel, since, actualLabel };
+  }, [data.experience, t]);
 
   const sinceGraduation = useMemo(() => {
-    const now = new Date()
+    const now = new Date();
     const uniEntries = data.education.filter(
       (e) => e.category === "university" && (e.endDate || e.current)
-    )
+    );
     if (uniEntries.length === 0) {
-      return null
+      return null;
     }
 
     const endDates = uniEntries
       .map((e) => (e.current ? now : new Date(`${e.endDate}-01`)))
-      .filter((d) => !Number.isNaN(d.getTime()))
+      .filter((d) => !Number.isNaN(d.getTime()));
     if (endDates.length === 0) {
-      return null
+      return null;
     }
 
-    const latest = new Date(Math.max(...endDates.map((d) => d.getTime())))
-    const label = dateDiffLabel(latest, now, t)
+    const latest = new Date(Math.max(...endDates.map((d) => d.getTime())));
+    const label = dateDiffLabel(latest, now, t);
     const since = latest.toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
-    })
+    });
 
-    return { label, since }
-  }, [data.education, t])
+    return { label, since };
+  }, [data.education, t]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor)
-  )
-  const dndContextId = useId()
+  );
+  const dndContextId = useId();
 
   function handleSectionDragEnd(event: DragEndEvent) {
-    const { active, over } = event
+    const { active, over } = event;
     if (!over || active.id === over.id) {
-      return
+      return;
     }
-    const oldIndex = data.sectionOrder.indexOf(active.id as CVSectionId)
-    const newIndex = data.sectionOrder.indexOf(over.id as CVSectionId)
+    const oldIndex = data.sectionOrder.indexOf(active.id as CVSectionId);
+    const newIndex = data.sectionOrder.indexOf(over.id as CVSectionId);
     if (oldIndex === -1 || newIndex === -1) {
-      return
+      return;
     }
     onChange({
       ...data,
       sectionOrder: arrayMove(data.sectionOrder, oldIndex, newIndex),
-    })
+    });
   }
 
   function renderSection(sectionId: CVSectionId): ReactNode {
@@ -766,7 +773,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           <section>
             <input
               aria-label={t("a11y2.summarySectionTitle")}
-              className="w-full bg-transparent text-body-sm font-medium outline-none placeholder:text-muted-foreground"
+              className="w-full rounded-sm bg-transparent font-medium text-body-sm outline-hidden placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
               onChange={(e) =>
                 onChange({ ...data, summaryTitle: e.target.value })
               }
@@ -782,12 +789,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     e.target.value.length > 500
                       ? t("errors.maxFiveHundredChars")
                       : undefined
-                  )
+                  );
                 }}
                 onChange={(e) => {
-                  onChange({ ...data, summary: e.target.value })
+                  onChange({ ...data, summary: e.target.value });
                   if (errors.summary && e.target.value.length <= 500) {
-                    updateError("summary", undefined)
+                    updateError("summary", undefined);
                   }
                 }}
                 placeholder={t("placeholders.summary")}
@@ -795,7 +802,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
               />
               <div className="mt-1 flex justify-between">
                 {errors.summary ? (
-                  <p className="text-xs text-destructive">{errors.summary}</p>
+                  <p className="text-destructive text-xs">{errors.summary}</p>
                 ) : (
                   <span />
                 )}
@@ -807,25 +814,25 @@ export function CVForm({ data, onChange }: CVFormProps) {
               </div>
             </div>
           </section>
-        )
+        );
       case "experience":
-        return renderExperienceSection()
+        return renderExperienceSection();
       case "education":
-        return renderEducationSection()
+        return renderEducationSection();
       case "skills":
-        return renderSkillsSection()
+        return renderSkillsSection();
       case "awards":
-        return renderAwardsSection()
+        return renderAwardsSection();
       case "certificates":
-        return renderCertificatesSection()
+        return renderCertificatesSection();
       case "languages":
-        return renderLanguagesSection()
+        return renderLanguagesSection();
       case "projects":
-        return renderProjectsSection()
+        return renderProjectsSection();
       case "volunteer":
-        return renderVolunteerSection()
+        return renderVolunteerSection();
       default:
-        return null
+        return null;
     }
   }
 
@@ -833,7 +840,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
     <div className="space-y-6">
       {/* ── Personal Info ── */}
       <section>
-        <h2 className="text-body-sm font-medium">
+        <h2 className="font-medium text-body-sm">
           {t("form.personalInformation")}
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -844,27 +851,27 @@ export function CVForm({ data, onChange }: CVFormProps) {
               aria-invalid={!!errors.fullName}
               id="fullName"
               onBlur={(e) => {
-                const v = e.target.value.trim()
+                const value = e.target.value.trim();
+                if (!value) {
+                  updateError("fullName", t("errors.fullNameRequired"));
+                  return;
+                }
                 updateError(
                   "fullName",
-                  v
-                    ? v.length < 2
-                      ? t("errors.minTwoChars")
-                      : undefined
-                    : t("errors.fullNameRequired")
-                )
+                  value.length < 2 ? t("errors.minTwoChars") : undefined
+                );
               }}
               onChange={(e) => {
-                updatePersonal("fullName", e.target.value)
+                updatePersonal("fullName", e.target.value);
                 if (errors.fullName && e.target.value.trim().length >= 2) {
-                  updateError("fullName", undefined)
+                  updateError("fullName", undefined);
                 }
               }}
               placeholder={t("placeholders.fullName")}
               value={data.personalInfo.fullName}
             />
             {errors.fullName && (
-              <p className="text-xs text-destructive">{errors.fullName}</p>
+              <p className="text-destructive text-xs">{errors.fullName}</p>
             )}
           </div>
 
@@ -886,23 +893,22 @@ export function CVForm({ data, onChange }: CVFormProps) {
               aria-invalid={!!errors.email}
               id="email"
               onBlur={(e) => {
-                const v = e.target.value
+                const value = e.target.value;
+                if (!value.trim()) {
+                  updateError("email", t("errors.emailRequired"));
+                  return;
+                }
                 updateError(
                   "email",
-                  v.trim()
-                    ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
-                      ? undefined
-                      : t("errors.invalidEmail")
-                    : t("errors.emailRequired")
-                )
+                  EMAIL_PATTERN.test(value)
+                    ? undefined
+                    : t("errors.invalidEmail")
+                );
               }}
               onChange={(e) => {
-                updatePersonal("email", e.target.value)
-                if (
-                  errors.email &&
-                  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value)
-                ) {
-                  updateError("email", undefined)
+                updatePersonal("email", e.target.value);
+                if (errors.email && EMAIL_PATTERN.test(e.target.value)) {
+                  updateError("email", undefined);
                 }
               }}
               placeholder={t("placeholders.email")}
@@ -910,7 +916,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
               value={data.personalInfo.email}
             />
             {errors.email && (
-              <p className="text-xs text-destructive">{errors.email}</p>
+              <p className="text-destructive text-xs">{errors.email}</p>
             )}
           </div>
 
@@ -920,9 +926,9 @@ export function CVForm({ data, onChange }: CVFormProps) {
             <PhoneInput
               defaultCountry="ID"
               onChange={(value) => {
-                updatePersonal("phone", String(value ?? ""))
+                updatePersonal("phone", String(value ?? ""));
                 if (errors.phone) {
-                  updateError("phone", undefined)
+                  updateError("phone", undefined);
                 }
               }}
               placeholder={t("placeholders.phone")}
@@ -978,8 +984,13 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   <>
                     <img
                       alt={t("a11y2.profile")}
-                      className="size-16 rounded-full border border-border object-cover"
+                      className="image-fade size-16 rounded-full border border-border object-cover"
+                      decoding="async"
+                      height={64}
+                      loading="lazy"
+                      ref={fadeInOnLoad}
                       src={data.personalInfo.photoUrl}
+                      width={64}
                     />
                     <Button
                       onClick={() =>
@@ -995,18 +1006,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     </Button>
                   </>
                 ) : (
-                  <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-xs text-muted-foreground hover:border-foreground/30">
+                  <label className="flex cursor-pointer items-center gap-2 rounded-md border border-border border-dashed px-4 py-3 text-muted-foreground text-xs transition-[color,border-color,box-shadow] duration-150 ease-standard hover:border-foreground/30 has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-ring/30">
                     <Upload className="size-4" />
                     {t("form.uploadPhoto")}
                     <input
                       accept="image/jpeg,image/png,image/webp"
                       aria-label={t("a11y2.uploadProfilePhoto")}
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        e.target.value = ""
+                      className="sr-only"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        e.target.value = "";
                         if (file) {
-                          void handlePhotoFile(file)
+                          await handlePhotoFile(file);
                         }
                       }}
                       type="file"
@@ -1014,7 +1025,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   </label>
                 )}
                 {errors.photo && (
-                  <p className="text-xs text-destructive">{errors.photo}</p>
+                  <p className="text-destructive text-xs">{errors.photo}</p>
                 )}
               </div>
             )}
@@ -1040,7 +1051,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         </SortableContext>
       </DndContext>
     </div>
-  )
+  );
 
   function renderExperienceSection() {
     return (
@@ -1069,12 +1080,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     entry.company.trim()
                       ? undefined
                       : t("errors.companyRequired")
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateExperience(entry.id, "company", v)
+                  updateExperience(entry.id, "company", v);
                   if (errors[`exp-${entry.id}-company`] && v.trim()) {
-                    updateError(`exp-${entry.id}-company`, undefined)
+                    updateError(`exp-${entry.id}-company`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.companyName")}
@@ -1089,12 +1100,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     entry.title.trim()
                       ? undefined
                       : t("errors.jobTitleRequired")
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateExperience(entry.id, "title", v)
+                  updateExperience(entry.id, "title", v);
                   if (errors[`exp-${entry.id}-title`] && v.trim()) {
-                    updateError(`exp-${entry.id}-title`, undefined)
+                    updateError(`exp-${entry.id}-title`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.yourRole")}
@@ -1108,18 +1119,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 onBlur={() => {
                   updateError(
                     `exp-${entry.id}-url`,
-                    entry.url && !/^https?:\/\/.+/.test(entry.url)
+                    entry.url && !HTTP_URL_PATTERN.test(entry.url)
                       ? t("errors.invalidUrl")
                       : undefined
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateExperience(entry.id, "url", v)
+                  updateExperience(entry.id, "url", v);
                   if (
                     errors[`exp-${entry.id}-url`] &&
-                    (!v || /^https?:\/\/.+/.test(v))
+                    (!v || HTTP_URL_PATTERN.test(v))
                   ) {
-                    updateError(`exp-${entry.id}-url`, undefined)
+                    updateError(`exp-${entry.id}-url`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.url")}
@@ -1213,11 +1224,11 @@ export function CVForm({ data, onChange }: CVFormProps) {
                               }
                             : exp
                         ),
-                      })
+                      });
                     }}
                     type="checkbox"
                   />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     {t("form.present")}
                   </span>
                 </label>
@@ -1236,7 +1247,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.experienceTitle}
         titleExtra={
           totalExperience && (
-            <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+            <span className="flex shrink-0 items-center gap-1 text-muted-foreground text-xs">
               {totalExperience.label}
               <TooltipProvider>
                 <Tooltip>
@@ -1267,7 +1278,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         triggerExtra={(entry) =>
           entry.startDate ? (
             <span
-              className="shrink-0 text-xs text-muted-foreground"
+              className="shrink-0 text-muted-foreground text-xs"
               suppressHydrationWarning
             >
               {dateDiffLabel(
@@ -1281,7 +1292,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           ) : null
         }
       />
-    )
+    );
   }
 
   function renderEducationSection() {
@@ -1339,12 +1350,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     entry.institution.trim()
                       ? undefined
                       : t("errors.institutionRequired")
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateEducation(entry.id, "institution", v)
+                  updateEducation(entry.id, "institution", v);
                   if (errors[`edu-${entry.id}-institution`] && v.trim()) {
-                    updateError(`edu-${entry.id}-institution`, undefined)
+                    updateError(`edu-${entry.id}-institution`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.universityName")}
@@ -1357,12 +1368,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   updateError(
                     `edu-${entry.id}-degree`,
                     entry.degree.trim() ? undefined : t("errors.degreeRequired")
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateEducation(entry.id, "degree", v)
+                  updateEducation(entry.id, "degree", v);
                   if (errors[`edu-${entry.id}-degree`] && v.trim()) {
-                    updateError(`edu-${entry.id}-degree`, undefined)
+                    updateError(`edu-${entry.id}-degree`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.degree")}
@@ -1411,11 +1422,11 @@ export function CVForm({ data, onChange }: CVFormProps) {
                               }
                             : edu
                         ),
-                      })
+                      });
                     }}
                     type="checkbox"
                   />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     {t("form.present")}
                   </span>
                 </label>
@@ -1428,18 +1439,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
             return t("form.summaryDash", {
               a: entry.degree,
               b: entry.institution,
-            })
+            });
           }
           return (
             entry.degree ||
             entry.institution ||
             t("form.educationFallback", { index: index + 1 })
-          )
+          );
         }}
         title={data.educationTitle}
         titleExtra={
           sinceGraduation && (
-            <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+            <span className="flex shrink-0 items-center gap-1 text-muted-foreground text-xs">
               {sinceGraduation.label}
               <TooltipProvider>
                 <Tooltip>
@@ -1463,7 +1474,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         triggerExtra={(entry) =>
           entry.startDate ? (
             <span
-              className="shrink-0 text-xs text-muted-foreground"
+              className="shrink-0 text-muted-foreground text-xs"
               suppressHydrationWarning
             >
               {dateDiffLabel(
@@ -1477,7 +1488,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           ) : null
         }
       />
-    )
+    );
   }
 
   function renderSkillsSection() {
@@ -1499,8 +1510,11 @@ export function CVForm({ data, onChange }: CVFormProps) {
               value={category.name}
             />
             <div className="space-y-1.5">
-              <Label>{t("form.skills")}</Label>
+              <Label htmlFor={`skill-entry-${category.id}`}>
+                {t("form.skills")}
+              </Label>
               <Input
+                id={`skill-entry-${category.id}`}
                 onChange={(e) =>
                   setSkillInputs((prev) => ({
                     ...prev,
@@ -1516,13 +1530,25 @@ export function CVForm({ data, onChange }: CVFormProps) {
               <div className="flex flex-wrap gap-1.5">
                 {category.items.map((skill) => (
                   <Badge
-                    className="cursor-pointer"
+                    asChild
+                    className="press cursor-pointer outline-hidden transition-[color,background-color,border-color,box-shadow,scale]"
                     key={skill}
-                    onClick={() => removeSkillFromCategory(category.id, skill)}
                     variant="secondary"
                   >
-                    {skill}
-                    <X className="size-2.5" />
+                    <button
+                      aria-label={t("a11y.removeItem", { item: skill })}
+                      onClick={() => {
+                        removeSkillFromCategory(category.id, skill);
+                        // The chip unmounts; keep keyboard focus in the field.
+                        document
+                          .getElementById(`skill-entry-${category.id}`)
+                          ?.focus();
+                      }}
+                      type="button"
+                    >
+                      {skill}
+                      <X aria-hidden="true" className="size-2.5" />
+                    </button>
                   </Badge>
                 ))}
               </div>
@@ -1531,14 +1557,14 @@ export function CVForm({ data, onChange }: CVFormProps) {
         )}
         summary={(category) => {
           if (category.name && category.items.length > 0) {
-            return `${category.name} (${category.items.length})`
+            return `${category.name} (${category.items.length})`;
           }
-          return category.name || t("form.untitledCategory")
+          return category.name || t("form.untitledCategory");
         }}
         title={data.skillsTitle}
         titleExtra={
           data.skills.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t("form.skillsCount", {
                 count: data.skills.reduce((sum, c) => sum + c.items.length, 0),
               })}
@@ -1546,7 +1572,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           )
         }
       />
-    )
+    );
   }
 
   function renderAwardsSection() {
@@ -1594,18 +1620,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
               onBlur={() => {
                 updateError(
                   `award-${entry.id}-url`,
-                  entry.url && !/^https?:\/\/.+/.test(entry.url)
+                  entry.url && !HTTP_URL_PATTERN.test(entry.url)
                     ? t("errors.invalidUrl")
                     : undefined
-                )
+                );
               }}
               onChange={(v) => {
-                updateAward(entry.id, "url", v)
+                updateAward(entry.id, "url", v);
                 if (
                   errors[`award-${entry.id}-url`] &&
-                  (!v || /^https?:\/\/.+/.test(v))
+                  (!v || HTTP_URL_PATTERN.test(v))
                 ) {
-                  updateError(`award-${entry.id}-url`, undefined)
+                  updateError(`award-${entry.id}-url`, undefined);
                 }
               }}
               placeholder={t("placeholders.url")}
@@ -1616,18 +1642,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
         )}
         summary={(entry, index) => {
           if (entry.title && entry.issuer) {
-            return t("form.summaryDash", { a: entry.title, b: entry.issuer })
+            return t("form.summaryDash", { a: entry.title, b: entry.issuer });
           }
           return (
             entry.title ||
             entry.issuer ||
             t("form.awardFallback", { index: index + 1 })
-          )
+          );
         }}
         title={data.awardsTitle}
         titleExtra={
           data.awards.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t(
                 data.awards.length === 1
                   ? "form.awardCount"
@@ -1638,7 +1664,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           )
         }
       />
-    )
+    );
   }
 
   function renderCertificatesSection() {
@@ -1690,18 +1716,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 onBlur={() => {
                   updateError(
                     `cert-${entry.id}-url`,
-                    entry.url && !/^https?:\/\/.+/.test(entry.url)
+                    entry.url && !HTTP_URL_PATTERN.test(entry.url)
                       ? t("errors.invalidUrl")
                       : undefined
-                  )
+                  );
                 }}
                 onChange={(v) => {
-                  updateCertificate(entry.id, "url", v)
+                  updateCertificate(entry.id, "url", v);
                   if (
                     errors[`cert-${entry.id}-url`] &&
-                    (!v || /^https?:\/\/.+/.test(v))
+                    (!v || HTTP_URL_PATTERN.test(v))
                   ) {
-                    updateError(`cert-${entry.id}-url`, undefined)
+                    updateError(`cert-${entry.id}-url`, undefined);
                   }
                 }}
                 placeholder={t("placeholders.url")}
@@ -1713,18 +1739,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
         )}
         summary={(entry, index) => {
           if (entry.name && entry.issuer) {
-            return t("form.summaryDash", { a: entry.name, b: entry.issuer })
+            return t("form.summaryDash", { a: entry.name, b: entry.issuer });
           }
           return (
             entry.name ||
             entry.issuer ||
             t("form.certificateFallback", { index: index + 1 })
-          )
+          );
         }}
         title={data.certificatesTitle}
         titleExtra={
           data.certificates.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t(
                 data.certificates.length === 1
                   ? "form.certificateCount"
@@ -1736,38 +1762,38 @@ export function CVForm({ data, onChange }: CVFormProps) {
         }
         triggerExtra={(entry) => {
           if (!entry.expiryDate) {
-            return null
+            return null;
           }
-          const expiry = new Date(`${entry.expiryDate}-01`)
+          const expiry = new Date(`${entry.expiryDate}-01`);
           if (Number.isNaN(expiry.getTime())) {
-            return null
+            return null;
           }
-          const now = new Date()
+          const now = new Date();
           const isExpired =
-            expiry < new Date(now.getFullYear(), now.getMonth(), 1)
+            expiry < new Date(now.getFullYear(), now.getMonth(), 1);
           if (isExpired) {
             return (
               <span
-                className="shrink-0 text-xs text-destructive"
+                className="shrink-0 text-destructive text-xs"
                 suppressHydrationWarning
               >
                 {t("form.expiredAgo", {
                   duration: dateDiffLabel(expiry, now, t),
                 })}
               </span>
-            )
+            );
           }
           return (
             <span
-              className="shrink-0 text-xs text-muted-foreground"
+              className="shrink-0 text-muted-foreground text-xs"
               suppressHydrationWarning
             >
               {t("form.expiresIn", { duration: dateDiffLabel(now, expiry, t) })}
             </span>
-          )
+          );
         }}
       />
-    )
+    );
   }
 
   function renderLanguagesSection() {
@@ -1801,16 +1827,16 @@ export function CVForm({ data, onChange }: CVFormProps) {
             return t("form.summaryDash", {
               a: entry.language,
               b: entry.proficiency,
-            })
+            });
           }
           return (
             entry.language || t("form.languageFallback", { index: index + 1 })
-          )
+          );
         }}
         title={data.languagesTitle}
         titleExtra={
           data.languages.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t(
                 data.languages.length === 1
                   ? "form.languageCount"
@@ -1821,7 +1847,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           )
         }
       />
-    )
+    );
   }
 
   function renderProjectsSection() {
@@ -1865,7 +1891,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.projectsTitle}
         titleExtra={
           data.projects.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t(
                 data.projects.length === 1
                   ? "form.projectCount"
@@ -1876,7 +1902,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           )
         }
       />
-    )
+    );
   }
 
   function renderVolunteerSection() {
@@ -1935,11 +1961,11 @@ export function CVForm({ data, onChange }: CVFormProps) {
                               }
                             : vol
                         ),
-                      })
+                      });
                     }}
                     type="checkbox"
                   />
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     {t("form.present")}
                   </span>
                 </label>
@@ -1959,18 +1985,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
             return t("form.summaryAt", {
               title: entry.role,
               company: entry.organization,
-            })
+            });
           }
           return (
             entry.role ||
             entry.organization ||
             t("form.volunteerFallback", { index: index + 1 })
-          )
+          );
         }}
         title={data.volunteerTitle}
         titleExtra={
           data.volunteer.length > 0 && (
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-muted-foreground text-xs">
               {t(
                 data.volunteer.length === 1
                   ? "form.activityCount"
@@ -1983,7 +2009,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         triggerExtra={(entry) =>
           entry.startDate ? (
             <span
-              className="shrink-0 text-xs text-muted-foreground"
+              className="shrink-0 text-muted-foreground text-xs"
               suppressHydrationWarning
             >
               {dateDiffLabel(
@@ -1997,16 +2023,23 @@ export function CVForm({ data, onChange }: CVFormProps) {
           ) : null
         }
       />
-    )
+    );
   }
 }
+
+// Matches --motion-duration-base / --motion-ease in @bahrul/config/motion.css
+// (dnd-kit's own default is `250ms ease`).
+const SORTABLE_TRANSITION = {
+  duration: 200,
+  easing: "cubic-bezier(0.2, 0, 0, 1)",
+} as const;
 
 function SortableSection({
   id,
   children,
 }: {
-  id: string
-  children: ReactNode
+  id: string;
+  children: ReactNode;
 }) {
   const {
     attributes,
@@ -2015,12 +2048,12 @@ function SortableSection({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id })
+  } = useSortable({ id, transition: SORTABLE_TRANSITION });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-  }
+  };
   return (
     <div
       className="relative"
@@ -2032,7 +2065,7 @@ function SortableSection({
       }}
     >
       <div
-        className="absolute top-1 -left-4 cursor-grab text-muted-foreground/50 hover:text-muted-foreground sm:-left-6"
+        className="absolute top-1 -left-4 cursor-grab rounded-sm text-muted-foreground/50 outline-hidden transition-[color,box-shadow] duration-150 ease-standard hover:text-muted-foreground focus-visible:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30 sm:-left-6"
         {...attributes}
         {...listeners}
       >
@@ -2041,5 +2074,5 @@ function SortableSection({
       <Separator className="mb-6" />
       {children}
     </div>
-  )
+  );
 }

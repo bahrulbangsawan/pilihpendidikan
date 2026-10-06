@@ -54,8 +54,10 @@
   "a11y": {
     "switchLanguage": "Switch language",
     "skipToContent": "Skip to main content",
+    "loadingDocument": "Loading CV",
     "downloadCv": "Download CV",
-    "importCv": "Import CV from JSON file"
+    "importCv": "Import CV from JSON file",
+    "removeItem": "Remove {item}"
   },
   "alert": {
     "invalidJson": "Invalid JSON file. Please select a valid CV JSON export.",

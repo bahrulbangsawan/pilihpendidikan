@@ -1,4 +1,6 @@
-import { Button } from "@rulisme/ui/ui/button"
+import { cn } from "@rulisme/ui/lib/utils";
+import { useFirstPaintEntrance } from "@rulisme/ui/lib/use-first-paint-entrance";
+import { Button } from "@rulisme/ui/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,16 +9,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@rulisme/ui/ui/dialog"
+} from "@rulisme/ui/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@rulisme/ui/ui/dropdown-menu"
-import { Input } from "@rulisme/ui/ui/input"
-import { Label } from "@rulisme/ui/ui/label"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rulisme/ui/ui/tooltip"
+} from "@rulisme/ui/ui/dropdown-menu";
+import { Input } from "@rulisme/ui/ui/input";
+import { Label } from "@rulisme/ui/ui/label";
+import { Spinner } from "@rulisme/ui/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@rulisme/ui/ui/tooltip";
 import {
   ArrowUpRight,
   Cable,
@@ -24,102 +31,106 @@ import {
   Download,
   FileJson,
   FileText,
-  Loader2,
   Sparkles,
   Trash2,
   Upload,
-} from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form"
-import { PortfolioPreview } from "@/components/portfolio-preview"
-import type { Portfolio } from "@/components/portfolio-data-model"
-import sampleData from "@/data/sample-portfolio.json"
-import { useTranslation } from "@/i18n"
-import { LanguageSwitcher } from "@/i18n/components/language-switcher"
-import { useCloudSave } from "@/lib/use-cloud-save"
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form";
+import { PortfolioPreview } from "@/components/portfolio-preview";
+import type { Portfolio } from "@/components/portfolio-data-model";
+import sampleData from "@/data/sample-portfolio.json";
+import { useTranslation } from "@/i18n";
+import { LanguageSwitcher } from "@/i18n/components/language-switcher";
+import { useCloudSave } from "@/lib/use-cloud-save";
 
 // In dev, target the local mcp Worker (`wrangler dev` on :8787) so end-to-end
 // portfolio load/save is exercised without hitting production. In prod the
 // public API host is used. MCP_URL is the human-facing host in the MCP guide.
 const MCP_API = import.meta.env.DEV
   ? "http://localhost:8787"
-  : "https://mcp.bahrul.me"
-const MCP_URL = "https://mcp.bahrul.me"
+  : "https://mcp.bahrul.me";
+const MCP_URL = "https://mcp.bahrul.me";
 
 // Local draft persistence (mirrors apps/cv-bahrul). Keeps an unsaved portfolio
 // in localStorage so a client-side remount — e.g. switching the EN↔ID locale,
 // which swaps the route — restores the in-progress document instead of losing it.
-const STORAGE_KEY = "portfolio-data"
+const STORAGE_KEY = "portfolio-data";
 
 function loadSaved(): Portfolio | null {
   if (typeof window === "undefined") {
-    return null
+    return null;
   }
   try {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       return {
         ...makeEmptyPortfolio(),
         ...(JSON.parse(saved) as Partial<Portfolio>),
-      }
+      };
     }
   } catch {
     /* ignore corrupt data */
   }
-  return null
+  return null;
 }
 
-let saveTimeout: ReturnType<typeof setTimeout> | null = null
-let pendingSave: Portfolio | null = null
+let saveTimeout: ReturnType<typeof setTimeout> | null = null;
+let pendingSave: Portfolio | null = null;
 
 function saveImmediate(next: Portfolio) {
   if (typeof window === "undefined") {
-    return
+    return;
   }
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-    pendingSave = null
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    pendingSave = null;
   } catch {
     /* storage full / unavailable */
   }
 }
 
 function saveLocal(next: Portfolio) {
-  pendingSave = next
+  pendingSave = next;
   if (saveTimeout) {
-    clearTimeout(saveTimeout)
+    clearTimeout(saveTimeout);
   }
-  saveTimeout = setTimeout(() => saveImmediate(next), 500)
+  saveTimeout = setTimeout(() => saveImmediate(next), 500);
 }
 
 function flushSave() {
   if (pendingSave) {
     if (saveTimeout) {
-      clearTimeout(saveTimeout)
+      clearTimeout(saveTimeout);
     }
-    saveImmediate(pendingSave)
+    saveImmediate(pendingSave);
   }
 }
 
 interface PortfolioGeneratorProps {
-  portfolioId?: string
-  print?: boolean
+  portfolioId?: string;
+  print?: boolean;
 }
 
 export function PortfolioGenerator({
   portfolioId,
   print,
 }: PortfolioGeneratorProps) {
-  const { t } = useTranslation()
-  const [data, setData] = useState<Portfolio>(makeEmptyPortfolio)
-  const [generating, setGenerating] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [confirmOpen, setConfirmOpen] = useState(false)
-  const [pendingImport, setPendingImport] = useState<Portfolio | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const isEmpty =
-    !data.owner.fullName.trim() && !data.projects.some((p) => p.title.trim())
+  const { t } = useTranslation();
+  const [data, setData] = useState<Portfolio>(makeEmptyPortfolio);
+  const [generating, setGenerating] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  // Entrance plays on the first paint only; locale switches remount this
+  // page and rely on the route cross-fade instead.
+  const animateEntrance = useFirstPaintEntrance(!loading);
+  const [pendingImport, setPendingImport] = useState<Portfolio | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const isEmpty = !(
+    data.owner.fullName.trim() || data.projects.some((p) => p.title.trim())
+  );
 
   // Owner-authenticated optimistic persistence. Editing a loaded
   // `?portfolio=<slug>` while signed in writes through to PORTFOLIO_KV; a failed
@@ -129,186 +140,217 @@ export function PortfolioGenerator({
     id: portfolioId,
     resource: "portfolio",
     onRollback: setData,
-  })
+  });
 
   // Apply an edit optimistically and persist it to the local draft + cloud (the
   // cloud save is a no-op unless editing a signed-in `?portfolio=` slug).
   const applyChange = (next: Portfolio) => {
-    const stamped: Portfolio = { ...next, updatedAt: new Date().toISOString() }
-    setData(stamped)
-    saveLocal(stamped)
-    cloud.scheduleSave(stamped)
-  }
+    const stamped: Portfolio = { ...next, updatedAt: new Date().toISOString() };
+    setData(stamped);
+    saveLocal(stamped);
+    cloud.scheduleSave(stamped);
+  };
 
   // Reset the editor to a blank document (confirm-gated). Clears the local
   // draft; uses the raw setter so a loaded remote portfolio is not wiped until
   // the user makes a deliberate edit.
   const handleClearAll = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEY);
     }
-    setData(makeEmptyPortfolio())
-    setConfirmOpen(false)
-  }
+    setData(makeEmptyPortfolio());
+    setConfirmOpen(false);
+  };
 
   // Hydrate the local draft after mount (client only, to avoid an SSR mismatch).
   // Skipped when a `?portfolio=` slug is present — the cloud document is
   // authoritative.
   useEffect(() => {
     if (portfolioId) {
-      return
+      return;
     }
-    const saved = loadSaved()
+    const saved = loadSaved();
     if (saved) {
-      setData(saved)
+      setData(saved);
     }
-  }, [portfolioId])
+  }, [portfolioId]);
 
   useEffect(() => {
-    window.addEventListener("beforeunload", flushSave)
+    window.addEventListener("beforeunload", flushSave);
     return () => {
-      window.removeEventListener("beforeunload", flushSave)
+      window.removeEventListener("beforeunload", flushSave);
       // Flush on unmount so switching the locale (which remounts the route)
       // doesn't drop an edit still sitting in the debounce window.
-      flushSave()
-    }
-  }, [])
+      flushSave();
+    };
+  }, []);
 
-  const { markSaved } = cloud
+  const { markSaved } = cloud;
   useEffect(() => {
     if (!portfolioId) {
-      return
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     // Bound the document load: a slow or unreachable MCP API would otherwise
     // leave the preview stranded on a perpetual spinner (a hung fetch never
     // settles, so `.finally` never clears `loading`). On timeout the request
     // aborts, the catch runs, and the editor falls back to its current document.
-    const controller = new AbortController()
-    const abortTimer = setTimeout(() => controller.abort(), 12_000)
+    const controller = new AbortController();
+    const abortTimer = setTimeout(() => controller.abort(), 12_000);
     fetch(`${MCP_API}/api/portfolio/${encodeURIComponent(portfolioId)}`, {
       signal: controller.signal,
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Portfolio not found")
+          throw new Error("Portfolio not found");
         }
-        return res.json() as Promise<Portfolio>
+        return res.json() as Promise<Portfolio>;
       })
       .then((loaded) => {
-        setData(loaded)
-        markSaved(loaded)
+        setData(loaded);
+        markSaved(loaded);
       })
       .catch((err) => console.error("Failed to load remote portfolio:", err))
       .finally(() => {
-        clearTimeout(abortTimer)
-        setLoading(false)
-      })
-  }, [portfolioId, markSaved])
+        clearTimeout(abortTimer);
+        setLoading(false);
+      });
+  }, [portfolioId, markSaved]);
 
   const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (!file) {
-      return
+      return;
     }
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const imported = JSON.parse(event.target?.result as string) as Portfolio
-        const next = { ...makeEmptyPortfolio(), ...imported }
+        const imported = JSON.parse(
+          event.target?.result as string
+        ) as Portfolio;
+        const next = { ...makeEmptyPortfolio(), ...imported };
         // Overwriting a non-empty portfolio is destructive — confirm first.
         // An empty editor has nothing to lose, so import straight away.
         if (isEmpty) {
-          applyChange(next)
+          applyChange(next);
         } else {
-          setPendingImport(next)
+          setPendingImport(next);
         }
       } catch {
-        alert(t("alert.invalidJson"))
+        toast.error(t("alert.invalidJson"), {
+          duration: Number.POSITIVE_INFINITY,
+        });
       }
-    }
-    reader.readAsText(file)
-    e.target.value = ""
-  }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
 
   const confirmImport = () => {
     if (pendingImport) {
-      applyChange(pendingImport)
+      applyChange(pendingImport);
     }
-    setPendingImport(null)
-  }
+    setPendingImport(null);
+  };
 
   const getFileName = (ext: string) => {
-    const now = new Date()
-    const dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`
-    const name = data.owner.fullName
+    const now = new Date();
+    const dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+    const name = data.owner.fullName;
     return name
       ? `Portfolio-${name.replace(/\s+/g, "-")}-${dt}.${ext}`
-      : `Portfolio-${dt}.${ext}`
-  }
+      : `Portfolio-${dt}.${ext}`;
+  };
 
   const handleDownloadPDF = async () => {
-    if (typeof window === "undefined") {
-      return
+    // The browser PDF renderer must not enter the Workers SSR module graph.
+    if (import.meta.env.SSR) {
+      return;
     }
-    setGenerating(true)
+    setGenerating(true);
     try {
-      const { pdf } = await import("@react-pdf/renderer")
-      const { PortfolioDocument } = await import("@/components/portfolio-pdf")
-      const blob = await pdf(<PortfolioDocument data={data} t={t} />).toBlob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = getFileName("pdf")
-      a.click()
-      URL.revokeObjectURL(url)
+      const { pdf } = await import("@react-pdf/renderer");
+      const { PortfolioDocument } = await import("@/components/portfolio-pdf");
+      const blob = await pdf(<PortfolioDocument data={data} t={t} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = getFileName("pdf");
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("PDF generation failed:", err)
-      alert(t("alert.pdfFailed"))
+      console.error("PDF generation failed:", err);
+      toast.error(t("alert.pdfFailed"), { duration: Number.POSITIVE_INFINITY });
     } finally {
-      setGenerating(false)
+      setGenerating(false);
     }
-  }
+  };
 
   const handleDownloadJSON = () => {
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
-    })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = getFileName("json")
-    a.click()
-    URL.revokeObjectURL(url)
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getFileName("json");
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  let tokenStatus = (
+    <p className="text-micro text-muted-foreground">{t("mcp.tokenOptional")}</p>
+  );
+  if (cloud.auth) {
+    tokenStatus = (
+      <p className="text-micro text-primary">
+        {t("mcp.signedInAs", { email: cloud.auth.email })}
+      </p>
+    );
+  } else if (cloud.hasToken) {
+    tokenStatus = (
+      <p className="text-destructive text-micro">
+        {t("mcp.tokenNotRecognized")}
+      </p>
+    );
   }
 
   if (print) {
-    return <PortfolioPrintView data={data} loading={loading} />
+    return <PortfolioPrintView data={data} loading={loading} />;
   }
 
   if (loading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-muted-foreground" />
+        <Spinner
+          className="text-muted-foreground"
+          label={t("a11y.loadingDocument")}
+          size="md"
+        />
       </div>
-    )
+    );
   }
 
   return (
     <>
       <a
-        className="sr-only rounded-md bg-background px-4 py-2 text-body-sm font-medium outline-none focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
+        className="sr-only rounded-md bg-background px-4 py-2 font-medium text-body-sm outline-hidden focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
         href="#portfolio-main"
       >
         {t("a11y.skipToContent")}
       </a>
       <div
-        className="pf-app-shell flex min-h-svh flex-col md:flex-row"
+        className="route-view pf-app-shell flex min-h-svh flex-col md:flex-row"
         id="portfolio-main"
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        <div className="pf-no-print scrollbar-hide h-svh w-full overflow-y-auto border-b border-border md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1.5 border-b border-border bg-background px-4 py-3 sm:px-6">
+        <div
+          className={cn(
+            "pf-no-print scrollbar-hide h-svh w-full overflow-y-auto border-border border-b md:w-1/2 md:border-r md:border-b-0",
+            animateEntrance && "motion-enter"
+          )}
+        >
+          <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="default" variant="outline">
@@ -322,21 +364,21 @@ export function PortfolioGenerator({
                   <DialogDescription>{t("mcp.description")}</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3">
-                  <ol className="space-y-2 text-xs text-muted-foreground">
+                  <ol className="space-y-2 text-muted-foreground text-xs">
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         1
                       </span>
                       <span>{t("mcp.step1")}</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         2
                       </span>
                       <span>{t("mcp.step2")}</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         3
                       </span>
                       <span>{t("mcp.step3")}</span>
@@ -351,7 +393,7 @@ export function PortfolioGenerator({
                   <p className="text-micro text-muted-foreground">
                     {t("mcp.privacy")}
                   </p>
-                  <div className="space-y-1.5 border-t border-border pt-3">
+                  <div className="space-y-1.5 border-border border-t pt-3">
                     <Label htmlFor="portfolio-token">
                       {t("mcp.tokenLabel")}
                     </Label>
@@ -362,19 +404,7 @@ export function PortfolioGenerator({
                       placeholder={t("mcp.tokenPlaceholder")}
                       type="password"
                     />
-                    {cloud.auth ? (
-                      <p className="text-micro text-primary">
-                        {t("mcp.signedInAs", { email: cloud.auth.email })}
-                      </p>
-                    ) : cloud.hasToken ? (
-                      <p className="text-micro text-destructive">
-                        {t("mcp.tokenNotRecognized")}
-                      </p>
-                    ) : (
-                      <p className="text-micro text-muted-foreground">
-                        {t("mcp.tokenOptional")}
-                      </p>
-                    )}
+                    {tokenStatus}
                   </div>
                 </div>
               </DialogContent>
@@ -404,7 +434,7 @@ export function PortfolioGenerator({
               <Dialog
                 onOpenChange={(open) => {
                   if (!open) {
-                    setPendingImport(null)
+                    setPendingImport(null);
                   }
                 }}
                 open={pendingImport !== null}
@@ -486,16 +516,22 @@ export function PortfolioGenerator({
             <PortfolioForm data={data} onChange={applyChange} />
           </div>
         </div>
-        <div className="pf-preview-pane scrollbar-hide h-svh w-full overflow-y-auto bg-muted/50 md:w-1/2">
-          <div className="pf-no-print flex flex-wrap items-center gap-1.5 border-b border-border bg-background px-4 py-3 sm:px-6">
-            <span className="text-xs text-muted-foreground">
+        <div
+          className={cn(
+            "pf-preview-pane scrollbar-hide h-svh w-full overflow-y-auto bg-muted/50 md:w-1/2",
+            animateEntrance &&
+              "motion-enter [animation-delay:var(--motion-stagger)]"
+          )}
+        >
+          <div className="pf-no-print flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
+            <span className="text-muted-foreground text-xs">
               {t("preview.documentLabel")}
             </span>
             {portfolioId && cloud.hasToken ? (
               <span className="flex items-center gap-1 text-micro text-muted-foreground">
                 {cloud.status === "saving" ? (
                   <>
-                    <Loader2 className="size-3 animate-spin" />{" "}
+                    <Spinner className="[--spinner-size:12px]" />{" "}
                     {t("status.saving")}
                   </>
                 ) : null}
@@ -512,10 +548,7 @@ export function PortfolioGenerator({
                 <DropdownMenuTrigger asChild>
                   <Button disabled={isEmpty || generating} size="default">
                     {generating ? (
-                      <Loader2
-                        className="animate-spin"
-                        data-icon="inline-start"
-                      />
+                      <Spinner data-icon="inline-start" />
                     ) : (
                       <Download data-icon="inline-start" />
                     )}
@@ -552,11 +585,7 @@ export function PortfolioGenerator({
                 disabled={isEmpty || generating}
                 size="icon-lg"
               >
-                {generating ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <Download />
-                )}
+                {generating ? <Spinner /> : <Download />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top">
@@ -573,7 +602,7 @@ export function PortfolioGenerator({
         </div>
       </div>
     </>
-  )
+  );
 }
 
 // Standalone, chrome-free render of a single portfolio used by the public
@@ -585,41 +614,46 @@ function PortfolioPrintView({
   data,
   loading,
 }: {
-  data: Portfolio
-  loading: boolean
+  data: Portfolio;
+  loading: boolean;
 }) {
-  const printed = useRef(false)
+  const { t } = useTranslation();
+  const printed = useRef(false);
   const ready =
     !loading &&
-    (data.owner.fullName.trim().length > 0 || data.projects.length > 0)
+    (data.owner.fullName.trim().length > 0 || data.projects.length > 0);
 
   useEffect(() => {
     if (!ready || printed.current || typeof window === "undefined") {
-      return
+      return;
     }
-    printed.current = true
-    const fire = () => window.print()
-    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts
+    printed.current = true;
+    const fire = () => window.print();
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     if (fonts?.ready) {
       fonts.ready
         .then(() => window.setTimeout(fire, 150))
-        .catch(() => window.setTimeout(fire, 150))
+        .catch(() => window.setTimeout(fire, 150));
     } else {
-      window.setTimeout(fire, 400)
+      window.setTimeout(fire, 400);
     }
-  }, [ready])
+  }, [ready]);
 
   if (loading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-muted-foreground" />
+        <Spinner
+          className="text-muted-foreground"
+          label={t("a11y.loadingDocument")}
+          size="md"
+        />
       </div>
-    )
+    );
   }
 
   return (
     <div className="pf-print-root">
       <PortfolioPreview data={data} fit={false} />
     </div>
-  )
+  );
 }

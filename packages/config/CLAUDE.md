@@ -1,6 +1,16 @@
 # packages/config — Shared TypeScript Base (@bahrul/config)
 
-The workspace's shared TypeScript config. Provides `tsconfig.base.json`; no source code, no build step.
+The workspace's shared config. Provides `tsconfig.base.json` and `motion.css`; no source code, no build step.
+
+## `motion.css` — shared motion primitives
+
+Every UI app (`web`, `mcp-ui`, `cv-bahrul`, `invoice-bahrul`, `portfolio-bahrul`) imports it right after `tw-animate-css`:
+
+```css
+@import "@bahrul/config/motion.css";
+```
+
+It owns the motion tokens (`--motion-duration-*`, `--motion-ease`, `--motion-press-scale`, `--motion-hover-lift`, `--motion-enter-*`, `--motion-stagger`), the `ease-standard` / `press` / `card-interactive` / `motion-enter` / `motion-stagger` / `image-fade` / `route-view` utilities, the route view-transition CSS, the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. Change a value here, never per component.
 
 ## Usage
 

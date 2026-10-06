@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import "@bahrul/config/motion.css";
+@import "@rulisme/ui/styles/shadcn.css";
 /* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
    (code chips). The --font-sans / --font-mono stacks fall through to these. */
 @import "@fontsource/inter/400.css";

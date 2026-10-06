@@ -1,9 +1,13 @@
-import { createRootRoute } from "@tanstack/react-router"
+import { createRootRoute } from "@tanstack/react-router";
 
-import appCss from "../styles.css?url"
-import { RootComponent, RootDocument } from "./__root-components"
+import appCss from "../styles.css?url";
+import { RootComponent, RootDocument } from "./-root-components";
+import { jsonLd } from "./-root-helpers";
 
-const BASE_URL = "https://portfolio.bahrul.me"
+const BASE_URL = "https://portfolio.bahrul.me";
+
+// Resolve the saved/system theme before the first paint, matching next-themes.
+const themeScript = `(function(){try{var d=document.documentElement,e=localStorage.getItem("theme"),m=window.matchMedia("(prefers-color-scheme: dark)").matches,k=e==="dark"||((e==="system"||!e)&&m);d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -11,6 +15,10 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#121212" },
+    ],
+    scripts: [
+      { children: themeScript },
+      { type: "application/ld+json", children: JSON.stringify(jsonLd) },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -57,4 +65,4 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   shellComponent: RootDocument,
-})
+});

@@ -7,7 +7,7 @@ import { MonthPicker } from "./month-picker";
 interface FormFieldProps {
   label: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   type?: string;
   error?: string;
@@ -50,8 +50,9 @@ function FormControl(props: FormFieldProps) {
       <Textarea
         disabled={disabled}
         onBlur={onBlur}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
+        readOnly={!onChange}
         rows={rows}
         value={value}
       />
@@ -60,7 +61,11 @@ function FormControl(props: FormFieldProps) {
 
   if (type === "month") {
     return (
-      <MonthPicker disabled={disabled} onChange={onChange} value={value} />
+      <MonthPicker
+        disabled={disabled || !onChange}
+        onChange={(nextValue) => onChange?.(nextValue)}
+        value={value}
+      />
     );
   }
 
@@ -73,10 +78,11 @@ function FormControl(props: FormFieldProps) {
       min={min}
       onBlur={onBlur}
       onChange={(e) =>
-        onChange(numeric ? sanitizeNumeric(e.target.value) : e.target.value)
+        onChange?.(numeric ? sanitizeNumeric(e.target.value) : e.target.value)
       }
       pattern={numeric ? "[0-9]*" : undefined}
       placeholder={placeholder}
+      readOnly={!onChange}
       step={step}
       type={type}
       value={value}

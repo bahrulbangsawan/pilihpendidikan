@@ -1,8 +1,7 @@
+import type { DragEndEvent, DraggableAttributes } from "@dnd-kit/core";
 import {
   closestCenter,
   DndContext,
-  type DragEndEvent,
-  type DraggableAttributes,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -16,7 +15,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Plus, X } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -27,7 +27,7 @@ import { Button } from "../ui/button";
 
 interface SectionListProps<T extends { id: string }> {
   title: string;
-  onTitleChange: (value: string) => void;
+  onTitleChange?: (value: string) => void;
   placeholder: string;
   items: T[];
   onAdd: () => void;
@@ -43,6 +43,13 @@ interface SectionListProps<T extends { id: string }> {
 }
 
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+
+// Matches --motion-duration-base / --motion-ease in @bahrul/config/motion.css
+// (dnd-kit's own default is `250ms ease`).
+const SORTABLE_TRANSITION = {
+  duration: 200,
+  easing: "cubic-bezier(0.2, 0, 0, 1)",
+} as const;
 
 function SortableItem({
   id,
@@ -61,7 +68,7 @@ function SortableItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id, transition: SORTABLE_TRANSITION });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -121,9 +128,10 @@ export function SectionList<T extends { id: string }>({
           )}
           <input
             aria-label={placeholder}
-            className="min-w-0 flex-1 bg-transparent font-medium text-body-sm outline-none placeholder:text-muted-foreground"
-            onChange={(e) => onTitleChange(e.target.value)}
+            className="min-w-0 flex-1 rounded-sm bg-transparent font-medium text-body-sm outline-hidden placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
+            onChange={(e) => onTitleChange?.(e.target.value)}
             placeholder={placeholder}
+            readOnly={!onTitleChange}
             value={title}
           />
         </div>

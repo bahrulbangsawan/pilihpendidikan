@@ -1,42 +1,45 @@
-import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field"
-import { SectionList } from "@rulisme/ui/form/section-list"
-import { PhoneInput } from "@rulisme/ui/reui/phone-input"
-import { Badge } from "@rulisme/ui/ui/badge"
-import { Button } from "@rulisme/ui/ui/button"
-import { Input } from "@rulisme/ui/ui/input"
+import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
+import { SectionList } from "@rulisme/ui/form/section-list";
+import { PhoneInput } from "@rulisme/ui/reui/phone-input";
+import { Badge } from "@rulisme/ui/ui/badge";
+import { Button } from "@rulisme/ui/ui/button";
+import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
-} from "@rulisme/ui/ui/input-group"
-import { Label } from "@rulisme/ui/ui/label"
+} from "@rulisme/ui/ui/input-group";
+import { Label } from "@rulisme/ui/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@rulisme/ui/ui/select"
-import { Trash2, Upload, X } from "lucide-react"
-import { useState } from "react"
-import { useTranslation } from "@/i18n"
+} from "@rulisme/ui/ui/select";
+import { Trash2, Upload, X } from "lucide-react";
+import { useId, useRef, useState } from "react";
+import { useTranslation } from "@/i18n";
+import type {
+  Affiliation,
+  Collaboration,
+  ContactInfo,
+  Portfolio,
+  PortfolioOwner,
+  Project,
+  ProjectType,
+  Track,
+} from "@/components/portfolio-data-model";
 import {
-  type Affiliation,
-  type Collaboration,
-  type ContactInfo,
   isValidImageRatio,
   LIMITS,
   MAX_PROJECTS,
-  type Portfolio,
-  type PortfolioOwner,
-  type Project,
-  type ProjectType,
   RECOMMENDED_IMAGE_SIZE,
   SUBMISSION_TARGET,
-  type Track,
-} from "@/components/portfolio-data-model"
-import { preprocessImage } from "@/lib/preprocess-image"
+} from "@/components/portfolio-data-model";
+import { preprocessImage } from "@/lib/preprocess-image";
 
 // Owner-side affiliation/track/collaboration option lists. Concrete values
 // only (no empty option) — every list maps onto a required discriminant.
@@ -44,7 +47,7 @@ const TRACK_OPTIONS: { value: Track; labelKey: string }[] = [
   { value: "tech", labelKey: "options.track.tech" },
   { value: "design", labelKey: "options.track.design" },
   { value: "domain", labelKey: "options.track.domain" },
-]
+];
 
 const AFFILIATION_OPTIONS: { value: Affiliation["kind"]; labelKey: string }[] =
   [
@@ -52,7 +55,7 @@ const AFFILIATION_OPTIONS: { value: Affiliation["kind"]; labelKey: string }[] =
     { value: "alumni", labelKey: "options.affiliation.alumni" },
     { value: "professional", labelKey: "options.affiliation.professional" },
     { value: "independent", labelKey: "options.affiliation.independent" },
-  ]
+  ];
 
 const PROJECT_TYPE_OPTIONS: { value: ProjectType; labelKey: string }[] = [
   { value: "self-initiated", labelKey: "options.projectType.selfInitiated" },
@@ -61,23 +64,23 @@ const PROJECT_TYPE_OPTIONS: { value: ProjectType; labelKey: string }[] = [
     labelKey: "options.projectType.classAssignment",
   },
   { value: "work-assignment", labelKey: "options.projectType.workAssignment" },
-]
+];
 
 const COLLABORATION_OPTIONS: {
-  value: Collaboration["kind"]
-  labelKey: string
+  value: Collaboration["kind"];
+  labelKey: string;
 }[] = [
   { value: "individual", labelKey: "options.collaboration.individual" },
   { value: "group", labelKey: "options.collaboration.group" },
-]
+];
 
 // Reject oversized uploads before decoding. 1920×1080 PNG/JPEG comfortably
 // fits under this; the ratio guard (16:9) is the real gate.
-const MAX_IMAGE_MB = 5
-const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024
+const MAX_IMAGE_MB = 5;
+const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 // Project media fills a 16:9 slot up to ~half an A4-landscape page, so 1200px on
 // the long edge (→ 1200×675) covers print resolution without bloating the embed.
-const MEDIA_MAX_EDGE = 1200
+const MEDIA_MAX_EDGE = 1200;
 
 // ── Factories ──────────────────────────────────────────────
 
@@ -99,7 +102,7 @@ export function makeEmptyProject(order: number): Project {
     technologies: [],
     skills: [],
     media: [],
-  }
+  };
 }
 
 export function makeEmptyPortfolio(): Portfolio {
@@ -115,21 +118,32 @@ export function makeEmptyPortfolio(): Portfolio {
     cohortYear: 2025,
     projects: [],
     updatedAt: "",
-  }
+  };
 }
 
 // Truncate to a hard character cap (the LIMITS clamp). Enforced at the input
 // boundary so a field can never exceed its slot in the locked layout.
 function clamp(value: string, max: number): string {
-  return value.length > max ? value.slice(0, max) : value
+  return value.length > max ? value.slice(0, max) : value;
+}
+
+function parseOptionalNumber(
+  value: string,
+  maxDigits: number
+): number | undefined {
+  return value ? Number(value.slice(0, maxDigits)) : undefined;
+}
+
+function formatOptionalNumber(value: number | undefined): string {
+  return value ? String(value) : "";
 }
 
 // The website field shows a fixed "https://" prefix addon, so the input itself
 // only edits the part after the protocol. Strip any protocol the user types or
 // pastes; the stored value is re-composed with https:// on change.
-const PROTOCOL_RE = /^https?:\/\//i
+const PROTOCOL_RE = /^https?:\/\//i;
 function stripProtocol(value: string): string {
-  return value.replace(PROTOCOL_RE, "")
+  return value.replace(PROTOCOL_RE, "");
 }
 
 // ── Reusable chip field (scope of work / technologies / skills) ───
@@ -145,46 +159,58 @@ function ChipField({
   onAdd,
   onRemove,
 }: {
-  label: string
-  hint?: string
-  items: string[]
-  max: number
-  maxChars: number
-  placeholder: string
-  fullLabel: string
-  onAdd: (value: string) => void
-  onRemove: (value: string) => void
+  label: string;
+  hint?: string;
+  items: string[];
+  max: number;
+  maxChars: number;
+  placeholder: string;
+  fullLabel: string;
+  onAdd: (value: string) => void;
+  onRemove: (value: string) => void;
 }) {
-  const [draft, setDraft] = useState("")
-  const full = items.length >= max
+  const { t } = useTranslation();
+  const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [draft, setDraft] = useState("");
+  const full = items.length >= max;
+
+  function remove(value: string) {
+    onRemove(value);
+    // The chip unmounts; return keyboard focus to the field. Wait a frame so
+    // an input disabled while the list was full has re-enabled first.
+    requestAnimationFrame(() => inputRef.current?.focus());
+  }
 
   function commit() {
-    const value = draft.trim().slice(0, maxChars)
+    const value = draft.trim().slice(0, maxChars);
     if (value && !items.includes(value) && !full) {
-      onAdd(value)
-      setDraft("")
+      onAdd(value);
+      setDraft("");
     }
   }
 
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-2">
-        <Label>{label}</Label>
+        <Label htmlFor={inputId}>{label}</Label>
         <span className="shrink-0 text-micro text-muted-foreground">
           {items.length}/{max}
         </span>
       </div>
       <Input
         disabled={full}
+        id={inputId}
         maxLength={maxChars}
         onChange={(e) => setDraft(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            e.preventDefault()
-            commit()
+            e.preventDefault();
+            commit();
           }
         }}
         placeholder={full ? fullLabel : placeholder}
+        ref={inputRef}
         value={draft}
       />
       {hint && !full && (
@@ -194,79 +220,85 @@ function ChipField({
         <div className="flex flex-wrap gap-1.5">
           {items.map((item) => (
             <Badge
-              className="cursor-pointer"
+              asChild
+              className="press cursor-pointer outline-hidden transition-[color,background-color,border-color,box-shadow,scale]"
               key={item}
-              onClick={() => onRemove(item)}
               variant="secondary"
             >
-              {item}
-              <X className="size-2.5" />
+              <button
+                aria-label={t("a11y.removeItem", { item })}
+                onClick={() => remove(item)}
+                type="button"
+              >
+                {item}
+                <X aria-hidden="true" className="size-2.5" />
+              </button>
             </Badge>
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }
 
 interface PortfolioFormProps {
-  data: Portfolio
-  onChange: (data: Portfolio) => void
+  data: Portfolio;
+  onChange: (data: Portfolio) => void;
 }
 
 export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
-  const { t } = useTranslation()
-  const [imageErrors, setImageErrors] = useState<Record<string, string>>({})
+  const { t } = useTranslation();
+  const [imageErrors, setImageErrors] = useState<Record<string, string>>({});
 
-  const { owner } = data
-  const { affiliation, contact } = owner
+  const { owner } = data;
+  const { affiliation, contact } = owner;
 
   function setImageError(projectId: string, message: string | undefined) {
     setImageErrors((prev) => {
       if (message) {
-        return { ...prev, [projectId]: message }
+        return { ...prev, [projectId]: message };
       }
       if (!(projectId in prev)) {
-        return prev
+        return prev;
       }
-      const next = { ...prev }
-      delete next[projectId]
-      return next
-    })
+      const next = { ...prev };
+      delete next[projectId];
+      return next;
+    });
   }
 
   // ── Owner mutations ──────────────────────────────────────
   function updateOwner(patch: Partial<PortfolioOwner>) {
-    onChange({ ...data, owner: { ...owner, ...patch } })
+    onChange({ ...data, owner: { ...owner, ...patch } });
   }
 
   function updateContact(patch: Partial<ContactInfo>) {
-    updateOwner({ contact: { ...contact, ...patch } })
+    updateOwner({ contact: { ...contact, ...patch } });
   }
 
   function changeAffiliationKind(kind: Affiliation["kind"]) {
-    let next: Affiliation
+    let next: Affiliation;
     switch (kind) {
       case "student":
-        next = { kind, institution: "", program: "" }
-        break
+        next = { kind, institution: "", program: "" };
+        break;
       case "alumni":
-        next = { kind, institution: "", program: "" }
-        break
+        next = { kind, institution: "", program: "" };
+        break;
       case "professional":
-        next = { kind, organization: "", jobTitle: "" }
-        break
+        next = { kind, organization: "", jobTitle: "" };
+        break;
       default:
-        next = { kind: "independent", note: "" }
+        next = { kind: "independent", note: "" };
     }
-    updateOwner({ affiliation: next })
+    updateOwner({ affiliation: next });
   }
 
   // ── Socials ──────────────────────────────────────────────
-  const socials = contact.socials ?? []
+  const socials = contact.socials ?? [];
 
   function addSocial() {
-    updateContact({ socials: [...socials, { label: "", url: "" }] })
+    updateContact({ socials: [...socials, { label: "", url: "" }] });
   }
 
   function updateSocial(
@@ -275,22 +307,22 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   ) {
     updateContact({
       socials: socials.map((s, i) => (i === index ? { ...s, ...patch } : s)),
-    })
+    });
   }
 
   function removeSocial(index: number) {
-    updateContact({ socials: socials.filter((_, i) => i !== index) })
+    updateContact({ socials: socials.filter((_, i) => i !== index) });
   }
 
   // ── Project mutations ────────────────────────────────────
   function addProject() {
     if (data.projects.length >= MAX_PROJECTS) {
-      return
+      return;
     }
     onChange({
       ...data,
       projects: [...data.projects, makeEmptyProject(data.projects.length + 1)],
-    })
+    });
   }
 
   function removeProject(id: string) {
@@ -299,15 +331,15 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       projects: data.projects
         .filter((p) => p.id !== id)
         .map((p, i) => ({ ...p, order: i + 1 })),
-    })
-    setImageError(id, undefined)
+    });
+    setImageError(id, undefined);
   }
 
   function reorderProjects(items: Project[]) {
     onChange({
       ...data,
       projects: items.map((p, i) => ({ ...p, order: i + 1 })),
-    })
+    });
   }
 
   function updateProject(id: string, patch: Partial<Project>) {
@@ -316,35 +348,35 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       projects: data.projects.map((p) =>
         p.id === id ? { ...p, ...patch } : p
       ),
-    })
+    });
   }
 
   function changeCollaborationKind(id: string, kind: Collaboration["kind"]) {
     const next: Collaboration =
       kind === "group"
         ? { kind, role: "", teamSize: undefined }
-        : { kind: "individual" }
-    updateProject(id, { collaboration: next })
+        : { kind: "individual" };
+    updateProject(id, { collaboration: next });
   }
 
   // ── Image upload (strict 16:9 guard) ─────────────────────
   async function handleImageUpload(project: Project, file: File | undefined) {
     if (!file) {
-      return
+      return;
     }
     if (file.size > MAX_IMAGE_BYTES) {
-      setImageError(project.id, t("errors.maxFileSize", { mb: MAX_IMAGE_MB }))
-      return
+      setImageError(project.id, t("errors.maxFileSize", { mb: MAX_IMAGE_MB }));
+      return;
     }
     try {
       // Probe the EXIF-oriented bitmap to enforce the locked 16:9 ratio against
       // the same orientation preprocessImage bakes into the output.
       const probe = await createImageBitmap(file, {
         imageOrientation: "from-image",
-      })
-      const w = probe.width
-      const h = probe.height
-      probe.close()
+      });
+      const w = probe.width;
+      const h = probe.height;
+      probe.close();
       if (!isValidImageRatio(w, h)) {
         setImageError(
           project.id,
@@ -352,12 +384,12 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             w: RECOMMENDED_IMAGE_SIZE.width,
             h: RECOMMENDED_IMAGE_SIZE.height,
           })
-        )
-        return
+        );
+        return;
       }
-      const url = await preprocessImage(file, { maxEdge: MEDIA_MAX_EDGE })
-      setImageError(project.id, undefined)
-      const existing = project.media[0]
+      const url = await preprocessImage(file, { maxEdge: MEDIA_MAX_EDGE });
+      setImageError(project.id, undefined);
+      const existing = project.media[0];
       updateProject(project.id, {
         media: [
           {
@@ -369,9 +401,9 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             height: h,
           },
         ],
-      })
+      });
     } catch {
-      setImageError(project.id, t("errors.imageDecode"))
+      setImageError(project.id, t("errors.imageDecode"));
     }
   }
 
@@ -379,16 +411,16 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     project: Project,
     patch: Partial<{ alt: string; caption: string }>
   ) {
-    const existing = project.media[0]
+    const existing = project.media[0];
     if (!existing) {
-      return
+      return;
     }
-    updateProject(project.id, { media: [{ ...existing, ...patch }] })
+    updateProject(project.id, { media: [{ ...existing, ...patch }] });
   }
 
   function removeMedia(project: Project) {
-    updateProject(project.id, { media: [] })
-    setImageError(project.id, undefined)
+    updateProject(project.id, { media: [] });
+    setImageError(project.id, undefined);
   }
 
   // ── Renderers ────────────────────────────────────────────
@@ -430,12 +462,12 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 updateOwner({
                   affiliation: {
                     ...affiliation,
-                    semester: v ? Number(v.slice(0, 2)) : undefined,
+                    semester: parseOptionalNumber(v, 2),
                   },
                 })
               }
               placeholder={t("placeholders.semester")}
-              value={affiliation.semester ? String(affiliation.semester) : ""}
+              value={formatOptionalNumber(affiliation.semester)}
             />
           ) : (
             <FormField
@@ -445,20 +477,16 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 updateOwner({
                   affiliation: {
                     ...affiliation,
-                    graduationYear: v ? Number(v.slice(0, 4)) : undefined,
+                    graduationYear: parseOptionalNumber(v, 4),
                   },
                 })
               }
               placeholder={t("placeholders.graduationYear")}
-              value={
-                affiliation.graduationYear
-                  ? String(affiliation.graduationYear)
-                  : ""
-              }
+              value={formatOptionalNumber(affiliation.graduationYear)}
             />
           )}
         </div>
-      )
+      );
     }
 
     if (affiliation.kind === "professional") {
@@ -497,19 +525,15 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               updateOwner({
                 affiliation: {
                   ...affiliation,
-                  yearsExperience: v ? Number(v.slice(0, 2)) : undefined,
+                  yearsExperience: parseOptionalNumber(v, 2),
                 },
               })
             }
             placeholder={t("placeholders.yearsExperience")}
-            value={
-              affiliation.yearsExperience
-                ? String(affiliation.yearsExperience)
-                : ""
-            }
+            value={formatOptionalNumber(affiliation.yearsExperience)}
           />
         </div>
-      )
+      );
     }
 
     return (
@@ -526,14 +550,14 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
         placeholder={t("placeholders.note")}
         value={affiliation.note ?? ""}
       />
-    )
+    );
   }
 
   function renderProjectContent(project: Project) {
-    const media = project.media[0]
-    const sow = project.scopeOfWork ?? []
-    const tech = project.technologies ?? []
-    const skills = project.skills ?? []
+    const media = project.media[0];
+    const sow = project.scopeOfWork ?? [];
+    const tech = project.technologies ?? [];
+    const skills = project.skills ?? [];
     return (
       <div className="space-y-3">
         <FormField
@@ -809,8 +833,13 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             <div className="space-y-2">
               <img
                 alt={media.alt || t("form.projectImage")}
-                className="aspect-video w-full rounded-lg border border-border object-cover"
+                className="image-fade aspect-video w-full rounded-lg border border-border object-cover"
+                decoding="async"
+                height={media.height}
+                loading="lazy"
+                ref={fadeInOnLoad}
                 src={media.url}
+                width={media.width}
               />
               <div className="flex items-center gap-2">
                 <Button
@@ -844,17 +873,17 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </div>
           ) : (
-            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-xs text-muted-foreground hover:border-foreground/30">
+            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-border border-dashed px-4 py-3 text-muted-foreground text-xs transition-[color,border-color,box-shadow] duration-150 ease-standard hover:border-foreground/30 has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-ring/30">
               <Upload className="size-4" />
               {t("form.uploadImage")}
               <input
                 accept="image/jpeg,image/png,image/webp"
                 aria-label={t("form.uploadImage")}
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  e.target.value = ""
-                  void handleImageUpload(project, file)
+                className="sr-only"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  await handleImageUpload(project, file);
                 }}
                 type="file"
               />
@@ -867,22 +896,20 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             })}
           </p>
           {imageErrors[project.id] && (
-            <p className="text-xs text-destructive">
+            <p className="text-destructive text-xs">
               {imageErrors[project.id]}
             </p>
           )}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-6">
       {/* ── Profile ── */}
       <section className="space-y-3">
-        <h2 className="text-body-sm font-medium">
-          {t("form.profile")}
-        </h2>
+        <h2 className="font-medium text-body-sm">{t("form.profile")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField
             label={t("form.fullName")}
@@ -944,9 +971,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
       {/* ── Contact ── */}
       <section className="space-y-3">
-        <h2 className="text-body-sm font-medium">
-          {t("form.contact")}
-        </h2>
+        <h2 className="font-medium text-body-sm">{t("form.contact")}</h2>
         <div className="grid gap-3 sm:grid-cols-3">
           <FormField
             label={t("form.email")}
@@ -978,12 +1003,12 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               </InputGroupAddon>
               <InputGroupInput
                 onChange={(e) => {
-                  const bare = stripProtocol(e.target.value)
+                  const bare = stripProtocol(e.target.value);
                   updateContact({
                     websiteUrl: bare
                       ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
                       : "",
-                  })
+                  });
                 }}
                 placeholder={t("placeholders.websiteBare")}
                 value={stripProtocol(contact.websiteUrl ?? "")}
@@ -1043,9 +1068,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
       {/* ── Submission ── */}
       <section className="space-y-3">
-        <h2 className="text-body-sm font-medium">
-          {t("form.submission")}
-        </h2>
+        <h2 className="font-medium text-body-sm">{t("form.submission")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField
             label={t("form.submissionTarget")}
@@ -1066,7 +1089,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             value={data.cohortYear ? String(data.cohortYear) : ""}
           />
         </div>
-        <p className="text-xs text-muted-foreground">{t("form.trackHint")}</p>
+        <p className="text-muted-foreground text-xs">{t("form.trackHint")}</p>
       </section>
 
       {/* ── Projects (max 5) ── */}
@@ -1089,11 +1112,11 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
         }
         title={t("form.projects")}
         titleExtra={
-          <span className="shrink-0 text-xs text-muted-foreground">
+          <span className="shrink-0 text-muted-foreground text-xs">
             {data.projects.length}/{MAX_PROJECTS}
           </span>
         }
       />
     </div>
-  )
+  );
 }

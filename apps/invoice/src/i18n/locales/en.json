@@ -141,6 +141,7 @@
     "switchLanguage": "Switch language",
     "downloadInvoice": "Download invoice",
     "skipToContent": "Skip to main content",
+    "loadingDocument": "Loading invoice",
     "removeItem": "Remove item",
     "removeSubItem": "Remove sub-item",
     "removeAdjustment": "Remove adjustment",

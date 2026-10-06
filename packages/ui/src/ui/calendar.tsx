@@ -3,13 +3,10 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "lucide-react";
-import { type ComponentProps, useEffect, useRef } from "react";
-import {
-  type DayButton,
-  DayPicker,
-  getDefaultClassNames,
-  type Locale,
-} from "react-day-picker";
+import type { ComponentProps } from "react";
+import { useEffect, useRef } from "react";
+import type { DayButton, Locale } from "react-day-picker";
+import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 import { buttonVariants } from "./button-variants";

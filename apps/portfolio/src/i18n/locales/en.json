@@ -50,8 +50,10 @@
   "a11y": {
     "switchLanguage": "Switch language",
     "skipToContent": "Skip to main content",
+    "loadingDocument": "Loading portfolio",
     "downloadPortfolio": "Download portfolio",
-    "importPortfolio": "Import portfolio from JSON file"
+    "importPortfolio": "Import portfolio from JSON file",
+    "removeItem": "Remove {item}"
   },
   "alert": {
     "invalidJson": "Invalid JSON file. Please select a valid portfolio JSON export.",
@@ -123,7 +125,7 @@
     "jobTitle": "Product Designer",
     "yearsExperience": "4",
     "note": "Freelancer · self-taught",
-    "email": "work@bahrul.me",
+    "email": "project@bahrul.me",
     "phone": "+62 8xx xxxx xxxx",
     "url": "https://...",
     "websiteBare": "your-portfolio.com",

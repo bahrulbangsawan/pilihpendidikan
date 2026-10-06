@@ -19,7 +19,7 @@ const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 61 }, (_, i) => currentYear - 50 + i);
 
 const selectStyles =
-  "h-8 min-w-0 flex-1 appearance-none rounded-md border border-input bg-input/20 px-2.5 py-1 text-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
+  "h-8 min-w-0 flex-1 appearance-none rounded-md border border-input bg-input/20 px-2.5 py-1 text-xs outline-hidden transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
 
 interface MonthPickerProps {
   value: string;

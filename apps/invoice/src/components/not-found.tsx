@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router"
-import { NotFound } from "@rulisme/ui/ui/not-found"
+import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import { Link } from "@tanstack/react-router";
+import { NotFound } from "@rulisme/ui/ui/not-found";
 
 // Wired as the router's `defaultNotFoundComponent` (see `src/router.tsx`) and
 // rendered by the `/$` catch-all. Home route for this app is `/` (the invoice
@@ -16,12 +17,14 @@ export function NotFoundPage() {
       logo={
         <img
           alt=""
-          className="size-10 rounded-lg"
+          className="image-fade size-10 rounded-lg"
+          decoding="async"
           height={40}
+          ref={fadeInOnLoad}
           src="/favicon-active/apple-touch-icon.png"
           width={40}
         />
       }
     />
-  )
+  );
 }

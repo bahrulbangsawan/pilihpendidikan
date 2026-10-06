@@ -1,7 +1,7 @@
 // Auto-generated from wilayah.sql — do not edit manually
-import type { WilayahEntry } from "./index"
+import type { WilayahEntry } from "./index";
 
-export const provinces: Array<WilayahEntry> = [
+export const provinces: WilayahEntry[] = [
   {
     kode: "11",
     nama: "Aceh",
@@ -154,4 +154,4 @@ export const provinces: Array<WilayahEntry> = [
     kode: "96",
     nama: "Papua Barat Daya",
   },
-]
+];

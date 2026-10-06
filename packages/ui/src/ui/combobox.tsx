@@ -1,6 +1,7 @@
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
-import { type ComponentPropsWithRef, useRef } from "react";
+import type { ComponentPropsWithRef } from "react";
+import { useRef } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 import {
@@ -108,7 +109,7 @@ function ComboboxContent({
       >
         <ComboboxPrimitive.Popup
           className={cn(
-            "dark group/combobox-content data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:fade-in-0 data-open:zoom-in-95 data-closed:fade-out-0 data-closed:zoom-out-95 relative max-h-(--available-height) w-(--anchor-width) min-w-[calc(var(--anchor-width)+--spacing(7))] max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-lg bg-popover text-popover-foreground ring-1 ring-foreground/10 duration-100 data-[chips=true]:min-w-(--anchor-width) data-closed:animate-out data-open:animate-in *:data-[slot=input-group]:m-1 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-7 *:data-[slot=input-group]:border-none *:data-[slot=input-group]:bg-input/20 *:data-[slot=input-group]:shadow-none dark:bg-popover",
+            "dark group/combobox-content data-open:fade-in-0 data-open:zoom-in-96 data-closed:fade-out-0 data-closed:zoom-out-96 relative max-h-(--available-height) w-(--anchor-width) min-w-[calc(var(--anchor-width)+--spacing(7))] max-w-(--available-width) origin-(--transform-origin) overflow-hidden rounded-lg bg-popover text-popover-foreground ring-1 ring-foreground/10 duration-150 ease-standard data-[chips=true]:min-w-(--anchor-width) data-closed:animate-out data-open:animate-in *:data-[slot=input-group]:m-1 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-7 *:data-[slot=input-group]:border-none *:data-[slot=input-group]:bg-input/20 *:data-[slot=input-group]:shadow-none dark:bg-popover",
             className
           )}
           data-chips={!!anchor}
@@ -222,7 +223,7 @@ function ComboboxChips({
   return (
     <ComboboxPrimitive.Chips
       className={cn(
-        "flex min-h-7 flex-wrap items-center gap-1 rounded-md border border-input bg-input/20 bg-clip-padding px-2 py-0.5 text-xs/relaxed transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 has-aria-invalid:border-destructive has-data-[slot=combobox-chip]:px-1 has-aria-invalid:ring-2 has-aria-invalid:ring-destructive/20 dark:bg-input/30 dark:has-aria-invalid:border-destructive/50 dark:has-aria-invalid:ring-destructive/40",
+        "flex min-h-7 flex-wrap items-center gap-1 rounded-md border border-input bg-input/20 bg-clip-padding px-2 py-0.5 text-xs/relaxed transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 has-aria-invalid:border-destructive has-data-[slot=combobox-chip]:px-1 has-aria-invalid:ring-2 has-aria-invalid:ring-destructive/20 dark:bg-input/30 dark:has-aria-invalid:border-destructive/50 dark:has-aria-invalid:ring-destructive/40",
         className
       )}
       data-slot="combobox-chips"
@@ -268,7 +269,7 @@ function ComboboxChipsInput({
 }: ComboboxPrimitive.Input.Props) {
   return (
     <ComboboxPrimitive.Input
-      className={cn("min-w-16 flex-1 outline-none", className)}
+      className={cn("min-w-16 flex-1 outline-hidden", className)}
       data-slot="combobox-chip-input"
       {...props}
     />

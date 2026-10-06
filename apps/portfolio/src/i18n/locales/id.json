@@ -50,8 +50,10 @@
   "a11y": {
     "switchLanguage": "Ganti bahasa",
     "skipToContent": "Lewati ke konten utama",
+    "loadingDocument": "Memuat portofolio",
     "downloadPortfolio": "Unduh portofolio",
-    "importPortfolio": "Impor portofolio dari berkas JSON"
+    "importPortfolio": "Impor portofolio dari berkas JSON",
+    "removeItem": "Hapus {item}"
   },
   "alert": {
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON portofolio yang valid.",
@@ -123,7 +125,7 @@
     "jobTitle": "Product Designer",
     "yearsExperience": "4",
     "note": "Freelancer · otodidak",
-    "email": "work@bahrul.me",
+    "email": "project@bahrul.me",
     "phone": "+62 8xx xxxx xxxx",
     "url": "https://...",
     "websiteBare": "situs-portofolio.com",

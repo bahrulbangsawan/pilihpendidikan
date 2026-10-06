@@ -1,83 +1,84 @@
-import { useEffect, useRef, useState } from "react"
-import { useTranslation } from "@/i18n"
-import {
-  type Portfolio,
-  type PortfolioOwner,
-  type Project,
-  type ProjectType,
-  type Track,
-} from "@/components/portfolio-data-model"
+import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/i18n";
+import type {
+  Portfolio,
+  PortfolioOwner,
+  Project,
+  ProjectType,
+  Track,
+} from "@/components/portfolio-data-model";
 
 type Translate = (
   key: string,
   params?: Record<string, string | number>
-) => string
+) => string;
 
-const PROTOCOL_RE = /^https?:\/\//i
-const WWW_RE = /^www\./i
-const TRAILING_SLASH_RE = /\/$/
+const PROTOCOL_RE = /^https?:\/\//i;
+const WWW_RE = /^www\./i;
+const TRAILING_SLASH_RE = /\/$/;
 
 // Compact, link-style display of a URL (protocol + www + trailing slash dropped).
 function displayUrl(url: string): string {
   return url
     .replace(PROTOCOL_RE, "")
     .replace(WWW_RE, "")
-    .replace(TRAILING_SLASH_RE, "")
+    .replace(TRAILING_SLASH_RE, "");
 }
 
 function trackLabel(track: Track, t: Translate): string {
-  return t(`options.track.${track}`)
+  return t(`options.track.${track}`);
 }
 
 function projectTypeLabel(type: ProjectType, t: Translate): string {
   switch (type) {
     case "class-assignment":
-      return t("preview.classAssignment")
+      return t("preview.classAssignment");
     case "work-assignment":
-      return t("preview.workAssignment")
+      return t("preview.workAssignment");
     default:
-      return t("preview.selfInitiated")
+      return t("preview.selfInitiated");
   }
 }
 
 // Cover column 2 ("Background") — render the owner's affiliation as ≤3 lines.
 function backgroundLines(owner: PortfolioOwner, t: Translate): string[] {
-  const { affiliation } = owner
+  const { affiliation } = owner;
   switch (affiliation.kind) {
     case "student": {
       const status = affiliation.semester
         ? `${t("preview.student")} · ${t("preview.semester")} ${affiliation.semester}`
-        : t("preview.student")
+        : t("preview.student");
       return [
         affiliation.institution,
         status,
         affiliation.program ?? "",
-      ].filter(Boolean)
+      ].filter(Boolean);
     }
     case "alumni": {
       const status = affiliation.graduationYear
         ? `${t("preview.alumni")} · ${affiliation.graduationYear}`
-        : t("preview.alumni")
+        : t("preview.alumni");
       return [
         affiliation.institution,
         status,
         affiliation.program ?? "",
-      ].filter(Boolean)
+      ].filter(Boolean);
     }
     case "professional": {
       const status = affiliation.yearsExperience
         ? `${affiliation.jobTitle ?? ""} · ${affiliation.yearsExperience} ${t("preview.years")}`
-        : (affiliation.jobTitle ?? "")
-      return [affiliation.organization ?? "", status].filter(Boolean)
+        : (affiliation.jobTitle ?? "");
+      return [affiliation.organization ?? "", status].filter(Boolean);
     }
     default:
-      return [affiliation.note || t("preview.independent")]
+      return [affiliation.note || t("preview.independent")];
   }
 }
 
 // Compact one-line affiliation tag for the per-page footer.
 function affiliationFootnote(owner: PortfolioOwner, t: Translate): string {
-  const { affiliation } = owner
+  const { affiliation } = owner;
   switch (affiliation.kind) {
     case "student":
       return [
@@ -87,43 +88,45 @@ function affiliationFootnote(owner: PortfolioOwner, t: Translate): string {
           : t("preview.student"),
       ]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     case "alumni":
       return [affiliation.institution, t("preview.alumni")]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     case "professional":
       return [affiliation.organization, affiliation.jobTitle]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · ");
     default:
-      return affiliation.note || t("preview.independent")
+      return affiliation.note || t("preview.independent");
   }
 }
 
 function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
-  const { owner } = data
-  const sub = [owner.fullName, owner.headline].filter(Boolean).join(" · ")
+  const { owner } = data;
+  const sub = [owner.fullName, owner.headline].filter(Boolean).join(" · ");
 
   const years = data.projects
     .map((p) => p.yearAccomplished)
-    .filter((y) => y > 0)
-  const minY = years.length ? Math.min(...years) : undefined
-  const maxY = years.length ? Math.max(...years) : undefined
-  const worksLine =
-    minY === undefined
-      ? t("preview.selectedWorks")
-      : minY === maxY
-        ? t("preview.selectedWorksRange", { range: String(minY) })
-        : t("preview.selectedWorksRange", { range: `${minY}–${maxY}` })
+    .filter((y) => y > 0);
+  const minY = years.length ? Math.min(...years) : undefined;
+  const maxY = years.length ? Math.max(...years) : undefined;
+  let worksLine = t("preview.selectedWorks");
+  if (minY !== undefined) {
+    const range = minY === maxY ? String(minY) : `${minY}–${maxY}`;
+    worksLine = t("preview.selectedWorksRange", { range });
+  }
   const trackLine = t("preview.trackLine", {
     track: trackLabel(owner.track, t),
-  })
+  });
 
-  const background = backgroundLines(owner, t)
-  const { contact } = owner
-  const website = contact.websiteUrl?.trim()
-  const social = contact.socials?.find((s) => s.url.trim())
+  const background = backgroundLines(owner, t);
+  const { contact } = owner;
+  const website = contact.websiteUrl?.trim();
+  const social = contact.socials?.find((s) => s.url.trim());
+  const contactLink = website
+    ? { url: website, label: displayUrl(website) }
+    : social;
 
   return (
     <section className="pf-page pf-cover">
@@ -176,15 +179,15 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
                 <br />
               </>
             )}
-            {website ? (
-              <a href={website} rel="noreferrer" target="_blank">
-                {displayUrl(website)}
+            {contactLink && (
+              <a
+                href={contactLink.url}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {contactLink.label || displayUrl(contactLink.url)}
               </a>
-            ) : social ? (
-              <a href={social.url} rel="noreferrer" target="_blank">
-                {social.label || displayUrl(social.url)}
-              </a>
-            ) : null}
+            )}
           </p>
         </div>
         <div>
@@ -193,7 +196,7 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function ProjectPage({
@@ -203,20 +206,22 @@ function ProjectPage({
   total,
   t,
 }: {
-  data: Portfolio
-  project: Project
-  index: number
-  total: number
-  t: Translate
+  data: Portfolio;
+  project: Project;
+  index: number;
+  total: number;
+  t: Translate;
 }) {
-  const { owner } = data
-  const media = project.media[0]
-  const sow = (project.scopeOfWork ?? []).slice(0, 6)
-  const track = project.track ?? owner.track
-  const isTech = track === "tech"
-  const tags = (isTech ? project.technologies : project.skills) ?? []
-  const tagLabel = isTech ? t("preview.technologies") : t("preview.disciplines")
-  const isGroup = project.collaboration.kind === "group"
+  const { owner } = data;
+  const media = project.media[0];
+  const sow = (project.scopeOfWork ?? []).slice(0, 6);
+  const track = project.track ?? owner.track;
+  const isTech = track === "tech";
+  const tags = (isTech ? project.technologies : project.skills) ?? [];
+  const tagLabel = isTech
+    ? t("preview.technologies")
+    : t("preview.disciplines");
+  const isGroup = project.collaboration.kind === "group";
 
   return (
     <section className="pf-page pf-project">
@@ -290,7 +295,15 @@ function ProjectPage({
           <p className="pf-body">{project.description}</p>
           <div className="pf-figure">
             {media?.url ? (
-              <img alt={media.alt || project.title} src={media.url} />
+              <img
+                alt={media.alt || project.title}
+                className="image-fade"
+                decoding="async"
+                height={media.height}
+                ref={fadeInOnLoad}
+                src={media.url}
+                width={media.width}
+              />
             ) : (
               <>
                 <div className="pf-ph-title">{t("preview.artworkTitle")}</div>
@@ -333,59 +346,59 @@ function ProjectPage({
         </span>
       </div>
     </section>
-  )
+  );
 }
 
 interface PortfolioPreviewProps {
-  data: Portfolio
+  data: Portfolio;
   /** When true (editor), scale the natural-size A4 deck to fit the pane. */
-  fit?: boolean
+  fit?: boolean;
 }
 
 export function PortfolioPreview({ data, fit = true }: PortfolioPreviewProps) {
-  const { t } = useTranslation()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const deckRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(1)
-  const [deckHeight, setDeckHeight] = useState<number | null>(null)
+  const { t } = useTranslation();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [deckHeight, setDeckHeight] = useState<number | null>(null);
 
   const hasContent =
     Boolean(data.owner.fullName.trim()) ||
     data.projects.some(
       (p) => p.title.trim() || p.summary.trim() || p.description.trim()
-    )
+    );
 
   useEffect(() => {
-    if (!fit) {
-      return
+    if (!(fit && hasContent)) {
+      return;
     }
-    const container = containerRef.current
-    const deck = deckRef.current
+    const container = containerRef.current;
+    const deck = deckRef.current;
     if (!(container && deck)) {
-      return
+      return;
     }
     const measure = () => {
-      const cw = container.clientWidth
-      const dw = deck.offsetWidth // natural width — transform doesn't affect layout box
-      const next = dw > 0 ? Math.min(1, cw / dw) : 1
-      setScale(next)
-      setDeckHeight(deck.offsetHeight * next)
-    }
-    measure()
-    const ro = new ResizeObserver(measure)
-    ro.observe(container)
-    ro.observe(deck)
-    return () => ro.disconnect()
-    // Re-attach when the deck first mounts (empty → has content) and when the
-    // page count changes; the ResizeObserver handles all subsequent size drift.
-  }, [fit, hasContent, data.projects.length])
+      const cw = container.clientWidth;
+      const dw = deck.offsetWidth; // natural width — transform doesn't affect layout box
+      const next = dw > 0 ? Math.min(1, cw / dw) : 1;
+      setScale(next);
+      setDeckHeight(deck.offsetHeight * next);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    ro.observe(deck);
+    return () => ro.disconnect();
+    // Re-attach when the deck first mounts (empty → has content). Observing the
+    // deck handles page-count changes and all subsequent size drift.
+  }, [fit, hasContent]);
 
   if (!hasContent) {
     return (
       <div className="pf-empty">
-        <p className="text-sm text-muted-foreground">{t("preview.empty")}</p>
+        <p className="text-muted-foreground text-sm">{t("preview.empty")}</p>
       </div>
-    )
+    );
   }
 
   const deck = (
@@ -406,10 +419,10 @@ export function PortfolioPreview({ data, fit = true }: PortfolioPreviewProps) {
         />
       ))}
     </div>
-  )
+  );
 
   if (!fit) {
-    return deck
+    return deck;
   }
 
   return (
@@ -420,5 +433,5 @@ export function PortfolioPreview({ data, fit = true }: PortfolioPreviewProps) {
     >
       {deck}
     </div>
-  )
+  );
 }

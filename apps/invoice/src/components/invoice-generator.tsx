@@ -1,4 +1,6 @@
-import { Button } from "@rulisme/ui/ui/button"
+import { cn } from "@rulisme/ui/lib/utils";
+import { useFirstPaintEntrance } from "@rulisme/ui/lib/use-first-paint-entrance";
+import { Button } from "@rulisme/ui/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,17 +9,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@rulisme/ui/ui/dialog"
+} from "@rulisme/ui/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@rulisme/ui/ui/dropdown-menu"
-import { Input } from "@rulisme/ui/ui/input"
-import { Label } from "@rulisme/ui/ui/label"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rulisme/ui/ui/tooltip"
-import { useSearch } from "@tanstack/react-router"
+} from "@rulisme/ui/ui/dropdown-menu";
+import { Input } from "@rulisme/ui/ui/input";
+import { Label } from "@rulisme/ui/ui/label";
+import { Spinner } from "@rulisme/ui/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@rulisme/ui/ui/tooltip";
+import { useSearch } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Cable,
@@ -25,65 +32,72 @@ import {
   Download,
   FileJson,
   FileText,
-  Loader2,
   Sparkles,
   Trash2,
   Upload,
-} from "lucide-react"
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react"
-import type { InvoiceData } from "@/components/invoice-form"
-import { InvoiceForm } from "@/components/invoice-form"
-import { ThemeToggle } from "@/components/theme-toggle"
-import sampleData from "@/data/sample-invoice.json"
-import { useTranslation } from "@/i18n"
-import { LanguageSwitcher } from "@/i18n/components/language-switcher"
-import { useCloudSave } from "@/lib/use-cloud-save"
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import type { InvoiceData } from "@/components/invoice-form";
+import { InvoiceForm } from "@/components/invoice-form";
+import { InvoicePreview } from "@/components/invoice-preview";
+import { ThemeToggle } from "@/components/theme-toggle";
+import sampleData from "@/data/sample-invoice.json";
+import { useTranslation } from "@/i18n";
+import { LanguageSwitcher } from "@/i18n/components/language-switcher";
+import { useCloudSave } from "@/lib/use-cloud-save";
 
 // Canonical ISO `yyyy-MM-dd` seed for a new invoice's issue date, matching what
 // the mcp tools and createEmptyInvoice() persist (was "dd MMM yyyy"). [defect-1]
 function todayIso(): string {
-  const now = new Date()
-  const month = String(now.getMonth() + 1).padStart(2, "0")
-  const day = String(now.getDate()).padStart(2, "0")
-  return `${now.getFullYear()}-${month}-${day}`
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
 }
-
-const InvoicePreview = lazy(() =>
-  import("@/components/invoice-preview").then((m) => ({
-    default: m.InvoicePreview,
-  }))
-)
 
 // Preload PDF renderer on idle so first download is instant
 function preloadPdfRenderer() {
-  const preload = () => {
-    void import("@react-pdf/renderer")
-    void import("@/components/invoice-pdf")
+  // A compile-time guard also removes these browser-only imports from SSR.
+  if (import.meta.env.SSR) {
+    return;
   }
+  const preload = async () => {
+    try {
+      await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/invoice-pdf"),
+      ]);
+    } catch (error) {
+      toast.error("Could not prepare PDF download. Try downloading again.", {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    }
+  };
   // Skip preload on slow connections
   const conn = (
     navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string }
+      connection?: { saveData?: boolean; effectiveType?: string };
     }
-  ).connection
+  ).connection;
   if (conn?.saveData || conn?.effectiveType === "2g") {
-    return
+    return;
   }
 
   if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(preload, { timeout: 5000 })
+    window.requestIdleCallback(preload, { timeout: 5000 });
   } else {
-    setTimeout(preload, 3000)
+    setTimeout(preload, 3000);
   }
 }
 
-const STORAGE_KEY = "invoice-data"
+const STORAGE_KEY = "invoice-data";
 // In dev, target the local mcp Worker (`wrangler dev` on :8787) so end-to-end
 // invoice load/save is exercised without hitting production.
 const MCP_API = import.meta.env.DEV
   ? "http://localhost:8787"
-  : "https://mcp.bahrul.me"
-const MCP_URL = "https://mcp.bahrul.me"
+  : "https://mcp.bahrul.me";
+const MCP_URL = "https://mcp.bahrul.me";
 
 const initialData: InvoiceData = {
   invoiceNumber: "",
@@ -117,94 +131,101 @@ const initialData: InvoiceData = {
   customFields: [],
   notes: "",
   taxRate: 0,
-}
+};
 
 function loadSavedData(): InvoiceData {
   if (typeof window === "undefined") {
-    return initialData
+    return initialData;
   }
   try {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      return { ...initialData, ...JSON.parse(saved) }
+      return { ...initialData, ...JSON.parse(saved) };
     }
   } catch {
-    /* ignore corrupt data */
+    toast.error(
+      "Could not restore the saved invoice. Import a JSON export to recover it."
+    );
   }
-  return initialData
+  return initialData;
 }
 
-let saveTimeout: ReturnType<typeof setTimeout> | null = null
-let pendingSaveData: InvoiceData | null = null
+let saveTimeout: ReturnType<typeof setTimeout> | null = null;
+let pendingSaveData: InvoiceData | null = null;
 
 function saveDataImmediate(data: InvoiceData) {
   if (typeof window === "undefined") {
-    return
+    return;
   }
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
-    pendingSaveData = null
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    pendingSaveData = null;
   } catch {
-    /* storage full / unavailable */
+    toast.error(
+      "Could not save this invoice in the browser. Download a JSON copy to keep your changes."
+    );
   }
 }
 
 function saveData(data: InvoiceData) {
-  pendingSaveData = data
+  pendingSaveData = data;
   if (saveTimeout) {
-    clearTimeout(saveTimeout)
+    clearTimeout(saveTimeout);
   }
-  saveTimeout = setTimeout(() => saveDataImmediate(data), 500)
+  saveTimeout = setTimeout(() => saveDataImmediate(data), 500);
 }
 
 function flushPendingSave() {
   if (pendingSaveData) {
     if (saveTimeout) {
-      clearTimeout(saveTimeout)
+      clearTimeout(saveTimeout);
     }
-    saveDataImmediate(pendingSaveData)
+    saveDataImmediate(pendingSaveData);
   }
 }
 
-function PreviewSkeleton() {
+interface CloudAuthStatusProps {
+  auth: { email: string } | null;
+  hasToken: boolean;
+}
+
+function CloudAuthStatus({ auth, hasToken }: CloudAuthStatusProps) {
+  if (auth) {
+    return (
+      <p className="text-micro text-primary">
+        Signed in as {auth.email}. Edits to a loaded invoice save automatically.
+      </p>
+    );
+  }
+  if (hasToken) {
+    return (
+      <p className="text-destructive text-micro">
+        Token not recognized — generate a new one.
+      </p>
+    );
+  }
   return (
-    <div className="invoice-page mx-auto animate-pulse">
-      <div className="h-1 bg-muted" />
-      <div className="p-8">
-        <div className="h-6 w-24 rounded bg-muted" />
-        <div className="mt-4 space-y-2">
-          <div className="h-3 w-40 rounded bg-muted" />
-          <div className="h-3 w-32 rounded bg-muted" />
-          <div className="h-3 w-36 rounded bg-muted" />
-        </div>
-        <div className="my-6 border-t border-muted" />
-        <div className="grid grid-cols-2 gap-8">
-          <div className="space-y-2">
-            <div className="h-3 w-28 rounded bg-muted" />
-            <div className="h-3 w-36 rounded bg-muted" />
-          </div>
-          <div className="space-y-2">
-            <div className="h-3 w-28 rounded bg-muted" />
-            <div className="h-3 w-36 rounded bg-muted" />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+    <p className="text-micro text-muted-foreground">
+      Optional. Without a token, edits stay in this browser only.
+    </p>
+  );
 }
 
 export function InvoiceGenerator() {
-  const { t, locale } = useTranslation()
+  const { t, locale } = useTranslation();
   // `?id=` is the canonical edit param; `?invoice=` is kept as a working alias.
   const { id, invoice, print } = useSearch({ strict: false }) as {
-    id?: string
-    invoice?: string
-    print?: true
-  }
-  const invoiceId = id ?? invoice
-  const [data, setDataRaw] = useState<InvoiceData>(initialData)
-  const [loading, setLoading] = useState(false)
-  const [confirmOpen, setConfirmOpen] = useState(false)
+    id?: string;
+    invoice?: string;
+    print?: true;
+  };
+  const invoiceId = id ?? invoice;
+  const [data, setDataRaw] = useState<InvoiceData>(initialData);
+  const [loading, setLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  // Entrance plays on the first paint only; locale switches remount this
+  // page and rely on the route cross-fade instead.
+  const animateEntrance = useFirstPaintEntrance();
 
   // Owner-authenticated optimistic persistence for a loaded `?invoice=<slug>`.
   // A ref keeps the memoized `setData` stable while always calling the latest
@@ -214,168 +235,182 @@ export function InvoiceGenerator() {
     id: invoiceId,
     resource: "invoice",
     onRollback: setDataRaw,
-  })
-  const scheduleSaveRef = useRef(cloud.scheduleSave)
-  scheduleSaveRef.current = cloud.scheduleSave
+  });
+  const scheduleSaveRef = useRef(cloud.scheduleSave);
+  scheduleSaveRef.current = cloud.scheduleSave;
 
   // Hydrate after mount to avoid SSR mismatch. A `?invoice=` slug loads the
   // server-authoritative document from INVOICE_KV; otherwise fall back to the
   // localStorage scratch copy.
   useEffect(() => {
     if (invoiceId) {
-      return
+      return;
     }
-    const saved = loadSavedData()
+    const saved = loadSavedData();
     if (saved !== initialData) {
-      setDataRaw(saved)
+      setDataRaw(saved);
     } else {
       // Set today's date only on client to avoid server/client date mismatch
       setDataRaw((prev) => ({
         ...prev,
         dateOfIssue: todayIso(),
-      }))
+      }));
     }
-  }, [invoiceId])
+  }, [invoiceId]);
 
   useEffect(() => {
-    preloadPdfRenderer()
-    window.addEventListener("beforeunload", flushPendingSave)
-    return () => window.removeEventListener("beforeunload", flushPendingSave)
-  }, [])
+    preloadPdfRenderer();
+    window.addEventListener("beforeunload", flushPendingSave);
+    return () => window.removeEventListener("beforeunload", flushPendingSave);
+  }, []);
 
-  const { markSaved } = cloud
+  const { markSaved } = cloud;
   useEffect(() => {
     if (!invoiceId) {
-      return
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     fetch(`${MCP_API}/api/invoice/${encodeURIComponent(invoiceId)}`)
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Invoice not found")
+          throw new Error("Invoice not found");
         }
-        return res.json() as Promise<InvoiceData>
+        return res.json() as Promise<InvoiceData>;
       })
       .then((loaded) => {
-        setDataRaw(loaded)
-        markSaved(loaded)
+        setDataRaw(loaded);
+        markSaved(loaded);
       })
-      .catch((err) => console.error("Failed to load remote invoice:", err))
-      .finally(() => setLoading(false))
-  }, [invoiceId, markSaved])
+      .catch((error: unknown) =>
+        toast.error("Failed to load remote invoice.", {
+          description: error instanceof Error ? error.message : undefined,
+        })
+      )
+      .finally(() => setLoading(false));
+  }, [invoiceId, markSaved]);
 
   const setData = useCallback(
     (update: InvoiceData | ((prev: InvoiceData) => InvoiceData)) => {
       setDataRaw((prev) => {
-        const next = typeof update === "function" ? update(prev) : update
-        saveData(next)
-        scheduleSaveRef.current(next)
-        return next
-      })
+        const next = typeof update === "function" ? update(prev) : update;
+        saveData(next);
+        scheduleSaveRef.current(next);
+        return next;
+      });
     },
     []
-  )
-  const [generating, setGenerating] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const isEmpty = !data.from.companyName.trim() && data.items.length === 0
+  );
+  const [generating, setGenerating] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const isEmpty = !data.from.companyName.trim() && data.items.length === 0;
 
   // Reset the editor to a blank invoice (confirm-gated).
   const handleClearAll = () => {
-    localStorage.removeItem(STORAGE_KEY)
-    setDataRaw(initialData)
-    setConfirmOpen(false)
-  }
+    localStorage.removeItem(STORAGE_KEY);
+    setDataRaw(initialData);
+    setConfirmOpen(false);
+  };
 
   const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (!file) {
-      return
+      return;
     }
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = (event) => {
       try {
         const imported = JSON.parse(
           event.target?.result as string
-        ) as InvoiceData
-        setData(imported)
+        ) as InvoiceData;
+        setData(imported);
       } catch {
-        alert("Invalid JSON file. Please select a valid Invoice JSON export.")
+        toast.error(
+          "Invalid JSON file. Please select a valid Invoice JSON export."
+        );
       }
-    }
-    reader.readAsText(file)
-    e.target.value = ""
-  }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
 
   const handleDownloadPDF = async () => {
+    // The browser PDF renderer must not enter the Workers SSR module graph.
+    // A compile-time guard also removes these browser-only imports from SSR.
     if (import.meta.env.SSR) {
-      return
+      return;
     }
 
-    setGenerating(true)
+    setGenerating(true);
     try {
       const [{ pdf }, { InvoiceDocument }] = await Promise.all([
         import("@react-pdf/renderer"),
         import("@/components/invoice-pdf"),
-      ])
+      ]);
 
       const blob = await pdf(
         <InvoiceDocument data={data} locale={locale} />
-      ).toBlob()
+      ).toBlob();
 
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = getFileName("pdf")
-      a.click()
-      URL.revokeObjectURL(url)
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = getFileName("pdf");
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("PDF generation failed:", err)
-      alert("Failed to generate PDF. Check the browser console for details.")
+      toast.error("Failed to generate PDF.", {
+        description: err instanceof Error ? err.message : "Please try again.",
+      });
     } finally {
-      setGenerating(false)
+      setGenerating(false);
     }
-  }
+  };
 
   const getFileName = (ext: string) => {
-    const now = new Date()
-    const dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`
+    const now = new Date();
+    const dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
     return data.invoiceNumber
       ? `Invoice-${data.invoiceNumber}-${dt}.${ext}`
-      : `Invoice-${dt}.${ext}`
-  }
+      : `Invoice-${dt}.${ext}`;
+  };
 
   const handleDownloadJSON = () => {
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
-    })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = getFileName("json")
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getFileName("json");
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (print) {
-    return <InvoicePrintView data={data} loading={loading} />
+    return <InvoicePrintView data={data} loading={loading} />;
   }
 
   return (
     <>
       <a
-        className="sr-only rounded-md bg-background px-4 py-2 text-body-sm font-medium outline-none focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
+        className="sr-only rounded-md bg-background px-4 py-2 font-medium text-body-sm outline-hidden focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
         href="#main-content"
       >
         {t("a11y.skipToContent")}
       </a>
       <main
-        className="invoice-app-shell flex min-h-svh flex-col md:flex-row"
+        className="route-view invoice-app-shell flex min-h-svh flex-col md:flex-row"
         id="main-content"
         tabIndex={-1}
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        <div className="invoice-no-print scrollbar-hide w-full border-b border-border md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1.5 border-b border-border bg-background px-4 py-3 sm:px-6">
+        <div
+          className={cn(
+            "invoice-no-print scrollbar-hide w-full border-border border-b md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0",
+            animateEntrance && "motion-enter"
+          )}
+        >
+          <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="default" variant="outline">
@@ -389,21 +424,21 @@ export function InvoiceGenerator() {
                   <DialogDescription>{t("mcp.description")}</DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3">
-                  <ol className="space-y-2 text-xs text-muted-foreground">
+                  <ol className="space-y-2 text-muted-foreground text-xs">
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         1
                       </span>
                       <span>{t("mcp.step1")}</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         2
                       </span>
                       <span>{t("mcp.step2")}</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-micro font-medium text-foreground">
+                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
                         3
                       </span>
                       <span>{t("mcp.step3")}</span>
@@ -418,7 +453,7 @@ export function InvoiceGenerator() {
                   <p className="text-micro text-muted-foreground">
                     {t("mcp.privacy")}
                   </p>
-                  <div className="space-y-1.5 border-t border-border pt-3">
+                  <div className="space-y-1.5 border-border border-t pt-3">
                     <Label htmlFor="inv-token">
                       Personal token (enables cloud save)
                     </Label>
@@ -429,21 +464,10 @@ export function InvoiceGenerator() {
                       placeholder="Paste your token to save edits"
                       type="password"
                     />
-                    {cloud.auth ? (
-                      <p className="text-micro text-primary">
-                        Signed in as {cloud.auth.email}. Edits to a loaded
-                        invoice save automatically.
-                      </p>
-                    ) : cloud.hasToken ? (
-                      <p className="text-micro text-destructive">
-                        Token not recognized — generate a new one.
-                      </p>
-                    ) : (
-                      <p className="text-micro text-muted-foreground">
-                        Optional. Without a token, edits stay in this browser
-                        only.
-                      </p>
-                    )}
+                    <CloudAuthStatus
+                      auth={cloud.auth}
+                      hasToken={cloud.hasToken}
+                    />
                   </div>
                 </div>
               </DialogContent>
@@ -527,13 +551,19 @@ export function InvoiceGenerator() {
             <InvoiceForm data={data} onChange={setData} />
           </div>
         </div>
-        <div className="invoice-preview-pane scrollbar-hide w-full bg-muted/50 md:h-svh md:w-1/2 md:overflow-y-auto">
-          <div className="invoice-no-print flex flex-wrap items-center gap-1.5 border-b border-border bg-background px-4 py-3 sm:px-6">
+        <div
+          className={cn(
+            "invoice-preview-pane scrollbar-hide w-full bg-muted/50 md:h-svh md:w-1/2 md:overflow-y-auto",
+            animateEntrance &&
+              "motion-enter [animation-delay:var(--motion-stagger)]"
+          )}
+        >
+          <div className="invoice-no-print flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
             {invoiceId && cloud.hasToken ? (
               <span className="flex items-center gap-1 text-micro text-muted-foreground">
                 {cloud.status === "saving" ? (
                   <>
-                    <Loader2 className="size-3 animate-spin" />{" "}
+                    <Spinner className="[--spinner-size:12px]" />{" "}
                     {t("status.saving")}
                   </>
                 ) : null}
@@ -550,10 +580,7 @@ export function InvoiceGenerator() {
                 <DropdownMenuTrigger asChild>
                   <Button disabled={isEmpty || generating} size="default">
                     {generating ? (
-                      <Loader2
-                        className="animate-spin"
-                        data-icon="inline-start"
-                      />
+                      <Spinner data-icon="inline-start" />
                     ) : (
                       <Download data-icon="inline-start" />
                     )}
@@ -577,9 +604,7 @@ export function InvoiceGenerator() {
             </div>
           </div>
           <div className="invoice-preview-scroll p-4 sm:p-6">
-            <Suspense fallback={<PreviewSkeleton />}>
-              <InvoicePreview data={data} />
-            </Suspense>
+            <InvoicePreview data={data} />
           </div>
         </div>
         {/* Floating download button — mobile only */}
@@ -592,11 +617,7 @@ export function InvoiceGenerator() {
                 disabled={isEmpty || generating}
                 size="icon-lg"
               >
-                {generating ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <Download />
-                )}
+                {generating ? <Spinner /> : <Download />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top">
@@ -617,7 +638,7 @@ export function InvoiceGenerator() {
         </output>
       </main>
     </>
-  )
+  );
 }
 
 // Standalone, chrome-free render of a single invoice used by the public
@@ -628,41 +649,44 @@ function InvoicePrintView({
   data,
   loading,
 }: {
-  data: InvoiceData
-  loading: boolean
+  data: InvoiceData;
+  loading: boolean;
 }) {
-  const printed = useRef(false)
+  const { t } = useTranslation();
+  const printed = useRef(false);
   const ready =
-    !loading && (Boolean(data.from.companyName) || data.items.length > 0)
+    !loading && (Boolean(data.from.companyName) || data.items.length > 0);
 
   useEffect(() => {
     if (!ready || printed.current || typeof window === "undefined") {
-      return
+      return;
     }
-    printed.current = true
-    const fire = () => window.print()
-    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts
+    printed.current = true;
+    const fire = () => window.print();
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     if (fonts?.ready) {
       fonts.ready
         .then(() => window.setTimeout(fire, 200))
-        .catch(() => window.setTimeout(fire, 200))
+        .catch(() => window.setTimeout(fire, 200));
     } else {
-      window.setTimeout(fire, 500)
+      window.setTimeout(fire, 500);
     }
-  }, [ready])
+  }, [ready]);
 
   if (loading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-muted-foreground" />
+        <Spinner
+          className="text-muted-foreground"
+          label={t("a11y.loadingDocument")}
+          size="md"
+        />
       </div>
-    )
+    );
   }
   return (
     <div className="invoice-print-root">
-      <Suspense fallback={<PreviewSkeleton />}>
-        <InvoicePreview data={data} />
-      </Suspense>
+      <InvoicePreview data={data} />
     </div>
-  )
+  );
 }

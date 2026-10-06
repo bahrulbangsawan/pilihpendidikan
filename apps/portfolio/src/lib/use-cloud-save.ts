@@ -1,24 +1,24 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export type SaveStatus = "idle" | "saving" | "saved" | "error"
+export type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 interface Auth {
-  email: string
-  isAdmin: boolean
+  email: string;
+  isAdmin: boolean;
 }
 
 interface UseCloudSaveOptions<T> {
   /** Base origin of the mcp API (dev: localhost:8787, prod: mcp.bahrul.me). */
-  apiBase: string
+  apiBase: string;
   /** The document slug from `?portfolio=`; undefined when scratch-editing. */
-  id: string | undefined
+  id: string | undefined;
   /** Resource family — selects the KV namespace + endpoint on the server. */
-  resource: "cv" | "invoice" | "portfolio"
+  resource: "cv" | "invoice" | "portfolio";
   /**
    * Restore the last server-confirmed document. Called when a persistence
    * attempt fails so the optimistic edit is rolled back. Pass the state setter.
    */
-  onRollback: (data: T) => void
+  onRollback: (data: T) => void;
 }
 
 /**
@@ -41,94 +41,94 @@ export function useCloudSave<T>({
   resource,
   onRollback,
 }: UseCloudSaveOptions<T>) {
-  const storageKey = `${resource}-mcp-token`
-  const [token, setTokenState] = useState<string | null>(null)
-  const [auth, setAuth] = useState<Auth | null>(null)
-  const [status, setStatus] = useState<SaveStatus>("idle")
-  const [error, setError] = useState<string | null>(null)
-  const [forbidden, setForbidden] = useState(false)
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const lastSaved = useRef<T | null>(null)
+  const storageKey = `${resource}-mcp-token`;
+  const [token, setTokenState] = useState<string | null>(null);
+  const [auth, setAuth] = useState<Auth | null>(null);
+  const [status, setStatus] = useState<SaveStatus>("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [forbidden, setForbidden] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastSaved = useRef<T | null>(null);
 
   // Hydrate the token from localStorage on mount (SSR-safe — window only here).
   useEffect(() => {
     if (typeof window === "undefined") {
-      return
+      return;
     }
-    const stored = window.localStorage.getItem(storageKey)
+    const stored = window.localStorage.getItem(storageKey);
     if (stored) {
-      setTokenState(stored)
+      setTokenState(stored);
     }
-  }, [storageKey])
+  }, [storageKey]);
 
   // Resolve the token to an identity so the UI can show "signed in as …" and
   // gate the edit affordance. A `false` response just means anonymous.
   useEffect(() => {
     if (!token) {
-      setAuth(null)
-      return
+      setAuth(null);
+      return;
     }
-    let cancelled = false
+    let cancelled = false;
     fetch(`${apiBase}/api/whoami`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json() as Promise<{ authenticated: boolean } & Auth>)
       .then((data) => {
         if (cancelled) {
-          return
+          return;
         }
         setAuth(
           data.authenticated
             ? { email: data.email, isAdmin: data.isAdmin }
             : null
-        )
+        );
       })
       .catch(() => {
         if (!cancelled) {
-          setAuth(null)
+          setAuth(null);
         }
-      })
+      });
     return () => {
-      cancelled = true
-    }
-  }, [token, apiBase])
+      cancelled = true;
+    };
+  }, [token, apiBase]);
 
   const setToken = useCallback(
     (next: string) => {
-      const value = next.trim()
+      const value = next.trim();
       if (typeof window !== "undefined") {
         if (value) {
-          window.localStorage.setItem(storageKey, value)
+          window.localStorage.setItem(storageKey, value);
         } else {
-          window.localStorage.removeItem(storageKey)
+          window.localStorage.removeItem(storageKey);
         }
       }
-      setTokenState(value || null)
-      setForbidden(false)
-      setError(null)
-      setStatus("idle")
+      setTokenState(value || null);
+      setForbidden(false);
+      setError(null);
+      setStatus("idle");
     },
     [storageKey]
-  )
+  );
 
   // Establish the rollback baseline (call after the initial document load and
   // whenever the server confirms a save).
   const markSaved = useCallback((data: T) => {
-    lastSaved.current = data
-  }, [])
+    lastSaved.current = data;
+  }, []);
 
-  const canEdit = Boolean(id && auth && !forbidden)
+  const canEdit = Boolean(id && auth && !forbidden);
 
   const scheduleSave = useCallback(
     (next: T) => {
       if (!(canEdit && token && id)) {
-        return
+        return;
       }
       if (timer.current) {
-        clearTimeout(timer.current)
+        clearTimeout(timer.current);
       }
-      setStatus("saving")
-      setError(null)
+      setStatus("saving");
+      setError(null);
       timer.current = setTimeout(async () => {
         try {
           const res = await fetch(
@@ -141,40 +141,40 @@ export function useCloudSave<T>({
               },
               body: JSON.stringify(next),
             }
-          )
+          );
           if (res.ok) {
-            lastSaved.current = next
-            setStatus("saved")
-            return
+            lastSaved.current = next;
+            setStatus("saved");
+            return;
           }
           // Persistence failed — roll the optimistic edit back to the last
           // server-confirmed document and surface why.
           if (lastSaved.current !== null) {
-            onRollback(lastSaved.current)
+            onRollback(lastSaved.current);
           }
           if (res.status === 401) {
-            setAuth(null)
-            setError("Session expired — re-enter your token to save.")
+            setAuth(null);
+            setError("Session expired — re-enter your token to save.");
           } else if (res.status === 403) {
-            setForbidden(true)
-            setError("You don't have permission to edit this document.")
+            setForbidden(true);
+            setError("You don't have permission to edit this document.");
           } else {
-            setError(`Save failed (${res.status}). Your change was reverted.`)
+            setError(`Save failed (${res.status}). Your change was reverted.`);
           }
-          setStatus("error")
+          setStatus("error");
         } catch {
           if (lastSaved.current !== null) {
-            onRollback(lastSaved.current)
+            onRollback(lastSaved.current);
           }
-          setStatus("error")
+          setStatus("error");
           setError(
             "Save failed — check your connection. Your change was reverted."
-          )
+          );
         }
-      }, 800)
+      }, 800);
     },
     [apiBase, id, resource, token, canEdit, onRollback]
-  )
+  );
 
   return {
     auth,
@@ -185,5 +185,5 @@ export function useCloudSave<T>({
     setToken,
     markSaved,
     scheduleSave,
-  }
+  };
 }

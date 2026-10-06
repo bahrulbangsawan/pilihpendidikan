@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { InvoiceGenerator } from "@/components/invoice-generator"
-import { headForLocale } from "@/i18n"
+import { createFileRoute } from "@tanstack/react-router";
+import { InvoiceGenerator } from "@/components/invoice-generator";
+import { headForLocale } from "@/i18n";
 
-const BASE_URL = "https://invoice.bahrul.me"
+const BASE_URL = "https://invoice.bahrul.me";
 
 export const Route = createFileRoute("/id")({
   head: () => headForLocale("id", BASE_URL),
@@ -19,4 +19,4 @@ export const Route = createFileRoute("/id")({
       search.print === true ||
       undefined,
   }),
-})
+});
