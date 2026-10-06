@@ -31,4 +31,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://portfolio.bahrul.me/sitemap.xml
+Sitemap: https://portfolio.pilihpendidikan.com/sitemap.xml

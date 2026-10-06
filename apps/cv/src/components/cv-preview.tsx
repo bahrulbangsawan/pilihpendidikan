@@ -24,7 +24,7 @@ export function CVPreview({ data, style }: CVPreviewProps) {
 
   if (!hasContent) {
     return (
-      <p className="py-20 text-center text-muted-foreground text-sm">
+      <p className="py-20 text-center text-body-sm text-muted-foreground">
         Start filling in the form to see your CV preview
       </p>
     );

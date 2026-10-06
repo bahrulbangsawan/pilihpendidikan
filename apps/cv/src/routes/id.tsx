@@ -3,7 +3,7 @@ import type { CVStyle } from "@/components/cv-form";
 import { CVGenerator } from "@/components/cv-generator";
 import { headForLocale } from "@/i18n";
 
-const BASE_URL = "https://cv.bahrul.me";
+const BASE_URL = "https://cv.pilihpendidikan.com";
 
 export const Route = createFileRoute("/id")({
   head: () => headForLocale("id", BASE_URL),

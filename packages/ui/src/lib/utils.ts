@@ -1,9 +1,39 @@
 import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 
 const NON_DIGIT_RE = /\D/g;
 const HTTP_PROTOCOL_RE = /^https?:\/\//i;
+
+// tailwind-merge has no knowledge of the custom Warp typography utilities the
+// apps define in `@theme inline { … }` (see DESIGN.md / TYPOGRAPHY.md). Without
+// this config it reads `text-body-sm` as a text colour, so
+// `cn("text-body-sm", "text-muted-foreground")` silently drops the size and the
+// element renders at the inherited size. Register the custom font-size names so
+// cn() preserves them. The Warp scale bakes letter-spacing into each size token
+// (`--text-*--letter-spacing`), so there are no tracking utilities to register.
+// `bun run parity:twmerge` keeps this list in sync with every app's @theme.
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [
+        {
+          text: [
+            "display",
+            "heading-lg",
+            "heading",
+            "heading-sm",
+            "subheading",
+            "body",
+            "body-sm",
+            "caption-tracked",
+            "micro",
+          ],
+        },
+      ],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

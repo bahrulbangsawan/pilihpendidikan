@@ -1,0 +1,45 @@
+{
+  "name": "pilihpendidikan",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "zod": "^4.6.5",
+      "typescript": "^7.0.2"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "tsc --noEmit && turbo typecheck",
+    "test": "turbo test",
+    "dev:cv": "turbo dev -F cv...",
+    "dev:invoice": "turbo dev -F invoice...",
+    "dev:portfolio": "turbo dev -F portfolio...",
+    "check": "biome check && turbo lint && bun run lint:typography && bun run parity:typography && bun run parity:twmerge && bun run test && bun run audit",
+    "audit": "bun audit",
+    "audit:ci": "bun audit --prod",
+    "fix": "biome check --write",
+    "lint:typography": "bash scripts/lint-typography.sh",
+    "parity:typography": "bun scripts/check-typography-parity.ts",
+    "parity:twmerge": "bun scripts/check-twmerge-typography-config.ts"
+  },
+  "devDependencies": {
+    "@babel/parser": "^8.0.6",
+    "@babel/types": "^8.0.6",
+    "@biomejs/biome": "2.5.15",
+    "@pilihpendidikan/config": "workspace:*",
+    "@types/node": "^26.6.4",
+    "turbo": "^2.11.7",
+    "typescript": "^7.0.2"
+  },
+  "packageManager": "bun@1.4.2",
+  "engines": {
+    "bun": ">=1.4.2",
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  }
+}

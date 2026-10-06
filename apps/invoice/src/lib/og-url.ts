@@ -9,10 +9,9 @@ export interface BuildOgUrlOptions {
   title: string;
   subtitle: string;
   theme?: OgTheme;
-  // Stored D1 template id (see apps/mcp-ui/src/lib/og-builtins/). When
-  // absent, the worker falls back to the default `renderOg` renderer
-  // tuned to look good both at full social-share size and when downscaled
-  // into in-page card thumbnails.
+  // Stored template id on the og.bahrul.me renderer. When absent, the worker
+  // falls back to the default `renderOg` renderer, tuned to look good both at
+  // full social-share size and when downscaled into in-page card thumbnails.
   template?: string;
 }
 

@@ -1,0 +1,7 @@
+{
+  "engine": "chrome",
+  "headed": false,
+  "colorScheme": "light",
+  "contentBoundaries": true,
+  "maxOutput": 4000
+}

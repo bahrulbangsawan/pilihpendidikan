@@ -32,11 +32,11 @@
   },
   "mcp": {
     "title": "Hubungkan melalui MCP",
-    "description": "Kelola faktur Anda dengan asisten AI apa pun. Minta AI \"buat faktur\" atau \"perbarui item\". Untuk menyimpan faktur dan mengaksesnya dari perangkat mana pun, buat token di mcp.bahrul.me.",
-    "step1": "Kunjungi mcp.bahrul.me dan masuk untuk membuat token MCP pribadi Anda — diperlukan untuk menyimpan faktur ke cloud.",
-    "step2": "Ikuti panduan spesifik klien di halaman panduan — Claude Code, Cursor, Codex, Windsurf, Zed, dan lainnya.",
+    "description": "Kelola faktur Anda dengan asisten AI apa pun. Minta AI \"buat faktur\" atau \"perbarui item\". Untuk menyimpan faktur dan mengaksesnya dari perangkat mana pun, buat token di api.pilihpendidikan.com/connect.",
+    "step1": "Kunjungi api.pilihpendidikan.com/connect dan masuk untuk membuat token MCP pribadi Anda — diperlukan untuk menyimpan faktur ke cloud.",
+    "step2": "Tambahkan server MCP ke klien Anda — Claude Code, Cursor, Codex, Windsurf, Zed, dan lainnya.",
     "step3": "Tempelkan URL pribadi Anda ke klien dan mulai ulang.",
-    "cta": "Dapatkan token MCP di mcp.bahrul.me",
+    "cta": "Dapatkan token MCP di api.pilihpendidikan.com/connect",
     "privacy": "URL MCP Anda bersifat pribadi — jangan dibagikan."
   },
   "form": {

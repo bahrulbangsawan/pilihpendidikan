@@ -10,7 +10,7 @@
 // needed.
 //
 // Shared-location note: this browser-only helper is duplicated in each PDF app
-// (cv-bahrul, invoice-bahrul, portfolio-bahrul), which consumes @rulisme/ui as a
+// (apps/cv, apps/invoice, apps/portfolio), which consumes @rulisme/ui as a
 // prebuilt dist. Keep the copies identical without requiring a UI package
 // rebuild for image-processing changes.
 //

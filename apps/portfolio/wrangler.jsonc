@@ -1,9 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "portfolio-bahrul",
+  "name": "portfolio-pilihpendidikan",
   "compatibility_date": "2026-03-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+  "routes": [
+    { "pattern": "portfolio.pilihpendidikan.com", "custom_domain": true }
+  ],
   "observability": {
     "enabled": true
   }

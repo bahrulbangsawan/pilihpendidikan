@@ -1,33 +1,37 @@
-# CV Bahrul
+# CV Builder (`apps/cv`)
 
-A CV/Resume builder web application with real-time preview and PDF export.
+A bilingual (English/Indonesian) CV builder with a live preview and PDF
+export. Production: <https://cv.pilihpendidikan.com>.
 
 ## Features
 
-- Interactive form with sections for personal info, summary, experience, education, skills, awards, certificates, and languages
-- Real-time CV preview as you type
-- PDF download with multi-page support
-- Pre-fill with sample data
-- Responsive split-pane layout (form + preview)
+- Form sections for personal info, summary, experience, education, skills, awards, certificates, languages, projects and volunteering
+- Four templates (basic, harvard, simple, standard) with a live preview
+- PDF export with `@react-pdf/renderer`, plus JSON and Markdown export and JSON import
+- Local draft in the browser; prefill with sample data
+- Cloud save with a personal token from <https://api.pilihpendidikan.com/connect>, and editing through any MCP client
 
 ## Tech Stack
 
-- [TanStack Start](https://tanstack.com/start) — Full-stack React framework
-- [React 19](https://react.dev) — UI library
-- [shadcn/ui](https://ui.shadcn.com) — Component library
-- [Tailwind CSS v4](https://tailwindcss.com) — Styling
-- [TypeScript](https://www.typescriptlang.org) — Type safety
-- [Bun](https://bun.sh) — Runtime and package manager
+- [TanStack Start](https://tanstack.com/start) on [Cloudflare Workers](https://workers.cloudflare.com)
+- [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@rulisme/ui` (shadcn/ui-based, `packages/ui`)
+- [TypeScript](https://www.typescriptlang.org), [Bun](https://bun.sh), Biome, Vitest
 
 ## Getting Started
 
+From the repo root:
+
 ```bash
 bun install
-bun run dev
+bun run dev:cv
 ```
 
-The app runs at `http://localhost:5001`.
+The app runs at <http://localhost:4003> (English at `/`, Indonesian at `/id`).
+Cloud save talks to `apps/api` on <http://localhost:8788> in dev.
 
-## PDF Export
+## Deploy
 
-Uses `html2canvas` + `jsPDF` for client-side PDF generation with A4 formatting and automatic page breaks.
+```bash
+bun run build
+bun run deploy   # Worker cv-pilihpendidikan → cv.pilihpendidikan.com
+```

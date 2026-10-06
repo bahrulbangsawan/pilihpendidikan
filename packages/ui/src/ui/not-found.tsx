@@ -37,7 +37,7 @@ const DEFAULT_DESCRIPTION =
  * Router-agnostic 404 screen shared by the cv / invoice / portfolio apps.
  * Each app passes its own `logo` node and a `homeAction` link; everything else
  * (layout, type scale, spacing, button size) is fixed here so the apps render
- * an identical not-found page. Warp tokens only — no shadows, no `font-bold`.
+ * an identical not-found page. Warp tokens only — no shadows, no bold weights.
  */
 export function NotFound({
   logo,

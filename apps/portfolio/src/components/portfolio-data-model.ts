@@ -1,5 +1,5 @@
 // Portfolio data model — Apple Developer Academy Indonesia submission
-// Target app: apps/portfolio-bahrul
+// Target app: apps/portfolio
 //
 // Source of truth: the two ADA 2025 guidance PDFs.
 // Submission output is a single PDF (FullName_Portfolio_Academy2025).

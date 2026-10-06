@@ -4,7 +4,7 @@ import appCss from "../styles.css?url";
 import { RootComponent, RootDocument } from "./-root-components";
 import { jsonLd } from "./-root-helpers";
 
-const BASE_URL = "https://cv.bahrul.me";
+const BASE_URL = "https://cv.pilihpendidikan.com";
 
 // Resolve the theme before body content paints, matching next-themes.
 const themeScript = `(function(){try{var d=document.documentElement,e=localStorage.getItem("theme"),m=window.matchMedia("(prefers-color-scheme: dark)").matches,k=e==="dark"||((e==="system"||!e)&&m);d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
@@ -25,10 +25,10 @@ export const Route = createRootRoute({
       // read; `dns-prefetch` is the universal fallback.
       {
         rel: "preconnect",
-        href: "https://mcp.bahrul.me",
+        href: "https://api.pilihpendidikan.com",
         crossOrigin: "anonymous",
       },
-      { rel: "dns-prefetch", href: "https://mcp.bahrul.me" },
+      { rel: "dns-prefetch", href: "https://api.pilihpendidikan.com" },
       // hreflang tags
       { rel: "alternate", hrefLang: "en", href: BASE_URL },
       { rel: "alternate", hrefLang: "id", href: `${BASE_URL}/id` },

@@ -1,29 +1,32 @@
-# apps/portfolio-bahrul — Portfolio Builder
+# apps/portfolio — Portfolio Builder
 
 TanStack Start (SSR) app that builds and exports a locked **Apple Developer
 Academy** portfolio (A4 **landscape**) as PDF + JSON. Consumes the shared
-`@rulisme/ui` library. Deployed to Cloudflare via `@cloudflare/vite-plugin`.
-Host: `portfolio.bahrul.me`.
+`@rulisme/ui` library. Deployed to Cloudflare Workers via
+`@cloudflare/vite-plugin` as `portfolio-pilihpendidikan` on
+`portfolio.pilihpendidikan.com`.
+
+Workspace-wide rules (commands, conventions, typography) live in the root
+`CLAUDE.md`, `TYPOGRAPHY.md` and `DESIGN.md`; proposals go in the root
+`openspec/` (prefix change ids with `portfolio-`).
 
 ## Commands
 
-- `bun dev` — Vite dev server on port **4005** (`vite dev --port 4005`)
-- `bun run build` / `bun run preview`
-- `bun run test` — Vitest (`vitest run`)
-- `bun run lint` — **ESLint** (`@tanstack/eslint-config`); `bun run format` — Prettier
-- `bun run typecheck` — `tsc --noEmit` (**the real gate for this app**)
-- `bun run deploy` — `wrangler deploy`
+- `bun dev` — Vite dev server on port **4005**
+- `bun run build` — `wrangler types` + `vite build`; `bun run preview`
+- `bun run test` — Vitest
+- `bun run lint` — Biome (`biome check .`); `bun run format` — Biome autofix
+- `bun run typecheck` — `wrangler types` + `tsc --noEmit`
+- `bun run deploy` — `wrangler deploy` (owner approval required)
 
-> **Toolchain differs from the rest of the repo.** portfolio-bahrul (like
-> cv-bahrul / invoice-bahrul) lints with **ESLint + Prettier** (no-semicolon
-> style) and is **excluded from Biome/Ultracite** in the root `biome.jsonc`.
-> Verify with `bun run typecheck` + Prettier, NOT `bun x ultracite`. The root
-> `bun run check` / `ultracite fix` skip this app's files.
+Like `apps/cv` and `apps/invoice`, this app is covered by the root Biome
+config, the typography lint and the typography parity check — run
+`bun x ultracite fix && bun run check` from the repo root.
 
 ## Structure
 
 - `src/router.tsx` — TanStack Router setup; routes in `src/routes/` (`__root.tsx`
-  + sibling `__root-components.tsx` / `__root-helpers.ts`, `index.tsx` = EN,
+  + route-private `-root-components.tsx` / `-root-helpers.ts`, `index.tsx` = EN,
   `id.tsx` = ID, `$.tsx` catch-all). `routeTree.gen.ts` is generated — never edit.
 - `src/components/portfolio-data-model.ts` — the verbatim ADA data model
   (`Portfolio`, `PortfolioOwner`, `Affiliation` union, `Project`, `MediaAsset`,
@@ -41,9 +44,12 @@ Host: `portfolio.bahrul.me`.
 - `src/components/portfolio-generator.tsx` — 50/50 split orchestration + toolbar
   (MCP token dialog, import JSON, prefill sample, clear-all confirm, theme,
   language) + download dropdown (PDF/JSON) + `PortfolioPrintView` (`?print=1` →
-  `window.print()`, used by the `/portfolio/<slug>.pdf` redirect).
+  `window.print()`, used by the `/portfolio/<slug>.pdf` redirect on `apps/api`).
 - `src/lib/use-cloud-save.ts` — owner-authenticated optimistic cloud save
   (`resource: "portfolio"`, `PUT /api/portfolio/:id`, Bearer-gated, rollback).
+  `MCP_API` in `portfolio-generator.tsx` is `http://localhost:8788` in dev
+  (`apps/api`) and `https://api.pilihpendidikan.com` in prod; tokens are minted
+  at `https://api.pilihpendidikan.com/connect`.
 - `src/data/sample-portfolio.json` — sample document (prefill).
 
 ## Locked layout (do not loosen)
@@ -59,8 +65,9 @@ the reflection strip + footer pack flush at the bottom. Keep the slot exactly
 
 ## Design system — Warp (see `DESIGN.md`)
 
-App chrome is the shared dark Warp system (`@theme` mirrors cv/invoice; light +
-dark via next-themes). The **cover** is `#121212`; **project pages stay
+App chrome is the shared dark Warp system (`@theme` typography is byte-identical
+to apps/cv and apps/invoice — `bun run parity:typography`; light + dark via
+next-themes). The **cover** is `#121212`; **project pages stay
 print-light** (ink on paper) but adopt Matter type + tracked uppercase eyebrows.
 NO drop shadows (pages get a hairline border), tags are 4px (never pills), text
 is warm off-white `#faf9f6` (never pure `#fff`); accents `#bd9f65` / `#6f839f`
@@ -68,8 +75,8 @@ only in link/eyebrow contexts.
 
 ## Shared UI
 
-Imports primitives from `@rulisme/ui` (resolves to its built `dist/` — run
-`bun run build` in `packages/ui` first, or imports are stale/missing).
+Imports primitives from `@rulisme/ui` (resolves to its built `dist/` at runtime —
+run `bun run build` in `packages/ui` first, or use the root `bun dev`).
 
 ## Browser testing
 

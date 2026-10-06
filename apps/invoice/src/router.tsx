@@ -13,7 +13,7 @@ export function getRouter() {
     defaultPreload: "intent",
     defaultPreloadStaleTime: 30_000,
     // Path changes cross-fade the page (`route-view` in
-    // @bahrul/config/motion.css); the first load and search/hash-only
+    // @pilihpendidikan/config/motion.css); the first load and search/hash-only
     // changes swap instantly.
     defaultViewTransition: {
       types: ({ fromLocation, pathChanged }) =>

@@ -9,7 +9,7 @@ export const jsonLd = {
   name: "Invoice Generator — Bahrul Bangsawan",
   description:
     "Create, preview, and download professional invoices as PDF. Free online invoice generator with real-time preview and AI assistant.",
-  url: "https://invoice.bahrul.me",
+  url: "https://invoice.pilihpendidikan.com",
   applicationCategory: "BusinessApplication",
   operatingSystem: "All",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

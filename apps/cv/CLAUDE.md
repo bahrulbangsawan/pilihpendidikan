@@ -1,75 +1,64 @@
-<!-- OPENSPEC:START -->
-# OpenSpec Instructions
+# apps/cv — CV Builder
 
-These instructions are for AI assistants working in this project.
+TanStack Start (SSR) app that builds CVs and exports them as PDF or JSON.
+Consumes the shared `@rulisme/ui` library. Deployed to Cloudflare Workers via
+`@cloudflare/vite-plugin` as `cv-pilihpendidikan` on `cv.pilihpendidikan.com`.
 
-Always open `@/openspec/AGENTS.md` when the request:
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
-
-Use `@/openspec/AGENTS.md` to learn:
-- How to create and apply change proposals
-- Spec format and conventions
-- Project structure and guidelines
-
-Keep this managed block so 'openspec update' can refresh the instructions.
-
-<!-- OPENSPEC:END -->
-
-# apps/cv-bahrul — CV Builder
-
-TanStack Start (SSR) app that builds and exports CVs as PDFs. Consumes the shared `@rulisme/ui` library. Deployed to Cloudflare via `@cloudflare/vite-plugin`.
+Workspace-wide rules (commands, conventions, typography) live in the root
+`CLAUDE.md`, `TYPOGRAPHY.md` and `DESIGN.md`; proposals go in the root
+`openspec/` (prefix change ids with `cv-`).
 
 ## Commands
 
-- `bun dev` — Vite dev server on port **4003** (`vite dev --port 4003`)
-- `bun run build` / `bun run preview`
-- `bun run test` — Vitest (`vitest run`)
-- `bun run lint` — **ESLint** (`@tanstack/eslint-config`); `bun run format` — Prettier
-- `bun run typecheck` — `tsc --noEmit`
-- `bun run deploy` — `wrangler deploy`
+- `bun dev` — Vite dev server on port **4003**
+- `bun run build` — `wrangler types` + `vite build`; `bun run preview`
+- `bun run test` — Vitest
+- `bun run lint` — Biome (`biome check .`); `bun run format` — Biome autofix
+- `bun run typecheck` — `wrangler types` + `tsc --noEmit`
+- `bun run deploy` — `wrangler deploy` (owner approval required)
 
-> **Toolchain differs from the rest of the repo.** cv-bahrul (and invoice-bahrul) lint with **ESLint + Prettier** and test with **Vitest** — not the Biome/Ultracite + typography lint chain used by `apps/web`/`apps/mcp-ui`. Run `bun run lint && bun run typecheck && bun run test` here, not `bun x ultracite`.
+The root `bun run check` runs Biome, the typography lint and the parity checks
+over this app too.
 
 ## Structure
 
-- `src/router.tsx` — TanStack Router setup; routes in `src/routes/` (`__root.tsx`, `index.tsx`, `$.tsx` catch-all). `routeTree.gen.ts` is generated — never edit by hand.
-- `src/components/cv-form.tsx` / `cv-preview.tsx` / `cv-pdf.tsx` — the editing form, live preview, and PDF renderer.
-- `src/components/templates/` — one `-pdf.tsx` + `-preview.tsx` pair per template (`basic`, `harvard`, `simple`, `standard`). Add a template by creating both halves and wiring them into the picker.
-- `src/data/sample-cv.json` — sample document shape.
-- PDFs are generated with `@react-pdf/renderer` — `*-pdf.tsx` use `@react-pdf` primitives (not DOM elements), so preview and PDF layouts are maintained separately; keep them in sync by hand.
+- `src/router.tsx` — router setup; routes in `src/routes/`: `__root.tsx` (head, hreflang, preconnect to the API), `-root-components.tsx` (document shell, ThemeProvider, i18n), `-root-helpers.ts` (JSON-LD), `index.tsx` (EN), `id.tsx` (ID), `$.tsx` (catch-all 404). `routeTree.gen.ts` is generated — never edit it by hand.
+- `src/components/cv-generator.tsx` — the editor shell: toolbar, MCP dialog, import/export, local draft, cloud load/save, and the `?print=1` print view.
+- `src/components/cv-form.tsx` / `cv-preview.tsx` / `cv-pdf.tsx` — the form, live preview and `@react-pdf/renderer` entry point.
+- `src/components/templates/` — one `*-preview.tsx` + `*-pdf.tsx` pair per template (`basic`, `harvard`, `simple`, `standard`), plus `preview-entries.tsx` and `template-utils.ts`. Add a template by creating both halves and wiring them into the picker. Preview and PDF are separate renderers; keep them in sync by hand.
+- `src/lib/use-cloud-save.ts` — owner-authenticated optimistic cloud save (`PUT /api/cv/:id`, Bearer token, rollback).
+- `src/lib/og-url.ts` — OG image URLs on the public `og.bahrul.me` renderer.
+- `src/lib/cv-markdown.ts`, `src/lib/preprocess-image.ts` — Markdown export and client-side image normalisation for the PDF.
+- `src/i18n/` — EN/ID copy (`locales/{en,id}.json`) and the language switcher.
+- `src/data/sample-cv.json` — sample document (prefill).
+- `public/` — `robots.txt`, `sitemap.xml`, `llms.txt`, favicons.
+
+## Backend
+
+`MCP_API` in `cv-generator.tsx` is `http://localhost:8788` in dev (`apps/api`
+under `wrangler dev`) and `https://api.pilihpendidikan.com` in prod. Users mint
+a personal token at `https://api.pilihpendidikan.com/connect` (`MCP_URL`) and
+paste it into the MCP dialog to enable cloud save. `?cv=<slug>` loads a saved
+CV; `/cv/<slug>.pdf` on the API redirects to `?cv=<slug>&print=1`.
 
 ## Shared UI
 
 - Imports primitives from `@rulisme/ui` (e.g. `@rulisme/ui/ui/button`, `@rulisme/ui/form/form-field`, `@rulisme/ui/lib/utils`).
-- `@rulisme/ui` resolves to its built `dist/` — **run `bun run build` (or `bun run dev`) in `packages/ui` first**, or imports resolve to stale/missing files. See `packages/ui/CLAUDE.md`.
-- shadcn config in `components.json`. Tailwind 4.
+- At runtime `@rulisme/ui` resolves to its built `dist/` — run `bun run build` in `packages/ui` (or the root `bun dev`) first. TypeScript maps it to `packages/ui/src` through `tsconfig.json` paths.
+- shadcn config in `components.json`. Tailwind 4 scans `node_modules/@rulisme/ui/dist` via `@source` in `src/styles.css`.
+
+## Design system — Warp ("moonlit terminal")
+
+This app, `apps/invoice` and `apps/portfolio` share one dark, warm-neutral design system (`DESIGN.md`). The `@theme inline` typography tokens in `src/styles.css` are byte-identical across the three apps (`bun run parity:typography`, with this app as the reference). Never hardcode hex or `text-[Npx]` in chrome; use tokens.
+
+- **Themes.** Light and dark via next-themes (`.dark` class, system theme by default, `theme-toggle.tsx`); dark is canonical. `theme-color` is `#121212`.
+- **Surfaces.** canvas `#121212` (`--background`) · banded `#1e1e1d` · card `#2f2f2f` (`--card`) · control `#383838` (`--secondary`/`--accent`) · floating `#40403f` (`--popover`). Text is warm off-white `#faf9f6` (`--foreground`) — never `#fff`; muted text is pale-stone `#b4b4b2`.
+- **Type.** Named tokens (`text-display` … `text-body-sm`, `text-caption-tracked`, `text-micro`) bake size, line-height and tracking; `text-xs` is the chrome default. Weights are 400/500 only.
+- **Radius.** buttons/nav `4px`, cards/panels `8px`, images `20px`. Buttons are never pill-shaped.
+- **Accent discipline.** `--color-gold-leaf` and `--color-muted-cobalt` only in code/syntax and section headings. No shadows; focus rings are neutral.
+- **Print exception.** The rendered CV is a print artifact: `templates/*-{preview,pdf}.tsx` and `.cv-page` stay light and print-faithful (ink on white, Helvetica). `.cv-page` re-scopes `--foreground`/`--border`/`--background`/`--card` locally. The typography lint skips these files (`TYPOGRAPHY.md` § Exceptions).
+- **Fonts and scrollbars.** Inter 400/500 and Geist Mono 400 are bundled via `@fontsource`; editor panels use the `scrollbar-hide` utility from `src/styles.css`.
 
 ## Browser testing
 
 Use `agent-browser` (not chrome-devtools/claude-in-chrome MCP): `agent-browser open http://localhost:4003 && agent-browser screenshot cv.png`.
-
-<!-- intent-skills:start -->
-## Skill Loading
-
-Before substantial work:
-- Skill check: run `bunx @tanstack/intent@latest list`, or use skills already listed in context.
-- Skill guidance: if one local skill clearly matches the task, run `bunx @tanstack/intent@latest load <package>#<skill>` and follow the returned `SKILL.md`.
-- Monorepos: when working across packages, run the skill check from the workspace root and prefer the local skill for the package being changed.
-- Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
-<!-- intent-skills:end -->
-
-## Design system — Warp ("moonlit terminal")
-
-This app and `apps/invoice-bahrul` share one dark, warm-neutral terminal design system (DESIGN.md "Warp"). The two apps' `src/styles.css` `@theme` blocks are **byte-identical** (parity-diffed) and are the **single source of truth** — never hardcode hex or `text-[Npx]` in components; use tokens.
-
-- **Dark by default.** `<html class="dark">` is set in `src/routes/__root-components.tsx`; `theme-color` is `#121212`. There is no light theme for the editor chrome.
-- **Surfaces (elevation ladder).** canvas `#121212` (`--background`) · banded `#1e1e1d` · card `#2f2f2f` (`--card`) · control `#383838` (`--secondary`/`--accent`) · floating `#40403f` (`--popover` — dialogs/popovers/selects). Text is warm off-white `#faf9f6` (`--foreground`) — **never `#fff`**; muted text is pale-stone `#b4b4b2`; hairline borders are warm off-white at ~12%.
-- **Semantic mapping.** shadcn/reui vars (`--background`, `--card`, `--primary`, `--border`, `--muted`, `--popover`, …) are mapped onto Warp surfaces in `:root`/`.dark`, so every `@rulisme/ui` primitive inherits the skin. Re-skin a primitive **once** in `packages/ui` (then rebuild it) — never fork per app.
-- **Type.** `--font-sans` is the Matter stack (system fallback); `--font-mono` is Geist/Matter Mono for code chips only. Named scale tokens (`text-display` → `text-heading-lg` → … → `text-caption-tracked` → `text-micro`) pair size + line-height + tracking: negative tracking at display sizes, `+2.2px` tracked 11px uppercase eyebrows (`text-caption-tracked uppercase`). Weights are **400/500 only** — `font-bold`/`font-semibold` are forbidden in chrome.
-- **Radius.** buttons/nav `4px` (`rounded-sm`/`rounded-md`), cards/icons/floating panels `8px` (`rounded-lg`), `xl 14px`, images `20px` (`rounded-2xl`). Buttons are **never pill-shaped**; `rounded-full` is reserved for true circles (avatars, switches, FABs, number badges).
-- **Spacing.** Tailwind's native 4-pt scale carries DESIGN.md's rhythm; DESIGN.md's px spacing values are **not** injected as `--spacing-N` overrides (that would silently rescale every existing `p-*`/`gap-*`).
-- **Accent discipline.** `--color-gold-leaf` (`#bd9f65`) and `--color-muted-cobalt` (`#6f839f`) appear **only** in code/terminal/syntax and section headings — never on buttons, tags, or badges. No new bright brand color. **No shadows** anywhere — the system is flat. Focus rings are neutral (`--ring` pale-stone).
-- **Print-template exception (do NOT dark-theme).** The rendered CV is a print artifact. `src/components/templates/{basic,harvard,simple,standard}-{preview,pdf}.tsx` and the `.cv-page` document stay **light/print-faithful** (ink on white paper). `.cv-page` is a self-contained light "island": `src/styles.css` locally re-scopes `--foreground`/`--border`/`--background`/`--card` to print values and pins the Helvetica print font, so the document renders ink-on-paper regardless of the dark editor around it. Apply Warp only to editor chrome.
-- **Bundled fonts · hidden scrollbars.** Inter (UI body, weights 400/500) and Geist Mono (code chips) are bundled via `@fontsource` and `@import`ed at the top of `src/styles.css`, so the `--font-sans`/`--font-mono` stacks render their substitutes when Matter is unavailable. Editor scroll panels use the `scrollbar-hide` utility (defined in `src/styles.css`) to hide the scrollbar while keeping scroll behavior.

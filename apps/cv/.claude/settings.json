@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "bahrul": {
+    "pilihpendidikan": {
       "type": "sse",
-      "url": "https://mcp.bahrul.me/sse"
+      "url": "https://api.pilihpendidikan.com/sse"
     }
   }
 }

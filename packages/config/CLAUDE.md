@@ -1,26 +1,28 @@
-# packages/config — Shared TypeScript Base (@bahrul/config)
+# packages/config — Shared TypeScript Base (@pilihpendidikan/config)
 
 The workspace's shared config. Provides `tsconfig.base.json` and `motion.css`; no source code, no build step.
 
 ## `motion.css` — shared motion primitives
 
-Every UI app (`web`, `mcp-ui`, `cv-bahrul`, `invoice-bahrul`, `portfolio-bahrul`) imports it right after `tw-animate-css`:
+Every UI app (`apps/cv`, `apps/invoice`, `apps/portfolio`) imports it right after `tw-animate-css`:
 
 ```css
-@import "@bahrul/config/motion.css";
+@import "@pilihpendidikan/config/motion.css";
 ```
 
 It owns the motion tokens (`--motion-duration-*`, `--motion-ease`, `--motion-press-scale`, `--motion-hover-lift`, `--motion-enter-*`, `--motion-stagger`), the `ease-standard` / `press` / `card-interactive` / `motion-enter` / `motion-stagger` / `image-fade` / `route-view` utilities, the route view-transition CSS, the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. Change a value here, never per component.
 
 ## Usage
 
-Apps and packages extend it in their own `tsconfig.json`:
+The root `tsconfig.json` (for `scripts/`) extends it by package name; `packages/ui` extends it by relative path (`../config/tsconfig.base.json`):
 
 ```jsonc
-{ "extends": "@bahrul/config/tsconfig.base.json" }
+{ "extends": "@pilihpendidikan/config/tsconfig.base.json" }
 ```
 
-It's a `devDependency` across the workspace (`"@bahrul/config": "workspace:*"`). Change the shared compiler options (target, module, strictness, path base) in `tsconfig.base.json` and every consumer inherits them — verify with `turbo check-types` (or `bun run typecheck` in a consumer) afterward.
+The apps keep self-contained `tsconfig.json` files (bundler mode, DOM libs, `@/*` and `@rulisme/ui/*` paths) and only use this package for `motion.css`.
+
+It's a `devDependency` across the workspace (`"@pilihpendidikan/config": "workspace:*"`). Change the shared compiler options (target, module, strictness, path base) in `tsconfig.base.json` and every consumer inherits them — verify with `bun run check-types` from the repo root afterward.
 
 <!-- intent-skills:start -->
 ## Skill Loading

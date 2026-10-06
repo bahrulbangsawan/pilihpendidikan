@@ -1,22 +1,23 @@
-# portfolio-bahrul
+# Portfolio Builder (`apps/portfolio`)
 
 Bilingual (EN/ID) **portfolio builder** that edits up to 5 projects and renders a
 locked **Apple Developer Academy** A4-landscape portfolio, downloadable as PDF
-and JSON. TanStack Start (SSR) on Cloudflare Workers. Host: `portfolio.bahrul.me`.
+and JSON. TanStack Start (SSR) on Cloudflare Workers (Worker
+`portfolio-pilihpendidikan`). Host: <https://portfolio.pilihpendidikan.com>.
 
 ## Develop
 
 ```sh
 bun install                 # from the repo root
-bun run --cwd packages/ui build   # build the shared @rulisme/ui dist first
-bun dev                     # vite dev on http://localhost:4005  (EN: /, ID: /id)
+bun run dev:portfolio       # builds @rulisme/ui, then vite dev on http://localhost:4005  (EN: /, ID: /id)
 ```
 
 ## Verify
 
 ```sh
-bun run typecheck           # tsc --noEmit (the gate; this app is excluded from Biome)
-bun run format              # Prettier (no-semicolon style)
+bun x ultracite fix         # from the repo root: Biome format + autofix
+bun run check               # from the repo root: Biome, typography lint, parity, tests
+bun run typecheck           # in this app: wrangler types + tsc --noEmit
 ```
 
 ## What it does
@@ -31,9 +32,9 @@ bun run format              # Prettier (no-semicolon style)
   line-clamped fields), scaled to fit the pane.
 - **Export**: PDF (`@react-pdf/renderer`) or JSON. Re-import JSON round-trips.
   `?print=1` renders the chrome-free document and fires the browser print dialog
-  (powers the `/portfolio/<slug>.pdf` redirect).
-- **Cloud save**: paste a personal MCP token (from `mcp.bahrul.me`) to save a
-  loaded `?portfolio=<slug>` document; saves are Bearer-gated and
-  server-authoritative.
+  (powers the `/portfolio/<slug>.pdf` redirect on `apps/api`).
+- **Cloud save**: paste a personal MCP token (from
+  `api.pilihpendidikan.com/connect`) to save a loaded `?portfolio=<slug>`
+  document; saves are Bearer-gated and server-authoritative.
 
-See `CLAUDE.md` for structure, the toolchain caveat, and the locked-layout rules.
+See `CLAUDE.md` for structure and the locked-layout rules.

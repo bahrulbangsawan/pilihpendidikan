@@ -31,4 +31,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://invoice.bahrul.me/sitemap.xml
+Sitemap: https://invoice.pilihpendidikan.com/sitemap.xml

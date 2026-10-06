@@ -1,10 +1,10 @@
 /*
- * Shared motion primitives for every Warp UI app (apps/web · apps/mcp-ui ·
- * apps/cv-bahrul · apps/invoice-bahrul · apps/portfolio-bahrul).
+ * Shared motion primitives for every Warp UI app (apps/cv · apps/invoice ·
+ * apps/portfolio).
  *
  * Import once per app, right after `tw-animate-css`:
  *
- *   @import "@bahrul/config/motion.css";
+ *   @import "@pilihpendidikan/config/motion.css";
  *
  * One set of durations, one curve, one press scale, one entrance offset and
  * one stagger step, so no component invents its own values. Everything here

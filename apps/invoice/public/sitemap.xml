@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://invoice.bahrul.me</loc>
+    <loc>https://invoice.pilihpendidikan.com</loc>
     <lastmod>2026-06-11</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://invoice.bahrul.me" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://invoice.bahrul.me/id" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://invoice.bahrul.me" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://invoice.pilihpendidikan.com" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://invoice.pilihpendidikan.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://invoice.pilihpendidikan.com" />
   </url>
   <url>
-    <loc>https://invoice.bahrul.me/id</loc>
+    <loc>https://invoice.pilihpendidikan.com/id</loc>
     <lastmod>2026-06-11</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://invoice.bahrul.me" />
-    <xhtml:link rel="alternate" hreflang="id" href="https://invoice.bahrul.me/id" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://invoice.bahrul.me" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://invoice.pilihpendidikan.com" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://invoice.pilihpendidikan.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://invoice.pilihpendidikan.com" />
   </url>
 </urlset>

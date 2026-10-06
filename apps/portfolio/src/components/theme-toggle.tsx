@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "@/i18n";
 
 // Icon-only light/dark switch. Byte-identical to the same component in
-// apps/cv-bahrul / apps/invoice-bahrul. Defaults to the system theme
+// apps/cv / apps/invoice. Defaults to the system theme
 // (next-themes); once toggled the choice persists in localStorage. The
 // `mounted` guard avoids a hydration mismatch because the resolved theme is
 // only known on the client.

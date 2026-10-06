@@ -1,33 +1,21 @@
-<!-- OPENSPEC:START -->
+# Agent notes — apps/invoice
 
-# OpenSpec Instructions
+Read the root `AGENTS.md` and `CLAUDE.md` first, then this app's `CLAUDE.md`.
+Proposals for this app go in the root `openspec/changes/` with an `invoice-` prefix.
 
-These instructions are for AI assistants working in this project.
+## Design system — Warp ("moonlit terminal")
 
-Always open `@/openspec/AGENTS.md` when the request:
+`apps/cv`, `apps/invoice` and `apps/portfolio` share one dark, warm-neutral design system (root `DESIGN.md`, rules in `TYPOGRAPHY.md`). Rules an agent must follow:
 
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
-
-Use `@/openspec/AGENTS.md` to learn:
-
-- How to create and apply change proposals
-- Spec format and conventions
-- Project structure and guidelines
-
-Keep this managed block so 'openspec update' can refresh the instructions.
-
-<!-- OPENSPEC:END -->
-
-# Design system — Warp ("moonlit terminal")
-
-invoice-bahrul and cv-bahrul share one dark, warm-neutral terminal design system (root `DESIGN.md`). Full reference: `CLAUDE.md` § Design system. Rules an agent must follow:
-
-- **Tokens are the single source of truth.** They live in `src/styles.css` `@theme`; the block is **byte-identical** across both apps (parity-diffed). Never hardcode hex or `text-[Npx]` in components — add/extend a token.
-- **Dark by default.** `<html class="dark">` (`src/routes/__root-shell.tsx`), canvas `#121212`, text warm off-white `#faf9f6` (**never `#fff`**). Surfaces: canvas `#121212` → card `#2f2f2f` → control `#383838` → floating `#40403f` (dialogs/popovers/selects = `--popover`).
-- **Type scale.** Matter stack (`--font-sans`); mono only for code chips. Named tokens `text-display … text-caption-tracked … text-micro` pair size+leading+tracking (negative tracking at display sizes; `text-caption-tracked uppercase` = the 11px `+2.2px` eyebrow). Weights **400/500 only**; `font-bold`/`font-semibold` are forbidden in chrome.
-- **Radius / spacing.** buttons/nav `4px`, cards/icons/panels `8px`, images `20px`; buttons are **never pill-shaped** (`rounded-full` = true circles only). Spacing uses Tailwind's native 4-pt scale (DESIGN.md px values are NOT injected as `--spacing-N`).
-- **Accent discipline.** `--color-gold-leaf` / `--color-muted-cobalt` only in code/syntax + section headings — never on buttons/tags/badges. **No shadows** (the system is flat). The per-invoice `accentColor` (default `#f48120`) + swatch presets are **document content**, not chrome — leave them.
+- **Tokens are the single source of truth.** They live in `src/styles.css` `@theme inline`; the typography block is byte-identical across the three apps (`bun run parity:typography`). Never hardcode hex or `text-[Npx]` in chrome — add or extend a token in every app.
+- **Themes.** Light and dark via next-themes; dark is canonical. Canvas `#121212`, text warm off-white `#faf9f6` (never `#fff`). Surfaces: canvas `#121212` → card `#2f2f2f` → control `#383838` → floating `#40403f` (`--popover`).
+- **Type scale.** Named tokens `text-display` … `text-caption-tracked` … `text-micro` bake size, leading and tracking; `text-xs` is the chrome default. Weights **400/500 only**; `font-bold`/`font-semibold` are forbidden in chrome.
+- **Radius / spacing.** buttons/nav `4px`, cards/icons/panels `8px`, images `20px`; buttons are never pill-shaped (`rounded-full` = true circles only). Spacing uses Tailwind's native 4-pt scale.
+- **Accent discipline.** `--color-gold-leaf` / `--color-muted-cobalt` only in code/syntax and section headings — never on buttons, tags or badges. No shadows.
+- **Document accent colour.** The per-invoice `accentColor` (default `#f48120`) and its swatch presets are document content, not chrome — leave them as raw hex.
 - **Re-skin shared primitives once** in `packages/ui` (then rebuild) — never fork per app.
-- **Print-template exception:** `src/components/{invoice-preview,invoice-pdf}.tsx` and `.invoice-page` stay **light/print-faithful**. `.invoice-page` is a light island (local var re-scope + Helvetica) in `src/styles.css`. Do NOT apply the dark palette to the rendered invoice.
+- **Print-template exception:** `src/components/{invoice-preview,invoice-pdf}.tsx` and `.invoice-page` stay light and print-faithful. Do NOT apply the dark palette to the rendered invoice.
+
+## Backend
+
+Cloud save and loading go to `apps/api` through `MCP_API` (`http://localhost:8788` in dev, `https://api.pilihpendidikan.com` in prod). Never point the app back at the bahrul services; OG images are the one exception (`og.bahrul.me`, public).

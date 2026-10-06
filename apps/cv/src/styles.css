@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@bahrul/config/motion.css";
+@import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
 /* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
    (code chips). The --font-sans / --font-mono stacks fall through to these. */
@@ -23,8 +23,8 @@
 /*
  * Warp — "moonlit terminal" design system (see DESIGN.md).
  * Dark warm-neutral terminal aesthetic. Tokens below are the single source of
- * truth; this @theme block is byte-identical across apps/cv-bahrul and
- * apps/invoice-bahrul (enforced by a parity diff). Editor chrome only — the
+ * truth; this @theme block is byte-identical across apps/cv, apps/invoice
+ * and apps/portfolio (enforced by a parity diff). Editor chrome only — the
  * CV/invoice print artifacts (.cv-page / .invoice-page and templates/*-pdf,
  * *-preview) stay print-faithful (light) and are re-scoped at the bottom.
  *
@@ -255,7 +255,7 @@
   --card-foreground: #171717;
 }
 
-/* Standalone print/PDF view (cv.bahrul.me/?cv=<slug>&print=1). Centers the
+/* Standalone print/PDF view (cv.pilihpendidikan.com/?cv=<slug>&print=1). Centers the
    document on the dark editor backdrop for on-screen viewing; the @media print
    rules below strip it to the bare page. */
 .cv-print-root {

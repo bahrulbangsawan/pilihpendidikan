@@ -4,8 +4,8 @@
 
 ## Pages
 
-- [CV Builder (English)](https://cv.bahrul.me): Build, preview, and download an ATS-friendly resume as PDF with live preview and four templates (basic, Harvard, simple, standard).
-- [Pembuat CV (Bahasa Indonesia)](https://cv.bahrul.me/id): Indonesian-language version of the CV builder with the same templates, real-time preview, and PDF export.
+- [CV Builder (English)](https://cv.pilihpendidikan.com): Build, preview, and download an ATS-friendly resume as PDF with live preview and four templates (basic, Harvard, simple, standard).
+- [Pembuat CV (Bahasa Indonesia)](https://cv.pilihpendidikan.com/id): Indonesian-language version of the CV builder with the same templates, real-time preview, and PDF export.
 
 ## Key Facts
 
@@ -18,7 +18,7 @@
 
 ## Contact
 
-- Website: https://cv.bahrul.me
+- Website: https://cv.pilihpendidikan.com
 - Author: https://bahrul.me
 - LinkedIn: https://www.linkedin.com/in/bahrulbangsawan
 - GitHub: https://github.com/bahrulbangsawan

@@ -6,7 +6,7 @@ import { NotFound } from "@rulisme/ui/ui/not-found";
 // rendered by the `/$` catch-all. Home route for this app is `/` (the invoice
 // editor at `src/routes/index.tsx`).
 //
-// Logo: the app's favicon brand mark — the same red wordmark mcp-ui shows, so
+// Logo: the app's favicon brand mark — the same red wordmark on every app, so
 // all the apps' 404s stay on-brand and consistent. (`src/logo.svg` is the
 // unused React-template default, not a real brand mark — intentionally not used
 // here; swap this `src` if a dedicated logo asset lands.)

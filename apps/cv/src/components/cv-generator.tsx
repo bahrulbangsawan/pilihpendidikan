@@ -89,13 +89,14 @@ const initialData: CVData = {
   volunteer: [],
 };
 
-// In dev, target the local mcp Worker (`wrangler dev` on :8787) so end-to-end
-// CV load/save is exercised without hitting production. In prod the public API
-// host is used. `MCP_URL` is the human-facing host shown in the MCP guide.
+// In dev, target the local api Worker (`wrangler dev` on :8788, apps/api) so
+// end-to-end CV load/save is exercised without hitting production. In prod the
+// public API host is used. `MCP_URL` is the human-facing page linked from the
+// MCP guide, where users sign in and mint a personal token.
 const MCP_API = import.meta.env.DEV
-  ? "http://localhost:8787"
-  : "https://mcp.bahrul.me";
-const MCP_URL = "https://mcp.bahrul.me";
+  ? "http://localhost:8788"
+  : "https://api.pilihpendidikan.com";
+const MCP_URL = "https://api.pilihpendidikan.com/connect";
 
 const TEMPLATES: CVStyle[] = ["basic", "harvard", "simple", "standard"];
 
@@ -126,7 +127,7 @@ function TokenStatus({
   );
 }
 
-// Local draft persistence (mirrors apps/invoice-bahrul). Keeps an unsaved CV in
+// Local draft persistence (mirrors apps/invoice). Keeps an unsaved CV in
 // localStorage so a client-side remount — e.g. switching the EN↔ID locale, which
 // swaps the route — restores the in-progress document instead of losing it.
 const CV_STORAGE_KEY = "cv-data";
@@ -661,8 +662,8 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
 }
 
 // Standalone, chrome-free render of a single CV used by the public
-// `/cv/<slug>.pdf` redirect (mcp 302s here with `?print=1`). The document is
-// the SAME `<CVPreview>` component the editor shows, so the printed PDF is
+// `/cv/<slug>.pdf` redirect (apps/api 302s here with `?print=1`). The document
+// is the SAME `<CVPreview>` component the editor shows, so the printed PDF is
 // byte-faithful to the web view — there is no separate PDF renderer. Once the
 // data and web fonts are ready it auto-invokes the browser print dialog so the
 // `.pdf` URL behaves like a download.

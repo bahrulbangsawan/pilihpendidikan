@@ -109,7 +109,8 @@ export function formatCurrency(amount: number, currency: string): string {
 // Authoritative line total: own qty × unitPrice PLUS the sum of its sub-item
 // amounts. Computing from first principles (instead of trusting the stored
 // `item.amount`) keeps the rendered subtotal correct even when a write path left
-// a parent `amount` stale, and mirrors the mcp `invoiceLineTotal`. [defect-2]
+// a parent `amount` stale, and mirrors the MCP server's `invoiceLineTotal`.
+// [defect-2]
 export function lineItemTotal(item: InvoiceLineItem): number {
   const own = item.qty * item.unitPrice;
   const subTotal = item.subItems.reduce((sum, sub) => sum + sub.amount, 0);

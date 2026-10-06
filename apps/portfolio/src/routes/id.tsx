@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PortfolioGenerator } from "@/components/portfolio-generator";
 import { headForLocale } from "@/i18n";
 
-const BASE_URL = "https://portfolio.bahrul.me";
+const BASE_URL = "https://portfolio.pilihpendidikan.com";
 
 export const Route = createFileRoute("/id")({
   head: () => headForLocale("id", BASE_URL),

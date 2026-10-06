@@ -1,7 +1,7 @@
 import { cn } from "../lib/utils";
 
 // The nine cells of the Blocks spinner; animation and layout live in
-// `.spinner-blocks` (@bahrul/config/motion.css).
+// `.spinner-blocks` (@pilihpendidikan/config/motion.css).
 const CELLS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
 const SIZE_CLASS = {

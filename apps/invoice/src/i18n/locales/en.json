@@ -32,11 +32,11 @@
   },
   "mcp": {
     "title": "Connect via MCP",
-    "description": "Manage your invoices with any AI assistant. Ask it to \"create an invoice\" or \"update line items\". To save your invoices and access them from any device, generate a token at mcp.bahrul.me.",
-    "step1": "Visit mcp.bahrul.me and sign in to generate your personal MCP token — required to save your invoices to the cloud.",
-    "step2": "Follow the client-specific setup on the guides page — Claude Code, Cursor, Codex, Windsurf, Zed, and more.",
+    "description": "Manage your invoices with any AI assistant. Ask it to \"create an invoice\" or \"update line items\". To save your invoices and access them from any device, generate a token at api.pilihpendidikan.com/connect.",
+    "step1": "Visit api.pilihpendidikan.com/connect and sign in to generate your personal MCP token — required to save your invoices to the cloud.",
+    "step2": "Add the MCP server to your client — Claude Code, Cursor, Codex, Windsurf, Zed, and more.",
     "step3": "Paste your personal URL into your client and restart it.",
-    "cta": "Get my MCP token at mcp.bahrul.me",
+    "cta": "Get my MCP token at api.pilihpendidikan.com/connect",
     "privacy": "Your MCP URL is personal — keep it private."
   },
   "form": {

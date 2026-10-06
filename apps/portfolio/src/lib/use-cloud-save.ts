@@ -8,7 +8,7 @@ interface Auth {
 }
 
 interface UseCloudSaveOptions<T> {
-  /** Base origin of the mcp API (dev: localhost:8787, prod: mcp.bahrul.me). */
+  /** Origin of the api Worker (dev localhost:8788, prod api.pilihpendidikan.com). */
   apiBase: string;
   /** The document slug from `?portfolio=`; undefined when scratch-editing. */
   id: string | undefined;
@@ -31,9 +31,10 @@ interface UseCloudSaveOptions<T> {
  * it enforces ownership from the `owner:*` stamp and a non-owner gets a 403,
  * after which editing is disabled (`canEdit` → false).
  *
- * The token is the user's personal mcp token (generated at mcp.bahrul.me),
- * persisted in localStorage. Cross-subdomain cookies don't apply, so the bearer
- * header is the credential the cross-origin PUT carries.
+ * The token is the user's personal MCP token (minted at
+ * api.pilihpendidikan.com/connect), persisted in localStorage. Cross-subdomain
+ * cookies don't apply, so the bearer header is the credential the cross-origin
+ * PUT carries.
  */
 export function useCloudSave<T>({
   apiBase,

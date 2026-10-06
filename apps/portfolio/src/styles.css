@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@bahrul/config/motion.css";
+@import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
 /* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
    (code chips). The --font-sans / --font-mono stacks fall through to these. */
@@ -23,7 +23,7 @@
 /*
  * Warp — "moonlit terminal" design system (see DESIGN.md).
  * Dark warm-neutral terminal aesthetic. This @theme block mirrors
- * apps/cv-bahrul / apps/invoice-bahrul so the three apps share one design
+ * apps/cv / apps/invoice so the three apps share one design
  * system. Editor chrome only — the portfolio print artifact (.pf-deck and the
  * cover/project pages) stays print-faithful and is re-scoped at the bottom.
  *
@@ -668,7 +668,7 @@
   text-align: center;
 }
 
-/* Standalone print/PDF view (portfolio.bahrul.me/?portfolio=<slug>&print=1).
+/* Standalone print/PDF view (portfolio.pilihpendidikan.com/?portfolio=<slug>&print=1).
    Centers the natural-size deck on the dark editor backdrop for on-screen
    viewing; the @media print rules below strip it to bare A4-landscape pages. */
 .pf-print-root {

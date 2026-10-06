@@ -7,7 +7,7 @@ let entered = false;
 
 /**
  * Returns `true` when this mount is the app's first paint, i.e. the moment to
- * apply the `motion-enter` utility (`@bahrul/config/motion.css`). Later
+ * apply the `motion-enter` utility (`@pilihpendidikan/config/motion.css`). Later
  * client-side navigations (e.g. switching locale remounts the page) return
  * `false`, so the page relies on the `route-view` cross-fade alone instead of
  * playing two entrances on top of each other.

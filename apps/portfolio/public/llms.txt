@@ -4,8 +4,8 @@
 
 ## Pages
 
-- [Portfolio Builder (English)](https://portfolio.bahrul.me): Build, preview, and download an Apple Developer Academy portfolio (cover + up to five 16:9 project pages) as PDF or JSON, in a locked A4-landscape layout.
-- [Pembuat Portofolio (Bahasa Indonesia)](https://portfolio.bahrul.me/id): Indonesian-language version of the portfolio builder with the same locked layout, real-time preview, and PDF + JSON export.
+- [Portfolio Builder (English)](https://portfolio.pilihpendidikan.com): Build, preview, and download an Apple Developer Academy portfolio (cover + up to five 16:9 project pages) as PDF or JSON, in a locked A4-landscape layout.
+- [Pembuat Portofolio (Bahasa Indonesia)](https://portfolio.pilihpendidikan.com/id): Indonesian-language version of the portfolio builder with the same locked layout, real-time preview, and PDF + JSON export.
 
 ## Key Facts
 
@@ -19,7 +19,7 @@
 
 ## Contact
 
-- Website: https://portfolio.bahrul.me
+- Website: https://portfolio.pilihpendidikan.com
 - Author: https://bahrul.me
 - LinkedIn: https://www.linkedin.com/in/bahrulbangsawan
 - GitHub: https://github.com/bahrulbangsawan

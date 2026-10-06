@@ -2027,7 +2027,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
   }
 }
 
-// Matches --motion-duration-base / --motion-ease in @bahrul/config/motion.css
+// Matches --motion-duration-base / --motion-ease in @pilihpendidikan/config/motion.css
 // (dnd-kit's own default is `250ms ease`).
 const SORTABLE_TRANSITION = {
   duration: 200,

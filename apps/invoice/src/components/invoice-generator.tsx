@@ -92,12 +92,14 @@ function preloadPdfRenderer() {
 }
 
 const STORAGE_KEY = "invoice-data";
-// In dev, target the local mcp Worker (`wrangler dev` on :8787) so end-to-end
-// invoice load/save is exercised without hitting production.
+// In dev, target the local api Worker (`wrangler dev` on :8788, apps/api) so
+// end-to-end invoice load/save is exercised without hitting production. In prod
+// the public API host is used. `MCP_URL` is the human-facing page linked from
+// the MCP guide, where users sign in and mint a personal token.
 const MCP_API = import.meta.env.DEV
-  ? "http://localhost:8787"
-  : "https://mcp.bahrul.me";
-const MCP_URL = "https://mcp.bahrul.me";
+  ? "http://localhost:8788"
+  : "https://api.pilihpendidikan.com";
+const MCP_URL = "https://api.pilihpendidikan.com/connect";
 
 const initialData: InvoiceData = {
   invoiceNumber: "",
@@ -642,9 +644,9 @@ export function InvoiceGenerator() {
 }
 
 // Standalone, chrome-free render of a single invoice used by the public
-// `/invoice/<slug>.pdf` redirect (mcp 302s here with `?print=1`). The document
-// is the SAME `<InvoicePreview>` the editor shows, so the printed PDF is
-// byte-faithful to the web view. Auto-prints once data + fonts are ready.
+// `/invoice/<slug>.pdf` redirect (apps/api 302s here with `?print=1`). The
+// document is the SAME `<InvoicePreview>` the editor shows, so the printed PDF
+// is byte-faithful to the web view. Auto-prints once data + fonts are ready.
 function InvoicePrintView({
   data,
   loading,

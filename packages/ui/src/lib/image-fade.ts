@@ -2,7 +2,7 @@ import type { RefCallback } from "react";
 
 /**
  * Ref callback that fades an `<img>` in once it has loaded. Pair it with the
- * `image-fade` utility from `@bahrul/config/motion.css`:
+ * `image-fade` utility from `@pilihpendidikan/config/motion.css`:
  *
  *   <img className="image-fade" decoding="async" ref={fadeInOnLoad} … />
  *

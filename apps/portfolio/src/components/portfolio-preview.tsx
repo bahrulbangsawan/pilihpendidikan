@@ -396,7 +396,9 @@ export function PortfolioPreview({ data, fit = true }: PortfolioPreviewProps) {
   if (!hasContent) {
     return (
       <div className="pf-empty">
-        <p className="text-muted-foreground text-sm">{t("preview.empty")}</p>
+        <p className="text-body-sm text-muted-foreground">
+          {t("preview.empty")}
+        </p>
       </div>
     );
   }

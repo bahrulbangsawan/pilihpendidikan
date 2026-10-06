@@ -4,8 +4,8 @@
 
 ## Pages
 
-- [Invoice Generator (English)](https://invoice.bahrul.me): Create, preview, and download professional invoices as PDF with live preview, multi-currency support, Indonesian region (wilayah) address data, and an AI assistant.
-- [Generator Faktur (Bahasa Indonesia)](https://invoice.bahrul.me/id): Indonesian-language version of the invoice generator with the same live preview, currency support, and PDF export.
+- [Invoice Generator (English)](https://invoice.pilihpendidikan.com): Create, preview, and download professional invoices as PDF with live preview, multi-currency support, Indonesian region (wilayah) address data, and an AI assistant.
+- [Generator Faktur (Bahasa Indonesia)](https://invoice.pilihpendidikan.com/id): Indonesian-language version of the invoice generator with the same live preview, currency support, and PDF export.
 
 ## Key Facts
 
@@ -19,7 +19,7 @@
 
 ## Contact
 
-- Website: https://invoice.bahrul.me
+- Website: https://invoice.pilihpendidikan.com
 - Author: https://bahrul.me
 - LinkedIn: https://www.linkedin.com/in/bahrulbangsawan
 - GitHub: https://github.com/bahrulbangsawan

@@ -9,7 +9,7 @@ export const jsonLd = {
   name: "Bahrul Bangsawan — Portfolio Builder",
   description:
     "Create, preview, and download a locked Apple Developer Academy portfolio as PDF. Bilingual portfolio builder with a fixed A4-landscape layout and real-time preview.",
-  url: "https://portfolio.bahrul.me",
+  url: "https://portfolio.pilihpendidikan.com",
   applicationCategory: "BusinessApplication",
   operatingSystem: "All",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
