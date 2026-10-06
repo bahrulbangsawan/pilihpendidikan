@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Pilih Pendidikan — CV, invoice and portfolio builders",
+    "description": "Document builders for students and job seekers: write a CV, an invoice or an Apple Developer Academy portfolio in your browser with a live preview, then download it as a PDF.",
+    "ogDescription": "Browser-based CV, invoice and portfolio builders with a live preview and PDF export.",
+    "siteName": "Pilih Pendidikan",
+    "ogImageAlt": "Pilih Pendidikan — CV, invoice and portfolio builders"
+  },
+  "nav": {
+    "switchLanguage": "Bahasa Indonesia"
+  },
+  "hero": {
+    "title": "Pilih Pendidikan",
+    "intro": "Pilih Pendidikan is a set of document builders for students and job seekers, in English and Bahasa Indonesia. Each one runs in your browser, shows a live preview and exports a print-ready PDF.",
+    "rollout": "The builders are launching one at a time. Each one gets a link here once it is live."
+  },
+  "tools": {
+    "heading": "Builders"
+  },
+  "services": {
+    "cv": {
+      "name": "CV builder",
+      "description": "Write a CV in one of four templates and download it as a PDF."
+    },
+    "invoice": {
+      "name": "Invoice builder",
+      "description": "Create invoices with Indonesian region addresses and download them as PDFs."
+    },
+    "portfolio": {
+      "name": "Portfolio builder",
+      "description": "Build an Apple Developer Academy portfolio in a fixed A4-landscape layout and export it as a PDF."
+    },
+    "mcp": {
+      "heading": "AI assistants",
+      "name": "Use it from an AI assistant (MCP)",
+      "description": "An AI assistant that supports MCP can read and edit your CVs, invoices and portfolios for you.",
+      "endpointLabel": "MCP endpoint",
+      "connect": "Get a personal token"
+    }
+  },
+  "status": {
+    "soon": "Coming soon",
+    "live": "Live",
+    "open": "Open"
+  },
+  "footer": {
+    "builtBy": "Built by"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "home": "Back to home"
+  }
+}

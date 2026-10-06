@@ -1,9 +1,11 @@
 # pilihpendidikan
 
-Document builders that run in the browser and export print-ready PDFs:
+Document builders that run in the browser and export print-ready PDFs, plus
+the hub page at the apex domain:
 
 | App | What it builds | Dev | Production |
 | --- | -------------- | --- | ---------- |
+| `apps/home` | Hub landing page: lists the builders, linking each one only once it is live | <http://localhost:4002> | <https://pilihpendidikan.com> (`www.` 301s here) |
 | `apps/cv` | CVs, four templates (basic, harvard, simple, standard) | <http://localhost:4003> | <https://cv.pilihpendidikan.com> |
 | `apps/invoice` | Invoices with Indonesian region (wilayah) addresses | <http://localhost:4004> | <https://invoice.pilihpendidikan.com> |
 | `apps/portfolio` | Apple Developer Academy portfolios, A4 landscape | <http://localhost:4005> | <https://portfolio.pilihpendidikan.com> |
@@ -25,7 +27,7 @@ documents through the MCP server at `https://api.pilihpendidikan.com/mcp`
 ```sh
 bun install
 bun dev            # builds @rulisme/ui, then runs every app and the api Worker
-bun run dev:cv     # or one app: dev:cv, dev:invoice, dev:portfolio, dev:api
+bun run dev:cv     # or one app: dev:home, dev:cv, dev:invoice, dev:portfolio, dev:api
 ```
 
 ### Running the API locally
@@ -59,6 +61,7 @@ bun run build         # packages/ui, then each app (wrangler types + vite build)
 ## Layout
 
 ```
+apps/home                               hub landing page (pilihpendidikan.com)
 apps/cv  apps/invoice  apps/portfolio   TanStack Start apps on Cloudflare Workers
 apps/api                                backend Worker (api.pilihpendidikan.com)
 packages/ui                             @rulisme/ui component library
@@ -71,8 +74,9 @@ portfolio-mock/                         the static mock the portfolio app was bu
 
 ## Deploy
 
-The first deploy needs Cloudflare resources created and data migrated, in a
-fixed order: see [`DEPLOY.md`](DEPLOY.md). After that:
+The hub (`apps/home`) has no backend dependency and can deploy on its own.
+The builders' first deploy needs Cloudflare resources created and data
+migrated, in a fixed order: see [`DEPLOY.md`](DEPLOY.md). After that:
 
 ```sh
 bun run build
@@ -80,9 +84,13 @@ cd apps/api && bun run deploy  # the backend first
 cd apps/cv && bun run deploy   # then apps/invoice, apps/portfolio
 ```
 
-Each `wrangler.jsonc` binds its Worker (`api-pilihpendidikan`,
-`cv-pilihpendidikan`, `invoice-pilihpendidikan`, `portfolio-pilihpendidikan`)
-to its custom domain.
+Each `wrangler.jsonc` binds its Worker (`home-pilihpendidikan`,
+`api-pilihpendidikan`, `cv-pilihpendidikan`, `invoice-pilihpendidikan`,
+`portfolio-pilihpendidikan`) to its custom domain.
+
+The hub links a builder only when its entry in
+`apps/home/src/config/services.ts` is `"live"`. When a subdomain goes live,
+follow the **Going live** checklist in `DEPLOY.md`.
 
 ## History
 

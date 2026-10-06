@@ -598,6 +598,18 @@
           }
         }
       }
+    },
+    {
+      // TanStack escapes a literal dot in a route path as "[.]": this file
+      // serves /llms.txt, so its basename cannot be kebab-case.
+      "includes": ["apps/home/src/routes/llms\\[.\\]txt.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
     }
   ]
 }

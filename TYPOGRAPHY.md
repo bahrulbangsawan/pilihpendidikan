@@ -6,7 +6,7 @@ the workspace's UI apps. The typographic **scale** itself is defined by the Warp
 `DESIGN.md` conflict, `DESIGN.md` wins for visual values and this document wins
 for the utility / lint rules.
 
-All three apps — **`apps/cv`, `apps/invoice` and `apps/portfolio`** — share
+All four apps — **`apps/cv`, `apps/invoice`, `apps/portfolio` and `apps/home`** — share
 **one** typography scale (the Warp scale) and one `cn()` helper from
 `@rulisme/ui` (`packages/ui`).
 
@@ -19,10 +19,11 @@ The Warp `@theme inline { … }` typography tokens are **byte-identical** across
 | `apps/cv` | `src/styles.css` | Canonical reference |
 | `apps/invoice` | `src/styles.css` | Must match `apps/cv` |
 | `apps/portfolio` | `src/styles.css` | Must match `apps/cv` |
+| `apps/home` | `src/styles.css` | Must match `apps/cv` |
 
 `scripts/check-typography-parity.ts` (`bun run parity:typography`) diffs the
 typography tokens (font sizes, line heights, tracking, leading, font families,
-font weights) of all three and fails on any drift.
+font weights) of all four and fails on any drift.
 
 ## Token Inventory — the Warp scale
 
@@ -83,7 +84,7 @@ When replacing generic Tailwind utilities with Warp tokens:
 ## Forbidden Patterns
 
 `scripts/lint-typography.sh` (`bun run lint:typography`) checks each pattern in
-`apps/cv/src`, `apps/invoice/src`, `apps/portfolio/src` and `packages/ui/src`
+`apps/home/src`, `apps/cv/src`, `apps/invoice/src`, `apps/portfolio/src` and `packages/ui/src`
 and fails CI on a match. Inline font properties are checked as TypeScript/JSX
 syntax by `scripts/check-inline-typography.ts`, including quoted keys and
 render-prop objects.
@@ -151,10 +152,10 @@ that file instead.
 ## Verification Commands
 
 ```sh
-# Forbidden-pattern lint (cv + invoice + portfolio + packages/ui)
+# Forbidden-pattern lint (home + cv + invoice + portfolio + packages/ui)
 bun run lint:typography
 
-# Parity — typography tokens byte-identical across cv / invoice / portfolio
+# Parity — typography tokens byte-identical across cv / invoice / portfolio / home
 bun run parity:typography
 
 # tailwind-merge config parity (cn() registers the 9 font-size tokens)

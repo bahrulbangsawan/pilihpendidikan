@@ -1,0 +1,10 @@
+# Static assets skip the Worker, so they get the security headers here.
+# Keep in sync with SECURITY_HEADERS in src/lib/edge-policy.ts
+# (src/lib/edge-policy.test.ts checks it).
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'none'; object-src 'none'; form-action 'none'
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000

@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Pilih Pendidikan — Pembuat CV, invoice, dan portofolio",
+    "description": "Pembuat dokumen untuk pelajar dan pencari kerja: tulis CV, invoice, atau portofolio Apple Developer Academy di browser dengan pratinjau langsung, lalu unduh sebagai PDF.",
+    "ogDescription": "Pembuat CV, invoice, dan portofolio berbasis browser dengan pratinjau langsung dan ekspor PDF.",
+    "siteName": "Pilih Pendidikan",
+    "ogImageAlt": "Pilih Pendidikan — Pembuat CV, invoice, dan portofolio"
+  },
+  "nav": {
+    "switchLanguage": "English"
+  },
+  "hero": {
+    "title": "Pilih Pendidikan",
+    "intro": "Pilih Pendidikan adalah kumpulan pembuat dokumen untuk pelajar dan pencari kerja, dalam bahasa Inggris dan Bahasa Indonesia. Semuanya berjalan di browser, menampilkan pratinjau langsung, dan menghasilkan PDF siap cetak.",
+    "rollout": "Alat-alat ini diluncurkan satu per satu. Tautannya muncul di sini begitu alatnya aktif."
+  },
+  "tools": {
+    "heading": "Pembuat dokumen"
+  },
+  "services": {
+    "cv": {
+      "name": "Pembuat CV",
+      "description": "Tulis CV dengan salah satu dari empat template, lalu unduh sebagai PDF."
+    },
+    "invoice": {
+      "name": "Pembuat invoice",
+      "description": "Buat invoice dengan alamat wilayah Indonesia, lalu unduh sebagai PDF."
+    },
+    "portfolio": {
+      "name": "Pembuat portofolio",
+      "description": "Susun portofolio Apple Developer Academy dalam tata letak A4 lanskap yang tetap, lalu ekspor sebagai PDF."
+    },
+    "mcp": {
+      "heading": "Asisten AI",
+      "name": "Pakai lewat asisten AI (MCP)",
+      "description": "Asisten AI yang mendukung MCP bisa membaca dan mengedit CV, invoice, dan portofolio Anda.",
+      "endpointLabel": "Endpoint MCP",
+      "connect": "Dapatkan token pribadi"
+    }
+  },
+  "status": {
+    "soon": "Segera hadir",
+    "live": "Aktif",
+    "open": "Buka"
+  },
+  "footer": {
+    "builtBy": "Dibuat oleh"
+  },
+  "notFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang Anda cari tidak ada atau mungkin sudah dipindahkan.",
+    "home": "Kembali ke beranda"
+  }
+}

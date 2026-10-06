@@ -21,7 +21,8 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 Document builders for students and job seekers: a CV builder, an invoice
 builder and an Apple Developer Academy portfolio builder, each a TanStack Start
-app on Cloudflare Workers, plus the backend Worker they save to.
+app on Cloudflare Workers, plus the backend Worker they save to and a hub
+landing page at the apex domain.
 
 The apps were extracted from the `bahrul` monorepo with their git history.
 This repo is self-contained: it installs, checks and builds on its own.
@@ -29,11 +30,12 @@ This repo is self-contained: it installs, checks and builds on its own.
 ## Architecture
 
 - Bun workspace with Turborepo orchestration (`apps/*`, `packages/*`)
+- `apps/home` — hub landing page (TanStack Start SSR, dev port `4002`) → `pilihpendidikan.com`, with `www.` 301ing to the apex (Worker `home-pilihpendidikan`). One page in English (`/`) and Indonesian (`/id`). It links a builder or the MCP endpoint only when that service's entry in `src/config/services.ts` is `"live"`; `src/server.ts` does the www redirect and security headers; `/llms.txt` is generated from the same config
 - `apps/cv` — CV builder (TanStack Start SSR, dev port `4003`) → `cv.pilihpendidikan.com` (Worker `cv-pilihpendidikan`)
 - `apps/invoice` — invoice builder with Indonesian region data (dev port `4004`) → `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`)
 - `apps/portfolio` — Apple Developer Academy portfolio builder, A4 landscape (dev port `4005`) → `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`)
 - `apps/api` — backend Worker at `api.pilihpendidikan.com` (dev `wrangler dev` on `localhost:8788`): cloud save and public reads for cv/invoice/portfolio/jobs, email-link sign-in, personal tokens (`/connect`), PDF print redirects and the MCP server (`/mcp`, `/sse`). Hand-written router, D1 `pilihpendidikan` + KV (`AUTH_KV`, `CV_KV`, rebound `INVOICE_KV` / `PORTFOLIO_KV` / `JOBS_KV`, `RATE_LIMIT_KV`), Durable Object `PilihMcpServer`, tests with `bun test`. See `apps/api/CLAUDE.md`
-- `packages/ui` — `@rulisme/ui`, the shared React 19 component library (built to `dist/`, consumed by all three apps)
+- `packages/ui` — `@rulisme/ui`, the shared React 19 component library (built to `dist/`, consumed by every app)
 - `packages/config` — `@pilihpendidikan/config`: shared `tsconfig.base.json` and `motion.css`
 - `openspec/` — spec-driven change management (see `openspec/AGENTS.md`)
 
@@ -58,15 +60,15 @@ The apps talk to the backend through one constant per app (`MCP_API` in
 ## Commands
 
 - `bun install` — install the workspace
-- `bun dev` — Turborepo fan-out (`@rulisme/ui` watch build + the three apps + the api Worker on `:8788`)
-- `bun run dev:cv` / `dev:invoice` / `dev:portfolio` — one app plus the `@rulisme/ui` watch build it depends on
+- `bun dev` — Turborepo fan-out (`@rulisme/ui` watch build + the hub, the three builders + the api Worker on `:8788`)
+- `bun run dev:home` / `dev:cv` / `dev:invoice` / `dev:portfolio` — one app plus the `@rulisme/ui` watch build it depends on
 - `bun run dev:api` — only the api Worker (`wrangler dev` on `:8788`; run `bun run db:migrate:local` in `apps/api` once first)
 - `bun run build` — build `packages/ui`, then every app (`wrangler types` + `vite build`)
 - `bun run check` — full chain: `biome check` → `turbo lint` → `lint:typography` → `parity:typography` → `parity:twmerge` → `test` → `audit`
 - `bun x ultracite fix` (or `bun run fix`) — format and autofix
 - `bun run check-types` — `tsc` for `scripts/` plus `turbo typecheck`
 - `bun run lint:typography` — typography rule enforcement (see `TYPOGRAPHY.md`)
-- `bun run parity:typography` — the Warp `@theme inline` typography tokens stay byte-identical across `apps/cv` (canonical), `apps/invoice` and `apps/portfolio`
+- `bun run parity:typography` — the Warp `@theme inline` typography tokens stay byte-identical across `apps/cv` (canonical), `apps/invoice`, `apps/portfolio` and `apps/home`
 - `bun run parity:twmerge` — the `cn()` the apps use (`packages/ui/src/lib/utils.ts`) registers every Warp font-size token (twMerge silently strips unregistered `text-*` sizes)
 
 Run `bun x ultracite fix && bun run check` before committing.
@@ -75,10 +77,15 @@ Run `bun x ultracite fix && bun run check` before committing.
 
 Each app deploys with `bun run deploy` (`wrangler deploy`) from its directory
 after `bun run build`. Every `wrangler.jsonc` binds its Worker to a custom
-domain (`routes: [{ pattern: "<app>.pilihpendidikan.com", custom_domain: true }]`).
+domain (`routes: [{ pattern: "<app>.pilihpendidikan.com", custom_domain: true }]`);
+`apps/home` binds both `pilihpendidikan.com` and `www.pilihpendidikan.com`.
 The first deploy follows `DEPLOY.md`: create the D1/KV/Email resources, fill
 the `REPLACE_WITH_…` ids in `apps/api/wrangler.jsonc`, migrate data (dry run,
-then `--execute`), deploy `apps/api`, then the three apps.
+then `--execute`), deploy `apps/api`, then the three apps. The hub
+(`apps/home`) needs none of that and can deploy first. Each builder goes live
+on the hub through the **Going live** checklist in `DEPLOY.md` (deploy →
+smoke-test → flip its status in `apps/home/src/config/services.ts` → redeploy
+the hub).
 Deploys, DNS, Cloudflare resources and data migrations need the owner's go-ahead.
 
 ## Conventions
@@ -93,7 +100,7 @@ Deploys, DNS, Cloudflare resources and data migrations need the owner's go-ahead
 
 ## Design system
 
-All three apps use the dark **Warp** ("moonlit terminal") design system
+All four apps use the dark **Warp** ("moonlit terminal") design system
 (`DESIGN.md`). Typography rules live in `TYPOGRAPHY.md`, which CI enforces.
 
 - Named size tokens bake line-height and tracking: `text-display`, `text-heading-lg`, `text-heading`, `text-heading-sm`, `text-subheading`, `text-body`, `text-body-sm`, `text-caption-tracked`, `text-micro`. `text-xs` is the compact-chrome default.

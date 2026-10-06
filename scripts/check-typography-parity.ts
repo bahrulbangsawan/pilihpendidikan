@@ -3,9 +3,9 @@
  * Typography parity check — Warp design-system family.
  *
  * Verifies the typography portion of the `@theme inline { … }` block is
- * byte-identical across the three apps that share the Warp "moonlit terminal"
- * design system: apps/cv (canonical source of truth), apps/invoice and
- * apps/portfolio. The check covers font-size + line-height tokens, tracking
+ * byte-identical across the apps that share the Warp "moonlit terminal"
+ * design system: apps/cv (canonical source of truth), apps/invoice,
+ * apps/portfolio and apps/home. The check covers font-size + line-height tokens, tracking
  * tokens, standalone leading tokens, font-family tokens, and font-weight
  * tokens. Exits 1 on drift. See DESIGN.md / TYPOGRAPHY.md.
  */
@@ -27,6 +27,7 @@ const SOURCES: Source[] = [
     app: "apps/portfolio",
     path: resolve(ROOT, "apps/portfolio/src/styles.css"),
   },
+  { app: "apps/home", path: resolve(ROOT, "apps/home/src/styles.css") },
 ];
 
 const TYPOGRAPHY_TOKEN_PREFIXES = [

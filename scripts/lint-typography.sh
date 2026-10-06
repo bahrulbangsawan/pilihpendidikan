@@ -11,7 +11,7 @@ else
 fi
 cd "$ROOT" || exit 2
 
-SCOPE=(apps/cv/src apps/invoice/src apps/portfolio/src packages/ui/src)
+SCOPE=(apps/home/src apps/cv/src apps/invoice/src apps/portfolio/src packages/ui/src)
 # Print artifacts are exempt (TYPOGRAPHY.md § Exceptions): the rendered CV,
 # invoice and portfolio documents are ink-on-paper "light islands" whose type
 # mirrors the @react-pdf output (Helvetica, print sizes and bold weights), not

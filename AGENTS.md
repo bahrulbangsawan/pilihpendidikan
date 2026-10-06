@@ -30,6 +30,8 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 | Path | Purpose |
 |------|---------|
+| `apps/home/src/config/services.ts` | Hub service status (`soon` / `live`): the only switch for what pilihpendidikan.com links to |
+| `apps/home/src/lib/edge-policy.ts` | Hub www → apex redirect and security headers (mirrored in `apps/home/public/_headers`) |
 | `apps/cv/src/components/cv-generator.tsx` | CV editor shell, toolbar, MCP dialog, `MCP_API` |
 | `apps/cv/src/components/templates/` | CV templates (`*-preview.tsx` + `*-pdf.tsx` pairs) |
 | `apps/invoice/src/components/invoice-generator.tsx` | Invoice editor shell, `MCP_API` |

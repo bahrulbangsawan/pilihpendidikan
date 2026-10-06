@@ -2,8 +2,8 @@
 /**
  * tailwind-merge typography-config parity check.
  *
- * The apps don't ship their own `cn()`: apps/cv, apps/invoice and
- * apps/portfolio all import it from `@rulisme/ui/lib/utils`
+ * The apps don't ship their own `cn()`: apps/cv, apps/invoice, apps/portfolio
+ * and apps/home all import it from `@rulisme/ui/lib/utils`
  * (`packages/ui/src/lib/utils.ts`), which extends `tailwind-merge` so it knows
  * the custom Warp typography utilities live in the `font-size` group. If a new
  * `--text-*` size is added to an app's `@theme inline` but not registered in
@@ -33,7 +33,7 @@ const ROOT = resolve(import.meta.dirname, "..");
 // its own `src/lib/utils.ts` is checked against that file instead.
 const SHARED_UTILS = resolve(ROOT, "packages/ui/src/lib/utils.ts");
 
-const APPS: App[] = ["cv", "invoice", "portfolio"].map((app) => {
+const APPS: App[] = ["cv", "invoice", "portfolio", "home"].map((app) => {
   const localUtils = resolve(ROOT, `apps/${app}/src/lib/utils.ts`);
   return {
     name: `apps/${app}`,

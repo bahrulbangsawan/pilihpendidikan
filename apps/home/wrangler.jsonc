@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "home-pilihpendidikan",
+  "compatibility_date": "2026-03-24",
+  "compatibility_flags": ["nodejs_compat"],
+  // src/server.ts wraps the TanStack Start handler: www → apex 301 and the
+  // security headers (see openspec change home-add-hub-landing-page, D3/D4).
+  "main": "src/server.ts",
+  "routes": [
+    { "pattern": "pilihpendidikan.com", "custom_domain": true },
+    { "pattern": "www.pilihpendidikan.com", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

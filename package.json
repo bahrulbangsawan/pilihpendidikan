@@ -17,6 +17,7 @@
     "build": "turbo build",
     "check-types": "tsc --noEmit && turbo typecheck",
     "test": "turbo test",
+    "dev:home": "turbo dev -F home...",
     "dev:cv": "turbo dev -F cv...",
     "dev:invoice": "turbo dev -F invoice...",
     "dev:portfolio": "turbo dev -F portfolio...",

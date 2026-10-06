@@ -28,6 +28,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 
 | Path | Description | Dev port | Production |
 |---|---|---|---|
+| `apps/home` | Hub landing page; links each builder only once it is live | `4002` | `pilihpendidikan.com` + `www.` 301 (Worker `home-pilihpendidikan`) |
 | `apps/cv` | CV builder (four templates, PDF + JSON export) | `4003` | `cv.pilihpendidikan.com` (Worker `cv-pilihpendidikan`) |
 | `apps/invoice` | Invoice builder with Indonesian region data | `4004` | `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`) |
 | `apps/portfolio` | Apple Developer Academy portfolio builder (A4 landscape) | `4005` | `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`) |
@@ -44,7 +45,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 - Named exports, PascalCase function components, no default-exported components
 - React 19 ref-as-prop (no `forwardRef`); `data-slot` on primitives
 - No barrel files; `@/*` alias per app; shared UI via `@rulisme/ui/<dir>/<file>`
-- Typography follows `TYPOGRAPHY.md`; tokens are parity-checked across the three apps
+- Typography follows `TYPOGRAPHY.md`; tokens are parity-checked across the four apps
 
 ### Architecture Patterns
 

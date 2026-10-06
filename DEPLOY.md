@@ -7,7 +7,49 @@ deploys needs the owner's go-ahead; nothing here has been run yet.
 
 Order in one line: **resources → ids into config → D1 schema → deploy api →
 copy data (dry run, then execute) → deploy the three apps → retire the old
-backend.**
+backend.** After each deploy, the hub picks the service up through
+[Going live](#going-live-flip-a-service-on-the-hub).
+
+## Hub: pilihpendidikan.com (apps/home)
+
+The hub has no bindings, data or secrets and does not depend on the api, so
+it can (and should) deploy before everything else: the bahrul.me admin
+already links to `https://pilihpendidikan.com`. It ships with every service
+`"soon"` and links none of them.
+
+```sh
+bun install && bun run check && bun run build
+cd apps/home
+bunx wrangler deploy --dry-run   # config + bundle check, uploads nothing
+bun run deploy                   # needs the owner's go-ahead
+```
+
+What the deploy creates:
+
+- Worker `home-pilihpendidikan`
+- Custom domain `pilihpendidikan.com` and custom domain
+  `www.pilihpendidikan.com`, each with its proxied DNS record and edge
+  certificate (created by wrangler from `routes`; the zone must have no
+  existing records on those two names)
+
+Zone setting (dashboard → SSL/TLS → Edge Certificates, not in this repo):
+**Always Use HTTPS = on**, so every `http://` request on the zone, including
+the future `cv.`, `invoice.`, `portfolio.` and `api.` hosts, 301s to `https://`.
+Turned on 2026-10-06 after the first hub deploy.
+
+Smoke-check:
+
+```sh
+curl -sI http://pilihpendidikan.com           # 301 → https://pilihpendidikan.com/
+curl -sI https://pilihpendidikan.com          # 200, security headers, Cache-Control: public, max-age=300
+curl -sI https://www.pilihpendidikan.com/id   # 301 → https://pilihpendidikan.com/id
+curl -s https://pilihpendidikan.com/llms.txt  # names no subdomain while everything is "soon"
+curl -s https://pilihpendidikan.com/robots.txt https://pilihpendidikan.com/sitemap.xml
+```
+
+Rollback: `bunx wrangler rollback` in `apps/home`. To take the apex offline
+again, remove the two custom domains (Workers & Pages → `home-pilihpendidikan`
+→ Settings → Domains & Routes).
 
 ## 0. Before you start
 
@@ -141,6 +183,9 @@ The apps already call `https://api.pilihpendidikan.com` and link to
 `/connect`. Check a CV `?cv=<id>` load, a token save, and a
 `https://api.pilihpendidikan.com/cv/<id>.pdf` redirect.
 
+Then put each app on the hub through [Going live](#going-live-flip-a-service-on-the-hub),
+one at a time.
+
 ## 7. Retire the old backend (bahrul repo)
 
 Done from the `bahrul` repo, after steps 1–6:
@@ -152,6 +197,33 @@ Done from the `bahrul` repo, after steps 1–6:
 4. Optionally, once verified, delete the copied `cv:*` / `owner:cv:*` keys
    from the old auth namespace (manual; no script here deletes data) and
    retire the old `cv-bahrul`, `invoice-bahrul` and `portfolio-bahrul` Workers.
+
+## Going live: flip a service on the hub
+
+The hub links a service only when its entry in
+`apps/home/src/config/services.ts` is `"live"`. Never flip one ahead of its
+deploy: a `"live"` entry is a public link. For each of `cv`, `invoice`,
+`portfolio` and `api`, in that service's own order above:
+
+1. **Deploy the subdomain** (step 4 for `api`, step 6 for the apps).
+2. **Smoke-test it on its real URL:**
+   - `cv` / `invoice` / `portfolio`: `curl -sI https://<app>.pilihpendidikan.com`
+     and `.../id` return 200; open it in a browser, fill a field, download a
+     PDF.
+   - `api`: the step 4 checks (`/health`, `/api/whoami`, a `/connect`
+     sign-in that delivers its email). Flipping `api` publishes the MCP
+     endpoint and the `/connect` link on the hub.
+3. **Flip its hub status:** change its one line in
+   `apps/home/src/config/services.ts` from `status: "soon"` to
+   `status: "live"`, then `bun run test` in `apps/home` (the link-guard tests
+   cover every status).
+4. **Redeploy the hub:** `bun run build && cd apps/home && bun run deploy`
+   (owner's go-ahead), then check
+   `curl -s https://pilihpendidikan.com | grep <app>.pilihpendidikan.com` and
+   `curl -s https://pilihpendidikan.com/llms.txt`. HTML is cached for up to
+   five minutes (`max-age=300`).
+
+To take a service off the hub, set it back to `"soon"` and redeploy the hub.
 
 ## Rollback
 

@@ -81,6 +81,7 @@ const scopes = process.argv.slice(2);
 for (const scope of scopes.length
   ? scopes
   : [
+      "apps/home/src",
       "apps/cv/src",
       "apps/invoice/src",
       "apps/portfolio/src",
