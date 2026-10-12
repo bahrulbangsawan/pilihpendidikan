@@ -30,7 +30,9 @@ bun run typecheck           # in this app: wrangler types + tsc --noEmit
 - **Preview** (right): a fixed-footprint A4-landscape document — a dark cover
   plus one page per project (fixed 16:9 image slot, bounded bullet list,
   line-clamped fields), scaled to fit the pane.
-- **Export**: PDF (`@react-pdf/renderer`) or JSON. Re-import JSON round-trips.
+- **Export**: PDF (`@react-pdf/renderer`; the toolbar's **Download PDF** button
+  or the `D` key) or JSON (the format menu beside it). Re-import JSON
+  round-trips.
   `?print=1` renders the chrome-free document and fires the browser print dialog
   (powers the `/portfolio/<slug>.pdf` redirect on `apps/api`).
 - **Cloud save**: paste a personal MCP token (from

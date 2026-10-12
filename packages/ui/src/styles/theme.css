@@ -1,0 +1,573 @@
+/*
+ * Zedative — the pilihpendidikan design system (DESIGN.md).
+ *
+ * Warm off-white graph paper ruled into hairline rails with diamond nodes,
+ * one family (Inter Variable) set in six roles, and a single cobalt accent.
+ * This file is the only place tokens are defined. Every app imports it once,
+ * after `tailwindcss`, `motion.css` and `shadcn.css`:
+ *
+ *   @import "@rulisme/ui/styles/theme.css";
+ *
+ * Light is canonical (DESIGN.md: "Scheme: light"). `.dark` is the "Night
+ * Desk" scheme, derived from the brand's dark surface (`shot`, #2f343e):
+ * the DESIGN.md names the scheme but gives no values. next-themes toggles
+ * `.dark` on <html>; `className="dark"` on any element re-themes its subtree.
+ *
+ * Naming: Zedative calls the cobalt "accent", shadcn calls its hover wash
+ * "accent". Here the cobalt is `--primary`, and `--accent` stays the shadcn
+ * hover wash (Zedative `pane`).
+ */
+
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/inter/opsz-italic.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* One family (DESIGN.md Typography): every font token resolves to Inter
+     Variable 4.0 with its `opsz` axis. There is no second face. */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* shadcn semantic roles → the :root / .dark values below. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Zedative roles with no shadcn slot. */
+  --color-ink: var(--ink); /* body copy — never pure black */
+  --color-offgray: var(--offgray); /* decoration only: grid, lips, kbd edges */
+  --color-primary-deep: var(--primary-deep); /* the lip under the blue button */
+  --color-line: var(--line); /* rails, column rules, dividers, nodes */
+  --color-pane: var(--pane); /* editor chrome, agent thread */
+  --color-pane-2: var(--pane-2); /* title bars, the active sidebar row */
+  --color-shot: var(--shot); /* dark screenshot placeholders, app icon */
+  --color-tooltip: var(--tooltip);
+  --color-tooltip-foreground: var(--tooltip-foreground);
+  --color-wash: var(--wash); /* accent 7%: news bar, selected tint */
+  --color-highlight: var(--highlight); /* accent 15%: marked phrases */
+  --color-syn-1: var(--syn-1); /* syntax: types — editor mock only */
+  --color-syn-2: var(--syn-2); /* syntax: strings */
+  --color-syn-3: var(--syn-3); /* syntax: numbers / errors */
+  --color-syn-4: var(--syn-4); /* syntax: keywords */
+
+  /* Radius (DESIGN.md Shapes): 2px chips (kbd, tiles, avatars, badges),
+     4px buttons, nav links and fields, 6px windows (dialogs, menus, the
+     editor window). Cards, sections and bands are square: `rounded-none`.
+     Steps above `lg` are capped at the window radius. */
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --radius-2xl: 6px;
+  --radius-3xl: 6px;
+  --radius-4xl: 6px;
+
+  /* Elevation (DESIGN.md Elevation & Depth). Flat drafting paper: hairlines
+     do the work. Pressables carry an inset bottom lip that disappears on
+     hover; floating windows get the one soft two-layer drop; highlighted
+     cards get a flat cobalt offset. Ordinary cards get nothing. */
+  --inset-shadow-lip: var(--lip);
+  --inset-shadow-lip-primary: var(--lip-primary);
+  --shadow-primary: var(--primary-glint);
+  --shadow-float: var(--float);
+  --shadow-offset: var(--offset);
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: var(--float);
+  --shadow-lg: var(--float);
+  --shadow-xl: var(--float);
+  --shadow-2xl: var(--float);
+}
+
+@theme {
+  /* The ruled column (DESIGN.md Layout): `max-w-rail`. */
+  --container-rail: 1120px;
+}
+
+/* ── Light (canonical) ─────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  --background: #f4f4f2; /* bg — warm paper, the page and every band */
+  --foreground: #000000; /* fg — headings, button labels, nav, controls */
+  --card: #fafafa; /* bg-2 — cards, code pane, letter sheet, nodes */
+  --card-foreground: #000000;
+  --popover: #fafafa;
+  --popover-foreground: #000000;
+  --primary: #1348dc; /* accent — the only saturated colour */
+  --primary-foreground: #ffffff; /* accent-fg */
+  --secondary: #fafafa; /* paper under secondary buttons (used at 60%) */
+  --secondary-foreground: #000000;
+  --muted: #ebebec; /* pane */
+  --muted-foreground: #5a6170; /* fg-muted: ≥4.5:1 on every surface */
+  --accent: #ebebec; /* pane — hover fill, menu highlight */
+  --accent-foreground: #000000;
+  --destructive: #b42318; /* derived: 5.97:1 on bg, 5.08:1 on its 10% tint */
+  --destructive-foreground: #ffffff;
+  --border: #dadde2; /* button, card and tile outlines */
+  --input: #cbcfd4; /* field outlines (the `line` value) */
+  --ring: #1348dc;
+  --radius: 4px;
+
+  --chart-1: #1348dc;
+  --chart-2: #053794;
+  --chart-3: #5a6170;
+  --chart-4: #727a89;
+  --chart-5: #9aa1ad;
+
+  --sidebar: #ebebec;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #1348dc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dcdcdd; /* pane-2 — the active row */
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #cbcfd4;
+  --sidebar-ring: #1348dc;
+
+  --ink: #393d45;
+  --offgray: #727a89;
+  --primary-deep: #053794;
+  --line: #cbcfd4;
+  --pane: #ebebec;
+  --pane-2: #dcdcdd;
+  --shot: #2f343e;
+  --tooltip: #2f343e;
+  --tooltip-foreground: #fafafa;
+  --syn-1: #5c78e2;
+  --syn-2: #649f57;
+  --syn-3: #d3604f;
+  --syn-4: #a449ab;
+
+  /* Tweaks (DESIGN.md): graph-paper pitch and strength, diamond size, outer
+     rail offset, paper-grain strength. */
+  --grid: 16px;
+  --grid-ink: 6%;
+  --node: 7px;
+  --rail: 112px;
+  --grain: 0.06;
+  --grain-blend: multiply;
+}
+
+/* ── Night Desk (derived dark) ─────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+
+  --background: #181b21;
+  --foreground: #f4f4f2;
+  --card: #1f232a;
+  --card-foreground: #f4f4f2;
+  --popover: #1f232a;
+  --popover-foreground: #f4f4f2;
+  --primary: #7c9cff; /* lifted cobalt: 6.62:1 on bg as text */
+  --primary-foreground: #0b1430; /* 6.96:1 on the fill */
+  --secondary: #1f232a;
+  --secondary-foreground: #f4f4f2;
+  --muted: #252a32;
+  --muted-foreground: #9aa1ad; /* ≥4.8:1 on every Night Desk surface */
+  --accent: #252a32;
+  --accent-foreground: #f4f4f2;
+  --destructive: #ff8a80;
+  --destructive-foreground: #1a0705;
+  --border: #3e4552;
+  --input: #434a57;
+  --ring: #7c9cff;
+
+  --chart-1: #7c9cff;
+  --chart-2: #3f5fc8;
+  --chart-3: #9aa1ad;
+  --chart-4: #858c99;
+  --chart-5: #5b6270;
+
+  --sidebar: #1f232a;
+  --sidebar-foreground: #f4f4f2;
+  --sidebar-primary: #7c9cff;
+  --sidebar-primary-foreground: #0b1430;
+  --sidebar-accent: #2f343e;
+  --sidebar-accent-foreground: #f4f4f2;
+  --sidebar-border: #363c47;
+  --sidebar-ring: #7c9cff;
+
+  --ink: #c9cdd4;
+  --offgray: #858c99;
+  --primary-deep: #3f5fc8;
+  --line: #363c47;
+  --pane: #252a32;
+  --pane-2: #2f343e;
+  --shot: #0f1115;
+  --tooltip: #e4e6ea;
+  --tooltip-foreground: #181b21;
+  --syn-1: #8aa2ff;
+  --syn-2: #8fc985;
+  --syn-3: #f0907f;
+  --syn-4: #d38ad9;
+
+  --grid-ink: 8%;
+  --grain: 0.05;
+  --grain-blend: overlay;
+}
+
+/* Values derived from the tokens above. Declared on both scopes so a nested
+   `.dark` subtree recomputes them from its own tokens. Every tint is a
+   color-mix() off a token (DESIGN.md Colors). */
+:root,
+.dark {
+  --wash: color-mix(in srgb, var(--primary) 7%, transparent);
+  --highlight: color-mix(in srgb, var(--primary) 15%, transparent);
+  --gridline: color-mix(in srgb, var(--offgray) var(--grid-ink), transparent);
+  --lip: inset 0 -2px 0 0 color-mix(in srgb, var(--offgray) 12%, transparent);
+  --lip-primary: inset 0 -2px 0 0 var(--primary-deep);
+  --primary-glint: 0 1px 3px 0
+    color-mix(in srgb, var(--primary) 12%, transparent);
+  --float:
+    0 20px 25px -5px color-mix(in srgb, var(--offgray) 22%, transparent),
+    0 8px 10px -6px color-mix(in srgb, var(--offgray) 22%, transparent);
+  --offset: 6px 6px 0 color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.dark {
+  --wash: color-mix(in srgb, var(--primary) 12%, transparent);
+  --highlight: color-mix(in srgb, var(--primary) 22%, transparent);
+  --lip: inset 0 -2px 0 0 color-mix(in srgb, var(--shot) 45%, transparent);
+  --float:
+    0 20px 25px -5px color-mix(in srgb, var(--shot) 60%, transparent),
+    0 8px 10px -6px color-mix(in srgb, var(--shot) 60%, transparent);
+  --offset: 6px 6px 0 color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+/* Print is always paper. Night Desk sets `color-scheme: dark` on <html> (the
+   class above, and next-themes as an inline style), which makes Chrome paint
+   the printed page margins with the dark canvas; `!important` beats the
+   inline style. */
+@media print {
+  :root {
+    color-scheme: light !important;
+  }
+}
+
+/* ── Type roles (DESIGN.md Typography) ─────────────────────────────────── *
+ * Six roles, each a size and a whole-pixel line height, at the default and
+ * compact steps (compact = dense regions: toolbars, filter bars, sidebars).
+ * A role also carries its default weight, paired with an optical size so a
+ * label keeps its width when it gets heavier: 400/opsz 14 text, 550/opsz 18
+ * headings and selected items, 700/opsz 25 the display role only. `weight-*`
+ * overrides the role's weight: Tailwind sorts every font-weight utility after
+ * every font-size utility. No uppercase, no letter-spacing. In code, prefer
+ * `typeClass(role, variant)` from `@rulisme/ui/lib/type-scale`. */
+@utility type-display {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  font-variation-settings: "opsz" 25;
+}
+@utility type-display-compact {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  font-variation-settings: "opsz" 25;
+}
+@utility type-title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 550;
+  font-variation-settings: "opsz" 18;
+}
+@utility type-title-compact {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 550;
+  font-variation-settings: "opsz" 18;
+}
+@utility type-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-subtitle-compact {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-body {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-body-compact {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-caption-compact {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-micro {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility type-micro-compact {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+
+@utility weight-normal {
+  font-weight: 400;
+  font-variation-settings: "opsz" 14;
+}
+@utility weight-semibold {
+  font-weight: 550;
+  font-variation-settings: "opsz" 18;
+}
+@utility weight-bold {
+  font-weight: 700;
+  font-variation-settings: "opsz" 25;
+}
+
+/* Editable fields render at 16px on touch screens so iOS Safari never zooms
+   on focus (DESIGN.md: `fieldTouchClass`). */
+@utility field-touch {
+  @media (pointer: coarse) {
+    font-size: 16px;
+  }
+}
+
+/* Rendered markdown. */
+@utility typeset {
+  & :where(p, ul, ol, blockquote, pre, table) {
+    margin-block: 0 12px;
+  }
+  & :where(h1, h2, h3) {
+    margin-block: 24px 8px;
+    color: var(--foreground);
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 550;
+    font-variation-settings: "opsz" 18;
+  }
+  & :where(h4, h5, h6) {
+    margin-block: 16px 4px;
+    color: var(--foreground);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 550;
+    font-variation-settings: "opsz" 18;
+  }
+  & :where(a) {
+    color: var(--primary);
+    text-decoration-line: underline;
+    text-underline-offset: 3px;
+  }
+  & :where(ul) {
+    padding-left: 20px;
+    list-style: disc;
+  }
+  & :where(ol) {
+    padding-left: 20px;
+    list-style: decimal;
+  }
+  & :where(code) {
+    padding: 1px 4px;
+    border-radius: var(--radius-sm);
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: 12px;
+  }
+  & :where(blockquote) {
+    padding-left: 12px;
+    border-left: 2px solid var(--line);
+    color: var(--muted-foreground);
+  }
+  & :where(hr) {
+    margin-block: 24px;
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* ── Rails, nodes and paper (DESIGN.md Layout / Elevation) ─────────────── */
+
+/* A full-bleed band ruled by a 1px bottom hairline. */
+@utility band {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The ruled column: max 1120px with its own 1px side rules, 12px clear of
+   the viewport edge on small screens. */
+@utility rail {
+  position: relative;
+  width: calc(100% - 24px);
+  max-width: var(--container-rail);
+  margin-inline: auto;
+  border-inline: 1px solid var(--line);
+}
+
+/* Diamond nodes (7px squares at 45°) where the column's side rules cross
+   the rule above it. Uses ::before and ::after. */
+@utility rail-nodes {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    top: calc(var(--node) / -2 - 0.5px);
+    width: var(--node);
+    height: var(--node);
+    border: 1px solid var(--line);
+    background: var(--card);
+    rotate: 45deg;
+    pointer-events: none;
+  }
+  &::before {
+    left: calc(var(--node) / -2 - 0.5px);
+  }
+  &::after {
+    right: calc(var(--node) / -2 - 0.5px);
+  }
+}
+
+/* A single diamond node; position it with inset utilities. */
+@utility diamond {
+  position: absolute;
+  z-index: 3;
+  width: var(--node);
+  height: var(--node);
+  border: 1px solid var(--line);
+  background: var(--card);
+  rotate: 45deg;
+  pointer-events: none;
+}
+
+/* Graph paper: two 1px rules at `--grid` pitch, `--offgray` at `--grid-ink`. */
+@utility graph-paper {
+  background-image:
+    linear-gradient(to right, var(--gridline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--gridline) 1px, transparent 1px);
+  background-size: var(--grid) var(--grid);
+}
+
+/* Hatching: 1px diagonal rules every 7px in the current text colour at 14%
+   (the band under the footer wordmark). */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 6px,
+    color-mix(in srgb, currentColor 14%, transparent) 6px 7px
+  );
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring;
+  }
+
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-color: var(--line) transparent;
+  }
+
+  body {
+    @apply bg-background text-ink type-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings, labels and controls are `fg`; running text inherits `ink`. */
+  :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--foreground);
+  }
+
+  /* Three weights only: bold markup maps to the heading weight. */
+  :where(b, strong) {
+    font-weight: 550;
+    font-variation-settings: "opsz" 18;
+  }
+
+  ::selection {
+    background-color: var(--highlight);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Paper grain: a fixed fractal-noise sheet over the whole page at
+     `--grain` opacity — present but barely. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    opacity: var(--grain);
+    mix-blend-mode: var(--grain-blend);
+    pointer-events: none;
+  }
+
+  @media print, (forced-colors: active) {
+    body::after {
+      display: none;
+    }
+  }
+}
+
+/* Focus on the cobalt slab (the footer, any bg-primary band): a cobalt ring
+   would vanish, so it turns paper-white there. Unlayered on purpose: it must
+   beat the `focus-visible:outline-ring` utilities components carry. */
+.bg-primary :focus-visible {
+  outline-color: var(--primary-foreground);
+}

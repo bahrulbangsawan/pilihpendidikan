@@ -1,176 +1,156 @@
-# Typography System — Strict Rules
+# Typography and Style Rules — Enforcement
 
-This document is the authoritative spec for typography **enforcement** across
-the workspace's UI apps. The typographic **scale** itself is defined by the Warp
-("moonlit terminal") design system in `DESIGN.md`. Where this document and
-`DESIGN.md` conflict, `DESIGN.md` wins for visual values and this document wins
-for the utility / lint rules.
+This document is the authoritative spec for **enforcing** the Zedative design
+system (`DESIGN.md`) in code. `DESIGN.md` owns the visual values; this file
+owns the utilities, the lint rules and their exceptions. Where they conflict,
+`DESIGN.md` wins on values and this file wins on rules.
 
-All four apps — **`apps/cv`, `apps/invoice`, `apps/portfolio` and `apps/home`** — share
-**one** typography scale (the Warp scale) and one `cn()` helper from
-`@rulisme/ui` (`packages/ui`).
+Every UI surface in the workspace shares one type scale and one `cn()`:
+**`apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio`, `apps/design`**
+and **`packages/ui`**.
 
-## Token Source of Truth
+## Single Source of Truth
 
-The Warp `@theme inline { … }` typography tokens are **byte-identical** across:
+All tokens and type utilities live in **`packages/ui/src/styles/theme.css`**
+(`@rulisme/ui/styles/theme.css`). Each app's `src/styles.css` imports it and
+defines no tokens of its own.
 
-| App | File | Role |
-| --- | ---- | ---- |
-| `apps/cv` | `src/styles.css` | Canonical reference |
-| `apps/invoice` | `src/styles.css` | Must match `apps/cv` |
-| `apps/portfolio` | `src/styles.css` | Must match `apps/cv` |
-| `apps/home` | `src/styles.css` | Must match `apps/cv` |
+`scripts/check-typography-parity.ts` (`bun run parity:typography`) fails when
+an app's `styles.css` does not import the theme, or declares any typography or
+colour token (`--font-*`, `--text-*`, `--leading-*`, `--tracking-*`,
+`--font-weight-*`, `--color-*`), any `@theme` block or any `type-*` /
+`weight-*` utility.
 
-`scripts/check-typography-parity.ts` (`bun run parity:typography`) diffs the
-typography tokens (font sizes, line heights, tracking, leading, font families,
-font weights) of all four and fails on any drift.
+## The Scale — six roles
 
-## Token Inventory — the Warp scale
+One family, Inter Variable (every `font-*` family token resolves to it). Each
+role bakes size, whole-pixel line height, weight and optical size. Compact
+steps are for dense regions: toolbars, filter bars, sidebars.
 
-Every size token bakes its line-height **and** its (negative-at-display,
-positive-for-eyebrows) letter-spacing, so a single utility carries the
-engineered look. There are **no standalone `tracking-*` utilities**.
+| Utility | Size / line | Weight | Compact | Use |
+| ------- | ----------- | ------ | ------- | --- |
+| `type-display` | 28 / 34 | 700, opsz 25 | `type-display-compact` 24 / 30 | the page title (hero h1) only |
+| `type-title` | 16 / 22 | 550, opsz 18 | `type-title-compact` 15 / 20 | section headings, dialog and sheet titles |
+| `type-subtitle` | 14 / 20 | 400, opsz 14 | `type-subtitle-compact` 13 / 18 | card titles, leads, quotes, chat bubbles |
+| `type-body` | 13 / 20 | 400, opsz 14 | `type-body-compact` 12 / 18 | body copy, control labels, menu rows (the `body` default) |
+| `type-caption` | 12 / 16 | 400, opsz 14 | `type-caption-compact` 11 / 14 | descriptions, meta, errors, group labels, tooltips |
+| `type-micro` | 11 / 14 | 400, opsz 14 | `type-micro-compact` 10 / 12 | kbd caps, counters, tiny badges; single line |
 
-### Font Size + Line Height + Tracking (all baked into the size token)
+In TypeScript, `typeClass(role, variant)` from `@rulisme/ui/lib/type-scale`
+returns the same class names.
 
-| Utility | Size | Line-height | Tracking | Use case |
-| ------- | ---- | ----------- | -------- | -------- |
-| `text-display` | `68px` | `1` | `-2.04px` | Marketing hero headline |
-| `text-heading-lg` | `48px` | `1.1` | `-1.44px` | Section opener / large feature headline |
-| `text-heading` | `32px` | `1.19` | `-0.64px` | Page / section heading |
-| `text-heading-sm` | `24px` | `1.2` | `-0.48px` | Sub-section heading |
-| `text-subheading` | `20px` | `1.3` | `-0.2px` | Card / panel heading, page H1 in compact UI |
-| `text-body` | `16px` | `1.38` | `0.16px` | Default body / paragraph |
-| `text-body-sm` | `14px` | `1.38` | `0.14px` | Secondary body, compact copy, dialog titles |
-| `text-caption-tracked` | `11px` | `1.2` | `2.2px` | Uppercase eyebrow / tracked small-caps label |
-| `text-micro` | `10px` | `1.2` | `0.2px` | Status dots, supplementary metadata (size floor) |
+### Weights
 
-`text-xs` (Tailwind built-in, `0.75rem` / 12px) is the **compact-chrome default**
-— buttons, tabs, nav links, form inputs, dense controls. It is the single allowed
-generic Tailwind text utility.
+Three weights, each paired with an optical size. A role carries its default;
+override it with:
 
-### Font Weight
+| Utility | Value | Use |
+| ------- | ----- | --- |
+| `weight-normal` | 400, opsz 14 | text (reset) |
+| `weight-semibold` | 550, opsz 18 | headings, card titles, names, selected items |
+| `weight-bold` | 700, opsz 25 | the display role only |
 
-Weights are **400 / 500 only**. `font-bold` (700) **and** `font-semibold` (600)
-are both forbidden in chrome — Warp's hierarchy comes from size + tracking +
-colour, not weight.
+`weight-*` always wins over the role on the same element (Tailwind sorts
+font-weight utilities after font-size ones). `<b>` / `<strong>` render at 550.
 
-| Utility | Value | Use case |
-| ------- | ----- | -------- |
-| `font-regular` | `400` | Default body copy |
-| `font-medium` | `500` | Headings, emphasis, button labels, nav links |
+### Fields
 
-If a headline genuinely needs 600/700, add a `--font-weight-*` token to every
-`@theme inline` block first and add an Exceptions row below.
+Editable fields (`Input`, `Textarea`, the field part of `InputGroup`, `Select`
+triggers that take text) add `field-touch`, which sets 16px on coarse pointers
+so iOS Safari does not zoom on focus.
 
-## Utility Mapping (migration table)
+### Colour of text
 
-When replacing generic Tailwind utilities with Warp tokens:
-
-| Generic | Replace with |
-| ------- | ------------ |
-| `text-xs` on label / eyebrow (uppercase) | `text-caption-tracked` (+ `uppercase`) |
-| `text-xs` on button / tab / nav / input | keep `text-xs` (chrome default) |
-| `text-sm` | `text-body-sm` |
-| `text-base` | `text-body` |
-| `text-lg` / `text-xl` | `text-subheading` |
-| `text-2xl` | `text-heading-sm` |
-| `text-3xl` | `text-heading` |
-| `text-4xl` / `text-5xl` | `text-heading-lg` |
-| `text-6xl` | `text-display` |
-| `font-bold` / `font-semibold` | `font-medium` |
-| `font-normal` | `font-regular` |
+- Running text inherits `ink` from `body`; never set paragraphs in
+  `text-foreground` or black.
+- Headings, labels, buttons, inputs, menu rows: `text-foreground`.
+- Descriptions, meta, timestamps, counts: `text-muted-foreground`.
+- Links and the hero headline: `text-primary` (the hero is also `italic`).
+- `text-syn-*` only inside an editor mock.
 
 ## Forbidden Patterns
 
-`scripts/lint-typography.sh` (`bun run lint:typography`) checks each pattern in
-`apps/home/src`, `apps/cv/src`, `apps/invoice/src`, `apps/portfolio/src` and `packages/ui/src`
-and fails CI on a match. Inline font properties are checked as TypeScript/JSX
-syntax by `scripts/check-inline-typography.ts`, including quoted keys and
-render-prop objects.
+`scripts/lint-typography.sh` (`bun run lint:typography`) checks
+`apps/home/src`, `apps/cv/src`, `apps/invoice/src`, `apps/portfolio/src`,
+`apps/design/src` and `packages/ui/src`, and fails on any match. Inline style
+font properties are checked as TypeScript/JSX syntax by
+`scripts/check-inline-typography.ts`.
 
-| Pattern | Why |
-| ------- | --- |
-| `text-[…]` (e.g. `text-[11px]`) | Bypasses the size scale. Use a named token. |
-| `leading-[…]` | Line-height is baked into the size token. |
-| `font-[…]` | Bypasses the font-family token (`font-sans` / `font-mono`). |
-| `tracking-[…]` | Tracking is baked into the size token; there are no `tracking-*` utilities. |
-| Inline `style={{ fontSize / fontFamily / fontWeight }}` | Bypasses the system; can't be themed; defeats lint. |
-| `font-bold`, `font-semibold` | Warp is 400/500 only. Use `font-medium`. |
-| `text-sm` … `text-6xl` | Generic utilities bypass the named scale. Migrate per the table. |
-| `font-normal` | Use the `font-regular` token. |
+| Pattern | Why | Use instead |
+| ------- | --- | ----------- |
+| `text-xs`, `text-sm`, `text-base`, `text-lg` … `text-9xl` | Sizes off the six roles | a `type-*` role |
+| `text-[…]` arbitrary size | Bypasses the scale | a `type-*` role |
+| `leading-*` | Line height is baked into the role | the role |
+| `tracking-*` | No letter-spacing | nothing |
+| `uppercase`, `capitalize` | No uppercase | sentence case |
+| `font-thin` … `font-black`, `font-normal`, `font-medium`, `font-semibold`, `font-bold` | Three weights, paired with opsz | `weight-normal` / `weight-semibold` / `weight-bold` |
+| `font-[…]` arbitrary family | One family | `font-sans` (rarely needed) |
+| Inline `style={{ fontSize / fontFamily / fontWeight }}` | Bypasses the system | a role class |
+| `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-4xl` (and side variants) | Cards and sections are square | `rounded-none` / `-sm` / `-md` / `-lg` (see DESIGN.md § Radius) |
+| `bg-gradient-*`, `bg-linear-*`, `bg-radial-*`, `bg-conic-*` | No gradients | flat token fills, `graph-paper` |
+| `backdrop-blur*` | No glass | an opaque surface |
+| `-[#…]` hex in a class | Raw colour | a token |
+| `animate-in`, `animate-out`, `fade-in-*`, `zoom-in-*`, `slide-in-*` (and `-out`) | Nothing enters; overlays open instantly | nothing |
+| `text-syn-*` / `bg-syn-*` outside an editor mock | Syntax colours stay in the editor | `text-primary`, `text-muted-foreground` |
+
+Editor mocks are files named `*editor-mock*.tsx` and `apps/design/src`.
 
 ## Exceptions
 
-New exceptions require a PR that updates this section, citing the component, the
-reason no token works, and the alternative considered.
+New exceptions need a change that updates this section, naming the file, the
+reason no token works and the alternative considered.
 
 | Component | Pattern | Reason | Alternative considered |
 | --------- | ------- | ------ | ---------------------- |
-| `@react-pdf` renderers (`apps/cv/src/components/templates/*-pdf.tsx`, `apps/invoice/src/components/invoice-pdf.tsx`, `apps/portfolio/src/components/portfolio-pdf.tsx`) | `StyleSheet` `fontSize` / `fontFamily` / `fontWeight` | react-pdf has no `className` or Tailwind; StyleSheet props are the only way to set type in the exported PDF. `check-inline-typography.ts` skips `*-pdf.tsx` files that import `@react-pdf/renderer` | None — the PDF renderer cannot read CSS tokens |
-| On-screen print documents (`apps/cv/src/components/templates/*-preview.tsx`, `templates/preview-entries.tsx`, `apps/invoice/src/components/invoice-preview.tsx`) | Generic sizes, `font-semibold` / `font-bold`, `text-[…rem]` | Ink-on-paper "light islands" that mirror their PDF twin (Helvetica, print sizes, bold labels) so preview and download match. `lint-typography.sh` skips exactly these files via `PRINT_GLOBS` | Warp tokens — rejected: the printed CV/invoice would stop matching the preview |
-| Print / PDF colours (`*-pdf.tsx`, `.cv-page`, `.invoice-page`, `.pf-*`) | `#ffffff` background, ink colours | Print artifact — ink on white paper | None — print must be print-faithful |
-| Flag SVGs, social-platform logos | brand / `#fff` colours | Third-party brand marks, not app chrome | None — brand recognition requires accurate colour |
+| `@react-pdf` renderers (`apps/cv/src/components/templates/*-pdf.tsx`, `apps/invoice/src/components/invoice-pdf.tsx`, `apps/portfolio/src/components/portfolio-pdf.tsx`) | `StyleSheet` `fontSize` / `fontWeight` (and `fontFamily: PDF_FONT_FAMILY`, the shared print family) | react-pdf has no `className`; StyleSheet props are the only way to set type in the exported PDF. `check-inline-typography.ts` skips `*-pdf.tsx` files that import `@react-pdf/renderer`, and the shared `packages/ui/src/print/pdf-fonts.ts` (its cut list names the embedded weights). Lint rule 17 still holds them, the print module and every app's `src/styles.css` to one family (Inter: no other family in a StyleSheet, a fallback list or `Font.register`, no built-in PDF font, no literal family in print CSS); rule 18 to no uppercase or letter-spacing | None — the PDF renderer cannot read CSS tokens |
+| On-screen print documents (`apps/cv/src/components/templates/*-preview.tsx`, `templates/preview-entries.tsx`, `apps/invoice/src/components/invoice-preview.tsx`) | Print sizes (`text-[…rem]`, generic sizes), `leading-*`, and the static Inter weights 400 / 600 / 700 | The paper mirrors its PDF twin, which embeds static Inter cuts (react-pdf cannot use the variable `wght` / `opsz` axes) at print sizes. Only the size, leading and weight checks skip these files (`PRINT_GLOBS`); one family, no uppercase, no letter-spacing, tokens instead of hex and every other rule apply | The six screen roles — rejected: the printed CV and invoice would stop matching their PDFs |
+| Print / PDF colours (`*-pdf.tsx`, `.cv-page`, `.invoice-page`, `.pf-*`) | Literal Zedative values on white paper (`#000000` headings, `#393d45` ink, `#5a6170` muted, `#cbcfd4` rules, `#1348dc` links); the user's own invoice accent | A print artifact must not change with Night Desk, so the paper re-scopes the token variables to these literals | None — print must look the same in every scheme |
+| Flag SVGs, social-platform logos | Brand / `#fff` colours | Third-party marks, not chrome | None — recognition requires accurate colour |
 
-The portfolio preview (`portfolio-preview.tsx`) styles its deck through the
-scoped `.pf-*` CSS in `apps/portfolio/src/styles.css`, so it needs no lint
-exemption; its empty state is chrome and uses Warp tokens.
+The portfolio deck (`portfolio-preview.tsx`) styles its pages through the
+scoped `.pf-*` CSS in `apps/portfolio/src/styles.css`, so the component itself
+needs no exemption; its empty state is chrome and uses the roles. Lint rules
+17 and 18 cover that CSS (and every app's `src/styles.css`): Inter only, no
+`text-transform: uppercase`, no `letter-spacing`.
 
-## Per-Component Usage Guide (Warp)
+## Per-Component Guide
 
-- **Buttons / tabs / nav / inputs (chrome):** `text-xs font-medium`; 4px radius
-  (`rounded-md`), never pill. Inline icons `size-3.5`, outlined.
-- **Eyebrow / section label:** `text-caption-tracked uppercase font-medium`.
-- **Page / section heading:** `text-heading font-medium` (or `text-heading-lg` /
-  `text-display` for hero openers).
-- **Card / panel heading:** `text-subheading font-medium`.
-- **Dialog / popover / card title (`@rulisme/ui`):** `text-body-sm font-medium`;
-  description `text-xs text-muted-foreground`.
-- **Body paragraphs:** `text-body font-regular` (long-form) / `text-body-sm` (compact).
-- **Labels / helper / metadata:** `text-xs text-muted-foreground` or
-  `text-caption-tracked` for tracked eyebrows.
-- **Code / terminal:** `font-mono`; gold (`--color-gold-leaf`) / cobalt
-  (`--color-muted-cobalt`) syntax accents appear **only** here (and in section
-  headings), never on buttons, badges, or body.
+- **Buttons, nav links, tabs, toggles, inputs, menu rows:** `type-body`
+  (components set it; don't restate it).
+- **Page title (hero):** `type-display italic text-primary`, once per page.
+- **Section heading, dialog / sheet title:** `type-title`.
+- **Card title, lead paragraph:** `type-subtitle` (`weight-semibold` for card
+  titles and names).
+- **Descriptions, helper text, errors, meta, group labels:** `type-caption`
+  in `text-muted-foreground` (errors: `text-destructive`).
+- **Counters, kbd, tiny badges, status text:** `type-micro`.
+- **Numbers that line up:** add `tabular-nums`.
+- **Code / commands:** same family; set them in a `Kbd` or a `bg-muted`
+  chip with `type-caption`.
 
-## tailwind-merge Configuration (critical)
+## tailwind-merge Configuration
 
 `cn()` in `packages/ui/src/lib/utils.ts` (imported by every app as
-`@rulisme/ui/lib/utils`) runs classes through `tailwind-merge`, which doesn't
-know our custom `text-*` utilities live in the `font-size` group — without
-registration it reads `text-body-sm` as a colour and silently strips it when it
-meets `text-muted-foreground`. `cn()` registers the **9 Warp font-size tokens**
-(`display`, `heading-lg`, `heading`, `heading-sm`, `subheading`, `body`,
-`body-sm`, `caption-tracked`, `micro`) in `extendTailwindMerge({ extend: {
-classGroups: { "font-size": [{ text: [...] }] } } })`. The scale bakes
-letter-spacing, so there is **no `tracking` group** to register.
-
-`bun run parity:twmerge` asserts the registration matches every app's
-`@theme inline`. An app that adds its own `src/lib/utils.ts` is checked against
-that file instead.
+`@rulisme/ui/lib/utils`) registers two class groups with tailwind-merge:
+`type-role` (every `type-*` utility, which also replaces any `text-<size>` or
+`leading-*` before it) and `type-weight` (`weight-*`, which conflicts with
+Tailwind's `font-<weight>`). The lists come from `TYPE_UTILITIES` and
+`TYPE_WEIGHTS` in `lib/type-scale.ts`. `bun run parity:twmerge` asserts they
+match the `@utility type-*` and `@utility weight-*` blocks in `theme.css`.
 
 ## Verification Commands
 
 ```sh
-# Forbidden-pattern lint (home + cv + invoice + portfolio + packages/ui)
-bun run lint:typography
-
-# Parity — typography tokens byte-identical across cv / invoice / portfolio / home
-bun run parity:typography
-
-# tailwind-merge config parity (cn() registers the 9 font-size tokens)
-bun run parity:twmerge
-
-# Full chain
-bun run check
+bun run lint:typography     # forbidden patterns across the six UI roots
+bun run parity:typography   # apps import theme.css and define no tokens
+bun run parity:twmerge      # cn() registers every type-* and weight-* utility
+bun run check               # the full chain
 ```
 
 ## When in Doubt
 
-1. Look at a canonical reference for the same context (`button-variants.ts` in
-   `packages/ui` for chrome).
-2. Pick the closest Warp token from the scale above.
-3. If nothing fits, propose a new token in a PR that adds it to **every** app's
-   `@theme inline` block (parity), updates the `cn()` twMerge config in
-   `packages/ui`, and updates this document + the Exceptions list. Never use
-   arbitrary values.
+1. Look at the component in `packages/ui` that already solves the same
+   context, or at `apps/design`.
+2. Pick the role by purpose (the Use column above), not by pixel size.
+3. If nothing fits, propose a change to `DESIGN.md` first. Never add an
+   arbitrary value.

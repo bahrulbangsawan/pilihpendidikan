@@ -3,12 +3,17 @@ import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 const isVitest = Boolean(process.env.VITEST);
 
 const config = defineConfig({
   resolve: {
     tsconfigPaths: true,
+  },
+  test: {
+    // Vitest stubs CSS imports with empty strings; the deck-palette test
+    // reads the deck's `.pf-*` stylesheet as text, so let that one through.
+    css: { include: [/src\/styles\.css/] },
   },
   plugins: [
     ...(!isVitest

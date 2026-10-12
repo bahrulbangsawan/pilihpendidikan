@@ -1,3 +1,4 @@
+import { Toaster } from "@rulisme/ui/ui/sonner";
 import { TooltipProvider } from "@rulisme/ui/ui/tooltip";
 import {
   HeadContent,
@@ -7,7 +8,6 @@ import {
 } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
 import { lazy, Suspense, useEffect, useMemo } from "react";
-import { Toaster } from "sonner";
 import type { Locale } from "@/i18n";
 import { getT, I18nProvider } from "@/i18n";
 import { useFaviconVisibility } from "./-root-helpers";
@@ -65,20 +65,22 @@ export function RootComponent() {
 
   const i18nValue = useMemo(() => ({ locale, t: getT(locale) }), [locale]);
 
+  // Light is canonical (DESIGN.md); Night Desk (`.dark`) is the derived
+  // scheme the toolbar toggle switches to. The system theme is not followed,
+  // and the head script in `__root.tsx` applies the same rule before paint.
+  // Toasts are Zedative windows (`@rulisme/ui/ui/sonner`) and stay until
+  // dismissed.
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       disableTransitionOnChange
-      enableSystem
+      enableSystem={false}
     >
       <I18nProvider value={i18nValue}>
         <TooltipProvider>
           <Outlet />
-          <Toaster
-            closeButton
-            toastOptions={{ duration: Number.POSITIVE_INFINITY }}
-          />
+          <Toaster closeButton duration={Number.POSITIVE_INFINITY} />
         </TooltipProvider>
       </I18nProvider>
     </ThemeProvider>

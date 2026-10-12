@@ -1,4 +1,3 @@
-import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
@@ -12,6 +11,7 @@ import {
   InputGroupText,
 } from "@rulisme/ui/ui/input-group";
 import { Label } from "@rulisme/ui/ui/label";
+import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { Trash2, Upload, X } from "lucide-react";
+import { Plus, Trash2, Upload, X } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { useTranslation } from "@/i18n";
 import type {
@@ -194,7 +194,7 @@ function ChipField({
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-2">
         <Label htmlFor={inputId}>{label}</Label>
-        <span className="shrink-0 text-micro text-muted-foreground">
+        <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
           {items.length}/{max}
         </span>
       </div>
@@ -214,14 +214,14 @@ function ChipField({
         value={draft}
       />
       {hint && !full && (
-        <p className="text-micro text-muted-foreground">{hint}</p>
+        <p className="type-caption text-muted-foreground">{hint}</p>
       )}
       {items.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {items.map((item) => (
             <Badge
               asChild
-              className="press cursor-pointer outline-hidden transition-[color,background-color,border-color,box-shadow,scale]"
+              className="press cursor-pointer hover:bg-pane-2"
               key={item}
               variant="secondary"
             >
@@ -231,7 +231,7 @@ function ChipField({
                 type="button"
               >
                 {item}
-                <X aria-hidden="true" className="size-2.5" />
+                <X aria-hidden="true" data-icon="inline-end" />
               </button>
             </Badge>
           ))}
@@ -599,7 +599,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               }
               value={project.projectType}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -618,7 +618,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               }
               value={project.track ?? "tech"}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -639,7 +639,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               }
               value={project.collaboration.kind}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -833,11 +833,10 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             <div className="space-y-2">
               <img
                 alt={media.alt || t("form.projectImage")}
-                className="image-fade aspect-video w-full rounded-lg border border-border object-cover"
+                className="aspect-video w-full rounded-sm border border-border object-cover"
                 decoding="async"
                 height={media.height}
                 loading="lazy"
-                ref={fadeInOnLoad}
                 src={media.url}
                 width={media.width}
               />
@@ -847,9 +846,10 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                   size="sm"
                   variant="outline"
                 >
-                  <Trash2 className="size-3" /> {t("form.remove")}
+                  <Trash2 data-icon="inline-start" />
+                  {t("form.remove")}
                 </Button>
-                <span className="text-micro text-muted-foreground">
+                <span className="type-caption text-muted-foreground tabular-nums">
                   {media.width}×{media.height}
                 </span>
               </div>
@@ -873,8 +873,8 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </div>
           ) : (
-            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-border border-dashed px-4 py-3 text-muted-foreground text-xs transition-[color,border-color,box-shadow] duration-150 ease-standard hover:border-foreground/30 has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-ring/30">
-              <Upload className="size-4" />
+            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-input border-dashed bg-card/60 px-3 py-3 text-muted-foreground transition-[background-color,border-color,color] duration-150 ease-standard hover:bg-pane/70 hover:text-foreground has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2">
+              <Upload aria-hidden="true" className="size-3.5" />
               {t("form.uploadImage")}
               <input
                 accept="image/jpeg,image/png,image/webp"
@@ -889,14 +889,14 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </label>
           )}
-          <p className="text-micro text-muted-foreground">
+          <p className="type-caption text-muted-foreground">
             {t("form.imageHint", {
               w: RECOMMENDED_IMAGE_SIZE.width,
               h: RECOMMENDED_IMAGE_SIZE.height,
             })}
           </p>
           {imageErrors[project.id] && (
-            <p className="text-destructive text-xs">
+            <p className="type-caption text-destructive">
               {imageErrors[project.id]}
             </p>
           )}
@@ -905,218 +905,237 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     );
   }
 
+  // Each form section is a full-bleed band of the form pane, ruled by a
+  // `line` hairline (DESIGN.md § Layout).
   return (
-    <div className="space-y-6">
+    <div>
       {/* ── Profile ── */}
-      <section className="space-y-3">
-        <h2 className="font-medium text-body-sm">{t("form.profile")}</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <FormField
-            label={t("form.fullName")}
-            onChange={(v) =>
-              updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
-            }
-            placeholder={t("placeholders.fullName")}
-            value={owner.fullName}
-          />
-          <FormField
-            label={t("form.headline")}
-            onChange={(v) =>
-              updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
-            }
-            placeholder={t("placeholders.headline")}
-            value={owner.headline ?? ""}
-          />
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <FormFieldCustom label={t("form.track")}>
-            <Select
-              onValueChange={(v) => updateOwner({ track: v as Track })}
-              value={owner.track}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {TRACK_OPTIONS.map((o) => (
-                  <SelectItem key={o.value} value={o.value}>
-                    {t(o.labelKey)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormFieldCustom>
-          <FormFieldCustom label={t("form.affiliation")}>
-            <Select
-              onValueChange={(v) =>
-                changeAffiliationKind(v as Affiliation["kind"])
+      <Band asChild>
+        <section className="space-y-3 px-4 py-6 sm:px-6">
+          <h2 className="type-subtitle weight-semibold">{t("form.profile")}</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormField
+              label={t("form.fullName")}
+              onChange={(v) =>
+                updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
               }
-              value={affiliation.kind}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {AFFILIATION_OPTIONS.map((o) => (
-                  <SelectItem key={o.value} value={o.value}>
-                    {t(o.labelKey)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormFieldCustom>
-        </div>
-        {renderAffiliationFields()}
-      </section>
-
-      {/* ── Contact ── */}
-      <section className="space-y-3">
-        <h2 className="font-medium text-body-sm">{t("form.contact")}</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <FormField
-            label={t("form.email")}
-            onChange={(v) =>
-              updateContact({ email: clamp(v, LIMITS.contact.email) })
-            }
-            placeholder={t("placeholders.email")}
-            type="email"
-            value={contact.email}
-          />
-          <div className="space-y-1.5">
-            <Label>{t("form.phone")}</Label>
-            <PhoneInput
-              defaultCountry="ID"
-              onChange={(value) =>
-                updateContact({
-                  phone: clamp(String(value ?? ""), LIMITS.contact.phone),
-                })
+              placeholder={t("placeholders.fullName")}
+              value={owner.fullName}
+            />
+            <FormField
+              label={t("form.headline")}
+              onChange={(v) =>
+                updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
               }
-              placeholder={t("placeholders.phone")}
-              value={contact.phone || undefined}
+              placeholder={t("placeholders.headline")}
+              value={owner.headline ?? ""}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label>{t("form.websiteUrl")}</Label>
-            <InputGroup>
-              <InputGroupAddon align="inline-start">
-                <InputGroupText>https://</InputGroupText>
-              </InputGroupAddon>
-              <InputGroupInput
-                onChange={(e) => {
-                  const bare = stripProtocol(e.target.value);
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormFieldCustom label={t("form.track")}>
+              <Select
+                onValueChange={(v) => updateOwner({ track: v as Track })}
+                value={owner.track}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TRACK_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {t(o.labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormFieldCustom>
+            <FormFieldCustom label={t("form.affiliation")}>
+              <Select
+                onValueChange={(v) =>
+                  changeAffiliationKind(v as Affiliation["kind"])
+                }
+                value={affiliation.kind}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {AFFILIATION_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {t(o.labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormFieldCustom>
+          </div>
+          {renderAffiliationFields()}
+        </section>
+      </Band>
+
+      {/* ── Contact ── */}
+      <Band asChild>
+        <section className="space-y-3 px-4 py-6 sm:px-6">
+          <h2 className="type-subtitle weight-semibold">{t("form.contact")}</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <FormField
+              label={t("form.email")}
+              onChange={(v) =>
+                updateContact({ email: clamp(v, LIMITS.contact.email) })
+              }
+              placeholder={t("placeholders.email")}
+              type="email"
+              value={contact.email}
+            />
+            <div className="space-y-1.5">
+              <Label>{t("form.phone")}</Label>
+              <PhoneInput
+                defaultCountry="ID"
+                onChange={(value) =>
                   updateContact({
-                    websiteUrl: bare
-                      ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
-                      : "",
-                  });
-                }}
-                placeholder={t("placeholders.websiteBare")}
-                value={stripProtocol(contact.websiteUrl ?? "")}
-              />
-            </InputGroup>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <Label>{t("form.socials")}</Label>
-            <span className="text-micro text-muted-foreground">
-              {socials.length}
-            </span>
-          </div>
-          {socials.map((social, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
-            <div className="flex items-end gap-2" key={index}>
-              <div className="w-28 shrink-0">
-                <Input
-                  aria-label={t("form.socialLabel")}
-                  maxLength={LIMITS.contact.socialLabel}
-                  onChange={(e) =>
-                    updateSocial(index, {
-                      label: clamp(e.target.value, LIMITS.contact.socialLabel),
-                    })
-                  }
-                  placeholder={t("placeholders.socialLabel")}
-                  value={social.label}
-                />
-              </div>
-              <Input
-                aria-label={t("form.socialUrl")}
-                maxLength={LIMITS.contact.socialUrl}
-                onChange={(e) =>
-                  updateSocial(index, {
-                    url: clamp(e.target.value, LIMITS.contact.socialUrl),
+                    phone: clamp(String(value ?? ""), LIMITS.contact.phone),
                   })
                 }
-                placeholder={t("placeholders.url")}
-                value={social.url}
+                placeholder={t("placeholders.phone")}
+                value={contact.phone || undefined}
               />
-              <Button
-                aria-label={t("form.remove")}
-                onClick={() => removeSocial(index)}
-                size="icon"
-                variant="ghost"
-              >
-                <X className="size-3.5" />
-              </Button>
             </div>
-          ))}
-          <Button onClick={addSocial} size="sm" variant="outline">
-            {t("form.addSocial")}
-          </Button>
-        </div>
-      </section>
+            <div className="space-y-1.5">
+              <Label>{t("form.websiteUrl")}</Label>
+              <InputGroup>
+                <InputGroupAddon align="inline-start">
+                  <InputGroupText>https://</InputGroupText>
+                </InputGroupAddon>
+                <InputGroupInput
+                  onChange={(e) => {
+                    const bare = stripProtocol(e.target.value);
+                    updateContact({
+                      websiteUrl: bare
+                        ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
+                        : "",
+                    });
+                  }}
+                  placeholder={t("placeholders.websiteBare")}
+                  value={stripProtocol(contact.websiteUrl ?? "")}
+                />
+              </InputGroup>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <Label>{t("form.socials")}</Label>
+              <span className="type-micro text-muted-foreground tabular-nums">
+                {socials.length}
+              </span>
+            </div>
+            {socials.map((social, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
+              <div className="flex items-end gap-2" key={index}>
+                <div className="w-28 shrink-0">
+                  <Input
+                    aria-label={t("form.socialLabel")}
+                    maxLength={LIMITS.contact.socialLabel}
+                    onChange={(e) =>
+                      updateSocial(index, {
+                        label: clamp(
+                          e.target.value,
+                          LIMITS.contact.socialLabel
+                        ),
+                      })
+                    }
+                    placeholder={t("placeholders.socialLabel")}
+                    value={social.label}
+                  />
+                </div>
+                <Input
+                  aria-label={t("form.socialUrl")}
+                  maxLength={LIMITS.contact.socialUrl}
+                  onChange={(e) =>
+                    updateSocial(index, {
+                      url: clamp(e.target.value, LIMITS.contact.socialUrl),
+                    })
+                  }
+                  placeholder={t("placeholders.url")}
+                  value={social.url}
+                />
+                <Button
+                  aria-label={t("form.remove")}
+                  onClick={() => removeSocial(index)}
+                  size="icon"
+                  variant="ghost"
+                >
+                  <X />
+                </Button>
+              </div>
+            ))}
+            <Button onClick={addSocial} size="sm" variant="outline">
+              <Plus data-icon="inline-start" />
+              {t("form.addSocial")}
+            </Button>
+          </div>
+        </section>
+      </Band>
 
       {/* ── Submission ── */}
-      <section className="space-y-3">
-        <h2 className="font-medium text-body-sm">{t("form.submission")}</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <FormField
-            label={t("form.submissionTarget")}
-            onChange={(v) => onChange({ ...data, submissionTarget: v })}
-            placeholder={t("placeholders.submissionTarget")}
-            value={data.submissionTarget ?? ""}
-          />
-          <FormField
-            label={t("form.cohortYear")}
-            numeric
-            onChange={(v) =>
-              onChange({
-                ...data,
-                cohortYear: v ? Number(v.slice(0, 4)) : undefined,
-              })
-            }
-            placeholder={t("placeholders.cohortYear")}
-            value={data.cohortYear ? String(data.cohortYear) : ""}
-          />
-        </div>
-        <p className="text-muted-foreground text-xs">{t("form.trackHint")}</p>
-      </section>
+      <Band asChild>
+        <section className="space-y-3 px-4 py-6 sm:px-6">
+          <h2 className="type-subtitle weight-semibold">
+            {t("form.submission")}
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormField
+              label={t("form.submissionTarget")}
+              onChange={(v) => onChange({ ...data, submissionTarget: v })}
+              placeholder={t("placeholders.submissionTarget")}
+              value={data.submissionTarget ?? ""}
+            />
+            <FormField
+              label={t("form.cohortYear")}
+              numeric
+              onChange={(v) =>
+                onChange({
+                  ...data,
+                  cohortYear: v ? Number(v.slice(0, 4)) : undefined,
+                })
+              }
+              placeholder={t("placeholders.cohortYear")}
+              value={data.cohortYear ? String(data.cohortYear) : ""}
+            />
+          </div>
+          <p className="type-caption text-muted-foreground">
+            {t("form.trackHint")}
+          </p>
+        </section>
+      </Band>
 
       {/* ── Projects (max 5) ── */}
-      <SectionList<Project>
-        addLabel={
-          data.projects.length >= MAX_PROJECTS
-            ? t("form.maxProjects", { max: MAX_PROJECTS })
-            : t("form.addProject")
-        }
-        hasError={(p) => Boolean(imageErrors[p.id])}
-        items={data.projects}
-        onAdd={addProject}
-        onRemove={removeProject}
-        onReorder={reorderProjects}
-        onTitleChange={() => undefined}
-        placeholder={t("form.projects")}
-        renderContent={renderProjectContent}
-        summary={(project, index) =>
-          project.title || t("form.projectFallback", { index: index + 1 })
-        }
-        title={t("form.projects")}
-        titleExtra={
-          <span className="shrink-0 text-muted-foreground text-xs">
-            {data.projects.length}/{MAX_PROJECTS}
-          </span>
-        }
-      />
+      <Band className="px-4 py-6 sm:px-6">
+        <SectionList<Project>
+          addLabel={
+            data.projects.length >= MAX_PROJECTS
+              ? t("form.maxProjects", { max: MAX_PROJECTS })
+              : t("form.addProject")
+          }
+          hasError={(p) => Boolean(imageErrors[p.id])}
+          items={data.projects}
+          onAdd={addProject}
+          onRemove={removeProject}
+          onReorder={reorderProjects}
+          placeholder={t("form.projects")}
+          removeLabel={t("form.remove")}
+          reorderLabel={t("form.dragToReorder")}
+          renderContent={renderProjectContent}
+          summary={(project, index) =>
+            project.title || t("form.projectFallback", { index: index + 1 })
+          }
+          title={t("form.projects")}
+          titleExtra={
+            <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
+              {data.projects.length}/{MAX_PROJECTS}
+            </span>
+          }
+        />
+      </Band>
     </div>
   );
 }

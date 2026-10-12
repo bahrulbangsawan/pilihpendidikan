@@ -1,4 +1,5 @@
 import { cn } from "@rulisme/ui/lib/utils";
+import { toggleVariants } from "@rulisme/ui/ui/toggle";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import type { Locale } from "@/i18n";
 import { SUPPORTED_LOCALES, useTranslation } from "@/i18n";
@@ -70,8 +71,8 @@ export function LanguageSwitcher() {
     navigate({ to: pathForLocale(code) });
   }
 
-  // Warm the other locale's route chunk on hover/focus so the switch (and its
-  // cross-fade) starts without waiting on the network. No loaders, so cheap.
+  // Warm the other locale's route chunk on hover/focus so the switch starts
+  // without waiting on the network. No loaders, so cheap.
   function preload(code: Locale) {
     if (code === locale) {
       return;
@@ -79,12 +80,15 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
+  // A Zedative segmented control: the shared outlined toggle pressable
+  // (`toggleVariants`), joined edge to edge. The current locale reads as "on"
+  // (pane-2 fill, semibold); `aria-current` says so to assistive tech.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="m-0 flex h-7 min-w-0 items-center overflow-hidden rounded-md border border-input bg-background p-0"
+      className="m-0 flex min-w-0 items-center p-0"
     >
-      {SUPPORTED_LOCALES.map((lang, i) => {
+      {SUPPORTED_LOCALES.map((lang) => {
         const Flag = FLAG_COMPONENTS[lang.code];
         const isActive = locale === lang.code;
         return (
@@ -92,19 +96,17 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              "press flex h-full items-center gap-1.5 px-2 font-medium text-xs outline-hidden transition-[color,background-color,box-shadow,scale] duration-150 ease-standard focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-inset",
-              i > 0 && "border-input border-l",
-              isActive
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+              toggleVariants({ variant: "outline", size: "sm" }),
+              "not-last:rounded-r-none not-first:rounded-l-none not-first:border-l-0 focus-visible:z-10"
             )}
+            data-state={isActive ? "on" : "off"}
             key={lang.code}
             onClick={() => handleSwitch(lang.code)}
             onFocus={() => preload(lang.code)}
             onPointerEnter={() => preload(lang.code)}
             type="button"
           >
-            <Flag className="h-3 w-5 shrink-0 rounded-[1px]" />
+            <Flag className="h-3 w-5 shrink-0 rounded-xs" />
             <span>{lang.code.toUpperCase()}</span>
           </button>
         );

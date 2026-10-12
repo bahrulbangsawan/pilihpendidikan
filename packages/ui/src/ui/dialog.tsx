@@ -4,6 +4,12 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 
+// Zedative window (DESIGN.md § Shapes / Elevation): 6px corners, a 1px
+// border on `bg-2` paper and the one soft drop shadow, over a flat 40% `shot`
+// backdrop. It opens and closes instantly. The title takes the title role,
+// the description the caption role, and a footer sits on a `line` rule over
+// a faint pane band that bleeds to the window edges.
+
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -34,10 +40,7 @@ function DialogOverlay({
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
-      className={cn(
-        "data-open:fade-in-0 data-closed:fade-out-0 fixed inset-0 isolate z-50 bg-black/80 duration-200 ease-standard data-closed:animate-out data-open:animate-in data-closed:duration-150 supports-backdrop-filter:backdrop-blur-xs",
-        className
-      )}
+      className={cn("fixed inset-0 z-50 bg-shot/40", className)}
       data-slot="dialog-overlay"
       {...props}
     />
@@ -57,7 +60,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "data-open:fade-in-0 data-open:zoom-in-98 data-closed:fade-out-0 data-closed:zoom-out-98 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg bg-popover p-4 text-popover-foreground text-xs/relaxed outline-hidden ring-1 ring-foreground/10 duration-200 ease-standard data-closed:animate-out data-open:animate-in data-closed:duration-150 sm:max-w-sm",
+          "type-body fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-lg border border-border bg-popover p-4 text-ink shadow-float outline-none sm:max-w-sm",
           className
         )}
         data-slot="dialog-content"
@@ -67,7 +70,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close asChild data-slot="dialog-close">
             <Button
-              className="absolute top-2 right-2"
+              className="absolute top-3 right-3"
               size="icon-sm"
               variant="ghost"
             >
@@ -84,7 +87,11 @@ function DialogContent({
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex flex-col gap-1", className)}
+      className={cn(
+        // Clear the corner close button when the window shows one.
+        "flex flex-col gap-1 text-left has-[~[data-slot=dialog-close]]:pr-8",
+        className
+      )}
       data-slot="dialog-header"
       {...props}
     />
@@ -102,7 +109,7 @@ function DialogFooter({
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        "-mx-4 -mb-4 flex flex-col-reverse gap-2 border-line border-t bg-pane/40 p-4 sm:flex-row sm:justify-end",
         className
       )}
       data-slot="dialog-footer"
@@ -124,7 +131,7 @@ function DialogTitle({
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn("font-heading font-medium text-body-sm", className)}
+      className={cn("type-title text-foreground", className)}
       data-slot="dialog-title"
       {...props}
     />
@@ -138,7 +145,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       className={cn(
-        "text-muted-foreground text-xs/relaxed *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+        "type-caption text-muted-foreground *:[a]:text-primary *:[a]:underline *:[a]:underline-offset-4",
         className
       )}
       data-slot="dialog-description"

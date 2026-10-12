@@ -3,6 +3,11 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
+// Zedative scroll area: a thin `line` thumb with 2px corners, like the
+// page's own scrollbar colour. The viewport takes the focus outline inside
+// its edge so a clipping parent cannot hide it. Radix wraps the content in a
+// `display: table` box that grows to fit; it is made a block so rows can
+// truncate (a `w-max` child still scrolls sideways).
 function ScrollArea({
   className,
   children,
@@ -15,7 +20,7 @@ function ScrollArea({
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
-        className="size-full rounded-[inherit] outline-hidden transition-[color,box-shadow] duration-150 ease-standard focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        className="[&>div]:block! size-full rounded-[inherit] outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:-outline-offset-2"
         data-slot="scroll-area-viewport"
       >
         {children}
@@ -34,7 +39,7 @@ function ScrollBar({
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
       className={cn(
-        "flex touch-none select-none p-px transition-colors duration-150 ease-standard data-horizontal:h-2.5 data-vertical:h-full data-vertical:w-2.5 data-horizontal:flex-col data-horizontal:border-t data-horizontal:border-t-transparent data-vertical:border-l data-vertical:border-l-transparent",
+        "flex touch-none select-none p-0.5 data-horizontal:h-2.5 data-vertical:h-full data-vertical:w-2.5 data-horizontal:flex-col",
         className
       )}
       data-orientation={orientation}
@@ -43,7 +48,7 @@ function ScrollBar({
       {...props}
     >
       <ScrollAreaPrimitive.ScrollAreaThumb
-        className="relative flex-1 rounded-full bg-border"
+        className="relative flex-1 rounded-xs bg-line transition-[background-color] duration-150 ease-standard hover:bg-offgray/60"
         data-slot="scroll-area-thumb"
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>

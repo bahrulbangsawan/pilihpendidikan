@@ -12,13 +12,6 @@ export function getRouter() {
     // being rebuilt on the click that follows.
     defaultPreload: "intent",
     defaultPreloadStaleTime: 30_000,
-    // Path changes cross-fade the page (`route-view` in
-    // @pilihpendidikan/config/motion.css); the first load and search/hash-only
-    // changes swap instantly.
-    defaultViewTransition: {
-      types: ({ fromLocation, pathChanged }) =>
-        fromLocation && pathChanged ? ["route"] : false,
-    },
     // Unknown URLs render NotFoundPage (also thrown by the `/$` catch-all).
     defaultNotFoundComponent: NotFoundPage,
   });

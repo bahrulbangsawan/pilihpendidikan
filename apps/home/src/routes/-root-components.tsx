@@ -16,12 +16,12 @@ function useLocale() {
   return localeFromPath(pathname);
 }
 
-// Warp is dark-canonical and the hub has no theme toggle, so `.dark` is set on
-// the server and no theme script runs.
+// Zedative is light-canonical (DESIGN.md: "Scheme: light") and the hub has no
+// theme toggle, so <html> carries no theme class and no theme script runs.
 export function RootDocument({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
   return (
-    <html className="dark" lang={locale}>
+    <html lang={locale}>
       <head>
         <HeadContent />
       </head>

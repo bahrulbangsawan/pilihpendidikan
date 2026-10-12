@@ -50,6 +50,23 @@ export function getT(locale: Locale) {
   };
 }
 
+/**
+ * Translate in the page's current language (`<html lang>`, kept in step with
+ * the route by the root shell). For code that runs outside render — module
+ * helpers, hooks' async callbacks and effects — where `useTranslation()` is
+ * not at hand.
+ */
+export function translateNow(
+  key: string,
+  params?: Record<string, string | number>
+): string {
+  const lang =
+    typeof document === "undefined"
+      ? DEFAULT_LOCALE
+      : document.documentElement.lang;
+  return getT(isValidLocale(lang) ? lang : DEFAULT_LOCALE)(key, params);
+}
+
 /** Date format locale mapping */
 export function getDateLocale(locale: Locale): string {
   return locale === "id" ? "id-ID" : "en-US";
@@ -68,7 +85,7 @@ export function headForLocale(locale: Locale, baseUrl: string) {
   const ogImage = buildOgUrl({
     title: t("meta.title"),
     subtitle: t("meta.siteName"),
-    theme: "dark",
+    theme: "light",
   });
 
   return {

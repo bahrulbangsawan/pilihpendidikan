@@ -14,7 +14,7 @@ import { countries } from "@/data/countries";
 import type { WilayahEntry } from "@/data/wilayah";
 import { loadProvinceData } from "@/data/wilayah";
 import { provinces as provinceList } from "@/data/wilayah/provinces";
-import { useTranslation } from "@/i18n";
+import { translateNow, useTranslation } from "@/i18n";
 
 interface AddressValues {
   city: string;
@@ -98,7 +98,7 @@ export function AddressFields({
         if (!cancelled) {
           setKabupatenList([]);
           setAllKecamatanList([]);
-          toast.error("Could not load province addresses.", {
+          toast.error(translateNow("errors.provinceLoadFailed"), {
             description: error instanceof Error ? error.message : undefined,
           });
         }
@@ -179,12 +179,15 @@ export function AddressFields({
       : t("placeholders.selectKabupatenFirst");
   }
 
+  // Two columns pair the cascade (country · province, city · district); the
+  // row widens with the form pane (the `form` container in invoice-form.tsx),
+  // not the viewport, since the pane is half the screen on desktop.
   return (
     <div
       className={
         isIndonesia
-          ? "grid grid-cols-2 gap-3 lg:grid-cols-5"
-          : "grid grid-cols-2 gap-3 lg:grid-cols-4"
+          ? "grid @3xl/form:grid-cols-3 grid-cols-2 gap-3"
+          : "grid @2xl/form:grid-cols-4 grid-cols-2 gap-3"
       }
     >
       {/* Country */}

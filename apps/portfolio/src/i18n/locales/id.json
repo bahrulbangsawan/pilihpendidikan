@@ -14,11 +14,17 @@
     "download": "Unduh",
     "generating": "Membuat...",
     "downloadPdf": "Unduh sebagai PDF",
-    "downloadJson": "Unduh sebagai JSON"
+    "downloadJson": "Unduh sebagai JSON",
+    "downloadPdfShort": "Unduh PDF",
+    "moreFormats": "Format unduhan lainnya"
   },
   "status": {
     "saving": "Menyimpan…",
-    "saved": "Tersimpan"
+    "saved": "Tersimpan",
+    "sessionExpired": "Sesi berakhir — masukkan ulang token Anda untuk menyimpan.",
+    "forbidden": "Anda tidak punya izin untuk mengedit dokumen ini.",
+    "saveFailed": "Gagal menyimpan ({code}). Perubahan Anda dibatalkan.",
+    "saveOffline": "Gagal menyimpan — periksa koneksi Anda. Perubahan Anda dibatalkan."
   },
   "theme": {
     "toLight": "Beralih ke mode terang",
@@ -109,6 +115,7 @@
     "uploadImage": "Unggah gambar 16:9",
     "imageHint": "Disarankan {w}×{h}. Harus tepat 16:9 — rasio lain ditolak.",
     "remove": "Hapus",
+    "dragToReorder": "Seret untuk mengurutkan ulang",
     "addProject": "Tambah Proyek",
     "maxProjects": "Maksimal {max} proyek tercapai",
     "projectFallback": "Proyek {index}",
@@ -177,11 +184,11 @@
   "preview": {
     "empty": "Mulai isi formulir untuk melihat pratinjau portofolio Anda",
     "documentLabel": "A4 lanskap · Apple Developer Academy",
-    "kicker": "Pengajuan Portofolio — Kohort {year}",
+    "kicker": "Pengajuan portofolio — kohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Nama Anda · Tagline",
     "author": "Penulis",
-    "background": "Latar Belakang",
+    "background": "Latar belakang",
     "contact": "Kontak",
     "submissionFor": "Diajukan untuk",
     "defaultTarget": "Apple Developer Academy Indonesia",
@@ -195,15 +202,15 @@
     "years": "thn",
     "independent": "Independen",
     "projectIndex": "Proyek {n} dari {total}",
-    "yearAccomplished": "Tahun Penyelesaian",
-    "rolePosition": "Peran / Posisi",
+    "yearAccomplished": "Tahun penyelesaian",
+    "rolePosition": "Peran / posisi",
     "type": "Jenis",
-    "groupProject": "Proyek Grup",
-    "selfInitiated": "Inisiatif Sendiri",
-    "classAssignment": "Tugas Kelas",
-    "workAssignment": "Tugas Kerja",
-    "publicationLink": "Tautan Publikasi",
-    "scopeOfWork": "Lingkup Pekerjaan",
+    "groupProject": "Proyek grup",
+    "selfInitiated": "Inisiatif sendiri",
+    "classAssignment": "Tugas kelas",
+    "workAssignment": "Tugas kerja",
+    "publicationLink": "Tautan publikasi",
+    "scopeOfWork": "Lingkup pekerjaan",
     "technologies": "Teknologi",
     "disciplines": "Disiplin",
     "untitledProject": "Proyek Tanpa Judul",
@@ -211,5 +218,11 @@
     "artworkNote": "Tangkapan layar berkualitas atau bidikan utama. Untuk karya video: tangkapan adegan plus tautan ke publikasi daring.",
     "impact": "Dampak",
     "learned": "Yang saya pelajari"
+  },
+  "notFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang Anda cari tidak ada atau mungkin sudah dipindahkan.",
+    "home": "Kembali ke beranda",
+    "back": "Kembali"
   }
 }

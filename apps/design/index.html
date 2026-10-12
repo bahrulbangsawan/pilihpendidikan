@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Zedative, the pilihpendidikan design system: tokens, type roles and every @rulisme/ui component."
+    >
+    <title>Zedative · pilihpendidikan design system</title>
+    <link rel="icon" type="image/png" href="/favicon-32x32.png">
+    <script>
+    "use strict";
+    try {
+      if (localStorage.getItem("zedative-theme") === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    } catch {
+      // Storage unavailable: start in light.
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

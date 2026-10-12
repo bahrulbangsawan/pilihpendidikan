@@ -10,68 +10,95 @@ import {
   View,
 } from "@react-pdf/renderer";
 import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
-import type { CVData } from "@/components/cv-form";
-import { formatOngoingEndDate, getDescriptionLines } from "./template-utils";
+import type { CVData, CVSectionId } from "@/components/cv-form";
+import { PDF_FONT_FAMILY } from "@/lib/pdf-fonts";
+import {
+  formatOngoingEndDate,
+  getDescriptionLines,
+  getTextLines,
+} from "./template-utils";
 
+// Zedative on paper: Inter (registered in src/lib/pdf-fonts.ts), name and
+// headings #000000, body ink #393d45, dates and meta #5a6170, rules #cbcfd4,
+// the photo frame #dadde2, links cobalt #1348dc. Weight 700 for the name,
+// 600 for headings and labels; copy set as written, no letter-spacing. The
+// preview (standard-preview.tsx) uses the matching token classes.
 const s = StyleSheet.create({
   page: {
-    fontFamily: "Helvetica",
+    fontFamily: PDF_FONT_FAMILY,
     backgroundColor: "#ffffff",
     paddingTop: 32,
     paddingBottom: 32,
     paddingHorizontal: 40,
     fontSize: 9,
-    color: "#404040",
+    color: "#393d45",
     lineHeight: 1.5,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  headerLeft: {},
-  headerRight: { textAlign: "right" },
-  name: {
-    fontSize: 16,
-    fontWeight: 700,
-    color: "#171717",
-    letterSpacing: -0.3,
-    marginBottom: 2,
-  },
-  jobTitle: { fontSize: 10, color: "#737373", marginTop: 4 },
-  contactLine: { fontSize: 8, color: "#737373", marginTop: 1 },
-  sectionWrap: { marginTop: 12 },
-  sectionTitle: {
-    fontSize: 10,
-    fontWeight: 600,
-    color: "#171717",
-    paddingBottom: 2,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
-  },
-  entryWrap: { marginTop: 8 },
-  entryTitle: { fontSize: 10, fontWeight: "bold", color: "#171717" },
-  entryDate: { fontSize: 8, color: "#737373", marginTop: 1 },
-  bodyText: { fontSize: 9, color: "#404040", lineHeight: 1.6 },
-  bulletRow: { flexDirection: "row", marginTop: 2, paddingLeft: 4 },
-  bulletDot: { width: 8, fontSize: 9, color: "#404040" },
-  bulletText: { flex: 1, fontSize: 9, color: "#404040", lineHeight: 1.6 },
-  skillRow: { marginTop: 3 },
-  skillLabel: { fontWeight: "bold", color: "#171717" },
-  langRow: { marginTop: 3 },
-  langProficiency: { color: "#737373" },
-  link: {
-    fontSize: 8,
-    color: "#737373",
-    textDecoration: "underline",
-    marginTop: 2,
-  },
-  photo: { width: 48, height: 48, borderRadius: 24, objectFit: "cover" },
-  headerLeftWithPhoto: {
+  // Name and title on the left, contact lines on the right, as in the
+  // preview. react-pdf lays a text out once, at the first width it is
+  // offered, and does not redo it when a row then shrinks its column, so
+  // neither column may rely on shrinking: the contact block is capped at
+  // half the row before it is measured, and the name takes what is left
+  // (flex: 1 starts it from zero). A long email or address wraps inside its
+  // own column instead of running over the name or off the page.
+  header: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
+  headerMain: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
   },
+  headerName: { flex: 1 },
+  // Each contact line hugs the right edge. textAlign alone does not move
+  // them: react-pdf aligns a line inside the width it measured, which in
+  // this shrink-to-fit column is the line's own.
+  headerRight: { maxWidth: "50%", alignItems: "flex-end", textAlign: "right" },
+  name: {
+    fontSize: 16,
+    fontWeight: 700,
+    color: "#000000",
+    marginBottom: 2,
+  },
+  jobTitle: { fontSize: 10, color: "#5a6170", marginTop: 4 },
+  contactLine: { fontSize: 8, color: "#5a6170", marginTop: 1 },
+  sectionWrap: { marginTop: 12 },
+  sectionTitle: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: "#000000",
+    paddingBottom: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cbcfd4",
+  },
+  entryWrap: { marginTop: 8 },
+  entryTitle: { fontSize: 10, fontWeight: 600, color: "#000000" },
+  entryDate: { fontSize: 8, color: "#5a6170", marginTop: 1 },
+  bodyText: { fontSize: 9, color: "#393d45", lineHeight: 1.6 },
+  bulletRow: { flexDirection: "row", marginTop: 2, paddingLeft: 4 },
+  bulletDot: { width: 8, fontSize: 9, color: "#393d45" },
+  bulletText: { flex: 1, fontSize: 9, color: "#393d45", lineHeight: 1.6 },
+  skillRow: { marginTop: 3 },
+  skillLabel: { fontWeight: 600, color: "#000000" },
+  langRow: { marginTop: 3 },
+  langProficiency: { color: "#5a6170" },
+  // A link inside a heading: cobalt, underlined (react-pdf's link default).
+  inlineLink: { color: "#1348dc" },
+  link: {
+    fontSize: 8,
+    color: "#1348dc",
+    textDecoration: "underline",
+    marginTop: 2,
+  },
+  // A 2pt-radius square in a 1pt frame. react-pdf paints an Image over its
+  // own border, so the frame is a View and the image sits inside it.
+  photoFrame: {
+    width: 48,
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#dadde2",
+    borderRadius: 2,
+  },
+  photo: { width: 46, height: 46, borderRadius: 1, objectFit: "cover" },
 });
 
 function formatMonth(value: string): string {
@@ -120,22 +147,311 @@ export function CVDocument({ data }: { data: CVData }) {
     projects,
     volunteer,
   } = data;
+
+  // Sections follow the order the user set (the form's drag handles, the
+  // MCP reorder tool), exactly as the preview lists them.
+  const sections: Record<CVSectionId, React.ReactNode> = {
+    summary: summary && (
+      <View key="summary" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.summaryTitle}</Text>
+        <View style={{ marginTop: 4 }}>
+          {getTextLines(summary).map(({ key, text }) => (
+            <Text key={key} style={s.bodyText}>
+              {text}
+            </Text>
+          ))}
+        </View>
+      </View>
+    ),
+    experience: experience.some((e) => e.company || e.title) && (
+      <View key="experience" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.experienceTitle}</Text>
+        {experience.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!(entry.company || entry.title)) {
+            return acc;
+          }
+          acc.push(
+            <View key={entry.id} style={s.entryWrap} wrap={false}>
+              <Text style={s.entryTitle}>
+                {entry.title}
+                {entry.title && entry.company ? " at " : ""}
+                {entry.url ? (
+                  <Link src={ensureUrl(entry.url)} style={s.inlineLink}>
+                    {entry.company}
+                  </Link>
+                ) : (
+                  entry.company
+                )}
+              </Text>
+              {(entry.startDate || entry.endDate || entry.current) && (
+                <Text style={s.entryDate}>
+                  {[
+                    formatMonth(entry.startDate),
+                    formatOngoingEndDate(
+                      entry.endDate,
+                      entry.current,
+                      formatMonth
+                    ),
+                  ]
+                    .filter(Boolean)
+                    .join(" – ")}
+                </Text>
+              )}
+              {(entry.workType || entry.locationPolicy) && (
+                <Text style={s.entryDate}>
+                  {[
+                    WORK_TYPE_LABELS[entry.workType],
+                    LOCATION_LABELS[entry.locationPolicy],
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </Text>
+              )}
+              {getDescriptionLines(entry.description).map(({ key, text }) => (
+                <View key={key} style={s.bulletRow}>
+                  <Text style={s.bulletDot}>{"•"}</Text>
+                  <Text style={s.bulletText}>{text}</Text>
+                </View>
+              ))}
+            </View>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    education: education.some((e) => e.institution || e.degree) && (
+      <View key="education" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.educationTitle}</Text>
+        {education.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!(entry.institution || entry.degree)) {
+            return acc;
+          }
+          acc.push(
+            <View key={entry.id} style={s.entryWrap} wrap={false}>
+              <Text style={s.entryTitle}>
+                {[entry.degree, entry.institution].filter(Boolean).join(" – ")}
+              </Text>
+              {(entry.startDate ||
+                entry.endDate ||
+                entry.current ||
+                entry.gpa ||
+                entry.category) && (
+                <Text style={s.entryDate}>
+                  {[
+                    [
+                      formatMonth(entry.startDate),
+                      entry.current ? "Present" : formatMonth(entry.endDate),
+                    ]
+                      .filter(Boolean)
+                      .join(" – "),
+                    entry.category
+                      ? EDUCATION_CATEGORY_LABELS[entry.category]
+                      : "",
+                    entry.gpa ? `GPA: ${entry.gpa}` : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </Text>
+              )}
+            </View>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    skills: skills.some((c) => c.items.length > 0) && (
+      <View key="skills" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.skillsTitle}</Text>
+        {skills.reduce<React.ReactNode[]>((acc, cat) => {
+          if (cat.items.length === 0) {
+            return acc;
+          }
+          acc.push(
+            <Text key={cat.id} style={[s.bodyText, s.skillRow]}>
+              {cat.name && <Text style={s.skillLabel}>{cat.name}: </Text>}
+              {cat.items.join(", ")}.
+            </Text>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    awards: awards.some((e) => e.title) && (
+      <View key="awards" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.awardsTitle}</Text>
+        {awards.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!entry.title) {
+            return acc;
+          }
+          acc.push(
+            <View key={entry.id} style={s.entryWrap} wrap={false}>
+              <Text style={s.entryTitle}>
+                {[entry.title, entry.issuer].filter(Boolean).join(" – ")}
+              </Text>
+              {entry.date && (
+                <Text style={s.entryDate}>{formatMonth(entry.date)}</Text>
+              )}
+              {entry.description && (
+                <View style={{ marginTop: 2 }}>
+                  {getTextLines(entry.description).map(({ key, text }) => (
+                    <Text key={key} style={s.bodyText}>
+                      {text}
+                    </Text>
+                  ))}
+                </View>
+              )}
+              {entry.url && (
+                <Link src={ensureUrl(entry.url)} style={s.link}>
+                  {entry.url}
+                </Link>
+              )}
+            </View>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    certificates: certificates.some((e) => e.name) && (
+      <View key="certificates" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.certificatesTitle}</Text>
+        {certificates.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!entry.name) {
+            return acc;
+          }
+          acc.push(
+            <View key={entry.id} style={s.entryWrap} wrap={false}>
+              <Text style={s.entryTitle}>
+                {entry.url ? (
+                  <Link src={ensureUrl(entry.url)} style={s.inlineLink}>
+                    {entry.name}
+                  </Link>
+                ) : (
+                  entry.name
+                )}
+                {entry.name && entry.issuer ? " – " : ""}
+                {entry.issuer}
+              </Text>
+              <Text style={s.entryDate}>
+                {[
+                  [
+                    entry.date ? formatMonth(entry.date) : "",
+                    entry.expiryDate ? formatMonth(entry.expiryDate) : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" – "),
+                  entry.credentialId ? `ID: ${entry.credentialId}` : "",
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </Text>
+            </View>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    languages: languages.some((e) => e.language) && (
+      <View key="languages" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.languagesTitle}</Text>
+        {languages.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!entry.language) {
+            return acc;
+          }
+          acc.push(
+            <Text key={entry.id} style={[s.bodyText, s.langRow]}>
+              {entry.language}
+              {entry.proficiency && (
+                <Text style={s.langProficiency}>
+                  {" "}
+                  {"–"} {entry.proficiency}
+                </Text>
+              )}
+            </Text>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+    projects: projects.length > 0 && (
+      <View key="projects" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.projectsTitle}</Text>
+        {projects.map((entry) => (
+          <View key={entry.id} style={s.entryWrap} wrap={false}>
+            {entry.url ? (
+              <Link
+                src={ensureUrl(entry.url)}
+                style={[s.entryTitle, s.inlineLink]}
+              >
+                {entry.name}
+              </Link>
+            ) : (
+              <Text style={s.entryTitle}>{entry.name}</Text>
+            )}
+            {entry.description && (
+              <View style={{ marginTop: 2 }}>
+                {getTextLines(entry.description).map(({ key, text }) => (
+                  <Text key={key} style={s.bodyText}>
+                    {text}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+    ),
+    volunteer: volunteer.some((e) => e.organization || e.role) && (
+      <View key="volunteer" style={s.sectionWrap}>
+        <Text style={s.sectionTitle}>{data.volunteerTitle}</Text>
+        {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
+          if (!(entry.organization || entry.role)) {
+            return acc;
+          }
+          acc.push(
+            <View key={entry.id} style={s.entryWrap} wrap={false}>
+              <Text style={s.entryTitle}>
+                {[entry.role, entry.organization].filter(Boolean).join(" at ")}
+              </Text>
+              {(entry.startDate || entry.endDate || entry.current) && (
+                <Text style={s.entryDate}>
+                  {[
+                    formatMonth(entry.startDate),
+                    formatOngoingEndDate(
+                      entry.endDate,
+                      entry.current,
+                      formatMonth
+                    ),
+                  ]
+                    .filter(Boolean)
+                    .join(" – ")}
+                </Text>
+              )}
+              {getDescriptionLines(entry.description).map(({ key, text }) => (
+                <View key={key} style={s.bulletRow}>
+                  <Text style={s.bulletDot}>{"•"}</Text>
+                  <Text style={s.bulletText}>{text}</Text>
+                </View>
+              ))}
+            </View>
+          );
+          return acc;
+        }, [])}
+      </View>
+    ),
+  };
+
   return (
     <Document>
       <Page size="A4" style={s.page}>
         {/* Header — two-column: name+title left, contact right */}
         <View style={s.header}>
-          <View
-            style={
-              personalInfo.usePhoto && personalInfo.photoUrl
-                ? s.headerLeftWithPhoto
-                : s.headerLeft
-            }
-          >
+          <View style={s.headerMain}>
             {personalInfo.usePhoto && personalInfo.photoUrl && (
-              <Image src={personalInfo.photoUrl} style={s.photo} />
+              <View style={s.photoFrame}>
+                <Image src={personalInfo.photoUrl} style={s.photo} />
+              </View>
             )}
-            <View>
+            <View style={s.headerName}>
               {personalInfo.fullName && (
                 <Text style={s.name}>{personalInfo.fullName}</Text>
               )}
@@ -168,300 +484,7 @@ export function CVDocument({ data }: { data: CVData }) {
             </View>
           )}
         </View>
-
-        {/* Summary */}
-        {summary && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.summaryTitle}</Text>
-            <Text style={[s.bodyText, { marginTop: 4 }]}>{summary}</Text>
-          </View>
-        )}
-
-        {/* Experience */}
-        {experience.some((e) => e.company || e.title) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.experienceTitle}</Text>
-            {experience.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!(entry.company || entry.title)) {
-                return acc;
-              }
-              acc.push(
-                <View key={entry.id} style={s.entryWrap} wrap={false}>
-                  <Text style={s.entryTitle}>
-                    {entry.title}
-                    {entry.title && entry.company ? " at " : ""}
-                    {entry.url ? (
-                      <Link src={ensureUrl(entry.url)}>{entry.company}</Link>
-                    ) : (
-                      entry.company
-                    )}
-                  </Text>
-                  {(entry.startDate || entry.endDate || entry.current) && (
-                    <Text style={s.entryDate}>
-                      {[
-                        formatMonth(entry.startDate),
-                        formatOngoingEndDate(
-                          entry.endDate,
-                          entry.current,
-                          formatMonth
-                        ),
-                      ]
-                        .filter(Boolean)
-                        .join(" – ")}
-                    </Text>
-                  )}
-                  {(entry.workType || entry.locationPolicy) && (
-                    <Text style={s.entryDate}>
-                      {[
-                        WORK_TYPE_LABELS[entry.workType],
-                        LOCATION_LABELS[entry.locationPolicy],
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </Text>
-                  )}
-                  {getDescriptionLines(entry.description).map(
-                    ({ key, text }) => (
-                      <View key={key} style={s.bulletRow}>
-                        <Text style={s.bulletDot}>{"•"}</Text>
-                        <Text style={s.bulletText}>{text}</Text>
-                      </View>
-                    )
-                  )}
-                </View>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Education */}
-        {education.some((e) => e.institution || e.degree) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.educationTitle}</Text>
-            {education.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!(entry.institution || entry.degree)) {
-                return acc;
-              }
-              acc.push(
-                <View key={entry.id} style={s.entryWrap} wrap={false}>
-                  <Text style={s.entryTitle}>
-                    {[entry.degree, entry.institution]
-                      .filter(Boolean)
-                      .join(" – ")}
-                  </Text>
-                  {(entry.startDate ||
-                    entry.endDate ||
-                    entry.current ||
-                    entry.gpa ||
-                    entry.category) && (
-                    <Text style={s.entryDate}>
-                      {[
-                        [
-                          formatMonth(entry.startDate),
-                          entry.current
-                            ? "Present"
-                            : formatMonth(entry.endDate),
-                        ]
-                          .filter(Boolean)
-                          .join(" – "),
-                        entry.category
-                          ? EDUCATION_CATEGORY_LABELS[entry.category]
-                          : "",
-                        entry.gpa ? `GPA: ${entry.gpa}` : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </Text>
-                  )}
-                </View>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Skills */}
-        {skills.some((c) => c.items.length > 0) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.skillsTitle}</Text>
-            {skills.reduce<React.ReactNode[]>((acc, cat) => {
-              if (cat.items.length === 0) {
-                return acc;
-              }
-              acc.push(
-                <Text key={cat.id} style={[s.bodyText, s.skillRow]}>
-                  {cat.name && <Text style={s.skillLabel}>{cat.name}: </Text>}
-                  {cat.items.join(", ")}.
-                </Text>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Awards */}
-        {awards.some((e) => e.title) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.awardsTitle}</Text>
-            {awards.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!entry.title) {
-                return acc;
-              }
-              acc.push(
-                <View key={entry.id} style={s.entryWrap} wrap={false}>
-                  <Text style={s.entryTitle}>
-                    {[entry.title, entry.issuer].filter(Boolean).join(" – ")}
-                  </Text>
-                  {entry.date && (
-                    <Text style={s.entryDate}>{formatMonth(entry.date)}</Text>
-                  )}
-                  {entry.description && (
-                    <Text style={[s.bodyText, { marginTop: 2 }]}>
-                      {entry.description}
-                    </Text>
-                  )}
-                  {entry.url && (
-                    <Link src={ensureUrl(entry.url)} style={s.link}>
-                      {entry.url}
-                    </Link>
-                  )}
-                </View>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Certificates */}
-        {certificates.some((e) => e.name) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.certificatesTitle}</Text>
-            {certificates.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!entry.name) {
-                return acc;
-              }
-              acc.push(
-                <View key={entry.id} style={s.entryWrap} wrap={false}>
-                  <Text style={s.entryTitle}>
-                    {entry.url ? (
-                      <Link src={ensureUrl(entry.url)}>{entry.name}</Link>
-                    ) : (
-                      entry.name
-                    )}
-                    {entry.name && entry.issuer ? " – " : ""}
-                    {entry.issuer}
-                  </Text>
-                  <Text style={s.entryDate}>
-                    {[
-                      [
-                        entry.date ? formatMonth(entry.date) : "",
-                        entry.expiryDate ? formatMonth(entry.expiryDate) : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" – "),
-                      entry.credentialId ? `ID: ${entry.credentialId}` : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </Text>
-                </View>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Languages */}
-        {languages.some((e) => e.language) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.languagesTitle}</Text>
-            {languages.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!entry.language) {
-                return acc;
-              }
-              acc.push(
-                <Text key={entry.id} style={[s.bodyText, s.langRow]}>
-                  {entry.language}
-                  {entry.proficiency && (
-                    <Text style={s.langProficiency}>
-                      {" "}
-                      {"–"} {entry.proficiency}
-                    </Text>
-                  )}
-                </Text>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
-
-        {/* Projects */}
-        {projects.length > 0 && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.projectsTitle}</Text>
-            {projects.map((entry) => (
-              <View key={entry.id} style={s.entryWrap} wrap={false}>
-                {entry.url ? (
-                  <Link src={ensureUrl(entry.url)} style={s.entryTitle}>
-                    {entry.name}
-                  </Link>
-                ) : (
-                  <Text style={s.entryTitle}>{entry.name}</Text>
-                )}
-                {entry.description && (
-                  <Text style={[s.bodyText, { marginTop: 2 }]}>
-                    {entry.description}
-                  </Text>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Volunteer */}
-        {volunteer.some((e) => e.organization || e.role) && (
-          <View style={s.sectionWrap}>
-            <Text style={s.sectionTitle}>{data.volunteerTitle}</Text>
-            {volunteer.reduce<React.ReactNode[]>((acc, entry) => {
-              if (!(entry.organization || entry.role)) {
-                return acc;
-              }
-              acc.push(
-                <View key={entry.id} style={s.entryWrap} wrap={false}>
-                  <Text style={s.entryTitle}>
-                    {[entry.role, entry.organization]
-                      .filter(Boolean)
-                      .join(" at ")}
-                  </Text>
-                  {(entry.startDate || entry.endDate || entry.current) && (
-                    <Text style={s.entryDate}>
-                      {[
-                        formatMonth(entry.startDate),
-                        formatOngoingEndDate(
-                          entry.endDate,
-                          entry.current,
-                          formatMonth
-                        ),
-                      ]
-                        .filter(Boolean)
-                        .join(" – ")}
-                    </Text>
-                  )}
-                  {getDescriptionLines(entry.description).map(
-                    ({ key, text }) => (
-                      <View key={key} style={s.bulletRow}>
-                        <Text style={s.bulletDot}>{"•"}</Text>
-                        <Text style={s.bulletText}>{text}</Text>
-                      </View>
-                    )
-                  )}
-                </View>
-              );
-              return acc;
-            }, [])}
-          </View>
-        )}
+        {data.sectionOrder.map((sectionId) => sections[sectionId])}
       </Page>
     </Document>
   );

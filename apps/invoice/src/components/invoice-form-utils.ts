@@ -87,6 +87,11 @@ const CURRENCY_LOCALE: Record<string, string> = {
 
 const currencyFormatters = new Map<string, Intl.NumberFormat>();
 
+// The ja-JP locale writes the yen sign full-width (U+FFE5), which Inter's
+// latin cut (the PDF's font) lacks; the PDF would set a missing glyph over
+// the amount. The ordinary yen sign is the same symbol and every font has it.
+const FULLWIDTH_YEN = /\uFFE5/g;
+
 export function formatCurrency(amount: number, currency: string): string {
   const locale = CURRENCY_LOCALE[currency] ?? "en-US";
   const key = `${locale}|${currency}`;
@@ -101,7 +106,7 @@ export function formatCurrency(amount: number, currency: string): string {
     });
     currencyFormatters.set(key, formatter);
   }
-  return formatter.format(amount);
+  return formatter.format(amount).replace(FULLWIDTH_YEN, "\u00A5");
 }
 
 // ── Calculations ───────────────────────────────────────────

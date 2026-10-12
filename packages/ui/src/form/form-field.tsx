@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useId } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
@@ -21,14 +22,22 @@ interface FormFieldProps {
   numeric?: boolean;
 }
 
+interface FormControlIds {
+  controlId: string;
+  labelId: string;
+  errorId?: string;
+}
+
+const NON_DIGITS = /\D+/g;
+
 // V2.2.3 / V2.3.7 boundary guard: strip anything that is not a digit so
 // non-finite tokens (NaN, Infinity, -Infinity, exponential noise) cannot
 // propagate upstream when the caller will pass the value to Number().
 function sanitizeNumeric(raw: string): string {
-  return raw.replace(/\D+/g, "");
+  return raw.replace(NON_DIGITS, "");
 }
 
-function FormControl(props: FormFieldProps) {
+function FormControl(props: FormFieldProps & FormControlIds) {
   const {
     value,
     onChange,
@@ -43,12 +52,18 @@ function FormControl(props: FormFieldProps) {
     min,
     max,
     numeric,
+    controlId,
+    labelId,
+    errorId,
   } = props;
 
   if (multiline) {
     return (
       <Textarea
+        aria-describedby={errorId}
+        aria-invalid={!!error}
         disabled={disabled}
+        id={controlId}
         onBlur={onBlur}
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
@@ -62,6 +77,7 @@ function FormControl(props: FormFieldProps) {
   if (type === "month") {
     return (
       <MonthPicker
+        aria-labelledby={labelId}
         disabled={disabled || !onChange}
         onChange={(nextValue) => onChange?.(nextValue)}
         value={value}
@@ -71,8 +87,11 @@ function FormControl(props: FormFieldProps) {
 
   return (
     <Input
+      aria-describedby={errorId}
       aria-invalid={!!error}
+      className={numeric ? "tabular-nums" : undefined}
       disabled={disabled}
+      id={controlId}
       inputMode={numeric ? "numeric" : undefined}
       max={max}
       min={min}
@@ -90,13 +109,37 @@ function FormControl(props: FormFieldProps) {
   );
 }
 
+// The builders' composed field (Zedative): a body-role label, one control and
+// a caption-role error in destructive, 6px apart. The label names the control
+// (or, for a month, the month/year pair) and the error describes it.
 export function FormField(props: FormFieldProps) {
-  const { label, error } = props;
+  const { label, error, type, multiline } = props;
+  const id = useId();
+  const controlId = `${id}-control`;
+  const labelId = `${id}-label`;
+  const errorId = error ? `${id}-error` : undefined;
+  const namesOneControl = multiline || type !== "month";
+
   return (
-    <div className="space-y-1.5">
-      <Label>{label}</Label>
-      <FormControl {...props} />
-      {error && <p className="text-destructive text-xs">{error}</p>}
+    <div
+      className="flex flex-col gap-1.5"
+      data-invalid={error ? true : undefined}
+      data-slot="form-field"
+    >
+      <Label htmlFor={namesOneControl ? controlId : undefined} id={labelId}>
+        {label}
+      </Label>
+      <FormControl
+        {...props}
+        controlId={controlId}
+        errorId={errorId}
+        labelId={labelId}
+      />
+      {error && (
+        <p className="type-caption text-destructive" id={errorId}>
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -113,10 +156,14 @@ export function FormFieldCustom({
   children,
 }: FormFieldCustomProps) {
   return (
-    <div className="space-y-1.5">
+    <div
+      className="flex flex-col gap-1.5"
+      data-invalid={error ? true : undefined}
+      data-slot="form-field"
+    >
       <Label>{label}</Label>
       {children}
-      {error && <p className="text-destructive text-xs">{error}</p>}
+      {error && <p className="type-caption text-destructive">{error}</p>}
     </div>
   );
 }

@@ -41,20 +41,20 @@ the API redirects to `?invoice=<slug>&print=1`.
 
 ## Shared UI
 
-Imports from `@rulisme/ui/*`, which resolves to the built `dist/` at runtime —
-build `packages/ui` first (the root `bun dev` / `bun run build` do). shadcn
-config in `components.json`.
+Imports from `@rulisme/ui/*`, compiled from `packages/ui/src` (tsconfig
+`paths` + Vite `resolve.tsconfigPaths`; Tailwind `@source`s the same folder),
+so component edits show up without a library build. shadcn config in
+`components.json`.
 
-## Design system — Warp ("moonlit terminal")
+## Design system — Zedative
 
-Shared with `apps/cv` and `apps/portfolio` (`DESIGN.md`). The `@theme inline` typography tokens in `src/styles.css` must stay byte-identical to `apps/cv` (`bun run parity:typography`). Never hardcode hex or `text-[Npx]` in chrome.
+The workspace's one design system: root `DESIGN.md` (§ Implementation maps every rule to code), lint rules in `TYPOGRAPHY.md`. `src/styles.css` only imports `@rulisme/ui/styles/theme.css` and holds the print artifact's CSS; it defines no tokens (`bun run parity:typography`). What is specific to this app:
 
-- **Themes.** Light and dark via next-themes (`.dark` class, system theme by default); dark is canonical. `theme-color` is `#121212`.
-- **Surfaces.** canvas `#121212` · banded `#1e1e1d` · card `#2f2f2f` · control `#383838` · floating `#40403f` (`--popover`). Text is warm off-white `#faf9f6` — never `#fff`.
-- **Type.** Named Warp tokens; `text-xs` for chrome; weights 400/500 only.
-- **Radius.** buttons/nav `4px`, cards/panels `8px`; buttons are never pill-shaped.
-- **Accent discipline.** Gold/cobalt accents only in code/syntax and section headings. No shadows. Exception: the per-invoice `accentColor` (default `#f48120`) and the swatch presets in `invoice-form.tsx` are document content — the user's branding on the invoice — and stay raw hex.
-- **Print exception.** The rendered invoice is a print artifact: `invoice-preview.tsx`, `invoice-pdf.tsx` and `.invoice-page` stay light and print-faithful (ink on white, Helvetica). The typography lint skips these files (`TYPOGRAPHY.md` § Exceptions).
+- **Editor frame.** Form pane and preview pane are divided by a `line` rule. Each pane's toolbar is a 56px band (`h-14`, `border-line` bottom rule, `sm` / `icon-sm` buttons) and a `Diamond` marks where the toolbar rule crosses the divider. Form sections are bands ruled by `line`; the form is a size container (`@container/form`), so its grids follow the pane's width, not the viewport's. The preview rests on `graph-paper`, the sheet framed by a 1px `border-border` hairline on screen only.
+- **Theme.** Light is the default (`defaultTheme="light"`, system theme not followed); the toolbar toggle switches to Night Desk (`.dark`). The head script in `src/routes/__root.tsx` applies the same rule before paint; `theme-color` is `#f4f4f2`.
+- **Shortcut.** The primary action is downloading the PDF: the preview toolbar's "Download PDF" button carries `<Kbd>D</Kbd>` and `aria-keyshortcuts="D"`, and `useShortcut("D", …)` runs the same download (off while that button is disabled and in the print view; never while typing, never behind an open dialog, menu or picker). The chevron beside it opens the PDF / JSON menu, whose PDF row shows `D` too. The cv and portfolio builders use the same split button. Never show a `<Kbd>` hint without its working key.
+- **Document accent colour.** The per-invoice `accentColor` (default `#f48120`) and the swatch presets in `invoice-form.tsx` are document content — the user's branding on the invoice — and stay raw hex.
+- **Print document.** The rendered invoice is a print artifact on Zedative: `invoice-preview.tsx`, `invoice-pdf.tsx` and `.invoice-page` are white paper set in Inter, sentence case with no letter-spacing, `#000000` title, names and amount due, `#393d45` text and figures, `#5a6170` labels and meta, `#cbcfd4` hairlines, the user's accent colour on the top rule, identical in light and Night Desk (`.invoice-page` re-scopes the colour tokens), and the two renderers mirror each other (`TYPOGRAPHY.md` § Exceptions; only the size, leading and weight lint checks skip `invoice-preview.tsx`). The PDF's type comes from the shared print module (`@rulisme/ui/print/pdf-fonts`, registered by `src/lib/pdf-fonts.ts`): the merged Inter cuts and the line-break policy (words whole, breaks after hyphens, dashes and slashes, long URLs and emails at their separators); the sheet sets `overflow-wrap: anywhere`. `src/lib/pdf-text.ts` runs every string through `@rulisme/ui/print/pdf-text`; the addresses and the notes keep the user's line breaks, one Text per line in the PDF (`toPrintLines`) and `whitespace-pre-line` on the sheet. `formatCurrency` writes the ordinary yen sign (ICU's full-width one is not in Inter's latin cut). The PDF keeps each item, the totals and the custom fields together and never lets the body share the page-number line. `@media print` in `src/styles.css` prints `.invoice-page` alone, in colour (`print-color-adjust: exact`, so the accent rule survives), with the same keep-together rules, so keep `invoice-no-print` on chrome.
 
 ## Browser testing
 

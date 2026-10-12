@@ -13,6 +13,8 @@
     "generating": "Generating...",
     "downloadPdf": "Download as PDF",
     "downloadJson": "Download as JSON",
+    "downloadPdfShort": "Download PDF",
+    "moreFormats": "More download formats",
     "clearAll": "Clear All",
     "mcp": "MCP"
   },
@@ -28,7 +30,11 @@
   },
   "status": {
     "saving": "Saving…",
-    "saved": "Saved"
+    "saved": "Saved",
+    "sessionExpired": "Session expired — re-enter your token to save.",
+    "forbidden": "You don't have permission to edit this document.",
+    "saveFailed": "Save failed ({code}). Your change was reverted.",
+    "saveOffline": "Save failed — check your connection. Your change was reverted."
   },
   "mcp": {
     "title": "Connect via MCP",
@@ -37,7 +43,12 @@
     "step2": "Add the MCP server to your client — Claude Code, Cursor, Codex, Windsurf, Zed, and more.",
     "step3": "Paste your personal URL into your client and restart it.",
     "cta": "Get my MCP token at api.pilihpendidikan.com/connect",
-    "privacy": "Your MCP URL is personal — keep it private."
+    "privacy": "Your MCP URL is personal — keep it private.",
+    "tokenLabel": "Personal token (enables cloud save)",
+    "tokenPlaceholder": "Paste your token to save edits",
+    "signedInAs": "Signed in as {email}. Edits to a loaded invoice save automatically.",
+    "tokenNotRecognized": "Token not recognized — generate a new one.",
+    "tokenOptional": "Optional. Without a token, edits stay in this browser only."
   },
   "form": {
     "invoiceDetails": "Invoice Details",
@@ -83,7 +94,8 @@
     "kecamatan": "District",
     "postalCode": "Postal Code",
     "country": "Country",
-    "period": "Period"
+    "period": "Period",
+    "itemFallback": "Item {n}"
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",
@@ -152,6 +164,21 @@
     "pdfReady": "PDF generated successfully"
   },
   "errors": {
-    "logoProcess": "Couldn't process that image. Try a different file."
+    "logoProcess": "Couldn't process that image. Try a different file.",
+    "preloadFailed": "Could not prepare the PDF download. Try downloading again.",
+    "restoreFailed": "Could not restore the saved invoice. Import a JSON export to recover it.",
+    "localSaveFailed": "Could not save this invoice in the browser. Download a JSON copy to keep your changes.",
+    "loadFailed": "Could not load the saved invoice.",
+    "notFound": "Invoice not found",
+    "invalidJson": "Invalid JSON file. Select a valid invoice JSON export.",
+    "pdfFailed": "Could not generate the PDF.",
+    "tryAgain": "Please try again.",
+    "provinceLoadFailed": "Could not load the province's addresses."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "home": "Back to home",
+    "back": "Go back"
   }
 }

@@ -1,36 +1,27 @@
 import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
+import { TYPE_UTILITIES, TYPE_WEIGHTS } from "./type-scale";
 
 const NON_DIGIT_RE = /\D/g;
 const HTTP_PROTOCOL_RE = /^https?:\/\//i;
 
-// tailwind-merge has no knowledge of the custom Warp typography utilities the
-// apps define in `@theme inline { … }` (see DESIGN.md / TYPOGRAPHY.md). Without
-// this config it reads `text-body-sm` as a text colour, so
-// `cn("text-body-sm", "text-muted-foreground")` silently drops the size and the
-// element renders at the inherited size. Register the custom font-size names so
-// cn() preserves them. The Warp scale bakes letter-spacing into each size token
-// (`--text-*--letter-spacing`), so there are no tracking utilities to register.
-// `bun run parity:twmerge` keeps this list in sync with every app's @theme.
-const twMerge = extendTailwindMerge({
+// tailwind-merge knows nothing about the Zedative type utilities defined in
+// `@rulisme/ui/styles/theme.css` (DESIGN.md / TYPOGRAPHY.md). Register the
+// roles (`type-body`, `type-title-compact`, …) and the weights
+// (`weight-semibold`, …) as their own groups so `cn()` keeps the last role
+// and the last weight, and drops any generic size, leading or weight they
+// replace. `bun run parity:twmerge` keeps these lists in sync with theme.css.
+const twMerge = extendTailwindMerge<"type-role" | "type-weight">({
   extend: {
     classGroups: {
-      "font-size": [
-        {
-          text: [
-            "display",
-            "heading-lg",
-            "heading",
-            "heading-sm",
-            "subheading",
-            "body",
-            "body-sm",
-            "caption-tracked",
-            "micro",
-          ],
-        },
-      ],
+      "type-role": [{ type: TYPE_UTILITIES }],
+      "type-weight": [{ weight: [...TYPE_WEIGHTS] }],
+    },
+    conflictingClassGroups: {
+      "type-role": ["font-size", "leading"],
+      "type-weight": ["font-weight"],
+      "font-weight": ["type-weight"],
     },
   },
 });

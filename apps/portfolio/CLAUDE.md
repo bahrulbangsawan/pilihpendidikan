@@ -38,13 +38,16 @@ config, the typography lint and the typography parity check — run
 - `src/components/portfolio-preview.tsx` — the locked A4-landscape preview (dark
   cover + up to 5 project pages). Uses the `.pf-*` scoped CSS in `styles.css`;
   fit-scales the natural-size deck to the pane via a ResizeObserver transform.
+  Its empty state is chrome (`Empty` from `@rulisme/ui`).
 - `src/components/portfolio-pdf.tsx` — `@react-pdf/renderer` `<PortfolioDocument>`
   reproducing the same A4-landscape layout (separate renderer; keep in sync with
   the preview by hand). Loaded via dynamic `import()` at download time.
-- `src/components/portfolio-generator.tsx` — 50/50 split orchestration + toolbar
-  (MCP token dialog, import JSON, prefill sample, clear-all confirm, theme,
-  language) + download dropdown (PDF/JSON) + `PortfolioPrintView` (`?print=1` →
-  `window.print()`, used by the `/portfolio/<slug>.pdf` redirect on `apps/api`).
+- `src/components/portfolio-generator.tsx` — 50/50 split orchestration + form
+  toolbar (MCP token dialog, import JSON, prefill sample, clear-all confirm,
+  theme, language) + preview toolbar (the primary **Download PDF** button with
+  its `D` shortcut, and a format menu for PDF/JSON; a floating download menu on
+  mobile) + `PortfolioPrintView` (`?print=1` → `window.print()`, used by the
+  `/portfolio/<slug>.pdf` redirect on `apps/api`).
 - `src/lib/use-cloud-save.ts` — owner-authenticated optimistic cloud save
   (`resource: "portfolio"`, `PUT /api/portfolio/:id`, Bearer-gated, rollback).
   `MCP_API` in `portfolio-generator.tsx` is `http://localhost:8788` in dev
@@ -63,20 +66,49 @@ image slot grows (height-driven, never cropped)** to fill the empty space, and
 the reflection strip + footer pack flush at the bottom. Keep the slot exactly
 16:9 (uploads are pre-validated 16:9) and never let content overflow the page.
 
-## Design system — Warp (see `DESIGN.md`)
+## Design system — Zedative
 
-App chrome is the shared dark Warp system (`@theme` typography is byte-identical
-to apps/cv and apps/invoice — `bun run parity:typography`; light + dark via
-next-themes). The **cover** is `#121212`; **project pages stay
-print-light** (ink on paper) but adopt Matter type + tracked uppercase eyebrows.
-NO drop shadows (pages get a hairline border), tags are 4px (never pills), text
-is warm off-white `#faf9f6` (never pure `#fff`); accents `#bd9f65` / `#6f839f`
-only in link/eyebrow contexts.
+The chrome follows the root `DESIGN.md` (rules mapped to code in its
+**Implementation** section) and `TYPOGRAPHY.md`; `src/styles.css` only imports
+the shared theme (`bun run parity:typography`) and adds the deck's `.pf-*`
+print CSS. What is specific to this app:
+
+- **Editor frame.** A split view: each pane is headed by a 56px toolbar band
+  (`h-14`, `border-line` rule, `size="sm"` / `icon-sm` buttons), the panes are
+  divided by a `line` rule, a `Diamond` marks where the toolbar rule crosses the
+  divider, and the deck rests on `graph-paper`. Form sections are full-bleed
+  `Band`s. Below `md` the panes stack and a floating button downloads.
+- **Theme.** Light is canonical: next-themes runs with `defaultTheme="light"`
+  and `enableSystem={false}` (the inline script in `__root.tsx` matches it);
+  the toolbar toggle switches to Night Desk (`.dark`).
+- **Shortcut.** The primary action is downloading the PDF: the toolbar button
+  carries `<Kbd>D</Kbd>` and `aria-keyshortcuts="D"`, and `useShortcut("D")`
+  performs the same download (never while typing, never behind an open
+  window). Keep the hint and the shortcut together.
+- **Print document (the deck).** The deck is ink on paper and mirrors its
+  `@react-pdf` twin (`TYPOGRAPHY.md` § Exceptions): literal colours, never
+  re-themed by Night Desk, its own base type (it does not inherit the chrome's
+  body role) in Inter at weights 400 / 600 / 700, copy in sentence case with
+  no letter-spacing. The PDF's type comes from the shared print module
+  (`@rulisme/ui/print/pdf-fonts`, registered by `src/lib/pdf-fonts.ts`): the
+  merged Inter cuts and the line-break policy (words whole, breaks after
+  hyphens, dashes and slashes, long URLs and emails at their separators);
+  `.pf-deck` sets `overflow-wrap: anywhere`. `src/lib/pdf-text.ts` runs every
+  string through `@rulisme/ui/print/pdf-text`, collapsing spaces and line
+  breaks as the preview's paragraphs do.
+  `.pf-deck` prints in colour (`print-color-adjust: exact`), so the cover slab
+  survives a browser print. It takes Zedative's colours in
+  **both renderers, kept in sync by hand**: the cover is `shot` `#2f343e` with
+  `#fafafa` text, `#b4b9c3` / `#9aa1ad` secondary text and a `#4a505c` rule;
+  links are cobalt `#1348dc` on paper and the lifted `#7c9cff` on the cover
+  (every text pair ≥ 4.5:1); tags and badges are 2px chips; no drop shadows
+  (the sheet gets a 1px `border` frame on screen, removed in print).
 
 ## Shared UI
 
-Imports primitives from `@rulisme/ui` (resolves to its built `dist/` at runtime —
-run `bun run build` in `packages/ui` first, or use the root `bun dev`).
+Imports primitives from `@rulisme/ui`, compiled from `packages/ui/src`
+(tsconfig `paths` + Vite `resolve.tsconfigPaths`; Tailwind `@source`s the same
+folder), so component edits show up without a library build.
 
 ## Browser testing
 

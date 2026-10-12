@@ -47,12 +47,12 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
   return (
     <section className="mt-3">
       <div className="flex items-baseline justify-between">
-        <h3 className="font-semibold text-neutral-700 text-sm">
+        <h3 className="font-semibold text-foreground text-sm">
           {entry.title}
           {entry.title && entry.company ? ", " : ""}
           {entry.url ? (
             <a
-              className="underline"
+              className="text-primary underline"
               href={ensureUrl(entry.url)}
               rel="noopener noreferrer"
               target="_blank"
@@ -64,7 +64,7 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
           )}
         </h3>
         {(entry.startDate || entry.endDate || entry.current) && (
-          <span className="ml-4 shrink-0 text-neutral-700 text-xs">
+          <span className="ml-4 shrink-0 text-muted-foreground text-xs">
             {[
               formatMonth(entry.startDate),
               formatOngoingEndDate(entry.endDate, entry.current, formatMonth),
@@ -75,7 +75,7 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
         )}
       </div>
       {(entry.workType || entry.locationPolicy) && (
-        <p className="mt-1 text-neutral-500 text-xs">
+        <p className="mt-1 text-muted-foreground text-xs">
           {[
             WORK_TYPE_LABELS[entry.workType],
             LOCATION_LABELS[entry.locationPolicy],
@@ -87,10 +87,7 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
       {entry.description && (
         <ul className="mt-1 list-disc space-y-0.5 pl-4">
           {getDescriptionLines(entry.description).map((line) => (
-            <li
-              className="text-neutral-700 text-xs leading-relaxed"
-              key={line.key}
-            >
+            <li className="text-ink text-xs leading-relaxed" key={line.key}>
               {line.text}
             </li>
           ))}
@@ -108,13 +105,13 @@ function EducationEntry({ entry }: { entry: CVData["education"][number] }) {
   return (
     <section className="mt-3">
       <div className="flex items-baseline justify-between">
-        <h3 className="font-semibold text-neutral-700 text-sm">
+        <h3 className="font-semibold text-foreground text-sm">
           {entry.degree}
           {entry.degree && entry.institution ? ", " : ""}
           {entry.institution}
         </h3>
         {(entry.startDate || entry.endDate || entry.current) && (
-          <span className="ml-4 shrink-0 text-neutral-700 text-xs">
+          <span className="ml-4 shrink-0 text-muted-foreground text-xs">
             {[
               formatMonth(entry.startDate),
               entry.current ? "Present" : formatMonth(entry.endDate),
@@ -125,7 +122,7 @@ function EducationEntry({ entry }: { entry: CVData["education"][number] }) {
         )}
       </div>
       {(entry.gpa || entry.category) && (
-        <p className="text-neutral-500 text-xs">
+        <p className="text-muted-foreground text-xs">
           {[
             entry.category ? EDUCATION_CATEGORY_LABELS[entry.category] : "",
             entry.gpa ? `GPA: ${entry.gpa}` : "",
@@ -150,10 +147,10 @@ function CertificateEntry({
   return (
     <section className="mt-3">
       <div className="flex items-baseline justify-between">
-        <h3 className="font-semibold text-neutral-700 text-sm">
+        <h3 className="font-semibold text-foreground text-sm">
           {entry.url ? (
             <a
-              className="underline"
+              className="text-primary underline"
               href={ensureUrl(entry.url)}
               rel="noopener noreferrer"
               target="_blank"
@@ -166,7 +163,7 @@ function CertificateEntry({
           {entry.issuer ? `, ${entry.issuer}` : ""}
         </h3>
         {(entry.date || entry.expiryDate) && (
-          <span className="ml-4 shrink-0 text-neutral-700 text-xs">
+          <span className="ml-4 shrink-0 text-muted-foreground text-xs">
             {[
               entry.date ? formatMonth(entry.date) : "",
               entry.expiryDate ? formatMonth(entry.expiryDate) : "",
@@ -177,7 +174,7 @@ function CertificateEntry({
         )}
       </div>
       {entry.credentialId && (
-        <p className="text-neutral-700 text-xs">
+        <p className="text-muted-foreground text-xs">
           Credential ID: {entry.credentialId}
         </p>
       )}
@@ -193,13 +190,13 @@ function VolunteerEntry({ entry }: { entry: CVData["volunteer"][number] }) {
   return (
     <section className="mt-3">
       <div className="flex items-baseline justify-between">
-        <h3 className="font-semibold text-neutral-700 text-sm">
+        <h3 className="font-semibold text-foreground text-sm">
           {entry.role}
           {entry.role && entry.organization ? ", " : ""}
           {entry.organization}
         </h3>
         {(entry.startDate || entry.endDate || entry.current) && (
-          <span className="ml-4 shrink-0 text-neutral-700 text-xs">
+          <span className="ml-4 shrink-0 text-muted-foreground text-xs">
             {[
               formatMonth(entry.startDate),
               formatOngoingEndDate(entry.endDate, entry.current, formatMonth),
@@ -212,10 +209,7 @@ function VolunteerEntry({ entry }: { entry: CVData["volunteer"][number] }) {
       {entry.description && (
         <ul className="mt-1 list-disc space-y-0.5 pl-4">
           {getDescriptionLines(entry.description).map((line) => (
-            <li
-              className="text-neutral-700 text-xs leading-relaxed"
-              key={line.key}
-            >
+            <li className="text-ink text-xs leading-relaxed" key={line.key}>
               {line.text}
             </li>
           ))}
@@ -253,7 +247,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
   if (!hasContent) {
     return (
       <article className="cv-page mx-auto" id="cv-content">
-        <p className="text-center text-neutral-400 text-sm">
+        <p className="text-center text-muted-foreground text-sm">
           Fill in the form to preview your Harvard CV.
         </p>
       </article>
@@ -265,7 +259,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
       {/* Header */}
       <header className="mb-3 text-center">
         {personalInfo.fullName && (
-          <h1 className="font-semibold text-neutral-700 text-xl tracking-tight">
+          <h1 className="font-bold text-foreground text-xl">
             {personalInfo.fullName}
           </h1>
         )}
@@ -273,7 +267,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           personalInfo.phone ||
           personalInfo.location ||
           personalInfo.linkedIn) && (
-          <p className="mt-2 text-neutral-500 text-xs">
+          <p className="mt-2 text-muted-foreground text-xs">
             {[
               personalInfo.email,
               personalInfo.phone ? formatPhoneDisplay(personalInfo.phone) : "",
@@ -283,7 +277,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
                 : "",
             ]
               .filter(Boolean)
-              .join("  |  ")}
+              .join(" | ")}
           </p>
         )}
       </header>
@@ -297,10 +291,10 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "summary":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.summaryTitle}
                 </h2>
-                <p className="mt-2 text-neutral-700 text-xs leading-relaxed">
+                <p className="mt-2 whitespace-pre-line text-ink text-xs leading-relaxed">
                   {summary}
                 </p>
               </section>
@@ -308,7 +302,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "experience":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.experienceTitle}
                 </h2>
                 {experience.map((entry) => (
@@ -319,7 +313,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "education":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.educationTitle}
                 </h2>
                 {education.map((entry) => (
@@ -330,7 +324,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "skills":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.skillsTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
@@ -339,9 +333,9 @@ export function HarvardPreview({ data }: { data: CVData }) {
                       return acc;
                     }
                     acc.push(
-                      <p className="text-neutral-700 text-xs" key={category.id}>
+                      <p className="text-ink text-xs" key={category.id}>
                         {category.name && (
-                          <span className="font-semibold">
+                          <span className="font-semibold text-foreground">
                             {category.name}:{" "}
                           </span>
                         )}
@@ -356,7 +350,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "awards":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.awardsTitle}
                 </h2>
                 {awards.reduce<React.ReactNode[]>((acc, entry) => {
@@ -366,24 +360,24 @@ export function HarvardPreview({ data }: { data: CVData }) {
                   acc.push(
                     <section className="mt-3" key={entry.id}>
                       <div className="flex items-baseline justify-between">
-                        <h3 className="font-semibold text-neutral-700 text-sm">
+                        <h3 className="font-semibold text-foreground text-sm">
                           {entry.title}
                           {entry.issuer ? `, ${entry.issuer}` : ""}
                         </h3>
                         {entry.date && (
-                          <span className="ml-4 shrink-0 text-neutral-700 text-xs">
+                          <span className="ml-4 shrink-0 text-muted-foreground text-xs">
                             {formatMonth(entry.date)}
                           </span>
                         )}
                       </div>
                       {entry.description && (
-                        <p className="mt-1 text-neutral-700 text-xs leading-relaxed">
+                        <p className="mt-1 whitespace-pre-line text-ink text-xs leading-relaxed">
                           {entry.description}
                         </p>
                       )}
                       {entry.url && (
                         <a
-                          className="mt-1 block text-neutral-900 text-xs underline"
+                          className="mt-1 block text-primary text-xs underline"
                           href={ensureUrl(entry.url)}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -400,7 +394,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "certificates":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.certificatesTitle}
                 </h2>
                 {certificates.map((entry) => (
@@ -411,7 +405,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "languages":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.languagesTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
@@ -420,10 +414,12 @@ export function HarvardPreview({ data }: { data: CVData }) {
                       return acc;
                     }
                     acc.push(
-                      <p className="text-neutral-700 text-xs" key={entry.id}>
-                        <span className="font-semibold">{entry.language}</span>
+                      <p className="text-ink text-xs" key={entry.id}>
+                        <span className="font-semibold text-foreground">
+                          {entry.language}
+                        </span>
                         {entry.proficiency && (
-                          <span>
+                          <span className="text-muted-foreground">
                             {" "}
                             {"–"} {entry.proficiency}
                           </span>
@@ -438,16 +434,16 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "projects":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.projectsTitle}
                 </h2>
                 {projects.map((entry) => (
                   <section className="mt-3" key={entry.id}>
                     <div className="flex items-baseline justify-between">
-                      <h3 className="font-semibold text-neutral-700 text-sm">
+                      <h3 className="font-semibold text-foreground text-sm">
                         {entry.url ? (
                           <a
-                            className="underline"
+                            className="text-primary underline"
                             href={ensureUrl(entry.url)}
                             rel="noopener noreferrer"
                             target="_blank"
@@ -460,7 +456,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
                       </h3>
                     </div>
                     {entry.description && (
-                      <p className="mt-1 text-neutral-700 text-xs leading-relaxed">
+                      <p className="mt-1 whitespace-pre-line text-ink text-xs leading-relaxed">
                         {entry.description}
                       </p>
                     )}
@@ -471,7 +467,7 @@ export function HarvardPreview({ data }: { data: CVData }) {
           case "volunteer":
             return (
               <section className="mt-3" key={sectionId}>
-                <h2 className="border-neutral-900 border-t border-b py-1 text-center font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+                <h2 className="border-line border-t border-b py-1 text-center font-semibold text-foreground text-xs">
                   {data.volunteerTitle}
                 </h2>
                 {volunteer.map((entry) => (

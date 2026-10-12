@@ -15,9 +15,12 @@
     "generating": "Membuat...",
     "downloadPdf": "Unduh sebagai PDF",
     "downloadMarkdown": "Unduh sebagai Markdown",
-    "downloadJson": "Unduh sebagai JSON"
+    "downloadJson": "Unduh sebagai JSON",
+    "downloadPdfShort": "Unduh PDF",
+    "moreFormats": "Format unduhan lainnya"
   },
   "template": {
+    "label": "Template CV",
     "basic": "Dasar",
     "harvard": "Harvard",
     "simple": "Sederhana",
@@ -25,7 +28,15 @@
   },
   "status": {
     "saving": "Menyimpan…",
-    "saved": "Tersimpan"
+    "saved": "Tersimpan",
+    "sessionExpired": "Sesi berakhir — masukkan ulang token Anda untuk menyimpan.",
+    "forbidden": "Anda tidak punya izin untuk mengedit dokumen ini.",
+    "saveFailed": "Gagal menyimpan ({code}). Perubahan Anda dibatalkan.",
+    "saveOffline": "Gagal menyimpan — periksa koneksi Anda. Perubahan Anda dibatalkan."
+  },
+  "preview": {
+    "emptyTitle": "CV Anda masih kosong",
+    "emptyDescription": "Mulai isi formulir untuk melihat pratinjau CV Anda."
   },
   "theme": {
     "toLight": "Beralih ke mode terang",
@@ -74,6 +85,7 @@
     "usePhotoProfile": "Gunakan Foto Profil",
     "uploadPhoto": "Unggah Foto",
     "remove": "Hapus",
+    "dragToReorder": "Seret untuk mengurutkan ulang",
     "present": "Sekarang",
     "company": "Perusahaan",
     "companyUrl": "URL Perusahaan",
@@ -231,5 +243,11 @@
     "currentlyVolunteeringHere": "Saat ini menjadi relawan di sini",
     "uploadProfilePhoto": "Unggah foto profil",
     "profile": "Profil"
+  },
+  "notFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang Anda cari tidak ada atau mungkin sudah dipindahkan.",
+    "home": "Kembali ke beranda",
+    "back": "Kembali"
   }
 }

@@ -1,31 +1,40 @@
-import { badgeVariants } from "@rulisme/ui/ui/badge-variants";
-import { buttonVariants } from "@rulisme/ui/ui/button-variants";
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@rulisme/ui/ui/card";
+import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
+import { Badge } from "@rulisme/ui/ui/badge";
+import { Button } from "@rulisme/ui/ui/button";
+import { Kbd } from "@rulisme/ui/ui/kbd";
 import { ArrowUpRight } from "lucide-react";
 import type { Service, ToolId } from "@/config/services";
 import { connectUrl, isLive, mcpEndpoint } from "@/config/services";
 import { useTranslation } from "@/i18n";
 
-const CARD_CLASS = "h-full gap-3 py-5";
-const CARD_HEADER_CLASS = "px-5";
-const CARD_BODY_CLASS = "px-5";
+// The single-letter shortcut behind each action's <Kbd> hint (DESIGN.md
+// § Components). A key is registered only while its service is live, so a
+// hint never shows without a working shortcut.
+const TOOL_SHORTCUTS: Record<ToolId, string> = {
+  cv: "C",
+  invoice: "I",
+  portfolio: "P",
+};
+const MCP_SHORTCUT = "M";
 
-function StatusBadge({ live }: { live: boolean }) {
+// A butted cell in the ruled column (DESIGN.md § Layout), not a floating
+// card: the hub's grid draws the hairlines between cells.
+const CELL_CLASS = "flex h-full flex-col gap-3 px-5 py-8 sm:px-10";
+
+/** Same-tab navigation, exactly what a click on the action's link does. */
+function navigateTo(href: string) {
+  window.location.assign(href);
+}
+
+function CellHeader({ title, live }: { title: string; live: boolean }) {
   const { t } = useTranslation();
   return (
-    <span
-      className={badgeVariants({ variant: live ? "secondary" : "outline" })}
-      data-slot="status-badge"
-    >
-      {live ? t("status.live") : t("status.soon")}
-    </span>
+    <div className="flex items-start justify-between gap-3">
+      <h3 className="type-subtitle weight-semibold">{title}</h3>
+      <Badge className="shrink-0" variant={live ? "secondary" : "outline"}>
+        {live ? t("status.live") : t("status.soon")}
+      </Badge>
+    </div>
   );
 }
 
@@ -39,30 +48,26 @@ export function ServiceCard({ id, service }: { id: ToolId; service: Service }) {
   const name = t(`services.${id}.name`);
   // The builders are bilingual too: English at `/`, Indonesian at `/id`.
   const href = locale === "id" ? `${service.url}/id` : service.url;
+  const shortcut = TOOL_SHORTCUTS[id];
+  useShortcut(shortcut, () => navigateTo(href), live);
 
   return (
-    <Card className={CARD_CLASS} data-service={id} data-status={service.status}>
-      <CardHeader className={CARD_HEADER_CLASS}>
-        <CardTitle className="text-subheading">
-          <h3>{name}</h3>
-        </CardTitle>
-        <CardAction>
-          <StatusBadge live={live} />
-        </CardAction>
-      </CardHeader>
-      <CardDescription className={`${CARD_BODY_CLASS} flex-1 text-body-sm`}>
-        <p>{t(`services.${id}.description`)}</p>
-      </CardDescription>
+    <div className={CELL_CLASS} data-service={id} data-status={service.status}>
+      <CellHeader live={live} title={name} />
+      <p className="type-body flex-1 text-pretty">
+        {t(`services.${id}.description`)}
+      </p>
       {live && (
-        <CardFooter className={`${CARD_BODY_CLASS} pt-2`}>
-          <a className={buttonVariants({ size: "lg" })} href={href}>
+        <Button asChild className="self-start" variant="outline">
+          <a aria-keyshortcuts={shortcut} href={href}>
             {t("status.open")}
             <span className="sr-only"> {name}</span>
             <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
+            <Kbd aria-hidden="true">{shortcut}</Kbd>
           </a>
-        </CardFooter>
+        </Button>
       )}
-    </Card>
+    </div>
   );
 }
 
@@ -73,39 +78,31 @@ export function ServiceCard({ id, service }: { id: ToolId; service: Service }) {
 export function McpCard({ api }: { api: Service }) {
   const { t } = useTranslation();
   const live = isLive(api);
+  useShortcut(MCP_SHORTCUT, () => navigateTo(connectUrl(api)), live);
 
   return (
-    <Card className={CARD_CLASS} data-service="api" data-status={api.status}>
-      <CardHeader className={CARD_HEADER_CLASS}>
-        <CardTitle className="text-subheading">
-          <h3>{t("services.mcp.name")}</h3>
-        </CardTitle>
-        <CardAction>
-          <StatusBadge live={live} />
-        </CardAction>
-      </CardHeader>
-      <CardDescription className={`${CARD_BODY_CLASS} text-body-sm`}>
-        <p>{t("services.mcp.description")}</p>
-      </CardDescription>
+    <div className={CELL_CLASS} data-service="api" data-status={api.status}>
+      <CellHeader live={live} title={t("services.mcp.name")} />
+      <p className="type-body max-w-2xl text-pretty">
+        {t("services.mcp.description")}
+      </p>
       {live && (
-        <CardFooter
-          className={`${CARD_BODY_CLASS} flex-wrap items-center gap-3 pt-2`}
-        >
-          <p className="flex min-w-0 flex-wrap items-center gap-2 text-muted-foreground text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-1">
+          <p className="type-caption flex min-w-0 flex-wrap items-center gap-2 text-muted-foreground">
             {t("services.mcp.endpointLabel")}
-            <code className="break-all rounded-md bg-muted px-2 py-1 font-mono text-foreground text-xs">
+            <code className="type-caption break-all rounded-sm bg-muted px-1.5 text-foreground">
               {mcpEndpoint(api)}
             </code>
           </p>
-          <a
-            className={buttonVariants({ size: "lg", variant: "outline" })}
-            href={connectUrl(api)}
-          >
-            {t("services.mcp.connect")}
-            <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
-          </a>
-        </CardFooter>
+          <Button asChild variant="outline">
+            <a aria-keyshortcuts={MCP_SHORTCUT} href={connectUrl(api)}>
+              {t("services.mcp.connect")}
+              <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
+              <Kbd aria-hidden="true">{MCP_SHORTCUT}</Kbd>
+            </a>
+          </Button>
+        </div>
       )}
-    </Card>
+    </div>
   );
 }

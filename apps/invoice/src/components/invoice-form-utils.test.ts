@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { InvoiceLineItem } from "./invoice-form-utils";
 import {
   calcSubtotal,
+  formatCurrency,
   formatInvoiceDate,
   lineItemTotal,
 } from "./invoice-form-utils";
@@ -82,5 +83,15 @@ describe("formatInvoiceDate", () => {
 
   it("returns an empty string unchanged", () => {
     expect(formatInvoiceDate("")).toBe("");
+  });
+});
+
+describe("formatCurrency", () => {
+  it("writes the yen sign the PDF's font has", () => {
+    // ICU writes it full-width (U+FFE5) for ja-JP in some runtimes; Inter's
+    // latin cut has only the ordinary sign.
+    const yen = formatCurrency(76_760, "JPY");
+    expect(yen).toBe("\u00A576,760");
+    expect(yen).not.toContain("\uFFE5");
   });
 });

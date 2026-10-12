@@ -14,11 +14,17 @@
     "download": "Download",
     "generating": "Generating...",
     "downloadPdf": "Download as PDF",
-    "downloadJson": "Download as JSON"
+    "downloadJson": "Download as JSON",
+    "downloadPdfShort": "Download PDF",
+    "moreFormats": "More download formats"
   },
   "status": {
     "saving": "Saving…",
-    "saved": "Saved"
+    "saved": "Saved",
+    "sessionExpired": "Session expired — re-enter your token to save.",
+    "forbidden": "You don't have permission to edit this document.",
+    "saveFailed": "Save failed ({code}). Your change was reverted.",
+    "saveOffline": "Save failed — check your connection. Your change was reverted."
   },
   "theme": {
     "toLight": "Switch to light mode",
@@ -109,6 +115,7 @@
     "uploadImage": "Upload 16:9 image",
     "imageHint": "Recommended {w}×{h}. Must be exactly 16:9 — other ratios are rejected.",
     "remove": "Remove",
+    "dragToReorder": "Drag to reorder",
     "addProject": "Add Project",
     "maxProjects": "Maximum {max} projects reached",
     "projectFallback": "Project {index}",
@@ -177,7 +184,7 @@
   "preview": {
     "empty": "Start filling in the form to see your portfolio preview",
     "documentLabel": "A4 landscape · Apple Developer Academy",
-    "kicker": "Portfolio Submission — Cohort {year}",
+    "kicker": "Portfolio submission — cohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Your Name · Headline",
     "author": "Author",
@@ -195,15 +202,15 @@
     "years": "yrs",
     "independent": "Independent",
     "projectIndex": "Project {n} of {total}",
-    "yearAccomplished": "Year Accomplished",
-    "rolePosition": "Role / Position",
+    "yearAccomplished": "Year accomplished",
+    "rolePosition": "Role / position",
     "type": "Type",
-    "groupProject": "Group Project",
+    "groupProject": "Group project",
     "selfInitiated": "Self-initiated",
-    "classAssignment": "Class Assignment",
-    "workAssignment": "Work Assignment",
-    "publicationLink": "Publication Link",
-    "scopeOfWork": "Scope of Work",
+    "classAssignment": "Class assignment",
+    "workAssignment": "Work assignment",
+    "publicationLink": "Publication link",
+    "scopeOfWork": "Scope of work",
     "technologies": "Technologies",
     "disciplines": "Disciplines",
     "untitledProject": "Untitled Project",
@@ -211,5 +218,11 @@
     "artworkNote": "Craftsmanship-quality screenshots or a hero shot. For video work: scene screenshots plus a link to the online publication.",
     "impact": "Impact",
     "learned": "What I learned"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "home": "Back to home",
+    "back": "Go back"
   }
 }

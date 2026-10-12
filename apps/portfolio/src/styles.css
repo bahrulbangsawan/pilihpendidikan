@@ -1,267 +1,79 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
-/* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
-   (code chips). The --font-sans / --font-mono stacks fall through to these. */
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/geist-mono/400.css";
+/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+   imports the same theme and defines no tokens of its own; this file adds
+   only the print artifact below. */
+@import "@rulisme/ui/styles/theme.css";
 
-@source "../node_modules/@rulisme/ui/dist";
-
-@custom-variant dark (&:is(.dark *));
-
-/* Hide scrollbars on the editor scroll panels while keeping scroll behavior. */
-@utility scrollbar-hide {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/*
- * Warp — "moonlit terminal" design system (see DESIGN.md).
- * Dark warm-neutral terminal aesthetic. This @theme block mirrors
- * apps/cv / apps/invoice so the three apps share one design
- * system. Editor chrome only — the portfolio print artifact (.pf-deck and the
- * cover/project pages) stays print-faithful and is re-scoped at the bottom.
- *
- * Accent discipline: --color-gold-leaf and --color-muted-cobalt appear ONLY in
- * code/terminal/syntax and section headings — never on buttons, tags, or badges.
- */
-@theme inline {
-  /* Fonts — Matter (UI), Geist/Matter Mono (code chips only). System fallback. */
-  --font-heading: var(--font-sans);
-  --font-sans:
-    "Matter", "Inter", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono:
-    "Geist Mono", "Matter Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", monospace;
-
-  /* Warp raw palette — DESIGN.md. */
-  --color-warm-off-white: #faf9f6;
-  --color-bone-gray: #868684;
-  --color-pale-stone: #b4b4b2;
-  --color-faint-linen: #e3e2e0;
-  --color-smoke-charcoal: #2f2f2f;
-  --color-iron-veil: #383838;
-  --color-slate-hearth: #40403f;
-  --color-deep-ember: #121212;
-  --color-smoked-onyx: #1e1e1d;
-  --color-absolute: #000000;
-  --color-ink-black: #080808;
-  --color-gold-leaf: #bd9f65;
-  --color-muted-cobalt: #6f839f;
-
-  /* Surfaces — DESIGN.md elevation ladder (0 canvas → 4 floating). */
-  --color-surface-canvas: #121212;
-  --color-surface-banded: #1e1e1d;
-  --color-surface-card: #2f2f2f;
-  --color-surface-control: #383838;
-  --color-surface-floating: #40403f;
-
-  /* shadcn/reui semantic aliases → resolve to the :root values below. */
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-
-  /* Radius — DESIGN.md: buttons/nav 4 · cards/icons 8 · images 20 (never pill). */
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 14px;
-  --radius-2xl: 20px;
-  --radius-3xl: 20px;
-  --radius-4xl: 24px;
-
-  /* Type scale — Matter. Each size pairs its line-height + (negative) tracking,
-     so a single utility carries the engineered look (DESIGN.md Type Scale). */
-  --text-micro: 10px;
-  --text-micro--line-height: 1.2;
-  --text-micro--letter-spacing: 0.2px;
-  --text-caption-tracked: 11px;
-  --text-caption-tracked--line-height: 1.2;
-  --text-caption-tracked--letter-spacing: 2.2px;
-  --text-body-sm: 14px;
-  --text-body-sm--line-height: 1.38;
-  --text-body-sm--letter-spacing: 0.14px;
-  --text-body: 16px;
-  --text-body--line-height: 1.38;
-  --text-body--letter-spacing: 0.16px;
-  --text-subheading: 20px;
-  --text-subheading--line-height: 1.3;
-  --text-subheading--letter-spacing: -0.2px;
-  --text-heading-sm: 24px;
-  --text-heading-sm--line-height: 1.2;
-  --text-heading-sm--letter-spacing: -0.48px;
-  --text-heading: 32px;
-  --text-heading--line-height: 1.19;
-  --text-heading--letter-spacing: -0.64px;
-  --text-heading-lg: 48px;
-  --text-heading-lg--line-height: 1.1;
-  --text-heading-lg--letter-spacing: -1.44px;
-  --text-display: 68px;
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -2.04px;
-
-  /* Weights — 400 / 500 only (font-bold is forbidden in chrome). */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-}
-
-/*
- * Light (:root) is the default theme — a warm "daylight" counterpart to Warp
- * dark. next-themes toggles the `.dark` class on <html>; when it is absent the
- * light tokens below apply, when present the dark block wins. Semantic
- * shadcn/reui vars are mapped onto warm surfaces so every @rulisme/ui primitive
- * inherits the skin in both themes. Editor chrome only — the portfolio print
- * artifact stays print-faithful and is re-scoped at the bottom of this file.
- */
-:root {
-  --background: #faf9f6; /* warm off-white canvas */
-  --foreground: #1e1e1d; /* warm near-black ink (never pure #000) */
-  --card: #ffffff; /* white card lifts above the canvas */
-  --card-foreground: #1e1e1d;
-  --popover: #ffffff; /* floating panels (dialogs/popovers) */
-  --popover-foreground: #1e1e1d;
-  --primary: #1e1e1d; /* filled control — ink on light */
-  --primary-foreground: #faf9f6;
-  --secondary: #ececea; /* light warm secondary control */
-  --secondary-foreground: #1e1e1d;
-  --muted: #f0efec; /* recessed warm light */
-  --muted-foreground: #6b6a66; /* warm stone — low-emphasis text */
-  --accent: #ececea; /* hover / highlight surface */
-  --accent-foreground: #1e1e1d;
-  --destructive: oklch(0.577 0.245 27.325); /* error red (semantic state) */
-  --border: oklch(0.27 0.01 60 / 12%); /* warm ink hairline */
-  --input: oklch(0.27 0.01 60 / 18%); /* input border */
-  --ring: #868684; /* neutral focus ring (no gold/cobalt on chrome) */
-  --chart-1: #bd9f65;
-  --chart-2: #6f839f;
-  --chart-3: #6b6a66;
-  --chart-4: #868684;
-  --chart-5: #1e1e1d;
-  --radius: 0.5rem;
-  --sidebar: #f0efec;
-  --sidebar-foreground: #1e1e1d;
-  --sidebar-primary: #1e1e1d;
-  --sidebar-primary-foreground: #faf9f6;
-  --sidebar-accent: #ececea;
-  --sidebar-accent-foreground: #1e1e1d;
-  --sidebar-border: oklch(0.27 0.01 60 / 12%);
-  --sidebar-ring: #868684;
-}
-
-/* Dark class mirrors :root so the dark: variant + colorScheme stay consistent. */
-.dark {
-  --background: #121212;
-  --foreground: #faf9f6;
-  --card: #2f2f2f;
-  --card-foreground: #faf9f6;
-  --popover: #40403f;
-  --popover-foreground: #faf9f6;
-  --primary: #faf9f6;
-  --primary-foreground: #121212;
-  --secondary: #383838;
-  --secondary-foreground: #faf9f6;
-  --muted: #262624;
-  --muted-foreground: #b4b4b2;
-  --accent: #383838;
-  --accent-foreground: #faf9f6;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.97 0.006 95 / 12%);
-  --input: oklch(0.97 0.006 95 / 16%);
-  --ring: #b4b4b2;
-  --chart-1: #bd9f65;
-  --chart-2: #6f839f;
-  --chart-3: #b4b4b2;
-  --chart-4: #868684;
-  --chart-5: #faf9f6;
-  --sidebar: #1e1e1d;
-  --sidebar-foreground: #faf9f6;
-  --sidebar-primary: #faf9f6;
-  --sidebar-primary-foreground: #121212;
-  --sidebar-accent: #383838;
-  --sidebar-accent-foreground: #faf9f6;
-  --sidebar-border: oklch(0.97 0.006 95 / 12%);
-  --sidebar-ring: #b4b4b2;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings:
-      "ss01" on,
-      "tnum" on;
-  }
-  html {
-    font-size: 100%;
-    @apply font-sans;
-  }
-}
+/* The app compiles @rulisme/ui from source (vite `resolve.tsconfigPaths`),
+   so Tailwind scans that source for the classes it uses. */
+@source "../../../packages/ui/src";
 
 /*
  * ── Portfolio preview document ──────────────────────────────────────────────
  * A locked, print-faithful Apple-Developer-Academy A4-LANDSCAPE artifact that
- * floats on the dark editor canvas. DESIGN.md print exception: NOT dark-themed
- * (except the cover). Ported verbatim in geometry from portfolio-mock/index.html
- * — fixed 16:9 image slot (150mm), bounded Scope-of-Work list, -webkit-line-clamp
- * per LINES, align-content:start, equal 12px rhythm — with the Warp adaptations
- * the brief calls for: Matter type, tracked uppercase eyebrows, #121212 cover,
- * muted-cobalt links/accents, neutral flat badges, de-pilled tags, and NO drop
- * shadows (the system is flat; pages get a hairline border instead).
+ * rests on the editor's graph paper. TYPOGRAPHY.md § Exceptions: it is a print
+ * artifact, so every colour on its pages is a literal and Night Desk (`.dark`)
+ * never re-themes it — the deck looks the same in both schemes (only the
+ * sheet's frame and the print view's backdrop, which are chrome and never
+ * print, follow the theme tokens). Ported verbatim in
+ * geometry from portfolio-mock/index.html — fixed 16:9 image slot (150mm),
+ * bounded Scope-of-Work list, -webkit-line-clamp per LINES,
+ * align-content:start, equal 12px rhythm — with the Zedative adaptations,
+ * mirrored in portfolio-pdf.tsx: the cover on Zedative's dark `shot` surface
+ * (#2f343e) in #fafafa with light blue-grey secondary text (every pair
+ * ≥ 4.5:1); project pages in Zedative ink on white (fg #000000 headings and
+ * names, ink #393d45 body, fg-muted #5a6170 values and meta, `line` #cbcfd4
+ * rules, `border` #dadde2 frames); cobalt links (#1348dc on paper, the lifted
+ * Night Desk cobalt #7c9cff on the cover); neutral flat badges; 2px chips and
+ * a 2px image tile; NO drop shadows (pages get a hairline frame). Type is
+ * Zedative's one family, Inter, at the static cuts the PDF embeds
+ * (src/lib/pdf-fonts.ts): 400 text, 600 headings and names, 700 the cover
+ * title. Copy renders as written, in sentence case, with no case transform
+ * and no tracking.
  */
 .pf-deck {
-  --pf-ink: #1d1d1f;
-  --pf-ink-soft: #6e6e73;
-  --pf-ink-faint: #a1a1a6;
-  --pf-line: #e3e3e6;
+  /* Paper: Zedative's print palette as literals, so `.dark` never reaches it. */
   --pf-bg: #ffffff;
-  --pf-panel: #f5f5f7;
-  --pf-accent: #6f839f; /* DESIGN.md muted-cobalt — secondary link / tag accent */
-  --pf-cover-bg: #121212; /* DESIGN.md deep-ember (mock used #000) */
+  --pf-fg: #000000; /* fg — project title, headings, the author's name */
+  --pf-ink: #393d45; /* ink — body copy, 10.90:1 */
+  --pf-muted: #5a6170; /* fg-muted — rail values, chips, meta, 6.22:1 */
+  --pf-line: #cbcfd4; /* line — the hairline rules */
+  --pf-border: #dadde2; /* border — chip and image frames */
+  --pf-panel: #fafafa; /* bg-2 — chip and image-slot fill */
+  --pf-accent: #1348dc; /* Zedative cobalt — links on paper, 7.03:1 */
+  --pf-cover-bg: #2f343e; /* Zedative `shot`, the brand's dark surface */
+  --pf-cover-fg: #fafafa; /* 11.96:1 on the cover */
+  --pf-cover-soft: #b4b9c3; /* kicker, subtitle — 6.34:1 */
+  --pf-cover-faint: #9aa1ad; /* footer columns — 4.80:1 */
+  --pf-cover-dot: #858c99; /* the decorative full stop of the title */
+  --pf-cover-line: #4a505c; /* the rule above the cover footer */
+  --pf-cover-accent: #7c9cff; /* cobalt lifted for the dark cover — 4.79:1 */
   --pf-page-w: 297mm;
   --pf-page-h: 210mm;
   --pf-gutter: 14mm;
 
   width: var(--pf-page-w);
+  /* The deck's own base type, insulated from the chrome: <body> carries the
+     Zedative body role (13px on a 20px line), which would otherwise leak into
+     every deck element that sets no size or line height of its own (it
+     clipped the cover subtitle). Inter at its text optical size throughout,
+     the optical size of the static cuts embedded in the PDF. */
   font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  font-variation-settings: "opsz" 14;
   color: var(--pf-ink);
-  letter-spacing: -0.01em;
+  color-scheme: light;
   -webkit-font-smoothing: antialiased;
+  /* A run too long for its line (a URL, an email) breaks anywhere, as the
+     PDF's hyphenation callback lets it (src/lib/pdf-fonts.ts). */
+  overflow-wrap: anywhere;
+  /* The cover slab and the chip fills are backgrounds; browsers drop those
+     from print unless told the colours are content. */
+  print-color-adjust: exact;
 }
 
 .pf-page {
@@ -271,7 +83,9 @@
   margin: 0 auto 28px;
   overflow: hidden;
   background: var(--pf-bg);
-  border: 1px solid var(--pf-line); /* hairline in place of the mock's drop shadow */
+  /* The sheet's 1px frame on the graph paper, in place of the mock's drop
+     shadow. Chrome, not ink: the `border` token, removed in print. */
+  border: 1px solid var(--border);
 }
 .pf-page:last-child {
   margin-bottom: 0;
@@ -284,52 +98,54 @@
   justify-content: space-between;
   padding: var(--pf-gutter);
   background: var(--pf-cover-bg);
-  color: #faf9f6; /* warm off-white — never pure #fff */
+  color: var(--pf-cover-fg);
 }
 .pf-cover__kicker {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   overflow: hidden;
-  color: #b4b4b2;
+  color: var(--pf-cover-soft);
   font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* The arrow is an inline SVG stroked in currentColor, so the ring and the
+   arrow share the cover text colour, as in the PDF. */
 .pf-cover__kicker .pf-dot {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
   width: 22px;
   height: 22px;
-  border: 1.5px solid #faf9f6;
+  border: 1.5px solid var(--pf-cover-fg);
   border-radius: 50%;
-  font-size: 12px;
+  color: var(--pf-cover-fg);
 }
+/* Headings set their colour: the theme's base layer gives h1–h6 the chrome
+   `foreground`, which would follow Night Desk. */
 .pf-cover__title {
   display: -webkit-box;
   margin: 0;
   overflow: hidden;
+  color: var(--pf-cover-fg);
   font-size: 96px;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 0.98;
-  letter-spacing: -0.03em;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
 .pf-cover__title .pf-muted {
-  color: #868684;
+  color: var(--pf-cover-dot);
 }
 .pf-cover__sub {
   display: -webkit-box;
   margin: 18px 0 0;
   overflow: hidden;
-  color: #b4b4b2;
+  color: var(--pf-cover-soft);
   font-size: 28px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
@@ -338,31 +154,40 @@
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
   gap: 28px;
   padding-top: 26px;
-  border-top: 1px solid #2a2a2d;
+  border-top: 1px solid var(--pf-cover-line);
+}
+/* Columns keep their share: without this an unbreakable email or URL widened
+   its column and pushed the last one off the sheet. */
+.pf-cover__foot > div {
+  min-width: 0;
 }
 .pf-cover__foot h4 {
   margin: 0 0 6px;
   overflow: hidden;
-  color: #faf9f6;
+  color: var(--pf-cover-fg);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .pf-cover__foot p {
-  display: -webkit-box;
   margin: 0;
-  overflow: hidden;
-  color: #98989d;
+  color: var(--pf-cover-faint);
   font-size: 13px;
   line-height: 1.5;
+}
+/* Each entry of a column is its own block, clamped to its share of the
+   column's three lines (src/lib/cover-foot.ts; the count is set inline as
+   -webkit-line-clamp), as the PDF clamps each entry's Text: the first may
+   wrap into the lines the others leave, every later entry keeps one line and
+   ends in an ellipsis. */
+.pf-cover__line {
+  display: -webkit-box;
+  overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
 .pf-cover__foot a {
-  color: var(--pf-accent);
+  color: var(--pf-cover-accent);
   text-decoration: none;
 }
 
@@ -399,18 +224,16 @@
 .pf-field h5 {
   margin: 0 0 4px;
   overflow: hidden;
-  color: var(--pf-ink);
+  color: var(--pf-fg);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .pf-field p {
   margin: 0;
   overflow: hidden;
-  color: var(--pf-ink-soft);
+  color: var(--pf-muted);
   font-size: 13px;
   line-height: 1.45;
   text-overflow: ellipsis;
@@ -427,28 +250,25 @@
 }
 .pf-tag {
   padding: 5px 9px;
-  border: 1px solid var(--pf-line);
-  border-radius: 4px; /* de-pilled — mock used 999px; DESIGN.md forbids pills */
+  border: 1px solid var(--pf-border);
+  border-radius: 2px; /* a Zedative chip — the mock used 999px pills */
   background: var(--pf-panel);
-  color: var(--pf-ink-soft);
+  color: var(--pf-muted);
   font-size: 11px;
   line-height: 1;
 }
 .pf-badge {
   display: inline-block;
   padding: 4px 8px;
-  border: 1px solid var(--pf-line);
-  border-radius: 4px;
+  border: 1px solid var(--pf-border);
+  border-radius: 2px;
   background: var(--pf-panel);
-  color: var(--pf-ink-soft); /* neutral — no bright brand color on badges */
+  color: var(--pf-muted); /* neutral — no bright brand color on badges */
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 .pf-badge--group {
-  border-color: #d6d6da;
-  color: var(--pf-ink);
+  border-color: var(--pf-line);
+  color: var(--pf-fg);
 }
 
 /* right content column — flex column holding the text block then the figure,
@@ -465,10 +285,10 @@
   min-height: 44px; /* reserves exactly 1 line */
   margin: 0;
   overflow: hidden;
+  color: var(--pf-fg);
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.05;
-  letter-spacing: -0.025em;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
@@ -479,9 +299,8 @@
   overflow: hidden;
   color: var(--pf-ink);
   font-size: 19px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.45;
-  letter-spacing: -0.015em;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -490,7 +309,7 @@
   min-height: 70px; /* reserves 3 lines */
   margin: 12px 0 0;
   overflow: hidden;
-  color: var(--pf-ink-soft);
+  color: var(--pf-ink);
   font-size: 14.5px;
   line-height: 1.6;
   -webkit-box-orient: vertical;
@@ -501,7 +320,8 @@
      column and grown as large as fits (flex-grow drives the height; width
      follows at 16:9, capped at the column). The image is pre-validated 16:9, so
      object-fit: cover fills it with NO crop. Matches the PDF renderer's fixed
-     16:9 card. Sized below full width because a full-width 16:9 is too tall. */
+     16:9 card. Sized below full width because a full-width 16:9 is too tall.
+     A Zedative tile: 2px corners and a 1px `border` frame, as in the PDF. */
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -513,10 +333,10 @@
   min-height: 0;
   margin-top: 12px;
   overflow: hidden;
-  border: 1px solid var(--pf-line);
-  border-radius: 14px;
+  border: 1px solid var(--pf-border);
+  border-radius: 2px;
   background: var(--pf-panel);
-  color: var(--pf-ink-faint);
+  color: var(--pf-muted);
   text-align: center;
   aspect-ratio: 16 / 9;
 }
@@ -527,9 +347,8 @@
   object-fit: cover;
 }
 .pf-figure .pf-ph-title {
-  color: var(--pf-ink-soft);
+  color: var(--pf-muted);
   font-size: 15px;
-  font-weight: 500;
 }
 .pf-figure .pf-ph-note {
   display: -webkit-box;
@@ -556,11 +375,9 @@
 }
 .pf-reflect h6 {
   margin: 0 0 5px;
-  color: var(--pf-ink-faint);
+  color: var(--pf-fg);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 .pf-reflect p {
   display: -webkit-box;
@@ -568,7 +385,7 @@
                        the figure above ends at the same Y as the PDF renderer */
   margin: 0;
   overflow: hidden;
-  color: var(--pf-ink-soft);
+  color: var(--pf-ink);
   font-size: 13px;
   line-height: 1.55;
   -webkit-box-orient: vertical;
@@ -582,10 +399,12 @@
   flex: 0 0 auto;
   align-items: baseline;
   justify-content: space-between;
+  /* Keeps a truncated left span's ellipsis off the right cluster. */
+  gap: 14px;
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--pf-line);
-  color: var(--pf-ink-faint);
+  color: var(--pf-muted);
   font-size: 11px;
 }
 .pf-pagefoot span {
@@ -593,34 +412,55 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* The theme's base layer sets <strong> to the chrome's 550 at opsz 18; on
+   paper the name takes the static 600 cut at the deck's text optical size. */
 .pf-pagefoot strong {
-  color: var(--pf-ink-soft);
-  font-weight: 500;
+  color: var(--pf-fg);
+  font-weight: 600;
+  font-variation-settings: "opsz" 14;
 }
-/* Right cluster: contact line (ellipsis-able) + the relocated page index. */
+/* Right cluster: contact line (ellipsis-able) + the relocated page index. It
+   stops at two thirds of the row, as the PDF caps its contact line, so a very
+   long email or target ellipsizes instead of pushing the index off the sheet
+   and the name keeps a third of the row. */
 .pf-pagefoot__right {
   display: inline-flex;
   flex-shrink: 0;
   align-items: baseline;
   gap: 14px;
   min-width: 0;
+  max-width: 66%;
   overflow: hidden;
 }
 .pf-pagefoot__index {
   flex-shrink: 0;
-  color: var(--pf-ink-faint);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  color: var(--pf-muted);
 }
 
 /* Scope of Work — bullet list, the only flexible field. Bounded so it can never
-   push Technologies past the page divider. */
+   push Technologies past the page divider: when the rail is full (six items
+   beside six wrapped tag rows) the field shrinks and the list sheds whole
+   items instead of running under the Technologies block. */
 .pf-field--sow {
+  display: flex;
   flex: 0 1 auto;
+  flex-direction: column;
   min-height: 0;
 }
+.pf-field--sow h5 {
+  flex-shrink: 0;
+}
 .pf-sow {
-  max-height: 116px; /* ~6 single-line items; clipped on the UL, not the LI */
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  /* An item that no longer fits wraps into a second column beside the rail,
+     which the clip hides, so only whole items ever show (the PDF does the
+     same). */
+  flex-wrap: wrap;
+  align-content: flex-start;
+  min-height: 0;
+  max-height: calc(6 * (13px * 1.45 + 2px)); /* six single-line items */
   margin: 0;
   padding-left: 0;
   overflow: hidden;
@@ -630,10 +470,12 @@
 }
 .pf-sow li {
   position: relative;
+  flex: none;
+  width: 100%;
   margin-bottom: 2px;
   padding-left: 14px; /* hanging indent that reserves room for the ::before bullet */
   overflow: hidden;
-  color: var(--pf-ink-soft);
+  color: var(--pf-muted);
   font-size: 13px;
   line-height: 1.45;
   text-overflow: ellipsis;
@@ -643,7 +485,7 @@
   content: "•";
   position: absolute;
   left: 2px;
-  color: var(--pf-ink-faint);
+  color: var(--pf-muted);
 }
 /* Technologies block pins to the bottom of the rail so it holds its position
    regardless of how many SOW bullets are present. */
@@ -663,21 +505,19 @@
 .pf-preview-fit .pf-deck {
   transform-origin: top left;
 }
-.pf-empty {
-  padding: 5rem 1rem;
-  text-align: center;
-}
 
 /* Standalone print/PDF view (portfolio.pilihpendidikan.com/?portfolio=<slug>&print=1).
-   Centers the natural-size deck on the dark editor backdrop for on-screen
-   viewing; the @media print rules below strip it to bare A4-landscape pages. */
+   Centers the natural-size deck on the editor's graph paper (the `graph-paper`
+   utility on the element sets the grid, so only the colour is set here) for
+   on-screen viewing; the @media print rules below strip it to bare
+   A4-landscape pages. */
 .pf-print-root {
   display: flex;
   justify-content: center;
   min-height: 100svh;
   padding: 2rem 1rem;
   overflow: auto;
-  background: var(--muted);
+  background-color: var(--background);
 }
 
 @media print {
@@ -720,9 +560,15 @@
   .pf-deck {
     margin: 0 !important;
   }
+  /* Each sheet lays out as on screen. Printing lays a sheet out in pages,
+     and Chrome's flex layout split across pages kept every Scope of Work
+     item of a full rail and pushed Technologies over the Impact strip. Size
+     containment makes the sheet monolithic (its size is its own 297 × 210mm),
+     so it is laid out whole, as the screen lays it out. */
   .pf-page {
     margin: 0 !important;
     border: none !important;
+    contain: strict;
     break-after: page;
     page-break-after: always;
   }

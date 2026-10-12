@@ -1,3 +1,7 @@
+HISTORICAL: this prompt built the portfolio app under the Warp design system,
+which Zedative has since replaced everywhere (see DESIGN.md). Its design
+instructions no longer apply; the locked deck geometry still does.
+
 /goal Build new TanStack Start SSR app `apps/portfolio-bahrul` (dev port 4005, wrangler name portfolio-bahrul, host portfolio.bahrul.me) in this Bun+Turborepo monorepo, mirroring apps/cv-bahrul + invoice-bahrul. Deploy via Cloudflare.
 Purpose: Bilingual portfolio builder that edits up to 5 projects and renders a locked Apple-Developer-Academy A4 portfolio preview, downloadable as PDF and JSON.
 

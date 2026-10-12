@@ -1,7 +1,7 @@
 import { parse } from "@babel/parser";
 import { isNode, VISITOR_KEYS } from "@babel/types";
 import type { Node, ObjectProperty } from "@babel/types";
-import { globSync, readFileSync, statSync } from "node:fs";
+import { existsSync, globSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const fontProperties: Record<string, boolean> = {
@@ -54,12 +54,19 @@ function visitNode(node: Node, filename: string): number {
 // @react-pdf/renderer documents (`*-pdf.tsx`) style text through StyleSheet
 // objects: react-pdf has no className or Tailwind, so fontSize / fontFamily /
 // fontWeight are the only way to set type in the exported PDF. They are print
-// artifacts (TYPOGRAPHY.md § Exceptions), not DOM styles.
+// artifacts (TYPOGRAPHY.md § Exceptions), not DOM styles. The shared print
+// fonts module (`packages/ui/src/print/pdf-fonts.ts`) lists the static Inter
+// cuts for `Font.register`, whose `fontWeight` keys name a cut rather than
+// style anything.
 const REACT_PDF_IMPORT = /from\s+["']@react-pdf\/renderer["']/;
 const PDF_DOCUMENT_FILE = /-pdf\.tsx$/;
+const PRINT_FONTS_FILE = /\/print\/pdf-fonts\.ts$/;
 
 function isReactPdfDocument(filename: string, source: string): boolean {
-  return PDF_DOCUMENT_FILE.test(filename) && REACT_PDF_IMPORT.test(source);
+  return (
+    (PDF_DOCUMENT_FILE.test(filename) && REACT_PDF_IMPORT.test(source)) ||
+    PRINT_FONTS_FILE.test(filename)
+  );
 }
 
 function inspectFile(filename: string): number {
@@ -85,8 +92,12 @@ for (const scope of scopes.length
       "apps/cv/src",
       "apps/invoice/src",
       "apps/portfolio/src",
+      "apps/design/src",
       "packages/ui/src",
     ]) {
+  if (!existsSync(scope)) {
+    continue;
+  }
   if (statSync(scope).isFile()) {
     violations += inspectFile(scope);
     continue;

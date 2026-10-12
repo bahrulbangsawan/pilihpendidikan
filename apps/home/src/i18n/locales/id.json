@@ -7,12 +7,27 @@
     "ogImageAlt": "Pilih Pendidikan — Pembuat CV, invoice, dan portofolio"
   },
   "nav": {
-    "switchLanguage": "English"
+    "switchLanguage": "English",
+    "sections": "Bagian di halaman ini"
+  },
+  "news": {
+    "label": "Kabar:",
+    "live": "Pembuat CV, invoice, dan portofolio sudah aktif, masing-masing dalam bahasa Inggris dan Bahasa Indonesia.",
+    "audience": "Dibuat untuk pelajar dan pencari kerja, dalam bahasa Inggris dan Bahasa Indonesia."
   },
   "hero": {
     "title": "Pilih Pendidikan",
     "intro": "Pilih Pendidikan adalah kumpulan pembuat dokumen untuk pelajar dan pencari kerja, dalam bahasa Inggris dan Bahasa Indonesia. Semuanya berjalan di browser, menampilkan pratinjau langsung, dan menghasilkan PDF siap cetak.",
     "rollout": "Alat-alat ini diluncurkan satu per satu. Tautannya muncul di sini begitu alatnya aktif."
+  },
+  "editor": {
+    "label": "Ilustrasi: di sebuah editor kode, asisten AI menambahkan magang di Gojek ke cv.json.",
+    "documents": "Dokumen",
+    "prompt": "Tambahkan magang saya di Gojek ke CV saya",
+    "read": "Baca",
+    "edit": "Ubah",
+    "answer": "Magang sudah ditambahkan di Pengalaman. Masih ada satu salah ketik di Pendidikan.",
+    "description": "Membangun layar struk dengan SwiftUI"
   },
   "tools": {
     "heading": "Pembuat dokumen"
@@ -44,7 +59,11 @@
     "open": "Buka"
   },
   "footer": {
-    "builtBy": "Dibuat oleh"
+    "builtBy": "Dibuat oleh",
+    "blurb": "Pembuat CV, invoice, dan portofolio yang berjalan di browser dan menghasilkan PDF siap cetak.",
+    "onThisPage": "Di halaman ini",
+    "language": "Bahasa",
+    "agents": "Untuk agen AI"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",

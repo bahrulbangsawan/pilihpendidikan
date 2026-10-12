@@ -1,5 +1,7 @@
 # Add CV Template System
 
+> **Superseded font wording.** REQ-TL-6 below (Helvetica in every template) is replaced by `update-zedative-design-system`: the templates now use Inter, embedded in the PDFs, with Zedative's ink colours and no uppercase or letter-spacing. The Helvetica references here are historical.
+
 ## Summary
 
 Add a multi-template system to the CV builder with 4 design styles: Basic (current), Harvard, Simple, and Standard. Users can switch between styles via a selector in the preview toolbar. Both the HTML preview and PDF export render the selected style.

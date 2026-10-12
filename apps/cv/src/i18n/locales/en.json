@@ -15,9 +15,12 @@
     "generating": "Generating...",
     "downloadPdf": "Download as PDF",
     "downloadMarkdown": "Download as Markdown",
-    "downloadJson": "Download as JSON"
+    "downloadJson": "Download as JSON",
+    "downloadPdfShort": "Download PDF",
+    "moreFormats": "More download formats"
   },
   "template": {
+    "label": "CV template",
     "basic": "Basic",
     "harvard": "Harvard",
     "simple": "Simple",
@@ -25,7 +28,15 @@
   },
   "status": {
     "saving": "Saving…",
-    "saved": "Saved"
+    "saved": "Saved",
+    "sessionExpired": "Session expired — re-enter your token to save.",
+    "forbidden": "You don't have permission to edit this document.",
+    "saveFailed": "Save failed ({code}). Your change was reverted.",
+    "saveOffline": "Save failed — check your connection. Your change was reverted."
+  },
+  "preview": {
+    "emptyTitle": "Your CV is empty",
+    "emptyDescription": "Start filling in the form to see your CV preview."
   },
   "theme": {
     "toLight": "Switch to light mode",
@@ -74,6 +85,7 @@
     "usePhotoProfile": "Use Photo Profile",
     "uploadPhoto": "Upload Photo",
     "remove": "Remove",
+    "dragToReorder": "Drag to reorder",
     "present": "Present",
     "company": "Company",
     "companyUrl": "Company URL",
@@ -231,5 +243,11 @@
     "currentlyVolunteeringHere": "Currently volunteering here",
     "uploadProfilePhoto": "Upload profile photo",
     "profile": "Profile"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "home": "Back to home",
+    "back": "Go back"
   }
 }

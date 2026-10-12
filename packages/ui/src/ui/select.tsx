@@ -15,7 +15,7 @@ function SelectGroup({
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return (
     <SelectPrimitive.Group
-      className={cn("scroll-my-1 p-1", className)}
+      className={cn("scroll-my-1", className)}
       data-slot="select-group"
       {...props}
     />
@@ -28,6 +28,8 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
+// The trigger is the Zedative field shell (36px, 32px at `sm`) with a muted
+// chevron; it never animates and has no hover fill, like the inputs beside it.
 function SelectTrigger({
   className,
   size = "default",
@@ -39,7 +41,7 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex w-fit items-center justify-between gap-1.5 whitespace-nowrap rounded-md border border-input bg-input/20 px-2.5 py-1 text-xs outline-hidden transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[size=default]:h-8 data-[size=sm]:h-7 data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 dark:hover:bg-input/50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "type-body field-touch flex h-9 w-fit min-w-0 select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-md border border-input bg-card/60 pr-2 pl-2.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:bg-pane/50 disabled:opacity-60 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/15 data-[size=sm]:h-8 data-placeholder:text-muted-foreground *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:truncate [&>[data-slot=select-value]>svg]:mr-1.5 [&>[data-slot=select-value]>svg]:inline-block [&>[data-slot=select-value]>svg]:align-[-2px] [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-size={size}
@@ -48,12 +50,14 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground" />
+        <ChevronDownIcon className="pointer-events-none text-muted-foreground" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
 }
 
+// A Zedative window: 6px radius, a hairline border, `bg-2` paper and the one
+// soft float shadow. It opens and closes instantly.
 function SelectContent({
   className,
   children,
@@ -66,7 +70,7 @@ function SelectContent({
       <SelectPrimitive.Content
         align={align}
         className={cn(
-          "dark data-open:fade-in-0 data-open:zoom-in-96 data-closed:fade-out-0 data-closed:zoom-out-96 relative z-50 max-h-(--radix-select-content-available-height) min-w-32 origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-lg bg-popover text-popover-foreground ring-1 ring-foreground/10 duration-150 ease-standard data-[align-trigger=true]:animate-none data-closed:animate-out data-open:animate-in",
+          "relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-float",
           position === "popper" &&
             "data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
           className
@@ -79,8 +83,9 @@ function SelectContent({
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={cn(
-            "data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)",
-            position === "popper" && ""
+            "p-1",
+            position === "popper" &&
+              "h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width)"
           )}
           data-position={position}
         >
@@ -98,13 +103,18 @@ function SelectLabel({
 }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
-      className={cn("px-2 py-1.5 text-muted-foreground text-xs", className)}
+      className={cn(
+        "type-caption px-2 py-1.5 text-muted-foreground data-inset:pl-7",
+        className
+      )}
       data-slot="select-label"
       {...props}
     />
   );
 }
 
+// A Zedative menu row: 2px radius, body role, a pane highlight; the chosen
+// option goes semibold and shows a check at the end.
 function SelectItem({
   className,
   children,
@@ -113,13 +123,13 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex min-h-7 w-full cursor-default select-none items-center gap-2 rounded-md py-1 pr-8 pl-2 text-xs/relaxed outline-hidden focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "type-body data-checked:weight-semibold relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-foreground outline-none data-disabled:pointer-events-none data-highlighted:bg-accent data-inset:pl-7 data-highlighted:text-accent-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className
       )}
       data-slot="select-item"
       {...props}
     >
-      <span className="pointer-events-none absolute right-2 flex items-center justify-center">
+      <span className="pointer-events-none absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <CheckIcon className="pointer-events-none" />
         </SelectPrimitive.ItemIndicator>
@@ -135,10 +145,7 @@ function SelectSeparator({
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
-      className={cn(
-        "pointer-events-none -mx-1 my-1 h-px bg-border/50",
-        className
-      )}
+      className={cn("pointer-events-none -mx-1 my-1 h-px bg-line", className)}
       data-slot="select-separator"
       {...props}
     />
@@ -152,7 +159,7 @@ function SelectScrollUpButton({
   return (
     <SelectPrimitive.ScrollUpButton
       className={cn(
-        "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-3.5",
+        "z-10 flex cursor-default items-center justify-center bg-popover py-1 text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5",
         className
       )}
       data-slot="select-scroll-up-button"
@@ -170,7 +177,7 @@ function SelectScrollDownButton({
   return (
     <SelectPrimitive.ScrollDownButton
       className={cn(
-        "z-10 flex cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-3.5",
+        "z-10 flex cursor-default items-center justify-center bg-popover py-1 text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5",
         className
       )}
       data-slot="select-scroll-down-button"

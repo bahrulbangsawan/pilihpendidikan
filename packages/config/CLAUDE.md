@@ -4,13 +4,13 @@ The workspace's shared config. Provides `tsconfig.base.json` and `motion.css`; n
 
 ## `motion.css` — shared motion primitives
 
-Every UI app (`apps/cv`, `apps/invoice`, `apps/portfolio`) imports it right after `tw-animate-css`:
+Every UI app (`apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio`, `apps/design`) imports it right after `tailwindcss`:
 
 ```css
 @import "@pilihpendidikan/config/motion.css";
 ```
 
-It owns the motion tokens (`--motion-duration-*`, `--motion-ease`, `--motion-press-scale`, `--motion-hover-lift`, `--motion-enter-*`, `--motion-stagger`), the `ease-standard` / `press` / `card-interactive` / `motion-enter` / `motion-stagger` / `image-fade` / `route-view` utilities, the route view-transition CSS, the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. Change a value here, never per component.
+It implements DESIGN.md § Motion: the curve and duration every bare `transition-*` uses (150ms, `cubic-bezier(0.4, 0, 0.2, 1)`, also as `ease-standard`), the `press` utility (`translateY(1px) scale(0.99)` on `:active`, instant), the `pulse-dot` status pulse (only without reduced motion), the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. Zedative has no entrances, hover lifts, route transitions or overlay animations, so there are no utilities for them. Change a value here, never per component.
 
 ## Usage
 

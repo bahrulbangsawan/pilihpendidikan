@@ -21,14 +21,16 @@
     "dev:cv": "turbo dev -F cv...",
     "dev:invoice": "turbo dev -F invoice...",
     "dev:portfolio": "turbo dev -F portfolio...",
+    "dev:design": "turbo dev -F design",
     "dev:api": "turbo dev -F api",
-    "check": "biome check && turbo lint && bun run lint:typography && bun run parity:typography && bun run parity:twmerge && bun run test && bun run audit",
+    "check": "biome check && turbo lint && bun run lint:typography && bun run parity:typography && bun run parity:twmerge && bun run parity:showcase && bun run test && bun run audit",
     "audit": "bun audit",
     "audit:ci": "bun audit --prod",
     "fix": "biome check --write",
     "lint:typography": "bash scripts/lint-typography.sh",
     "parity:typography": "bun scripts/check-typography-parity.ts",
-    "parity:twmerge": "bun scripts/check-twmerge-typography-config.ts"
+    "parity:twmerge": "bun scripts/check-twmerge-typography-config.ts",
+    "parity:showcase": "bun scripts/check-showcase-coverage.ts"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.6",
@@ -43,5 +45,11 @@
   "engines": {
     "bun": ">=1.4.2",
     "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "overrides": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/server": "2.3.1",
+    "sharp": "0.35.5"
   }
 }

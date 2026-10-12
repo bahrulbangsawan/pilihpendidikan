@@ -29,6 +29,13 @@ import { ScrollArea } from "../ui/scroll-area";
 
 type PhoneInputSize = "sm" | "default" | "lg";
 
+// The country button and the number field share one height: 32 / 36 / 40px.
+const TRIGGER_SIZE = {
+  sm: "sm",
+  default: "default",
+  lg: "lg",
+} as const satisfies Record<PhoneInputSize, string>;
+
 const PhoneInputContext = createContext<{
   variant: PhoneInputSize;
   popupClassName?: string;
@@ -71,9 +78,9 @@ function PhoneInput({
     <PhoneInputContext.Provider value={contextValue}>
       <BasePhoneInput
         className={cn(
-          "flex",
+          "flex min-w-0",
           props["aria-invalid"] &&
-            "[&_*[data-slot=combobox-trigger]]:border-destructive [&_*[data-slot=combobox-trigger]]:ring-destructive/50",
+            "[&_[data-slot=combobox-trigger]]:border-destructive",
           className
         )}
         countrySelectComponent={CountrySelect}
@@ -88,6 +95,9 @@ function PhoneInput({
   );
 }
 
+// Zedative phone field: the country button and the number share one field
+// shell — the button keeps the shell's `line` edge and paper (no lip), the
+// number field closes the shape with the shared hairline.
 function InputComponent({ className, ...props }: ComponentProps<typeof Input>) {
   const { variant } = use(PhoneInputContext);
 
@@ -95,8 +105,8 @@ function InputComponent({ className, ...props }: ComponentProps<typeof Input>) {
     <Input
       className={cn(
         "rounded-s-none focus:z-1",
-        variant === "sm" && "h-6",
-        variant === "lg" && "h-8",
+        variant === "sm" && "h-8",
+        variant === "lg" && "h-10",
         className
       )}
       {...props}
@@ -148,11 +158,11 @@ function CountrySelect({
         render={
           <Button
             className={cn(
-              "flex gap-1 rounded-s-md rounded-e-none border-e-0 px-2.5 py-0 leading-none hover:bg-transparent focus:z-10 data-pressed:bg-transparent",
+              "inset-shadow-none flex gap-1 rounded-s-md rounded-e-none border-input border-e-0 bg-card/60 px-2.5 py-0 focus:z-10 focus-visible:outline-solid data-pressed:bg-pane/70",
               disabled && "opacity-50"
             )}
             disabled={disabled}
-            size={variant === "sm" ? "sm" : "lg"}
+            size={TRIGGER_SIZE[variant]}
             variant="outline"
           >
             <span className="sr-only">
@@ -172,16 +182,14 @@ function CountrySelect({
         )}
       >
         <ComboboxInput
-          className="rounded-none border-0 border-input px-0 py-2.5 shadow-none outline-none! ring-0! focus-visible:border-border focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="rounded-none border-0 bg-transparent px-0 ring-0!"
           onChange={(e) => setSearchValue(e.target.value)}
           placeholder="e.g. United States"
           showTrigger={false}
           value={searchValue}
         />
         <ComboboxSeparator />
-        <ComboboxEmpty className="px-4 py-2.5 text-xs">
-          No country found.
-        </ComboboxEmpty>
+        <ComboboxEmpty>No country found.</ComboboxEmpty>
         <ComboboxList>
           <div className="relative flex max-h-full">
             <div className="flex max-h-[min(var(--available-height),24rem)] w-full scroll-pt-2 scroll-pb-2 flex-col overscroll-contain">
@@ -197,8 +205,10 @@ function CountrySelect({
                         country={item.value}
                         countryName={item.label}
                       />
-                      <span className="flex-1 text-xs">{item.label}</span>
-                      <span className="text-foreground/50 text-xs">
+                      <span className="min-w-0 flex-1 truncate">
+                        {item.label}
+                      </span>
+                      <span className="type-caption text-muted-foreground tabular-nums">
                         {`+${getCountryCallingCode(item.value)}`}
                       </span>
                     </ComboboxItem>
@@ -217,11 +227,11 @@ function FlagComponent({ country, countryName }: FlagProps) {
   const Flag = flags[country];
 
   return (
-    <span className="flex h-4 w-4 items-center justify-center [&_svg:not([class*='size-'])]:size-full! [&_svg:not([class*='size-'])]:rounded-[5px]">
+    <span className="flex size-4 items-center justify-center [&_svg:not([class*='size-'])]:size-full! [&_svg:not([class*='size-'])]:rounded-sm">
       {Flag ? (
         <Flag title={countryName} />
       ) : (
-        <GlobeIcon className="size-4 opacity-60" />
+        <GlobeIcon className="size-3.5 text-muted-foreground" />
       )}
     </span>
   );

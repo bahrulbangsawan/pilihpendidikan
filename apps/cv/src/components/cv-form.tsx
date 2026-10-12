@@ -1,4 +1,3 @@
-import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
   closestCenter,
@@ -18,9 +17,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { FormField } from "@rulisme/ui/form/form-field";
 import { MonthPicker } from "@rulisme/ui/form/month-picker";
 import { SectionList } from "@rulisme/ui/form/section-list";
+import { cn } from "@rulisme/ui/lib/utils";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
+import { Checkbox } from "@rulisme/ui/ui/checkbox";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
@@ -32,11 +33,11 @@ import { Label } from "@rulisme/ui/ui/label";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { Separator } from "@rulisme/ui/ui/separator";
 import { Switch } from "@rulisme/ui/ui/switch";
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import {
@@ -287,6 +288,38 @@ const currentMonth = (() => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 })();
+
+// Section headings and the editable section titles share one role: the
+// subtitle at the semibold weight (as in `SectionList`).
+const SECTION_TITLE_INPUT_CLASS =
+  "type-subtitle weight-semibold field-touch -ml-1.5 h-8 min-w-0 flex-1 rounded-md border border-transparent bg-transparent px-1.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard placeholder:text-muted-foreground hover:border-input focus-visible:border-ring focus-visible:bg-card/60 focus-visible:ring-3 focus-visible:ring-ring/20";
+
+// Meta beside a section title or an entry summary (durations, counts).
+const META_CLASS =
+  "type-caption flex shrink-0 items-center gap-1 text-muted-foreground tabular-nums";
+
+// The "Present" box under an end date: checking it clears the end date.
+function PresentCheckbox({
+  checked,
+  label,
+  onCheckedChange,
+}: {
+  checked: boolean;
+  label: string;
+  onCheckedChange: (checked: boolean) => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <Label className="w-fit">
+      <Checkbox
+        aria-label={label}
+        checked={checked}
+        onCheckedChange={(value) => onCheckedChange(value === true)}
+      />
+      {t("form.present")}
+    </Label>
+  );
+}
 
 export function CVForm({ data, onChange }: CVFormProps) {
   const { t } = useTranslation();
@@ -770,17 +803,19 @@ export function CVForm({ data, onChange }: CVFormProps) {
     switch (sectionId) {
       case "summary":
         return (
-          <section>
-            <input
-              aria-label={t("a11y2.summarySectionTitle")}
-              className="w-full rounded-sm bg-transparent font-medium text-body-sm outline-hidden placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
-              onChange={(e) =>
-                onChange({ ...data, summaryTitle: e.target.value })
-              }
-              placeholder={t("placeholders.summaryTitle")}
-              value={data.summaryTitle}
-            />
-            <div className="mt-3">
+          <section className="flex flex-col gap-3">
+            <div className="flex items-center">
+              <input
+                aria-label={t("a11y2.summarySectionTitle")}
+                className={SECTION_TITLE_INPUT_CLASS}
+                onChange={(e) =>
+                  onChange({ ...data, summaryTitle: e.target.value })
+                }
+                placeholder={t("placeholders.summaryTitle")}
+                value={data.summaryTitle}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
               <Textarea
                 aria-invalid={!!errors.summary}
                 onBlur={(e) => {
@@ -800,14 +835,21 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 placeholder={t("placeholders.summary")}
                 value={data.summary}
               />
-              <div className="mt-1 flex justify-between">
+              <div className="flex justify-between gap-3">
                 {errors.summary ? (
-                  <p className="text-destructive text-xs">{errors.summary}</p>
+                  <p className="type-caption text-destructive">
+                    {errors.summary}
+                  </p>
                 ) : (
                   <span />
                 )}
                 <p
-                  className={`text-xs ${data.summary.length > 500 ? "text-destructive" : "text-muted-foreground"}`}
+                  className={cn(
+                    "type-caption tabular-nums",
+                    data.summary.length > 500
+                      ? "text-destructive"
+                      : "text-muted-foreground"
+                  )}
                 >
                   {t("form.charCounter", { count: data.summary.length })}
                 </p>
@@ -836,16 +878,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
     }
   }
 
+  // Every section is a band on the form pane, ruled off by a full-width
+  // hairline; the reorderable ones carry a drag grip in the left gutter.
   return (
-    <div className="space-y-6">
+    <div>
       {/* ── Personal Info ── */}
-      <section>
-        <h2 className="font-medium text-body-sm">
+      <section className="flex flex-col gap-3 border-line border-b px-4 py-6 sm:px-6">
+        <h2 className="type-subtitle weight-semibold flex h-8 items-center">
           {t("form.personalInformation")}
         </h2>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           {/* Full Name */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="fullName">{t("form.fullName")}</Label>
             <Input
               aria-invalid={!!errors.fullName}
@@ -871,12 +915,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
               value={data.personalInfo.fullName}
             />
             {errors.fullName && (
-              <p className="text-destructive text-xs">{errors.fullName}</p>
+              <p className="type-caption text-destructive">{errors.fullName}</p>
             )}
           </div>
 
           {/* Job Title */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="jobTitle">{t("form.jobTitle")}</Label>
             <Input
               id="jobTitle"
@@ -887,7 +931,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           </div>
 
           {/* Email */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">{t("form.email")}</Label>
             <Input
               aria-invalid={!!errors.email}
@@ -916,12 +960,12 @@ export function CVForm({ data, onChange }: CVFormProps) {
               value={data.personalInfo.email}
             />
             {errors.email && (
-              <p className="text-destructive text-xs">{errors.email}</p>
+              <p className="type-caption text-destructive">{errors.email}</p>
             )}
           </div>
 
           {/* Phone */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label>{t("form.phone")}</Label>
             <PhoneInput
               defaultCountry="ID"
@@ -937,7 +981,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           </div>
 
           {/* Location */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="location">{t("form.location")}</Label>
             <Input
               id="location"
@@ -948,7 +992,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           </div>
 
           {/* LinkedIn */}
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <Label htmlFor="linkedIn">{t("form.linkedIn")}</Label>
             <InputGroup>
               <InputGroupAddon align="inline-start">
@@ -964,7 +1008,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           </div>
 
           {/* Photo Profile */}
-          <div className="col-span-full space-y-3">
+          <div className="col-span-full flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <Switch
                 checked={data.personalInfo.usePhoto}
@@ -984,11 +1028,10 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   <>
                     <img
                       alt={t("a11y2.profile")}
-                      className="image-fade size-16 rounded-full border border-border object-cover"
+                      className="size-16 rounded-sm border border-border object-cover"
                       decoding="async"
                       height={64}
                       loading="lazy"
-                      ref={fadeInOnLoad}
                       src={data.personalInfo.photoUrl}
                       width={64}
                     />
@@ -1002,12 +1045,16 @@ export function CVForm({ data, onChange }: CVFormProps) {
                       size="sm"
                       variant="outline"
                     >
-                      <Trash2 className="size-3" /> {t("form.remove")}
+                      <Trash2 data-icon="inline-start" />
+                      {t("form.remove")}
                     </Button>
                   </>
                 ) : (
-                  <label className="flex cursor-pointer items-center gap-2 rounded-md border border-border border-dashed px-4 py-3 text-muted-foreground text-xs transition-[color,border-color,box-shadow] duration-150 ease-standard hover:border-foreground/30 has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-ring/30">
-                    <Upload className="size-4" />
+                  <label className="type-body flex cursor-pointer items-center gap-2 rounded-md border border-line border-dashed bg-card/60 px-3 py-2.5 text-foreground transition-[background-color,border-color,box-shadow] duration-150 ease-standard hover:bg-pane/70 has-focus-visible:border-ring has-focus-visible:ring-3 has-focus-visible:ring-ring/20">
+                    <Upload
+                      aria-hidden="true"
+                      className="size-3.5 text-muted-foreground"
+                    />
                     {t("form.uploadPhoto")}
                     <input
                       accept="image/jpeg,image/png,image/webp"
@@ -1025,7 +1072,9 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   </label>
                 )}
                 {errors.photo && (
-                  <p className="text-destructive text-xs">{errors.photo}</p>
+                  <p className="type-caption text-destructive">
+                    {errors.photo}
+                  </p>
                 )}
               </div>
             )}
@@ -1068,8 +1117,10 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, experience: items })}
         onTitleChange={(v) => onChange({ ...data, experienceTitle: v })}
         placeholder={t("placeholders.workExperience")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             <div className="grid gap-3 sm:grid-cols-2">
               <FormField
                 error={errors[`exp-${entry.id}-company`]}
@@ -1137,8 +1188,10 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 type="url"
                 value={entry.url}
               />
-              <div className="space-y-1.5">
-                <Label>{t("form.workType")}</Label>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`exp-${entry.id}-work-type`}>
+                  {t("form.workType")}
+                </Label>
                 <Select
                   onValueChange={(v) =>
                     updateExperience(
@@ -1149,23 +1202,30 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   }
                   value={entry.workType || "__empty__"}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger
+                    className="w-full"
+                    id={`exp-${entry.id}-work-type`}
+                  >
                     <SelectValue placeholder={t("placeholders.selectType")} />
                   </SelectTrigger>
                   <SelectContent>
-                    {WORK_TYPE_OPTIONS.map((opt) => (
-                      <SelectItem
-                        key={opt.value || "__empty__"}
-                        value={opt.value || "__empty__"}
-                      >
-                        {t(opt.labelKey)}
-                      </SelectItem>
-                    ))}
+                    <SelectGroup>
+                      {WORK_TYPE_OPTIONS.map((opt) => (
+                        <SelectItem
+                          key={opt.value || "__empty__"}
+                          value={opt.value || "__empty__"}
+                        >
+                          {t(opt.labelKey)}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-1.5">
-                <Label>{t("form.locationPolicy")}</Label>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`exp-${entry.id}-location-policy`}>
+                  {t("form.locationPolicy")}
+                </Label>
                 <Select
                   onValueChange={(v) =>
                     updateExperience(
@@ -1176,18 +1236,23 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   }
                   value={entry.locationPolicy || "__empty__"}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger
+                    className="w-full"
+                    id={`exp-${entry.id}-location-policy`}
+                  >
                     <SelectValue placeholder={t("placeholders.selectPolicy")} />
                   </SelectTrigger>
                   <SelectContent>
-                    {LOCATION_POLICY_OPTIONS.map((opt) => (
-                      <SelectItem
-                        key={opt.value || "__empty__"}
-                        value={opt.value || "__empty__"}
-                      >
-                        {t(opt.labelKey)}
-                      </SelectItem>
-                    ))}
+                    <SelectGroup>
+                      {LOCATION_POLICY_OPTIONS.map((opt) => (
+                        <SelectItem
+                          key={opt.value || "__empty__"}
+                          value={opt.value || "__empty__"}
+                        >
+                          {t(opt.labelKey)}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
@@ -1199,39 +1264,35 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 type="month"
                 value={entry.startDate}
               />
-              <div className="space-y-1.5">
-                <Label>{t("form.endDate")}</Label>
+              <div className="flex flex-col gap-1.5">
+                <Label id={`exp-${entry.id}-end-date`}>
+                  {t("form.endDate")}
+                </Label>
                 <MonthPicker
+                  aria-labelledby={`exp-${entry.id}-end-date`}
                   disabled={entry.current}
                   max={currentMonth}
                   onChange={(v) => updateExperience(entry.id, "endDate", v)}
                   value={entry.current ? "" : entry.endDate}
                 />
-                <label className="flex items-center gap-1.5">
-                  <input
-                    aria-label={t("a11y2.currentlyWorkingHere")}
-                    checked={entry.current}
-                    className="accent-primary"
-                    onChange={(e) => {
-                      onChange({
-                        ...data,
-                        experience: data.experience.map((exp) =>
-                          exp.id === entry.id
-                            ? {
-                                ...exp,
-                                current: e.target.checked,
-                                endDate: e.target.checked ? "" : exp.endDate,
-                              }
-                            : exp
-                        ),
-                      });
-                    }}
-                    type="checkbox"
-                  />
-                  <span className="text-muted-foreground text-xs">
-                    {t("form.present")}
-                  </span>
-                </label>
+                <PresentCheckbox
+                  checked={entry.current}
+                  label={t("a11y2.currentlyWorkingHere")}
+                  onCheckedChange={(checked) => {
+                    onChange({
+                      ...data,
+                      experience: data.experience.map((exp) =>
+                        exp.id === entry.id
+                          ? {
+                              ...exp,
+                              current: checked,
+                              endDate: checked ? "" : exp.endDate,
+                            }
+                          : exp
+                      ),
+                    });
+                  }}
+                />
               </div>
             </div>
             <FormField
@@ -1247,7 +1308,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.experienceTitle}
         titleExtra={
           totalExperience && (
-            <span className="flex shrink-0 items-center gap-1 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {totalExperience.label}
               <TooltipProvider>
                 <Tooltip>
@@ -1255,7 +1316,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     <Info className="size-3.5 cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent
-                    className="flex-col items-start text-xs leading-relaxed"
+                    className="flex-col items-start gap-0.5"
                     side="bottom"
                   >
                     <p>
@@ -1277,10 +1338,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         }
         triggerExtra={(entry) =>
           entry.startDate ? (
-            <span
-              className="shrink-0 text-muted-foreground text-xs"
-              suppressHydrationWarning
-            >
+            <span className={META_CLASS} suppressHydrationWarning>
               {dateDiffLabel(
                 new Date(`${entry.startDate}-01`),
                 entry.current || !entry.endDate
@@ -1311,10 +1369,14 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, education: items })}
         onTitleChange={(v) => onChange({ ...data, educationTitle: v })}
         placeholder={t("placeholders.education")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
-          <div className="space-y-3">
-            <div className="space-y-1.5">
-              <Label>{t("form.category")}</Label>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor={`edu-${entry.id}-category`}>
+                {t("form.category")}
+              </Label>
               <Select
                 onValueChange={(v) =>
                   updateEducation(
@@ -1325,18 +1387,23 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 }
                 value={entry.category || "__empty__"}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className="w-full"
+                  id={`edu-${entry.id}-category`}
+                >
                   <SelectValue placeholder={t("placeholders.selectCategory")} />
                 </SelectTrigger>
                 <SelectContent>
-                  {EDUCATION_CATEGORY_OPTIONS.map((opt) => (
-                    <SelectItem
-                      key={opt.value || "__empty__"}
-                      value={opt.value || "__empty__"}
-                    >
-                      {t(opt.labelKey)}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    {EDUCATION_CATEGORY_OPTIONS.map((opt) => (
+                      <SelectItem
+                        key={opt.value || "__empty__"}
+                        value={opt.value || "__empty__"}
+                      >
+                        {t(opt.labelKey)}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
@@ -1397,39 +1464,35 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 type="month"
                 value={entry.startDate}
               />
-              <div className="space-y-1.5">
-                <Label>{t("form.endDate")}</Label>
+              <div className="flex flex-col gap-1.5">
+                <Label id={`edu-${entry.id}-end-date`}>
+                  {t("form.endDate")}
+                </Label>
                 <MonthPicker
+                  aria-labelledby={`edu-${entry.id}-end-date`}
                   disabled={entry.current}
                   max={currentMonth}
                   onChange={(v) => updateEducation(entry.id, "endDate", v)}
                   value={entry.current ? "" : entry.endDate}
                 />
-                <label className="flex items-center gap-1.5">
-                  <input
-                    aria-label={t("a11y2.currentlyEnrolled")}
-                    checked={entry.current}
-                    className="accent-primary"
-                    onChange={(e) => {
-                      onChange({
-                        ...data,
-                        education: data.education.map((edu) =>
-                          edu.id === entry.id
-                            ? {
-                                ...edu,
-                                current: e.target.checked,
-                                endDate: e.target.checked ? "" : edu.endDate,
-                              }
-                            : edu
-                        ),
-                      });
-                    }}
-                    type="checkbox"
-                  />
-                  <span className="text-muted-foreground text-xs">
-                    {t("form.present")}
-                  </span>
-                </label>
+                <PresentCheckbox
+                  checked={entry.current}
+                  label={t("a11y2.currentlyEnrolled")}
+                  onCheckedChange={(checked) => {
+                    onChange({
+                      ...data,
+                      education: data.education.map((edu) =>
+                        edu.id === entry.id
+                          ? {
+                              ...edu,
+                              current: checked,
+                              endDate: checked ? "" : edu.endDate,
+                            }
+                          : edu
+                      ),
+                    });
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -1450,7 +1513,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.educationTitle}
         titleExtra={
           sinceGraduation && (
-            <span className="flex shrink-0 items-center gap-1 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {sinceGraduation.label}
               <TooltipProvider>
                 <Tooltip>
@@ -1458,7 +1521,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     <Info className="size-3.5 cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent
-                    className="flex-col items-start text-xs leading-relaxed"
+                    className="flex-col items-start gap-0.5"
                     side="bottom"
                   >
                     <p>{t("form.sinceLastGraduation")}</p>
@@ -1473,10 +1536,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         }
         triggerExtra={(entry) =>
           entry.startDate ? (
-            <span
-              className="shrink-0 text-muted-foreground text-xs"
-              suppressHydrationWarning
-            >
+            <span className={META_CLASS} suppressHydrationWarning>
               {dateDiffLabel(
                 new Date(`${entry.startDate}-01`),
                 entry.current || !entry.endDate
@@ -1501,15 +1561,17 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, skills: items })}
         onTitleChange={(v) => onChange({ ...data, skillsTitle: v })}
         placeholder={t("placeholders.skills")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(category) => (
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             <FormField
               label={t("form.categoryName")}
               onChange={(v) => updateSkillCategoryName(category.id, v)}
               placeholder={t("placeholders.categoryItems")}
               value={category.name}
             />
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1.5">
               <Label htmlFor={`skill-entry-${category.id}`}>
                 {t("form.skills")}
               </Label>
@@ -1531,7 +1593,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 {category.items.map((skill) => (
                   <Badge
                     asChild
-                    className="press cursor-pointer outline-hidden transition-[color,background-color,border-color,box-shadow,scale]"
+                    className="press cursor-pointer hover:bg-pane-2"
                     key={skill}
                     variant="secondary"
                   >
@@ -1547,7 +1609,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                       type="button"
                     >
                       {skill}
-                      <X aria-hidden="true" className="size-2.5" />
+                      <X aria-hidden="true" data-icon="inline-end" />
                     </button>
                   </Badge>
                 ))}
@@ -1564,7 +1626,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.skillsTitle}
         titleExtra={
           data.skills.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t("form.skillsCount", {
                 count: data.skills.reduce((sum, c) => sum + c.items.length, 0),
               })}
@@ -1585,6 +1647,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, awards: items })}
         onTitleChange={(v) => onChange({ ...data, awardsTitle: v })}
         placeholder={t("placeholders.awards")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
           <>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -1653,7 +1717,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.awardsTitle}
         titleExtra={
           data.awards.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t(
                 data.awards.length === 1
                   ? "form.awardCount"
@@ -1677,6 +1741,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, certificates: items })}
         onTitleChange={(v) => onChange({ ...data, certificatesTitle: v })}
         placeholder={t("placeholders.certificates")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
           <>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -1750,7 +1816,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.certificatesTitle}
         titleExtra={
           data.certificates.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t(
                 data.certificates.length === 1
                   ? "form.certificateCount"
@@ -1774,7 +1840,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
           if (isExpired) {
             return (
               <span
-                className="shrink-0 text-destructive text-xs"
+                className={cn(META_CLASS, "text-destructive")}
                 suppressHydrationWarning
               >
                 {t("form.expiredAgo", {
@@ -1784,10 +1850,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
             );
           }
           return (
-            <span
-              className="shrink-0 text-muted-foreground text-xs"
-              suppressHydrationWarning
-            >
+            <span className={META_CLASS} suppressHydrationWarning>
               {t("form.expiresIn", { duration: dateDiffLabel(now, expiry, t) })}
             </span>
           );
@@ -1806,6 +1869,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, languages: items })}
         onTitleChange={(v) => onChange({ ...data, languagesTitle: v })}
         placeholder={t("placeholders.languages")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
           <div className="grid gap-3 sm:grid-cols-2">
             <FormField
@@ -1836,7 +1901,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.languagesTitle}
         titleExtra={
           data.languages.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t(
                 data.languages.length === 1
                   ? "form.languageCount"
@@ -1860,6 +1925,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, projects: items })}
         onTitleChange={(v) => onChange({ ...data, projectsTitle: v })}
         placeholder={t("placeholders.projects")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
           <div className="grid gap-3">
             <FormField
@@ -1891,7 +1958,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.projectsTitle}
         titleExtra={
           data.projects.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t(
                 data.projects.length === 1
                   ? "form.projectCount"
@@ -1915,8 +1982,10 @@ export function CVForm({ data, onChange }: CVFormProps) {
         onReorder={(items) => onChange({ ...data, volunteer: items })}
         onTitleChange={(v) => onChange({ ...data, volunteerTitle: v })}
         placeholder={t("placeholders.volunteer")}
+        removeLabel={t("form.remove")}
+        reorderLabel={t("form.dragToReorder")}
         renderContent={(entry) => (
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             <div className="grid gap-3 sm:grid-cols-2">
               <FormField
                 label={t("form.organization")}
@@ -1936,39 +2005,35 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 type="month"
                 value={entry.startDate}
               />
-              <div className="space-y-1.5">
-                <Label>{t("form.endDate")}</Label>
+              <div className="flex flex-col gap-1.5">
+                <Label id={`vol-${entry.id}-end-date`}>
+                  {t("form.endDate")}
+                </Label>
                 <MonthPicker
+                  aria-labelledby={`vol-${entry.id}-end-date`}
                   disabled={entry.current}
                   max={currentMonth}
                   onChange={(v) => updateVolunteer(entry.id, "endDate", v)}
                   value={entry.current ? "" : entry.endDate}
                 />
-                <label className="flex items-center gap-1.5">
-                  <input
-                    aria-label={t("a11y2.currentlyVolunteeringHere")}
-                    checked={entry.current}
-                    className="accent-primary"
-                    onChange={(e) => {
-                      onChange({
-                        ...data,
-                        volunteer: data.volunteer.map((vol) =>
-                          vol.id === entry.id
-                            ? {
-                                ...vol,
-                                current: e.target.checked,
-                                endDate: e.target.checked ? "" : vol.endDate,
-                              }
-                            : vol
-                        ),
-                      });
-                    }}
-                    type="checkbox"
-                  />
-                  <span className="text-muted-foreground text-xs">
-                    {t("form.present")}
-                  </span>
-                </label>
+                <PresentCheckbox
+                  checked={entry.current}
+                  label={t("a11y2.currentlyVolunteeringHere")}
+                  onCheckedChange={(checked) => {
+                    onChange({
+                      ...data,
+                      volunteer: data.volunteer.map((vol) =>
+                        vol.id === entry.id
+                          ? {
+                              ...vol,
+                              current: checked,
+                              endDate: checked ? "" : vol.endDate,
+                            }
+                          : vol
+                      ),
+                    });
+                  }}
+                />
               </div>
             </div>
             <FormField
@@ -1996,7 +2061,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         title={data.volunteerTitle}
         titleExtra={
           data.volunteer.length > 0 && (
-            <span className="shrink-0 text-muted-foreground text-xs">
+            <span className={META_CLASS}>
               {t(
                 data.volunteer.length === 1
                   ? "form.activityCount"
@@ -2008,10 +2073,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
         }
         triggerExtra={(entry) =>
           entry.startDate ? (
-            <span
-              className="shrink-0 text-muted-foreground text-xs"
-              suppressHydrationWarning
-            >
+            <span className={META_CLASS} suppressHydrationWarning>
               {dateDiffLabel(
                 new Date(`${entry.startDate}-01`),
                 entry.current || !entry.endDate
@@ -2027,11 +2089,13 @@ export function CVForm({ data, onChange }: CVFormProps) {
   }
 }
 
-// Matches --motion-duration-base / --motion-ease in @pilihpendidikan/config/motion.css
-// (dnd-kit's own default is `250ms ease`).
+// Drag-to-reorder is direct feedback, so it keeps moving (DESIGN.md §
+// Deviations), on the system duration and curve (`--motion-duration` /
+// `--motion-ease` in @pilihpendidikan/config/motion.css) rather than
+// dnd-kit's `250ms ease`. Same values as `SectionList`.
 const SORTABLE_TRANSITION = {
-  duration: 200,
-  easing: "cubic-bezier(0.2, 0, 0, 1)",
+  duration: 150,
+  easing: "cubic-bezier(0.4, 0, 0.2, 1)",
 } as const;
 
 function SortableSection({
@@ -2049,14 +2113,21 @@ function SortableSection({
     transition,
     isDragging,
   } = useSortable({ id, transition: SORTABLE_TRANSITION });
+  const { t } = useTranslation();
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
+  // One band of the form, ruled off by a full-width hairline. The grip sits
+  // in the left gutter, level with the section title's 32px row.
   return (
     <div
-      className="relative"
+      className={cn(
+        "relative border-line border-b bg-background px-4 py-6 sm:px-6",
+        // Above the neighbouring bands, under the sticky toolbar (z-10).
+        isDragging && "z-5"
+      )}
       ref={setNodeRef}
       style={{
         ...style,
@@ -2064,14 +2135,16 @@ function SortableSection({
         containIntrinsicSize: "auto 200px",
       }}
     >
-      <div
-        className="absolute top-1 -left-4 cursor-grab rounded-sm text-muted-foreground/50 outline-hidden transition-[color,box-shadow] duration-150 ease-standard hover:text-muted-foreground focus-visible:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30 sm:-left-6"
+      <button
+        aria-label={t("form.dragToReorder")}
+        className="absolute top-6 left-0 flex h-8 w-4 cursor-grab items-center justify-center rounded-sm text-muted-foreground outline-none transition-[color] duration-150 ease-standard hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing sm:left-1"
+        title={t("form.dragToReorder")}
+        type="button"
         {...attributes}
         {...listeners}
       >
-        <GripVertical className="size-4" />
-      </div>
-      <Separator className="mb-6" />
+        <GripVertical aria-hidden="true" className="size-3.5" />
+      </button>
       {children}
     </div>
   );

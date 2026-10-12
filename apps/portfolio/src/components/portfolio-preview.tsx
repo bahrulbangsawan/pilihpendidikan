@@ -1,4 +1,12 @@
-import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
+import { ensureUrl } from "@rulisme/ui/lib/utils";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+} from "@rulisme/ui/ui/empty";
+import { Presentation } from "lucide-react";
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n";
 import type {
@@ -8,6 +16,7 @@ import type {
   ProjectType,
   Track,
 } from "@/components/portfolio-data-model";
+import { coverFootLines } from "@/lib/cover-foot";
 
 type Translate = (
   key: string,
@@ -102,6 +111,33 @@ function affiliationFootnote(owner: PortfolioOwner, t: Translate): string {
   }
 }
 
+interface FootEntry {
+  key: string;
+  node: ReactNode;
+}
+
+// A cover footer column's entries, each its own block clamped to its share
+// of the column's lines (coverFootLines): the first may wrap into the lines
+// the others leave, every later entry keeps one line and ends in an
+// ellipsis. The PDF's FootLines clamps each entry's Text the same way, so
+// the column shows the same lines on screen and on paper.
+function FootLines({ entries }: { entries: FootEntry[] }) {
+  const lines = coverFootLines(entries.length);
+  return (
+    <p>
+      {entries.slice(0, lines.length).map(({ key, node }, i) => (
+        <span
+          className="pf-cover__line"
+          key={key}
+          style={{ WebkitLineClamp: lines[i] }}
+        >
+          {node}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
   const { owner } = data;
   const sub = [owner.fullName, owner.headline].filter(Boolean).join(" · ");
@@ -124,14 +160,51 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
   const { contact } = owner;
   const website = contact.websiteUrl?.trim();
   const social = contact.socials?.find((s) => s.url.trim());
+  // The link the PDF sets: an address typed without its scheme still opens
+  // the site, never a path on this app.
   const contactLink = website
-    ? { url: website, label: displayUrl(website) }
-    : social;
+    ? { url: ensureUrl(website), label: displayUrl(website) }
+    : social && {
+        url: ensureUrl(social.url.trim()),
+        label: social.label || displayUrl(social.url.trim()),
+      };
+  const contactEntries: FootEntry[] = [];
+  if (contact.phone) {
+    contactEntries.push({ key: "phone", node: contact.phone });
+  }
+  if (contact.email) {
+    contactEntries.push({
+      key: "email",
+      node: <a href={`mailto:${contact.email}`}>{contact.email}</a>,
+    });
+  }
+  if (contactLink) {
+    contactEntries.push({
+      key: "link",
+      node: (
+        <a href={contactLink.url} rel="noopener noreferrer" target="_blank">
+          {contactLink.label}
+        </a>
+      ),
+    });
+  }
 
   return (
     <section className="pf-page pf-cover">
       <div className="pf-cover__kicker">
-        <span className="pf-dot">→</span>
+        {/* The PDF's arrow path, drawn rather than typed: Inter's latin
+            subset has no rightwards arrow (U+2192), so the glyph fell back
+            to a system font on paper that must be Inter only. */}
+        <span className="pf-dot">
+          <svg aria-hidden="true" height="12" viewBox="0 0 24 24" width="12">
+            <path
+              d="M4 12 L20 12 M13 5 L20 12 L13 19"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            />
+          </svg>
+        </span>
         {t("preview.kicker", { year: data.cohortYear ?? "" })}
       </div>
 
@@ -146,53 +219,38 @@ function CoverPage({ data, t }: { data: Portfolio; t: Translate }) {
       <div className="pf-cover__foot">
         <div>
           <h4>{owner.fullName || t("preview.author")}</h4>
-          <p>
-            {worksLine}
-            <br />
-            {trackLine}
-          </p>
+          <FootLines
+            entries={[
+              { key: "works", node: worksLine },
+              { key: "track", node: trackLine },
+            ]}
+          />
         </div>
         <div>
           <h4>{t("preview.background")}</h4>
-          <p>
-            {background.map((line, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: static affiliation lines, never reordered
-              <span key={i}>
-                {i > 0 && <br />}
-                {line}
-              </span>
-            ))}
-          </p>
+          {/* Keyed by position: two lines may read the same (a program
+              named like its institution). */}
+          <FootLines
+            entries={background.map((line, i) => ({
+              key: `line-${i}`,
+              node: line,
+            }))}
+          />
         </div>
         <div>
           <h4>{t("preview.contact")}</h4>
-          <p>
-            {contact.phone && (
-              <>
-                {contact.phone}
-                <br />
-              </>
-            )}
-            {contact.email && (
-              <>
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>
-                <br />
-              </>
-            )}
-            {contactLink && (
-              <a
-                href={contactLink.url}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {contactLink.label || displayUrl(contactLink.url)}
-              </a>
-            )}
-          </p>
+          <FootLines entries={contactEntries} />
         </div>
         <div>
           <h4>{t("preview.submissionFor")}</h4>
-          <p>{data.submissionTarget || t("preview.defaultTarget")}</p>
+          <FootLines
+            entries={[
+              {
+                key: "target",
+                node: data.submissionTarget || t("preview.defaultTarget"),
+              },
+            ]}
+          />
         </div>
       </div>
     </section>
@@ -222,6 +280,7 @@ function ProjectPage({
     ? t("preview.technologies")
     : t("preview.disciplines");
   const isGroup = project.collaboration.kind === "group";
+  const publicationUrl = project.publicationUrl?.trim();
 
   return (
     <section className="pf-page pf-project">
@@ -251,16 +310,18 @@ function ProjectPage({
               )}
             </p>
           </div>
-          {project.publicationUrl && (
+          {publicationUrl && (
             <div className="pf-field">
               <h5>{t("preview.publicationLink")}</h5>
               <p>
+                {/* An address typed without its scheme still opens the
+                    site, as in the PDF. */}
                 <a
-                  href={project.publicationUrl}
+                  href={ensureUrl(publicationUrl)}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  {displayUrl(project.publicationUrl)}
+                  {displayUrl(publicationUrl)}
                 </a>
               </p>
             </div>
@@ -297,10 +358,8 @@ function ProjectPage({
             {media?.url ? (
               <img
                 alt={media.alt || project.title}
-                className="image-fade"
                 decoding="async"
                 height={media.height}
-                ref={fadeInOnLoad}
                 src={media.url}
                 width={media.width}
               />
@@ -393,13 +452,17 @@ export function PortfolioPreview({ data, fit = true }: PortfolioPreviewProps) {
     // deck handles page-count changes and all subsequent size drift.
   }, [fit, hasContent]);
 
+  // Nothing to show yet: an editor empty state (chrome, not part of the deck).
   if (!hasContent) {
     return (
-      <div className="pf-empty">
-        <p className="text-body-sm text-muted-foreground">
-          {t("preview.empty")}
-        </p>
-      </div>
+      <Empty className="py-20">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Presentation aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyDescription>{t("preview.empty")}</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     );
   }
 

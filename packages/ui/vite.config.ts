@@ -5,8 +5,14 @@ import { defineConfig } from "vite";
 
 const sourceRoot = fileURLToPath(new URL("./src/", import.meta.url));
 const sourceExtension = /\.tsx?$/;
+// print/ embeds the font files the builders' PDFs use; the apps compile it
+// from source like the rest of the package, and the library build leaves it
+// out rather than inline the fonts into dist.
 const entry = Object.fromEntries(
-  globSync(["**/*.tsx", "**/*.ts"], { cwd: sourceRoot }).map((file) => [
+  globSync(
+    ["**/*.tsx", "**/*.ts", "!**/*.test.ts", "!**/*.test.tsx", "!print/**"],
+    { cwd: sourceRoot }
+  ).map((file) => [
     file.replace(sourceExtension, ""),
     resolve(sourceRoot, file),
   ])

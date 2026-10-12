@@ -18,7 +18,7 @@ export interface BuildOgUrlOptions {
 export function buildOgUrl({
   title,
   subtitle,
-  theme = "dark",
+  theme = "light",
   template,
 }: BuildOgUrlOptions): string {
   const params = new URLSearchParams({ title, subtitle, theme });

@@ -1,29 +1,35 @@
 # packages/ui — Shared Component Library (@rulisme/ui)
 
-Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/cv`, `apps/invoice` and `apps/portfolio`. They are skinned to the Warp design system (`DESIGN.md`) through the shadcn CSS variables each app maps in its `src/styles.css`.
+Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio` and `apps/design`, plus the one **Zedative** theme (`DESIGN.md`) every app imports. All 61 shadcn/ui components are here (installed with the shadcn CLI, lyra geometry, radix base, lucide icons) and restyled to Zedative.
 
 ## Build (important)
 
 - Built with **Vite library mode** (`vite.config.ts`, every `src/**/*.{ts,tsx}` file is an entry, ESM, unminified) plus `tsc --declaration --emitDeclarationOnly` for `.d.ts` → `dist/`.
-- `exports` maps `./*` → `./dist/*.js` (types `./dist/*.d.ts`) and `./styles/shadcn.css` → `src/styles/shadcn.css`, so **consumers import the built output at runtime**. Build before (or while) developing an app:
-  - `bun run build` (one-off) or `bun run dev` (build, then Vite + tsc in watch mode). The root `bun dev`, `bun run dev:<app>` and `bun run build` do this for you through Turborepo.
-  - A stale or missing `dist/` shows up as stale/unresolved components in the apps. TypeScript in the apps maps `@rulisme/ui/*` to `src/*`, so `tsc` passes even when `dist/` is stale.
-- Every bare import is `external` (not bundled); the apps provide the peer deps (`react`, `@base-ui/react`, `@dnd-kit/*`, `lucide-react`, `radix-ui`, `react-phone-number-input`, `react-day-picker`, `tailwind-merge`, `clsx`, `class-variance-authority`).
+- `exports` maps `./*` → `./dist/*.js` (types `./dist/*.d.ts`), `./styles/shadcn.css` and `./styles/theme.css` → `src/styles/`. That is the published shape.
+- **Inside the workspace every app compiles this package from `src/`**: each app's `tsconfig.json` maps `@rulisme/ui/*` to `../../packages/ui/src/*` and its Vite config sets `resolve.tsconfigPaths: true`, so dev and production builds both bundle the source; each app's `styles.css` `@source`s `packages/ui/src` so Tailwind sees the classes. A component edit shows up in every running app without a library build. `apps/design` reaches the same source through a Vite alias and is the place to work on components.
+- `bun run build` (or `bun run dev`, which watches) still emits `dist/` for the package exports; the root `bun run build` runs it first through Turborepo. Declarations come from `tsconfig.build.json`, which leaves test files out.
+- `bun run test` (Vitest) covers the design system's own logic: `cn()` merging the `type-*` / `weight-*` groups, `typeClass()`, and `useShortcut`'s guards (typing, combobox triggers, modifiers, repeats, open windows; DOM tests run in happy-dom via `// @vitest-environment happy-dom`). Test files (`*.test.ts(x)`) are excluded from the library build.
+- Every bare import is `external` (not bundled); the apps provide the peer deps. Libraries only some components need (`cmdk`, `vaul`, `recharts`, `embla-carousel-react`, `input-otp`, `react-resizable-panels`, `sonner`, `next-themes`, `@shadcn/react`, `react-day-picker`, `@dnd-kit/*`, `react-phone-number-input`) are optional peers: an app installs them only if it imports that component. `@fontsource-variable/inter` is a dependency (the theme imports it).
 
 ## Structure & imports
 
-- `src/ui/` — primitives (button, card, dialog, select, tabs, calendar, …) → `@rulisme/ui/ui/button`
+- `src/styles/theme.css` → `@rulisme/ui/styles/theme.css`: every Zedative token (shadcn roles + `ink`, `line`, `pane`, `pane-2`, `shot`, `primary-deep`, `wash`, `highlight`, `syn-*`), the Night Desk `.dark` scheme, the `type-*` roles and `weight-*` utilities, radius, elevation (`inset-shadow-lip`, `shadow-float`, `shadow-offset`), the `band` / `rail` / `rail-nodes` / `diamond` / `graph-paper` / `hatch` / `typeset` / `field-touch` utilities, and the base layer (grain, focus, selection). The only place tokens are defined.
+- `src/styles/shadcn.css` → `@rulisme/ui/styles/shadcn.css`: the shadcn runtime variants and utilities (from the CLI, unchanged).
+- `src/ui/` — every shadcn component (button, card, dialog, select, sidebar, chart, …) plus `rails` (`Band`, `Rail`, `Diamond`), `kbd`, the Blocks `spinner` and `not-found` → `@rulisme/ui/ui/button`. `buttonVariants`, `badgeVariants` and `tabsListVariants` live in their own `*-variants.ts` files.
 - `src/form/` — composed form pieces (`form-field`, `month-picker`, `section-list`) → `@rulisme/ui/form/form-field`
 - `src/reui/phone-input.tsx` → `@rulisme/ui/reui/phone-input`
-- `src/lib/utils.ts` (`cn()` helper, phone/URL formatting) → `@rulisme/ui/lib/utils`. `cn()` registers the 9 Warp font-size tokens with tailwind-merge; `bun run parity:twmerge` keeps that list in sync with the apps' `@theme` (see `TYPOGRAPHY.md`).
-- `src/lib/image-fade.ts`, `src/lib/use-first-paint-entrance.ts` — motion helpers for the utilities in `@pilihpendidikan/config/motion.css`
-- `src/styles/shadcn.css` → `@rulisme/ui/styles/shadcn.css` (imported by each app's `styles.css`)
+- `src/hooks/` — `use-shortcut` (single-letter shortcuts behind `<Kbd>` hints), `use-mobile` (sidebar)
+- `src/lib/utils.ts` (`cn()`, phone/URL formatting) → `@rulisme/ui/lib/utils`. `cn()` registers the `type-*` and `weight-*` groups with tailwind-merge; `bun run parity:twmerge` keeps them in sync with `theme.css`.
+- `src/lib/type-scale.ts` → `typeClass(role, variant)`, `TYPE_ROLES`, `TYPE_UTILITIES`, `TYPE_WEIGHTS`.
+- `src/print/` → `@rulisme/ui/print/*`: the type of the builders' `@react-pdf` documents (DESIGN.md § Implementation › Print artifacts). `pdf-fonts.ts` takes react-pdf's `Font` (`registerPrintFonts(Font)`, so this package needs no react-pdf dependency) and registers the merged Inter cuts in `fonts/` (latin + latin-ext + vietnamese per weight, OFL in `fonts/OFL.txt`), their glyph-cache repair and the line-break policy (`hyphenateForPrint`, `hyphenateWithin(n)` for a narrow column's Text). `pdf-text.ts` normalises strings for the PDF (`toPrintText`, `toPrintLine`, `toPrintLines`). `print-coverage.ts` and the fonts are generated by `scripts/build-print-fonts.sh` (needs fontTools); never hand-edit them. The library build leaves `print/` out (it would inline the fonts into `dist`); the apps compile it from source like everything else.
 
 ## Conventions
 
-- Named exports, PascalCase components, function components, React 19 ref-as-prop. `data-slot` on primitive roots (shadcn pattern).
-- Add a component under the right `src/` subdir; the glob entry picks it up automatically — no barrel/index file. Rebuild so the new `dist/*.js` export resolves.
-- Typography follows `TYPOGRAPHY.md`: Warp tokens only (`text-xs` for chrome, `text-body-sm` for titles), weights 400/500. The root typography lint covers `src/`.
+- Named exports, PascalCase components, function components, React 19 ref-as-prop. `data-slot` on every part (shadcn pattern). Relative imports inside the package (`../lib/utils`, `./button-variants`); never `@/` or `@rulisme/ui/` from inside it.
+- Add a component under the right `src/` subdir; the glob entry picks it up automatically — no barrel/index file. Add it to `apps/design` (`bun run parity:showcase` fails otherwise).
+- Style follows `DESIGN.md` and `TYPOGRAPHY.md`: type roles only, tokens only, controls 36px (`sm` 32px), 4px controls, 2px chips, square cards, 6px windows, an inset lip on pressables, `shadow-float` on windows, no enter/exit animation, no `dark:` overrides. The root style lint covers `src/`.
+- Restyle a shared primitive here, once — never fork it in an app.
+- Adding a shadcn component: run `bunx --bun shadcn@latest add <name>` from any app or from here. Every `components.json` (this package and `apps/*`) says `radix-lyra` on the radix base with lucide icons, and the apps' `ui` / `utils` aliases point at `@rulisme/ui`, so the file lands in `src/ui/` here (check with `--dry-run`). Then restyle it to Zedative, rewrite its `@rulisme/ui/...` imports to relative ones (this package's `tsconfig.json` maps the alias so the CLI's output type-checks meanwhile), and render it in `apps/design`.
 
 <!-- intent-skills:start -->
 ## Skill Loading

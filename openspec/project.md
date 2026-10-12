@@ -15,11 +15,11 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 - **Framework**: React 19 + TanStack Router + TanStack Start (SSR)
 - **Bundler**: Vite 8 with `@cloudflare/vite-plugin`; Wrangler for deploys
 - **Orchestration**: Turborepo (`apps/*`, `packages/*`)
-- **Styling**: Tailwind CSS 4 — CSS-native config, `@theme inline`, Warp tokens
-- **UI**: `@rulisme/ui` (`packages/ui`): shadcn/ui on `@base-ui/react` / Radix + CVA
+- **Styling**: Tailwind CSS 4 — CSS-native config; one Zedative theme (`@rulisme/ui/styles/theme.css`)
+- **UI**: `@rulisme/ui` (`packages/ui`): every shadcn/ui component (lyra geometry, radix base) on `@base-ui/react` / Radix + CVA, restyled to Zedative
 - **PDF**: `@react-pdf/renderer`
 - **Icons**: lucide-react
-- **Font**: Inter 400/500 + Geist Mono 400 via `@fontsource`
+- **Font**: Inter Variable 4.0 (opsz axis) via `@fontsource-variable/inter`, the only family
 - **Lint/format**: Biome 2.5 with the Ultracite rule set
 - **Tests**: Vitest (apps), `bun test` (`apps/api`)
 - **Language**: TypeScript throughout
@@ -33,7 +33,8 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 | `apps/invoice` | Invoice builder with Indonesian region data | `4004` | `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`) |
 | `apps/portfolio` | Apple Developer Academy portfolio builder (A4 landscape) | `4005` | `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`) |
 | `apps/api` | Backend Worker: cloud save, sign-in, tokens, MCP server | `8788` (wrangler dev) | `api.pilihpendidikan.com` |
-| `packages/ui` | `@rulisme/ui` shared components, built to `dist/` | — | — |
+| `apps/design` | Zedative design system page (Vite SPA, renders `@rulisme/ui` from source) | `4006` | not deployed |
+| `packages/ui` | `@rulisme/ui` shared components and the Zedative theme (apps compile it from `src/`; `dist/` for package exports) | — | — |
 | `packages/config` | `@pilihpendidikan/config`: `tsconfig.base.json`, `motion.css` | — | — |
 
 ## Project Conventions
@@ -45,7 +46,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 - Named exports, PascalCase function components, no default-exported components
 - React 19 ref-as-prop (no `forwardRef`); `data-slot` on primitives
 - No barrel files; `@/*` alias per app; shared UI via `@rulisme/ui/<dir>/<file>`
-- Typography follows `TYPOGRAPHY.md`; tokens are parity-checked across the four apps
+- Design follows `DESIGN.md` (Zedative) and `TYPOGRAPHY.md`; tokens live only in the shared theme, and every app's `styles.css` is parity-checked to import it and define nothing
 
 ### Architecture Patterns
 
@@ -74,7 +75,7 @@ exposes them to AI assistants over MCP. The apps were extracted from the
 
 ## Important Constraints
 
-- Printed documents are print-faithful light "islands" inside the dark Warp chrome
+- Printed documents are ink on white paper inside the Zedative chrome, in light and Night Desk alike: Inter only, no uppercase or letter-spacing, Zedative ink colours, print sizes and the static weights 400 / 600 / 700 (the PDFs embed `@fontsource/inter`)
 - No deploys, DNS changes or remote data migrations without the owner's approval
 
 ## External Dependencies

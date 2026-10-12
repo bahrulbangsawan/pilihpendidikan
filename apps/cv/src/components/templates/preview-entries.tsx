@@ -28,12 +28,12 @@ export function PreviewExperienceEntry({
 
   return (
     <section className={className}>
-      <h3 className="font-semibold text-neutral-900 text-sm">
+      <h3 className="font-semibold text-foreground text-sm">
         {entry.title}
         {entry.title && entry.company ? " at " : ""}
         {entry.url ? (
           <a
-            className="underline"
+            className="text-primary underline"
             href={ensureUrl(entry.url)}
             rel="noopener noreferrer"
             target="_blank"
@@ -45,7 +45,7 @@ export function PreviewExperienceEntry({
         )}
       </h3>
       {(entry.startDate || entry.endDate || entry.current) && (
-        <p className="text-neutral-500 text-xs">
+        <p className="text-muted-foreground text-xs">
           {[
             formatMonth(entry.startDate),
             formatOngoingEndDate(entry.endDate, entry.current, formatMonth),
@@ -55,7 +55,7 @@ export function PreviewExperienceEntry({
         </p>
       )}
       {(entry.workType || entry.locationPolicy) && (
-        <p className="mt-1 text-neutral-500 text-xs">
+        <p className="mt-1 text-muted-foreground text-xs">
           {[
             WORK_TYPE_LABELS[entry.workType],
             LOCATION_LABELS[entry.locationPolicy],
@@ -67,7 +67,7 @@ export function PreviewExperienceEntry({
       {entry.description && (
         <ul className="mt-1.5 list-disc space-y-0.5 pl-4">
           {getDescriptionLines(entry.description).map(({ key, text }) => (
-            <li className="text-neutral-700 text-xs leading-relaxed" key={key}>
+            <li className="text-ink text-xs leading-relaxed" key={key}>
               {text}
             </li>
           ))}
@@ -92,10 +92,10 @@ export function PreviewCertificateEntry({
 
   return (
     <section className={className}>
-      <h3 className="font-semibold text-neutral-900 text-sm">
+      <h3 className="font-semibold text-foreground text-sm">
         {entry.url ? (
           <a
-            className="underline"
+            className="text-primary underline"
             href={ensureUrl(entry.url)}
             rel="noopener noreferrer"
             target="_blank"
@@ -108,7 +108,7 @@ export function PreviewCertificateEntry({
         {entry.name && entry.issuer ? " – " : ""}
         {entry.issuer}
       </h3>
-      <p className="text-neutral-500 text-xs">
+      <p className="text-muted-foreground text-xs">
         {[
           [
             entry.date ? formatMonth(entry.date) : "",

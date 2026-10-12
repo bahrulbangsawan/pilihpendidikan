@@ -7,12 +7,27 @@
     "ogImageAlt": "Pilih Pendidikan — CV, invoice and portfolio builders"
   },
   "nav": {
-    "switchLanguage": "Bahasa Indonesia"
+    "switchLanguage": "Bahasa Indonesia",
+    "sections": "Sections on this page"
+  },
+  "news": {
+    "label": "News:",
+    "live": "The CV, invoice and portfolio builders are live, each in English and Bahasa Indonesia.",
+    "audience": "Built for students and job seekers, in English and Bahasa Indonesia."
   },
   "hero": {
     "title": "Pilih Pendidikan",
     "intro": "Pilih Pendidikan is a set of document builders for students and job seekers, in English and Bahasa Indonesia. Each one runs in your browser, shows a live preview and exports a print-ready PDF.",
     "rollout": "The builders are launching one at a time. Each one gets a link here once it is live."
+  },
+  "editor": {
+    "label": "Illustration: in a code editor, an AI assistant adds a Gojek internship to cv.json.",
+    "documents": "Documents",
+    "prompt": "Add my internship at Gojek to my CV",
+    "read": "Read",
+    "edit": "Edit",
+    "answer": "Added the internship under Experience. One typo is left in Education.",
+    "description": "Built the trip receipt screen in SwiftUI"
   },
   "tools": {
     "heading": "Builders"
@@ -44,7 +59,11 @@
     "open": "Open"
   },
   "footer": {
-    "builtBy": "Built by"
+    "builtBy": "Built by",
+    "blurb": "CV, invoice and portfolio builders that run in your browser and export print-ready PDFs.",
+    "onThisPage": "On this page",
+    "language": "Language",
+    "agents": "For AI agents"
   },
   "notFound": {
     "title": "Page not found",

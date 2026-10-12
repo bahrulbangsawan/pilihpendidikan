@@ -120,14 +120,14 @@ function newTokenBlock(origin: string, token: string): string {
 <div class="secret">
 <label class="visually-hidden" for="new-token">New token</label>
 <input id="new-token" type="text" readonly value="${escapeHtml(token)}" />
-<button type="button" data-copy="new-token">Copy</button>
+<button type="button" class="secondary" data-copy="new-token">Copy</button>
 </div>
 <p class="meta">In the CV, invoice or portfolio builder, open <strong>Connect via MCP</strong> and paste it into <strong>Personal token</strong>.</p>
 <p>Personal MCP URL, for AI apps that only accept a URL:</p>
 <div class="secret">
 <label class="visually-hidden" for="personal-url">Personal MCP URL</label>
 <input id="personal-url" type="text" readonly value="${escapeHtml(personalUrl)}" />
-<button type="button" data-copy="personal-url">Copy</button>
+<button type="button" class="secondary" data-copy="personal-url">Copy</button>
 </div>
 <p class="meta">Keep both private: anyone with them can edit your documents.</p>
 </section>`;
@@ -225,7 +225,7 @@ ${sessions}
 <div class="secret">
 <label class="visually-hidden" for="mcp-url">MCP server URL</label>
 <input id="mcp-url" type="text" readonly value="${escapeHtml(`${origin}/mcp`)}" />
-<button type="button" data-copy="mcp-url">Copy</button>
+<button type="button" class="secondary" data-copy="mcp-url">Copy</button>
 </div>
 <p class="meta">Older clients that only speak SSE use <code>${escapeHtml(`${origin}/sse`)}</code>. Clients without sign-in support can send a token as <code>Authorization: Bearer &lt;token&gt;</code>.</p>
 </section>

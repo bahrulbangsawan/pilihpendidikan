@@ -10,6 +10,7 @@ the hub page at the apex domain:
 | `apps/invoice` | Invoices with Indonesian region (wilayah) addresses | <http://localhost:4004> | <https://invoice.pilihpendidikan.com> |
 | `apps/portfolio` | Apple Developer Academy portfolios, A4 landscape | <http://localhost:4005> | <https://portfolio.pilihpendidikan.com> |
 | `apps/api` | Backend Worker: cloud save, sign-in, personal tokens, MCP server | <http://localhost:8788> | <https://api.pilihpendidikan.com> |
+| `apps/design` | The Zedative design system page: tokens, type roles, every component | <http://localhost:4006> | not deployed |
 
 Every app is bilingual (English at `/`, Indonesian at `/id`), keeps a local
 draft in the browser, and can save to the cloud with a personal token minted at
@@ -27,7 +28,7 @@ documents through the MCP server at `https://api.pilihpendidikan.com/mcp`
 ```sh
 bun install
 bun dev            # builds @rulisme/ui, then runs every app and the api Worker
-bun run dev:cv     # or one app: dev:home, dev:cv, dev:invoice, dev:portfolio, dev:api
+bun run dev:cv     # or one app: dev:home, dev:cv, dev:invoice, dev:portfolio, dev:design, dev:api
 ```
 
 ### Running the API locally
@@ -46,15 +47,16 @@ sign-in link wrangler prints in the terminal (local email is simulated). Mint
 a token there and paste it into an app's "Connect via MCP" dialog to try
 cloud save. No Cloudflare login is needed for local development.
 
-The apps import `@rulisme/ui` from its built `dist/`. `bun dev` and
-`bun run build` build it first; if you run an app on its own, run
-`bun run build` in `packages/ui` beforehand.
+The apps compile `@rulisme/ui` straight from `packages/ui/src` (TypeScript
+`paths` plus Vite's `resolve.tsconfigPaths`), so a component change shows up
+in every running app without a library build. `bun run build` still emits
+its `dist/` for the package exports.
 
 ## Checks
 
 ```sh
 bun x ultracite fix   # format and autofix (Biome, Ultracite rules)
-bun run check         # biome → turbo lint → typography lint → parity → tests → audit
+bun run check         # biome → turbo lint → style lint → theme parity → tests → audit
 bun run build         # packages/ui, then each app (wrangler types + vite build)
 ```
 
@@ -64,9 +66,10 @@ bun run build         # packages/ui, then each app (wrangler types + vite build)
 apps/home                               hub landing page (pilihpendidikan.com)
 apps/cv  apps/invoice  apps/portfolio   TanStack Start apps on Cloudflare Workers
 apps/api                                backend Worker (api.pilihpendidikan.com)
-packages/ui                             @rulisme/ui component library
+apps/design                             Zedative design system page (localhost:4006)
+packages/ui                             @rulisme/ui component library + the Zedative theme
 packages/config                         @pilihpendidikan/config (tsconfig base, motion.css)
-scripts/                                typography lint + parity checks
+scripts/                                style lint + theme parity checks
 openspec/                               change proposals and specs
 docs/archive/                           reports written before the extraction
 portfolio-mock/                         the static mock the portfolio app was built from
@@ -101,5 +104,6 @@ These apps were extracted from the `bahrul` monorepo (where they lived as
 extraction time. Reports in `docs/archive/` and `og-metadata-audit.md`
 predate the move and still refer to the old `*.bahrul.me` hosts.
 
-See `CLAUDE.md` for conventions, `DESIGN.md` for the Warp design system and
-`TYPOGRAPHY.md` for the enforced type rules.
+See `CLAUDE.md` for conventions, `DESIGN.md` for the Zedative design system
+and `TYPOGRAPHY.md` for the enforced type rules. Run `bun run dev:design` to
+browse the system.

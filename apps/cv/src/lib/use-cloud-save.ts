@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { translateNow } from "@/i18n";
 
 export type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -155,12 +156,12 @@ export function useCloudSave<T>({
           }
           if (res.status === 401) {
             setAuth(null);
-            setError("Session expired — re-enter your token to save.");
+            setError(translateNow("status.sessionExpired"));
           } else if (res.status === 403) {
             setForbidden(true);
-            setError("You don't have permission to edit this document.");
+            setError(translateNow("status.forbidden"));
           } else {
-            setError(`Save failed (${res.status}). Your change was reverted.`);
+            setError(translateNow("status.saveFailed", { code: res.status }));
           }
           setStatus("error");
         } catch {
@@ -168,9 +169,7 @@ export function useCloudSave<T>({
             onRollback(lastSaved.current);
           }
           setStatus("error");
-          setError(
-            "Save failed — check your connection. Your change was reverted."
-          );
+          setError(translateNow("status.saveOffline"));
         }
       }, 800);
     },

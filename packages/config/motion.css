@@ -1,67 +1,68 @@
 /*
- * Shared motion primitives for every Warp UI app (apps/cv · apps/invoice ·
- * apps/portfolio).
+ * Shared motion for every Zedative app (apps/home · apps/cv · apps/invoice ·
+ * apps/portfolio · apps/design). DESIGN.md § Motion:
  *
- * Import once per app, right after `tw-animate-css`:
+ *   - Duration 150ms, easing cubic-bezier(0.4, 0, 0.2, 1).
+ *   - What animates: button and tile background + lip shadow, nav-link hover
+ *     fill, footer underline colour, link opacity.
+ *   - What never animates: layout, sections, the editor. Nothing enters on
+ *     scroll, nothing fades in on mount, overlays open and close instantly.
+ *   - Signature move: pressables press `translateY(1px) scale(0.99)`.
+ *   - Status dots pulse slowly, only under prefers-reduced-motion:
+ *     no-preference.
+ *
+ * Import once per app, right after `tailwindcss`:
  *
  *   @import "@pilihpendidikan/config/motion.css";
  *
- * One set of durations, one curve, one press scale, one entrance offset and
- * one stagger step, so no component invents its own values. Everything here
- * animates `opacity`, `translate` and `scale` only (compositor-friendly) and
- * honours `prefers-reduced-motion`.
- *
  * Utilities (Tailwind 4 `@utility`, usable with every variant):
- *   ease-standard        the shared curve, for `transition-*` utilities
- *   press                pressed feedback: scale(var(--motion-press-scale))
- *   card-interactive     hover lift + surface/border transition for link cards
- *   motion-enter         one-shot entrance (opacity + 8px rise + 0.98 scale)
- *   motion-stagger       staggered `motion-enter` for every direct child
- *   route-view           the element that cross-fades between routes
- *   image-fade           fades an <img> in once it has decoded
+ *   ease-standard   the shared curve, for `transition-*` utilities
+ *   press           the pressed offset on :active
+ *   pulse-dot       slow opacity pulse for live/status dots
+ *   animate-caret-blink  the InputOTP caret
  *
- * Components: `.spinner-blocks` (the Blocks loading spinner), rendered only
- * through each app's `components/ui/spinner.tsx`.
+ * Component: `.spinner-blocks`, the Blocks loading spinner, rendered only
+ * through `Spinner` (`@rulisme/ui/ui/spinner`). Loading feedback is
+ * functional, not decoration, so it keeps moving.
  */
 
 @theme {
-  /* `ease-standard` utility. Same curve as --motion-ease below. */
-  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  /* Every bare `transition-*` utility defaults to the fast duration and the
-     shared curve, so an unannotated hover still matches the system. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Every bare `transition-*` utility defaults to the system duration and
+     curve, so an unannotated hover still matches the spec. */
   --default-transition-duration: 150ms;
-  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* The fake caret inside an InputOTP slot: functional feedback (it shows
+     where the next digit goes), so it keeps blinking. */
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
 }
 
 :root {
-  /* Hover, press, focus and other high-frequency feedback. */
-  --motion-duration-fast: 150ms;
-  /* Overlays, route cross-fade, card hover lift. */
-  --motion-duration-base: 200ms;
-  /* One-shot entrances (cards, images). */
-  --motion-duration-enter: 300ms;
-  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
-
-  --motion-press-scale: 0.97;
-  --motion-hover-lift: -2px;
-  --motion-enter-offset: 8px;
-  --motion-enter-scale: 0.98;
-  /* Per-item stagger. `motion-stagger` caps the delay at 8 steps (280ms) so
-     a long grid never waits on its tail. */
-  --motion-stagger: 40ms;
-  --motion-route-offset: 4px;
+  --motion-duration: 150ms;
+  --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-press-offset: 1px;
+  --motion-press-scale: 0.99;
 }
 
-/* Reduced motion: no movement, no scale — entrances and route changes become
-   instant (the kill switch below zeroes their duration). Spinners keep a
-   static frame plus their text label. */
+/* Reduced motion: no travel, no scale, and every transition or animation
+   ends at once. Spinners keep a static frame plus their text label. */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --motion-press-offset: 0px;
     --motion-press-scale: 1;
-    --motion-hover-lift: 0px;
-    --motion-enter-offset: 0px;
-    --motion-enter-scale: 1;
-    --motion-route-offset: 0px;
   }
 
   *,
@@ -74,153 +75,37 @@
   }
 }
 
-/* ── Press feedback ──────────────────────────────────────────────────────────
-   Pair with a transition list that includes `scale`, e.g.
-   `transition-[color,background-color,scale] duration-150 ease-standard`. */
+/* ── Press ───────────────────────────────────────────────────────────────────
+   The press is instant: transition background and box-shadow, never
+   translate or scale. */
 @utility press {
   &:active:not(:disabled, [aria-disabled="true"], [data-disabled]) {
+    translate: 0 var(--motion-press-offset);
     scale: var(--motion-press-scale);
   }
 }
 
-/* ── Interactive cards ───────────────────────────────────────────────────────
-   Warp cards are flat (DESIGN.md: no drop shadows), so "elevation" is a 2px
-   lift plus the surface/border step the card already declares on hover. The
-   lift is gated to real hover devices so a tap never leaves it stuck. */
-@utility card-interactive {
-  transition-property: translate, background-color, border-color, color;
-  transition-duration: var(--motion-duration-base);
-  transition-timing-function: var(--motion-ease);
-
-  @media (hover: hover) {
-    &:hover {
-      translate: 0 var(--motion-hover-lift);
-    }
+/* ── Status pulse ────────────────────────────────────────────────────────────
+   The active branch dot and the footer status dot (DESIGN.md Motion). */
+@keyframes pulse-dot {
+  50% {
+    opacity: 0.35;
   }
 }
 
-/* ── One-shot entrances ──────────────────────────────────────────────────────
-   Keyframes (not transitions) because an entrance runs once on mount.
-   `backwards` holds the start frame during any stagger delay, so nothing
-   flashes in early, and releases every property once it ends — a forwards
-   fill would keep overriding `translate`/`scale` (killing the
-   `card-interactive` hover lift and trapping `position: fixed` children). SSR renders the start frame too, so content
-   animates from the first paint without waiting for hydration. */
-@keyframes motion-enter {
-  from {
-    opacity: 0;
-    translate: 0 var(--motion-enter-offset);
-    scale: var(--motion-enter-scale);
+@utility pulse-dot {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: pulse-dot 2.4s var(--motion-ease) infinite;
   }
-}
-
-@utility motion-enter {
-  animation: motion-enter var(--motion-duration-enter) var(--motion-ease)
-    backwards;
-}
-
-@utility motion-stagger {
-  & > * {
-    animation: motion-enter var(--motion-duration-enter) var(--motion-ease)
-      backwards;
-  }
-  & > :nth-child(2) {
-    animation-delay: calc(var(--motion-stagger) * 1);
-  }
-  & > :nth-child(3) {
-    animation-delay: calc(var(--motion-stagger) * 2);
-  }
-  & > :nth-child(4) {
-    animation-delay: calc(var(--motion-stagger) * 3);
-  }
-  & > :nth-child(5) {
-    animation-delay: calc(var(--motion-stagger) * 4);
-  }
-  & > :nth-child(6) {
-    animation-delay: calc(var(--motion-stagger) * 5);
-  }
-  & > :nth-child(7) {
-    animation-delay: calc(var(--motion-stagger) * 6);
-  }
-  & > :nth-child(n + 8) {
-    animation-delay: calc(var(--motion-stagger) * 7);
-  }
-}
-
-/* ── Images ──────────────────────────────────────────────────────────────────
-   `data-image-state="loading"` is set from a ref callback only when the image
-   has not decoded yet (see each app's image primitive), and cleared on
-   `load`/`error`. SSR markup never carries it, so an image never hides
-   waiting on JavaScript. The element keeps its width/height or aspect ratio,
-   so fading in causes no layout shift. */
-@utility image-fade {
-  transition-property: opacity;
-  transition-duration: var(--motion-duration-enter);
-  transition-timing-function: var(--motion-ease);
-
-  &[data-image-state="loading"] {
-    opacity: 0;
-  }
-
-  /* The print views call window.print() right after images load; never let a
-     mid-fade image reach paper. */
-  @media print {
-    transition: none;
-    opacity: 1;
-  }
-}
-
-/* ── Route transitions ───────────────────────────────────────────────────────
-   Driven by the View Transitions API through TanStack Router's
-   `defaultViewTransition: { types: … }`, which tags path changes with the
-   `route` type and skips search-only, hash-only and first-load changes.
-   The name is assigned only while a `route` transition runs, so `route-view`
-   never creates a stacking context at rest. Sidebar and chrome snap
-   instantly; only the page content fades and rises 4px. Browsers without
-   view-transition types fall back to an instant swap. */
-@utility route-view {
-  :root:active-view-transition-type(route) & {
-    view-transition-name: route-view;
-  }
-}
-
-::view-transition-group(*),
-::view-transition-old(*),
-::view-transition-new(*) {
-  animation: none;
-}
-
-@keyframes motion-route-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes motion-route-in {
-  from {
-    opacity: 0;
-    translate: 0 var(--motion-route-offset);
-  }
-}
-
-:root:active-view-transition-type(route)::view-transition-old(route-view) {
-  animation: motion-route-out 120ms var(--motion-ease) both;
-}
-
-:root:active-view-transition-type(route)::view-transition-new(route-view) {
-  animation: motion-route-in var(--motion-duration-base) var(--motion-ease) both;
 }
 
 /* ── Blocks spinner ──────────────────────────────────────────────────────────
    Ported from the loading.dev "Blocks" spinner (loading-dev@0.3.5,
    https://loading.dev/spinners/blocks — MIT, © 2026 Jakub Krehel): nine
-   blocks shrinking and growing in a diagonal sweep. Rebuilt on <span>s so it
-   is valid inside <button>, and sized by `--spinner-size` (14px default =
-   the inline-icon size; 20px for page/panel loaders). Render it through each
-   app's `Spinner` component (`components/ui/spinner.tsx`), never by hand.
-
-   Loading indicators are functional feedback, not decoration: they keep
-   animating under reduced motion (scale in place only, no travel). */
+   square blocks shrinking and growing in a diagonal sweep. Built on <span>s
+   so it is valid inside <button>, sized by `--spinner-size` (14px default =
+   the inline-icon size; 20px for page and panel loaders). Render it through
+   `Spinner`, never by hand. */
 .spinner-blocks {
   --spinner-size: 14px;
   --spinner-duration: 1300ms;
@@ -236,7 +121,7 @@
 
 .spinner-blocks > span {
   background: currentColor;
-  border-radius: calc(var(--spinner-size) * 0.0625);
+  border-radius: 1px;
   animation: spinner-blocks-sweep var(--spinner-duration) ease-in-out infinite;
   /* Diagonal sweep: delay = (row + col - 5) / 5 × duration (cells are in
      row-major order, so nth-child maps to row + col). */

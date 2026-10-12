@@ -49,15 +49,13 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
   return (
     <section className="mt-4">
       {entry.title && (
-        <h3 className="font-semibold text-neutral-700 text-sm">
-          {entry.title}
-        </h3>
+        <h3 className="font-semibold text-foreground text-sm">{entry.title}</h3>
       )}
-      <p className="text-neutral-700 text-xs">
+      <p className="text-muted-foreground text-xs">
         {entry.company &&
           (entry.url ? (
             <a
-              className="underline"
+              className="text-primary underline"
               href={ensureUrl(entry.url)}
               rel="noopener noreferrer"
               target="_blank"
@@ -77,7 +75,7 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
             .join(" – ")}
       </p>
       {(entry.workType || entry.locationPolicy) && (
-        <p className="mt-1 text-neutral-500 text-xs">
+        <p className="mt-1 text-muted-foreground text-xs">
           {[
             WORK_TYPE_LABELS[entry.workType],
             LOCATION_LABELS[entry.locationPolicy],
@@ -89,10 +87,7 @@ function ExperienceEntry({ entry }: { entry: CVData["experience"][number] }) {
       {entry.description && (
         <ul className="mt-1.5 list-disc space-y-0.5 pl-4">
           {getDescriptionLines(entry.description).map((line) => (
-            <li
-              className="text-neutral-700 text-xs leading-relaxed"
-              key={line.key}
-            >
+            <li className="text-ink text-xs leading-relaxed" key={line.key}>
               {line.text}
             </li>
           ))}
@@ -120,11 +115,11 @@ function EducationEntry({ entry }: { entry: CVData["education"][number] }) {
   return (
     <section className="mt-4">
       {entry.degree && (
-        <h3 className="font-semibold text-neutral-700 text-sm">
+        <h3 className="font-semibold text-foreground text-sm">
           {entry.degree}
         </h3>
       )}
-      <p className="text-neutral-700 text-xs">
+      <p className="text-muted-foreground text-xs">
         {[
           entry.institution,
           dates,
@@ -149,10 +144,10 @@ function CertificateEntry({
 
   return (
     <section className="mt-4">
-      <h3 className="font-semibold text-neutral-700 text-sm">
+      <h3 className="font-semibold text-foreground text-sm">
         {entry.url ? (
           <a
-            className="underline"
+            className="text-primary underline"
             href={ensureUrl(entry.url)}
             rel="noopener noreferrer"
             target="_blank"
@@ -163,7 +158,7 @@ function CertificateEntry({
           entry.name
         )}
       </h3>
-      <p className="text-neutral-700 text-xs">
+      <p className="text-muted-foreground text-xs">
         {[
           entry.issuer,
           [
@@ -199,18 +194,15 @@ function VolunteerEntry({ entry }: { entry: CVData["volunteer"][number] }) {
   return (
     <section className="mt-4">
       {entry.role && (
-        <h3 className="font-semibold text-neutral-700 text-sm">{entry.role}</h3>
+        <h3 className="font-semibold text-foreground text-sm">{entry.role}</h3>
       )}
-      <p className="text-neutral-700 text-xs">
+      <p className="text-muted-foreground text-xs">
         {[entry.organization, dates].filter(Boolean).join(" | ")}
       </p>
       {entry.description && (
         <ul className="mt-1.5 list-disc space-y-0.5 pl-4">
           {getDescriptionLines(entry.description).map((line) => (
-            <li
-              className="text-neutral-700 text-xs leading-relaxed"
-              key={line.key}
-            >
+            <li className="text-ink text-xs leading-relaxed" key={line.key}>
               {line.text}
             </li>
           ))}
@@ -248,7 +240,7 @@ export function SimplePreview({ data }: { data: CVData }) {
   if (!hasContent) {
     return (
       <article className="cv-page mx-auto" id="cv-content">
-        <p className="text-center text-neutral-400 text-sm">
+        <p className="text-center text-muted-foreground text-sm">
           Fill in the form to see your CV preview.
         </p>
       </article>
@@ -260,12 +252,12 @@ export function SimplePreview({ data }: { data: CVData }) {
       {/* Header — centered */}
       <header className="text-center">
         {personalInfo.fullName && (
-          <h1 className="font-semibold text-neutral-700 text-xl tracking-tight">
+          <h1 className="font-bold text-foreground text-xl">
             {personalInfo.fullName}
           </h1>
         )}
         {personalInfo.jobTitle && (
-          <p className="mt-0.5 text-neutral-700 text-sm">
+          <p className="mt-0.5 text-muted-foreground text-sm">
             {personalInfo.jobTitle}
           </p>
         )}
@@ -273,7 +265,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           personalInfo.phone ||
           personalInfo.location ||
           personalInfo.linkedIn) && (
-          <p className="mt-2 text-neutral-500 text-xs">
+          <p className="mt-2 text-muted-foreground text-xs">
             {[
               personalInfo.email,
               personalInfo.phone ? formatPhoneDisplay(personalInfo.phone) : "",
@@ -297,10 +289,10 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "summary":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.summaryTitle}
                 </h2>
-                <p className="mt-2 text-neutral-700 text-xs leading-relaxed">
+                <p className="mt-2 whitespace-pre-line text-ink text-xs leading-relaxed">
                   {summary}
                 </p>
               </section>
@@ -308,7 +300,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "experience":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.experienceTitle}
                 </h2>
                 {experience.map((entry) => (
@@ -319,7 +311,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "education":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.educationTitle}
                 </h2>
                 {education.map((entry) => (
@@ -330,7 +322,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "skills":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.skillsTitle}
                 </h2>
                 <div className="mt-2 space-y-1">
@@ -339,9 +331,9 @@ export function SimplePreview({ data }: { data: CVData }) {
                       return acc;
                     }
                     acc.push(
-                      <p className="text-neutral-700 text-xs" key={category.id}>
+                      <p className="text-ink text-xs" key={category.id}>
                         {category.name && (
-                          <span className="font-semibold">
+                          <span className="font-semibold text-foreground">
                             {category.name}:{" "}
                           </span>
                         )}
@@ -356,7 +348,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "awards":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.awardsTitle}
                 </h2>
                 {awards.reduce<React.ReactNode[]>((acc, entry) => {
@@ -365,10 +357,10 @@ export function SimplePreview({ data }: { data: CVData }) {
                   }
                   acc.push(
                     <section className="mt-4" key={entry.id}>
-                      <h3 className="font-semibold text-neutral-700 text-sm">
+                      <h3 className="font-semibold text-foreground text-sm">
                         {entry.title}
                       </h3>
-                      <p className="text-neutral-700 text-xs">
+                      <p className="text-muted-foreground text-xs">
                         {[
                           entry.issuer,
                           entry.date ? formatMonth(entry.date) : "",
@@ -377,13 +369,13 @@ export function SimplePreview({ data }: { data: CVData }) {
                           .join(" | ")}
                       </p>
                       {entry.description && (
-                        <p className="mt-1 text-neutral-700 text-xs leading-relaxed">
+                        <p className="mt-1 whitespace-pre-line text-ink text-xs leading-relaxed">
                           {entry.description}
                         </p>
                       )}
                       {entry.url && (
                         <a
-                          className="mt-1 block text-neutral-900 text-xs underline"
+                          className="mt-1 block text-primary text-xs underline"
                           href={ensureUrl(entry.url)}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -400,7 +392,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "certificates":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.certificatesTitle}
                 </h2>
                 {certificates.map((entry) => (
@@ -411,7 +403,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "languages":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.languagesTitle}
                 </h2>
                 <ul className="mt-2 space-y-1">
@@ -420,10 +412,10 @@ export function SimplePreview({ data }: { data: CVData }) {
                       return acc;
                     }
                     acc.push(
-                      <li className="text-neutral-700 text-xs" key={entry.id}>
+                      <li className="text-ink text-xs" key={entry.id}>
                         {entry.language}
                         {entry.proficiency && (
-                          <span>
+                          <span className="text-muted-foreground">
                             {" "}
                             {"–"} {entry.proficiency}
                           </span>
@@ -438,15 +430,15 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "projects":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.projectsTitle}
                 </h2>
                 {projects.map((entry) => (
                   <section className="mt-4" key={entry.id}>
-                    <h3 className="font-semibold text-neutral-700 text-sm">
+                    <h3 className="font-semibold text-foreground text-sm">
                       {entry.url ? (
                         <a
-                          className="underline"
+                          className="text-primary underline"
                           href={ensureUrl(entry.url)}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -458,7 +450,7 @@ export function SimplePreview({ data }: { data: CVData }) {
                       )}
                     </h3>
                     {entry.description && (
-                      <p className="mt-1 text-neutral-700 text-xs leading-relaxed">
+                      <p className="mt-1 whitespace-pre-line text-ink text-xs leading-relaxed">
                         {entry.description}
                       </p>
                     )}
@@ -469,7 +461,7 @@ export function SimplePreview({ data }: { data: CVData }) {
           case "volunteer":
             return (
               <section className="mt-6" key={sectionId}>
-                <h2 className="border-neutral-900 border-b-2 pb-1 font-semibold text-neutral-900 text-sm">
+                <h2 className="border-line border-b pb-1 font-semibold text-foreground text-sm">
                   {data.volunteerTitle}
                 </h2>
                 {volunteer.map((entry) => (

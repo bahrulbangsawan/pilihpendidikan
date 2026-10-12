@@ -1,7 +1,8 @@
-import { fadeInOnLoad } from "@rulisme/ui/lib/image-fade";
 import { FormField } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
+import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
+import { buttonVariants } from "@rulisme/ui/ui/button-variants";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { Separator } from "@rulisme/ui/ui/separator";
 import {
   Building2,
   ChevronDown,
@@ -29,6 +29,7 @@ import {
   Upload,
   UserRound,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { AddressFields } from "@/components/form/address-fields";
 import { DatePicker } from "@/components/form/date-picker";
@@ -60,6 +61,28 @@ export type {
 // edge stays crisp while keeping the embed tiny. PNG logos keep their alpha.
 const LOGO_MAX_EDGE = 320;
 
+// The invoice's accent-colour presets. Document content (the user's branding
+// on the printed invoice), not chrome, so they stay raw hex.
+const ACCENT_PRESETS = [
+  "#f48120",
+  "#2563eb",
+  "#16a34a",
+  "#dc2626",
+  "#7c3aed",
+] as const;
+
+// Each form section is a band of the form pane, ruled by a 1px `line`
+// hairline (DESIGN.md § Layout). The form is a size container, so its grids
+// follow the pane's width rather than the viewport's.
+const SECTION_CLASS = "border-line border-b px-4 py-6 last:border-b-0 sm:px-6";
+
+// Swatches are 2px tiles at control height; focus draws the action outline.
+const SWATCH_CLASS =
+  "size-9 shrink-0 rounded-sm border border-input transition-[border-color] duration-150 ease-standard hover:border-muted-foreground";
+
+const FOCUS_WITHIN_CLASS =
+  "has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2";
+
 // ── Currency (internal to this file only) ─────────────────
 
 const CURRENCY_OPTIONS = [
@@ -72,6 +95,58 @@ const CURRENCY_OPTIONS = [
   { value: "JPY", flag: "🇯🇵", label: "JPY — Japanese Yen" },
   { value: "MYR", flag: "🇲🇾", label: "MYR — Malaysian Ringgit" },
 ] as const;
+
+// ── Section chrome ─────────────────────────────────────────
+
+// A section heading: subtitle role at the heading weight with a muted 16px
+// icon, on the same 32px row as the line-items title beside it.
+function SectionHeading({
+  icon,
+  children,
+}: {
+  icon: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <h2 className="type-subtitle weight-semibold flex h-8 items-center gap-1.5 text-foreground">
+      <span
+        aria-hidden="true"
+        className="inline-flex shrink-0 text-muted-foreground"
+      >
+        {icon}
+      </span>
+      {children}
+    </h2>
+  );
+}
+
+// The whole heading row toggles a collapsible section; the chevron flips
+// instantly (nothing animates layout).
+function SectionToggle({
+  icon,
+  children,
+}: {
+  icon: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
+      <span className="type-subtitle weight-semibold flex items-center gap-1.5 text-foreground">
+        <span
+          aria-hidden="true"
+          className="inline-flex shrink-0 text-muted-foreground"
+        >
+          {icon}
+        </span>
+        {children}
+      </span>
+      <ChevronDown
+        aria-hidden="true"
+        className="chevron size-4 shrink-0 text-muted-foreground"
+      />
+    </CollapsibleTrigger>
+  );
+}
 
 // ── Form Component ─────────────────────────────────────────
 
@@ -308,15 +383,14 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="@container/form flex flex-col">
       {/* ── Invoice Details ── */}
-      <section>
-        <h2 className="flex items-center gap-2 font-medium text-body-sm">
-          <FileText className="size-4 text-muted-foreground" />{" "}
+      <section className={SECTION_CLASS}>
+        <SectionHeading icon={<FileText className="size-4" />}>
           {t("form.invoiceDetails")}
-        </h2>
-        <div className="mt-3 grid grid-cols-1 items-end gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_auto_1fr_1fr_auto]">
-          <div className="grid grid-cols-[1fr_auto] items-end gap-3 sm:contents">
+        </SectionHeading>
+        <div className="mt-3 grid @xl/form:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_minmax(0,1fr)] grid-cols-1 items-end gap-3">
+          <div className="grid @xl/form:contents grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
             <FormField
               label={t("form.invoiceNumber")}
               onChange={(v) => updateField("invoiceNumber", v)}
@@ -349,7 +423,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               </Select>
             </div>
           </div>
-          <div className="col-span-1 grid grid-cols-2 gap-3 sm:contents">
+          <div className="grid @xl/form:contents grid-cols-2 items-end gap-3">
             <DatePicker
               label={t("form.dateOfIssue")}
               onChange={(v) => updateField("dateOfIssue", v)}
@@ -361,16 +435,24 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               value={data.dateDue}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label className="flex items-center gap-1">
-              <Palette className="size-3" /> {t("form.color")}
+          <div className="@xl/form:col-span-full space-y-1.5">
+            <Label className="gap-1.5">
+              <Palette
+                aria-hidden="true"
+                className="size-3.5 text-muted-foreground"
+              />
+              {t("form.color")}
             </Label>
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
               <label
                 aria-label={t("a11y.setAccentColor", {
                   color: data.accentColor,
                 })}
-                className="flex size-8 shrink-0 cursor-pointer rounded border border-input transition-[box-shadow] duration-150 ease-standard has-focus-visible:ring-2 has-focus-visible:ring-ring/50"
+                className={cn(
+                  SWATCH_CLASS,
+                  "flex cursor-pointer",
+                  FOCUS_WITHIN_CLASS
+                )}
                 style={{ backgroundColor: data.accentColor }}
               >
                 <input
@@ -383,37 +465,32 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   value={data.accentColor}
                 />
               </label>
-              {["#f48120", "#2563eb", "#16a34a", "#dc2626", "#7c3aed"].map(
-                (c) => (
-                  <button
-                    aria-label={t("a11y.setAccentColor", { color: c })}
-                    className="press size-8 shrink-0 rounded border border-input outline-hidden transition-[scale,box-shadow] duration-150 ease-standard hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring/50"
-                    key={c}
-                    onClick={() => updateField("accentColor", c)}
-                    style={{ backgroundColor: c }}
-                    type="button"
-                  />
-                )
-              )}
+              {ACCENT_PRESETS.map((c) => (
+                <button
+                  aria-label={t("a11y.setAccentColor", { color: c })}
+                  className={cn(
+                    SWATCH_CLASS,
+                    "press outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+                  )}
+                  key={c}
+                  onClick={() => updateField("accentColor", c)}
+                  style={{ backgroundColor: c }}
+                  type="button"
+                />
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <Separator />
-
       {/* ── From (Sender) ── */}
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className="flex w-full items-center justify-between rounded-sm font-medium text-body-sm outline-hidden focus-visible:ring-2 focus-visible:ring-ring/30 [&[data-state=open]>.chevron]:rotate-180">
-          <span className="flex items-center gap-2">
-            <Building2 className="size-4 text-muted-foreground" />{" "}
-            {t("form.fromSection")}
-          </span>
-          <ChevronDown className="chevron size-4 text-muted-foreground transition-[rotate] duration-200 ease-standard" />
-        </CollapsibleTrigger>
+      <Collapsible className={SECTION_CLASS} defaultOpen>
+        <SectionToggle icon={<Building2 className="size-4" />}>
+          {t("form.fromSection")}
+        </SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
               <FormField
                 label={t("form.companyName")}
                 onChange={(v) => updateFrom("companyName", v)}
@@ -457,17 +534,22 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 {data.from.logoUrl && (
                   <img
                     alt=""
-                    className="image-fade h-8 w-auto rounded border object-contain"
+                    className="h-8 w-auto rounded-sm border border-border object-contain"
                     decoding="async"
                     height={32}
                     loading="lazy"
-                    ref={fadeInOnLoad}
                     src={data.from.logoUrl}
                     width={32}
                   />
                 )}
-                <label className="press inline-flex cursor-pointer items-center gap-1.5 rounded border border-input bg-background px-2 py-1 text-xs transition-[color,background-color,box-shadow,scale] duration-150 ease-standard hover:bg-accent hover:text-accent-foreground has-focus-visible:ring-2 has-focus-visible:ring-ring/30">
-                  <Upload className="size-3" />
+                <label
+                  className={cn(
+                    buttonVariants({ size: "sm", variant: "outline" }),
+                    "cursor-pointer",
+                    FOCUS_WITHIN_CLASS
+                  )}
+                >
+                  <Upload aria-hidden="true" data-icon="inline-start" />
                   {data.from.logoUrl ? t("form.change") : t("form.upload")}
                   <input
                     accept="image/*"
@@ -483,38 +565,29 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   <Button
                     aria-label={t("a11y.removeLogo")}
                     onClick={() => updateFrom("logoUrl", "")}
-                    size="sm"
+                    size="icon-sm"
                     variant="ghost"
                   >
-                    <Trash2
-                      aria-hidden="true"
-                      className="size-3.5 text-destructive"
-                    />
+                    <Trash2 aria-hidden="true" className="text-destructive" />
                   </Button>
                 )}
               </div>
               {logoError && (
-                <p className="text-destructive text-xs">{logoError}</p>
+                <p className="type-caption text-destructive">{logoError}</p>
               )}
             </div>
           </div>
         </CollapsibleContent>
       </Collapsible>
 
-      <Separator />
-
       {/* ── Bill To ── */}
-      <Collapsible defaultOpen>
-        <CollapsibleTrigger className="flex w-full items-center justify-between rounded-sm font-medium text-body-sm outline-hidden focus-visible:ring-2 focus-visible:ring-ring/30 [&[data-state=open]>.chevron]:rotate-180">
-          <span className="flex items-center gap-2">
-            <UserRound className="size-4 text-muted-foreground" />{" "}
-            {t("form.billToSection")}
-          </span>
-          <ChevronDown className="chevron size-4 text-muted-foreground transition-[rotate] duration-200 ease-standard" />
-        </CollapsibleTrigger>
+      <Collapsible className={SECTION_CLASS} defaultOpen>
+        <SectionToggle icon={<UserRound className="size-4" />}>
+          {t("form.billToSection")}
+        </SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
               <FormField
                 label={t("form.name")}
                 onChange={(v) => updateBillTo("name", v)}
@@ -561,140 +634,146 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
         </CollapsibleContent>
       </Collapsible>
 
-      <Separator />
-
       {/* ── Line Items ── */}
-      <SectionList
-        addLabel={t("form.addItem")}
-        items={data.items}
-        onAdd={addItem}
-        onRemove={removeItem}
-        onReorder={reorderItems}
-        placeholder={t("form.lineItems")}
-        renderContent={(item) => (
-          <div className="space-y-3">
-            <FormField
-              label={t("form.description")}
-              onChange={(v) => updateItem(item.id, "description", v)}
-              placeholder={t("placeholders.description")}
-              value={item.description}
-            />
-            <div className="grid grid-cols-1 items-end gap-3 sm:grid-cols-[1fr_3.5rem_auto_auto]">
-              <PeriodRangePicker
-                onChange={(v) => updateItem(item.id, "period", v)}
-                value={item.period}
+      <div className={SECTION_CLASS}>
+        <SectionList
+          addLabel={t("form.addItem")}
+          items={data.items}
+          onAdd={addItem}
+          onRemove={removeItem}
+          onReorder={reorderItems}
+          placeholder={t("form.lineItems")}
+          removeLabel={t("a11y.removeItem")}
+          reorderLabel={t("a11y.dragToReorder")}
+          renderContent={(item) => (
+            <div className="space-y-3">
+              <FormField
+                label={t("form.description")}
+                onChange={(v) => updateItem(item.id, "description", v)}
+                placeholder={t("placeholders.description")}
+                value={item.description}
               />
-              <div className="grid grid-cols-3 items-end gap-2 sm:contents">
-                <FormField
-                  label={t("form.qty")}
-                  numeric
-                  onChange={(v) => updateItem(item.id, "qty", Number(v))}
-                  value={String(item.qty)}
+              <div className="grid @xl/form:grid-cols-[minmax(0,1.5fr)_3.5rem_minmax(0,0.8fr)_minmax(0,1fr)] grid-cols-1 items-end gap-3">
+                <PeriodRangePicker
+                  onChange={(v) => updateItem(item.id, "period", v)}
+                  value={item.period}
                 />
-                <FormField
-                  label={t("form.unitPrice")}
-                  numeric
-                  onChange={(v) => updateItem(item.id, "unitPrice", Number(v))}
-                  value={String(item.unitPrice)}
-                />
-                <FormField
-                  disabled
-                  label={t("form.amount")}
-                  value={formatCurrency(
-                    item.qty * item.unitPrice,
-                    data.currency
-                  )}
-                />
+                <div className="grid @xl/form:contents grid-cols-[3.5rem_minmax(0,1fr)_minmax(0,1fr)] items-end gap-2 tabular-nums">
+                  <FormField
+                    label={t("form.qty")}
+                    numeric
+                    onChange={(v) => updateItem(item.id, "qty", Number(v))}
+                    value={String(item.qty)}
+                  />
+                  <FormField
+                    label={t("form.unitPrice")}
+                    numeric
+                    onChange={(v) =>
+                      updateItem(item.id, "unitPrice", Number(v))
+                    }
+                    value={String(item.unitPrice)}
+                  />
+                  <FormField
+                    disabled
+                    label={t("form.amount")}
+                    value={formatCurrency(
+                      item.qty * item.unitPrice,
+                      data.currency
+                    )}
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Sub-items */}
-            {item.subItems.length > 0 && (
-              <div className="ml-2 space-y-2 border-muted border-l-2 pl-2 sm:ml-4 sm:pl-4">
-                <p className="font-medium text-muted-foreground text-xs">
-                  {t("form.subItems")}
-                </p>
-                {item.subItems.map((sub) => (
-                  <div
-                    className="grid grid-cols-1 items-end gap-2 sm:grid-cols-2 md:grid-cols-[1fr_3.5rem_auto_auto_auto]"
-                    key={sub.id}
-                  >
-                    <FormField
-                      label={t("form.label")}
-                      onChange={(v) =>
-                        updateSubItem(item.id, sub.id, "label", v)
-                      }
-                      placeholder={t("placeholders.subItemLabel")}
-                      value={sub.label}
-                    />
-                    <FormField
-                      label={t("form.qty")}
-                      numeric
-                      onChange={(v) =>
-                        updateSubItem(item.id, sub.id, "qty", Number(v))
-                      }
-                      value={String(sub.qty)}
-                    />
-                    <FormField
-                      label={t("form.unitPrice")}
-                      numeric
-                      onChange={(v) =>
-                        updateSubItem(item.id, sub.id, "unitPrice", Number(v))
-                      }
-                      value={String(sub.unitPrice)}
-                    />
-                    <FormField
-                      disabled
-                      label={t("form.amount")}
-                      value={formatCurrency(
-                        sub.qty * sub.unitPrice,
-                        data.currency
-                      )}
-                    />
-                    <Button
-                      aria-label={t("a11y.removeSubItem")}
-                      onClick={() => removeSubItem(item.id, sub.id)}
-                      size="sm"
-                      variant="ghost"
+              {/* Sub-items */}
+              {item.subItems.length > 0 && (
+                <div className="@md/form:ml-1 flex flex-col gap-2 border-line border-l @md/form:pl-4 pl-3">
+                  <p className="type-caption text-muted-foreground">
+                    {t("form.subItems")}
+                  </p>
+                  {item.subItems.map((sub) => (
+                    <div
+                      className="grid @xl/form:grid-cols-[minmax(0,1.2fr)_3.5rem_minmax(0,0.8fr)_minmax(0,1fr)_auto] grid-cols-[3.5rem_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums"
+                      key={sub.id}
                     >
-                      <Trash2
-                        aria-hidden="true"
-                        className="size-3.5 text-destructive"
+                      <div className="@xl/form:col-span-1 col-span-full">
+                        <FormField
+                          label={t("form.label")}
+                          onChange={(v) =>
+                            updateSubItem(item.id, sub.id, "label", v)
+                          }
+                          placeholder={t("placeholders.subItemLabel")}
+                          value={sub.label}
+                        />
+                      </div>
+                      <FormField
+                        label={t("form.qty")}
+                        numeric
+                        onChange={(v) =>
+                          updateSubItem(item.id, sub.id, "qty", Number(v))
+                        }
+                        value={String(sub.qty)}
                       />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-            <Button
-              onClick={() => addSubItem(item.id)}
-              size="sm"
-              variant="outline"
-            >
-              <Plus className="size-3.5" /> {t("form.addSubItem")}
-            </Button>
-          </div>
-        )}
-        summary={(item, i) => item.description || `Item ${i + 1}`}
-        title={t("form.lineItems")}
-        titleIcon={<ListOrdered className="size-4 text-muted-foreground" />}
-      />
-
-      <Separator />
+                      <FormField
+                        label={t("form.unitPrice")}
+                        numeric
+                        onChange={(v) =>
+                          updateSubItem(item.id, sub.id, "unitPrice", Number(v))
+                        }
+                        value={String(sub.unitPrice)}
+                      />
+                      <FormField
+                        disabled
+                        label={t("form.amount")}
+                        value={formatCurrency(
+                          sub.qty * sub.unitPrice,
+                          data.currency
+                        )}
+                      />
+                      <Button
+                        aria-label={t("a11y.removeSubItem")}
+                        onClick={() => removeSubItem(item.id, sub.id)}
+                        size="icon"
+                        variant="ghost"
+                      >
+                        <Trash2
+                          aria-hidden="true"
+                          className="text-destructive"
+                        />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Button
+                onClick={() => addSubItem(item.id)}
+                size="sm"
+                variant="outline"
+              >
+                <Plus aria-hidden="true" data-icon="inline-start" />
+                {t("form.addSubItem")}
+              </Button>
+            </div>
+          )}
+          summary={(item, i) =>
+            item.description || t("form.itemFallback", { n: i + 1 })
+          }
+          title={t("form.lineItems")}
+          titleIcon={<ListOrdered className="size-4" />}
+        />
+      </div>
 
       {/* ── Adjustments ── */}
-      <section>
-        <h2 className="flex items-center gap-2 font-medium text-body-sm">
-          <SlidersHorizontal className="size-4 text-muted-foreground" />{" "}
+      <section className={SECTION_CLASS}>
+        <SectionHeading icon={<SlidersHorizontal className="size-4" />}>
           {t("form.adjustments")}
-        </h2>
-        <p className="mt-1 text-muted-foreground text-xs">
+        </SectionHeading>
+        <p className="type-caption text-muted-foreground">
           {t("form.adjustmentsDesc")}
         </p>
-        <div className="mt-3 space-y-3">
+        <div className="mt-3 flex flex-col gap-3">
           {data.adjustments.map((adj) => (
             <div
-              className="space-y-2 lg:grid lg:grid-cols-[1fr_auto_auto_auto_auto] lg:items-end lg:gap-2 lg:space-y-0"
+              className="grid @xl/form:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] grid-cols-1 items-end gap-2"
               key={adj.id}
             >
               <FormField
@@ -703,14 +782,14 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 placeholder={t("placeholders.adjustmentLabel")}
                 value={adj.label}
               />
-              <div className="grid grid-cols-[1fr_1fr_1fr_auto] items-end gap-2">
+              <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums">
                 <div className="space-y-1.5">
                   <Label>{t("form.type")}</Label>
                   <Select
                     onValueChange={(v) => updateAdjustment(adj.id, "type", v)}
                     value={adj.type}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -727,7 +806,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                     onValueChange={(v) => updateAdjustment(adj.id, "mode", v)}
                     value={adj.mode}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -754,77 +833,70 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 />
                 <Button
                   aria-label={t("a11y.removeAdjustment")}
-                  className="shrink-0"
                   onClick={() => removeAdjustment(adj.id)}
-                  size="sm"
+                  size="icon"
                   variant="ghost"
                 >
-                  <Trash2
-                    aria-hidden="true"
-                    className="size-3.5 text-destructive"
-                  />
+                  <Trash2 aria-hidden="true" className="text-destructive" />
                 </Button>
               </div>
             </div>
           ))}
-          <Button onClick={addAdjustment} size="sm" variant="outline">
-            <Plus className="size-3.5" /> {t("form.addAdjustment")}
+          <Button
+            className="self-start"
+            onClick={addAdjustment}
+            size="sm"
+            variant="outline"
+          >
+            <Plus aria-hidden="true" data-icon="inline-start" />
+            {t("form.addAdjustment")}
           </Button>
         </div>
       </section>
 
-      <Separator />
-
       {/* ── Notes & Settings ── */}
-      <section>
-        <h2 className="flex items-center gap-2 font-medium text-body-sm">
-          <StickyNote className="size-4 text-muted-foreground" />{" "}
+      <section className={SECTION_CLASS}>
+        <SectionHeading icon={<StickyNote className="size-4" />}>
           {t("form.notesSettings")}
-        </h2>
-        <div className="mt-3 space-y-3">
+        </SectionHeading>
+        <div className="mt-3 flex flex-col gap-3">
           {data.customFields.map((cf) => (
             <div
-              className="grid grid-cols-[1fr_auto] items-end gap-2 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid @md/form:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] grid-cols-[minmax(0,1fr)_auto] items-end gap-2"
               key={cf.id}
             >
-              <FormField
-                label={t("form.label")}
-                onChange={(v) => updateCustomField(cf.id, "label", v)}
-                placeholder={t("placeholders.customFieldLabel")}
-                value={cf.label}
-              />
-              <div className="col-span-1 flex items-end gap-2 sm:contents">
-                <div className="min-w-0 flex-1">
-                  <FormField
-                    label={t("form.value")}
-                    onChange={(v) => updateCustomField(cf.id, "value", v)}
-                    placeholder={t("placeholders.customFieldValue")}
-                    value={cf.value}
-                  />
-                </div>
-                <Button
-                  aria-label={t("a11y.removeField")}
-                  className="shrink-0 sm:hidden"
-                  onClick={() => removeCustomField(cf.id)}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <Trash2 aria-hidden="true" className="size-3.5" />
-                </Button>
+              <div className="@md/form:col-span-1 col-span-full">
+                <FormField
+                  label={t("form.label")}
+                  onChange={(v) => updateCustomField(cf.id, "label", v)}
+                  placeholder={t("placeholders.customFieldLabel")}
+                  value={cf.label}
+                />
               </div>
+              <FormField
+                label={t("form.value")}
+                onChange={(v) => updateCustomField(cf.id, "value", v)}
+                placeholder={t("placeholders.customFieldValue")}
+                value={cf.value}
+              />
               <Button
                 aria-label={t("a11y.removeField")}
-                className="hidden sm:inline-flex"
                 onClick={() => removeCustomField(cf.id)}
-                size="sm"
+                size="icon"
                 variant="ghost"
               >
-                <Trash2 aria-hidden="true" className="size-3.5" />
+                <Trash2 aria-hidden="true" />
               </Button>
             </div>
           ))}
-          <Button onClick={addCustomField} size="sm" variant="outline">
-            <Plus className="size-3.5" /> {t("form.addField")}
+          <Button
+            className="self-start"
+            onClick={addCustomField}
+            size="sm"
+            variant="outline"
+          >
+            <Plus aria-hidden="true" data-icon="inline-start" />
+            {t("form.addField")}
           </Button>
           <FormField
             label={t("form.notes")}

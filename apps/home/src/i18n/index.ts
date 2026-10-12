@@ -60,7 +60,7 @@ export function headForLocale(locale: Locale) {
   const ogImage = buildOgUrl({
     title: t("meta.title"),
     subtitle: t("meta.siteName"),
-    theme: "dark",
+    theme: "light",
   });
 
   return {

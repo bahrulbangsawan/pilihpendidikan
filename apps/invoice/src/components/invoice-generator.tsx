@@ -1,6 +1,7 @@
+import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { cn } from "@rulisme/ui/lib/utils";
-import { useFirstPaintEntrance } from "@rulisme/ui/lib/use-first-paint-entrance";
 import { Button } from "@rulisme/ui/ui/button";
+import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
   DialogContent,
@@ -14,10 +15,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
+import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
+import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -43,8 +47,9 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { ThemeToggle } from "@/components/theme-toggle";
 import sampleData from "@/data/sample-invoice.json";
-import { useTranslation } from "@/i18n";
+import { translateNow, useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
+import type { SaveStatus } from "@/lib/use-cloud-save";
 import { useCloudSave } from "@/lib/use-cloud-save";
 
 // Canonical ISO `yyyy-MM-dd` seed for a new invoice's issue date, matching what
@@ -69,7 +74,7 @@ function preloadPdfRenderer() {
         import("@/components/invoice-pdf"),
       ]);
     } catch (error) {
-      toast.error("Could not prepare PDF download. Try downloading again.", {
+      toast.error(translateNow("errors.preloadFailed"), {
         description: error instanceof Error ? error.message : undefined,
       });
     }
@@ -100,6 +105,17 @@ const MCP_API = import.meta.env.DEV
   ? "http://localhost:8788"
   : "https://api.pilihpendidikan.com";
 const MCP_URL = "https://api.pilihpendidikan.com/connect";
+
+// The primary action's shortcut. Its <Kbd> hint sits inside the toolbar's
+// "Download PDF" button and `useShortcut` makes it real (DESIGN.md §
+// Components: never one without the other). Typing in a field never fires it.
+const DOWNLOAD_SHORTCUT = "D";
+// A shortcut never acts behind an open window (dialog, menu, date picker,
+// select list).
+const OPEN_WINDOW =
+  "[role=dialog], [role=alertdialog], [role=menu], [role=listbox]";
+
+const MCP_STEPS = ["mcp.step1", "mcp.step2", "mcp.step3"] as const;
 
 const initialData: InvoiceData = {
   invoiceNumber: "",
@@ -145,9 +161,7 @@ function loadSavedData(): InvoiceData {
       return { ...initialData, ...JSON.parse(saved) };
     }
   } catch {
-    toast.error(
-      "Could not restore the saved invoice. Import a JSON export to recover it."
-    );
+    toast.error(translateNow("errors.restoreFailed"));
   }
   return initialData;
 }
@@ -163,9 +177,7 @@ function saveDataImmediate(data: InvoiceData) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     pendingSaveData = null;
   } catch {
-    toast.error(
-      "Could not save this invoice in the browser. Download a JSON copy to keep your changes."
-    );
+    toast.error(translateNow("errors.localSaveFailed"));
   }
 }
 
@@ -192,24 +204,151 @@ interface CloudAuthStatusProps {
 }
 
 function CloudAuthStatus({ auth, hasToken }: CloudAuthStatusProps) {
+  const { t } = useTranslation();
   if (auth) {
     return (
-      <p className="text-micro text-primary">
-        Signed in as {auth.email}. Edits to a loaded invoice save automatically.
+      <p className="type-caption text-foreground">
+        {t("mcp.signedInAs", { email: auth.email })}
       </p>
     );
   }
   if (hasToken) {
     return (
-      <p className="text-destructive text-micro">
-        Token not recognized — generate a new one.
+      <p className="type-caption text-destructive">
+        {t("mcp.tokenNotRecognized")}
       </p>
     );
   }
   return (
-    <p className="text-micro text-muted-foreground">
-      Optional. Without a token, edits stay in this browser only.
+    <p className="type-caption text-muted-foreground">
+      {t("mcp.tokenOptional")}
     </p>
+  );
+}
+
+interface McpDialogProps extends CloudAuthStatusProps {
+  onTokenChange: (token: string) => void;
+}
+
+// The MCP guide: three numbered steps, the cobalt link to mint a token, and
+// the optional personal-token field that turns on cloud save.
+function McpDialog({ auth, hasToken, onTokenChange }: McpDialogProps) {
+  const { t } = useTranslation();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button size="sm" variant="outline">
+          <Cable aria-hidden="true" data-icon="inline-start" />
+          {t("toolbar.mcp")}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{t("mcp.title")}</DialogTitle>
+          <DialogDescription>{t("mcp.description")}</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-3">
+          <ol className="flex flex-col gap-2">
+            {MCP_STEPS.map((step, index) => (
+              <li className="flex gap-2.5" key={step}>
+                <span className="type-micro mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-sm bg-pane text-foreground tabular-nums">
+                  {index + 1}
+                </span>
+                <span>{t(step)}</span>
+              </li>
+            ))}
+          </ol>
+          <Button
+            asChild
+            className="h-auto min-h-9 w-full whitespace-normal py-2"
+          >
+            <a href={MCP_URL} rel="noopener noreferrer" target="_blank">
+              {t("mcp.cta")}
+              <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
+            </a>
+          </Button>
+          <p className="type-caption text-muted-foreground">
+            {t("mcp.privacy")}
+          </p>
+          <div className="flex flex-col gap-1.5 border-line border-t pt-3">
+            <Label htmlFor="inv-token">{t("mcp.tokenLabel")}</Label>
+            <Input
+              autoComplete="off"
+              id="inv-token"
+              onChange={(e) => onTokenChange(e.target.value)}
+              placeholder={t("mcp.tokenPlaceholder")}
+              type="password"
+            />
+            <CloudAuthStatus auth={auth} hasToken={hasToken} />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+interface CloudSaveStatusProps {
+  status: SaveStatus;
+  error: string | null;
+}
+
+// The preview toolbar's status line for a loaded, token-authorised invoice.
+function CloudSaveStatus({ status, error }: CloudSaveStatusProps) {
+  const { t } = useTranslation();
+  return (
+    <span className="type-caption flex min-w-0 items-center gap-1.5 text-muted-foreground">
+      {status === "saving" ? (
+        <>
+          <Spinner />
+          {t("status.saving")}
+        </>
+      ) : null}
+      {status === "saved" ? <span>{t("status.saved")}</span> : null}
+      {status === "error" ? (
+        <span className="truncate text-destructive">{error}</span>
+      ) : null}
+    </span>
+  );
+}
+
+interface DownloadMenuItemsProps {
+  onPdf: () => void;
+  onJson: () => void;
+}
+
+function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
+  const { t } = useTranslation();
+  return (
+    <>
+      <DropdownMenuItem aria-keyshortcuts={DOWNLOAD_SHORTCUT} onClick={onPdf}>
+        <FileText aria-hidden="true" />
+        {t("toolbar.downloadPdf")}
+        <DropdownMenuShortcut aria-hidden="true">
+          {DOWNLOAD_SHORTCUT}
+        </DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem onClick={onJson}>
+        <FileJson aria-hidden="true" />
+        {t("toolbar.downloadJson")}
+      </DropdownMenuItem>
+    </>
+  );
+}
+
+// The document sheet resting on the editor's graph paper: a 1px hairline
+// frames it on screen, and it prints bare at full width (the print CSS in
+// styles.css prints `.invoice-page` alone). The empty state stays unframed.
+function PreviewSheet({ data }: { data: InvoiceData }) {
+  const hasDocument = Boolean(data.from.companyName) || data.items.length > 0;
+  return (
+    <div
+      className={cn(
+        "mx-auto w-full max-w-2xl print:max-w-none",
+        hasDocument && "border border-border print:border-0"
+      )}
+    >
+      <InvoicePreview data={data} />
+    </div>
   );
 }
 
@@ -225,9 +364,6 @@ export function InvoiceGenerator() {
   const [data, setDataRaw] = useState<InvoiceData>(initialData);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  // Entrance plays on the first paint only; locale switches remount this
-  // page and rely on the route cross-fade instead.
-  const animateEntrance = useFirstPaintEntrance();
 
   // Owner-authenticated optimistic persistence for a loaded `?invoice=<slug>`.
   // A ref keeps the memoized `setData` stable while always calling the latest
@@ -275,7 +411,7 @@ export function InvoiceGenerator() {
     fetch(`${MCP_API}/api/invoice/${encodeURIComponent(invoiceId)}`)
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Invoice not found");
+          throw new Error(translateNow("errors.notFound"));
         }
         return res.json() as Promise<InvoiceData>;
       })
@@ -284,7 +420,7 @@ export function InvoiceGenerator() {
         markSaved(loaded);
       })
       .catch((error: unknown) =>
-        toast.error("Failed to load remote invoice.", {
+        toast.error(translateNow("errors.loadFailed"), {
           description: error instanceof Error ? error.message : undefined,
         })
       )
@@ -305,6 +441,8 @@ export function InvoiceGenerator() {
   const [generating, setGenerating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isEmpty = !data.from.companyName.trim() && data.items.length === 0;
+  const canDownload = !(isEmpty || generating);
+  const showCloudStatus = Boolean(invoiceId) && cloud.hasToken;
 
   // Reset the editor to a blank invoice (confirm-gated).
   const handleClearAll = () => {
@@ -326,9 +464,7 @@ export function InvoiceGenerator() {
         ) as InvoiceData;
         setData(imported);
       } catch {
-        toast.error(
-          "Invalid JSON file. Please select a valid Invoice JSON export."
-        );
+        toast.error(t("errors.invalidJson"));
       }
     };
     reader.readAsText(file);
@@ -360,8 +496,8 @@ export function InvoiceGenerator() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
-      toast.error("Failed to generate PDF.", {
-        description: err instanceof Error ? err.message : "Please try again.",
+      toast.error(t("errors.pdfFailed"), {
+        description: err instanceof Error ? err.message : t("errors.tryAgain"),
       });
     } finally {
       setGenerating(false);
@@ -388,6 +524,18 @@ export function InvoiceGenerator() {
     URL.revokeObjectURL(url);
   };
 
+  // D downloads the PDF, exactly like the toolbar button that shows the hint.
+  // It is off whenever that button is disabled, and in the print view.
+  useShortcut(
+    DOWNLOAD_SHORTCUT,
+    () => {
+      if (!document.querySelector(OPEN_WINDOW)) {
+        handleDownloadPDF();
+      }
+    },
+    canDownload && !print && !loading
+  );
+
   if (print) {
     return <InvoicePrintView data={data} loading={loading} />;
   }
@@ -395,95 +543,35 @@ export function InvoiceGenerator() {
   return (
     <>
       <a
-        className="sr-only rounded-md bg-background px-4 py-2 font-medium text-body-sm outline-hidden focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:ring-2 focus:ring-ring"
+        className="sr-only rounded-md border border-border bg-popover px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         href="#main-content"
       >
         {t("a11y.skipToContent")}
       </a>
       <main
-        className="route-view invoice-app-shell flex min-h-svh flex-col md:flex-row"
+        className="invoice-app-shell relative flex min-h-svh flex-col md:flex-row"
         id="main-content"
         tabIndex={-1}
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        <div
-          className={cn(
-            "invoice-no-print scrollbar-hide w-full border-border border-b md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0",
-            animateEntrance && "motion-enter"
-          )}
-        >
-          <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button size="default" variant="outline">
-                  <Cable data-icon="inline-start" />
-                  <span>{t("toolbar.mcp")}</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>{t("mcp.title")}</DialogTitle>
-                  <DialogDescription>{t("mcp.description")}</DialogDescription>
-                </DialogHeader>
-                <div className="space-y-3">
-                  <ol className="space-y-2 text-muted-foreground text-xs">
-                    <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
-                        1
-                      </span>
-                      <span>{t("mcp.step1")}</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
-                        2
-                      </span>
-                      <span>{t("mcp.step2")}</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-foreground text-micro">
-                        3
-                      </span>
-                      <span>{t("mcp.step3")}</span>
-                    </li>
-                  </ol>
-                  <Button asChild className="w-full" size="default">
-                    <a href={MCP_URL} rel="noopener noreferrer" target="_blank">
-                      {t("mcp.cta")}
-                      <ArrowUpRight />
-                    </a>
-                  </Button>
-                  <p className="text-micro text-muted-foreground">
-                    {t("mcp.privacy")}
-                  </p>
-                  <div className="space-y-1.5 border-border border-t pt-3">
-                    <Label htmlFor="inv-token">
-                      Personal token (enables cloud save)
-                    </Label>
-                    <Input
-                      autoComplete="off"
-                      id="inv-token"
-                      onChange={(e) => cloud.setToken(e.target.value)}
-                      placeholder="Paste your token to save edits"
-                      type="password"
-                    />
-                    <CloudAuthStatus
-                      auth={cloud.auth}
-                      hasToken={cloud.hasToken}
-                    />
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-            <div className="ml-auto flex items-center gap-1.5">
+        {/* Form pane: a 56px toolbar band over the form's ruled sections. */}
+        <div className="invoice-no-print no-scrollbar w-full border-line border-b md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-14 items-center gap-1.5 border-line border-b bg-background px-4 sm:px-6">
+            <McpDialog
+              auth={cloud.auth}
+              hasToken={cloud.hasToken}
+              onTokenChange={cloud.setToken}
+            />
+            <div className="ml-auto flex items-center gap-1">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     aria-label={t("toolbar.importJson")}
                     onClick={() => fileInputRef.current?.click()}
-                    size="icon"
+                    size="icon-sm"
                     variant="ghost"
                   >
-                    <Upload />
+                    <Upload aria-hidden="true" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
@@ -501,10 +589,10 @@ export function InvoiceGenerator() {
                   <Button
                     aria-label={t("toolbar.loadSample")}
                     onClick={() => setData(sampleData as InvoiceData)}
-                    size="icon"
+                    size="icon-sm"
                     variant="ghost"
                   >
-                    <Sparkles />
+                    <Sparkles aria-hidden="true" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>{t("toolbar.loadSample")}</TooltipContent>
@@ -516,10 +604,10 @@ export function InvoiceGenerator() {
                       <Button
                         aria-label={t("toolbar.clearAll")}
                         disabled={isEmpty}
-                        size="icon"
+                        size="icon-sm"
                         variant="ghost"
                       >
-                        <Trash2 />
+                        <Trash2 aria-hidden="true" />
                       </Button>
                     </DialogTrigger>
                   </TooltipTrigger>
@@ -549,88 +637,82 @@ export function InvoiceGenerator() {
               <LanguageSwitcher />
             </div>
           </div>
-          <div className="p-4 sm:p-6">
-            <InvoiceForm data={data} onChange={setData} />
-          </div>
+          <InvoiceForm data={data} onChange={setData} />
         </div>
-        <div
-          className={cn(
-            "invoice-preview-pane scrollbar-hide w-full bg-muted/50 md:h-svh md:w-1/2 md:overflow-y-auto",
-            animateEntrance &&
-              "motion-enter [animation-delay:var(--motion-stagger)]"
-          )}
-        >
-          <div className="invoice-no-print flex flex-wrap items-center gap-1.5 border-border border-b bg-background px-4 py-3 sm:px-6">
-            {invoiceId && cloud.hasToken ? (
-              <span className="flex items-center gap-1 text-micro text-muted-foreground">
-                {cloud.status === "saving" ? (
-                  <>
-                    <Spinner className="[--spinner-size:12px]" />{" "}
-                    {t("status.saving")}
-                  </>
-                ) : null}
-                {cloud.status === "saved" ? (
-                  <span>{t("status.saved")}</span>
-                ) : null}
-                {cloud.status === "error" ? (
-                  <span className="text-destructive">{cloud.error}</span>
-                ) : null}
-              </span>
+        {/* Preview pane: the same band, then the sheet on graph paper. */}
+        <div className="invoice-preview-pane no-scrollbar graph-paper w-full md:h-svh md:w-1/2 md:overflow-y-auto">
+          <div
+            className={cn(
+              "invoice-no-print h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6 md:sticky md:top-0 md:z-10",
+              showCloudStatus ? "flex" : "hidden md:flex"
+            )}
+          >
+            {showCloudStatus ? (
+              <CloudSaveStatus error={cloud.error} status={cloud.status} />
             ) : null}
-            <div className="ml-auto hidden md:block">
+            <ButtonGroup
+              aria-label={t("toolbar.download")}
+              className="ml-auto hidden md:flex"
+            >
+              <Button
+                aria-keyshortcuts={DOWNLOAD_SHORTCUT}
+                disabled={!canDownload}
+                onClick={handleDownloadPDF}
+                size="sm"
+              >
+                {generating ? (
+                  <Spinner data-icon="inline-start" />
+                ) : (
+                  <Download aria-hidden="true" data-icon="inline-start" />
+                )}
+                {generating
+                  ? t("toolbar.generating")
+                  : t("toolbar.downloadPdfShort")}
+                <Kbd aria-hidden="true">{DOWNLOAD_SHORTCUT}</Kbd>
+              </Button>
+              <ButtonGroupSeparator />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button disabled={isEmpty || generating} size="default">
-                    {generating ? (
-                      <Spinner data-icon="inline-start" />
-                    ) : (
-                      <Download data-icon="inline-start" />
-                    )}
-                    {generating
-                      ? t("toolbar.generating")
-                      : t("toolbar.download")}
-                    <ChevronDown />
+                  <Button
+                    aria-label={t("toolbar.moreFormats")}
+                    disabled={!canDownload}
+                    size="icon-sm"
+                  >
+                    <ChevronDown aria-hidden="true" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={handleDownloadPDF}>
-                    <FileText className="mr-2 size-4" />
-                    {t("toolbar.downloadPdf")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleDownloadJSON}>
-                    <FileJson className="mr-2 size-4" />
-                    {t("toolbar.downloadJson")}
-                  </DropdownMenuItem>
+                  <DownloadMenuItems
+                    onJson={handleDownloadJSON}
+                    onPdf={handleDownloadPDF}
+                  />
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="invoice-preview-scroll p-4 sm:p-6">
-            <InvoicePreview data={data} />
+            <PreviewSheet data={data} />
           </div>
         </div>
+        {/* The node where the toolbar rule crosses the pane divider. */}
+        <Diamond className="invoice-no-print top-[calc(3.5rem-var(--node)/2-0.5px)] left-[calc(50%-var(--node)/2-0.5px)] z-20 hidden md:block" />
         {/* Floating download button — mobile only */}
         <div className="invoice-no-print fixed bottom-4 left-4 z-50 md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 aria-label={t("a11y.downloadInvoice")}
-                className="rounded-full"
-                disabled={isEmpty || generating}
+                disabled={!canDownload}
                 size="icon-lg"
               >
-                {generating ? <Spinner /> : <Download />}
+                {generating ? <Spinner /> : <Download aria-hidden="true" />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top">
-              <DropdownMenuItem onClick={handleDownloadPDF}>
-                <FileText className="mr-2 size-4" />
-                {t("toolbar.downloadPdf")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDownloadJSON}>
-                <FileJson className="mr-2 size-4" />
-                {t("toolbar.downloadJson")}
-              </DropdownMenuItem>
+              <DownloadMenuItems
+                onJson={handleDownloadJSON}
+                onPdf={handleDownloadPDF}
+              />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -688,7 +770,7 @@ function InvoicePrintView({
   }
   return (
     <div className="invoice-print-root">
-      <InvoicePreview data={data} />
+      <PreviewSheet data={data} />
     </div>
   );
 }

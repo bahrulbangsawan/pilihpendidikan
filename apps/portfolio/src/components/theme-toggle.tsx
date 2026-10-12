@@ -9,11 +9,12 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/i18n";
 
-// Icon-only light/dark switch. Byte-identical to the same component in
-// apps/cv / apps/invoice. Defaults to the system theme
-// (next-themes); once toggled the choice persists in localStorage. The
-// `mounted` guard avoids a hydration mismatch because the resolved theme is
-// only known on the client.
+// Icon-only switch between light (Zedative's canonical scheme, the default)
+// and Night Desk, the derived dark scheme; mirrors the toggle in apps/cv and
+// apps/invoice. next-themes defaults to light and ignores the system
+// preference; once toggled the choice persists in localStorage. The `mounted`
+// guard avoids a hydration mismatch because the saved theme is only known on
+// the client.
 export function ThemeToggle() {
   const { t } = useTranslation();
   const { resolvedTheme, setTheme } = useTheme();
@@ -32,7 +33,7 @@ export function ThemeToggle() {
         <Button
           aria-label={label}
           onClick={() => setTheme(isDark ? "light" : "dark")}
-          size="icon"
+          size="icon-sm"
           type="button"
           variant="ghost"
         >

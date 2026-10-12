@@ -3,17 +3,18 @@
 Read the root `AGENTS.md` and `CLAUDE.md` first, then this app's `CLAUDE.md`.
 Proposals for this app go in the root `openspec/changes/` with a `cv-` prefix.
 
-## Design system — Warp ("moonlit terminal")
+## Design system — Zedative
 
-`apps/cv`, `apps/invoice` and `apps/portfolio` share one dark, warm-neutral design system (root `DESIGN.md`, rules in `TYPOGRAPHY.md`). Rules an agent must follow:
+Every app shares Zedative (root `DESIGN.md`, whose § Implementation maps each rule to code; rules enforced by `TYPOGRAPHY.md`). Rules an agent must follow here:
 
-- **Tokens are the single source of truth.** They live in `src/styles.css` `@theme inline`; the typography block is byte-identical across the three apps (`bun run parity:typography`). Never hardcode hex or `text-[Npx]` in chrome — add or extend a token in every app.
-- **Themes.** Light and dark via next-themes; dark is canonical. Canvas `#121212`, text warm off-white `#faf9f6` (never `#fff`). Surfaces: canvas `#121212` → card `#2f2f2f` → control `#383838` → floating `#40403f` (`--popover`).
-- **Type scale.** Named tokens `text-display` … `text-caption-tracked` … `text-micro` bake size, leading and tracking; `text-xs` is the chrome default. Weights **400/500 only**; `font-bold`/`font-semibold` are forbidden in chrome.
-- **Radius / spacing.** buttons/nav `4px`, cards/icons/panels `8px`, images `20px`; buttons are never pill-shaped (`rounded-full` = true circles only). Spacing uses Tailwind's native 4-pt scale.
-- **Accent discipline.** `--color-gold-leaf` / `--color-muted-cobalt` only in code/syntax and section headings — never on buttons, tags or badges. No shadows.
+- **Tokens live only in `@rulisme/ui/styles/theme.css`.** `src/styles.css` imports it and holds only the print-artifact CSS (`bun run parity:typography`). Never hardcode hex, `text-[Npx]`, generic text sizes or `font-<weight>` in chrome (`bun run lint:typography`).
+- **Type.** Roles only: `type-title` for dialog and panel headings, `type-subtitle weight-semibold` for the editor's section titles (as in `SectionList`), `type-body` for controls and labels (components set it), `type-caption` for helper text, meta, counters beside titles and errors. No uppercase, no tracking.
+- **Frame.** Toolbars are 56px bands with `size="sm"` / `icon-sm` buttons; the panes and the form's section bands are ruled by `border-line`; a `Diamond` marks where the toolbars' rule crosses the pane divider; the preview sits on `graph-paper` with the sheet in a 1px `border-border` frame. Cards are square, controls 4px, chips 2px, windows 6px; no shadows on surfaces.
+- **Theme and colour.** Light by default, Night Desk (`.dark`) through the toolbar toggle; no `dark:` overrides. Cobalt is scarce: the Download PDF split button, checked controls, links and focus.
+- **Shortcut.** The "Download PDF" button's `<Kbd>D</Kbd>` (plus `aria-keyshortcuts`) and `useShortcut("D", …)` go together, and match the invoice and portfolio builders' split control; never show a hint without a working key.
+- **Motion.** No entrances, no route transitions; only the shared hover/press feedback and drag-to-reorder movement.
 - **Re-skin shared primitives once** in `packages/ui` (then rebuild) — never fork per app.
-- **Print-template exception:** `src/components/templates/*-{preview,pdf}.tsx` and `.cv-page` stay light and print-faithful. Do NOT apply the dark palette to the rendered CV.
+- **Print templates:** `src/components/templates/*-{preview,pdf}.tsx` and `.cv-page` follow Zedative on paper (Inter via `src/lib/pdf-fonts.ts`, no uppercase or letter-spacing, Zedative ink colours, a 2px framed photo), look the same in both themes and keep print sizes and preview ↔ PDF parity. Keep `cv-no-print` on chrome so `@media print` prints a bare page.
 
 ## Backend
 

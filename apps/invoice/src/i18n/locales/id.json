@@ -13,6 +13,8 @@
     "generating": "Membuat...",
     "downloadPdf": "Unduh sebagai PDF",
     "downloadJson": "Unduh sebagai JSON",
+    "downloadPdfShort": "Unduh PDF",
+    "moreFormats": "Format unduhan lainnya",
     "clearAll": "Hapus Semua",
     "mcp": "MCP"
   },
@@ -28,7 +30,11 @@
   },
   "status": {
     "saving": "Menyimpan…",
-    "saved": "Tersimpan"
+    "saved": "Tersimpan",
+    "sessionExpired": "Sesi berakhir — masukkan ulang token Anda untuk menyimpan.",
+    "forbidden": "Anda tidak punya izin untuk mengedit dokumen ini.",
+    "saveFailed": "Gagal menyimpan ({code}). Perubahan Anda dibatalkan.",
+    "saveOffline": "Gagal menyimpan — periksa koneksi Anda. Perubahan Anda dibatalkan."
   },
   "mcp": {
     "title": "Hubungkan melalui MCP",
@@ -37,7 +43,12 @@
     "step2": "Tambahkan server MCP ke klien Anda — Claude Code, Cursor, Codex, Windsurf, Zed, dan lainnya.",
     "step3": "Tempelkan URL pribadi Anda ke klien dan mulai ulang.",
     "cta": "Dapatkan token MCP di api.pilihpendidikan.com/connect",
-    "privacy": "URL MCP Anda bersifat pribadi — jangan dibagikan."
+    "privacy": "URL MCP Anda bersifat pribadi — jangan dibagikan.",
+    "tokenLabel": "Token pribadi (mengaktifkan simpan ke cloud)",
+    "tokenPlaceholder": "Tempel token Anda untuk menyimpan perubahan",
+    "signedInAs": "Masuk sebagai {email}. Perubahan pada invoice yang dimuat tersimpan otomatis.",
+    "tokenNotRecognized": "Token tidak dikenali — buat yang baru.",
+    "tokenOptional": "Opsional. Tanpa token, perubahan hanya tersimpan di browser ini."
   },
   "form": {
     "invoiceDetails": "Detail Faktur",
@@ -83,7 +94,8 @@
     "kecamatan": "Kecamatan",
     "postalCode": "Kode Pos",
     "country": "Negara",
-    "period": "Periode"
+    "period": "Periode",
+    "itemFallback": "Item {n}"
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",
@@ -152,6 +164,21 @@
     "pdfReady": "PDF berhasil dibuat"
   },
   "errors": {
-    "logoProcess": "Tidak dapat memproses gambar itu. Coba berkas lain."
+    "logoProcess": "Tidak dapat memproses gambar itu. Coba berkas lain.",
+    "preloadFailed": "Tidak dapat menyiapkan unduhan PDF. Coba unduh lagi.",
+    "restoreFailed": "Tidak dapat memulihkan invoice yang tersimpan. Impor ekspor JSON untuk memulihkannya.",
+    "localSaveFailed": "Tidak dapat menyimpan invoice ini di browser. Unduh salinan JSON agar perubahan Anda tidak hilang.",
+    "loadFailed": "Tidak dapat memuat invoice yang tersimpan.",
+    "notFound": "Invoice tidak ditemukan",
+    "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON invoice yang valid.",
+    "pdfFailed": "Tidak dapat membuat PDF.",
+    "tryAgain": "Silakan coba lagi.",
+    "provinceLoadFailed": "Tidak dapat memuat alamat provinsi ini."
+  },
+  "notFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang Anda cari tidak ada atau mungkin sudah dipindahkan.",
+    "home": "Kembali ke beranda",
+    "back": "Kembali"
   }
 }

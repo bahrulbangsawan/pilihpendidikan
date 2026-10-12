@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "@pilihpendidikan/config/motion.css";
+@import "@rulisme/ui/styles/shadcn.css";
+@import "@rulisme/ui/styles/theme.css";
+
+/* The page renders @rulisme/ui from source (see vite.config.ts). */
+@source "../../../packages/ui/src";
+
+/* Pin interaction states for review with data-preview="hover focus active"
+   (state matrices on the design system page only). */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+  &[data-preview~="hover"] {
+    @slot;
+  }
+}
+@custom-variant focus-visible (&:focus-visible, &[data-preview~="focus"]);
+@custom-variant active (&:active, &[data-preview~="active"]);
+
+html {
+  scroll-padding-top: 72px;
+}

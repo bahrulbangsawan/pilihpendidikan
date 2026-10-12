@@ -70,8 +70,8 @@ export function LanguageSwitcher() {
     navigate({ to: pathForLocale(code) });
   }
 
-  // Warm the other locale's route chunk on hover/focus so the switch (and its
-  // cross-fade) starts without waiting on the network. No loaders, so cheap.
+  // Warm the other locale's route chunk on hover/focus so the switch starts
+  // without waiting on the network. No loaders, so cheap.
   function preload(code: Locale) {
     if (code === locale) {
       return;
@@ -79,10 +79,13 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
+  // A Zedative segmented control: paper at 60% with a grey lip, 32px like the
+  // toolbar's small buttons; the current language sits on `pane-2` at the
+  // heading weight.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="flex h-7 items-center overflow-hidden rounded-md border border-input bg-background"
+      className="inset-shadow-lip flex h-8 items-stretch overflow-hidden rounded-md border border-border/60 bg-card/60"
     >
       {SUPPORTED_LOCALES.map((lang, i) => {
         const Flag = FLAG_COMPONENTS[lang.code];
@@ -92,11 +95,11 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              "press flex h-full items-center gap-1.5 px-2 font-medium text-xs outline-hidden transition-[color,background-color,box-shadow,scale] duration-150 ease-standard focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-inset",
-              i > 0 && "border-input border-l",
+              "press flex items-center gap-1.5 px-2 outline-none transition-[background-color,color] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:-outline-offset-2",
+              i > 0 && "border-border/60 border-l",
               isActive
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                ? "weight-semibold bg-pane-2 text-foreground"
+                : "text-muted-foreground hover:bg-pane/70 hover:text-foreground"
             )}
             key={lang.code}
             onClick={() => handleSwitch(lang.code)}
@@ -104,7 +107,7 @@ export function LanguageSwitcher() {
             onPointerEnter={() => preload(lang.code)}
             type="button"
           >
-            <Flag className="h-3 w-5 shrink-0 rounded-[1px]" />
+            <Flag className="h-3 w-5 shrink-0 rounded-xs" />
             <span>{lang.code.toUpperCase()}</span>
           </button>
         );

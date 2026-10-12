@@ -1,5 +1,7 @@
 # Change: Add the pilihpendidikan.com hub landing page (apps/home)
 
+> **Superseded design wording.** This change built the hub on the Warp design system. `update-zedative-design-system` has since replaced Warp with Zedative across the workspace, the hub included; the Warp references below are historical.
+
 ## Why
 
 `https://pilihpendidikan.com` resolves to nothing: the zone has no DNS records

@@ -2,6 +2,7 @@
 // RootDocument and RootComponent are components referenced by Route
 // but must be exported for Fast Refresh to work correctly.
 
+import { Toaster } from "@rulisme/ui/ui/sonner";
 import { TooltipProvider } from "@rulisme/ui/ui/tooltip";
 import {
   HeadContent,
@@ -11,7 +12,6 @@ import {
 } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
 import { lazy, Suspense, useEffect, useMemo } from "react";
-import { Toaster } from "sonner";
 import type { Locale } from "@/i18n";
 import { getT, I18nProvider } from "@/i18n";
 
@@ -62,12 +62,14 @@ export function RootComponent() {
 
   const i18nValue = useMemo(() => ({ locale, t: getT(locale) }), [locale]);
 
+  // Zedative is light-canonical; Night Desk (`.dark`) is the derived dark
+  // scheme the toolbar toggle switches to. The system preference is ignored.
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       disableTransitionOnChange
-      enableSystem
+      enableSystem={false}
     >
       <I18nProvider value={i18nValue}>
         <TooltipProvider>

@@ -7,7 +7,7 @@ export. Production: <https://invoice.pilihpendidikan.com>.
 
 - Sender and recipient details with an Indonesian address cascade (province → city → district)
 - Line items with sub-items, adjustments, custom fields and period ranges
-- Live preview and PDF export with `@react-pdf/renderer`, plus JSON export and import
+- Live preview and PDF export with `@react-pdf/renderer` (press <kbd>D</kbd> to download the PDF), plus JSON export and import
 - Per-invoice accent colour and logo
 - Local draft in the browser; prefill with sample data
 - Cloud save with a personal token from <https://api.pilihpendidikan.com/connect>, and editing through any MCP client
@@ -16,6 +16,7 @@ export. Production: <https://invoice.pilihpendidikan.com>.
 
 - [TanStack Start](https://tanstack.com/start) on [Cloudflare Workers](https://workers.cloudflare.com)
 - [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@rulisme/ui` (shadcn/ui-based, `packages/ui`)
+- The Zedative design system (root `DESIGN.md`): light by default, with a Night Desk toggle
 - [TypeScript](https://www.typescriptlang.org), [Bun](https://bun.sh), Biome, Vitest
 
 ## Getting Started

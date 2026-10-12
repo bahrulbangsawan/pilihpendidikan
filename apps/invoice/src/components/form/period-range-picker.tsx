@@ -121,13 +121,17 @@ export function PeriodRangePicker({
         <PopoverTrigger asChild>
           <Button
             className={cn(
-              "h-8 w-full justify-start border-input bg-input/20 px-2.5 text-left font-regular text-xs dark:bg-input/30",
+              "w-full justify-start",
               !value && "text-muted-foreground"
             )}
             disabled={disabled}
             variant="outline"
           >
-            <CalendarRange className="size-3.5 shrink-0 text-muted-foreground" />
+            <CalendarRange
+              aria-hidden="true"
+              className="text-muted-foreground"
+              data-icon="inline-start"
+            />
             <span className="truncate">
               {value || t("placeholders.selectPeriod")}
             </span>

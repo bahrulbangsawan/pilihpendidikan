@@ -70,8 +70,8 @@ export function LanguageSwitcher() {
     navigate({ to: pathForLocale(code) });
   }
 
-  // Warm the other locale's route chunk on hover/focus so the switch (and its
-  // cross-fade) starts without waiting on the network. No loaders, so cheap.
+  // Warm the other locale's route chunk on hover/focus so the switch starts
+  // without waiting on the network. No loaders, so cheap.
   function preload(code: Locale) {
     if (code === locale) {
       return;
@@ -79,12 +79,15 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
+  // A 32px segmented control (the Zedative outlined pressable): the two
+  // locales share one hairline, only the outer corners round, and the
+  // current one sits on `pane-2` in the semibold weight.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="flex h-7 min-w-0 items-center overflow-hidden rounded-md border border-input bg-background p-0"
+      className="flex h-8 min-w-0 items-center"
     >
-      {SUPPORTED_LOCALES.map((lang, i) => {
+      {SUPPORTED_LOCALES.map((lang) => {
         const Flag = FLAG_COMPONENTS[lang.code];
         const isActive = locale === lang.code;
         return (
@@ -92,11 +95,10 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              "press flex h-full items-center gap-1.5 px-2 font-medium text-xs outline-hidden transition-[color,background-color,box-shadow,scale] duration-150 ease-standard focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-inset",
-              i > 0 && "border-input border-l",
+              "press type-body flex h-full items-center gap-1.5 border border-border/60 not-first:border-l-0 px-2 outline-none transition-[background-color,border-color,box-shadow,color] duration-150 ease-standard first:rounded-l-md last:rounded-r-md focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2",
               isActive
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                ? "weight-semibold bg-pane-2 text-foreground"
+                : "inset-shadow-lip bg-card/60 text-muted-foreground hover:inset-shadow-none hover:bg-pane/70 hover:text-foreground"
             )}
             key={lang.code}
             onClick={() => handleSwitch(lang.code)}
@@ -104,7 +106,7 @@ export function LanguageSwitcher() {
             onPointerEnter={() => preload(lang.code)}
             type="button"
           >
-            <Flag className="h-3 w-5 shrink-0 rounded-[1px]" />
+            <Flag className="h-3 w-5 shrink-0 rounded-sm" />
             <span>{lang.code.toUpperCase()}</span>
           </button>
         );

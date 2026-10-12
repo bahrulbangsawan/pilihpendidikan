@@ -1,4 +1,5 @@
 import { cn } from "../lib/utils";
+import { NativeSelect, NativeSelectOption } from "../ui/native-select";
 
 const MONTHS = [
   { value: "01", label: "Jan" },
@@ -18,9 +19,6 @@ const MONTHS = [
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: 61 }, (_, i) => currentYear - 50 + i);
 
-const selectStyles =
-  "h-8 min-w-0 flex-1 appearance-none rounded-md border border-input bg-input/20 px-2.5 py-1 text-xs outline-hidden transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
-
 interface MonthPickerProps {
   value: string;
   onChange: (value: string) => void;
@@ -28,14 +26,19 @@ interface MonthPickerProps {
   /** Maximum selectable month in YYYY-MM format (e.g. "2026-03"). Months/years beyond this are hidden. */
   max?: string;
   className?: string;
+  /** The id of the element that names the pair (a field label). */
+  "aria-labelledby"?: string;
 }
 
+// Zedative month picker: two native selects (month, year) side by side, each
+// the field shell with a muted chevron, sharing the row 6px apart.
 export function MonthPicker({
   value,
   onChange,
   disabled,
   max,
   className,
+  "aria-labelledby": ariaLabelledBy,
 }: MonthPickerProps) {
   const [year, month] = value ? value.split("-") : ["", ""];
   const maxYear = max ? Number(max.split("-")[0]) : undefined;
@@ -64,35 +67,41 @@ export function MonthPicker({
   }
 
   return (
-    <div className={cn("flex gap-1.5", className)}>
-      <select
-        className={selectStyles}
+    <fieldset
+      aria-labelledby={ariaLabelledBy}
+      className={cn("flex min-w-0 gap-1.5", className)}
+      data-slot="month-picker"
+    >
+      <NativeSelect
+        aria-label="Month"
+        className="min-w-0 flex-1"
         disabled={disabled}
         onChange={(e) =>
           handleChange(e.target.value, year || String(currentYear))
         }
         value={month}
       >
-        <option value="">Month</option>
+        <NativeSelectOption value="">Month</NativeSelectOption>
         {filteredMonths.map((m) => (
-          <option key={m.value} value={m.value}>
+          <NativeSelectOption key={m.value} value={m.value}>
             {m.label}
-          </option>
+          </NativeSelectOption>
         ))}
-      </select>
-      <select
-        className={selectStyles}
+      </NativeSelect>
+      <NativeSelect
+        aria-label="Year"
+        className="min-w-0 flex-1"
         disabled={disabled}
         onChange={(e) => handleChange(month || "01", e.target.value)}
         value={year}
       >
-        <option value="">Year</option>
+        <NativeSelectOption value="">Year</NativeSelectOption>
         {filteredYears.map((y) => (
-          <option key={y} value={String(y)}>
+          <NativeSelectOption key={y} value={String(y)}>
             {y}
-          </option>
+          </NativeSelectOption>
         ))}
-      </select>
-    </div>
+      </NativeSelect>
+    </fieldset>
   );
 }

@@ -28,6 +28,9 @@ function TooltipTrigger({
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
+// Zedative tooltip: a 2px chip on the dark tooltip fill in the caption role,
+// with a sharp diamond arrow. It appears without animation; a <Kbd> inside
+// turns into a translucent cap (see kbd.tsx).
 function TooltipContent({
   className,
   sideOffset = 0,
@@ -38,7 +41,7 @@ function TooltipContent({
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         className={cn(
-          "data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-96 data-open:fade-in-0 data-open:zoom-in-96 data-closed:fade-out-0 data-closed:zoom-out-96 z-50 inline-flex w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-background text-xs duration-150 ease-standard has-data-[slot=kbd]:pr-1.5 data-[state=delayed-open]:animate-in data-closed:animate-out data-open:animate-in **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-sm",
+          "type-caption z-50 inline-flex w-fit max-w-xs origin-(--radix-tooltip-content-transform-origin) items-center gap-1.5 rounded-sm bg-tooltip px-2 py-1 text-tooltip-foreground has-data-[slot=kbd]:pr-1",
           className
         )}
         data-slot="tooltip-content"
@@ -46,7 +49,7 @@ function TooltipContent({
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground" />
+        <TooltipPrimitive.Arrow className="z-50 size-2 translate-y-[calc(-50%_-_2px)] rotate-45 bg-tooltip fill-tooltip" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

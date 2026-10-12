@@ -4,9 +4,11 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-
     "skipLibCheck": true,
-    "types": ["react"]
+    "types": ["react"],
+    "paths": {
+      "@rulisme/ui/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

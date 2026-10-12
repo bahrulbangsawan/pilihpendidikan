@@ -1,20 +1,25 @@
 import { cva } from "class-variance-authority";
 
+// Zedative tiny badge (DESIGN.md § Components / Shapes): a 2px chip in the
+// micro role. `default` spends the cobalt, so prefer `secondary` or
+// `outline` unless the badge is the one blue thing in view. Every variant sets
+// its own border colour so `badgeVariants()` is conflict-free on an <a>.
 export const badgeVariants = cva(
-  "group/badge inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-full border border-transparent px-2 py-0.5 font-medium text-micro transition-[color,background-color,border-color,box-shadow] duration-150 ease-standard focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-2.5!",
+  "group/badge type-micro inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-sm border px-1.5 outline-none transition-[background-color,border-color,color] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        default:
+          "border-transparent bg-primary text-primary-foreground [a]:hover:bg-primary/90",
         secondary:
-          "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
+          "border-transparent bg-pane text-foreground [a]:hover:bg-pane-2",
         destructive:
-          "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
+          "border-destructive/25 bg-destructive/10 text-destructive [a]:hover:bg-destructive/15",
         outline:
-          "border-border bg-input/20 text-foreground dark:bg-input/30 [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+          "border-border bg-card/60 text-foreground [a]:hover:bg-pane/70",
         ghost:
-          "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border-transparent text-muted-foreground hover:bg-pane/70 hover:text-foreground",
+        link: "border-transparent text-primary underline-offset-4 hover:underline",
       },
     },
     defaultVariants: {

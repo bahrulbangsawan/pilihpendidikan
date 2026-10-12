@@ -6,6 +6,8 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import { hyphenateWithin } from "@rulisme/ui/print/pdf-fonts";
+import { toPrintLines } from "@rulisme/ui/print/pdf-text";
 import type { InvoiceData } from "@/components/invoice-form-utils";
 import {
   calcAdjustmentAmount,
@@ -18,6 +20,9 @@ import {
 } from "@/components/invoice-form-utils";
 import type { Locale } from "@/i18n";
 import { getT } from "@/i18n";
+// Registers Inter (400 / 600 / 700) before any document renders.
+import { PDF_FONT_FAMILY } from "@/lib/pdf-fonts";
+import { toPdfText } from "@/lib/pdf-text";
 
 // ── Date formatting ───────────────────────────────────────
 
@@ -26,19 +31,61 @@ function formatDate(dateStr: string): string {
   return formatInvoiceDate(dateStr);
 }
 
+// ── Zedative on paper ─────────────────────────────────────
+// The PDF cannot read CSS tokens, so the print palette is literal here; the
+// on-screen sheet (`.invoice-page` in styles.css) re-scopes the same values.
+// Paper is never themed: Night Desk does not recolour the invoice. The user's
+// accent colour (the top rule) is document content and stays as chosen.
+
+const PRINT = {
+  foreground: "#000000", // the title, party names, the amount due
+  ink: "#393d45", // running text and figures
+  muted: "#5a6170", // labels, column headers, periods, sub-items, page number
+  line: "#cbcfd4", // hairline rules
+} as const;
+
+// Inter's default figures are proportional; amounts line up in columns, so
+// they take its tabular figures (the preview's `tabular-nums`).
+const TABULAR_FIGURES = ["tnum"];
+
+// ── Pagination ────────────────────────────────────────────
+// Sections carry their own 30pt side padding; the page adds a top and a
+// bottom margin on every page. The top margin shows on continuation pages:
+// on page 1 the accent rule bleeds into it, so the header sits where it
+// always has. The bottom margin ends the body about 20pt above the page
+// number (itself 20pt up from the edge), so the two never share a line.
+const PAGE_MARGIN_TOP = 30;
+const PAGE_MARGIN_BOTTOM = 48;
+// The notes heading never ends a page without two lines of the paragraph
+// (8pt at 1.4) under it; a shorter paragraph moves whole with its heading.
+const NOTES_LINE = 8 * 1.4;
+const NOTES_MIN_PRESENCE = NOTES_LINE * 2;
+// A block (an item with its sub-items, the totals, the custom fields) stays
+// on one page only while it surely fits one: react-pdf squeezes a
+// wrap={false} block taller than a page into overlapping text. Past this many
+// rows, each row is kept whole on its own instead.
+const MAX_KEPT_ROWS = 20;
+// The custom-field label column is 90pt at 8pt semibold: a one-word label
+// longer than this breaks in it instead of running into its value.
+const LABEL_HYPHENATION = hyphenateWithin(14);
+
 // ── Styles ────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#ffffff",
-    fontFamily: "Helvetica",
+    fontFamily: PDF_FONT_FAMILY,
+    fontWeight: 400,
     fontSize: 9,
-    color: "#1a1a1a",
+    color: PRINT.ink,
+    paddingTop: PAGE_MARGIN_TOP,
+    paddingBottom: PAGE_MARGIN_BOTTOM,
   },
 
-  // Orange accent bar
+  // Accent bar (the user's accent colour), flush with the top edge of page 1
   accentBar: {
     height: 4,
+    marginTop: -PAGE_MARGIN_TOP,
     backgroundColor: "#f48120",
     width: "100%",
   },
@@ -55,7 +102,8 @@ const styles = StyleSheet.create({
   },
   invoiceTitle: {
     fontSize: 20,
-    fontFamily: "Helvetica-Bold",
+    fontWeight: 700,
+    color: PRINT.foreground,
   },
   logo: {
     maxHeight: 40,
@@ -68,15 +116,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 3,
   },
+  // Label and value side by side, as on the sheet: the label keeps its
+  // column, the value takes the rest of the row and wraps in it.
   metaLabel: {
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
+    fontWeight: 600,
     width: 90,
-    color: "#444444",
+    flexShrink: 0,
+    color: PRINT.muted,
   },
   metaValue: {
+    flex: 1,
     fontSize: 8,
-    color: "#1a1a1a",
+    color: PRINT.ink,
   },
 
   // From / Bill To
@@ -91,19 +143,19 @@ const styles = StyleSheet.create({
   },
   partyTitle: {
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: "#444444",
+    fontWeight: 600,
+    color: PRINT.muted,
     marginBottom: 4,
-    textTransform: "uppercase",
   },
   partyName: {
     fontSize: 9,
-    fontFamily: "Helvetica-Bold",
+    fontWeight: 600,
+    color: PRINT.foreground,
     marginBottom: 2,
   },
   partyText: {
     fontSize: 8,
-    color: "#444444",
+    color: PRINT.ink,
     lineHeight: 1.4,
   },
 
@@ -112,15 +164,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 14,
     borderTopWidth: 1,
-    borderTopColor: "#e5e5e5",
+    borderTopColor: PRINT.line,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    borderBottomColor: PRINT.line,
     marginBottom: 10,
   },
   amountDueText: {
     fontSize: 13,
-    fontFamily: "Helvetica-Bold",
-    color: "#1a1a1a",
+    fontWeight: 600,
+    color: PRINT.foreground,
   },
 
   // Line items table
@@ -131,20 +183,19 @@ const styles = StyleSheet.create({
   tableHeader: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: "#1a1a1a",
+    borderBottomColor: PRINT.line,
     paddingBottom: 6,
     marginBottom: 2,
   },
   tableHeaderCell: {
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: "#444444",
-    textTransform: "uppercase",
+    fontWeight: 600,
+    color: PRINT.muted,
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    borderBottomColor: PRINT.line,
     paddingVertical: 8,
     alignItems: "flex-start",
   },
@@ -171,17 +222,18 @@ const styles = StyleSheet.create({
   },
   itemDescription: {
     fontSize: 8,
-    color: "#1a1a1a",
+    color: PRINT.ink,
   },
   itemPeriod: {
     fontSize: 8,
-    color: "#888888",
+    color: PRINT.muted,
     marginTop: 2,
   },
   itemNumber: {
     fontSize: 8,
-    color: "#1a1a1a",
+    color: PRINT.ink,
     textAlign: "right",
+    fontFeatureSettings: TABULAR_FIGURES,
   },
 
   // Sub-items
@@ -192,13 +244,14 @@ const styles = StyleSheet.create({
   },
   subItemLabel: {
     fontSize: 8,
-    color: "#666666",
+    color: PRINT.muted,
     paddingLeft: 14,
   },
   subItemNumber: {
     fontSize: 8,
-    color: "#666666",
+    color: PRINT.muted,
     textAlign: "right",
+    fontFeatureSettings: TABULAR_FIGURES,
   },
 
   // Footer totals
@@ -215,49 +268,67 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 4,
   },
+  // A long adjustment label wraps beside its amount instead of running into
+  // it; the amount keeps its width.
   totalLabel: {
+    flex: 1,
+    paddingRight: 8,
     fontSize: 8,
-    color: "#444444",
+    color: PRINT.ink,
   },
   totalValue: {
+    flexShrink: 0,
     fontSize: 8,
-    color: "#1a1a1a",
+    color: PRINT.ink,
     textAlign: "right",
+    fontFeatureSettings: TABULAR_FIGURES,
   },
   totalDueRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 6,
     borderTopWidth: 1,
-    borderTopColor: "#1a1a1a",
+    borderTopColor: PRINT.line,
     marginTop: 4,
   },
   totalDueLabel: {
+    flex: 1,
+    paddingRight: 8,
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: "#1a1a1a",
+    fontWeight: 600,
+    color: PRINT.foreground,
   },
   totalDueValue: {
+    flexShrink: 0,
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: "#1a1a1a",
+    fontWeight: 600,
+    color: PRINT.foreground,
     textAlign: "right",
+    fontFeatureSettings: TABULAR_FIGURES,
   },
 
-  // Notes
-  notesSection: {
+  // Custom fields (bank details and the like), then the notes. Each is its
+  // own page-level block so it paginates on its own: the fields never split,
+  // and the notes heading stays with its paragraph.
+  customFields: {
     paddingHorizontal: 30,
     paddingTop: 24,
   },
   notesTitle: {
+    paddingHorizontal: 30,
+    marginTop: 24,
     fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: "#444444",
+    fontWeight: 600,
+    color: PRINT.muted,
     marginBottom: 4,
   },
+  notesTitleAfterFields: {
+    marginTop: 6,
+  },
   notesText: {
+    paddingHorizontal: 30,
     fontSize: 8,
-    color: "#444444",
+    color: PRINT.ink,
     lineHeight: 1.4,
   },
 
@@ -267,28 +338,31 @@ const styles = StyleSheet.create({
     bottom: 20,
     right: 30,
     fontSize: 7,
-    color: "#888888",
+    color: PRINT.muted,
   },
 });
 
 // ── Component ─────────────────────────────────────────────
 
 export function InvoiceDocument({
-  data,
+  data: invoice,
   locale = "en",
 }: {
   data: InvoiceData;
   locale?: Locale;
 }) {
   const t = getT(locale);
+  const data = toPdfText(invoice);
   const subtotal = calcSubtotal(data.items);
   const tax = calcTax(subtotal, data.taxRate);
   const total = calcTotal(data.items, data.taxRate, data.adjustments);
+  // Subtotal, tax, each adjustment, total and amount due.
+  const totalRows = 3 + (data.taxRate > 0 ? 1 : 0) + data.adjustments.length;
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Orange accent bar */}
+        {/* Accent bar in the user's accent colour */}
         <View
           style={[
             styles.accentBar,
@@ -328,9 +402,13 @@ export function InvoiceDocument({
           {/* From */}
           <View style={styles.partyColumn}>
             <Text style={styles.partyName}>{data.from.companyName}</Text>
-            {data.from.address ? (
-              <Text style={styles.partyText}>{data.from.address}</Text>
-            ) : null}
+            {data.from.address
+              ? toPrintLines(data.from.address).map((line) => (
+                  <Text key={line.key} style={styles.partyText}>
+                    {line.text}
+                  </Text>
+                ))
+              : null}
             <Text style={styles.partyText}>
               {(data.from.country === "Indonesia"
                 ? [
@@ -356,9 +434,13 @@ export function InvoiceDocument({
           <View style={styles.partyColumn}>
             <Text style={styles.partyTitle}>{t("preview.billTo")}</Text>
             <Text style={styles.partyName}>{data.billTo.name}</Text>
-            {data.billTo.address ? (
-              <Text style={styles.partyText}>{data.billTo.address}</Text>
-            ) : null}
+            {data.billTo.address
+              ? toPrintLines(data.billTo.address).map((line) => (
+                  <Text key={line.key} style={styles.partyText}>
+                    {line.text}
+                  </Text>
+                ))
+              : null}
             <Text style={styles.partyText}>
               {(data.billTo.country === "Indonesia"
                 ? [
@@ -413,8 +495,8 @@ export function InvoiceDocument({
 
           {/* Item rows */}
           {data.items.map((item) => (
-            <View key={item.id} wrap={false}>
-              <View style={styles.tableRow}>
+            <View key={item.id} wrap={item.subItems.length + 1 > MAX_KEPT_ROWS}>
+              <View style={styles.tableRow} wrap={false}>
                 <View style={styles.colDescription}>
                   <Text style={styles.itemDescription}>{item.description}</Text>
                   {item.period ? (
@@ -434,7 +516,7 @@ export function InvoiceDocument({
 
               {/* Sub-items */}
               {item.subItems.map((sub) => (
-                <View key={sub.id} style={styles.subItemRow}>
+                <View key={sub.id} style={styles.subItemRow} wrap={false}>
                   <View style={styles.colDescription}>
                     <Text style={styles.subItemLabel}>{sub.label}</Text>
                   </View>
@@ -453,8 +535,8 @@ export function InvoiceDocument({
           ))}
         </View>
 
-        {/* Footer totals */}
-        <View style={styles.footer}>
+        {/* Footer totals, kept together on one page while they fit one */}
+        <View style={styles.footer} wrap={totalRows > MAX_KEPT_ROWS}>
           <View style={styles.totalsBlock}>
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>{t("preview.subtotal")}</Text>
@@ -475,7 +557,7 @@ export function InvoiceDocument({
             {data.adjustments.map((adj) => {
               const amount = calcAdjustmentAmount(adj, subtotal);
               return (
-                <View key={adj.id} style={styles.totalRow}>
+                <View key={adj.id} style={styles.totalRow} wrap={false}>
                   <Text style={styles.totalLabel}>
                     {adj.type === "deduct" ? "\u2212" : "+"}{" "}
                     {adj.label || t("preview.adjustment")}
@@ -502,29 +584,48 @@ export function InvoiceDocument({
           </View>
         </View>
 
-        {/* Custom fields & Notes */}
-        {data.customFields.length > 0 || data.notes ? (
-          <View style={styles.notesSection}>
+        {/* Custom fields, kept together on one page while they fit one */}
+        {data.customFields.length > 0 ? (
+          <View
+            style={styles.customFields}
+            wrap={data.customFields.length > MAX_KEPT_ROWS}
+          >
             {data.customFields.map((cf) => (
-              <View key={cf.id} style={styles.metaRow}>
-                <Text style={styles.metaLabel}>{cf.label}</Text>
+              <View key={cf.id} style={styles.metaRow} wrap={false}>
+                <Text
+                  hyphenationCallback={LABEL_HYPHENATION}
+                  style={styles.metaLabel}
+                >
+                  {cf.label}
+                </Text>
                 <Text style={styles.metaValue}>{cf.value}</Text>
               </View>
             ))}
-            {data.notes ? (
-              <>
-                <Text
-                  style={[
-                    styles.notesTitle,
-                    data.customFields.length > 0 ? { marginTop: 6 } : {},
-                  ]}
-                >
-                  {t("preview.notes")}
-                </Text>
-                <Text style={styles.notesText}>{data.notes}</Text>
-              </>
-            ) : null}
           </View>
+        ) : null}
+
+        {/* Notes: page-level siblings, so the heading's minPresenceAhead can
+            carry it to the next page with its paragraph; a long paragraph
+            still flows on across pages. */}
+        {data.notes ? (
+          <>
+            <Text
+              minPresenceAhead={NOTES_MIN_PRESENCE}
+              style={[
+                styles.notesTitle,
+                data.customFields.length > 0
+                  ? styles.notesTitleAfterFields
+                  : {},
+              ]}
+            >
+              {t("preview.notes")}
+            </Text>
+            {toPrintLines(data.notes).map((line) => (
+              <Text key={line.key} style={styles.notesText}>
+                {line.text}
+              </Text>
+            ))}
+          </>
         ) : null}
 
         {/* Page number */}

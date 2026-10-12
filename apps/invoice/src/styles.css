@@ -1,262 +1,54 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
-/* Matter's free substitutes — Inter (UI body, weights 400/500) + Geist Mono
-   (code chips). The --font-sans / --font-mono stacks fall through to these. */
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/geist-mono/400.css";
+/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+   imports the same theme and defines no tokens of its own; this file adds
+   only the print artifact below. */
+@import "@rulisme/ui/styles/theme.css";
 
-@source "../node_modules/@rulisme/ui/dist";
-
-@custom-variant dark (&:is(.dark *));
-
-/* Hide scrollbars on the editor scroll panels while keeping scroll behavior. */
-@utility scrollbar-hide {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
+/* The app compiles @rulisme/ui from source (vite `resolve.tsconfigPaths`),
+   so Tailwind scans that source for the classes it uses. */
+@source "../../../packages/ui/src";
 
 /*
- * Warp — "moonlit terminal" design system (see DESIGN.md).
- * Dark warm-neutral terminal aesthetic. Tokens below are the single source of
- * truth; this @theme block is byte-identical across apps/cv, apps/invoice
- * and apps/portfolio (enforced by a parity diff). Editor chrome only — the
- * CV/invoice print artifacts (.cv-page / .invoice-page and templates/*-pdf,
- * *-preview) stay print-faithful (light) and are re-scoped at the bottom.
- *
- * Accent discipline: --color-gold-leaf and --color-muted-cobalt appear ONLY in
- * code/terminal/syntax and section headings — never on buttons, tags, or badges.
- */
-@theme inline {
-  /* Fonts — Matter (UI), Geist/Matter Mono (code chips only). System fallback. */
-  --font-heading: var(--font-sans);
-  --font-sans:
-    "Matter", "Inter", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono:
-    "Geist Mono", "Matter Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", monospace;
-
-  /* Warp raw palette — DESIGN.md. */
-  --color-warm-off-white: #faf9f6;
-  --color-bone-gray: #868684;
-  --color-pale-stone: #b4b4b2;
-  --color-faint-linen: #e3e2e0;
-  --color-smoke-charcoal: #2f2f2f;
-  --color-iron-veil: #383838;
-  --color-slate-hearth: #40403f;
-  --color-deep-ember: #121212;
-  --color-smoked-onyx: #1e1e1d;
-  --color-absolute: #000000;
-  --color-ink-black: #080808;
-  --color-gold-leaf: #bd9f65;
-  --color-muted-cobalt: #6f839f;
-
-  /* Surfaces — DESIGN.md elevation ladder (0 canvas → 4 floating). */
-  --color-surface-canvas: #121212;
-  --color-surface-banded: #1e1e1d;
-  --color-surface-card: #2f2f2f;
-  --color-surface-control: #383838;
-  --color-surface-floating: #40403f;
-
-  /* shadcn/reui semantic aliases → resolve to the :root values below. */
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-
-  /* Radius — DESIGN.md: buttons/nav 4 · cards/icons 8 · images 20 (never pill). */
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 14px;
-  --radius-2xl: 20px;
-  --radius-3xl: 20px;
-  --radius-4xl: 24px;
-
-  /* Type scale — Matter. Each size pairs its line-height + (negative) tracking,
-     so a single utility carries the engineered look (DESIGN.md Type Scale). */
-  --text-micro: 10px;
-  --text-micro--line-height: 1.2;
-  --text-micro--letter-spacing: 0.2px;
-  --text-caption-tracked: 11px;
-  --text-caption-tracked--line-height: 1.2;
-  --text-caption-tracked--letter-spacing: 2.2px;
-  --text-body-sm: 14px;
-  --text-body-sm--line-height: 1.38;
-  --text-body-sm--letter-spacing: 0.14px;
-  --text-body: 16px;
-  --text-body--line-height: 1.38;
-  --text-body--letter-spacing: 0.16px;
-  --text-subheading: 20px;
-  --text-subheading--line-height: 1.3;
-  --text-subheading--letter-spacing: -0.2px;
-  --text-heading-sm: 24px;
-  --text-heading-sm--line-height: 1.2;
-  --text-heading-sm--letter-spacing: -0.48px;
-  --text-heading: 32px;
-  --text-heading--line-height: 1.19;
-  --text-heading--letter-spacing: -0.64px;
-  --text-heading-lg: 48px;
-  --text-heading-lg--line-height: 1.1;
-  --text-heading-lg--letter-spacing: -1.44px;
-  --text-display: 68px;
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -2.04px;
-
-  /* Weights — 400 / 500 only (font-bold is forbidden in chrome). */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-}
-
-/*
- * Light (:root) is the default theme — a warm "daylight" counterpart to Warp
- * dark. next-themes toggles the `.dark` class on <html>; when it is absent the
- * light tokens below apply, when present the dark block wins. Semantic
- * shadcn/reui vars are mapped onto warm surfaces so every @rulisme/ui primitive
- * inherits the skin in both themes. Editor chrome only — the CV/invoice print
- * artifacts stay print-faithful and are re-scoped at the bottom of this file.
- */
-:root {
-  --background: #faf9f6; /* warm off-white canvas */
-  --foreground: #1e1e1d; /* warm near-black ink (never pure #000) */
-  --card: #ffffff; /* white card lifts above the canvas */
-  --card-foreground: #1e1e1d;
-  --popover: #ffffff; /* floating panels (dialogs/popovers) */
-  --popover-foreground: #1e1e1d;
-  --primary: #1e1e1d; /* filled control — ink on light */
-  --primary-foreground: #faf9f6;
-  --secondary: #ececea; /* light warm secondary control */
-  --secondary-foreground: #1e1e1d;
-  --muted: #f0efec; /* recessed warm light */
-  --muted-foreground: #6b6a66; /* warm stone — low-emphasis text */
-  --accent: #ececea; /* hover / highlight surface */
-  --accent-foreground: #1e1e1d;
-  --destructive: oklch(0.577 0.245 27.325); /* error red (semantic state) */
-  --border: oklch(0.27 0.01 60 / 12%); /* warm ink hairline */
-  --input: oklch(0.27 0.01 60 / 18%); /* input border */
-  --ring: #868684; /* neutral focus ring (no gold/cobalt on chrome) */
-  --chart-1: #bd9f65;
-  --chart-2: #6f839f;
-  --chart-3: #6b6a66;
-  --chart-4: #868684;
-  --chart-5: #1e1e1d;
-  --radius: 0.5rem;
-  --sidebar: #f0efec;
-  --sidebar-foreground: #1e1e1d;
-  --sidebar-primary: #1e1e1d;
-  --sidebar-primary-foreground: #faf9f6;
-  --sidebar-accent: #ececea;
-  --sidebar-accent-foreground: #1e1e1d;
-  --sidebar-border: oklch(0.27 0.01 60 / 12%);
-  --sidebar-ring: #868684;
-}
-
-/* Dark class mirrors :root so the dark: variant + colorScheme stay consistent. */
-.dark {
-  --background: #121212;
-  --foreground: #faf9f6;
-  --card: #2f2f2f;
-  --card-foreground: #faf9f6;
-  --popover: #40403f;
-  --popover-foreground: #faf9f6;
-  --primary: #faf9f6;
-  --primary-foreground: #121212;
-  --secondary: #383838;
-  --secondary-foreground: #faf9f6;
-  --muted: #262624;
-  --muted-foreground: #b4b4b2;
-  --accent: #383838;
-  --accent-foreground: #faf9f6;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.97 0.006 95 / 12%);
-  --input: oklch(0.97 0.006 95 / 16%);
-  --ring: #b4b4b2;
-  --chart-1: #bd9f65;
-  --chart-2: #6f839f;
-  --chart-3: #b4b4b2;
-  --chart-4: #868684;
-  --chart-5: #faf9f6;
-  --sidebar: #1e1e1d;
-  --sidebar-foreground: #faf9f6;
-  --sidebar-primary: #faf9f6;
-  --sidebar-primary-foreground: #121212;
-  --sidebar-accent: #383838;
-  --sidebar-accent-foreground: #faf9f6;
-  --sidebar-border: oklch(0.97 0.006 95 / 12%);
-  --sidebar-ring: #b4b4b2;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings:
-      "ss01" on,
-      "tnum" on;
-  }
-  html {
-    font-size: 100%;
-    @apply font-sans;
-  }
-}
-
-/*
- * Invoice preview document — a print-faithful light "paper" island floating on
- * the dark editor canvas. DESIGN.md print-template exception: NOT dark-themed.
- * Semantic vars are locally re-scoped to light and the print font is pinned so
- * the rendered invoice (and its PDF) stays ink-on-paper regardless of the dark
- * editor theme.
+ * Invoice preview document — a print-faithful sheet of paper resting on the
+ * editor's graph paper, Zedative on paper like its PDF twin (invoice-pdf.tsx).
+ * Print exception (TYPOGRAPHY.md § Exceptions): it is not themed. The tokens
+ * the document uses are re-scoped here to the literal Zedative print values
+ * the PDF sets, so the sheet stays ink on white paper in light and Night Desk
+ * alike: `foreground` the title, names and amount due; `ink` running text;
+ * `muted-foreground` labels and meta; `line` rules; `border` frames;
+ * `primary` links. One family, Inter (`--font-sans`), at the PDF's static
+ * optical size (opsz 14); weights 400 / 600 / 700 match its embedded cuts.
+ * The accent colour the user picks stays inline on the top rule. A run too
+ * long for its column (an IBAN, a URL, an email) breaks anywhere, as the
+ * PDF's hyphenation callback lets it (src/lib/pdf-fonts.ts).
  */
 .invoice-page {
-  max-width: 42rem;
-  background: #ffffff;
-  color: #171717;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
-  --foreground: #171717;
-  --muted-foreground: #6b7280;
-  --border: #e5e7eb;
+  --foreground: #000000;
+  --ink: #393d45;
+  --muted-foreground: #5a6170;
+  --line: #cbcfd4;
+  --border: #dadde2;
+  --primary: #1348dc;
   --background: #ffffff;
   --card: #ffffff;
-  --card-foreground: #171717;
+  --card-foreground: #000000;
+  max-width: 42rem;
+  background: #ffffff;
+  color: var(--ink);
+  color-scheme: light;
+  font-family: var(--font-sans);
+  font-variation-settings: "opsz" 14;
+  /* The sheet's own leading: text without a size class of its own does not
+     take the editor's 20px body line. */
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
 }
 
 /* Standalone print/PDF view (invoice.pilihpendidikan.com/?invoice=<slug>&print=1). Centers
-   the document on the dark editor backdrop for on-screen viewing; the @media
+   the document on the editor backdrop for on-screen viewing; the @media
    print rules below strip it to the bare page. */
 .invoice-print-root {
   display: flex;
@@ -266,10 +58,11 @@
   background: var(--muted);
 }
 
-/* The web preview IS the PDF. When printing — the in-editor "Download as PDF"
-   (window.print over the full editor) or the auto-print on the standalone print
-   view — hide every chrome element and let the single `.invoice-page` document
-   flow across paper pages. One renderer, byte-faithful output. */
+/* Printing from the browser — the standalone print view behind the API's
+   .pdf links (?print=1, which prints itself) or Ctrl+P in the editor — hides
+   every chrome element and lets the single `.invoice-page` sheet flow across
+   paper pages. The Download PDF button does not come through here: it renders
+   the @react-pdf twin, kept in step with this sheet by hand. */
 @media print {
   @page {
     size: A4;
@@ -306,5 +99,8 @@
     max-width: 100% !important;
     margin: 0 !important;
     box-shadow: none !important;
+    /* The accent rule is a background; browsers drop backgrounds from
+       print unless told the colours are content. */
+    print-color-adjust: exact;
   }
 }
