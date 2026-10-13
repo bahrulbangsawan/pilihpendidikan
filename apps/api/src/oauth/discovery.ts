@@ -1,29 +1,41 @@
 // RFC 8414 authorization-server metadata and RFC 9728 protected-resource
-// metadata. Strict clients compare these against what the endpoints really
-// do, so keep them in step with register.ts / token.ts.
+// metadata (17 §13). Strict clients compare these against what the endpoints
+// really do, so keep them in step with register.ts / token.ts / revoke.ts:
+//
+//   grant_types_supported     authorization_code (everyone) and
+//                             refresh_token (first-party grants)
+//   revocation_endpoint       /oauth/revoke (RFC 7009)
+//   scopes_supported          every 05 §1.2 scope + the DCR ceiling `mcp`
 
 import { publicOrigin } from "../origins";
-import { oauthJson, SUPPORTED_SCOPES } from "./shared";
+import { METADATA_SCOPES, oauthJson } from "./shared";
 
-export function handleAuthorizationServerMetadata(request: Request): Response {
-  const issuer = publicOrigin(request);
-  return oauthJson({
+const AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"];
+
+export function authorizationServerMetadata(issuer: string) {
+  return {
     issuer,
     authorization_endpoint: `${issuer}/oauth/authorize`,
     token_endpoint: `${issuer}/oauth/token`,
     registration_endpoint: `${issuer}/oauth/register`,
+    revocation_endpoint: `${issuer}/oauth/revoke`,
     response_types_supported: ["code"],
-    grant_types_supported: ["authorization_code"],
+    grant_types_supported: ["authorization_code", "refresh_token"],
     code_challenge_methods_supported: ["S256"],
-    token_endpoint_auth_methods_supported: [
+    token_endpoint_auth_methods_supported: [...AUTH_METHODS],
+    revocation_endpoint_auth_methods_supported: [
+      "none",
       "client_secret_basic",
       "client_secret_post",
-      "none",
     ],
-    scopes_supported: [...SUPPORTED_SCOPES],
+    scopes_supported: [...METADATA_SCOPES],
     resource_indicators_supported: true,
     authorization_response_iss_parameter_supported: true,
-  });
+  };
+}
+
+export function handleAuthorizationServerMetadata(request: Request): Response {
+  return oauthJson(authorizationServerMetadata(publicOrigin(request)));
 }
 
 // Claude's connector canonicalizes the server URL with a trailing slash, so
@@ -34,6 +46,6 @@ export function handleProtectedResourceMetadata(request: Request): Response {
     resource: `${issuer}/`,
     authorization_servers: [issuer],
     bearer_methods_supported: ["header"],
-    scopes_supported: [...SUPPORTED_SCOPES],
+    scopes_supported: [...METADATA_SCOPES],
   });
 }

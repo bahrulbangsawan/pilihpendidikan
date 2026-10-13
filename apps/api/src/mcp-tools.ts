@@ -36,6 +36,8 @@ export const READ_ONLY_TOOLS: ReadonlySet<string> = new Set([
   "portfolio_get_url",
   "jobs_get",
   "jobs_list",
+  "jobs_board",
+  "jobs_approvals_list",
 ]);
 
 export interface RegisterToolsOptions {

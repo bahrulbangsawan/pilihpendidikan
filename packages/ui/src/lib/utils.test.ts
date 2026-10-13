@@ -1,5 +1,9 @@
+import {
+  ensureUrl as engineEnsureUrl,
+  formatPhoneDisplay as engineFormatPhoneDisplay,
+} from "@pilihpendidikan/cv-engine/format";
 import { describe, expect, it } from "vitest";
-import { cn } from "./utils";
+import { cn, ensureUrl, formatPhoneDisplay } from "./utils";
 
 describe("cn() with the Zedative type utilities", () => {
   it("lets a role replace a generic size and line height", () => {
@@ -32,5 +36,24 @@ describe("cn() with the Zedative type utilities", () => {
     expect(
       cn("inset-shadow-lip", "hover:inset-shadow-none", "shadow-primary")
     ).toBe("inset-shadow-lip hover:inset-shadow-none shadow-primary");
+  });
+});
+
+describe("the CV engine's format helpers, re-exported", () => {
+  it("are the engine's own functions", () => {
+    expect(ensureUrl).toBe(engineEnsureUrl);
+    expect(formatPhoneDisplay).toBe(engineFormatPhoneDisplay);
+  });
+
+  it("add a missing scheme to a link and keep an existing one", () => {
+    expect(ensureUrl("bengkele.com")).toBe("https://bengkele.com");
+    expect(ensureUrl("http://example.org")).toBe("http://example.org");
+    expect(ensureUrl("")).toBe("");
+  });
+
+  it("group a phone number in fours from the right", () => {
+    expect(formatPhoneDisplay("+6281234567890")).toBe("+62812-3456-7890");
+    expect(formatPhoneDisplay("0812 3456 789")).toBe("081-2345-6789");
+    expect(formatPhoneDisplay("1234")).toBe("1234");
   });
 });

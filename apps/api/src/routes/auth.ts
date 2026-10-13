@@ -81,7 +81,24 @@ ${messageBanner("error", message)}
   );
 }
 
-async function handleVerifyGet(env: Env, url: URL): Promise<Response> {
+// The confirm page's POST answers `303` to the record's `returnTo` app, and
+// CSP `form-action` also governs that redirect (Chromium blocks it), so the
+// page allows exactly that origin. It is re-checked against the same app
+// allow-list the record was created with (`resolveReturnTo`): a stored value
+// that is not an app origin of this Worker never widens the policy.
+function confirmFormActionOrigins(
+  request: Request,
+  returnTo: string | null
+): string[] {
+  const allowed = resolveReturnTo(request, returnTo);
+  return allowed ? [allowed] : [];
+}
+
+async function handleVerifyGet(
+  request: Request,
+  env: Env,
+  url: URL
+): Promise<Response> {
   const token = url.searchParams.get("t") ?? "";
   const record = token ? await readMagicRecord(env, token) : null;
   if (!record) {
@@ -98,6 +115,7 @@ async function handleVerifyGet(env: Env, url: URL): Promise<Response> {
 <input type="hidden" name="t" value="${escapeHtml(token)}" />
 <button type="submit">Continue</button>
 </form>`,
+    formActionOrigins: confirmFormActionOrigins(request, record.returnTo),
   });
 }
 
@@ -214,7 +232,7 @@ export function routeAuth(
     return handleRequest(request, env, ctx);
   }
   if (pathname === "/auth/verify" && method === "GET") {
-    return handleVerifyGet(env, url);
+    return handleVerifyGet(request, env, url);
   }
   if (pathname === "/auth/verify" && method === "POST") {
     return handleVerifyPost(request, env);

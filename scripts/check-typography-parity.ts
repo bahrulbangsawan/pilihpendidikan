@@ -31,6 +31,17 @@ const FORBIDDEN: { label: string; pattern: RegExp }[] = [
   { label: "dark variant", pattern: /@custom-variant\s+dark\b/ },
 ];
 
+// UI apps that must have a src/styles.css importing the theme. Any other app
+// with a styles.css is checked too (apps/api has none).
+const REQUIRED_APPS = [
+  "apps/home",
+  "apps/cv",
+  "apps/invoice",
+  "apps/portfolio",
+  "apps/jobs",
+  "apps/design",
+];
+
 const apps = readdirSync(resolve(ROOT, "apps"))
   .map((name) => ({
     app: `apps/${name}`,
@@ -39,6 +50,12 @@ const apps = readdirSync(resolve(ROOT, "apps"))
   .filter((entry) => existsSync(entry.path));
 
 const failures: string[] = [];
+
+for (const app of REQUIRED_APPS) {
+  if (!existsSync(resolve(ROOT, app, "src/styles.css"))) {
+    failures.push(`${app}: has no src/styles.css importing the shared theme`);
+  }
+}
 
 for (const { app, path } of apps) {
   const css = readFileSync(path, "utf8").replace(COMMENT, "");

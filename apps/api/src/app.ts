@@ -10,14 +10,25 @@
 //   5. /, /connect                           → sign-in + token page (HTML)
 //   6. /auth/tokens*                         → personal tokens (credentialed CORS)
 //   7. /auth/*                               → sign-in, exchange, logout, me
-//   8. /api/*, /{cv,invoice,portfolio}/*.pdf → documents (credentialed CORS)
-//   9. anything else                         → 404
+//   8. /api/v1/*                             → Job Tracker kernel (credentialed
+//                                              CORS; src/jobs/core/router.ts)
+//   9. /api/*, /{cv,invoice,portfolio}/*.pdf → documents (credentialed CORS)
+//  10. anything else                         → 404
+//
+// The same object also serves `scheduled` (crons, dispatched by
+// `controller.cron` in src/jobs/cron) and `queue` (the `jobs-ai` consumer in
+// src/jobs/queue). `createApp(mcp, deps)` takes optional kernel dependencies
+// (a fake clock, a scripted AI provider) so tests drive all three.
 
 import { applyCors, handlePreflight } from "./cors";
-import { isLocalRequest } from "./origins";
 import type { Env } from "./env";
 import { jsonError } from "./http";
-import { purgeExpiredLogs } from "./request-log";
+import { runScheduled } from "./jobs/cron/index";
+import type { KernelDeps } from "./jobs/core/deps";
+import { dispatchV1, V1_PREFIX } from "./jobs/core/router";
+import { handleJobsAiBatch } from "./jobs/queue/consumer";
+import { v1RouteTable } from "./jobs/routes/index";
+import { isLocalRequest } from "./origins";
 import { routeAuth } from "./routes/auth";
 import { routeConnect } from "./routes/connect";
 import { routeDocuments } from "./routes/documents";
@@ -62,11 +73,16 @@ function httpsUpgrade(request: Request): Response | null {
   return Response.redirect(url.toString(), 308);
 }
 
+function isV1Path(pathname: string): boolean {
+  return pathname === V1_PREFIX || pathname.startsWith(`${V1_PREFIX}/`);
+}
+
 async function route(
   mcp: McpHandlers,
   request: Request,
   env: Env,
-  ctx: ExecutionContext
+  ctx: ExecutionContext,
+  deps: KernelDeps
 ): Promise<Response> {
   const url = new URL(request.url);
   const { pathname } = url;
@@ -87,6 +103,12 @@ async function route(
   if (connect) {
     return await connect;
   }
+  if (isV1Path(pathname)) {
+    return applyCors(
+      await dispatchV1(v1RouteTable(), request, env, ctx, deps),
+      request
+    );
+  }
   const credentialed =
     routeTokens(request, env, url) ??
     routeAuth(request, env, ctx, url) ??
@@ -97,7 +119,7 @@ async function route(
   return applyCors(jsonError(404, "Not found."), request);
 }
 
-export function createApp(mcp: McpHandlers) {
+export function createApp(mcp: McpHandlers, deps: KernelDeps = {}) {
   return {
     async fetch(
       request: Request,
@@ -107,21 +129,28 @@ export function createApp(mcp: McpHandlers) {
       return (
         httpsUpgrade(request) ??
         handlePreflight(request) ??
-        (await route(mcp, request, env, ctx))
+        (await route(mcp, request, env, ctx, deps))
       );
     },
-    scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
+    scheduled(
+      controller: ScheduledController,
+      env: Env,
+      ctx: ExecutionContext
+    ) {
       ctx.waitUntil(
-        purgeExpiredLogs(env.DB)
-          .then((deleted) => {
-            if (deleted > 0) {
-              console.log("request_log purge", { deleted });
-            }
-          })
-          .catch((err: unknown) => {
-            console.error("request_log purge failed", { err });
-          })
+        runScheduled(controller, env, ctx, deps).catch((err: unknown) => {
+          console.error("scheduled run failed", {
+            err: err instanceof Error ? err.message : String(err),
+          });
+        })
       );
+    },
+    async queue(
+      batch: MessageBatch<unknown>,
+      env: Env,
+      ctx: ExecutionContext
+    ): Promise<void> {
+      await handleJobsAiBatch(batch, env, ctx, deps);
     },
   } satisfies ExportedHandler<Env>;
 }

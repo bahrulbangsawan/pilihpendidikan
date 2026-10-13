@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jobs-pilihpendidikan",
+  // src/server.ts wraps the TanStack Start handler: security headers with a
+  // per-response CSP nonce, the Origin check on server-function POSTs and
+  // noindex (job-tracker-spec 12 §1, 11 §4.1).
+  "main": "src/server.ts",
+  "compatibility_date": "2026-03-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [{ "pattern": "jobs.pilihpendidikan.com", "custom_domain": true }],
+  "observability": {
+    "enabled": true
+  },
+  // The BFF reaches apps/api server-to-server (D-15, 14 §3.1). `wrangler dev`
+  // resolves the binding to a locally running api-pilihpendidikan; without
+  // it, set JOBS_API_FALLBACK_URL in .dev.vars (dev only).
+  "services": [{ "binding": "API", "service": "api-pilihpendidikan" }],
+  "vars": {
+    "API_PUBLIC_ORIGIN": "https://api.pilihpendidikan.com",
+    "JOBS_APP_ORIGIN": "https://jobs.pilihpendidikan.com"
+  }
+  // Secret: BFF_COOKIE_KEY (≥ 32 random bytes, base64) encrypts the
+  // __Host-jobs-session cookie with AES-GCM. `bunx wrangler secret put
+  // BFF_COOKIE_KEY` in production, .dev.vars locally (see .dev.vars.example).
+}

@@ -66,10 +66,12 @@ export function HubPage({ services }: { services: Services }) {
           <SectionHead id="tools-heading">{t("tools.heading")}</SectionHead>
           <Band>
             <Rail asChild>
-              <ul className="grid md:grid-cols-3">
+              {/* Four tools: one column on phones, 2 × 2 on tablets, one row
+                  from lg. The hairlines follow the grid at each step. */}
+              <ul className="grid sm:grid-cols-2 lg:grid-cols-4">
                 {TOOL_IDS.map((id) => (
                   <li
-                    className="border-line border-b last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0"
+                    className="border-line border-b last:border-b-0 sm:odd:border-r lg:border-r lg:border-b-0 lg:last:border-r-0 sm:[&:nth-last-child(-n+2)]:border-b-0"
                     key={id}
                   >
                     <ServiceCard id={id} service={services[id]} />

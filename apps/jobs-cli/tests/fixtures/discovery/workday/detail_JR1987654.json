@@ -1,0 +1,25 @@
+{
+  "jobPostingInfo": {
+    "id": "id-JR1987654",
+    "title": "Systems Software Engineer",
+    "jobDescription": "<p>NVIDIA is looking for a Systems Software Engineer to work on GPU platforms used by researchers worldwide.</p><p><b>What you'll need:</b></p><ul><li>BS or MS in Computer Science</li><li>Strong C++ and Linux skills</li></ul>",
+    "location": "Jakarta",
+    "postedOn": "Posted 3 Days Ago",
+    "startDate": null,
+    "timeType": "Full time",
+    "jobReqId": "JR1987654",
+    "jobPostingId": "Systems-Software-Engineer_JR1987654",
+    "jobPostingSiteId": "NVIDIAExternalCareerSite",
+    "country": {
+      "descriptor": "Indonesia",
+      "id": "c1"
+    },
+    "canApply": true,
+    "posted": true,
+    "externalUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Jakarta/Systems-Software-Engineer_JR1987654"
+  },
+  "hiringOrganization": {
+    "name": "NVIDIA",
+    "url": ""
+  }
+}

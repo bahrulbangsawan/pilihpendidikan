@@ -1,3 +1,4 @@
+import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
 import {
   Empty,
   EmptyDescription,
@@ -6,7 +7,6 @@ import {
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
 import { FileText } from "lucide-react";
-import type { CVData, CVStyle } from "@/components/cv-form";
 import { BasicPreview } from "@/components/templates/basic-preview";
 import { HarvardPreview } from "@/components/templates/harvard-preview";
 import { SimplePreview } from "@/components/templates/simple-preview";

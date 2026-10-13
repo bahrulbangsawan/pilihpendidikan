@@ -1,0 +1,253 @@
+# CLI matrix (job-tracker-spec 22 §9, A-04): the pilih-jobs Python CLI on every
+# supported OS and Python version. It also runs as step 2 of release-cli.yml
+# (workflow_call). The full-stack `cli-e2e` leg is e2e.yml; the live canary is
+# nightly-live.yml.
+#
+#   cli-lint      ruff, ruff format, import-linter, pyright, policy tests
+#   cli-test      unit + component + contract tests on Python 3.11, 3.12, 3.13
+#   cli-build     one pure-Python wheel + sdist (uv build), shared below
+#   cli-platform  per OS: the hub's install script with the built wheel
+#                 (`uv tool install <wheel>`) → `pilih-jobs --json doctor`
+#                 → `pilih-jobs browser install` → agent fixture tests
+#                 (headless Chromium, fixture ATS server) → `discover --dry-run`
+#                 against recorded board fixtures (no internet)
+name: CLI matrix
+
+on:
+  pull_request:
+    paths:
+      - "apps/jobs-cli/**"
+      - "packages/jobs-contracts/**"
+      - "scripts/require-uv.sh"
+      - ".github/workflows/cli-matrix.yml"
+      - ".github/scripts/**"
+  push:
+    branches: [main]
+    paths:
+      - "apps/jobs-cli/**"
+      - "packages/jobs-contracts/**"
+      - "scripts/require-uv.sh"
+      - ".github/workflows/cli-matrix.yml"
+      - ".github/scripts/**"
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+    working-directory: apps/jobs-cli
+
+env:
+  FORCE_COLOR: "1"
+  PYTHONUTF8: "1"
+  UV_VERSION: "0.12.1"
+
+jobs:
+  cli-lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+      - run: uv sync --locked
+      - name: ruff
+        run: uv run ruff check src tests scripts
+      - name: ruff format
+        run: uv run ruff format --check src tests scripts
+      - name: import-linter (16 §2.1)
+        run: uv run lint-imports
+      - name: pyright
+        run: uv run pyright
+      - name: Policy tests (Scrapling guard, D-17 exclusions, agent policy)
+        run: >-
+          uv run pytest -m "not e2e and not live and not browser"
+          tests/discovery/test_policy.py tests/discovery/test_exclusion.py
+          tests/agent/test_agent_units.py
+          -k "POLICY or EXCLUSION or STEALTH"
+
+  cli-test:
+    name: cli-test (py${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      # gen_contracts.py runs a Bun script for the route index.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Install the workspace (contracts sources for the drift check)
+        working-directory: .
+        run: bun install --frozen-lockfile
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+      - run: uv sync --locked
+      - name: Generated contracts are fresh (D-20)
+        run: uv run python scripts/gen_contracts.py --check
+      - name: Unit, component and contract tests
+        run: uv run pytest -m "not e2e and not live and not browser"
+
+  cli-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+      - name: uv build (sdist + pure-Python wheel)
+        run: uv build --out-dir dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cli-matrix-dist
+          path: apps/jobs-cli/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  cli-platform:
+    name: cli-platform (${{ matrix.os }})
+    needs: cli-build
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22 §9 lists macos-13 for macOS x64; GitHub retired that image, so
+        # macos-15-intel is the x64 macOS runner now. ubuntu-24.04-arm needs a
+        # public repository or an arm runner plan.
+        os:
+          - macos-14
+          - macos-15-intel
+          - windows-2022
+          - ubuntu-22.04
+          - ubuntu-24.04-arm
+    env:
+      # An isolated CLI home per job; the encrypted-file credential store
+      # (16 §11) because CI has no OS keychain; a loopback API URL so doctor
+      # never calls production (the API check is a warning).
+      PILIH_JOBS_HOME: ${{ github.workspace }}/.ci-pilih-jobs-home
+      PILIH_JOBS_CREDENTIALS_STORE: encrypted-file
+      PILIH_JOBS_API_URL: http://127.0.0.1:9
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+      - uses: actions/download-artifact@v4
+        with:
+          name: cli-matrix-dist
+          path: apps/jobs-cli/dist
+
+      # The hub's install scripts (apps/home/public/install-cli.{sh,ps1}) with
+      # the wheel just built instead of PyPI; the browser comes later.
+      - name: install-cli.sh <wheel>
+        if: runner.os != 'Windows'
+        env:
+          PILIH_JOBS_NO_BROWSER: "1"
+        run: |
+          PILIH_JOBS_PACKAGE="$(ls "$PWD"/dist/*.whl)" sh ../home/public/install-cli.sh
+          uv tool dir --bin >> "$GITHUB_PATH"
+
+      - name: install-cli.ps1 <wheel>
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          PILIH_JOBS_NO_BROWSER: "1"
+        run: |
+          $env:PILIH_JOBS_PACKAGE = (Get-ChildItem dist\*.whl).FullName
+          & ..\home\public\install-cli.ps1
+          uv tool dir --bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: pilih-jobs --json doctor (before the browser)
+        run: |
+          pilih-jobs --json doctor > doctor-before.json || true
+          cat doctor-before.json
+          uv run --no-project --python 3.12 python - doctor-before.json <<'PY'
+          import json, sys
+          envelope = json.load(open(sys.argv[1], encoding="utf-8"))
+          assert envelope["ok"] is True, envelope
+          checks = {c["name"]: c for c in envelope["data"]["checks"]}
+          for name in ("python", "disk", "keyring", "policy"):
+              assert checks[name]["ok"], checks[name]
+          PY
+
+      - name: pilih-jobs browser install
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            pilih-jobs --json --yes browser install --with-deps
+          else
+            pilih-jobs --json --yes browser install
+          fi
+
+      - name: pilih-jobs --json doctor (browser launches headless)
+        run: |
+          pilih-jobs --json doctor > doctor.json
+          cat doctor.json
+          uv run --no-project --python 3.12 python - doctor.json <<'PY'
+          import json, sys
+          envelope = json.load(open(sys.argv[1], encoding="utf-8"))
+          checks = {c["name"]: c for c in envelope["data"]["checks"]}
+          for name in ("browser", "browser_launch"):
+              assert checks[name]["ok"], checks[name]
+          PY
+
+      - name: Agent fixture tests (headless, fixture ATS server)
+        # The suite isolates its own CLI home and config; drop the job's.
+        run: |
+          uv sync --locked
+          uv run playwright install chromium
+          env -u PILIH_JOBS_HOME -u PILIH_JOBS_CREDENTIALS_STORE -u PILIH_JOBS_API_URL \
+            uv run pytest -m browser tests/browser/test_fixture_scenarios.py
+
+      - name: discover --dry-run against recorded board fixtures
+        working-directory: .
+        run: |
+          uv run --no-project --python 3.12 python .github/scripts/fixture-boards.py \
+            --port-file boards.port 2> boards.log &
+          for _ in $(seq 1 50); do [ -s boards.port ] && break; sleep 0.2; done
+          base="http://127.0.0.1:$(cat boards.port)"
+          export PILIH_JOBS_ENV=test
+          export PILIH_JOBS_TEST_BASE_URLS="{\"greenhouse\":\"$base\",\"lever\":\"$base\",\"ashby\":\"$base\"}"
+          pilih-jobs --json discover --source greenhouse:acme --source lever:acme \
+            --source ashby:ramp-id --dry-run > discover.ndjson
+          tail -n 1 discover.ndjson
+          uv run --no-project --python 3.12 python - discover.ndjson <<'PY'
+          import json, sys
+          lines = open(sys.argv[1], encoding="utf-8").read().splitlines()
+          result = json.loads(lines[-1])
+          assert result["type"] == "result" and result["ok"] is True, result
+          stats = result["data"]["stats"]
+          assert result["data"]["status"] == "completed", result
+          assert stats["postings_found"] == 8 and stats["invalid"] == 0, stats
+          PY
+
+      - name: Keep the doctor reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli-platform-${{ matrix.os }}
+          path: |
+            apps/jobs-cli/doctor*.json
+            discover.ndjson
+            boards.log
+          if-no-files-found: ignore
+          retention-days: 14

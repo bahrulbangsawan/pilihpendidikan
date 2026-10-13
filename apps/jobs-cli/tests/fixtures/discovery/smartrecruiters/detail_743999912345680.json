@@ -1,0 +1,74 @@
+{
+  "id": "743999912345680",
+  "name": "Working Student Data Analytics",
+  "uuid": "uuid-743999912345680",
+  "jobAdId": "ad-743999912345680",
+  "defaultJobAd": true,
+  "refNumber": "REF5680",
+  "company": {
+    "identifier": "BoschGroup",
+    "name": "Bosch Group"
+  },
+  "releasedDate": "2026-10-07T03:00:00.000Z",
+  "location": {
+    "city": "Jakarta",
+    "region": "DKI Jakarta",
+    "country": "id",
+    "remote": false,
+    "hybrid": false,
+    "fullLocation": "Jakarta, Indonesia"
+  },
+  "industry": {
+    "id": "automotive",
+    "label": "Automotive"
+  },
+  "department": {
+    "id": "123",
+    "label": "Engineering"
+  },
+  "function": {
+    "id": "engineering",
+    "label": "Engineering"
+  },
+  "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Internship"
+  },
+  "experienceLevel": {
+    "id": "mid_senior_level",
+    "label": "Mid-Senior Level"
+  },
+  "customField": [],
+  "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/743999912345680",
+  "creator": {
+    "name": "Talent Team"
+  },
+  "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+  },
+  "active": true,
+  "postingUrl": "https://jobs.smartrecruiters.com/BoschGroup/743999912345680-working-student-data-analytics",
+  "applyUrl": "https://jobs.smartrecruiters.com/BoschGroup/743999912345680-working-student-data-analytics?oga=true",
+  "jobAd": {
+    "sections": {
+      "companyDescription": {
+        "title": "Company Description",
+        "text": "<p>Bosch is a leading global supplier of technology and services.</p>"
+      },
+      "jobDescription": {
+        "title": "Job Description",
+        "text": "<p>As Working Student Data Analytics you develop software for automotive control units together with our global teams.</p>"
+      },
+      "qualifications": {
+        "title": "Qualifications",
+        "text": "<ul><li>Degree in computer science or electrical engineering</li><li>Solid C/C++ knowledge</li><li>Good English skills</li></ul>"
+      },
+      "additionalInformation": {
+        "title": "Additional Information",
+        "text": "<p>Flexible working hours.</p>"
+      }
+    }
+  }
+}

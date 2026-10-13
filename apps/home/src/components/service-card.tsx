@@ -14,6 +14,7 @@ const TOOL_SHORTCUTS: Record<ToolId, string> = {
   cv: "C",
   invoice: "I",
   portfolio: "P",
+  jobs: "J",
 };
 const MCP_SHORTCUT = "M";
 

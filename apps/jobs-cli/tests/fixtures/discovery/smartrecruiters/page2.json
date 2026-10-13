@@ -1,0 +1,58 @@
+{
+  "offset": 2,
+  "limit": 100,
+  "totalFound": 3,
+  "content": [
+    {
+      "id": "743999912345680",
+      "name": "Working Student Data Analytics",
+      "uuid": "uuid-743999912345680",
+      "jobAdId": "ad-743999912345680",
+      "defaultJobAd": true,
+      "refNumber": "REF5680",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-10-07T03:00:00.000Z",
+      "location": {
+        "city": "Jakarta",
+        "region": "DKI Jakarta",
+        "country": "id",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "Jakarta, Indonesia"
+      },
+      "industry": {
+        "id": "automotive",
+        "label": "Automotive"
+      },
+      "department": {
+        "id": "123",
+        "label": "Engineering"
+      },
+      "function": {
+        "id": "engineering",
+        "label": "Engineering"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Internship"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [],
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/743999912345680",
+      "creator": {
+        "name": "Talent Team"
+      },
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    }
+  ]
+}

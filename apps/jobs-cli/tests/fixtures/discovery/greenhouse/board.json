@@ -1,0 +1,109 @@
+{
+  "jobs": [
+    {
+      "absolute_url": "https://boards.greenhouse.io/acme/jobs/4012345?gh_src=7b3c9d",
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": false,
+          "requires_processing_consent": false,
+          "requires_retention_consent": false,
+          "retention_period": null
+        }
+      ],
+      "internal_job_id": 2876001,
+      "location": {
+        "name": "Jakarta, Indonesia"
+      },
+      "metadata": null,
+      "id": 4012345,
+      "updated_at": "2026-10-08T09:14:02-04:00",
+      "requisition_id": "ENG-142",
+      "title": "Senior Backend Engineer (Payments)",
+      "company_name": "Acme",
+      "first_published": "2026-09-21T03:00:00-04:00",
+      "language": "en",
+      "content": "&lt;h2&gt;About the role&lt;/h2&gt;&lt;p&gt;You will build the payment APIs that move money for 3 million merchants across Indonesia, in Go and PostgreSQL.&lt;/p&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;5+ years building backend services in Go&lt;/li&gt;&lt;li&gt;Strong PostgreSQL and data modelling skills&lt;/li&gt;&lt;li&gt;Experience with event-driven systems (Kafka)&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Benefits&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Hybrid work&lt;/li&gt;&lt;li&gt;Learning budget&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 4001,
+          "name": "Engineering",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ],
+      "offices": [
+        {
+          "id": 5001,
+          "name": "Jakarta",
+          "location": "Jakarta, Indonesia",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ]
+    },
+    {
+      "absolute_url": "https://www.acme.com/careers/jobs/4012346?gh_jid=4012346",
+      "data_compliance": [],
+      "internal_job_id": 2876002,
+      "location": {
+        "name": "Remote - Indonesia"
+      },
+      "metadata": null,
+      "id": 4012346,
+      "updated_at": "2026-10-01T12:00:00-04:00",
+      "requisition_id": "DATA-17",
+      "title": "Data Engineer",
+      "company_name": "Acme",
+      "first_published": "2026-09-30T08:00:00-04:00",
+      "language": "en",
+      "content": "&lt;h2&gt;About the role&lt;/h2&gt;&lt;p&gt;Own our batch and streaming pipelines; partner with analysts to ship trustworthy metrics for the whole company.&lt;/p&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;3+ years with Python and SQL&lt;/li&gt;&lt;li&gt;Airflow or Dagster&lt;/li&gt;&lt;li&gt;dbt experience is a plus&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Benefits&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Hybrid work&lt;/li&gt;&lt;li&gt;Learning budget&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 4002,
+          "name": "Data",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ],
+      "offices": []
+    },
+    {
+      "absolute_url": "https://boards.greenhouse.io/acme/jobs/4012399",
+      "data_compliance": [],
+      "internal_job_id": 2876003,
+      "location": {
+        "name": "Singapore / Kuala Lumpur"
+      },
+      "metadata": null,
+      "id": 4012399,
+      "updated_at": "2026-09-15T10:30:00-04:00",
+      "requisition_id": "SAL-3",
+      "title": "Account Executive, Enterprise",
+      "company_name": "Acme",
+      "first_published": "2026-09-15T10:30:00-04:00",
+      "language": "en",
+      "content": "&lt;h2&gt;About the role&lt;/h2&gt;&lt;p&gt;Grow our enterprise accounts in Singapore and Malaysia with a consultative sales approach and long sales cycles.&lt;/p&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;4+ years of B2B SaaS sales&lt;/li&gt;&lt;li&gt;Fluent English; Bahasa Melayu is a plus&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Benefits&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Hybrid work&lt;/li&gt;&lt;li&gt;Learning budget&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 4003,
+          "name": "Sales",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ],
+      "offices": [
+        {
+          "id": 5002,
+          "name": "Singapore",
+          "location": "Singapore",
+          "child_ids": [],
+          "parent_id": null
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "total": 3
+  }
+}

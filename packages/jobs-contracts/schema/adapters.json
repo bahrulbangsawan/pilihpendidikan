@@ -1,0 +1,324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "AdapterId": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url"
+      ]
+    },
+    "AdapterManifest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/AdapterId"
+        },
+        "version": {
+          "$ref": "#/$defs/Semver"
+        },
+        "min_cli_version": {
+          "$ref": "#/$defs/Semver"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": ["stable", "beta", "opt_in"]
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "discovery": {
+              "type": "boolean"
+            },
+            "pagination": {
+              "type": "string",
+              "enum": [
+                "none",
+                "offset",
+                "cursor",
+                "page_links",
+                "single_response"
+              ]
+            },
+            "detail": {
+              "type": "boolean"
+            },
+            "structured_fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "auth_required": {
+              "type": "boolean"
+            },
+            "browser_required": {
+              "type": "boolean"
+            },
+            "incremental": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["etag", "watermark", "content_hash"]
+              }
+            },
+            "application_support": {
+              "type": "string",
+              "enum": [
+                "browser_supported",
+                "browser_unsupported",
+                "external_redirect",
+                "unknown"
+              ]
+            },
+            "application_api": {
+              "type": "string",
+              "enum": ["none", "employer_key_required"]
+            }
+          },
+          "required": [
+            "discovery",
+            "pagination",
+            "detail",
+            "structured_fields",
+            "auth_required",
+            "browser_required",
+            "incremental",
+            "application_support",
+            "application_api"
+          ]
+        },
+        "restrictions": {
+          "type": "object",
+          "properties": {
+            "robots_respected": {
+              "type": "boolean",
+              "const": true
+            },
+            "tos_notes": {
+              "type": "string",
+              "maxLength": 500
+            },
+            "requires_opt_in": {
+              "type": "boolean"
+            },
+            "stop_on": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/DiscoveryErrorClass"
+              }
+            }
+          },
+          "required": [
+            "robots_respected",
+            "tos_notes",
+            "requires_opt_in",
+            "stop_on"
+          ]
+        },
+        "rate_limits": {
+          "type": "object",
+          "properties": {
+            "per_domain_concurrency": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "const": 1
+                },
+                {
+                  "type": "number",
+                  "const": 2
+                }
+              ]
+            },
+            "min_delay_ms": {
+              "type": "integer",
+              "minimum": 1000
+            },
+            "max_pages": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          "required": ["per_domain_concurrency", "min_delay_ms", "max_pages"]
+        },
+        "automation": {
+          "type": "object",
+          "properties": {
+            "headless_ok": {
+              "type": "boolean"
+            },
+            "auto_ok": {
+              "type": "boolean"
+            },
+            "ats_hosts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "confirmation_url_patterns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "confirmation_selectors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "headless_ok",
+            "auto_ok",
+            "ats_hosts",
+            "confirmation_url_patterns",
+            "confirmation_selectors"
+          ]
+        },
+        "config_schema": {
+          "$ref": "#/$defs/JsonObject"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "min_cli_version",
+        "display_name",
+        "status",
+        "capabilities",
+        "restrictions",
+        "rate_limits",
+        "automation",
+        "config_schema"
+      ]
+    },
+    "AdapterRegistryEntry": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AdapterManifest"
+        },
+        {
+          "$ref": "#/$defs/ExcludedSource"
+        }
+      ]
+    },
+    "AdaptersFile": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number",
+          "const": 1
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AdapterRegistryEntry"
+          }
+        }
+      },
+      "required": ["version", "adapters"]
+    },
+    "DiscoveryErrorClass": {
+      "type": "string",
+      "enum": [
+        "network",
+        "timeout",
+        "http_5xx",
+        "rate_limited",
+        "access_denied",
+        "challenge_detected",
+        "robots_disallowed",
+        "not_found",
+        "source_closed",
+        "source_unavailable",
+        "parse_error",
+        "schema_invalid",
+        "selector_drift",
+        "unsupported_content",
+        "policy_blocked",
+        "cancelled"
+      ]
+    },
+    "ExcludedSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ExcludedSourceId"
+        },
+        "status": {
+          "type": "string",
+          "const": "excluded"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hosts": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_urls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Url"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "display_name",
+        "hosts",
+        "reason",
+        "evidence_urls"
+      ]
+    },
+    "ExcludedSourceId": {
+      "type": "string",
+      "enum": ["linkedin", "indeed"]
+    },
+    "JsonObject": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {},
+      "description": "Any JSON object"
+    },
+    "Semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "description": "Semantic version"
+    },
+    "Url": {
+      "type": "string",
+      "maxLength": 2048,
+      "format": "uri",
+      "description": "Absolute URL"
+    }
+  }
+}

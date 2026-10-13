@@ -5,7 +5,7 @@
 
 export type ServiceStatus = "soon" | "live";
 
-export type ServiceId = "cv" | "invoice" | "portfolio" | "api";
+export type ServiceId = "cv" | "invoice" | "portfolio" | "jobs" | "api";
 
 export interface Service {
   status: ServiceStatus;
@@ -18,11 +18,15 @@ export const SERVICES = {
   cv: { status: "live", url: "https://cv.pilihpendidikan.com" },
   invoice: { status: "live", url: "https://invoice.pilihpendidikan.com" },
   portfolio: { status: "live", url: "https://portfolio.pilihpendidikan.com" },
+  jobs: { status: "soon", url: "https://jobs.pilihpendidikan.com" },
   api: { status: "live", url: "https://api.pilihpendidikan.com" },
 } as const satisfies Services;
 
-/** The document builders, in display order. `api` is shown as the MCP item. */
-export const TOOL_IDS = ["cv", "invoice", "portfolio"] as const;
+/**
+ * The tools, in display order: the three document builders and the job
+ * tracker (job-tracker-spec 12 §15). `api` is shown as the MCP item.
+ */
+export const TOOL_IDS = ["cv", "invoice", "portfolio", "jobs"] as const;
 
 export type ToolId = (typeof TOOL_IDS)[number];
 

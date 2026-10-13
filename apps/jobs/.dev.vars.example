@@ -1,0 +1,15 @@
+# Copy to .dev.vars (git-ignored) for `bun run dev`.
+
+# AES-GCM key material for the BFF session cookie (12 §1). Any 32+ random
+# bytes, base64: `openssl rand -base64 32`. Production sets it with
+# `bunx wrangler secret put BFF_COOKIE_KEY`.
+BFF_COOKIE_KEY=replace-with-openssl-rand-base64-32
+
+# Dev only: call the api Worker over HTTP instead of the `API` service
+# binding (14 §3.1). `bun run dev:api` serves it on :8788; `bun run
+# dev:mock-api` (apps/jobs) serves contract fixtures on :8790 instead.
+JOBS_API_FALLBACK_URL=http://localhost:8788
+
+# Dev only: validate every API response against the contract schemas and log
+# mismatches (requests are always validated).
+JOBS_STRICT_CONTRACTS=1

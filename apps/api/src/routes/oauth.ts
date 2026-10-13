@@ -1,13 +1,16 @@
-// Dispatcher for the OAuth surface; the handlers live in ../oauth/.
+// Dispatcher for the OAuth surface; the handlers live in ../oauth/ (see
+// ../oauth/shared.ts for the map of endpoints, 17 for the first-party flow).
 
 import type { Env } from "../env";
 import { handleAuthorizeGet, handleAuthorizePost } from "../oauth/authorize";
+import { DECISION_PATH, handleAuthorizeDecision } from "../oauth/consent";
 import {
   handleAuthorizationServerMetadata,
   handleProtectedResourceMetadata,
 } from "../oauth/discovery";
 import { handleMagicGet, handleMagicPost } from "../oauth/magic";
 import { handleRegister } from "../oauth/register";
+import { handleRevoke } from "../oauth/revoke";
 import { oauthError } from "../oauth/shared";
 import { handleToken } from "../oauth/token";
 
@@ -63,8 +66,12 @@ export function routeOAuth(
       return routeMethod(method, { POST: () => handleRegister(request, env) });
     case "/oauth/authorize":
       return routeMethod(method, {
-        GET: () => handleAuthorizeGet(env, url),
+        GET: () => handleAuthorizeGet(request, env, url),
         POST: () => handleAuthorizePost(request, env, ctx),
+      });
+    case DECISION_PATH:
+      return routeMethod(method, {
+        POST: () => handleAuthorizeDecision(request, env),
       });
     case "/oauth/magic":
       return routeMethod(method, {
@@ -73,6 +80,8 @@ export function routeOAuth(
       });
     case "/oauth/token":
       return routeMethod(method, { POST: () => handleToken(request, env) });
+    case "/oauth/revoke":
+      return routeMethod(method, { POST: () => handleRevoke(request, env) });
     default:
       return oauthError("invalid_request", "Unknown OAuth endpoint.", 404);
   }

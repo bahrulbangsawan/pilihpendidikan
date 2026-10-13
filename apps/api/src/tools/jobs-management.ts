@@ -2,8 +2,11 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { Caller } from "../auth";
 import type { Env } from "../env";
-import { getJob, json, putJob, text } from "../helpers";
-import { jobIdsOwnedBy } from "../ownership";
+import { json, text } from "../helpers";
+import { legacyJobs } from "../jobs/legacy/facade";
+import { LOSSY_STATUS_NOTE } from "../jobs/legacy/mapping";
+import { mcpContext, parseWhen, withJobErrors } from "../jobs/legacy/mcp";
+import type { LegacyPatch } from "../jobs/legacy/types";
 import type { JobData } from "../types";
 import { createEmptyJob, JOB_STATUSES } from "../types";
 
@@ -12,44 +15,81 @@ import { createEmptyJob, JOB_STATUSES } from "../types";
 // validates the URL server-side so a malformed value is rejected before write.
 const COMPANY_URL_SCHEMA = z.union([z.literal(""), z.url()]).optional();
 
+interface JobFieldArgs {
+  company?: string;
+  company_url?: string;
+  interview_date?: string;
+  job_description?: string[];
+  requirements?: string[];
+  salary_range?: string;
+}
+
 // Structured fields shared by jobs_create + jobs_update (snake_case tool params
 // → camelCase JobData keys). Each is applied only when the caller supplied it,
 // so an update leaves omitted fields untouched.
-function applyJobFields(
-  job: JobData,
-  args: {
-    company?: string;
-    company_url?: string;
-    salary_range?: string;
-    job_description?: string[];
-    requirements?: string[];
-    interview_date?: string;
-  }
-): void {
+function jobFields(args: JobFieldArgs): Partial<JobData> {
+  const fields: Partial<JobData> = {};
   if (args.company !== undefined) {
-    job.company = args.company;
+    fields.company = args.company;
   }
   if (args.company_url !== undefined) {
-    job.companyUrl = args.company_url;
+    fields.companyUrl = args.company_url;
   }
   if (args.salary_range !== undefined) {
-    job.salaryRange = args.salary_range;
+    fields.salaryRange = args.salary_range;
   }
   if (args.job_description !== undefined) {
-    job.jobDescription = args.job_description;
+    fields.jobDescription = args.job_description;
   }
   if (args.requirements !== undefined) {
-    job.requirements = args.requirements;
+    fields.requirements = args.requirements;
   }
   if (args.interview_date !== undefined) {
-    job.interviewDate = args.interview_date;
+    fields.interviewDate = args.interview_date;
   }
+  return fields;
 }
 
-// Top-level CRUD for the per-user jobs tracker. Mirrors invoice-management.ts:
-// jobs_list/jobs_create self-scope (list filters by owner, create stamps it),
-// so the ownership guard (ownership-guard.ts) lets them through; every other
-// tool here is gated by the guard on `owner:job:{id}` before its handler runs.
+interface UpdateArgs extends JobFieldArgs {
+  follow_up_at?: string | null;
+  status?: JobData["status"];
+  title?: string;
+}
+
+/** The facade patch of a jobs_update call, or the refusal text. */
+function updatePatch(args: UpdateArgs): LegacyPatch | ReturnType<typeof text> {
+  const patch: LegacyPatch = { ...jobFields(args) };
+  if (args.title !== undefined) {
+    patch.title = args.title;
+  }
+  if (args.status !== undefined) {
+    patch.status = args.status;
+  }
+  if (args.follow_up_at === undefined) {
+    return patch;
+  }
+  const raw = args.follow_up_at;
+  const when = raw === null || raw === "" ? null : parseWhen(raw);
+  if (raw && when === null) {
+    return text(
+      "follow_up_at must be an ISO date (YYYY-MM-DD) or date-time, or empty to clear it."
+    );
+  }
+  patch.followUpAt = when;
+  return patch;
+}
+
+const NOT_SIGNED_IN = text("Not signed in.");
+
+function notFound(jobId: string) {
+  return text(`Job "${jobId}" not found.`);
+}
+
+// Top-level CRUD for the per-user jobs tracker, served by the legacy facade
+// (src/jobs/legacy: KV or JOBS_DB by the JOBS_LEGACY_BACKEND flag).
+// jobs_list/jobs_create self-scope (list returns the caller's jobs, create
+// writes under the caller), so the ownership guard (ownership-guard.ts) lets
+// them through; every other tool here is gated by the guard on `job_id`.
 export function registerJobsManagementTools(
   server: McpServer,
   env: Env,
@@ -58,57 +98,44 @@ export function registerJobsManagementTools(
   server.registerTool(
     "jobs_list",
     {
-      description:
-        "List the job applications you are tracking, with their IDs, titles, and statuses.",
+      description: `List the job applications you are tracking, with their IDs, titles, statuses and interview dates (every job, no page limit). ${LOSSY_STATUS_NOTE}`,
       inputSchema: {},
     },
     async () => {
-      const list = await env.JOBS_KV.list<{
-        title: string;
-        status: string;
-        interviewDate: string;
-      }>({
-        prefix: "job:",
-      });
-      let jobs = list.keys.map((k) => ({
-        id: k.name.replace("job:", ""),
-        title: k.metadata?.title ?? "",
-        status: k.metadata?.status ?? "",
-        interviewDate: k.metadata?.interviewDate ?? "",
-      }));
-      // Non-admins only see jobs they own — resolved from the authoritative
-      // `owner:job:{id}` stamp via the shared resolver (the SAME source GET
-      // /api/jobs uses), so the MCP client and the web UI always agree.
-      if (caller && !caller.isAdmin) {
-        const owned = await jobIdsOwnedBy(
-          env,
-          caller.email,
-          jobs.map((job) => job.id)
-        );
-        jobs = jobs.filter((job) => owned.has(job.id));
+      if (!caller) {
+        return NOT_SIGNED_IN;
       }
-      if (jobs.length === 0) {
+      const jobs = await legacyJobs(mcpContext(env, caller));
+      const rows = await jobs.list();
+      if (rows.length === 0) {
         return text("No jobs found. Use jobs_create to start tracking one.");
       }
-      return json(jobs);
+      return json(
+        rows.map((row) => ({
+          id: row.id,
+          title: row.title,
+          status: row.status,
+          interviewDate: row.interviewDate,
+        }))
+      );
     }
   );
 
   server.registerTool(
     "jobs_get",
     {
-      description:
-        "Get the full data of a tracked job by its ID, including its sections and items.",
+      description: `Get the full data of a tracked job by its ID, including its sections and items. ${LOSSY_STATUS_NOTE} interviewDate is the date of the next pending interview.`,
       inputSchema: {
         job_id: z.string().describe("Job identifier"),
       },
     },
     async ({ job_id }) => {
-      const data = await getJob(env.JOBS_KV, job_id);
-      if (!data) {
-        return text(`Job "${job_id}" not found.`);
+      if (!caller) {
+        return NOT_SIGNED_IN;
       }
-      return json(data);
+      const jobs = await legacyJobs(mcpContext(env, caller));
+      const data = await jobs.get(job_id);
+      return data ? json(data) : notFound(job_id);
     }
   );
 
@@ -116,7 +143,7 @@ export function registerJobsManagementTools(
     "jobs_create",
     {
       description:
-        "Create a new job-application tracker entry. Re-creating an existing ID is rejected — it never overwrites or hijacks another owner's job.",
+        "Create a new job-application tracker entry. Re-creating one of your existing IDs is rejected — it never overwrites a job.",
       inputSchema: {
         job_id: z
           .string()
@@ -158,33 +185,35 @@ export function registerJobsManagementTools(
           ),
       },
     },
-    async (args) => {
-      const existing = await getJob(env.JOBS_KV, args.job_id);
-      if (existing) {
-        return text(
-          `Job "${args.job_id}" already exists. Use a different ID or delete it first.`
-        );
-      }
-      const job = createEmptyJob();
-      job.id = args.job_id;
-      job.title = args.title;
-      if (args.status) {
-        job.status = args.status;
-      }
-      applyJobFields(job, args);
-      await putJob(env.JOBS_KV, args.job_id, job);
-      if (caller) {
-        await env.JOBS_KV.put(`owner:job:${args.job_id}`, caller.email);
-      }
-      return json(job);
-    }
+    (args) =>
+      withJobErrors(async () => {
+        if (!caller) {
+          return NOT_SIGNED_IN;
+        }
+        const job: JobData = {
+          ...createEmptyJob(),
+          ...jobFields(args),
+          id: args.job_id,
+          title: args.title,
+        };
+        if (args.status) {
+          job.status = args.status;
+        }
+        const jobs = await legacyJobs(mcpContext(env, caller));
+        const created = await jobs.create(job);
+        if (created === "exists") {
+          return text(
+            `Job "${args.job_id}" already exists. Use a different ID or delete it first.`
+          );
+        }
+        return json(created);
+      })
   );
 
   server.registerTool(
     "jobs_update",
     {
-      description:
-        "Update a tracked job's title, status, company, URL, salary, description, requirements, and/or interview date.",
+      description: `Update a tracked job's title, status, company, URL, salary, description, requirements, interview date and/or follow-up date. ${LOSSY_STATUS_NOTE} Setting status "applied" records that you applied.`,
       inputSchema: {
         job_id: z.string().describe("Job identifier"),
         title: z.string().optional().describe("New job title"),
@@ -218,40 +247,47 @@ export function registerJobsManagementTools(
           .describe(
             "Scheduled interview date as an ISO calendar date (YYYY-MM-DD); pass an empty string to clear it"
           ),
+        follow_up_at: z
+          .string()
+          .nullable()
+          .optional()
+          .describe(
+            "Follow-up reminder as an ISO date (YYYY-MM-DD, 09:00 UTC) or date-time; an empty string or null clears it"
+          ),
       },
     },
-    async (args) => {
-      const job = await getJob(env.JOBS_KV, args.job_id);
-      if (!job) {
-        return text(`Job "${args.job_id}" not found.`);
-      }
-      if (args.title !== undefined) {
-        job.title = args.title;
-      }
-      if (args.status !== undefined) {
-        job.status = args.status;
-      }
-      applyJobFields(job, args);
-      await putJob(env.JOBS_KV, args.job_id, job);
-      return json(job);
-    }
+    (args) =>
+      withJobErrors(async () => {
+        if (!caller) {
+          return NOT_SIGNED_IN;
+        }
+        const patch = updatePatch(args);
+        if ("content" in patch) {
+          return patch;
+        }
+        const jobs = await legacyJobs(mcpContext(env, caller));
+        const updated = await jobs.update(args.job_id, patch);
+        return updated ? json(updated) : notFound(args.job_id);
+      })
   );
 
   server.registerTool(
     "jobs_delete",
     {
       description:
-        "Permanently delete a tracked job by its ID (also clears its ownership record).",
+        "Delete a tracked job by its ID. On the new Job Tracker this archives it (hidden from the board, kept in your history); jobs are never purged through MCP.",
       inputSchema: { job_id: z.string().describe("Job identifier to delete") },
     },
-    async ({ job_id }) => {
-      const existing = await getJob(env.JOBS_KV, job_id);
-      if (!existing) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      await env.JOBS_KV.delete(`job:${job_id}`);
-      await env.JOBS_KV.delete(`owner:job:${job_id}`);
-      return text(`Job "${job_id}" deleted.`);
-    }
+    ({ job_id }) =>
+      withJobErrors(async () => {
+        if (!caller) {
+          return NOT_SIGNED_IN;
+        }
+        const jobs = await legacyJobs(mcpContext(env, caller));
+        if (!(await jobs.remove(job_id))) {
+          return notFound(job_id);
+        }
+        return text(`Job "${job_id}" deleted.`);
+      })
   );
 }

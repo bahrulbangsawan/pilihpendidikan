@@ -14,7 +14,8 @@ Every app shares Zedative (root `DESIGN.md`, whose § Implementation maps each r
 - **Shortcut.** The "Download PDF" button's `<Kbd>D</Kbd>` (plus `aria-keyshortcuts`) and `useShortcut("D", …)` go together, and match the invoice and portfolio builders' split control; never show a hint without a working key.
 - **Motion.** No entrances, no route transitions; only the shared hover/press feedback and drag-to-reorder movement.
 - **Re-skin shared primitives once** in `packages/ui` (then rebuild) — never fork per app.
-- **Print templates:** `src/components/templates/*-{preview,pdf}.tsx` and `.cv-page` follow Zedative on paper (Inter via `src/lib/pdf-fonts.ts`, no uppercase or letter-spacing, Zedative ink colours, a 2px framed photo), look the same in both themes and keep print sizes and preview ↔ PDF parity. Keep `cv-no-print` on chrome so `@media print` prints a bare page.
+- **Print templates:** the previews (`src/components/templates/*-preview.tsx`), their `@react-pdf` twins (`packages/cv-engine/src/pdf/*-pdf.tsx`) and `.cv-page` follow Zedative on paper (Inter via `src/lib/pdf-fonts.ts`, no uppercase or letter-spacing, Zedative ink colours, a 2px framed photo), look the same in both themes and keep print sizes and preview ↔ PDF parity: change a preview and its PDF together (`bun run parity:cv-templates` at the root, part of `bun run check`; see `CLAUDE.md` § Preview ↔ PDF parity). Keep `cv-no-print` on chrome so `@media print` prints a bare page.
+- **CV engine:** the document types, schema, Markdown export and PDF templates live in `@pilihpendidikan/cv-engine`; import its subpaths, and load `/pdf` only with a dynamic import behind the SSR guard.
 
 ## Backend
 

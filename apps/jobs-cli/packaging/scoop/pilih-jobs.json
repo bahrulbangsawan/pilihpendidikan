@@ -1,0 +1,36 @@
+{
+  "##": "TEMPLATE (job-tracker-spec 22 §2): packaging/render.py fills @VERSION@ and @WHEEL_SHA256@ for one release; the rendered file goes to the pilihpendidikan Scoop bucket as bucket/pilih-jobs.json. Scoop installs uv (main/uv), downloads the pure-Python wheel from PyPI (hash-checked), then `uv tool install`s it into the app directory so `scoop update` / `scoop uninstall` own it.",
+  "version": "@VERSION@",
+  "description": "Local CLI of the pilihpendidikan Job Tracker: discovery, browser automation, sync.",
+  "homepage": "https://jobs.pilihpendidikan.com/cli",
+  "license": "MIT",
+  "depends": "main/uv",
+  "url": "https://files.pythonhosted.org/packages/py3/p/pilih-jobs/pilih_jobs-@VERSION@-py3-none-any.whl",
+  "hash": "@WHEEL_SHA256@",
+  "installer": {
+    "script": [
+      "$env:UV_TOOL_DIR = \"$dir\\tools\"",
+      "$env:UV_TOOL_BIN_DIR = \"$dir\\bin\"",
+      "uv tool install --python 3.12 --force \"$dir\\pilih_jobs-$version-py3-none-any.whl\"",
+      "if ($LASTEXITCODE -ne 0) { throw 'uv tool install pilih-jobs failed' }"
+    ]
+  },
+  "bin": [["bin\\pilih-jobs.exe", "pilih-jobs"], ["bin\\pj.exe", "pj"]],
+  "notes": [
+    "Download the browser once (about 550 MB), then sign in:",
+    "  pilih-jobs browser install",
+    "  pilih-jobs login",
+    "`pilih-jobs doctor` checks the setup; `scoop update pilih-jobs` updates it."
+  ],
+  "checkver": {
+    "url": "https://pypi.org/pypi/pilih-jobs/json",
+    "jsonpath": "$.info.version"
+  },
+  "autoupdate": {
+    "url": "https://files.pythonhosted.org/packages/py3/p/pilih-jobs/pilih_jobs-$version-py3-none-any.whl",
+    "hash": {
+      "url": "https://pypi.org/pypi/pilih-jobs/$version/json",
+      "jsonpath": "$.urls[?(@.packagetype == 'bdist_wheel')].digests.sha256"
+    }
+  }
+}

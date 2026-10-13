@@ -5,24 +5,73 @@
 //   1. KV `auth:session:<sha256>` — browser sessions minted by the email link
 //      (7-day TTL). Always write scope.
 //   2. D1 `mcp_tokens` by `token_hash` — personal tokens (no expiry until
-//      revoked) and session rows (browser + OAuth) that have not expired.
+//      revoked), session rows (browser + MCP OAuth) and `oauth` rows (CLI
+//      access tokens with structured `scopes`, 17) that have not expired.
 // Only SHA-256 hashes of bearers are ever stored; the plaintext exists in
 // memory during a request and in the response that hands it to its owner.
+//
+// Every resolved caller also carries the Job Tracker identity (03 §2, PLAN
+// C4): the canonical `userId` from the lazily created `users` row, the OAuth
+// `scopes` of 05 §1.2, the credential kind, and the device / grant / token
+// ids of the bearer. The three legacy fields `{email, isAdmin, scope}` keep
+// their meaning, so every pre-existing consumer works unchanged.
 
+import type {
+  CredentialKind,
+  OAuthScope,
+} from "@pilihpendidikan/jobs-contracts/enums";
+import { MCP_CLIENT_SCOPE } from "@pilihpendidikan/jobs-contracts/enums";
 import type { Env, TokenScope } from "./env";
+import { legacyScopeFor, scopesForCredential } from "./jobs/core/scopes";
+import {
+  backfillTokenUserId,
+  ensureUser,
+  findUserById,
+} from "./jobs/repo/core/users";
 import { isLocalRequest } from "./origins";
 
 const BEARER_PREFIX = "Bearer ";
 
 export const SESSION_COOKIE = "session";
 
+// Label of the `mcp_tokens` row behind every browser session (session.ts).
+// `kind='session'` rows with any other label are MCP OAuth access tokens.
+export const BROWSER_SESSION_LABEL = "Browser session";
+
+// The legacy shape every document route, MCP tool and test literal uses.
+// The Job Tracker fields are optional here so `{email, isAdmin, scope}`
+// literals stay valid; `resolveCaller` always fills them (`ResolvedCaller`).
 export interface Caller {
   email: string;
   isAdmin: boolean;
   scope: TokenScope;
+  // Canonical `users.id` (`usr_…`, 03 §2).
+  userId?: string;
+  // OAuth scopes of the credential (05 §1.2).
+  scopes?: readonly OAuthScope[];
+  // `devices.id` of a CLI access token bound to a registered device.
+  deviceId?: string | null;
+  // `oauth_grants.id` of an OAuth access token.
+  grantId?: string | null;
+  credentialKind?: CredentialKind;
+  // `mcp_tokens.id` (null for a browser session served from KV).
+  tokenId?: string | null;
 }
 
-export type McpTokenKind = "personal" | "session";
+// What `resolveCaller` returns: every field is set.
+export interface ResolvedCaller extends Caller {
+  userId: string;
+  scopes: readonly OAuthScope[];
+  deviceId: string | null;
+  grantId: string | null;
+  credentialKind: CredentialKind;
+  tokenId: string | null;
+  // `users.deleted_at` (account deletion in progress, 11 §10). The /api/v1
+  // router refuses tombstoned identities with 401 revoked_token.
+  userDeletedAt: number | null;
+}
+
+export type McpTokenKind = "personal" | "session" | "oauth";
 
 export interface McpTokenRow {
   id: string;
@@ -36,6 +85,10 @@ export interface McpTokenRow {
   revoked_at: number | null;
   last_used_at: number | null;
   expires_at: number | null;
+  user_id: string | null;
+  scopes: string | null;
+  grant_id: string | null;
+  device_id: string | null;
 }
 
 export type AuthFailureReason =
@@ -45,8 +98,16 @@ export type AuthFailureReason =
   | "revoked_token";
 
 export type ResolveCallerResult =
-  | { caller: Caller; reason: null; tokenId: string | null }
-  | { caller: null; reason: AuthFailureReason; tokenId: null };
+  | { caller: ResolvedCaller; reason: null; tokenId: string | null }
+  | {
+      caller: null;
+      reason: AuthFailureReason;
+      tokenId: null;
+      // Set when a revoked token belongs to a deleted account (11 §10): the
+      // CLI wipes its local state only then; any other revocation keeps the
+      // outbox for the next login (20 §5.3).
+      revokedReason?: "account_deleted";
+    };
 
 export interface StoredSession {
   email: string;
@@ -54,7 +115,7 @@ export interface StoredSession {
 }
 
 const TOKEN_COLUMNS =
-  "id, user_email, token_hash, label, status, kind, scope, created_at, revoked_at, last_used_at, expires_at";
+  "id, user_email, token_hash, label, status, kind, scope, created_at, revoked_at, last_used_at, expires_at, user_id, scopes, grant_id, device_id";
 
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
@@ -183,11 +244,20 @@ export async function resolveBearer(
     "json"
   );
   if (session) {
+    const email = normalizeEmail(session.email);
+    const user = await ensureUser(env.DB, email, Date.now());
     return {
       caller: {
-        email: session.email,
-        isAdmin: isAdminEmail(session.email, env),
+        email,
+        isAdmin: isAdminEmail(email, env),
         scope: "write",
+        userId: user.id,
+        scopes: scopesForCredential("browser_session"),
+        deviceId: null,
+        grantId: null,
+        credentialKind: "browser_session",
+        tokenId: null,
+        userDeletedAt: user.deleted_at,
       },
       reason: null,
       tokenId: null,
@@ -202,20 +272,76 @@ export async function resolveBearer(
     return { caller: null, reason: "unknown_token", tokenId: null };
   }
   if (row.status !== "active" || row.revoked_at !== null) {
-    return { caller: null, reason: "revoked_token", tokenId: null };
+    const owner =
+      row.user_id === null ? null : await findUserById(env.DB, row.user_id);
+    return owner?.deleted_at == null
+      ? { caller: null, reason: "revoked_token", tokenId: null }
+      : {
+          caller: null,
+          reason: "revoked_token",
+          tokenId: null,
+          revokedReason: "account_deleted",
+        };
   }
   if (row.expires_at !== null && row.expires_at <= Date.now()) {
     return { caller: null, reason: "expired_token", tokenId: null };
   }
+  const email = normalizeEmail(row.user_email);
+  const user = await ensureUser(env.DB, email, Date.now());
+  if (row.user_id === null) {
+    await backfillTokenUserId(env.DB, row.id, user.id);
+  }
+  const credentialKind = credentialKindOf(row);
+  const scopes = scopesForCredential(credentialKind, row.scopes);
   return {
     caller: {
-      email: row.user_email,
-      isAdmin: isAdminEmail(row.user_email, env),
-      scope: row.scope === "read" ? "read" : "write",
+      email,
+      isAdmin: isAdminEmail(email, env),
+      scope: legacyScopeOf(row, scopes),
+      userId: user.id,
+      scopes,
+      deviceId: row.device_id,
+      grantId: row.grant_id,
+      credentialKind,
+      tokenId: row.id,
+      userDeletedAt: user.deleted_at,
     },
     reason: null,
     tokenId: row.id,
   };
+}
+
+// `oauth` rows derive the legacy scope from their OAuth scopes (17 §5.2);
+// older kinds keep their stored `write`/`read`.
+function legacyScopeOf(
+  row: Pick<McpTokenRow, "kind" | "scope">,
+  scopes: readonly string[]
+): TokenScope {
+  if (row.kind === "oauth") {
+    return legacyScopeFor(scopes);
+  }
+  return row.scope === "read" ? "read" : "write";
+}
+
+// 05 §1.2: which credential a token row is.
+//   personal → personal_write | personal_read (by `scope`)
+//   session  → browser_session when it backs a browser sign-in, else the
+//              access token of an MCP OAuth (DCR) client
+//   oauth    → oauth_mcp when its scopes carry the DCR `mcp` ceiling, else a
+//              scoped first-party (CLI) token
+export function credentialKindOf(
+  row: Pick<McpTokenRow, "kind" | "label" | "scope" | "scopes">
+): CredentialKind {
+  if (row.kind === "personal") {
+    return row.scope === "read" ? "personal_read" : "personal_write";
+  }
+  if (row.kind === "session") {
+    return row.label === BROWSER_SESSION_LABEL
+      ? "browser_session"
+      : "oauth_mcp";
+  }
+  const declared = (row.scopes ?? "").split(" ");
+  return declared.includes(MCP_CLIENT_SCOPE) ? "oauth_mcp" : "oauth_cli";
 }
 
 // `last_used_at` is informational; callers pass the promise to waitUntil.
@@ -260,6 +386,11 @@ export interface CreateTokenInput {
   kind: McpTokenKind;
   scope: TokenScope;
   expiresAt: number | null;
+  // Job Tracker links (04 §1); all optional for legacy callers.
+  userId?: string | null;
+  scopes?: string | null;
+  grantId?: string | null;
+  deviceId?: string | null;
 }
 
 export async function createToken(
@@ -278,10 +409,14 @@ export async function createToken(
     revoked_at: null,
     last_used_at: null,
     expires_at: input.expiresAt,
+    user_id: input.userId ?? null,
+    scopes: input.scopes ?? null,
+    grant_id: input.grantId ?? null,
+    device_id: input.deviceId ?? null,
   };
   await db
     .prepare(
-      "INSERT INTO mcp_tokens (id, user_email, token_hash, label, status, kind, scope, created_at, expires_at) VALUES (?, ?, ?, ?, 'active', ?, ?, ?, ?)"
+      "INSERT INTO mcp_tokens (id, user_email, token_hash, label, status, kind, scope, created_at, expires_at, user_id, scopes, grant_id, device_id) VALUES (?, ?, ?, ?, 'active', ?, ?, ?, ?, ?, ?, ?, ?)"
     )
     .bind(
       row.id,
@@ -291,7 +426,11 @@ export async function createToken(
       row.kind,
       row.scope,
       row.created_at,
-      row.expires_at
+      row.expires_at,
+      row.user_id,
+      row.scopes,
+      row.grant_id,
+      row.device_id
     )
     .run();
   return row;

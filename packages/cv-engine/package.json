@@ -1,0 +1,47 @@
+{
+  "name": "@pilihpendidikan/cv-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./schema": "./src/schema.ts",
+    "./document": "./src/document.ts",
+    "./markdown": "./src/markdown.ts",
+    "./bullets": "./src/bullets.ts",
+    "./format": "./src/format.ts",
+    "./template-utils": "./src/template-utils.ts",
+    "./pdf": "./src/pdf/index.ts"
+  },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@react-pdf/renderer": "^4.9.0",
+    "react": "^19.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@react-pdf/renderer": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@pilihpendidikan/config": "workspace:*",
+    "@react-pdf/renderer": "^4.9.0",
+    "@types/bun": "^1.3.0",
+    "@types/react": "^19.3.0",
+    "react": "19.3.0",
+    "typescript": "catalog:",
+    "unpdf": "^1.8.1"
+  }
+}

@@ -1,7 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import type { Caller } from "../auth";
 import type { Env } from "../env";
-import { getJob, putJob, text, uid } from "../helpers";
+import { text, uid } from "../helpers";
+import { editJobSections } from "../jobs/legacy/mcp";
 import type { JobItem, JobSection } from "../types";
 
 function findSection(
@@ -13,8 +15,12 @@ function findSection(
 
 // Item CRUD: operate on the `items[]` array inside a section, located by
 // `section_id`, inside a job located by `job_id`. The ownership guard authorizes
-// against `owner:job:{id}` (via job_id) before any handler here runs.
-export function registerJobsItemsTools(server: McpServer, env: Env): void {
+// the job (via job_id) before any handler here runs.
+export function registerJobsItemsTools(
+  server: McpServer,
+  env: Env,
+  caller: Caller | null
+): void {
   server.registerTool(
     "jobs_item_add",
     {
@@ -31,28 +37,27 @@ export function registerJobsItemsTools(server: McpServer, env: Env): void {
           .describe("Whether the item is complete (default: false)"),
       },
     },
-    async ({ job_id, section_id, title, notes, url, done }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const section = findSection(job.sections, section_id);
-      if (!section) {
-        return text(`No section with id "${section_id}".`);
-      }
-      const item: JobItem = {
-        id: uid(),
-        title,
-        notes: notes ?? "",
-        url: url ?? "",
-        done: done ?? false,
-      };
-      section.items.push(item);
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(
-        `Item "${title}" added to section "${section_id}" (item id: ${item.id}).`
-      );
-    }
+    ({ job_id, section_id, title, notes, url, done }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const section = findSection(sections, section_id);
+        if (!section) {
+          return { result: text(`No section with id "${section_id}".`) };
+        }
+        const item: JobItem = {
+          id: uid(),
+          title,
+          notes: notes ?? "",
+          url: url ?? "",
+          done: done ?? false,
+        };
+        section.items.push(item);
+        return {
+          sections,
+          result: text(
+            `Item "${title}" added to section "${section_id}" (item id: ${item.id}).`
+          ),
+        };
+      })
   );
 
   server.registerTool(
@@ -70,34 +75,34 @@ export function registerJobsItemsTools(server: McpServer, env: Env): void {
         done: z.boolean().optional(),
       },
     },
-    async ({ job_id, section_id, item_id, title, notes, url, done }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const section = findSection(job.sections, section_id);
-      if (!section) {
-        return text(`No section with id "${section_id}".`);
-      }
-      const item = section.items.find((i) => i.id === item_id);
-      if (!item) {
-        return text(`No item with id "${item_id}" in section "${section_id}".`);
-      }
-      if (title !== undefined) {
-        item.title = title;
-      }
-      if (notes !== undefined) {
-        item.notes = notes;
-      }
-      if (url !== undefined) {
-        item.url = url;
-      }
-      if (done !== undefined) {
-        item.done = done;
-      }
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(`Item "${item_id}" updated.`);
-    }
+    ({ job_id, section_id, item_id, title, notes, url, done }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const section = findSection(sections, section_id);
+        if (!section) {
+          return { result: text(`No section with id "${section_id}".`) };
+        }
+        const item = section.items.find((i) => i.id === item_id);
+        if (!item) {
+          return {
+            result: text(
+              `No item with id "${item_id}" in section "${section_id}".`
+            ),
+          };
+        }
+        if (title !== undefined) {
+          item.title = title;
+        }
+        if (notes !== undefined) {
+          item.notes = notes;
+        }
+        if (url !== undefined) {
+          item.url = url;
+        }
+        if (done !== undefined) {
+          item.done = done;
+        }
+        return { sections, result: text(`Item "${item_id}" updated.`) };
+      })
   );
 
   server.registerTool(
@@ -111,22 +116,22 @@ export function registerJobsItemsTools(server: McpServer, env: Env): void {
         item_id: z.string().describe("Item ID to delete"),
       },
     },
-    async ({ job_id, section_id, item_id }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const section = findSection(job.sections, section_id);
-      if (!section) {
-        return text(`No section with id "${section_id}".`);
-      }
-      const idx = section.items.findIndex((i) => i.id === item_id);
-      if (idx === -1) {
-        return text(`No item with id "${item_id}" in section "${section_id}".`);
-      }
-      section.items.splice(idx, 1);
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(`Item "${item_id}" deleted.`);
-    }
+    ({ job_id, section_id, item_id }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const section = findSection(sections, section_id);
+        if (!section) {
+          return { result: text(`No section with id "${section_id}".`) };
+        }
+        const idx = section.items.findIndex((i) => i.id === item_id);
+        if (idx === -1) {
+          return {
+            result: text(
+              `No item with id "${item_id}" in section "${section_id}".`
+            ),
+          };
+        }
+        section.items.splice(idx, 1);
+        return { sections, result: text(`Item "${item_id}" deleted.`) };
+      })
   );
 }

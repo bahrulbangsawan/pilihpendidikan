@@ -1,0 +1,4 @@
+[test]
+# The T8-01 render test loads the print module (@rulisme/ui/print/pdf-fonts)
+# from source, whose fonts are Vite `?url` imports.
+preload = ["./test/preload.ts"]

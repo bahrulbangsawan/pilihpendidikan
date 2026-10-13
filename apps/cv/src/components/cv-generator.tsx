@@ -1,3 +1,5 @@
+import { formatCvMarkdown } from "@pilihpendidikan/cv-engine/markdown";
+import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
@@ -42,57 +44,16 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import type { CVData, CVStyle } from "@/components/cv-form";
 import { CVForm } from "@/components/cv-form";
 import { CVPreview } from "@/components/cv-preview";
 import sampleData from "@/data/sample-cv.json";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { formatCvMarkdown } from "@/lib/cv-markdown";
+import { createBlankCv } from "@/lib/blank-cv";
 import { useCloudSave } from "@/lib/use-cloud-save";
 
-const initialData: CVData = {
-  personalInfo: {
-    fullName: "",
-    jobTitle: "",
-    email: "",
-    phone: "",
-    location: "",
-    linkedIn: "",
-    photoUrl: "",
-    usePhoto: false,
-  },
-  sectionOrder: [
-    "summary",
-    "experience",
-    "education",
-    "skills",
-    "awards",
-    "certificates",
-    "languages",
-    "projects",
-    "volunteer",
-  ],
-  summaryTitle: "Professional Summary",
-  summary: "",
-  experienceTitle: "Work Experience",
-  experience: [],
-  educationTitle: "Education",
-  education: [],
-  skillsTitle: "Skills",
-  skills: [],
-  awardsTitle: "Awards",
-  awards: [],
-  certificatesTitle: "Certificates",
-  certificates: [],
-  languagesTitle: "Languages",
-  languages: [],
-  projectsTitle: "Projects",
-  projects: [],
-  volunteerTitle: "Volunteer & Community",
-  volunteer: [],
-};
+const initialData: CVData = createBlankCv();
 
 // In dev, target the local api Worker (`wrangler dev` on :8788, apps/api) so
 // end-to-end CV load/save is exercised without hitting production. In prod the
@@ -384,10 +345,13 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
 
     setGenerating(true);
     try {
-      const { pdf } = await import("@react-pdf/renderer");
-      const { CVDocument } = await import("@/components/cv-pdf");
-
-      const blob = await pdf(<CVDocument data={data} style={style} />).toBlob();
+      const [{ renderCvPdfBlob }, { registerCvPrint }] = await Promise.all([
+        import("@pilihpendidikan/cv-engine/pdf"),
+        import("@/lib/pdf-fonts"),
+      ]);
+      const blob = await renderCvPdfBlob(data, style, {
+        registerFonts: registerCvPrint,
+      });
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

@@ -1,15 +1,21 @@
-// The PDF's type: the shared print cuts, their repair and line-break policy
-// (@rulisme/ui/print/pdf-fonts, DESIGN.md § Implementation › Print
-// artifacts), registered with this app's react-pdf before the first render.
-// Imported only by the PDF modules, which load in the browser at download
-// time, so the font files never enter the Worker.
-import { Font } from "@react-pdf/renderer";
+// The PDF's type: the shared print module (@rulisme/ui/print/*, DESIGN.md §
+// Implementation › Print artifacts) handed to the CV engine's renderer
+// (@pilihpendidikan/cv-engine/pdf): the merged Inter cuts with their repair
+// and line-break policy, registered with the react-pdf `Font` that renders,
+// and the text normaliser every string passes through. Loaded only by the
+// Download PDF handler, in the browser, so the font files never enter the
+// Worker.
+import type { CvPdfFontStore } from "@pilihpendidikan/cv-engine/pdf";
+import { registerCvPrintText } from "@pilihpendidikan/cv-engine/pdf";
+import { registerPrintFonts } from "@rulisme/ui/print/pdf-fonts";
 import {
-  PRINT_FONT_FAMILY,
-  registerPrintFonts,
-} from "@rulisme/ui/print/pdf-fonts";
+  toPrintLine,
+  toPrintLines,
+  toPrintText,
+} from "@rulisme/ui/print/pdf-text";
 
-registerPrintFonts(Font);
-
-/** The family every page of the PDF sets. */
-export const PDF_FONT_FAMILY = PRINT_FONT_FAMILY;
+/** The `registerFonts` step of renderCvPdfBlob; safe to run on every render. */
+export function registerCvPrint(font: CvPdfFontStore): void {
+  registerPrintFonts(font);
+  registerCvPrintText({ toPrintLine, toPrintLines, toPrintText });
+}

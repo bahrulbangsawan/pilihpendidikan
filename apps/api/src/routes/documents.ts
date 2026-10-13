@@ -104,7 +104,8 @@ function routeDocument(
     if (format === "pdf" && spec.kind === "portfolio") {
       return jsonError(404, "Not found.");
     }
-    return handlePublicRead(env, spec, id, format, url);
+    // The request lets the owner of a private CV read it (D-25).
+    return handlePublicRead(env, spec, id, format, url, request);
   }
   if (method === "PUT") {
     return withCaller(request, env, ctx, (caller) =>
@@ -185,7 +186,7 @@ export function routeDocuments(
     }
     const slug = safeDecode(pdf[2]);
     return slug
-      ? handlePdfRoute(env, pdf[1] as DocumentKind, slug, url)
+      ? handlePdfRoute(env, pdf[1] as DocumentKind, slug, url, request)
       : jsonError(400, "Invalid document id.");
   }
   return null;

@@ -1,189 +1,32 @@
-export interface PersonalInfo {
-  fullName: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  linkedIn: string;
-  photoUrl: string;
-  usePhoto: boolean;
-}
+// ─── CV types ─────────────────────────────────────────────────
+//
+// The CV document is defined once, in @pilihpendidikan/cv-engine (shared with
+// apps/cv and its PDF templates); this module re-exports it for the tools and
+// handlers that import their document types from here.
 
-export type WorkType = "" | "full-time" | "part-time" | "internship";
-export type LocationPolicy =
-  | ""
-  | "work-from-office"
-  | "work-from-anywhere"
-  | "hybrid";
-
-export interface ExperienceEntry {
-  id: string;
-  company: string;
-  url: string;
-  title: string;
-  workType: WorkType;
-  locationPolicy: LocationPolicy;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-  description: string;
-}
-
-export type EducationCategory =
-  | ""
-  | "university"
-  | "college"
-  | "school"
-  | "polytechnic"
-  | "academy"
-  | "language-center"
-  | "online-platform"
-  | "professional-association";
-
-export interface EducationEntry {
-  id: string;
-  category: EducationCategory;
-  institution: string;
-  degree: string;
-  gpa: string;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-}
-
-export interface AwardEntry {
-  id: string;
-  title: string;
-  issuer: string;
-  date: string;
-  description: string;
-  url: string;
-}
-
-export interface CertificateEntry {
-  id: string;
-  name: string;
-  issuer: string;
-  date: string;
-  expiryDate: string;
-  credentialId: string;
-  url: string;
-}
-
-export interface LanguageEntry {
-  id: string;
-  language: string;
-  proficiency: string;
-}
-
-export interface ProjectEntry {
-  id: string;
-  name: string;
-  url: string;
-  description: string;
-}
-
-export interface VolunteerEntry {
-  id: string;
-  organization: string;
-  role: string;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-  description: string;
-}
-
-export interface SkillCategory {
-  id: string;
-  name: string;
-  items: string[];
-}
-
-export type CVSectionId =
-  | "summary"
-  | "experience"
-  | "education"
-  | "skills"
-  | "awards"
-  | "certificates"
-  | "languages"
-  | "projects"
-  | "volunteer";
-
-export const DEFAULT_SECTION_ORDER: CVSectionId[] = [
-  "summary",
-  "experience",
-  "education",
-  "skills",
-  "awards",
-  "certificates",
-  "languages",
-  "projects",
-  "volunteer",
-];
-
-export type CVStyle = "basic" | "harvard" | "simple" | "standard";
-
-export interface CVData {
-  // Selected template; persisted so the chosen layout round-trips into the
-  // print view / PDF redirect. Optional for documents stored before the field
-  // existed — consumers default to "basic".
-  style?: CVStyle;
-  personalInfo: PersonalInfo;
-  sectionOrder: CVSectionId[];
-  summaryTitle: string;
-  summary: string;
-  experienceTitle: string;
-  experience: ExperienceEntry[];
-  educationTitle: string;
-  education: EducationEntry[];
-  skillsTitle: string;
-  skills: SkillCategory[];
-  awardsTitle: string;
-  awards: AwardEntry[];
-  certificatesTitle: string;
-  certificates: CertificateEntry[];
-  languagesTitle: string;
-  languages: LanguageEntry[];
-  projectsTitle: string;
-  projects: ProjectEntry[];
-  volunteerTitle: string;
-  volunteer: VolunteerEntry[];
-}
-
-export function createEmptyCV(): CVData {
-  return {
-    personalInfo: {
-      fullName: "",
-      jobTitle: "",
-      email: "",
-      phone: "",
-      location: "",
-      linkedIn: "",
-      photoUrl: "",
-      usePhoto: false,
-    },
-    sectionOrder: [...DEFAULT_SECTION_ORDER],
-    summaryTitle: "Summary",
-    summary: "",
-    experienceTitle: "Experience",
-    experience: [],
-    educationTitle: "Education",
-    education: [],
-    skillsTitle: "Skills",
-    skills: [],
-    awardsTitle: "Awards",
-    awards: [],
-    certificatesTitle: "Certificates",
-    certificates: [],
-    languagesTitle: "Languages",
-    languages: [],
-    projectsTitle: "Projects",
-    projects: [],
-    volunteerTitle: "Volunteer",
-    volunteer: [],
-  };
-}
+export type {
+  AwardEntry,
+  CertificateEntry,
+  CVData,
+  CVSectionId,
+  CVStyle,
+  CVVisibility,
+  EducationCategory,
+  EducationEntry,
+  ExperienceEntry,
+  LanguageEntry,
+  LocationPolicy,
+  PersonalInfo,
+  ProjectEntry,
+  SkillCategory,
+  VolunteerEntry,
+  WorkType,
+} from "@pilihpendidikan/cv-engine";
+// biome-ignore lint/performance/noBarrelFile: compatibility re-export for the tools' existing imports
+export {
+  createEmptyCV,
+  DEFAULT_SECTION_ORDER,
+} from "@pilihpendidikan/cv-engine";
 
 // ─── Invoice types ────────────────────────────────────────────
 

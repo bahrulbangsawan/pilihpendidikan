@@ -1,0 +1,35 @@
+[
+  {
+    "additionalPlain": "We offer equity, a learning budget and a remote-friendly culture.",
+    "additional": "<div>We offer equity, a learning budget and a remote-friendly culture.</div>",
+    "categories": {
+      "commitment": "Internship",
+      "department": "Product & Engineering",
+      "location": "Remote",
+      "team": "Platform",
+      "allLocations": [
+        "Remote",
+        "Jakarta"
+      ]
+    },
+    "createdAt": 1790759200000,
+    "descriptionPlain": "Engineering Intern at Acme. You will design, build and run features used by millions of learners every day.",
+    "description": "<div><b>Engineering Intern</b> at Acme. You will design, build and run features used by millions of learners every day.</div>",
+    "lists": [
+      {
+        "text": "Requirements",
+        "content": "<li>3+ years of professional experience</li><li>Comfortable with TypeScript and React</li>"
+      },
+      {
+        "text": "Nice to have",
+        "content": "<li>Experience with EdTech</li>"
+      }
+    ],
+    "id": "5ac21346-8e0c-4494-8e7a-3eb92ff77003",
+    "text": "Engineering Intern",
+    "country": null,
+    "workplaceType": "remote",
+    "hostedUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77003",
+    "applyUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77003/apply"
+  }
+]

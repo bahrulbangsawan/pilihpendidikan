@@ -1,0 +1,3 @@
+# Vite writes a bundled copy of the config next to it while starting.
+support/*.timestamp-*.mjs
+__pycache__/

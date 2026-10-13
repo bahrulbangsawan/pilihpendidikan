@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "alphabet": "0123456789ABCDEFGHJKMNPQRSTVWXYZ",
+  "max_clock_skew_ms": 86400000,
+  "ulid_time": [
+    {
+      "ms": 0,
+      "time": "0000000000"
+    },
+    {
+      "ms": 1,
+      "time": "0000000001"
+    },
+    {
+      "ms": 31,
+      "time": "000000000Z"
+    },
+    {
+      "ms": 32,
+      "time": "0000000010"
+    },
+    {
+      "ms": 1469918176385,
+      "time": "01ARYZ6S41"
+    },
+    {
+      "ms": 281474976710655,
+      "time": "7ZZZZZZZZZ"
+    }
+  ],
+  "validity": [
+    {
+      "prefix": "app",
+      "value": "app_01JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "valid": true
+    },
+    {
+      "prefix": "app",
+      "value": "app_01ja6v8m3w8z1t6q4y2b7k9c0d",
+      "valid": false
+    },
+    {
+      "prefix": "app",
+      "value": "app_81JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "valid": false
+    },
+    {
+      "prefix": "app",
+      "value": "app_01JA6V8M3W8Z1T6Q4Y2B7K9C0",
+      "valid": false
+    },
+    {
+      "prefix": "app",
+      "value": "app_01JA6V8M3W8Z1T6Q4Y2B7K9COD",
+      "valid": false
+    },
+    {
+      "prefix": "app",
+      "value": "evt_01JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "valid": false
+    },
+    {
+      "prefix": "obs",
+      "value": "obs_01JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "valid": true
+    },
+    {
+      "prefix": "lse",
+      "value": "lse_7ZZZZZZZZZZZZZZZZZZZZZZZZZ",
+      "valid": true
+    }
+  ]
+}

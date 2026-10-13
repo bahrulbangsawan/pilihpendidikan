@@ -1,10 +1,12 @@
 // Per-caller ownership enforcement for the cv / invoice / portfolio / jobs
 // MCP tools. The MCP route guarantees every call belongs to an authenticated
 // caller; this guard adds object-level authorization so a caller only touches
-// documents stamped to them (admins bypass). Stamps are written at create time
-// (`owner:cv:{id}`, `owner:inv:{id}`, `owner:portfolio:{id}`,
-// `owner:job:{id}` — see ../ownership.ts); a document with no stamp is
-// admin-only.
+// their own documents. cv / invoice / portfolio: the stamp written at create
+// time (`owner:cv:{id}`, `owner:inv:{id}`, `owner:portfolio:{id}` — see
+// ../ownership.ts); admins bypass and an unstamped document is admin-only.
+// jobs: the legacy facade (src/jobs/legacy) — the `owner:job:{id}` stamp on
+// the KV backend, the caller's JOBS_DB application on the D1 backend — with no
+// admin bypass (D-26).
 //
 // Implemented as a server.registerTool() wrapper with the same
 // category-tracking pattern as installToolLogger: call setCategory() before
@@ -14,12 +16,14 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Caller } from "../auth";
 import type { Env } from "../env";
 import { text } from "../helpers";
+import { canAccessJob, mcpContext } from "../jobs/legacy/mcp";
 import type { OwnedKind } from "../ownership";
 import { ownsDocument } from "../ownership";
 import type { LogCategory } from "../request-log";
 
 // Create/list tools scope themselves (create stamps ownership and refuses an
-// existing id; list filters by owner), so the guard lets them through.
+// existing id; list filters by owner), so the guard lets them through. The
+// board and approval tools without a `job_id` read only the caller's rows.
 const SELF_SCOPED_TOOLS: Record<string, true> = {
   cv_create: true,
   invoice_create: true,
@@ -29,6 +33,9 @@ const SELF_SCOPED_TOOLS: Record<string, true> = {
   invoice_list: true,
   jobs_list: true,
   portfolio_list: true,
+  jobs_board: true,
+  jobs_approvals_list: true,
+  jobs_approval_decide: true,
 };
 
 // These cv-lookup tools target EITHER a CV or an invoice depending on
@@ -91,7 +98,11 @@ async function denyIfNotOwned(
 ): Promise<ReturnType<typeof text> | null> {
   const kind = kindFor(name, category, args);
   const id = readId(args, ID_ARG[kind]);
-  if (await ownsDocument(caller, env, kind, id)) {
+  const owned =
+    kind === "jobs"
+      ? await canAccessJob(mcpContext(env, caller), name, id)
+      : await ownsDocument(caller, env, kind, id);
+  if (owned) {
     return null;
   }
   return text(`${NOT_FOUND_LABEL[kind]} "${id}" not found.`);

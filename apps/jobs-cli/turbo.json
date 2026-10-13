@@ -1,0 +1,38 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "contracts": {
+      "inputs": [
+        "$TURBO_ROOT$/packages/jobs-contracts/schema/**",
+        "$TURBO_ROOT$/packages/jobs-contracts/adapters.json",
+        "$TURBO_ROOT$/packages/jobs-contracts/skills-dictionary.json",
+        "$TURBO_ROOT$/packages/jobs-contracts/psl/**",
+        "$TURBO_ROOT$/packages/jobs-contracts/src/**",
+        "scripts/**"
+      ],
+      "outputs": [
+        "src/pilih_jobs/contracts/_generated/**",
+        "src/pilih_jobs/contracts/data/**"
+      ]
+    },
+    "test": {
+      "dependsOn": ["contracts"],
+      "inputs": ["src/**", "tests/**", "pyproject.toml", "uv.lock"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["contracts"],
+      "inputs": ["src/**", "pyproject.toml", "uv.lock"],
+      "outputs": []
+    },
+    "lint": {
+      "inputs": ["src/**", "tests/**", "scripts/**", "pyproject.toml"],
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["contracts"],
+      "outputs": ["dist/**"]
+    }
+  }
+}

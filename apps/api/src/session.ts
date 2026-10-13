@@ -7,6 +7,7 @@
 
 import type { StoredSession } from "./auth";
 import {
+  BROWSER_SESSION_LABEL,
   createToken,
   hashToken,
   hostCookieName,
@@ -16,6 +17,7 @@ import {
   SESSION_COOKIE,
 } from "./auth";
 import type { Env } from "./env";
+import { ensureUser } from "./jobs/repo/core/users";
 import { isLocalRequest } from "./origins";
 
 export const SESSION_TTL_SECONDS = 604_800; // 7 days
@@ -23,20 +25,24 @@ export const SESSION_TTL_SECONDS = 604_800; // 7 days
 // The D1 row is written before the KV record and awaited, so a sign-out that
 // follows immediately always finds a row to revoke (a row written after the
 // revoke would otherwise keep the bearer alive through the D1 fallback).
+// Signing in is also where most users get their canonical `users` row
+// (03 §2); the row id is recorded on the token. The label marks the row as a
+// browser session for scope resolution (05 §1.2, `credentialKindOf`).
 export async function createBrowserSession(
   env: Env,
-  email: string,
-  label = "Browser session"
+  email: string
 ): Promise<string> {
   const token = randomSecret();
   const normalized = normalizeEmail(email);
+  const user = await ensureUser(env.DB, normalized, Date.now());
   await createToken(env.DB, {
     email: normalized,
     token,
-    label,
+    label: BROWSER_SESSION_LABEL,
     kind: "session",
     scope: "write",
     expiresAt: Date.now() + SESSION_TTL_SECONDS * 1000,
+    userId: user.id,
   });
   const session: StoredSession = { email: normalized, createdAt: Date.now() };
   await env.AUTH_KV.put(

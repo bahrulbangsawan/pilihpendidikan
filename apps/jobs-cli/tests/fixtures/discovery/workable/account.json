@@ -1,0 +1,64 @@
+{
+  "name": "Tokopedia",
+  "description": "<p>Building the leading Indonesian marketplace.</p>",
+  "jobs": [
+    {
+      "title": "Android Developer",
+      "shortcode": "A1B2C3D4E5",
+      "code": "",
+      "employment_type": "Full-time",
+      "telecommuting": false,
+      "department": "Engineering",
+      "url": "https://apply.workable.com/j/A1B2C3D4E5",
+      "shortlink": "https://apply.workable.com/j/A1B2C3D4E5",
+      "application_url": "https://apply.workable.com/j/A1B2C3D4E5/apply",
+      "published_on": "2026-10-03",
+      "created_at": "2026-10-02",
+      "country": "Indonesia",
+      "city": "Jakarta",
+      "state": "Jakarta",
+      "education": "",
+      "experience": "Mid-Senior level",
+      "function": "Engineering",
+      "industry": "Internet",
+      "locations": [
+        {
+          "country": "Indonesia",
+          "countryCode": "ID",
+          "city": "Jakarta",
+          "region": "Jakarta",
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "title": "Customer Success Manager",
+      "shortcode": "F6G7H8I9J0",
+      "code": "",
+      "employment_type": "Contract",
+      "telecommuting": true,
+      "department": "Support",
+      "url": "https://apply.workable.com/j/F6G7H8I9J0",
+      "shortlink": "https://apply.workable.com/j/F6G7H8I9J0",
+      "application_url": "https://apply.workable.com/j/F6G7H8I9J0/apply",
+      "published_on": "2026-09-28",
+      "created_at": "2026-09-27",
+      "country": "Indonesia",
+      "city": "Surabaya",
+      "state": "Jawa Timur",
+      "education": "",
+      "experience": "Associate",
+      "function": "Customer Service",
+      "industry": "Internet",
+      "locations": [
+        {
+          "country": "Indonesia",
+          "countryCode": "ID",
+          "city": "Surabaya",
+          "region": "Jawa Timur",
+          "hidden": false
+        }
+      ]
+    }
+  ]
+}

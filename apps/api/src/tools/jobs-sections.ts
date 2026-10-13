@@ -1,13 +1,19 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import type { Caller } from "../auth";
 import type { Env } from "../env";
-import { getJob, putJob, text, uid } from "../helpers";
+import { text, uid } from "../helpers";
+import { editJobSections } from "../jobs/legacy/mcp";
 import type { JobSection } from "../types";
 
 // Section CRUD: operate on the `sections[]` array inside a job. Every tool takes
-// `job_id` so the ownership guard can authorize against `owner:job:{id}` before
-// the handler runs (owning the job authorizes mutating its sections).
-export function registerJobsSectionsTools(server: McpServer, env: Env): void {
+// `job_id` so the ownership guard can authorize it before the handler runs
+// (owning the job authorizes mutating its sections).
+export function registerJobsSectionsTools(
+  server: McpServer,
+  env: Env,
+  caller: Caller | null
+): void {
   server.registerTool(
     "jobs_section_add",
     {
@@ -18,16 +24,15 @@ export function registerJobsSectionsTools(server: McpServer, env: Env): void {
         name: z.string().min(1).describe("Section name"),
       },
     },
-    async ({ job_id, name }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const section: JobSection = { id: uid(), name, items: [] };
-      job.sections.push(section);
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(`Section "${name}" added (id: ${section.id}).`);
-    }
+    ({ job_id, name }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const section: JobSection = { id: uid(), name, items: [] };
+        sections.push(section);
+        return {
+          sections,
+          result: text(`Section "${name}" added (id: ${section.id}).`),
+        };
+      })
   );
 
   server.registerTool(
@@ -40,19 +45,18 @@ export function registerJobsSectionsTools(server: McpServer, env: Env): void {
         name: z.string().min(1).describe("New section name"),
       },
     },
-    async ({ job_id, section_id, name }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const section = job.sections.find((s) => s.id === section_id);
-      if (!section) {
-        return text(`No section with id "${section_id}".`);
-      }
-      section.name = name;
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(`Section "${section_id}" updated.`);
-    }
+    ({ job_id, section_id, name }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const section = sections.find((s) => s.id === section_id);
+        if (!section) {
+          return { result: text(`No section with id "${section_id}".`) };
+        }
+        section.name = name;
+        return {
+          sections,
+          result: text(`Section "${section_id}" updated.`),
+        };
+      })
   );
 
   server.registerTool(
@@ -65,18 +69,17 @@ export function registerJobsSectionsTools(server: McpServer, env: Env): void {
         section_id: z.string().describe("Section ID to delete"),
       },
     },
-    async ({ job_id, section_id }) => {
-      const job = await getJob(env.JOBS_KV, job_id);
-      if (!job) {
-        return text(`Job "${job_id}" not found.`);
-      }
-      const idx = job.sections.findIndex((s) => s.id === section_id);
-      if (idx === -1) {
-        return text(`No section with id "${section_id}".`);
-      }
-      job.sections.splice(idx, 1);
-      await putJob(env.JOBS_KV, job_id, job);
-      return text(`Section "${section_id}" deleted.`);
-    }
+    ({ job_id, section_id }) =>
+      editJobSections(env, caller, job_id, (sections) => {
+        const idx = sections.findIndex((s) => s.id === section_id);
+        if (idx === -1) {
+          return { result: text(`No section with id "${section_id}".`) };
+        }
+        sections.splice(idx, 1);
+        return {
+          sections,
+          result: text(`Section "${section_id}" deleted.`),
+        };
+      })
   );
 }

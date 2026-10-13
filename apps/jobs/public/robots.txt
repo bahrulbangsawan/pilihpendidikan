@@ -1,0 +1,4 @@
+# Pilih Jobs is a signed-in dashboard: nothing here is meant for search
+# engines (job-tracker-spec 12 §1, X-Robots-Tag: noindex on every page).
+User-agent: *
+Disallow: /

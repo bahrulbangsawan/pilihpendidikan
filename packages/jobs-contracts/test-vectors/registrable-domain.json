@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "psl_version": "2026-10-07_07-28-19_UTC",
+  "psl_commit": "3929462652695bad04f0a27afb600974014a3c8b",
+  "cases": [
+    {
+      "input": "example.com",
+      "include_private": true,
+      "registrable_domain": "example.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "www.example.com",
+      "include_private": true,
+      "registrable_domain": "example.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "a.b.c.example.com",
+      "include_private": true,
+      "registrable_domain": "example.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "com",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "com"
+    },
+    {
+      "input": "example.co.uk",
+      "include_private": true,
+      "registrable_domain": "example.co.uk",
+      "public_suffix": "co.uk"
+    },
+    {
+      "input": "careers.example.co.uk",
+      "include_private": true,
+      "registrable_domain": "example.co.uk",
+      "public_suffix": "co.uk"
+    },
+    {
+      "input": "co.uk",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "co.uk"
+    },
+    {
+      "input": "jobs.seek.com.au",
+      "include_private": true,
+      "registrable_domain": "seek.com.au",
+      "public_suffix": "com.au"
+    },
+    {
+      "input": "careers.telkom.co.id",
+      "include_private": true,
+      "registrable_domain": "telkom.co.id",
+      "public_suffix": "co.id"
+    },
+    {
+      "input": "www.ui.ac.id",
+      "include_private": true,
+      "registrable_domain": "ui.ac.id",
+      "public_suffix": "ac.id"
+    },
+    {
+      "input": "ac.id",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "ac.id"
+    },
+    {
+      "input": "acme.com.br",
+      "include_private": true,
+      "registrable_domain": "acme.com.br",
+      "public_suffix": "com.br"
+    },
+    {
+      "input": "acme.github.io",
+      "include_private": true,
+      "registrable_domain": "acme.github.io",
+      "public_suffix": "github.io"
+    },
+    {
+      "input": "github.io",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "github.io"
+    },
+    {
+      "input": "acme.github.io",
+      "include_private": false,
+      "registrable_domain": "github.io",
+      "public_suffix": "io"
+    },
+    {
+      "input": "www.github.com",
+      "include_private": true,
+      "registrable_domain": "github.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "acme.pages.dev",
+      "include_private": true,
+      "registrable_domain": "acme.pages.dev",
+      "public_suffix": "pages.dev"
+    },
+    {
+      "input": "acme.herokuapp.com",
+      "include_private": true,
+      "registrable_domain": "acme.herokuapp.com",
+      "public_suffix": "herokuapp.com"
+    },
+    {
+      "input": "ec2-1-2-3-4.us-east-1.compute.amazonaws.com",
+      "include_private": true,
+      "registrable_domain": "ec2-1-2-3-4.us-east-1.compute.amazonaws.com",
+      "public_suffix": "us-east-1.compute.amazonaws.com"
+    },
+    {
+      "input": "WWW.EXAMPLE.COM",
+      "include_private": true,
+      "registrable_domain": "example.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "  Example.ORG  ",
+      "include_private": true,
+      "registrable_domain": "example.org",
+      "public_suffix": "org"
+    },
+    {
+      "input": "example.com.",
+      "include_private": true,
+      "registrable_domain": "example.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "bücher.de",
+      "include_private": true,
+      "registrable_domain": "xn--bcher-kva.de",
+      "public_suffix": "de"
+    },
+    {
+      "input": "www.münchen.de",
+      "include_private": true,
+      "registrable_domain": "xn--mnchen-3ya.de",
+      "public_suffix": "de"
+    },
+    {
+      "input": "acme.公司.cn",
+      "include_private": true,
+      "registrable_domain": "acme.xn--55qx5d.cn",
+      "public_suffix": "xn--55qx5d.cn"
+    },
+    {
+      "input": "公司.cn",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "xn--55qx5d.cn"
+    },
+    {
+      "input": "acme.ελ",
+      "include_private": true,
+      "registrable_domain": "acme.xn--qxam",
+      "public_suffix": "xn--qxam"
+    },
+    {
+      "input": "foo.bar.ck",
+      "include_private": true,
+      "registrable_domain": "foo.bar.ck",
+      "public_suffix": "bar.ck"
+    },
+    {
+      "input": "bar.ck",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "bar.ck"
+    },
+    {
+      "input": "www.ck",
+      "include_private": true,
+      "registrable_domain": "www.ck",
+      "public_suffix": "ck"
+    },
+    {
+      "input": "a.www.ck",
+      "include_private": true,
+      "registrable_domain": "www.ck",
+      "public_suffix": "ck"
+    },
+    {
+      "input": "city.kawasaki.jp",
+      "include_private": true,
+      "registrable_domain": "city.kawasaki.jp",
+      "public_suffix": "kawasaki.jp"
+    },
+    {
+      "input": "foo.bar.kawasaki.jp",
+      "include_private": true,
+      "registrable_domain": "foo.bar.kawasaki.jp",
+      "public_suffix": "bar.kawasaki.jp"
+    },
+    {
+      "input": "example.zzunlisted",
+      "include_private": true,
+      "registrable_domain": "example.zzunlisted",
+      "public_suffix": "zzunlisted"
+    },
+    {
+      "input": "localhost",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": "localhost"
+    },
+    {
+      "input": "192.168.1.1",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": null
+    },
+    {
+      "input": "[::1]",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": null
+    },
+    {
+      "input": "",
+      "include_private": true,
+      "registrable_domain": null,
+      "public_suffix": null
+    },
+    {
+      "input": "https://jobs.lever.co/acme/123",
+      "include_private": true,
+      "registrable_domain": "lever.co",
+      "public_suffix": "co"
+    },
+    {
+      "input": "boards.greenhouse.io",
+      "include_private": true,
+      "registrable_domain": "greenhouse.io",
+      "public_suffix": "io"
+    },
+    {
+      "input": "nvidia.wd5.myworkdayjobs.com",
+      "include_private": true,
+      "registrable_domain": "myworkdayjobs.com",
+      "public_suffix": "com"
+    },
+    {
+      "input": "id.indeed.com",
+      "include_private": true,
+      "registrable_domain": "indeed.com",
+      "public_suffix": "com"
+    }
+  ]
+}

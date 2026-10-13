@@ -1,14 +1,14 @@
-import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
-import type { CVData } from "@/components/cv-form";
-import {
-  PreviewCertificateEntry,
-  PreviewExperienceEntry,
-} from "./preview-entries";
+import type { CVData } from "@pilihpendidikan/cv-engine/types";
 import {
   formatOngoingEndDate,
   getDescriptionLines,
   hasPreviewSectionContent,
-} from "./template-utils";
+} from "@pilihpendidikan/cv-engine/template-utils";
+import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
+import {
+  PreviewCertificateEntry,
+  PreviewExperienceEntry,
+} from "./preview-entries";
 
 function formatMonth(value: string): string {
   if (!value) {

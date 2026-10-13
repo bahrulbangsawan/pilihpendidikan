@@ -1,0 +1,15 @@
+Subjek: Lamaran {posting.title} — {facts.contact.full_name}
+
+Yth. {recipient_name|"Tim Rekrutmen"} {posting.company_name},
+
+Dengan hormat, saya bermaksud melamar posisi {posting.title} di {posting.company_name}{posting.source_ref_clause}.
+Bersama email ini saya lampirkan CV saya.
+
+{optional_paragraph}
+
+Atas perhatian Bapak/Ibu, saya ucapkan terima kasih.
+
+Hormat saya,
+{facts.contact.full_name}
+{facts.contact.phone}
+{facts.links.linkedin|""}

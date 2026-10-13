@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "BulletOperation": {
+      "type": "string",
+      "enum": ["keep", "reorder", "rephrase", "merge"]
+    },
+    "CvBullet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "section": {
+          "$ref": "#/$defs/CvBulletSection"
+        },
+        "entry_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "section", "entry_id", "text"]
+    },
+    "CvBulletSection": {
+      "type": "string",
+      "enum": [
+        "summary",
+        "experience",
+        "projects",
+        "volunteer",
+        "awards",
+        "certificates"
+      ]
+    },
+    "CvSectionId": {
+      "type": "string",
+      "enum": [
+        "summary",
+        "experience",
+        "education",
+        "skills",
+        "awards",
+        "certificates",
+        "languages",
+        "projects",
+        "volunteer"
+      ]
+    },
+    "CvTailoringPatch": {
+      "type": "object",
+      "properties": {
+        "section_order": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CvSectionId"
+          }
+        },
+        "include_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "entry_id": {
+                "type": "string"
+              }
+            },
+            "required": ["section", "entry_id"],
+            "additionalProperties": false
+          }
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entry_id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "source_bullet_ids": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "operation": {
+                "$ref": "#/$defs/BulletOperation"
+              }
+            },
+            "required": ["entry_id", "text", "source_bullet_ids", "operation"],
+            "additionalProperties": false
+          }
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "maxLength": 700
+            },
+            "source_bullet_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "source_fact_keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["text", "source_bullet_ids", "source_fact_keys"],
+          "additionalProperties": false
+        },
+        "skills_order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes_for_user": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "required": [
+        "section_order",
+        "include_entries",
+        "bullets",
+        "summary",
+        "skills_order",
+        "notes_for_user"
+      ],
+      "additionalProperties": false
+    },
+    "CvVariantDiff": {
+      "type": "object",
+      "properties": {
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "section_order": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CvSectionId"
+              }
+            },
+            "to": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CvSectionId"
+              }
+            }
+          },
+          "required": ["from", "to"]
+        },
+        "excluded_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "entry_id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": ["section", "entry_id", "label"]
+          }
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entry_id": {
+                "type": "string"
+              },
+              "operation": {
+                "$ref": "#/$defs/BulletOperation"
+              },
+              "text": {
+                "type": "string"
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "text"]
+                }
+              }
+            },
+            "required": ["entry_id", "operation", "text", "sources"]
+          }
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": ["from", "to", "sources"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes_for_user": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validator": {
+          "type": "object",
+          "properties": {
+            "fallbacks_to_keep": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "violations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["fallbacks_to_keep"]
+        },
+        "tailored_cv_sha256": {
+          "$ref": "#/$defs/Sha256Hex"
+        }
+      },
+      "required": [
+        "prompt_version",
+        "model",
+        "section_order",
+        "excluded_entries",
+        "bullets",
+        "summary",
+        "notes_for_user",
+        "validator"
+      ]
+    },
+    "Sha256Hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256 digest (64 characters)"
+    }
+  }
+}

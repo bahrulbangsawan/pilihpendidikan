@@ -2,6 +2,15 @@
 
 > **Superseded design wording.** This change built the hub on the Warp design system. `update-zedative-design-system` has since replaced Warp with Zedative across the workspace, the hub included; the Warp references below are historical.
 
+> **Superseded service list.** `jobs-add-dashboard` adds a fifth entry, `jobs`
+> (`https://jobs.pilihpendidikan.com`, status `"soon"`), to
+> `apps/home/src/config/services.ts`, and the hub now lists four tools (`cv`,
+> `invoice`, `portfolio`, `jobs`) plus the MCP item (`job-tracker-spec/12` §15).
+> The `cv | invoice | portfolio | api` key set described below is historical;
+> the `Service status config` requirement is restated in
+> `jobs-add-dashboard/specs/home-hub/spec.md`. The `jobs` card stays unlinked
+> until the Job Tracker goes through the **Going live** checklist.
+
 ## Why
 
 `https://pilihpendidikan.com` resolves to nothing: the zone has no DNS records

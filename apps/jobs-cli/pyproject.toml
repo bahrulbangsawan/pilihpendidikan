@@ -1,0 +1,189 @@
+[project]
+name = "pilih-jobs"
+version = "0.1.0"
+description = "pilih-jobs: the local execution engine of the pilihpendidikan Job Tracker (discovery, browser automation, sync)."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+authors = [{ name = "pilihpendidikan" }]
+keywords = ["jobs", "job-tracker", "cli", "automation"]
+classifiers = [
+  "Environment :: Console",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+  "scrapling[fetchers]==0.4.15",
+  "playwright>=1.63,<1.64",
+  "typer>=0.27,<0.28",
+  "rich>=15,<16",
+  "httpx>=0.28,<1",
+  "pydantic>=2.9,<3",
+  "keyring>=25.7,<26",
+  "platformdirs>=4,<5",
+  "zstandard>=0.23",
+  "cryptography>=43",
+  "psutil>=6",
+  # UTS #46 host mapping for canonical URLs / registrable domains (already a
+  # transitive dependency of httpx; declared because contracts imports it).
+  "idna>=3.7",
+]
+
+[project.urls]
+Homepage = "https://jobs.pilihpendidikan.com/cli"
+
+[project.scripts]
+pilih-jobs = "pilih_jobs.cli.app:main"
+pj = "pilih_jobs.cli.app:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.24",
+  "pytest-httpserver>=1.1",
+  "respx>=0.22",
+  "hypothesis>=6.100",
+  "starlette>=0.40",
+  "python-multipart>=0.0.9",  # Starlette form parsing (fake API uploads, fixture ATS forms)
+  "uvicorn>=0.30",
+  "ruff>=0.8",
+  "pyright>=1.1.390",
+  "datamodel-code-generator>=0.26",
+  "import-linter>=2.1",
+  "pip-audit>=2.7",
+]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pilih_jobs"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"THIRD_PARTY_NOTICES" = "pilih_jobs/THIRD_PARTY_NOTICES"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src",
+  "scripts",
+  "tests",
+  "README.md",
+  "THIRD_PARTY_NOTICES",
+  "CLAUDE.md",
+  "pyproject.toml",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "scripts"]
+extend-exclude = ["src/pilih_jobs/contracts/_generated"]
+
+[tool.ruff.lint]
+select = [
+  "E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "PIE", "PT",
+  "RET", "ASYNC", "TID", "PERF", "S", "BLE", "T20", "ERA", "PTH", "TRY",
+]
+ignore = [
+  "TRY003",  # long messages in exception constructors are the CLI's user-facing text
+  "S603",    # subprocess calls use argv lists built from fixed commands
+  "S607",    # installer commands (uv/pipx/brew) are resolved from PATH on purpose
+  "PTH123",  # open() is fine next to pathlib
+  "RUF001",  # typographic dashes/ellipses in user-facing strings are intended
+  "RUF002",
+  "RUF003",
+  "PIE807",  # `default_factory=lambda: []` keeps pyright strict's element types
+  "ASYNC109",  # `timeout_s` parameters are part of the cross-leaf interfaces (PLAN C6)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S108", "S311", "PLR2004", "T20", "BLE001", "ASYNC", "TRY", "N802"]
+"scripts/**" = ["T20", "S"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# ---------------------------------------------------------------- pyright
+[tool.pyright]
+include = ["src"]
+exclude = ["**/__pycache__", "src/pilih_jobs/contracts/_generated"]
+strict = ["src"]
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
+reportMissingTypeStubs = false
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = ["--strict-markers", "-ra"]
+markers = [
+  "e2e: end-to-end tests against `wrangler dev` (13 §5); excluded from the default suite",
+  "live: tests that reach the public internet (live adapters, PyPI); excluded by default",
+  "browser: Playwright tests that launch a real Chromium; run with `bun run test:browser`",
+]
+filterwarnings = ["error::pytest.PytestUnraisableExceptionWarning"]
+
+# ---------------------------------------------------------------- import-linter (16 §2.1)
+[tool.importlinter]
+root_package = "pilih_jobs"
+include_external_packages = true
+exclude_type_checking_imports = true
+
+[[tool.importlinter.contracts]]
+id = "scrapling-only-in-engine"
+name = "scrapling may be imported only in discovery.engine"
+type = "forbidden"
+source_modules = ["pilih_jobs"]
+forbidden_modules = ["scrapling"]
+allow_indirect_imports = true
+ignore_imports = [
+  "pilih_jobs.discovery.engine -> scrapling",
+  "pilih_jobs.discovery.engine.** -> scrapling",
+]
+unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+id = "playwright-only-in-browser-and-executor"
+name = "playwright may be imported only in browser and agent.executor"
+type = "forbidden"
+source_modules = ["pilih_jobs"]
+forbidden_modules = ["playwright"]
+allow_indirect_imports = true
+ignore_imports = [
+  "pilih_jobs.browser -> playwright",
+  "pilih_jobs.browser.** -> playwright",
+  "pilih_jobs.agent.executor -> playwright",
+  "pilih_jobs.agent.executor.** -> playwright",
+]
+unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+id = "cli-no-drivers"
+name = "cli must not import playwright or scrapling"
+type = "forbidden"
+source_modules = ["pilih_jobs.cli"]
+forbidden_modules = ["playwright", "scrapling"]
+allow_indirect_imports = true
+
+[[tool.importlinter.contracts]]
+id = "api-not-browser"
+name = "api must not import browser"
+type = "forbidden"
+source_modules = ["pilih_jobs.api"]
+forbidden_modules = ["pilih_jobs.browser"]

@@ -92,6 +92,7 @@ for (const scope of scopes.length
       "apps/cv/src",
       "apps/invoice/src",
       "apps/portfolio/src",
+      "apps/jobs/src",
       "apps/design/src",
       "packages/ui/src",
     ]) {

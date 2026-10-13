@@ -1,0 +1,51 @@
+{
+  "name": "@pilihpendidikan/jobs-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Job Tracker shared contracts: Zod schemas, JSON Schema export, fingerprint, state machines and data files (D-20).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./enums": "./src/enums.ts",
+    "./ids": "./src/ids.ts",
+    "./records": "./src/records.ts",
+    "./api": "./src/api/index.ts",
+    "./api/*": "./src/api/*.ts",
+    "./stage": "./src/stage.ts",
+    "./fingerprint": "./src/fingerprint.ts",
+    "./facts": "./src/facts.ts",
+    "./queue": "./src/queue.ts",
+    "./agent": "./src/agent.ts",
+    "./scoring": "./src/scoring.ts",
+    "./cv-tailoring": "./src/cv-tailoring.ts",
+    "./email": "./src/email.ts",
+    "./adapters": "./src/adapters.ts",
+    "./data": "./src/data.ts",
+    "./schema-export": "./src/schema-export.ts",
+    "./adapters.json": "./adapters.json",
+    "./skills-dictionary.json": "./skills-dictionary.json",
+    "./title-families.json": "./title-families.json",
+    "./cli-commands.json": "./cli-commands.json",
+    "./psl/public_suffix_list.dat": "./psl/public_suffix_list.dat",
+    "./email-templates/*": "./email-templates/*",
+    "./schema/*": "./schema/*",
+    "./test-vectors/*": "./test-vectors/*",
+    "./examples/*": "./examples/*"
+  },
+  "scripts": {
+    "build": "bun scripts/generate.ts --write",
+    "check": "bun scripts/generate.ts --check",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@pilihpendidikan/config": "workspace:*",
+    "@types/bun": "^1.3.0",
+    "@types/node": "^26.6.4",
+    "typescript": "catalog:"
+  }
+}

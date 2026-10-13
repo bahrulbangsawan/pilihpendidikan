@@ -1,68 +1,41 @@
-// /oauth/magic — the emailed approval link. GET renders a confirm page and
-// changes nothing (inbox scanners prefetch links); POST consumes the link,
-// stores a single-use authorization code and redirects back to the client.
+// /oauth/magic — the emailed approval link. GET renders a page and changes
+// nothing (inbox scanners prefetch links); both methods require the browser
+// that asked for the link (`__Host-oauth-flow`, pending.ts).
+//
+//   MCP (DCR) clients     GET → confirm page; POST consumes the link, stores
+//                         a single-use code and redirects back (unchanged).
+//   first-party clients   GET and POST → the approve page (17 §4.3: the same
+//                         page as the session path); the decision endpoint
+//                         consumes the link and issues the code.
 
-import {
-  hashToken,
-  randomSecret,
-  readHostCookie,
-  timingSafeEqual,
-} from "../auth";
+import { hashToken, randomSecret } from "../auth";
 import type { Env } from "../env";
-import { escapeHtml, htmlPage, messageBanner } from "../html";
+import { escapeHtml, htmlPage } from "../html";
 import { formString, isSameOriginPost, readForm } from "../http";
 import { publicOrigin } from "../origins";
 import { hostCookie } from "../session";
-import type { PendingAuthorization, StoredCode } from "./shared";
-import { CODE_TTL_SECONDS, OAUTH_FLOW_COOKIE } from "./shared";
+import { magicApprovePage } from "./consent";
+import type { FoundPending } from "./pending";
+import {
+  expiredPage,
+  isInitiatingBrowser,
+  readPending,
+  wrongBrowserPage,
+} from "./pending";
+import type { StoredCode } from "./shared";
+import {
+  CODE_TTL_SECONDS,
+  findClient,
+  isFirstParty,
+  OAUTH_FLOW_COOKIE,
+} from "./shared";
 
-function expiredPage(): Response {
-  return htmlPage(
-    {
-      title: "Link expired",
-      body: `<h1>This link no longer works</h1>
-${messageBanner("error", "Approval links last 15 minutes and work once.")}
-<p>Start the connection again from your AI app.</p>`,
-    },
-    { status: 410 }
-  );
-}
-
-function wrongBrowserPage(): Response {
-  return htmlPage(
-    {
-      title: "Open in the original browser",
-      body: `<h1>Open this link where you started</h1>
-${messageBanner("error", "For your safety, approval links only work in the browser that asked for them.")}
-<p>Open the link in the browser where your AI app opened the connect page, or start the connection again from the app.</p>`,
-    },
-    { status: 403 }
-  );
-}
-
-// True when this browser carries the cookie set when the authorization was
-// requested. Someone who merely receives the email cannot approve it.
-async function isInitiatingBrowser(
-  request: Request,
-  pending: PendingAuthorization
-): Promise<boolean> {
-  const cookie = readHostCookie(request, OAUTH_FLOW_COOKIE);
-  if (!(cookie && pending.browserBinding)) {
-    return false;
-  }
-  return timingSafeEqual(await hashToken(cookie), pending.browserBinding);
-}
-
-async function readPending(
+async function isFirstPartyPending(
   env: Env,
-  token: string
-): Promise<{ key: string; pending: PendingAuthorization } | null> {
-  if (!token) {
-    return null;
-  }
-  const key = `auth:oauth-magic:${await hashToken(token)}`;
-  const pending = await env.AUTH_KV.get<PendingAuthorization>(key, "json");
-  return pending ? { key, pending } : null;
+  found: FoundPending
+): Promise<boolean> {
+  const client = await findClient(env.DB, found.pending.clientId);
+  return client !== null && isFirstParty(client);
 }
 
 export async function handleMagicGet(
@@ -77,6 +50,9 @@ export async function handleMagicGet(
   }
   if (!(await isInitiatingBrowser(request, found.pending))) {
     return wrongBrowserPage();
+  }
+  if (await isFirstPartyPending(env, found)) {
+    return await magicApprovePage(env, found, token);
   }
   const target = new URL(found.pending.redirectUri);
   return htmlPage({
@@ -108,6 +84,10 @@ export async function handleMagicPost(
   }
   if (!(await isInitiatingBrowser(request, found.pending))) {
     return wrongBrowserPage();
+  }
+  if (await isFirstPartyPending(env, found)) {
+    // Consent for first-party clients happens on the approve page only.
+    return await magicApprovePage(env, found, token);
   }
   await env.AUTH_KV.delete(found.key);
   const { pending } = found;

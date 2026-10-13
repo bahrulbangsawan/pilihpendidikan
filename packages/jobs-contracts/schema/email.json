@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "EmailParagraphDraft": {
+      "type": "object",
+      "properties": {
+        "paragraph": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "source_bullet_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_fact_keys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["paragraph", "source_bullet_ids", "source_fact_keys"],
+      "additionalProperties": false
+    }
+  }
+}

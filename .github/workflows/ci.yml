@@ -1,0 +1,96 @@
+# Repository CI (job-tracker-spec 13 §7): the whole workspace check chain,
+# type checks and builds on every push to main and every pull request.
+#
+#   bun run check        Biome → turbo lint (incl. the Python leg: ruff,
+#                        ruff format, import-linter) → typography lint and
+#                        parities → CV template parity → contracts drift
+#                        (JSON Schema + generated Pydantic models) → turbo
+#                        test (incl. pytest) → bun audit + pip-audit
+#   bun run check-types  tsc for scripts/ + turbo typecheck (incl. pyright)
+#   bun run build        packages, apps (wrangler types + vite build), api
+#                        (wrangler deploy --dry-run), the CLI wheel (uv build)
+#
+# Nothing here deploys, publishes or touches a Cloudflare resource. The CLI's
+# OS / Python matrix is cli-matrix.yml; the full-stack suite is e2e.yml.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  WRANGLER_SEND_METRICS: "false"
+
+jobs:
+  check:
+    name: check, check-types, build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # parity:cv-templates on pull requests diffs against the base branch.
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      # uv is required for the Python leg (A-06, scripts/require-uv.sh).
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+
+      - name: Install the workspace
+        run: bun install --frozen-lockfile
+
+      - name: Python environment of apps/jobs-cli (lockfile must be current)
+        working-directory: apps/jobs-cli
+        run: uv sync --locked
+
+      - name: CV template parity against the pull request base
+        if: github.event_name == 'pull_request'
+        run: bun scripts/check-cv-template-parity.ts --base "origin/${{ github.base_ref }}"
+
+      - name: bun run check
+        run: bun run check
+
+      - name: bun run check-types
+        run: bun run check-types
+
+      - name: bun run build
+        run: bun run build
+
+      # 13 §7: `openspec validate --strict` for the active Job Tracker changes.
+      - name: OpenSpec (Job Tracker changes, strict)
+        run: |
+          for id in \
+            jobs-add-contracts-and-schema \
+            cv-extract-cv-engine \
+            api-add-user-ids-and-jobs-db \
+            api-extend-oauth-for-cli \
+            jobs-add-dashboard \
+            jobs-add-cli \
+            jobs-add-cv-variants \
+            jobs-add-matching \
+            jobs-add-browser-agent \
+            jobs-add-email-applications \
+            jobs-add-analytics \
+            jobs-add-auto-apply; do
+            if [ -d "openspec/changes/$id" ]; then
+              bunx @fission-ai/openspec@1.13.2 validate "$id" --strict --no-interactive
+            fi
+          done

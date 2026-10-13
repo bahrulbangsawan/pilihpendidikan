@@ -1,0 +1,62 @@
+# Full-stack scenarios (job-tracker-spec 13 §5, 13 §7 "E2E leg", 22 §9
+# `cli-e2e`): `bun run e2e` boots apps/api under `wrangler dev` on a scratch
+# local state, the apps/jobs dashboard under `vite dev`, the pilih-jobs CLI
+# through `uv run`, the CLI's fixture ATS server and fixture job boards, and a
+# scripted Chromium playing the user (see e2e/README.md). Local only: no
+# Cloudflare account, no OpenAI, no internet beyond package installs.
+#
+# Runs nightly and before a CLI release (release-cli.yml calls it).
+name: E2E
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: "1"
+  WRANGLER_SEND_METRICS: "false"
+
+jobs:
+  e2e:
+    name: full-stack scenarios (bun run e2e)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+      - name: Install the workspace
+        run: bun install --frozen-lockfile
+      - name: CLI environment and Chromium (user browser + CLI browser)
+        run: |
+          uv sync --project apps/jobs-cli --locked
+          uv run --project apps/jobs-cli playwright install --with-deps chromium
+      # S-13 (assisted mode) opens a headed Chromium window by design, so the
+      # suite runs inside a virtual display. Ports 4003, 4007 and 8788 are free
+      # on a fresh runner.
+      - name: bun run e2e
+        env:
+          # Scratch dirs (`$TMPDIR/pilih-e2e-*`) stay for the failure upload.
+          E2E_KEEP: "1"
+          TMPDIR: ${{ runner.temp }}
+        run: xvfb-run --auto-servernum bun run e2e
+      - name: Keep the e2e scratch directories (logs, local D1/R2 state)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-scratch
+          path: ${{ runner.temp }}/pilih-e2e-*
+          if-no-files-found: ignore
+          retention-days: 7

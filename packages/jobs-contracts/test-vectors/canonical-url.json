@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "algorithm": "canonical_url (03 §4.2)",
+  "cases": [
+    {
+      "name": "utm_*, gh_src, ref, source, fbclid, gclid, lever-source dropped",
+      "input": "https://careers.acme.com/jobs/5?utm_source=linkedin&utm_medium=social&ref=abc&lang=en&gh_src=x&fbclid=1&gclid=2&source=feed&lever-source=y",
+      "output": "https://careers.acme.com/jobs/5?lang=en"
+    },
+    {
+      "name": "tracking names match case-insensitively",
+      "input": "https://acme.com/jobs?UTM_Source=x&Ref=y&id=3",
+      "output": "https://acme.com/jobs?id=3"
+    },
+    {
+      "name": "percent-encoded tracking name is decoded for the check",
+      "input": "https://acme.com/jobs?utm%5Fsource=x&id=3",
+      "output": "https://acme.com/jobs?id=3"
+    },
+    {
+      "name": "only tracking params: no ?",
+      "input": "https://acme.com/jobs/9?utm_campaign=x",
+      "output": "https://acme.com/jobs/9"
+    },
+    {
+      "name": "similar names are kept (referrer, sources, lever_source)",
+      "input": "https://acme.com/j?sources=a&referrer=b&lever_source=c",
+      "output": "https://acme.com/j?lever_source=c&referrer=b&sources=a"
+    },
+    {
+      "name": "params sorted by name",
+      "input": "https://careers.acme.com/jobs?team=eng&b=2&a=1",
+      "output": "https://careers.acme.com/jobs?a=1&b=2&team=eng"
+    },
+    {
+      "name": "same name sorted by whole segment",
+      "input": "https://acme.com/j?b=2&a=2&a=1",
+      "output": "https://acme.com/j?a=1&a=2&b=2"
+    },
+    {
+      "name": "valueless param kept",
+      "input": "https://acme.com/j?remote&a=1",
+      "output": "https://acme.com/j?a=1&remote"
+    },
+    {
+      "name": "empty segments dropped",
+      "input": "https://acme.com/j?a=1&&b=2&",
+      "output": "https://acme.com/j?a=1&b=2"
+    },
+    {
+      "name": "segments kept verbatim (+ and %2B)",
+      "input": "https://acme.com/search?q=c%2B%2B+dev",
+      "output": "https://acme.com/search?q=c%2B%2B+dev"
+    },
+    {
+      "name": "space in query percent-encoded by the URL parser",
+      "input": "https://acme.com/jobs?q=data engineer",
+      "output": "https://acme.com/jobs?q=data%20engineer"
+    },
+    {
+      "name": "empty ? removed",
+      "input": "https://acme.com/jobs?",
+      "output": "https://acme.com/jobs"
+    },
+    {
+      "name": "https default port dropped",
+      "input": "https://careers.acme.com:443/jobs/6",
+      "output": "https://careers.acme.com/jobs/6"
+    },
+    {
+      "name": "http default port dropped",
+      "input": "http://careers.acme.com:80/jobs/6",
+      "output": "http://careers.acme.com/jobs/6"
+    },
+    {
+      "name": "non-default port kept",
+      "input": "http://careers.acme.com:8080/jobs/6",
+      "output": "http://careers.acme.com:8080/jobs/6"
+    },
+    {
+      "name": "fragment dropped",
+      "input": "https://careers.acme.com/jobs/7#apply",
+      "output": "https://careers.acme.com/jobs/7"
+    },
+    {
+      "name": "scheme and host lowercased, path case kept",
+      "input": "HTTPS://Careers.ACME.com/Jobs/8",
+      "output": "https://careers.acme.com/Jobs/8"
+    },
+    {
+      "name": "IDN host to punycode",
+      "input": "https://karriere.bücher.de/stellen/1",
+      "output": "https://karriere.xn--bcher-kva.de/stellen/1"
+    },
+    {
+      "name": "non-ASCII path percent-encoded",
+      "input": "https://acme.com/lowongan/kasir-é",
+      "output": "https://acme.com/lowongan/kasir-%C3%A9"
+    },
+    {
+      "name": "empty path becomes /",
+      "input": "https://acme.com",
+      "output": "https://acme.com/"
+    },
+    {
+      "name": "dot segments resolved",
+      "input": "https://acme.com/a/../jobs/./10",
+      "output": "https://acme.com/jobs/10"
+    },
+    {
+      "name": "userinfo dropped",
+      "input": "https://user:secret@acme.com/jobs/1",
+      "output": "https://acme.com/jobs/1"
+    },
+    {
+      "name": "surrounding whitespace ignored",
+      "input": "  https://acme.com/jobs/1  ",
+      "output": "https://acme.com/jobs/1"
+    },
+    {
+      "name": "IPv6 host and port",
+      "input": "http://[::1]:8080/x",
+      "output": "http://[::1]:8080/x"
+    },
+    {
+      "name": "Greenhouse board url with gh_src",
+      "input": "https://boards.greenhouse.io/acme/jobs/4012345?gh_src=7f3a2c",
+      "output": "https://boards.greenhouse.io/acme/jobs/4012345"
+    },
+    {
+      "name": "Lever url with lever-source",
+      "input": "https://jobs.lever.co/acme/5f0c8a2e?lever-source=LinkedIn",
+      "output": "https://jobs.lever.co/acme/5f0c8a2e"
+    },
+    {
+      "name": "mailto is not canonicalized",
+      "input": "mailto:hr@acme.com",
+      "output": null
+    },
+    {
+      "name": "javascript: is refused",
+      "input": "javascript:alert(1)",
+      "output": null
+    },
+    {
+      "name": "ftp is refused",
+      "input": "ftp://acme.com/jobs.txt",
+      "output": null
+    },
+    {
+      "name": "no scheme is not a URL",
+      "input": "acme.com/jobs",
+      "output": null
+    },
+    {
+      "name": "empty input",
+      "input": "",
+      "output": null
+    }
+  ]
+}

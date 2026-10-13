@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "CliCommands": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number",
+          "const": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "package": {
+          "type": "string"
+        },
+        "executable": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "string"
+        },
+        "install_uv": {
+          "type": "object",
+          "properties": {
+            "macos": {
+              "type": "string",
+              "minLength": 1
+            },
+            "linux": {
+              "type": "string",
+              "minLength": 1
+            },
+            "windows": {
+              "type": "string",
+              "minLength": 1
+            },
+            "docs_url": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": ["macos", "linux", "windows", "docs_url"]
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "commands": {
+                "type": "object",
+                "properties": {
+                  "macos": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "linux": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "windows": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["macos", "linux", "windows"]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "title", "commands", "note"]
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "available": {
+                "type": "boolean"
+              }
+            },
+            "required": ["id", "label", "command", "available"]
+          }
+        },
+        "step_up": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["id", "label", "command"]
+          }
+        },
+        "troubleshooting": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["id", "label", "command"]
+          }
+        },
+        "upgrade": {
+          "type": "object",
+          "properties": {
+            "uv": {
+              "type": "string"
+            },
+            "pipx": {
+              "type": "string"
+            }
+          },
+          "required": ["uv", "pipx"]
+        },
+        "uninstall": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "description",
+        "package",
+        "executable",
+        "alias",
+        "requirements",
+        "install_uv",
+        "steps",
+        "alternatives",
+        "step_up",
+        "troubleshooting",
+        "upgrade",
+        "uninstall"
+      ]
+    },
+    "SkillsDictionary": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number",
+          "const": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "skills": {
+          "minItems": 150,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "language",
+                  "framework",
+                  "database",
+                  "cloud",
+                  "devops",
+                  "data",
+                  "mobile",
+                  "testing",
+                  "security",
+                  "design",
+                  "practice",
+                  "platform"
+                ]
+              },
+              "synonyms": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": ["id", "label", "category", "synonyms"]
+          }
+        }
+      },
+      "required": ["version", "description", "skills"]
+    },
+    "TitleFamilies": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number",
+          "const": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "seniority_words": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "families": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "titles": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": ["id", "label", "titles"]
+          }
+        }
+      },
+      "required": ["version", "description", "seniority_words", "families"]
+    }
+  }
+}

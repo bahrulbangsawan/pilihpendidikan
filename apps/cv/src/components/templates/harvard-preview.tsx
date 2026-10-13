@@ -1,10 +1,10 @@
-import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
-import type { CVData } from "@/components/cv-form";
+import type { CVData } from "@pilihpendidikan/cv-engine/types";
 import {
   formatOngoingEndDate,
   getDescriptionLines,
   hasPreviewSectionContent,
-} from "./template-utils";
+} from "@pilihpendidikan/cv-engine/template-utils";
+import { ensureUrl, formatPhoneDisplay } from "@rulisme/ui/lib/utils";
 
 function formatMonth(value: string): string {
   if (!value) {

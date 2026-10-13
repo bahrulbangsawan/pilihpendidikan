@@ -1,0 +1,592 @@
+{
+  "version": 1,
+  "algorithm": "fp1 (03 §4.2); see src/fingerprint.ts for every normalization step",
+  "psl_version": "2026-10-07_07-28-19_UTC",
+  "cases": [
+    {
+      "name": "greenhouse: src key ignores url, title and location",
+      "input": {
+        "source_kind": "greenhouse",
+        "source_org": "acme",
+        "source_job_ref": "4012345",
+        "title": "Backend Engineer",
+        "company_domain": "acme.com",
+        "location_primary": "Jakarta",
+        "apply_url": "https://boards.greenhouse.io/acme/jobs/4012345?gh_src=abc"
+      },
+      "key": "src|greenhouse|acme|4012345",
+      "fingerprint": "fp1:3c87dbc338a7f3376d49e8c2734b917b80797a38313c671b6f22dd5a974218ae"
+    },
+    {
+      "name": "greenhouse: org is normalized (case, spaces)",
+      "input": {
+        "source_kind": "greenhouse",
+        "source_org": "  Acme   Corp ",
+        "source_job_ref": "4012346",
+        "title": "Data Engineer"
+      },
+      "key": "src|greenhouse|acme corp|4012346",
+      "fingerprint": "fp1:474bdbc028e7c979e3150adc1ca09932bbb057b43505be3977d49da48331d445"
+    },
+    {
+      "name": "greenhouse: org punctuation stripped except . (Acme, Inc.)",
+      "input": {
+        "source_kind": "greenhouse",
+        "source_org": "Acme, Inc.",
+        "source_job_ref": "99",
+        "title": "QA Engineer"
+      },
+      "key": "src|greenhouse|acme inc.|99",
+      "fingerprint": "fp1:658905eea8d3bcd299e08af0fd323773918977ecc1075a18c6dbc90016900f21"
+    },
+    {
+      "name": "lever: uuid ref kept verbatim",
+      "input": {
+        "source_kind": "lever",
+        "source_org": "netflix",
+        "source_job_ref": "5f0c8a2e-1d3b-4c7e-9a1f-2b3c4d5e6f70",
+        "title": "Senior Software Engineer"
+      },
+      "key": "src|lever|netflix|5f0c8a2e-1d3b-4c7e-9a1f-2b3c4d5e6f70",
+      "fingerprint": "fp1:6077603e5db236fc59598a53bb349b124f8d8eac4c514b7664e968bbfbaf7dd1"
+    },
+    {
+      "name": "lever: ref is trimmed",
+      "input": {
+        "source_kind": "lever",
+        "source_org": "acme",
+        "source_job_ref": " 123 ",
+        "title": "Designer"
+      },
+      "key": "src|lever|acme|123",
+      "fingerprint": "fp1:3afc0de2d8a374565410f509346a20b9073349d3e6e8e4a64183757929e2613e"
+    },
+    {
+      "name": "ashby: board name lowercased",
+      "input": {
+        "source_kind": "ashby",
+        "source_org": "Ramp",
+        "source_job_ref": "a1b2c3d4-0000-4000-8000-000000000001",
+        "title": "Product Manager"
+      },
+      "key": "src|ashby|ramp|a1b2c3d4-0000-4000-8000-000000000001",
+      "fingerprint": "fp1:057ce6cde4661eacc70e0f335de7595d14451de8dac6b679fa4acb9d75103a6f"
+    },
+    {
+      "name": "smartrecruiters: company identifier",
+      "input": {
+        "source_kind": "smartrecruiters",
+        "source_org": "BoschGroup",
+        "source_job_ref": "743999912345678",
+        "title": "Embedded Software Engineer"
+      },
+      "key": "src|smartrecruiters|boschgroup|743999912345678",
+      "fingerprint": "fp1:f88d3c8120e37b8db28b18aec74f9b8565651bff4a6ffc0eca289e6dab4a9035"
+    },
+    {
+      "name": "workable: ref case preserved",
+      "input": {
+        "source_kind": "workable",
+        "source_org": "tokopedia",
+        "source_job_ref": "A1B2C3D4E5",
+        "title": "Android Developer"
+      },
+      "key": "src|workable|tokopedia|A1B2C3D4E5",
+      "fingerprint": "fp1:1be75e3c24a3bd8d54b5df995b1da488cc3f21f67aca9cb1a3c69b6415c54399"
+    },
+    {
+      "name": "workday: tenant org",
+      "input": {
+        "source_kind": "workday",
+        "source_org": "nvidia",
+        "source_job_ref": "JR1987654",
+        "title": "Systems Software Engineer"
+      },
+      "key": "src|workday|nvidia|JR1987654",
+      "fingerprint": "fp1:c957341b8e2e2b632b49eae78d2b086e0d60766dafaf93bd22d11dab444ed0e9"
+    },
+    {
+      "name": "stable kind without a ref falls back to gen",
+      "input": {
+        "source_kind": "greenhouse",
+        "source_org": "acme",
+        "source_job_ref": null,
+        "title": "Data Analyst",
+        "company_domain": "acme.com",
+        "location_primary": "Jakarta",
+        "apply_url": "https://boards.greenhouse.io/acme/jobs/1"
+      },
+      "key": "gen|acme.com|data analyst|jakarta|https://boards.greenhouse.io/acme/jobs/1",
+      "fingerprint": "fp1:db32c1b721b32e82aa0d95db627c067df51bd977de5858134aa3d38bce08daa7"
+    },
+    {
+      "name": "stable kind with a whitespace-only ref falls back to gen",
+      "input": {
+        "source_kind": "lever",
+        "source_org": "acme",
+        "source_job_ref": "   ",
+        "title": "Recruiter",
+        "company_domain": "acme.com",
+        "apply_url": "https://jobs.lever.co/acme/x"
+      },
+      "key": "gen|acme.com|recruiter||https://jobs.lever.co/acme/x",
+      "fingerprint": "fp1:ddba0a0e8f22d924c0ceea2d464436c95f4fd1e57247a77d8f1cfbdc62e92ba3"
+    },
+    {
+      "name": "career_page: gen key with location",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Senior Software Engineer",
+        "location_primary": "Jakarta, Indonesia",
+        "apply_url": "https://careers.acme.com/jobs/123"
+      },
+      "key": "gen|acme.com|senior software engineer|jakarta indonesia|https://careers.acme.com/jobs/123",
+      "fingerprint": "fp1:03bf5e9b473b9b687f83c03035cf4747c6dcacd6b45c3af031647a465a63f1a8"
+    },
+    {
+      "name": "gen key without location",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Product Designer",
+        "location_primary": null,
+        "apply_url": "https://careers.acme.com/jobs/77"
+      },
+      "key": "gen|acme.com|product designer||https://careers.acme.com/jobs/77",
+      "fingerprint": "fp1:beb9fa0a22aae5eebd7746362a076f6a84ad70565aa9a40a27a3b03cdf62e25c"
+    },
+    {
+      "name": "company domain: uppercase www host, multi-level suffix co.id",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "WWW.ACME.CO.ID",
+        "title": "Finance Staff",
+        "location_primary": "Surabaya",
+        "apply_url": "https://acme.co.id/karir/12"
+      },
+      "key": "gen|acme.co.id|finance staff|surabaya|https://acme.co.id/karir/12",
+      "fingerprint": "fp1:03e9210ced0698038536181489965177b40ecf6b18db988a28259c00dda4d88e"
+    },
+    {
+      "name": "company domain given as a URL (com.au)",
+      "input": {
+        "source_kind": "generic_listing",
+        "company_domain": "https://jobs.acme.com.au/careers",
+        "title": "Nurse",
+        "location_primary": "Sydney NSW",
+        "apply_url": "https://jobs.acme.com.au/careers/88"
+      },
+      "key": "gen|acme.com.au|nurse|sydney nsw|https://jobs.acme.com.au/careers/88",
+      "fingerprint": "fp1:56abc8f20d65c228645b14d897f520ca3cea5abd2225ada4f3b96991f9e20c2a"
+    },
+    {
+      "name": "no company domain: apply_url host (co.uk)",
+      "input": {
+        "source_kind": "custom_url",
+        "title": "Barista",
+        "location_primary": "London",
+        "apply_url": "https://jobs.example.co.uk/apply/9"
+      },
+      "key": "gen|example.co.uk|barista|london|https://jobs.example.co.uk/apply/9",
+      "fingerprint": "fp1:9dafa038b76a428ca3f34062201cd90872370039b3c47f454562906dd6ffcb51"
+    },
+    {
+      "name": "no company domain or apply_url: canonical_url host and url",
+      "input": {
+        "source_kind": "custom_url",
+        "title": "Founding Engineer",
+        "canonical_url": "https://www.startup.io/jobs/2"
+      },
+      "key": "gen|startup.io|founding engineer||https://www.startup.io/jobs/2",
+      "fingerprint": "fp1:f656d0cd78076496bf318815232434e081791e34bfbb0062f672a6d637d5e44c"
+    },
+    {
+      "name": "NFKC: fullwidth title",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Ｓｏｆｔｗａｒｅ　Ｅｎｇｉｎｅｅｒ",
+        "apply_url": "https://acme.com/jobs/1"
+      },
+      "key": "gen|acme.com|software engineer||https://acme.com/jobs/1",
+      "fingerprint": "fp1:56a70dae203f7187580ac1224553af51f58b0a41712a1bc7d98afc2a1fb40a20"
+    },
+    {
+      "name": "punctuation: c++ kept, parentheses stripped",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "C++ Developer (Embedded)",
+        "apply_url": "https://acme.com/jobs/2"
+      },
+      "key": "gen|acme.com|c++ developer embedded||https://acme.com/jobs/2",
+      "fingerprint": "fp1:bf3663b10b4caff1ff2c44cd274d397f3ea1db78279d56ae2dba4b04860cdb1b"
+    },
+    {
+      "name": "punctuation: c#, / and .net kept",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Senior C#/.NET Engineer",
+        "apply_url": "https://acme.com/jobs/3"
+      },
+      "key": "gen|acme.com|senior c#/.net engineer||https://acme.com/jobs/3",
+      "fingerprint": "fp1:6b02ae3d6139346604ddb6a56f44d4c203926ba56cd2c7596d3c949685746713"
+    },
+    {
+      "name": "punctuation: em dash and pipe removed, spaces collapsed",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Backend Engineer — Payments | Remote",
+        "apply_url": "https://acme.com/jobs/4"
+      },
+      "key": "gen|acme.com|backend engineer payments remote||https://acme.com/jobs/4",
+      "fingerprint": "fp1:b227e580d946fdf69cc1779da81249b0f4ee27ad4e0a427e66df0c51554a09c9"
+    },
+    {
+      "name": "tracking params dropped from the url part",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Account Executive",
+        "location_primary": "Singapore",
+        "apply_url": "https://careers.acme.com/jobs/5?utm_source=linkedin&utm_medium=social&ref=abc&lang=en&gh_src=x&fbclid=1&gclid=2&source=feed&lever-source=y"
+      },
+      "key": "gen|acme.com|account executive|singapore|https://careers.acme.com/jobs/5?lang=en",
+      "fingerprint": "fp1:93785a9e09f2e6bd53da14d49c11dbd7626ef520831d8ab11b27f714f5548b26"
+    },
+    {
+      "name": "query params sorted",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Engineer",
+        "apply_url": "https://careers.acme.com/jobs?team=eng&b=2&a=1"
+      },
+      "key": "gen|acme.com|engineer||https://careers.acme.com/jobs?a=1&b=2&team=eng",
+      "fingerprint": "fp1:2b7509d71404bf92070ec44b85f7d0b343f076b9895e096ffa01d4c1d6eeebdf"
+    },
+    {
+      "name": "default port and fragment dropped, uppercase scheme/host lowered",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Engineer",
+        "apply_url": "HTTPS://Careers.ACME.com:443/Jobs/8#apply"
+      },
+      "key": "gen|acme.com|engineer||https://careers.acme.com/Jobs/8",
+      "fingerprint": "fp1:a0ceea55828b1b5d3ad4b7ca16bee21e13cb4752a6556a1d95085218766a2819"
+    },
+    {
+      "name": "IDN company and apply hosts in punycode",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "bücher.de",
+        "title": "Buchhändler (m/w/d)",
+        "location_primary": "München",
+        "apply_url": "https://karriere.bücher.de/stellen/1"
+      },
+      "key": "gen|xn--bcher-kva.de|buchhändler m/w/d|münchen|https://karriere.xn--bcher-kva.de/stellen/1",
+      "fingerprint": "fp1:455d4378e1fb98b3d75ed762bbcd77c76ba6aed85704b9d4e70ed78d5dc16399"
+    },
+    {
+      "name": "private suffix github.io keeps the user label",
+      "input": {
+        "source_kind": "custom_url",
+        "company_domain": "acme.github.io",
+        "title": "Open Source Maintainer",
+        "apply_url": "https://acme.github.io/jobs/1"
+      },
+      "key": "gen|acme.github.io|open source maintainer||https://acme.github.io/jobs/1",
+      "fingerprint": "fp1:165e182e49a92f9b27000fcb4b4570599f05abdf645a32fdc1da6afe92739c10"
+    },
+    {
+      "name": "multi-level suffix co.id from a subdomain",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "careers.telkom.co.id",
+        "title": "Network Engineer",
+        "location_primary": "Bandung",
+        "apply_url": "https://careers.telkom.co.id/vacancy/31"
+      },
+      "key": "gen|telkom.co.id|network engineer|bandung|https://careers.telkom.co.id/vacancy/31",
+      "fingerprint": "fp1:5b4ae1e85d41f24a4435416cdaa773b953126ada767c9a5f14c01c90cbb055fd"
+    },
+    {
+      "name": "academic suffix ac.id",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "www.ui.ac.id",
+        "title": "Dosen Ilmu Komputer",
+        "location_primary": "Depok",
+        "apply_url": "https://www.ui.ac.id/lowongan/7"
+      },
+      "key": "gen|ui.ac.id|dosen ilmu komputer|depok|https://www.ui.ac.id/lowongan/7",
+      "fingerprint": "fp1:ebc9fbf5f0471175955534f3af52136d0ec193957cb161db05efeac080f22179"
+    },
+    {
+      "name": "manual posting with no host or url",
+      "input": {
+        "source_kind": "manual",
+        "title": "Office Manager",
+        "location_primary": "Bandung"
+      },
+      "key": "gen||office manager|bandung|",
+      "fingerprint": "fp1:960a34260ccc316384aba28abe91c5f6dab8430bcd7877612bfee9ee2c667ee1"
+    },
+    {
+      "name": "mailto apply_url contributes no url",
+      "input": {
+        "source_kind": "email",
+        "company_domain": "acme.co.id",
+        "title": "Finance Staff",
+        "location_primary": "Surabaya",
+        "apply_url": "mailto:hr@acme.co.id?subject=Apply"
+      },
+      "key": "gen|acme.co.id|finance staff|surabaya|",
+      "fingerprint": "fp1:19af1a080e8c337e5f6004e985d266034c7b9721abef3bb4d3c9f13420ae5cff"
+    },
+    {
+      "name": "IP host has no registrable domain: host itself",
+      "input": {
+        "source_kind": "custom_url",
+        "title": "QA Tester",
+        "apply_url": "http://192.168.1.10:8080/jobs/1"
+      },
+      "key": "gen|192.168.1.10|qa tester||http://192.168.1.10:8080/jobs/1",
+      "fingerprint": "fp1:49b2ae7d185b7fe8bae386835f3ca830eac6d4dee1d076308b809e61f7b92a30"
+    },
+    {
+      "name": "unicode location keeps letters, strips comma",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com.br",
+        "title": "Engenheiro de Dados",
+        "location_primary": "São Paulo, Brasil",
+        "apply_url": "https://acme.com.br/vagas/3"
+      },
+      "key": "gen|acme.com.br|engenheiro de dados|são paulo brasil|https://acme.com.br/vagas/3",
+      "fingerprint": "fp1:e332af5f8d61764f619539fcb15dd4b201020cc0838e340ce2fbc65894c62ab3"
+    },
+    {
+      "name": "NBSP, zero-width space, tab and newline",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "  Senior\tData Engineer​\n",
+        "location_primary": "Remote (Indonesia)",
+        "apply_url": "https://acme.com/jobs/12"
+      },
+      "key": "gen|acme.com|senior data engineer|remote indonesia|https://acme.com/jobs/12",
+      "fingerprint": "fp1:f541075a9c01c3acf857b14d4cd423fa7f0ebdda9f35e77d0355318c764726ed"
+    },
+    {
+      "name": "emoji and ampersand stripped",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "🚀 R&D Engineer",
+        "apply_url": "https://acme.com/jobs/13"
+      },
+      "key": "gen|acme.com|rd engineer||https://acme.com/jobs/13",
+      "fingerprint": "fp1:8895fed8021367c935b58c5edccb044cb8e3ba18eaaf3bc96b86fd20472c55d0"
+    },
+    {
+      "name": "dots kept: Sr. Node.js",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.com",
+        "title": "Sr. Node.js Developer",
+        "apply_url": "https://acme.com/jobs/14"
+      },
+      "key": "gen|acme.com|sr. node.js developer||https://acme.com/jobs/14",
+      "fingerprint": "fp1:649c5b921800d749442781a686475361e51d2b46e63757f1a6cb01c7f4c60c7f"
+    },
+    {
+      "name": "Indonesian title with slash",
+      "input": {
+        "source_kind": "career_page",
+        "company_domain": "acme.co.id",
+        "title": "Staf Admin/Keuangan",
+        "location_primary": "Jakarta Selatan",
+        "apply_url": "https://acme.co.id/karir/staf-admin"
+      },
+      "key": "gen|acme.co.id|staf admin/keuangan|jakarta selatan|https://acme.co.id/karir/staf-admin",
+      "fingerprint": "fp1:fd9bbc97d0454372281c726cf59fa9a0adb202847bbe289800df420ad7121d9b"
+    }
+  ],
+  "normalize_text": [
+    {
+      "input": "Backend Engineer",
+      "output": "backend engineer"
+    },
+    {
+      "input": "  Senior   Software\tEngineer \n",
+      "output": "senior software engineer"
+    },
+    {
+      "input": "Ｓｏｆｔｗａｒｅ　Ｅｎｇｉｎｅｅｒ",
+      "output": "software engineer"
+    },
+    {
+      "input": "C++ Developer",
+      "output": "c++ developer"
+    },
+    {
+      "input": "C# / .NET",
+      "output": "c# / .net"
+    },
+    {
+      "input": "CI/CD Engineer",
+      "output": "ci/cd engineer"
+    },
+    {
+      "input": "Full-Stack Developer",
+      "output": "full-stack developer"
+    },
+    {
+      "input": "R&D Engineer",
+      "output": "rd engineer"
+    },
+    {
+      "input": "Backend Engineer — Payments | Remote",
+      "output": "backend engineer payments remote"
+    },
+    {
+      "input": "Engineer (Remote)",
+      "output": "engineer remote"
+    },
+    {
+      "input": "Data Engineer​",
+      "output": "data engineer"
+    },
+    {
+      "input": "🚀 Growth Marketer",
+      "output": "growth marketer"
+    },
+    {
+      "input": "Ingenieur (m/w/d) – München",
+      "output": "ingenieur m/w/d münchen"
+    },
+    {
+      "input": "São Paulo, Brasil",
+      "output": "são paulo brasil"
+    },
+    {
+      "input": "Straße",
+      "output": "straße"
+    },
+    {
+      "input": "ΟΔΟΣ",
+      "output": "οδος"
+    },
+    {
+      "input": "50% Remote! $120k+",
+      "output": "50 remote 120k+"
+    },
+    {
+      "input": "Sr. Node.js Developer",
+      "output": "sr. node.js developer"
+    },
+    {
+      "input": "“Quoted” ‘Title’",
+      "output": "quoted title"
+    },
+    {
+      "input": "Ⅳ ﬁnance",
+      "output": "iv finance"
+    },
+    {
+      "input": "x　y z",
+      "output": "x y z"
+    },
+    {
+      "input": "",
+      "output": ""
+    },
+    {
+      "input": " , ; ",
+      "output": ""
+    }
+  ],
+  "content_hash": [
+    {
+      "title": "Backend Engineer",
+      "description": "Build APIs in Go.\nWork with PostgreSQL.",
+      "normalized": "backend engineer\nbuild apis in go. work with postgresql.",
+      "content_hash": "77d5af2b233fa6abb0497841e73939e69edb326fcf53e7782abe5b99f7eb351f"
+    },
+    {
+      "title": "  BACKEND   engineer ",
+      "description": "Build APIs in Go. Work with PostgreSQL.",
+      "normalized": "backend engineer\nbuild apis in go. work with postgresql.",
+      "content_hash": "77d5af2b233fa6abb0497841e73939e69edb326fcf53e7782abe5b99f7eb351f"
+    },
+    {
+      "title": "Data Engineer",
+      "description": "",
+      "normalized": "data engineer\n",
+      "content_hash": "a99ab33726d257ea0429bec49f3ace7a9a49583b8f53d9cf9661de3b53151111"
+    },
+    {
+      "title": "Insinyur Data",
+      "description": "Membangun pipeline data — Python & SQL.",
+      "normalized": "insinyur data\nmembangun pipeline data python sql.",
+      "content_hash": "fb47db27f91c0d5cab46f1e6ae35c0d2cb8ddc8003d7f14a8b927acf2c6ee51e"
+    }
+  ],
+  "dedupe_group": [
+    {
+      "input": {
+        "company_domain": "careers.acme.com",
+        "title": "Backend Engineer",
+        "location_primary": "Jakarta, Indonesia"
+      },
+      "key": "acme.com|backend engineer|jakarta indonesia",
+      "dedupe_group": "75edc337cc01c75e923eaa028d9d2a4d04b3b209da6a34b0b3d06b4923b45d7d"
+    },
+    {
+      "input": {
+        "company_domain": "ACME.COM",
+        "title": "backend   engineer",
+        "location_primary": "Jakarta Indonesia"
+      },
+      "key": "acme.com|backend engineer|jakarta indonesia",
+      "dedupe_group": "75edc337cc01c75e923eaa028d9d2a4d04b3b209da6a34b0b3d06b4923b45d7d"
+    },
+    {
+      "input": {
+        "company_domain": "acme.co.uk",
+        "title": "Nurse",
+        "location_primary": null
+      },
+      "key": "acme.co.uk|nurse|",
+      "dedupe_group": "0d00a626daebf96c6192abd98ae6d3e7a025b2ebb1a0093224cecd55933240b6"
+    },
+    {
+      "input": {
+        "company_domain": null,
+        "title": "Nurse",
+        "location_primary": "London"
+      },
+      "key": null,
+      "dedupe_group": null
+    }
+  ],
+  "legacy": [
+    {
+      "user_id": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "legacy_id": "3f2b9c1e-7a6d-4e2f-9b1c-0d8e7f6a5b4c",
+      "key": "legacy|usr_01JA6V8M3W8Z1T6Q4Y2B7K9C0D|3f2b9c1e-7a6d-4e2f-9b1c-0d8e7f6a5b4c",
+      "fingerprint": "fp1:bf340d5becb11c74f4bec1b01677169401e38bdc41dd3b7429d0a01d4f0cb1ab"
+    },
+    {
+      "user_id": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C0D",
+      "legacy_id": "backend-engineer-acme",
+      "key": "legacy|usr_01JA6V8M3W8Z1T6Q4Y2B7K9C0D|backend-engineer-acme",
+      "fingerprint": "fp1:1322592beeef56fdf5b679706e9dc7806bdd731a80485fbdf8bbd602b696c034"
+    }
+  ]
+}

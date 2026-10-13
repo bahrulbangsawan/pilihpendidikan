@@ -65,6 +65,12 @@ button.secondary { border-color: color-mix(in srgb, var(--border) 60%, transpare
 button.secondary:hover { background: color-mix(in srgb, var(--pane) 70%, transparent); box-shadow: none; }
 button.danger { border-color: color-mix(in srgb, var(--error) 25%, transparent); background: color-mix(in srgb, var(--error) 10%, transparent); color: var(--error); box-shadow: var(--lip); }
 button.danger:hover { background: color-mix(in srgb, var(--error) 15%, transparent); box-shadow: none; }
+button.link { display: inline; height: auto; padding: 0; border: 0; background: none; color: var(--primary); font: inherit; text-decoration: underline; text-underline-offset: 3px; box-shadow: none; }
+button.link:hover { opacity: 0.8; }
+button.link:active { transform: none; }
+ul.scopes { margin: 0 0 16px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+ul.scopes li { position: relative; padding: 8px 0 8px 20px; border-bottom: 1px solid var(--line); color: var(--fg); }
+ul.scopes li::before { content: ""; position: absolute; left: 4px; top: 14px; width: 6px; height: 6px; border: 1px solid var(--line); background: var(--bg-2); transform: rotate(45deg); }
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 input:focus-visible, select:focus-visible { outline: none; }
 .msg { margin: 0 0 16px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 0; background: var(--bg-2); color: var(--fg); }

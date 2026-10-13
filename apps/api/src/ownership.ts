@@ -7,9 +7,12 @@
 //   portfolio  PORTFOLIO_KV  owner:portfolio:{id}
 //   jobs       JOBS_KV       owner:job:{id}
 //
-// A document without a stamp (written before stamps existed) is reachable
-// only by admins (ADMIN_EMAILS). The MCP ownership guard and every REST
-// handler resolve ownership through this one module.
+// A cv / invoice / portfolio document without a stamp (written before stamps
+// existed) is reachable only by admins (ADMIN_EMAILS). Jobs are different
+// (D-26, BREAKING for admin tooling): admins get no bypass, so an unstamped
+// job is reachable by nobody (support uses scripts/support-access.ts). The
+// MCP ownership guard and every REST handler resolve ownership through this
+// one module (jobs through src/jobs/legacy, which also covers JOBS_DB).
 
 import type { Caller } from "./auth";
 import type { Env } from "./env";
@@ -65,14 +68,15 @@ export async function clearOwner(
   await namespaceFor(env, kind).delete(ownerKey(kind, id));
 }
 
-// Admins bypass; everyone else needs the stamp to equal their email.
+// Admins bypass for cv / invoice / portfolio; everyone else — and everyone
+// for jobs (D-26) — needs the stamp to equal their email.
 export async function ownsDocument(
   caller: Caller,
   env: Env,
   kind: OwnedKind,
   id: string
 ): Promise<boolean> {
-  if (caller.isAdmin) {
+  if (caller.isAdmin && kind !== "jobs") {
     return true;
   }
   return (await resolveOwner(env, kind, id)) === caller.email;
@@ -109,7 +113,9 @@ export function jobIdsOwnedBy(
 }
 
 const LIST_PAGE_LIMIT = 1000;
-// Upper bound on pages scanned per listing (10k documents).
+// Default upper bound on pages scanned per document listing (10k documents).
+// Jobs pass `Number.POSITIVE_INFINITY`: `jobs_list` and `GET /api/jobs` read
+// every page (05 §14, T6-14).
 const LIST_MAX_PAGES = 10;
 
 export interface ListedKey<M> {
@@ -117,14 +123,15 @@ export interface ListedKey<M> {
   metadata: M | undefined;
 }
 
-// Every key under `prefix`, following KV list cursors.
+// Every key under `prefix`, following KV list cursors (at most `maxPages`).
 export async function listAllKeys<M>(
   kv: KVNamespace,
-  prefix: string
+  prefix: string,
+  maxPages: number = LIST_MAX_PAGES
 ): Promise<ListedKey<M>[]> {
   const keys: ListedKey<M>[] = [];
   let cursor: string | undefined;
-  for (let page = 0; page < LIST_MAX_PAGES; page++) {
+  for (let page = 0; page < maxPages; page++) {
     const result: KVNamespaceListResult<M> = await kv.list<M>({
       prefix,
       limit: LIST_PAGE_LIMIT,

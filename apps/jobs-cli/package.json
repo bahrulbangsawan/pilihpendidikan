@@ -1,0 +1,17 @@
+{
+  "name": "@pilihpendidikan/jobs-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Turborepo shim for the pilih-jobs Python CLI (uv project; see README.md)",
+  "scripts": {
+    "test": "sh ../../scripts/require-uv.sh && uv run pytest -m \"not e2e and not live and not browser\"",
+    "test:browser": "sh ../../scripts/require-uv.sh && uv run pytest -m browser",
+    "test:e2e": "sh ../../scripts/require-uv.sh && uv run pytest -m e2e",
+    "lint": "sh ../../scripts/require-uv.sh && uv run ruff check src tests scripts && uv run ruff format --check src tests scripts && uv run lint-imports",
+    "typecheck": "sh ../../scripts/require-uv.sh && uv run pyright",
+    "build": "sh ../../scripts/require-uv.sh && uv build",
+    "contracts": "sh ../../scripts/require-uv.sh && uv run python scripts/gen_contracts.py",
+    "contracts:check": "sh ../../scripts/require-uv.sh && uv run python scripts/gen_contracts.py --check",
+    "audit": "sh ../../scripts/require-uv.sh && uv export --frozen --format requirements-txt --no-emit-project --all-groups --quiet | uv run --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin"
+  }
+}

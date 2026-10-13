@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@pilihpendidikan/config/motion.css";
+@import "@rulisme/ui/styles/shadcn.css";
+/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+   imports the same theme; nothing below redefines a token (12 §1). */
+@import "@rulisme/ui/styles/theme.css";
+
+/* The app compiles @rulisme/ui from source (vite `resolve.tsconfigPaths`),
+   so Tailwind scans that source for the classes it uses. */
+@source "../../../packages/ui/src";

@@ -3,7 +3,7 @@ import type { Services } from "@/config/services";
 import { SERVICES } from "@/config/services";
 import { buildJsonLd, buildLlmsTxt } from "./discovery";
 
-const SUBDOMAINS = ["cv.", "invoice.", "portfolio.", "api."];
+const SUBDOMAINS = ["cv.", "invoice.", "portfolio.", "jobs.", "api."];
 
 /** Only `live` services are live, whatever the shipped config says. */
 function services(live: (keyof Services)[]): Services {
@@ -27,7 +27,7 @@ describe("llms.txt", () => {
   it("lists only the live tool", () => {
     const text = buildLlmsTxt(services(["cv"]));
     expect(text).toContain("](https://cv.pilihpendidikan.com)");
-    for (const subdomain of ["invoice.", "portfolio.", "api."]) {
+    for (const subdomain of ["invoice.", "portfolio.", "jobs.", "api."]) {
       expect(text).not.toContain(`${subdomain}pilihpendidikan.com`);
     }
   });
@@ -36,6 +36,21 @@ describe("llms.txt", () => {
     const text = buildLlmsTxt(services(["api"]));
     expect(text).toContain("https://api.pilihpendidikan.com/mcp");
     expect(text).toContain("https://api.pilihpendidikan.com/connect");
+  });
+});
+
+describe("job tracker while soon", () => {
+  it("is not in llms.txt or JSON-LD until it is live", () => {
+    expect(buildLlmsTxt(SERVICES)).not.toContain("jobs.pilihpendidikan.com");
+    expect(JSON.stringify(buildJsonLd(SERVICES))).not.toContain(
+      "jobs.pilihpendidikan.com"
+    );
+  });
+
+  it("is listed once live", () => {
+    expect(buildLlmsTxt(services(["jobs"]))).toContain(
+      "](https://jobs.pilihpendidikan.com)"
+    );
   });
 });
 

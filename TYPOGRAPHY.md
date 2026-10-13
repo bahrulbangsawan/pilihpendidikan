@@ -6,8 +6,8 @@ owns the utilities, the lint rules and their exceptions. Where they conflict,
 `DESIGN.md` wins on values and this file wins on rules.
 
 Every UI surface in the workspace shares one type scale and one `cn()`:
-**`apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio`, `apps/design`**
-and **`packages/ui`**.
+**`apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio`, `apps/jobs`,
+`apps/design`** and **`packages/ui`**.
 
 ## Single Source of Truth
 
@@ -72,9 +72,12 @@ so iOS Safari does not zoom on focus.
 
 `scripts/lint-typography.sh` (`bun run lint:typography`) checks
 `apps/home/src`, `apps/cv/src`, `apps/invoice/src`, `apps/portfolio/src`,
-`apps/design/src` and `packages/ui/src`, and fails on any match. Inline style
-font properties are checked as TypeScript/JSX syntax by
-`scripts/check-inline-typography.ts`.
+`apps/jobs/src`, `apps/design/src` and `packages/ui/src`, and fails on any
+match. Its print rules (17 and 18) also scan the CV PDF templates in
+`packages/cv-engine/src/pdf` and the shared print module in
+`packages/ui/src/print`. Inline style font properties are checked as
+TypeScript/JSX syntax by `scripts/check-inline-typography.ts` over the same
+app roots.
 
 | Pattern | Why | Use instead |
 | ------- | --- | ----------- |
@@ -102,8 +105,8 @@ reason no token works and the alternative considered.
 
 | Component | Pattern | Reason | Alternative considered |
 | --------- | ------- | ------ | ---------------------- |
-| `@react-pdf` renderers (`apps/cv/src/components/templates/*-pdf.tsx`, `apps/invoice/src/components/invoice-pdf.tsx`, `apps/portfolio/src/components/portfolio-pdf.tsx`) | `StyleSheet` `fontSize` / `fontWeight` (and `fontFamily: PDF_FONT_FAMILY`, the shared print family) | react-pdf has no `className`; StyleSheet props are the only way to set type in the exported PDF. `check-inline-typography.ts` skips `*-pdf.tsx` files that import `@react-pdf/renderer`, and the shared `packages/ui/src/print/pdf-fonts.ts` (its cut list names the embedded weights). Lint rule 17 still holds them, the print module and every app's `src/styles.css` to one family (Inter: no other family in a StyleSheet, a fallback list or `Font.register`, no built-in PDF font, no literal family in print CSS); rule 18 to no uppercase or letter-spacing | None — the PDF renderer cannot read CSS tokens |
-| On-screen print documents (`apps/cv/src/components/templates/*-preview.tsx`, `templates/preview-entries.tsx`, `apps/invoice/src/components/invoice-preview.tsx`) | Print sizes (`text-[…rem]`, generic sizes), `leading-*`, and the static Inter weights 400 / 600 / 700 | The paper mirrors its PDF twin, which embeds static Inter cuts (react-pdf cannot use the variable `wght` / `opsz` axes) at print sizes. Only the size, leading and weight checks skip these files (`PRINT_GLOBS`); one family, no uppercase, no letter-spacing, tokens instead of hex and every other rule apply | The six screen roles — rejected: the printed CV and invoice would stop matching their PDFs |
+| `@react-pdf` renderers (the CV templates `packages/cv-engine/src/pdf/*-pdf.tsx`, `apps/invoice/src/components/invoice-pdf.tsx`, `apps/portfolio/src/components/portfolio-pdf.tsx`) | `StyleSheet` `fontSize` / `fontWeight` (and `fontFamily: PDF_FONT_FAMILY`, the shared print family) | react-pdf has no `className`; StyleSheet props are the only way to set type in the exported PDF. `check-inline-typography.ts` skips `*-pdf.tsx` files that import `@react-pdf/renderer`, and the shared `packages/ui/src/print/pdf-fonts.ts` (its cut list names the embedded weights). Lint rule 17 still holds them, the print module and every app's `src/styles.css` to one family (Inter: no other family in a StyleSheet, a fallback list or `Font.register`, no built-in PDF font, no literal family in print CSS); rule 18 to no uppercase or letter-spacing | None — the PDF renderer cannot read CSS tokens |
+| On-screen print documents (`apps/cv/src/components/templates/*-preview.tsx`, the HTML twins of the cv-engine PDFs, `templates/preview-entries.tsx`, `apps/invoice/src/components/invoice-preview.tsx`) | Print sizes (`text-[…rem]`, generic sizes), `leading-*`, and the static Inter weights 400 / 600 / 700 | The paper mirrors its PDF twin, which embeds static Inter cuts (react-pdf cannot use the variable `wght` / `opsz` axes) at print sizes. Only the size, leading and weight checks skip these files (`PRINT_GLOBS`); one family, no uppercase, no letter-spacing, tokens instead of hex and every other rule apply | The six screen roles — rejected: the printed CV and invoice would stop matching their PDFs |
 | Print / PDF colours (`*-pdf.tsx`, `.cv-page`, `.invoice-page`, `.pf-*`) | Literal Zedative values on white paper (`#000000` headings, `#393d45` ink, `#5a6170` muted, `#cbcfd4` rules, `#1348dc` links); the user's own invoice accent | A print artifact must not change with Night Desk, so the paper re-scopes the token variables to these literals | None — print must look the same in every scheme |
 | Flag SVGs, social-platform logos | Brand / `#fff` colours | Third-party marks, not chrome | None — recognition requires accurate colour |
 

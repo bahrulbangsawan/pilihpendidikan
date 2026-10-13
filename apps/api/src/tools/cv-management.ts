@@ -1,6 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { Caller } from "../auth";
+import {
+  createCvDocument,
+  isPrivateCv,
+  isTailoredCvId,
+} from "../documents/cv-create";
 import type { Env } from "../env";
 import {
   cvEditUrl,
@@ -15,6 +20,20 @@ import {
 import { optionalEmail, optionalUrl } from "../schemas";
 import type { CVData } from "../types";
 import { createEmptyCV, DEFAULT_SECTION_ORDER } from "../types";
+
+// D-25: a private CV (every tailored Job Tracker variant) is readable only by
+// its owner, so the admin bypass of the ownership guard does not reach it.
+async function hiddenPrivateCv(
+  env: Env,
+  caller: Caller | null,
+  cvId: string,
+  data: unknown
+): Promise<boolean> {
+  if (!(caller && isPrivateCv(data))) {
+    return false;
+  }
+  return (await env.CV_KV.get(`owner:cv:${cvId}`)) !== caller.email;
+}
 
 export function registerCvManagementTools(
   server: McpServer,
@@ -32,7 +51,7 @@ export function registerCvManagementTools(
     },
     async ({ cv_id }) => {
       const data = await getCV(env.CV_KV, cv_id);
-      if (!data) {
+      if (!data || (await hiddenPrivateCv(env, caller, cv_id, data))) {
         return text(`CV "${cv_id}" not found.`);
       }
       return json(data);
@@ -55,12 +74,17 @@ export function registerCvManagementTools(
         jobTitle: k.metadata?.jobTitle ?? "",
       }));
       // Non-admins only see CVs they own (owner stamped at create time).
-      if (caller && !caller.isAdmin) {
+      // Admins see every CV except other people's tailored (private) ones.
+      if (caller) {
         const email = caller.email;
+        const needsOwnerCheck = (cv: { id: string }) =>
+          !caller.isAdmin || isTailoredCvId(cv.id);
         const checked = await Promise.all(
           cvs.map(async (cv) => ({
             cv,
-            owner: await env.CV_KV.get(`owner:cv:${cv.id}`),
+            owner: needsOwnerCheck(cv)
+              ? await env.CV_KV.get(`owner:cv:${cv.id}`)
+              : email,
           }))
         );
         cvs = checked.filter((c) => c.owner === email).map((c) => c.cv);
@@ -83,18 +107,21 @@ export function registerCvManagementTools(
       },
     },
     async ({ cv_id, full_name, job_title }) => {
-      const existing = await getCV(env.CV_KV, cv_id);
-      if (existing) {
-        return text(
-          `CV "${cv_id}" already exists. Use a different ID or delete it first.`
-        );
-      }
       const cv = createEmptyCV();
       cv.personalInfo.fullName = full_name;
       cv.personalInfo.jobTitle = job_title;
-      await putCV(env.CV_KV, cv_id, cv);
-      if (caller) {
-        await env.CV_KV.put(`owner:cv:${cv_id}`, caller.email);
+      // The same path the Job Tracker's tailored variants take (08 §5):
+      // KV document + owner stamp, an existing id refused.
+      const result = await createCvDocument(
+        env,
+        caller ? { email: caller.email } : null,
+        cv_id,
+        cv
+      );
+      if (!result.ok) {
+        return text(
+          `CV "${cv_id}" already exists. Use a different ID or delete it first.`
+        );
       }
       return saved(`CV "${cv_id}" created successfully.`, cv_id);
     }

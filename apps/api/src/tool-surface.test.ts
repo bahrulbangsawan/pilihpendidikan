@@ -21,10 +21,12 @@ const READER: Caller = {
   isAdmin: false,
   scope: "read",
 };
+const FORBIDDEN_MCP_TOOL_RE = /purge|apply|task|rule/;
 const FAMILY_RE = /^(cv|invoice|portfolio|jobs)_/;
 
 // The full tool surface the old backend served for these four families.
-const EXPECTED_COUNTS = { cv: 30, invoice: 22, portfolio: 19, jobs: 11 };
+// jobs: the 11 legacy tracker tools + 7 board/approval tools (05 §14).
+const EXPECTED_COUNTS = { cv: 30, invoice: 22, portfolio: 19, jobs: 18 };
 
 function countByFamily(names: string[]) {
   const counts = { cv: 0, invoice: 0, portfolio: 0, jobs: 0 };
@@ -43,7 +45,7 @@ describe("tool surface for a write-scoped caller", () => {
   it("registers every cv_, invoice_, portfolio_ and jobs_ tool and nothing else", () => {
     expect(names.every((name) => FAMILY_RE.test(name))).toBe(true);
     expect(countByFamily(names)).toEqual(EXPECTED_COUNTS);
-    expect(names).toHaveLength(82);
+    expect(names).toHaveLength(89);
   });
 
   it("marks read-only tools with readOnlyHint and the rest as writes", () => {
@@ -73,6 +75,43 @@ describe("tool surface for a write-scoped caller", () => {
     await handler?.({ params: { name: "get_cv", arguments: {} } }, {});
     await handler?.({ params: { name: "cv_get", arguments: {} } }, {});
     expect(session.calls.map((c) => c.name)).toEqual(["cv_get", "cv_get"]);
+  });
+});
+
+describe("TL-MCP-NEW board and approval tools on the surface (05 §14)", () => {
+  const NEW_TOOLS = [
+    "jobs_board",
+    "jobs_move",
+    "jobs_note_add",
+    "jobs_interview_add",
+    "jobs_offer_add",
+    "jobs_approvals_list",
+    "jobs_approval_decide",
+  ];
+
+  it("TL-MCP-NEW registers the seven new tools for a write-scoped caller", () => {
+    const { env } = createTestEnv();
+    const session = createToolSession(env, WRITER);
+    for (const name of NEW_TOOLS) {
+      expect(session.tools.has(name)).toBe(true);
+    }
+  });
+
+  it("TL-MCP-NEW gives a read-scoped caller only jobs_board and jobs_approvals_list", () => {
+    const { env } = createTestEnv();
+    const session = createToolSession(env, READER);
+    expect(NEW_TOOLS.filter((name) => session.tools.has(name))).toEqual([
+      "jobs_board",
+      "jobs_approvals_list",
+    ]);
+  });
+
+  it("TL-MCP-NEW exposes no purge, task-creation or rule tool to MCP (06 §11)", () => {
+    const { env } = createTestEnv();
+    const names = [...createToolSession(env, WRITER).tools.keys()];
+    expect(names.filter((name) => FORBIDDEN_MCP_TOOL_RE.test(name))).toEqual(
+      []
+    );
   });
 });
 
@@ -114,7 +153,7 @@ describe("end to end through the real MCP SDK", () => {
     await client.connect(clientTransport);
 
     const listed = await client.listTools();
-    expect(listed.tools).toHaveLength(82);
+    expect(listed.tools).toHaveLength(89);
     expect(listed.tools.some((tool) => tool.name === "get_cv")).toBe(false);
 
     const created = await client.callTool({

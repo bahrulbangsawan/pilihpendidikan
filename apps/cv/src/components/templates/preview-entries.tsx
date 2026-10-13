@@ -1,6 +1,9 @@
+import type { CVData } from "@pilihpendidikan/cv-engine/types";
+import {
+  formatOngoingEndDate,
+  getDescriptionLines,
+} from "@pilihpendidikan/cv-engine/template-utils";
 import { ensureUrl } from "@rulisme/ui/lib/utils";
-import type { CVData } from "@/components/cv-form";
-import { formatOngoingEndDate, getDescriptionLines } from "./template-utils";
 
 const WORK_TYPE_LABELS: Record<string, string> = {
   "full-time": "Full-Time",

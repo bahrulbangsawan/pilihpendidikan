@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "description": "Title families for scoring feature F2 (07 §3): titles in one family count as an exact family match. Every title is in normalizeText form; seniority_words are stripped before comparing.",
+  "seniority_words": [
+    "intern",
+    "internship",
+    "trainee",
+    "graduate",
+    "entry-level",
+    "entry level",
+    "junior",
+    "jr",
+    "jr.",
+    "associate",
+    "mid",
+    "mid-level",
+    "middle",
+    "senior",
+    "sr",
+    "sr.",
+    "lead",
+    "principal",
+    "staff",
+    "head",
+    "chief",
+    "i",
+    "ii",
+    "iii",
+    "iv",
+    "magang"
+  ],
+  "families": [
+    {
+      "id": "software_engineering",
+      "label": "Software engineering",
+      "titles": [
+        "software engineer",
+        "software developer",
+        "backend engineer",
+        "backend developer",
+        "back-end engineer",
+        "back-end developer",
+        "full-stack engineer",
+        "full-stack developer",
+        "fullstack engineer",
+        "fullstack developer",
+        "full stack engineer",
+        "full stack developer",
+        "application developer",
+        "programmer",
+        "pengembang perangkat lunak",
+        "programmer backend"
+      ]
+    },
+    {
+      "id": "frontend_engineering",
+      "label": "Frontend engineering",
+      "titles": [
+        "frontend engineer",
+        "frontend developer",
+        "front-end engineer",
+        "front-end developer",
+        "ui engineer",
+        "ui developer",
+        "web developer",
+        "pengembang web",
+        "programmer frontend"
+      ]
+    },
+    {
+      "id": "mobile_engineering",
+      "label": "Mobile engineering",
+      "titles": [
+        "mobile engineer",
+        "mobile developer",
+        "android engineer",
+        "android developer",
+        "ios engineer",
+        "ios developer",
+        "flutter developer",
+        "react native developer"
+      ]
+    },
+    {
+      "id": "devops_sre",
+      "label": "DevOps and SRE",
+      "titles": [
+        "devops engineer",
+        "site reliability engineer",
+        "sre",
+        "platform engineer",
+        "infrastructure engineer",
+        "cloud engineer",
+        "build engineer",
+        "release engineer"
+      ]
+    },
+    {
+      "id": "data_engineering",
+      "label": "Data engineering",
+      "titles": [
+        "data engineer",
+        "analytics engineer",
+        "etl developer",
+        "big data engineer",
+        "data platform engineer"
+      ]
+    },
+    {
+      "id": "data_science_ml",
+      "label": "Data science and ML",
+      "titles": [
+        "data scientist",
+        "machine learning engineer",
+        "ml engineer",
+        "ai engineer",
+        "research scientist",
+        "applied scientist",
+        "nlp engineer",
+        "computer vision engineer"
+      ]
+    },
+    {
+      "id": "data_analysis",
+      "label": "Data analysis",
+      "titles": [
+        "data analyst",
+        "business intelligence analyst",
+        "bi analyst",
+        "reporting analyst",
+        "analis data"
+      ]
+    },
+    {
+      "id": "qa_testing",
+      "label": "QA and testing",
+      "titles": [
+        "qa engineer",
+        "quality assurance engineer",
+        "test engineer",
+        "software tester",
+        "sdet",
+        "automation test engineer",
+        "qa analyst"
+      ]
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "titles": [
+        "security engineer",
+        "security analyst",
+        "cybersecurity analyst",
+        "penetration tester",
+        "application security engineer",
+        "soc analyst"
+      ]
+    },
+    {
+      "id": "embedded_engineering",
+      "label": "Embedded engineering",
+      "titles": [
+        "embedded engineer",
+        "embedded software engineer",
+        "firmware engineer",
+        "iot engineer"
+      ]
+    },
+    {
+      "id": "game_development",
+      "label": "Game development",
+      "titles": [
+        "game developer",
+        "game programmer",
+        "unity developer",
+        "gameplay engineer"
+      ]
+    },
+    {
+      "id": "solutions_architecture",
+      "label": "Solutions architecture",
+      "titles": [
+        "solutions architect",
+        "software architect",
+        "cloud architect",
+        "technical architect",
+        "enterprise architect"
+      ]
+    },
+    {
+      "id": "engineering_management",
+      "label": "Engineering management",
+      "titles": [
+        "engineering manager",
+        "software engineering manager",
+        "tech lead",
+        "technical lead",
+        "head of engineering",
+        "vp of engineering",
+        "cto"
+      ]
+    },
+    {
+      "id": "product_management",
+      "label": "Product management",
+      "titles": [
+        "product manager",
+        "product owner",
+        "technical product manager",
+        "product lead"
+      ]
+    },
+    {
+      "id": "product_design",
+      "label": "Product design",
+      "titles": [
+        "product designer",
+        "ux designer",
+        "ui designer",
+        "ui/ux designer",
+        "ux/ui designer",
+        "interaction designer",
+        "visual designer",
+        "desainer ui/ux"
+      ]
+    },
+    {
+      "id": "graphic_design",
+      "label": "Graphic design",
+      "titles": [
+        "graphic designer",
+        "visual communication designer",
+        "illustrator",
+        "desainer grafis"
+      ]
+    },
+    {
+      "id": "project_management",
+      "label": "Project management",
+      "titles": [
+        "project manager",
+        "program manager",
+        "delivery manager",
+        "scrum master",
+        "project coordinator"
+      ]
+    },
+    {
+      "id": "business_analysis",
+      "label": "Business analysis",
+      "titles": [
+        "business analyst",
+        "systems analyst",
+        "functional analyst",
+        "it business analyst"
+      ]
+    },
+    {
+      "id": "it_support",
+      "label": "IT support",
+      "titles": [
+        "it support",
+        "it support specialist",
+        "helpdesk technician",
+        "technical support engineer",
+        "desktop support",
+        "staf it"
+      ]
+    },
+    {
+      "id": "systems_administration",
+      "label": "Systems administration",
+      "titles": [
+        "system administrator",
+        "systems administrator",
+        "network engineer",
+        "network administrator",
+        "database administrator",
+        "dba"
+      ]
+    },
+    {
+      "id": "technical_writing",
+      "label": "Technical writing",
+      "titles": ["technical writer", "documentation engineer", "api writer"]
+    },
+    {
+      "id": "digital_marketing",
+      "label": "Digital marketing",
+      "titles": [
+        "digital marketing specialist",
+        "marketing specialist",
+        "seo specialist",
+        "content marketer",
+        "growth marketer",
+        "social media specialist",
+        "performance marketer"
+      ]
+    },
+    {
+      "id": "content_writing",
+      "label": "Content and copywriting",
+      "titles": ["content writer", "copywriter", "editor", "penulis konten"]
+    },
+    {
+      "id": "sales",
+      "label": "Sales",
+      "titles": [
+        "sales executive",
+        "account executive",
+        "sales representative",
+        "business development executive",
+        "business development manager"
+      ]
+    },
+    {
+      "id": "customer_success",
+      "label": "Customer success",
+      "titles": [
+        "customer success manager",
+        "customer support specialist",
+        "customer service representative",
+        "account manager"
+      ]
+    },
+    {
+      "id": "human_resources",
+      "label": "Human resources",
+      "titles": [
+        "recruiter",
+        "talent acquisition specialist",
+        "hr generalist",
+        "hr specialist",
+        "people operations specialist"
+      ]
+    },
+    {
+      "id": "finance_accounting",
+      "label": "Finance and accounting",
+      "titles": [
+        "accountant",
+        "financial analyst",
+        "finance officer",
+        "tax specialist",
+        "auditor",
+        "akuntan"
+      ]
+    },
+    {
+      "id": "operations",
+      "label": "Operations",
+      "titles": [
+        "operations manager",
+        "operations specialist",
+        "supply chain analyst",
+        "logistics coordinator",
+        "admin officer",
+        "staf admin"
+      ]
+    }
+  ]
+}

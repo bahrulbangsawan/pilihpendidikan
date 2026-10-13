@@ -2,6 +2,7 @@
 // portfolio) differ only in namespace, list metadata, payload check and
 // download name. This table drives the shared REST handlers in ./handlers.ts.
 
+import { CV_VISIBILITIES } from "@pilihpendidikan/cv-engine";
 import type { Env } from "../env";
 import type {
   CVMetadata,
@@ -49,10 +50,13 @@ const cvSpec: DocumentSpec = {
     fullName: (m as Partial<CVMetadata> | undefined)?.fullName ?? "",
     jobTitle: (m as Partial<CVMetadata> | undefined)?.jobTitle ?? "",
   }),
+  // `visibility` (D-25) is optional; when present it must be a known value.
   validate: (body) =>
     isObject(body) &&
     isObject(body.personalInfo) &&
-    Array.isArray(body.sectionOrder)
+    Array.isArray(body.sectionOrder) &&
+    (body.visibility === undefined ||
+      (CV_VISIBILITIES as readonly unknown[]).includes(body.visibility))
       ? body
       : null,
   save: (kv, id, data) => putCV(kv, id, data as CVData),

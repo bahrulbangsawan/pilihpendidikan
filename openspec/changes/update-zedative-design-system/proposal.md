@@ -1,5 +1,19 @@
 # Change: Replace the Warp design system with Zedative
 
+> **Superseded file locations (CV print templates).** `cv-extract-cv-engine`
+> moved the four CV `@react-pdf` templates (`apps/cv/src/components/templates/*-pdf.tsx`),
+> `cv-pdf.tsx`, `template-utils.ts` and `cv-markdown.ts` out of `apps/cv` into
+> `packages/cv-engine` (`src/pdf/*-pdf.tsx`, `src/pdf/cv-document.tsx`,
+> `src/template-utils.ts`, `src/markdown.ts`; `job-tracker-spec/08` §3, D-14). The Zedative print rules
+> below still hold for them unchanged: `scripts/lint-typography.sh` rules 17–18
+> now also scan `packages/cv-engine/src/pdf`, the fonts still come from
+> `@rulisme/ui/print/*` (registered by the caller through
+> `renderCvPdfBlob(..., {registerFonts})`), and the HTML previews stay in
+> `apps/cv/src/components/templates/*-preview.tsx` with
+> `scripts/check-cv-template-parity.ts` guarding preview ↔ PDF pairs. Where
+> the task list below names `apps/cv` PDF paths, read them as the
+> `packages/cv-engine` paths.
+
 ## Why
 
 The workspace is skinned with Warp, a dark "moonlit terminal" system whose

@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "description": "Commands shown on the Connect CLI page (/cli, 22 §12). One source so the page never drifts from the CLI.",
+  "package": "pilih-jobs",
+  "executable": "pilih-jobs",
+  "alias": "pj",
+  "requirements": "Python 3.12 via uv (installed automatically by the installer script).",
+  "install_uv": {
+    "macos": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "linux": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "windows": "powershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"",
+    "docs_url": "https://docs.astral.sh/uv/getting-started/installation/"
+  },
+  "steps": [
+    {
+      "id": "install",
+      "title": "Install",
+      "commands": {
+        "macos": "uv tool install pilih-jobs",
+        "linux": "uv tool install pilih-jobs",
+        "windows": "uv tool install pilih-jobs"
+      },
+      "note": "If the command is not found afterwards, run `uv tool update-shell` and open a new terminal."
+    },
+    {
+      "id": "browser",
+      "title": "Install the browser",
+      "commands": {
+        "macos": "pilih-jobs browser install",
+        "linux": "pilih-jobs browser install",
+        "windows": "pilih-jobs browser install"
+      },
+      "note": "About 550 MB (Chromium and its headless shell)."
+    },
+    {
+      "id": "login",
+      "title": "Sign in",
+      "commands": {
+        "macos": "pilih-jobs login",
+        "linux": "pilih-jobs login",
+        "windows": "pilih-jobs login"
+      },
+      "note": "A browser window asks you to approve this device on api.pilihpendidikan.com."
+    },
+    {
+      "id": "verify",
+      "title": "Verify",
+      "commands": {
+        "macos": "pilih-jobs status",
+        "linux": "pilih-jobs status",
+        "windows": "pilih-jobs status"
+      },
+      "note": "This page shows the device as soon as it connects."
+    },
+    {
+      "id": "next",
+      "title": "Next steps",
+      "commands": {
+        "macos": "pilih-jobs discover --all",
+        "linux": "pilih-jobs discover --all",
+        "windows": "pilih-jobs discover --all"
+      },
+      "note": "Then start the worker so the web can hand it tasks."
+    },
+    {
+      "id": "worker",
+      "title": "Start the worker",
+      "commands": {
+        "macos": "pilih-jobs worker start --detach",
+        "linux": "pilih-jobs worker start --detach",
+        "windows": "pilih-jobs worker start --detach"
+      },
+      "note": "Runs in the background and claims tasks for this device."
+    }
+  ],
+  "alternatives": [
+    {
+      "id": "pipx",
+      "label": "pipx",
+      "command": "pipx install pilih-jobs",
+      "available": true
+    },
+    {
+      "id": "uvx",
+      "label": "uvx (try it without installing)",
+      "command": "uvx pilih-jobs doctor",
+      "available": true
+    },
+    {
+      "id": "homebrew",
+      "label": "Homebrew",
+      "command": "brew install pilihpendidikan/tap/pilih-jobs",
+      "available": false
+    },
+    {
+      "id": "install_script",
+      "label": "Install script",
+      "command": "curl -LsSf https://pilihpendidikan.com/install-cli.sh | sh",
+      "available": false
+    }
+  ],
+  "step_up": [
+    {
+      "id": "automation_manage",
+      "label": "Approve submissions and enable rules from the CLI",
+      "command": "pilih-jobs login --scope automation:manage"
+    },
+    {
+      "id": "devices_manage",
+      "label": "Manage devices from the CLI",
+      "command": "pilih-jobs login --scope devices:manage"
+    }
+  ],
+  "troubleshooting": [
+    {
+      "id": "doctor",
+      "label": "Check the installation",
+      "command": "pilih-jobs doctor"
+    },
+    {
+      "id": "bundle",
+      "label": "Create a support bundle",
+      "command": "pilih-jobs doctor --bundle"
+    },
+    {
+      "id": "no_browser",
+      "label": "Sign in on a headless machine or over SSH",
+      "command": "pilih-jobs login --no-browser"
+    },
+    {
+      "id": "sync_status",
+      "label": "See changes that could not sync",
+      "command": "pilih-jobs sync --status"
+    }
+  ],
+  "upgrade": {
+    "uv": "uv tool upgrade pilih-jobs",
+    "pipx": "pipx upgrade pilih-jobs"
+  },
+  "uninstall": "pilih-jobs uninstall --purge-data"
+}

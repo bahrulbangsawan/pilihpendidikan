@@ -1,0 +1,109 @@
+{
+  "offset": 0,
+  "limit": 100,
+  "totalFound": 3,
+  "content": [
+    {
+      "id": "743999912345678",
+      "name": "Embedded Software Engineer",
+      "uuid": "uuid-743999912345678",
+      "jobAdId": "ad-743999912345678",
+      "defaultJobAd": true,
+      "refNumber": "REF5678",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-10-05T03:00:00.000Z",
+      "location": {
+        "city": "Bandung",
+        "region": "Jawa Barat",
+        "country": "id",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "Bandung, Indonesia"
+      },
+      "industry": {
+        "id": "automotive",
+        "label": "Automotive"
+      },
+      "department": {
+        "id": "123",
+        "label": "Engineering"
+      },
+      "function": {
+        "id": "engineering",
+        "label": "Engineering"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [],
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/743999912345678",
+      "creator": {
+        "name": "Talent Team"
+      },
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    },
+    {
+      "id": "743999912345679",
+      "name": "Test Automation Engineer",
+      "uuid": "uuid-743999912345679",
+      "jobAdId": "ad-743999912345679",
+      "defaultJobAd": true,
+      "refNumber": "REF5679",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-09-10T03:00:00.000Z",
+      "location": {
+        "city": "Jakarta",
+        "region": "DKI Jakarta",
+        "country": "id",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "Jakarta, Indonesia"
+      },
+      "industry": {
+        "id": "automotive",
+        "label": "Automotive"
+      },
+      "department": {
+        "id": "123",
+        "label": "Engineering"
+      },
+      "function": {
+        "id": "engineering",
+        "label": "Engineering"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [],
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/743999912345679",
+      "creator": {
+        "name": "Talent Team"
+      },
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    }
+  ]
+}

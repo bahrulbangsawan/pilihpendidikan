@@ -14,6 +14,22 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import type {
+  AwardEntry,
+  CertificateEntry,
+  CVData,
+  CVSectionId,
+  EducationCategory,
+  EducationEntry,
+  ExperienceEntry,
+  LanguageEntry,
+  LocationPolicy,
+  PersonalInfo,
+  ProjectEntry,
+  SkillCategory,
+  VolunteerEntry,
+  WorkType,
+} from "@pilihpendidikan/cv-engine/types";
 import { FormField } from "@rulisme/ui/form/form-field";
 import { MonthPicker } from "@rulisme/ui/form/month-picker";
 import { SectionList } from "@rulisme/ui/form/section-list";
@@ -63,24 +79,6 @@ type Translate = (
   params?: Record<string, string | number>
 ) => string;
 
-export interface PersonalInfo {
-  fullName: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  linkedIn: string;
-  photoUrl: string;
-  usePhoto: boolean;
-}
-
-export type WorkType = "" | "full-time" | "part-time" | "internship";
-export type LocationPolicy =
-  | ""
-  | "work-from-office"
-  | "work-from-anywhere"
-  | "hybrid";
-
 const WORK_TYPE_OPTIONS: { value: WorkType; labelKey: string }[] = [
   { value: "", labelKey: "options.notSpecified" },
   { value: "full-time", labelKey: "options.workType.fullTime" },
@@ -103,30 +101,6 @@ const LOCATION_POLICY_OPTIONS: {
   },
   { value: "hybrid", labelKey: "options.locationPolicy.hybrid" },
 ];
-
-export interface ExperienceEntry {
-  id: string;
-  company: string;
-  url: string;
-  title: string;
-  workType: WorkType;
-  locationPolicy: LocationPolicy;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-  description: string;
-}
-
-export type EducationCategory =
-  | ""
-  | "university"
-  | "college"
-  | "school"
-  | "polytechnic"
-  | "academy"
-  | "language-center"
-  | "online-platform"
-  | "professional-association";
 
 const EDUCATION_CATEGORY_OPTIONS: {
   value: EducationCategory;
@@ -151,108 +125,6 @@ const EDUCATION_CATEGORY_OPTIONS: {
     labelKey: "options.educationCategory.professionalAssociation",
   },
 ];
-
-export interface EducationEntry {
-  id: string;
-  category: EducationCategory;
-  institution: string;
-  degree: string;
-  gpa: string;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-}
-
-export interface AwardEntry {
-  id: string;
-  title: string;
-  issuer: string;
-  date: string;
-  description: string;
-  url: string;
-}
-
-export interface CertificateEntry {
-  id: string;
-  name: string;
-  issuer: string;
-  date: string;
-  expiryDate: string;
-  credentialId: string;
-  url: string;
-}
-
-export interface LanguageEntry {
-  id: string;
-  language: string;
-  proficiency: string;
-}
-
-export interface ProjectEntry {
-  id: string;
-  name: string;
-  url: string;
-  description: string;
-}
-
-export interface VolunteerEntry {
-  id: string;
-  organization: string;
-  role: string;
-  startDate: string;
-  endDate: string;
-  current: boolean;
-  description: string;
-}
-
-export type CVStyle = "basic" | "harvard" | "simple" | "standard";
-
-export interface SkillCategory {
-  id: string;
-  name: string;
-  items: string[];
-}
-
-export type CVSectionId =
-  | "summary"
-  | "experience"
-  | "education"
-  | "skills"
-  | "awards"
-  | "certificates"
-  | "languages"
-  | "projects"
-  | "volunteer";
-
-export interface CVData {
-  /**
-   * Selected template. Persisted so the chosen layout round-trips into the
-   * print view / PDF (the `/cv/<slug>.pdf` redirect renders whatever is saved
-   * here). Optional for backwards-compat with documents stored before the
-   * field existed — consumers default to "basic".
-   */
-  style?: CVStyle;
-  personalInfo: PersonalInfo;
-  sectionOrder: CVSectionId[];
-  summaryTitle: string;
-  summary: string;
-  experienceTitle: string;
-  experience: ExperienceEntry[];
-  educationTitle: string;
-  education: EducationEntry[];
-  skillsTitle: string;
-  skills: SkillCategory[];
-  awardsTitle: string;
-  awards: AwardEntry[];
-  certificatesTitle: string;
-  certificates: CertificateEntry[];
-  languagesTitle: string;
-  languages: LanguageEntry[];
-  projectsTitle: string;
-  projects: ProjectEntry[];
-  volunteerTitle: string;
-  volunteer: VolunteerEntry[];
-}
 
 function dateDiffLabel(from: Date, to: Date, t: Translate) {
   let y = to.getFullYear() - from.getFullYear();

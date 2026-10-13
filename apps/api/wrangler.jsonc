@@ -1,4 +1,4 @@
-// apps/api — backend Worker for cv / invoice / portfolio.pilihpendidikan.com.
+// apps/api — backend Worker for cv / invoice / portfolio / jobs.pilihpendidikan.com.
 //
 // The D1 database and the AUTH_KV / CV_KV / RATE_LIMIT_KV namespaces were
 // created on 2026-10-06 in the bisa.digital account (DEPLOY.md step 1; KV
@@ -9,8 +9,15 @@
 // namespaces the documents already live in, so no invoice / portfolio / job
 // data moves. CV_KV is new; its keys are copied in by scripts/migrate-cv-kv.ts.
 //
+// Job Tracker (job-tracker-spec/14 §3): the second D1 database JOBS_DB, the
+// R2 bucket JOBS_FILES, the `jobs-ai` queue (+ DLQ) and the 5-minute cron.
+// `REPLACE_WITH_JOBS_DB_ID` is filled in when the owner creates the database
+// (14 §8); local mode (`wrangler dev`, `--local` migrations) never needs it.
+// Kill switches are NOT vars: they live in DB.feature_flags (D-33).
+//
 // Secrets never live in this file — `.dev.vars` locally (see
-// `.dev.vars.example`), `wrangler secret put` in production.
+// `.dev.vars.example`), `wrangler secret put` in production
+// (`OPENAI_API_KEY`).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "api-pilihpendidikan",
@@ -35,12 +42,28 @@
     // Sender for sign-in emails. The pilihpendidikan.com domain must be
     // onboarded to Cloudflare Email Sending before this delivers.
     "EMAIL_FROM": "noreply@pilihpendidikan.com",
-    "LOG_RETENTION_DAYS": "90"
+    "LOG_RETENTION_DAYS": "90",
+    // CLI compatibility (05 §1.7): a `X-Pilih-Client: cli/<semver>` below the
+    // minimum gets 426 cli_upgrade_required on /api/v1 (except /meta).
+    "JOBS_MIN_CLI_VERSION": "0.1.0",
+    "JOBS_RECOMMENDED_CLI_VERSION": "0.1.0",
+    // "live" calls OpenAI with OPENAI_API_KEY; "fake" (.dev.vars, tests) is
+    // the deterministic provider. Optional: OPENAI_BASE_URL, TAILOR_MODEL.
+    "JOBS_AI_MODE": "live",
+    // Per-user AI budget (D-34): monthly cap; the daily sub-cap is $0.50.
+    "JOBS_AI_MONTHLY_BUDGET_USD": "3.00",
+    // The dashboard origin (render-ticket URLs, emailed links).
+    "JOBS_APP_ORIGIN": "https://jobs.pilihpendidikan.com"
   },
   "send_email": [
     {
       "name": "EMAIL",
-      "allowed_sender_addresses": ["noreply@pilihpendidikan.com"]
+      // applications@ is the sender of server-sent email applications
+      // (09 §6.2), only used behind JOBS_EMAIL_SERVER_SEND_ENABLED.
+      "allowed_sender_addresses": [
+        "noreply@pilihpendidikan.com",
+        "applications@pilihpendidikan.com"
+      ]
     }
   ],
   "d1_databases": [
@@ -49,8 +72,46 @@
       "database_name": "pilihpendidikan",
       "database_id": "d71a1734-01e5-435d-8c73-1b6b58a20b70",
       "migrations_dir": "migrations"
+    },
+    // Every Job Tracker record (D-02). Only src/jobs/repo/** queries it.
+    {
+      "binding": "JOBS_DB",
+      "database_name": "pilihpendidikan-jobs",
+      "database_id": "REPLACE_WITH_JOBS_DB_ID",
+      "migrations_dir": "migrations-jobs"
     }
   ],
+  // CV PDFs, cover letters, attachments, evidence screenshots, run logs
+  // (D-05). Private: only authorized Worker routes read or write it.
+  "r2_buckets": [
+    {
+      "binding": "JOBS_FILES",
+      "bucket_name": "pilihpendidikan-jobs-files",
+      "preview_bucket_name": "pilihpendidikan-jobs-files-preview"
+    }
+  ],
+  // Durable async AI work (D-06): bulk scoring, CV tailoring, rules,
+  // purge/export/rollup. Consumer values per 14 §3; the DLQ consumer never
+  // leaves a record stuck (14 §6).
+  "queues": {
+    "producers": [{ "binding": "JOBS_AI_QUEUE", "queue": "jobs-ai" }],
+    "consumers": [
+      {
+        "queue": "jobs-ai",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 5,
+        "dead_letter_queue": "jobs-ai-dlq",
+        "max_concurrency": 10
+      },
+      {
+        "queue": "jobs-ai-dlq",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 1
+      }
+    ]
+  },
   "kv_namespaces": [
     // Sessions, magic-link tokens, one-time codes and OAuth state. New.
     {
@@ -100,8 +161,10 @@
       "new_sqlite_classes": ["PilihMcpServer"]
     }
   ],
-  // Daily purge of request_log rows past their retention window.
+  // `0 3 * * *`: request_log purge + daily jobs (retention, file retention,
+  // analytics rollup). `*/5 * * * *`: lease reaper, approval and task expiry.
+  // Dispatched by `controller.cron` in src/jobs/cron/index.ts.
   "triggers": {
-    "crons": ["0 3 * * *"]
+    "crons": ["0 3 * * *", "*/5 * * * *"]
   }
 }

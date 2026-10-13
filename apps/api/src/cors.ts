@@ -1,6 +1,6 @@
 // CORS for the api Worker.
 //
-// - Credentialed surface (everything the three apps call): the request Origin
+// - Credentialed surface (everything the apps call, incl. /api/v1): the request Origin
 //   is echoed only when it is on the allowlist, together with
 //   `Access-Control-Allow-Credentials: true`. The localhost app ports are
 //   allowed only while this Worker itself runs locally (`wrangler dev`), so a
@@ -15,12 +15,15 @@ const DEV_ORIGINS = new Set<string>(Object.values(DEV_APP_ORIGINS));
 
 // `Mcp-Session-Id` / `MCP-Protocol-Version` are the Streamable HTTP
 // transport's session headers; browser MCP clients send them after the
-// handshake, so preflight must allow them.
+// handshake, so preflight must allow them. The rest are the /api/v1
+// conventions (05 §1.4–§1.7, PLAN C8): idempotency, conditional requests,
+// the CLI client header and the render ticket.
 const ALLOWED_HEADERS =
-  "Content-Type, Authorization, Mcp-Session-Id, MCP-Protocol-Version";
-const EXPOSED_HEADERS = "Mcp-Session-Id";
+  "Content-Type, Authorization, Mcp-Session-Id, MCP-Protocol-Version, Idempotency-Key, If-Match, If-None-Match, X-Pilih-Client, X-Render-Ticket";
+const EXPOSED_HEADERS =
+  "Mcp-Session-Id, ETag, Idempotent-Replayed, Retry-After, X-Request-Id";
 const MAX_AGE = "600";
-const DEFAULT_METHODS = "GET, POST, PUT, DELETE, OPTIONS";
+const DEFAULT_METHODS = "GET, POST, PUT, PATCH, DELETE, OPTIONS";
 
 export function resolveAllowedOrigin(request: Request): string | null {
   const origin = request.headers.get("origin");

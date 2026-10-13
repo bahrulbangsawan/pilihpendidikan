@@ -1,0 +1,690 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ActorKind": {
+      "type": "string",
+      "enum": ["user", "automation", "system", "mcp", "legacy_migration"]
+    },
+    "AdapterId": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url"
+      ]
+    },
+    "AdapterStatus": {
+      "type": "string",
+      "enum": ["stable", "beta", "opt_in", "excluded"]
+    },
+    "AiUsagePurpose": {
+      "type": "string",
+      "enum": ["score", "tailor_cv", "agent", "email_draft"]
+    },
+    "AnalyticsBreakdown": {
+      "type": "string",
+      "enum": [
+        "source",
+        "company",
+        "mode",
+        "method",
+        "cv_variant",
+        "score_band",
+        "workplace_type"
+      ]
+    },
+    "AnalyticsInterval": {
+      "type": "string",
+      "enum": ["day", "week", "month"]
+    },
+    "AnalyticsMetric": {
+      "type": "string",
+      "enum": [
+        "applied",
+        "interviews",
+        "offers",
+        "rejected",
+        "discovered",
+        "ai_cost"
+      ]
+    },
+    "AnswerKind": {
+      "type": "string",
+      "enum": ["text", "choice", "number", "boolean", "date"]
+    },
+    "ApiErrorCode": {
+      "type": "string",
+      "enum": [
+        "invalid_request",
+        "invalid_token",
+        "insufficient_scope",
+        "device_revoked",
+        "device_not_accepting_tasks",
+        "device_required",
+        "not_found",
+        "revision_conflict",
+        "lease_lost",
+        "idempotency_mismatch",
+        "duplicate",
+        "too_late",
+        "approval_expired",
+        "task_expired",
+        "cursor_expired",
+        "payload_too_large",
+        "invalid_transition",
+        "policy_violation",
+        "unsupported_source",
+        "mode_not_allowed",
+        "cli_upgrade_required",
+        "rate_limited",
+        "ai_budget_exhausted",
+        "upstream_unavailable"
+      ]
+    },
+    "ApplicationMode": {
+      "type": "string",
+      "enum": ["manual", "assisted", "approval", "auto"]
+    },
+    "ApplicationSupport": {
+      "type": "string",
+      "enum": [
+        "browser_supported",
+        "browser_unsupported",
+        "email",
+        "external_redirect",
+        "prohibited",
+        "unknown"
+      ]
+    },
+    "ApprovalDecidedVia": {
+      "type": "string",
+      "enum": ["web", "cli", "mcp"]
+    },
+    "ApprovalDecision": {
+      "type": "string",
+      "enum": ["approve", "reject"]
+    },
+    "ApprovalKind": {
+      "type": "string",
+      "enum": ["submit", "answer", "cv_variant", "rule_activation"]
+    },
+    "ApprovalState": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "expired"]
+    },
+    "AttemptOutcome": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "lease_expired",
+        "outcome_unknown",
+        "paused"
+      ]
+    },
+    "AutoUse": {
+      "type": "string",
+      "enum": ["never", "approval", "always"]
+    },
+    "BrowserMode": {
+      "type": "string",
+      "enum": ["managed", "connected", "persistent"]
+    },
+    "BrowserStatus": {
+      "type": "string",
+      "enum": ["ready", "busy", "not_installed", "error"]
+    },
+    "ChangeEntity": {
+      "type": "string",
+      "enum": [
+        "application",
+        "user_job",
+        "posting",
+        "event",
+        "interview",
+        "offer",
+        "task",
+        "attempt",
+        "approval",
+        "evidence",
+        "rule",
+        "source",
+        "run",
+        "fact",
+        "answer",
+        "score",
+        "cv_variant",
+        "file",
+        "email",
+        "settings",
+        "device"
+      ]
+    },
+    "ChangeOp": {
+      "type": "string",
+      "enum": ["upsert", "delete"]
+    },
+    "ChangeSource": {
+      "type": "string",
+      "enum": ["web", "cli", "mcp", "system", "legacy_migration"]
+    },
+    "CredentialKind": {
+      "type": "string",
+      "enum": [
+        "browser_session",
+        "personal_write",
+        "personal_read",
+        "oauth_mcp",
+        "oauth_cli"
+      ]
+    },
+    "CvTemplate": {
+      "type": "string",
+      "enum": ["basic", "harvard", "simple", "standard"]
+    },
+    "CvVariantStatus": {
+      "type": "string",
+      "enum": ["generating", "draft", "approved", "rejected", "failed"]
+    },
+    "CvVisibility": {
+      "type": "string",
+      "enum": ["public", "private"]
+    },
+    "DeviceCapability": {
+      "type": "string",
+      "enum": ["discover", "apply", "render_cv", "headed_browser"]
+    },
+    "DevicePlatform": {
+      "type": "string",
+      "enum": ["macos", "windows", "linux"]
+    },
+    "DiscoveryErrorClass": {
+      "type": "string",
+      "enum": [
+        "network",
+        "timeout",
+        "http_5xx",
+        "rate_limited",
+        "access_denied",
+        "challenge_detected",
+        "robots_disallowed",
+        "not_found",
+        "source_closed",
+        "source_unavailable",
+        "parse_error",
+        "schema_invalid",
+        "selector_drift",
+        "unsupported_content",
+        "policy_blocked",
+        "cancelled"
+      ]
+    },
+    "DiscoveryRunStatus": {
+      "type": "string",
+      "enum": ["running", "completed", "partial", "failed", "cancelled"]
+    },
+    "EmailDelivery": {
+      "type": "string",
+      "enum": ["local_handoff", "server_send"]
+    },
+    "EmailStatus": {
+      "type": "string",
+      "enum": ["draft", "approved", "sent", "failed", "handed_off"]
+    },
+    "EmploymentType": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "contract",
+        "temporary",
+        "internship",
+        "volunteer",
+        "unknown"
+      ]
+    },
+    "EventType": {
+      "type": "string",
+      "enum": [
+        "created",
+        "stage_changed",
+        "submission_status_changed",
+        "note_added",
+        "note_deleted",
+        "cv_variant_attached",
+        "automation_task_created",
+        "automation_task_claimed",
+        "automation_task_progress",
+        "automation_task_paused",
+        "automation_task_finished",
+        "approval_requested",
+        "approval_decided",
+        "submit_intent",
+        "interview_scheduled",
+        "interview_updated",
+        "offer_recorded",
+        "email_sent",
+        "conflict_recorded",
+        "legacy_imported"
+      ]
+    },
+    "EvidenceKind": {
+      "type": "string",
+      "enum": [
+        "browser_confirmation",
+        "ats_api_response",
+        "email_sent",
+        "user_attestation",
+        "confirmation_email"
+      ]
+    },
+    "EvidenceScreenshotMode": {
+      "type": "string",
+      "enum": ["off", "on_submit", "all_steps"]
+    },
+    "EvidenceVerdict": {
+      "type": "string",
+      "enum": ["verified", "unverified", "negative"]
+    },
+    "ExcludedSourceId": {
+      "type": "string",
+      "enum": ["linkedin", "indeed"]
+    },
+    "FactSource": {
+      "type": "string",
+      "enum": ["user_entered", "cv_import", "verified_document"]
+    },
+    "FeatureFlagKey": {
+      "type": "string",
+      "enum": [
+        "JOBS_V1_ENABLED",
+        "JOBS_CLI_LOGIN_ENABLED",
+        "JOBS_AUTOMATION_ENABLED",
+        "JOBS_AUTO_MODE_ENABLED",
+        "JOBS_EMAIL_SERVER_SEND_ENABLED",
+        "AI_DISABLED",
+        "JOBS_LEGACY_BACKEND"
+      ]
+    },
+    "FileKind": {
+      "type": "string",
+      "enum": [
+        "cv_pdf",
+        "cover_letter",
+        "attachment",
+        "evidence_screenshot",
+        "run_log"
+      ]
+    },
+    "FileStatus": {
+      "type": "string",
+      "enum": ["pending", "ready", "deleted"]
+    },
+    "GrantRevokedReason": {
+      "type": "string",
+      "enum": [
+        "user",
+        "device_revoked",
+        "refresh_reuse",
+        "admin",
+        "account_deleted"
+      ]
+    },
+    "InboxBulkAction": {
+      "type": "string",
+      "enum": ["track", "dismiss", "seen", "score"]
+    },
+    "InboxState": {
+      "type": "string",
+      "enum": ["new", "seen", "dismissed", "tracked"]
+    },
+    "InterviewKind": {
+      "type": "string",
+      "enum": [
+        "phone_screen",
+        "technical",
+        "take_home",
+        "onsite",
+        "behavioral",
+        "final",
+        "other"
+      ]
+    },
+    "InterviewOutcome": {
+      "type": "string",
+      "enum": ["pending", "passed", "failed", "cancelled", "no_show"]
+    },
+    "InvalidTokenReason": {
+      "type": "string",
+      "enum": ["no_bearer", "unknown_token", "expired_token", "revoked_token"]
+    },
+    "LeaseEventType": {
+      "type": "string",
+      "enum": [
+        "started",
+        "progress",
+        "paused",
+        "resumed",
+        "submit_intent",
+        "approval_requested",
+        "log"
+      ]
+    },
+    "LegacyBackend": {
+      "type": "string",
+      "enum": ["kv", "d1"]
+    },
+    "LegacyJobStatus": {
+      "type": "string",
+      "enum": [
+        "saved",
+        "applied",
+        "interviewing",
+        "offer",
+        "rejected",
+        "accepted"
+      ]
+    },
+    "LegacyTokenScope": {
+      "type": "string",
+      "enum": ["write", "read"]
+    },
+    "LocalTaskState": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "running",
+        "paused",
+        "awaiting_approval",
+        "submit_intent",
+        "sync_pending",
+        "done",
+        "orphaned"
+      ]
+    },
+    "Locale": {
+      "type": "string",
+      "enum": ["en", "id"]
+    },
+    "MatchScoreStatus": {
+      "type": "string",
+      "enum": ["queued", "ready", "failed"]
+    },
+    "OAuthScope": {
+      "type": "string",
+      "enum": [
+        "jobs:read",
+        "jobs:write",
+        "discovery:write",
+        "automation:execute",
+        "automation:manage",
+        "cv:read",
+        "cv:write",
+        "files:read",
+        "files:write",
+        "ai:invoke",
+        "devices:manage",
+        "offline_access"
+      ]
+    },
+    "OfferStatus": {
+      "type": "string",
+      "enum": ["open", "accepted", "declined", "expired", "rescinded"]
+    },
+    "PauseReason": {
+      "type": "string",
+      "enum": [
+        "captcha_or_challenge",
+        "login_required",
+        "account_creation_required",
+        "mfa_required",
+        "credential_field",
+        "missing_information",
+        "protected_question",
+        "unknown_question",
+        "unsupported_form",
+        "unclear_page",
+        "off_domain_navigation",
+        "validation_unresolved",
+        "stuck_loop",
+        "needs_headed_restart",
+        "payment_requested",
+        "network_offline",
+        "resource_exhausted",
+        "low_confidence",
+        "injection_suspected",
+        "ai_unavailable",
+        "user_requested"
+      ]
+    },
+    "PostingStatus": {
+      "type": "string",
+      "enum": ["open", "closed", "unknown"]
+    },
+    "PostingVisibility": {
+      "type": "string",
+      "enum": ["public", "private"]
+    },
+    "ProgressStage": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "preparing_cv",
+        "opening",
+        "inspecting",
+        "filling",
+        "uploading",
+        "reviewing",
+        "awaiting_approval",
+        "submitting",
+        "verifying",
+        "discovering",
+        "rendering",
+        "done"
+      ]
+    },
+    "ReleaseReason": {
+      "type": "string",
+      "enum": ["user_quit", "awaiting_approval", "needs_headed", "shutdown"]
+    },
+    "RequestLogCategory": {
+      "type": "string",
+      "enum": ["cv", "invoice", "portfolio", "jobs"]
+    },
+    "RequestLogStatus": {
+      "type": "string",
+      "enum": ["ok", "error"]
+    },
+    "RuleMode": {
+      "type": "string",
+      "enum": ["assisted", "approval", "auto"]
+    },
+    "RunItemOutcome": {
+      "type": "string",
+      "enum": ["new", "updated", "unchanged", "invalid"]
+    },
+    "SalaryPeriod": {
+      "type": "string",
+      "enum": ["year", "month", "week", "day", "hour"]
+    },
+    "Sensitivity": {
+      "type": "string",
+      "enum": ["none", "personal", "protected"]
+    },
+    "SnapshotEntity": {
+      "type": "string",
+      "enum": [
+        "applications",
+        "user_jobs",
+        "postings",
+        "interviews",
+        "offers",
+        "tasks",
+        "approvals",
+        "rules",
+        "sources",
+        "facts",
+        "answers",
+        "cv_variants",
+        "settings"
+      ]
+    },
+    "SourceKind": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url",
+        "manual",
+        "email",
+        "legacy"
+      ]
+    },
+    "Stage": {
+      "type": "string",
+      "enum": [
+        "saved",
+        "preparing",
+        "ready",
+        "applied",
+        "interviewing",
+        "offer",
+        "accepted",
+        "rejected",
+        "withdrawn"
+      ]
+    },
+    "StageActor": {
+      "type": "string",
+      "enum": ["user", "automation", "system"]
+    },
+    "SubmissionAction": {
+      "type": "string",
+      "enum": ["confirm", "deny", "mark_applied"]
+    },
+    "SubmissionMethod": {
+      "type": "string",
+      "enum": ["browser", "email", "ats_api", "manual"]
+    },
+    "SubmissionStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "submitted_verified",
+        "submitted_unverified",
+        "failed",
+        "outcome_unknown"
+      ]
+    },
+    "TaskCreatedBy": {
+      "type": "string",
+      "enum": ["web", "cli", "rule", "mcp", "system"]
+    },
+    "TaskErrorClass": {
+      "type": "string",
+      "enum": [
+        "network_offline",
+        "upstream_unavailable",
+        "browser_crashed",
+        "lease_expired",
+        "timeout",
+        "navigation_timeout",
+        "page_changed",
+        "selector_not_found",
+        "login_required",
+        "captcha_or_challenge",
+        "mfa_required",
+        "unsupported_form",
+        "prohibited_platform",
+        "domain_not_allowed",
+        "policy_violation",
+        "validation_errors_unresolved",
+        "posting_closed",
+        "posting_unavailable",
+        "approval_rejected",
+        "approval_expired",
+        "cancelled",
+        "missing_information",
+        "injection_suspected",
+        "budget_exceeded",
+        "auto_precondition_failed",
+        "precheck_failed",
+        "email_application_required",
+        "render_failed",
+        "artifact_integrity",
+        "files_unavailable",
+        "cdp_non_loopback",
+        "device_revoked"
+      ]
+    },
+    "TaskKind": {
+      "type": "string",
+      "enum": ["apply", "discover", "render_cv"]
+    },
+    "TaskResultOutcome": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "outcome_unknown"
+      ]
+    },
+    "TaskState": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "claimed",
+        "running",
+        "paused",
+        "awaiting_approval",
+        "submitted",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "outcome_unknown",
+        "expired"
+      ]
+    },
+    "TokenEndpointAuthMethod": {
+      "type": "string",
+      "enum": ["client_secret_basic", "client_secret_post", "none"]
+    },
+    "TokenKind": {
+      "type": "string",
+      "enum": ["personal", "session", "oauth"]
+    },
+    "TokenStatus": {
+      "type": "string",
+      "enum": ["active", "revoked"]
+    },
+    "UserJobOrigin": {
+      "type": "string",
+      "enum": ["discovered", "manual", "imported", "legacy", "mcp"]
+    },
+    "VerificationVerdict": {
+      "type": "string",
+      "enum": ["verified", "unverified", "negative", "outcome_unknown"]
+    },
+    "WorkplaceType": {
+      "type": "string",
+      "enum": ["onsite", "hybrid", "remote", "unknown"]
+    }
+  }
+}

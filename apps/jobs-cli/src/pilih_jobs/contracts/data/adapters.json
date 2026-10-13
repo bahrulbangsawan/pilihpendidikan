@@ -1,0 +1,676 @@
+{
+  "version": 1,
+  "adapters": [
+    {
+      "id": "greenhouse",
+      "version": "1.0.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Greenhouse",
+      "status": "stable",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "single_response",
+        "detail": true,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "department",
+          "description_text",
+          "apply_url",
+          "posted_at"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["etag", "watermark", "content_hash"],
+        "application_support": "browser_supported",
+        "application_api": "employer_key_required"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Public Job Board API (no authentication for GET endpoints). Applications go through the hosted form in the browser; the application API needs an employer key.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "source_closed",
+          "schema_invalid"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 2,
+        "min_delay_ms": 1000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": true,
+        "auto_ok": true,
+        "ats_hosts": [
+          "boards.greenhouse.io",
+          "job-boards.greenhouse.io",
+          "job-boards.eu.greenhouse.io"
+        ],
+        "confirmation_url_patterns": [
+          "/confirmation(?:[/?#]|$)",
+          "[?&][^=&#]*submitted"
+        ],
+        "confirmation_selectors": [
+          "#application_confirmation",
+          "#application-confirmation",
+          "[data-testid=\"application-confirmation\"]"
+        ]
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "board_token": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$",
+            "title": "Board token"
+          }
+        },
+        "required": ["board_token"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "lever",
+      "version": "1.0.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Lever",
+      "status": "stable",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "offset",
+        "detail": true,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "department",
+          "workplace_type",
+          "employment_type",
+          "description_text",
+          "apply_url",
+          "posted_at",
+          "salary"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["content_hash"],
+        "application_support": "browser_supported",
+        "application_api": "employer_key_required"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Public Postings API (api.lever.co, EU: api.eu.lever.co). Applications go through the browser form at jobs.lever.co; the apply API needs a key.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "source_closed",
+          "schema_invalid"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 2,
+        "min_delay_ms": 1000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": true,
+        "auto_ok": true,
+        "ats_hosts": ["jobs.lever.co", "jobs.eu.lever.co"],
+        "confirmation_url_patterns": [
+          "^https://jobs(?:\\.eu)?\\.lever\\.co/[^/]+/[^/]+/thanks(?:[/?#]|$)"
+        ],
+        "confirmation_selectors": [
+          ".application-confirmation",
+          "[data-qa=\"msg-submit-success\"]"
+        ]
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "site": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$",
+            "title": "Lever site"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string",
+            "enum": ["global", "eu"]
+          },
+          "filters": {
+            "title": "Filters",
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "commitment": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "team": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "department": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["site"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "ashby",
+      "version": "1.0.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Ashby",
+      "status": "stable",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "single_response",
+        "detail": false,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "department",
+          "workplace_type",
+          "employment_type",
+          "description_text",
+          "apply_url",
+          "posted_at",
+          "salary"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["watermark", "content_hash"],
+        "application_support": "browser_supported",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Public Job Posting API. Postings with isListed=false are skipped. Applications go through the browser form at jobs.ashbyhq.com.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "source_closed",
+          "schema_invalid"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 2,
+        "min_delay_ms": 1000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": true,
+        "auto_ok": true,
+        "ats_hosts": ["jobs.ashbyhq.com"],
+        "confirmation_url_patterns": ["/application/submitted(?:[/?#]|$)"],
+        "confirmation_selectors": [
+          "[data-testid=\"application-submitted\"]",
+          ".ashby-application-form-success-container"
+        ]
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "job_board_name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$",
+            "title": "Job board name"
+          }
+        },
+        "required": ["job_board_name"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "smartrecruiters",
+      "version": "0.9.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "SmartRecruiters",
+      "status": "beta",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "offset",
+        "detail": true,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "department",
+          "employment_type",
+          "description_text",
+          "apply_url",
+          "posted_at"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["watermark", "content_hash"],
+        "application_support": "browser_supported",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Keyless access to the Posting API is best-effort; the source stops on the first 401/403.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "source_closed",
+          "schema_invalid"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 2,
+        "min_delay_ms": 1000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": ["jobs.smartrecruiters.com"],
+        "confirmation_url_patterns": ["/thank-you(?:[/?#]|$)"],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "company_identifier": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$",
+            "title": "Company identifier"
+          }
+        },
+        "required": ["company_identifier"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "workable",
+      "version": "0.9.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Workable",
+      "status": "beta",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "single_response",
+        "detail": true,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "department",
+          "workplace_type",
+          "employment_type",
+          "apply_url",
+          "posted_at"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["content_hash"],
+        "application_support": "browser_supported",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Uses Workable's undocumented widget endpoint, which may change without notice; a schema mismatch stops the source.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "source_closed",
+          "schema_invalid"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 2,
+        "min_delay_ms": 1000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": ["apply.workable.com"],
+        "confirmation_url_patterns": ["/success(?:[/?#]|$)"],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "subdomain": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,62}$",
+            "title": "Subdomain"
+          }
+        },
+        "required": ["subdomain"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "workday",
+      "version": "0.9.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Workday",
+      "status": "opt_in",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "offset",
+        "detail": true,
+        "structured_fields": [
+          "source_job_ref",
+          "title",
+          "locations",
+          "posted_at",
+          "apply_url"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["content_hash"],
+        "application_support": "unknown",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Undocumented, often bot-protected endpoint. Opt in per tenant; one request at a time with at least 3 s between requests. The tenant is disabled on the first denial or challenge.",
+        "requires_opt_in": true,
+        "stop_on": ["access_denied", "challenge_detected", "rate_limited"]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 1,
+        "min_delay_ms": 3000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": ["myworkdayjobs.com"],
+        "confirmation_url_patterns": [],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "tenant": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,62}$",
+            "title": "Tenant"
+          },
+          "wd_host_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99,
+            "title": "Host number (wdN)"
+          },
+          "site": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$",
+            "title": "Career site"
+          },
+          "search_text": {
+            "title": "Search text",
+            "type": "string",
+            "maxLength": 200
+          },
+          "disabled_reason": {
+            "title": "Disabled because",
+            "type": "string",
+            "enum": ["challenge", "access_denied", "rate_limited"]
+          }
+        },
+        "required": ["tenant", "wd_host_number", "site"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "career_page",
+      "version": "1.0.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Careers page",
+      "status": "stable",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "page_links",
+        "detail": true,
+        "structured_fields": [
+          "title",
+          "posted_at",
+          "employment_type",
+          "locations",
+          "salary",
+          "description_text"
+        ],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["etag", "content_hash"],
+        "application_support": "unknown",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Static careers page: JSON-LD JobPosting first, then configured selectors. A link to a known ATS host is redirected to that ATS adapter.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "unsupported_content"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 1,
+        "min_delay_ms": 2000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": [],
+        "confirmation_url_patterns": [],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "pattern": "^https?:\\/\\/",
+            "title": "Careers page URL"
+          },
+          "item_css": {
+            "title": "Item selector",
+            "type": "string",
+            "maxLength": 300
+          },
+          "fields": {
+            "title": "Field selectors",
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "next_css": {
+            "title": "Next-page selector",
+            "type": "string",
+            "maxLength": 300
+          },
+          "allow_browser": {
+            "title": "Allow browser",
+            "type": "boolean"
+          }
+        },
+        "required": ["url"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "generic_listing",
+      "version": "0.9.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Generic job listing",
+      "status": "beta",
+      "capabilities": {
+        "discovery": true,
+        "pagination": "page_links",
+        "detail": true,
+        "structured_fields": [],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["etag", "content_hash"],
+        "application_support": "unknown",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Crawls one site (allowed_domains = its host) from a start URL, at most 50 pages; uses the sitemap when present.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "unsupported_content"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 1,
+        "min_delay_ms": 2000,
+        "max_pages": 50
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": [],
+        "confirmation_url_patterns": [],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "start_url": {
+            "type": "string",
+            "maxLength": 2048,
+            "pattern": "^https?:\\/\\/",
+            "title": "Start URL"
+          },
+          "detail_url_pattern": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "title": "Detail URL pattern (regex)"
+          },
+          "listing_url_pattern": {
+            "title": "Listing URL pattern (regex)",
+            "type": "string",
+            "maxLength": 300
+          },
+          "max_pages": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "title": "Max pages"
+          },
+          "allow_browser": {
+            "title": "Allow browser",
+            "type": "boolean"
+          }
+        },
+        "required": ["start_url", "detail_url_pattern", "max_pages"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "custom_url",
+      "version": "1.0.0",
+      "min_cli_version": "0.1.0",
+      "display_name": "Single job URL",
+      "status": "stable",
+      "capabilities": {
+        "discovery": false,
+        "pagination": "none",
+        "detail": true,
+        "structured_fields": [],
+        "auth_required": false,
+        "browser_required": false,
+        "incremental": ["etag", "content_hash"],
+        "application_support": "unknown",
+        "application_api": "none"
+      },
+      "restrictions": {
+        "robots_respected": true,
+        "tos_notes": "Fetches one job URL (JSON-LD, then OpenGraph, then page heuristics). Pages fetched with your own browser session are stored as private postings.",
+        "requires_opt_in": false,
+        "stop_on": [
+          "access_denied",
+          "challenge_detected",
+          "unsupported_content"
+        ]
+      },
+      "rate_limits": {
+        "per_domain_concurrency": 1,
+        "min_delay_ms": 2000,
+        "max_pages": 1
+      },
+      "automation": {
+        "headless_ok": false,
+        "auto_ok": false,
+        "ats_hosts": [],
+        "confirmation_url_patterns": [],
+        "confirmation_selectors": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "pattern": "^https?:\\/\\/",
+            "title": "Job URL"
+          },
+          "private": {
+            "title": "Private",
+            "type": "boolean"
+          }
+        },
+        "required": ["url"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "linkedin",
+      "status": "excluded",
+      "display_name": "LinkedIn",
+      "hosts": ["linkedin.com", "lnkd.in"],
+      "reason": "LinkedIn's robots.txt and User Agreement (§8.2) prohibit scraping and automated access. Track LinkedIn jobs manually by title and company.",
+      "evidence_urls": [
+        "https://www.linkedin.com/robots.txt",
+        "https://www.linkedin.com/legal/user-agreement"
+      ]
+    },
+    {
+      "id": "indeed",
+      "status": "excluded",
+      "display_name": "Indeed",
+      "hosts": ["indeed.*"],
+      "reason": "Indeed's terms (§21, Job Seekers §3) prohibit automated access and automated job applications. Track Indeed jobs manually by title and company.",
+      "evidence_urls": ["https://www.indeed.com/legal"]
+    }
+  ]
+}

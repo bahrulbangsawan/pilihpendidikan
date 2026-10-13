@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "CvVariantId": {
+      "type": "string",
+      "pattern": "^cvv_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cv_variant id (cvv_<ULID>)"
+    },
+    "Day": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Calendar day YYYY-MM-DD"
+    },
+    "EvaluateRulesMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "evaluate_rules"
+        },
+        "posting_ids": {
+          "minItems": 1,
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PostingId"
+          }
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "posting_ids"]
+    },
+    "ExportUserMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "export_user"
+        },
+        "export_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "export_id"]
+    },
+    "JobsAiMessage": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ScorePostingsMessage"
+        },
+        {
+          "$ref": "#/$defs/TailorCvMessage"
+        },
+        {
+          "$ref": "#/$defs/EvaluateRulesMessage"
+        },
+        {
+          "$ref": "#/$defs/PurgeUserMessage"
+        },
+        {
+          "$ref": "#/$defs/RollupUserMessage"
+        },
+        {
+          "$ref": "#/$defs/RebuildAnalyticsMessage"
+        },
+        {
+          "$ref": "#/$defs/ExportUserMessage"
+        }
+      ]
+    },
+    "PostingId": {
+      "type": "string",
+      "pattern": "^pst_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "posting id (pst_<ULID>)"
+    },
+    "PurgePhase": {
+      "type": "string",
+      "enum": ["jobs_db", "r2", "cv_kv"]
+    },
+    "PurgeUserMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "purge_user"
+        },
+        "phase": {
+          "$ref": "#/$defs/PurgePhase"
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "phase"]
+    },
+    "QueueMessageType": {
+      "type": "string",
+      "enum": [
+        "score_postings",
+        "tailor_cv",
+        "evaluate_rules",
+        "purge_user",
+        "rollup_user",
+        "rebuild_analytics",
+        "export_user"
+      ]
+    },
+    "RebuildAnalyticsMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "rebuild_analytics"
+        },
+        "reason": {
+          "type": "string",
+          "const": "timezone_change"
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "reason"]
+    },
+    "RollupUserMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "rollup_user"
+        },
+        "days": {
+          "minItems": 1,
+          "maxItems": 400,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Day"
+          }
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "days"]
+    },
+    "ScorePostingsMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "score_postings"
+        },
+        "posting_ids": {
+          "minItems": 1,
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PostingId"
+          }
+        },
+        "profile_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rubric_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "v",
+        "message_id",
+        "user_id",
+        "type",
+        "posting_ids",
+        "profile_version",
+        "rubric_version"
+      ]
+    },
+    "TailorCvMessage": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "type": {
+          "type": "string",
+          "const": "tailor_cv"
+        },
+        "cv_variant_id": {
+          "$ref": "#/$defs/CvVariantId"
+        }
+      },
+      "required": ["v", "message_id", "user_id", "type", "cv_variant_id"]
+    },
+    "UserId": {
+      "type": "string",
+      "pattern": "^usr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "user id (usr_<ULID>)"
+    }
+  }
+}

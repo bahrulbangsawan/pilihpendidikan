@@ -60,7 +60,9 @@
       "!!**/pnpm-lock.yaml",
       "!!**/next-env.d.ts",
       "!!**/worker-configuration.d.ts",
-      "!portfolio-mock"
+      "!portfolio-mock",
+      // Python (ruff owns it, spec 02 §4.2); its fixtures and browser scripts are not app code
+      "!!apps/jobs-cli"
     ]
   },
   "formatter": {

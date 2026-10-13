@@ -9,7 +9,7 @@ import id from "@/i18n/locales/id.json";
 import { HubPage } from "./hub-page";
 
 const LOCALES: Locale[] = ["en", "id"];
-const SERVICE_IDS: ServiceId[] = ["cv", "invoice", "portfolio", "api"];
+const SERVICE_IDS: ServiceId[] = ["cv", "invoice", "portfolio", "jobs", "api"];
 const HREF_PATTERN = /href="([^"]*)"/g;
 const CAPTURE_PATTERN = /<form|<input|<textarea|<select|mailto:/i;
 
@@ -89,6 +89,26 @@ describe("service links follow SERVICES status", () => {
   });
 });
 
+describe("job tracker (job-tracker-spec 12 §15)", () => {
+  it("ships as soon: listed with its copy, never linked", () => {
+    expect(SERVICES.jobs.status).toBe("soon");
+    for (const locale of LOCALES) {
+      const html = render(SERVICES, locale);
+      const card = cardHtml(html, "jobs");
+      expect(card).toContain(getT(locale)("services.jobs.name"));
+      expect(card).toContain(getT(locale)("status.soon"));
+      expect(linksTo(html, SERVICES.jobs.url)).toEqual([]);
+    }
+  });
+
+  it("the MCP copy mentions job applications", () => {
+    expect(getT("en")("services.mcp.description")).toContain(
+      "job applications"
+    );
+    expect(getT("id")("services.mcp.description")).toContain("lamaran kerja");
+  });
+});
+
 describe("MCP item", () => {
   it("hides the endpoint while the api is soon", () => {
     const html = render(withStatuses({ api: "soon" }), "en");
@@ -110,6 +130,7 @@ describe("content", () => {
     cv: "live",
     invoice: "live",
     portfolio: "live",
+    jobs: "live",
     api: "live",
   });
 

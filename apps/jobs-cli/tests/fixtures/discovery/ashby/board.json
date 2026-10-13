@@ -1,0 +1,132 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000001",
+      "title": "Product Manager, Expenses",
+      "department": "Product",
+      "team": "Product",
+      "employmentType": "FullTime",
+      "location": "Jakarta",
+      "secondaryLocations": [
+        {
+          "location": "Remote (Indonesia)",
+          "address": {
+            "postalAddress": {
+              "addressCountry": "Indonesia"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-10-02T08:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Jakarta Selatan",
+          "addressRegion": "DKI Jakarta",
+          "addressCountry": "Indonesia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000001",
+      "applyUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000001/application",
+      "descriptionHtml": "<p>As a Product Manager, Expenses you will shape how thousands of finance teams close their books.</p><h3>Qualifications</h3><ul><li>Product sense</li><li>4+ years of experience</li></ul>",
+      "descriptionPlain": "As a Product Manager, Expenses you will shape how thousands of finance teams close their books.\n\nQualifications\n- Product sense\n- 4+ years of experience",
+      "compensation": {
+        "compensationTierSummary": "IDR 40M – 55M / month",
+        "scrapeableCompensationSalarySummary": "IDR 40M - 55M",
+        "compensationTiers": [],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "interval": "1 MONTH",
+            "currencyCode": "IDR",
+            "minValue": 40000000,
+            "maxValue": 55000000
+          }
+        ]
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000002",
+      "title": "Staff Software Engineer",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "Jakarta",
+      "secondaryLocations": [
+        {
+          "location": "Remote (Indonesia)",
+          "address": {
+            "postalAddress": {
+              "addressCountry": "Indonesia"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-09-01T08:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Jakarta Selatan",
+          "addressRegion": "DKI Jakarta",
+          "addressCountry": "Indonesia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000002",
+      "applyUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000002/application",
+      "descriptionHtml": "<p>As a Staff Software Engineer you will shape how thousands of finance teams close their books.</p><h3>Qualifications</h3><ul><li>Product sense</li><li>4+ years of experience</li></ul>",
+      "descriptionPlain": "As a Staff Software Engineer you will shape how thousands of finance teams close their books.\n\nQualifications\n- Product sense\n- 4+ years of experience"
+    },
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000003",
+      "title": "Internal Transfer Only",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "Jakarta",
+      "secondaryLocations": [
+        {
+          "location": "Remote (Indonesia)",
+          "address": {
+            "postalAddress": {
+              "addressCountry": "Indonesia"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-10-02T08:00:00.000+00:00",
+      "isListed": false,
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Jakarta Selatan",
+          "addressRegion": "DKI Jakarta",
+          "addressCountry": "Indonesia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000003",
+      "applyUrl": "https://jobs.ashbyhq.com/ramp-id/a1b2c3d4-0000-4000-8000-000000000003/application",
+      "descriptionHtml": "<p>As a Internal Transfer Only you will shape how thousands of finance teams close their books.</p><h3>Qualifications</h3><ul><li>Product sense</li><li>4+ years of experience</li></ul>",
+      "descriptionPlain": "As a Internal Transfer Only you will shape how thousands of finance teams close their books.\n\nQualifications\n- Product sense\n- 4+ years of experience",
+      "compensation": {
+        "compensationTierSummary": "IDR 40M – 55M / month",
+        "scrapeableCompensationSalarySummary": "IDR 40M - 55M",
+        "compensationTiers": [],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "interval": "1 MONTH",
+            "currencyCode": "IDR",
+            "minValue": 40000000,
+            "maxValue": 55000000
+          }
+        ]
+      }
+    }
+  ]
+}

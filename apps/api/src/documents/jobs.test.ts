@@ -58,20 +58,20 @@ describe("GET /api/jobs owner scoping", () => {
     expect(await restIds(env, BOB)).toEqual(["b1"]);
   });
 
-  it("scopes an admin to their own jobs by default, every job with ?mine=0", async () => {
+  it("T11-ADMIN scopes an admin to their own jobs; ?mine=0 is ignored (D-26)", async () => {
     const { env } = createTestEnv();
     await createViaMcpShape(env, "a1", ALICE.email);
     await createViaMcpShape(env, "x1", ADMIN.email);
     expect(await restIds(env, ADMIN)).toEqual(["x1"]);
-    expect(await restIds(env, ADMIN, "?mine=0")).toEqual(["a1", "x1"]);
+    expect(await restIds(env, ADMIN, "?mine=0")).toEqual(["x1"]);
   });
 
-  it("ownsJob and jobIdsOwnedBy agree on the stamp", async () => {
+  it("ownsJob and jobIdsOwnedBy agree on the stamp (no admin bypass, D-26)", async () => {
     const { env } = createTestEnv();
     await createViaMcpShape(env, "a1", ALICE.email);
     expect(await ownsJob(ALICE, env, "a1")).toBe(true);
     expect(await ownsJob(BOB, env, "a1")).toBe(false);
-    expect(await ownsJob(ADMIN, env, "a1")).toBe(true);
+    expect(await ownsJob(ADMIN, env, "a1")).toBe(false);
     expect([...(await jobIdsOwnedBy(env, ALICE.email, ["a1", "zz"]))]).toEqual([
       "a1",
     ]);
@@ -95,6 +95,47 @@ describe("MCP jobs_list count == REST /api/jobs count (same user)", () => {
     expect(await restIds(env, ALICE)).toHaveLength(12);
     await mcp.call("jobs_create", { job_id: "job-13", title: "Role 13" });
     expect(await mcpCount()).toBe(13);
+    expect(await restIds(env, ALICE)).toHaveLength(13);
+  });
+});
+
+// T6-13: the same scenarios against JOBS_LEGACY_BACKEND = d1 (jobs created
+// through the MCP facade instead of hand-written KV blobs).
+describe("T6-13 GET /api/jobs against JOBS_LEGACY_BACKEND=d1", () => {
+  const d1Env = () =>
+    createTestEnv({}, { flags: { JOBS_LEGACY_BACKEND: "d1" } }).env;
+  const create = (env: Env, caller: Caller, id: string) =>
+    createToolSession(env, caller).call("jobs_create", {
+      job_id: id,
+      title: id,
+    });
+
+  it("T6-13 shows MCP-created jobs to their owner and hides them from others", async () => {
+    const env = d1Env();
+    await create(env, ALICE, "a1");
+    await create(env, BOB, "b1");
+    expect(await restIds(env, ALICE)).toEqual(["a1"]);
+    expect(await restIds(env, BOB)).toEqual(["b1"]);
+  });
+
+  it("T6-13 T11-ADMIN scopes an admin to their own jobs; ?mine=0 is ignored", async () => {
+    const env = d1Env();
+    await create(env, ALICE, "a1");
+    await create(env, ADMIN, "x1");
+    expect(await restIds(env, ADMIN)).toEqual(["x1"]);
+    expect(await restIds(env, ADMIN, "?mine=0")).toEqual(["x1"]);
+  });
+
+  it("T6-13 MCP jobs_list count == REST count for 13 jobs", async () => {
+    const env = d1Env();
+    const mcp = createToolSession(env, ALICE);
+    for (let i = 1; i <= 13; i++) {
+      await mcp.call("jobs_create", { job_id: `job-${i}`, title: `Role ${i}` });
+    }
+    const listed = JSON.parse(
+      (await mcp.call("jobs_list")).content[0]?.text ?? "[]"
+    ) as unknown[];
+    expect(listed).toHaveLength(13);
     expect(await restIds(env, ALICE)).toHaveLength(13);
   });
 });

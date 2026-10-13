@@ -13,7 +13,7 @@ fi
 cd "$ROOT" || exit 2
 
 SCOPE=()
-for dir in apps/home/src apps/cv/src apps/invoice/src apps/portfolio/src apps/design/src packages/ui/src; do
+for dir in apps/home/src apps/cv/src apps/invoice/src apps/portfolio/src apps/jobs/src apps/design/src packages/ui/src; do
   [[ -d "$dir" ]] && SCOPE+=("$dir")
 done
 
@@ -157,21 +157,22 @@ run_check \
   rg -n -P '(?<![\w-])dark:(\S+:)?(bg|text|border|ring|fill|stroke|outline|shadow|from|to|via)-' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 17) Print documents use the one family too: Inter, the shared print cuts
-#     (packages/ui/src/print/pdf-fonts.ts) in every PDF and --font-sans on the
+#     (packages/ui/src/print/pdf-fonts.ts) in every PDF (the CV templates live
+#     in packages/cv-engine/src/pdf) and --font-sans on the
 #     on-screen paper. Catches a non-Inter family in a StyleSheet (also inside
 #     a fallback list), in a Font.register call, a built-in PDF font named
 #     anywhere in a PDF module, and a literal family in print CSS.
 run_check \
   "One family in print documents (Inter only)" \
   "PDF StyleSheets: fontFamily PDF_FONT_FAMILY (the shared print family); print CSS: the --font-sans stack" \
-  rg -n -P -i '(fontFamily:\s*\[?\s*"(?!Inter")|\bfamily:\s*"(?!Inter")|(?-i:"(Helvetica|Times|Courier)(-[A-Za-z]+)?")|font-family:[^;]*(helvetica|arial|times|georgia|menlo|courier))' apps packages/ui/src/print --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
+  rg -n -P -i '(fontFamily:\s*\[?\s*"(?!Inter")|\bfamily:\s*"(?!Inter")|(?-i:"(Helvetica|Times|Courier)(-[A-Za-z]+)?")|font-family:[^;]*(helvetica|arial|times|georgia|menlo|courier))' apps packages/ui/src/print packages/cv-engine/src/pdf --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
 
 # 18) …and no uppercase or letter-spacing on paper either (the on-screen
 #     previews are held to that by the uppercase and tracking checks above).
 run_check \
   "No uppercase or letter-spacing in print documents" \
   "drop textTransform / letterSpacing (PDF) and text-transform / letter-spacing (print CSS)" \
-  rg -n -P -i '(textTransform:\s*"uppercase"|letterSpacing:|text-transform:\s*uppercase|letter-spacing:)' apps packages/ui/src/print --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
+  rg -n -P -i '(textTransform:\s*"uppercase"|letterSpacing:|text-transform:\s*uppercase|letter-spacing:)' apps packages/ui/src/print packages/cv-engine/src/pdf --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
 
 printf '\n'
 if [[ $fail -ne 0 ]]; then

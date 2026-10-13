@@ -1,0 +1,861 @@
+[
+  {
+    "key": "job:broken-json",
+    "value": "{\"id\": \"broken-json\", \"title\": ",
+    "metadata": {
+      "title": "Broken"
+    }
+  },
+  {
+    "key": "job:job-001",
+    "value": "{\"id\": \"job-001\", \"title\": \"Software Engineer 1 @ Acme\", \"status\": \"saved\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 10–15 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [{\"id\": \"s1a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i1a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i1b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s1b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-01-06T08:00:00.000Z\", \"updatedAt\": \"2025-01-09T08:00:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 1 @ Acme",
+      "status": "saved",
+      "updatedAt": "2025-01-09T08:00:00.000Z",
+      "interviewDate": "",
+      "company": "Acme",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-002",
+    "value": "{\"id\": \"job-002\", \"title\": \"Software Engineer 2 @ Globex\", \"status\": \"applied\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 11–16 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-07T09:00:00.000Z\", \"updatedAt\": \"2025-01-10T09:07:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 2 @ Globex",
+      "status": "applied",
+      "updatedAt": "2025-01-10T09:07:00.000Z",
+      "interviewDate": "",
+      "company": "Globex",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-003",
+    "value": "{\"id\": \"job-003\", \"title\": \"\", \"status\": \"interviewing\", \"company\": \"\", \"companyUrl\": \"\", \"salaryRange\": \"\", \"jobDescription\": [], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-01-18\", \"sections\": [], \"createdAt\": \"2025-01-08T10:00:00.000Z\", \"updatedAt\": \"2025-01-11T10:14:00.000Z\"}",
+    "metadata": {
+      "title": "",
+      "status": "interviewing",
+      "updatedAt": "2025-01-11T10:14:00.000Z",
+      "interviewDate": "2025-01-18",
+      "company": "",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-004",
+    "value": "{\"id\": \"job-004\", \"title\": \"Software Engineer 4 @ Umbrella\", \"status\": \"offer\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 13–18 jt / month\", \"jobDescription\": [\"Build things for Umbrella.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"next week\", \"sections\": [], \"createdAt\": \"2025-01-09T11:00:00.000Z\", \"updatedAt\": \"2025-01-12T11:21:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 4 @ Umbrella",
+      "status": "offer",
+      "updatedAt": "2025-01-12T11:21:00.000Z",
+      "interviewDate": "next week",
+      "company": "Umbrella",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-005",
+    "value": "{\"id\": \"job-005\", \"title\": \"Software Engineer 5 @ Hooli\", \"status\": \"rejected\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 14–19 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-02-30\", \"sections\": [], \"createdAt\": \"2025-01-10T12:00:00.000Z\", \"updatedAt\": \"2025-01-13T12:28:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 5 @ Hooli",
+      "status": "rejected",
+      "updatedAt": "2025-01-13T12:28:00.000Z",
+      "interviewDate": "2025-02-30",
+      "company": "Hooli",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-006",
+    "value": "{\"id\": \"job-006\", \"title\": \"Software Engineer 6 @ Tokopedia\", \"status\": \"accepted\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 15–20 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025/05/01\", \"sections\": [], \"createdAt\": \"2025-01-11T08:00:00.000Z\", \"updatedAt\": \"2025-01-14T08:35:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 6 @ Tokopedia",
+      "status": "accepted",
+      "updatedAt": "2025-01-14T08:35:00.000Z",
+      "interviewDate": "2025/05/01",
+      "company": "Tokopedia",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-007",
+    "value": "{\"id\": \"job-007\", \"title\": \"Software Engineer 7 @ Gojek\", \"status\": \"saved\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 16–21 jt / month\", \"jobDescription\": [\"\"], \"requirements\": [\"\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-12T09:00:00.000Z\", \"updatedAt\": \"2025-01-15T09:42:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 7 @ Gojek",
+      "status": "saved",
+      "updatedAt": "2025-01-15T09:42:00.000Z",
+      "interviewDate": "",
+      "company": "Gojek",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-008",
+    "value": "{\"id\": \"job-008\", \"title\": \"Software Engineer 8 @ Traveloka\", \"status\": \"applied\", \"sections\": [{\"id\": \"s8a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i8a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i8b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s8b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-01-13T10:00:00.000Z\", \"updatedAt\": \"2025-01-16T10:49:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 8 @ Traveloka",
+      "status": "applied",
+      "updatedAt": "2025-01-16T10:49:00.000Z",
+      "interviewDate": "",
+      "company": "",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-009",
+    "value": "{\"id\": \"job-009\", \"title\": \"Ingénieur logiciel — Jakarta 🚀\", \"status\": \"interviewing\", \"company\": \"PT Contoh Ünïcode\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 18–23 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-01-24\", \"sections\": [], \"createdAt\": \"2025-01-14T11:00:00.000Z\", \"updatedAt\": \"2025-01-17T11:56:00.000Z\"}",
+    "metadata": {
+      "title": "Ingénieur logiciel — Jakarta 🚀",
+      "status": "interviewing",
+      "updatedAt": "2025-01-17T11:56:00.000Z",
+      "interviewDate": "2025-01-24",
+      "company": "PT Contoh Ünïcode",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-010",
+    "value": "{\"id\": \"job-010\", \"title\": \"Software Engineer 10 @ Globex\", \"status\": \"offer\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 19–24 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-01-25\", \"sections\": [], \"createdAt\": \"2025-01-15\", \"updatedAt\": \"2025-03-01T10:00:00+07:00\"}",
+    "metadata": {
+      "title": "Software Engineer 10 @ Globex",
+      "status": "offer",
+      "updatedAt": "2025-03-01T10:00:00+07:00",
+      "interviewDate": "2025-01-25",
+      "company": "Globex",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-011",
+    "value": "{\"id\": \"job-011\", \"title\": \"Software Engineer 11 @ Initech\", \"status\": \"rejected\", \"company\": \"Initech\", \"companyUrl\": \"not a url\", \"salaryRange\": \"IDR 20–25 jt / month\", \"jobDescription\": [\"Build things for Initech.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-16T08:00:00.000Z\", \"updatedAt\": \"2025-01-19T09:10:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 11 @ Initech",
+      "status": "rejected",
+      "updatedAt": "2025-01-19T09:10:00.000Z",
+      "interviewDate": "",
+      "company": "Initech",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-012",
+    "value": "{\"id\": \"job-012\", \"title\": \"Software Engineer 12 @ Umbrella\", \"status\": \"accepted\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 21–26 jt / month\", \"jobDescription\": [\"Line with\\nan embedded newline\", \"Second\"], \"requirements\": [], \"interviewDate\": \"2025-01-27\", \"sections\": [], \"createdAt\": \"2025-01-17T09:00:00.000Z\", \"updatedAt\": \"2025-01-20T10:17:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 12 @ Umbrella",
+      "status": "accepted",
+      "updatedAt": "2025-01-20T10:17:00.000Z",
+      "interviewDate": "2025-01-27",
+      "company": "Umbrella",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-013",
+    "value": "{\"id\": \"job-013\", \"title\": \"Software Engineer 13 @ Hooli\", \"status\": \"saved\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 22–27 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-06-01\", \"sections\": [], \"createdAt\": \"2025-01-18T10:00:00.000Z\", \"updatedAt\": \"2025-01-21T11:24:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 13 @ Hooli",
+      "status": "saved",
+      "updatedAt": "2025-01-21T11:24:00.000Z",
+      "interviewDate": "2025-06-01",
+      "company": "Hooli",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-014",
+    "value": "{\"id\": \"job-014\", \"title\": \"Software Engineer 14 @ Tokopedia\", \"status\": \"applied\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 23–28 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-19T11:00:00.000Z\", \"updatedAt\": \"2025-01-22T12:31:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 14 @ Tokopedia",
+      "status": "applied",
+      "updatedAt": "2025-01-22T12:31:00.000Z",
+      "interviewDate": "",
+      "company": "Tokopedia",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-015",
+    "value": "{\"id\": \"job-015\", \"title\": \"Software Engineer 15 @ Gojek\", \"status\": \"interviewing\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 24–29 jt / month\", \"jobDescription\": [\"Build things for Gojek.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-01-30\", \"sections\": [{\"id\": \"s15a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i15a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i15b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s15b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-01-20T12:00:00.000Z\", \"updatedAt\": \"2025-01-23T13:38:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 15 @ Gojek",
+      "status": "interviewing",
+      "updatedAt": "2025-01-23T13:38:00.000Z",
+      "interviewDate": "2025-01-30",
+      "company": "Gojek",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-016",
+    "value": "{\"id\": \"job-016\", \"title\": \"Software Engineer 16 @ Traveloka\", \"status\": \"offer\", \"company\": \"Traveloka\", \"companyUrl\": \"https://www.traveloka.example.com/careers\", \"salaryRange\": \"IDR 25–30 jt / month\", \"jobDescription\": [\"Build things for Traveloka.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-01-31\", \"sections\": [], \"createdAt\": \"2025-01-21T08:00:00.000Z\", \"updatedAt\": \"2025-01-24T09:45:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 16 @ Traveloka",
+      "status": "offer",
+      "updatedAt": "2025-01-24T09:45:00.000Z",
+      "interviewDate": "2025-01-31",
+      "company": "Traveloka",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-017",
+    "value": "{\"id\": \"job-017\", \"title\": \"Software Engineer 17 @ Acme\", \"status\": \"rejected\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 26–31 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-22T09:00:00.000Z\", \"updatedAt\": \"2025-01-25T10:52:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 17 @ Acme",
+      "status": "rejected",
+      "updatedAt": "2025-01-25T10:52:00.000Z",
+      "interviewDate": "",
+      "company": "Acme",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-018",
+    "value": "{\"id\": \"job-018\", \"title\": \"Software Engineer 18 @ Globex\", \"status\": \"accepted\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 27–32 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-02\", \"sections\": [], \"createdAt\": \"2025-01-23T10:00:00.000Z\", \"updatedAt\": \"2025-01-26T11:59:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 18 @ Globex",
+      "status": "accepted",
+      "updatedAt": "2025-01-26T11:59:00.000Z",
+      "interviewDate": "2025-02-02",
+      "company": "Globex",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-019",
+    "value": "{\"id\": \"job-019\", \"title\": \"Software Engineer 19 @ Initech\", \"status\": \"saved\", \"company\": \"Initech\", \"companyUrl\": \"https://www.initech.example.com/careers\", \"salaryRange\": \"IDR 28–33 jt / month\", \"jobDescription\": [\"Build things for Initech.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-24T11:00:00.000Z\", \"updatedAt\": \"2025-01-27T13:06:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 19 @ Initech",
+      "status": "saved",
+      "updatedAt": "2025-01-27T13:06:00.000Z",
+      "interviewDate": "",
+      "company": "Initech",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-020",
+    "value": "{\"id\": \"job-020\", \"title\": \"Software Engineer 20 @ Umbrella\", \"status\": \"applied\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 29–34 jt / month\", \"jobDescription\": [\"Build things for Umbrella.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-25T12:00:00.000Z\", \"updatedAt\": \"2025-01-28T14:13:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 20 @ Umbrella",
+      "status": "applied",
+      "updatedAt": "2025-01-28T14:13:00.000Z",
+      "interviewDate": "",
+      "company": "Umbrella",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-021",
+    "value": "{\"id\": \"job-021\", \"title\": \"Software Engineer 21 @ Hooli\", \"status\": \"interviewing\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 30–35 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-02-05\", \"sections\": [], \"createdAt\": \"2025-01-26T08:00:00.000Z\", \"updatedAt\": \"2025-01-29T10:20:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 21 @ Hooli",
+      "status": "interviewing",
+      "updatedAt": "2025-01-29T10:20:00.000Z",
+      "interviewDate": "2025-02-05",
+      "company": "Hooli",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-022",
+    "value": "{\"id\": \"job-022\", \"title\": \"Software Engineer 22 @ Tokopedia\", \"status\": \"offer\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 31–36 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-06\", \"sections\": [{\"id\": \"s22a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i22a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i22b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s22b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-01-27T09:00:00.000Z\", \"updatedAt\": \"2025-01-30T11:27:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 22 @ Tokopedia",
+      "status": "offer",
+      "updatedAt": "2025-01-30T11:27:00.000Z",
+      "interviewDate": "2025-02-06",
+      "company": "Tokopedia",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-023",
+    "value": "{\"id\": \"job-023\", \"title\": \"Software Engineer 23 @ Gojek\", \"status\": \"rejected\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 32–37 jt / month\", \"jobDescription\": [\"Build things for Gojek.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-28T10:00:00.000Z\", \"updatedAt\": \"2025-01-31T12:34:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 23 @ Gojek",
+      "status": "rejected",
+      "updatedAt": "2025-01-31T12:34:00.000Z",
+      "interviewDate": "",
+      "company": "Gojek",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-024",
+    "value": "{\"id\": \"job-024\", \"title\": \"Software Engineer 24 @ Traveloka\", \"status\": \"accepted\", \"company\": \"Traveloka\", \"companyUrl\": \"https://www.traveloka.example.com/careers\", \"salaryRange\": \"IDR 33–38 jt / month\", \"jobDescription\": [\"Build things for Traveloka.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-08\", \"sections\": [], \"createdAt\": \"2025-01-29T11:00:00.000Z\", \"updatedAt\": \"2025-02-01T13:41:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 24 @ Traveloka",
+      "status": "accepted",
+      "updatedAt": "2025-02-01T13:41:00.000Z",
+      "interviewDate": "2025-02-08",
+      "company": "Traveloka",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-025",
+    "value": "{\"id\": \"job-025\", \"title\": \"Software Engineer 25 @ Acme\", \"status\": \"saved\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 34–39 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-30T12:00:00.000Z\", \"updatedAt\": \"2025-02-02T14:48:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 25 @ Acme",
+      "status": "saved",
+      "updatedAt": "2025-02-02T14:48:00.000Z",
+      "interviewDate": "",
+      "company": "Acme",
+      "owner": "alice@example.com"
+    }
+  },
+  {
+    "key": "job:job-026",
+    "value": "{\"id\": \"job-026\", \"title\": \"Software Engineer 26 @ Globex\", \"status\": \"applied\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 35–40 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-01-31T08:00:00.000Z\", \"updatedAt\": \"2025-02-03T10:55:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 26 @ Globex",
+      "status": "applied",
+      "updatedAt": "2025-02-03T10:55:00.000Z",
+      "interviewDate": "",
+      "company": "Globex",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-027",
+    "value": "{\"id\": \"job-027\", \"title\": \"Software Engineer 27 @ Initech\", \"status\": \"interviewing\", \"company\": \"Initech\", \"companyUrl\": \"https://www.initech.example.com/careers\", \"salaryRange\": \"IDR 36–41 jt / month\", \"jobDescription\": [\"Build things for Initech.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-02-11\", \"sections\": [], \"createdAt\": \"2025-02-01T09:00:00.000Z\", \"updatedAt\": \"2025-02-04T12:02:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 27 @ Initech",
+      "status": "interviewing",
+      "updatedAt": "2025-02-04T12:02:00.000Z",
+      "interviewDate": "2025-02-11",
+      "company": "Initech",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-028",
+    "value": "{\"id\": \"job-028\", \"title\": \"Software Engineer 28 @ Umbrella\", \"status\": \"offer\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 37–42 jt / month\", \"jobDescription\": [\"Build things for Umbrella.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-12\", \"sections\": [], \"createdAt\": \"2025-02-02T10:00:00.000Z\", \"updatedAt\": \"2025-02-05T13:09:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 28 @ Umbrella",
+      "status": "offer",
+      "updatedAt": "2025-02-05T13:09:00.000Z",
+      "interviewDate": "2025-02-12",
+      "company": "Umbrella",
+      "owner": "bob@example.com"
+    }
+  },
+  {
+    "key": "job:job-029",
+    "value": "{\"id\": \"job-029\", \"title\": \"Software Engineer 29 @ Hooli\", \"status\": \"rejected\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 38–43 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [{\"id\": \"s29a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i29a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i29b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s29b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-02-03T11:00:00.000Z\", \"updatedAt\": \"2025-02-06T14:16:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 29 @ Hooli",
+      "status": "rejected",
+      "updatedAt": "2025-02-06T14:16:00.000Z",
+      "interviewDate": "",
+      "company": "Hooli",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-030",
+    "value": "{\"id\": \"job-030\", \"title\": \"Software Engineer 30 @ Tokopedia\", \"status\": \"accepted\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 39–44 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-14\", \"sections\": [], \"createdAt\": \"2025-02-04T12:00:00.000Z\", \"updatedAt\": \"2025-02-07T15:23:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 30 @ Tokopedia",
+      "status": "accepted",
+      "updatedAt": "2025-02-07T15:23:00.000Z",
+      "interviewDate": "2025-02-14",
+      "company": "Tokopedia",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-031",
+    "value": "{\"id\": \"job-031\", \"title\": \"Software Engineer 31 @ Gojek\", \"status\": \"saved\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 40–45 jt / month\", \"jobDescription\": [\"Build things for Gojek.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-05T08:00:00.000Z\", \"updatedAt\": \"2025-02-08T11:30:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 31 @ Gojek",
+      "status": "saved",
+      "updatedAt": "2025-02-08T11:30:00.000Z",
+      "interviewDate": "",
+      "company": "Gojek",
+      "owner": "bob@example.com"
+    }
+  },
+  {
+    "key": "job:job-032",
+    "value": "{\"id\": \"job-032\", \"title\": \"Software Engineer 32 @ Traveloka\", \"status\": \"applied\", \"company\": \"Traveloka\", \"companyUrl\": \"https://www.traveloka.example.com/careers\", \"salaryRange\": \"IDR 41–46 jt / month\", \"jobDescription\": [\"Build things for Traveloka.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-06T09:00:00.000Z\", \"updatedAt\": \"2025-02-09T12:37:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 32 @ Traveloka",
+      "status": "applied",
+      "updatedAt": "2025-02-09T12:37:00.000Z",
+      "interviewDate": "",
+      "company": "Traveloka",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-033",
+    "value": "{\"id\": \"job-033\", \"title\": \"Software Engineer 33 @ Acme\", \"status\": \"interviewing\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 42–47 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-02-17\", \"sections\": [], \"createdAt\": \"2025-02-07T10:00:00.000Z\", \"updatedAt\": \"2025-02-10T13:44:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 33 @ Acme",
+      "status": "interviewing",
+      "updatedAt": "2025-02-10T13:44:00.000Z",
+      "interviewDate": "2025-02-17",
+      "company": "Acme",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-034",
+    "value": "{\"id\": \"job-034\", \"title\": \"Software Engineer 34 @ Globex\", \"status\": \"offer\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 43–48 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-18\", \"sections\": [], \"createdAt\": \"2025-02-08T11:00:00.000Z\", \"updatedAt\": \"2025-02-11T14:51:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 34 @ Globex",
+      "status": "offer",
+      "updatedAt": "2025-02-11T14:51:00.000Z",
+      "interviewDate": "2025-02-18",
+      "company": "Globex",
+      "owner": "bob@example.com"
+    }
+  },
+  {
+    "key": "job:job-035",
+    "value": "{\"id\": \"job-035\", \"title\": \"Software Engineer 35 @ Initech\", \"status\": \"rejected\", \"company\": \"Initech\", \"companyUrl\": \"https://www.initech.example.com/careers\", \"salaryRange\": \"IDR 44–49 jt / month\", \"jobDescription\": [\"Build things for Initech.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-09T12:00:00.000Z\", \"updatedAt\": \"2025-02-12T15:58:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 35 @ Initech",
+      "status": "rejected",
+      "updatedAt": "2025-02-12T15:58:00.000Z",
+      "interviewDate": "",
+      "company": "Initech",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-036",
+    "value": "{\"id\": \"job-036\", \"title\": \"Software Engineer 36 @ Umbrella\", \"status\": \"accepted\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 45–50 jt / month\", \"jobDescription\": [\"Build things for Umbrella.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-20\", \"sections\": [{\"id\": \"s36a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i36a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i36b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s36b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-02-10T08:00:00.000Z\", \"updatedAt\": \"2025-02-13T12:05:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 36 @ Umbrella",
+      "status": "accepted",
+      "updatedAt": "2025-02-13T12:05:00.000Z",
+      "interviewDate": "2025-02-20",
+      "company": "Umbrella",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-037",
+    "value": "{\"id\": \"job-037\", \"title\": \"Software Engineer 37 @ Hooli\", \"status\": \"saved\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 46–51 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-11T09:00:00.000Z\", \"updatedAt\": \"2025-02-14T13:12:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 37 @ Hooli",
+      "status": "saved",
+      "updatedAt": "2025-02-14T13:12:00.000Z",
+      "interviewDate": "",
+      "company": "Hooli",
+      "owner": "bob@example.com"
+    }
+  },
+  {
+    "key": "job:job-038",
+    "value": "{\"id\": \"job-038\", \"title\": \"Software Engineer 38 @ Tokopedia\", \"status\": \"applied\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 47–52 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-12T10:00:00.000Z\", \"updatedAt\": \"2025-02-15T14:19:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 38 @ Tokopedia",
+      "status": "applied",
+      "updatedAt": "2025-02-15T14:19:00.000Z",
+      "interviewDate": "",
+      "company": "Tokopedia",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-039",
+    "value": "{\"id\": \"job-039\", \"title\": \"Software Engineer 39 @ Gojek\", \"status\": \"interviewing\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 48–53 jt / month\", \"jobDescription\": [\"Build things for Gojek.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-02-23\", \"sections\": [], \"createdAt\": \"2025-02-13T11:00:00.000Z\", \"updatedAt\": \"2025-02-16T15:26:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 39 @ Gojek",
+      "status": "interviewing",
+      "updatedAt": "2025-02-16T15:26:00.000Z",
+      "interviewDate": "2025-02-23",
+      "company": "Gojek",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-040",
+    "value": "{\"id\": \"job-040\", \"title\": \"Software Engineer 40 @ Traveloka\", \"status\": \"offer\", \"company\": \"Traveloka\", \"companyUrl\": \"https://www.traveloka.example.com/careers\", \"salaryRange\": \"IDR 49–54 jt / month\", \"jobDescription\": [\"Build things for Traveloka.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-24\", \"sections\": [], \"createdAt\": \"2025-02-14T12:00:00.000Z\", \"updatedAt\": \"2025-02-17T16:33:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 40 @ Traveloka",
+      "status": "offer",
+      "updatedAt": "2025-02-17T16:33:00.000Z",
+      "interviewDate": "2025-02-24",
+      "company": "Traveloka",
+      "owner": "bob@example.com"
+    }
+  },
+  {
+    "key": "job:job-041",
+    "value": "{\"id\": \"job-041\", \"title\": \"Software Engineer 41 @ Acme\", \"status\": \"rejected\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 50–55 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-15T08:00:00.000Z\", \"updatedAt\": \"2025-02-18T12:40:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 41 @ Acme",
+      "status": "rejected",
+      "updatedAt": "2025-02-18T12:40:00.000Z",
+      "interviewDate": "",
+      "company": "Acme",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-042",
+    "value": "{\"id\": \"job-042\", \"title\": \"Software Engineer 42 @ Globex\", \"status\": \"accepted\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 51–56 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-02-26\", \"sections\": [], \"createdAt\": \"2025-02-16T09:00:00.000Z\", \"updatedAt\": \"2025-02-19T13:47:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 42 @ Globex",
+      "status": "accepted",
+      "updatedAt": "2025-02-19T13:47:00.000Z",
+      "interviewDate": "2025-02-26",
+      "company": "Globex",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-043",
+    "value": "{\"id\": \"job-043\", \"title\": \"Software Engineer 43 @ Initech\", \"status\": \"saved\", \"company\": \"Initech\", \"companyUrl\": \"https://www.initech.example.com/careers\", \"salaryRange\": \"IDR 52–57 jt / month\", \"jobDescription\": [\"Build things for Initech.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [{\"id\": \"s43a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i43a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i43b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s43b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-02-17T10:00:00.000Z\", \"updatedAt\": \"2025-02-20T14:54:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 43 @ Initech",
+      "status": "saved",
+      "updatedAt": "2025-02-20T14:54:00.000Z",
+      "interviewDate": "",
+      "company": "Initech",
+      "owner": "carol@example.com"
+    }
+  },
+  {
+    "key": "job:job-044",
+    "value": "{\"id\": \"job-044\", \"title\": \"Software Engineer 44 @ Umbrella\", \"status\": \"applied\", \"company\": \"Umbrella\", \"companyUrl\": \"https://www.umbrella.example.com/careers\", \"salaryRange\": \"IDR 53–58 jt / month\", \"jobDescription\": [\"Build things for Umbrella.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-18T11:00:00.000Z\", \"updatedAt\": \"2025-02-21T16:01:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 44 @ Umbrella",
+      "status": "applied",
+      "updatedAt": "2025-02-21T16:01:00.000Z",
+      "interviewDate": "",
+      "company": "Umbrella",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-045",
+    "value": "{\"id\": \"job-045\", \"title\": \"Software Engineer 45 @ Hooli\", \"status\": \"interviewing\", \"company\": \"Hooli\", \"companyUrl\": \"https://www.hooli.example.com/careers\", \"salaryRange\": \"IDR 54–59 jt / month\", \"jobDescription\": [\"Build things for Hooli.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"2025-03-01\", \"sections\": [], \"createdAt\": \"2025-02-19T12:00:00.000Z\", \"updatedAt\": \"2025-02-22T17:08:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 45 @ Hooli",
+      "status": "interviewing",
+      "updatedAt": "2025-02-22T17:08:00.000Z",
+      "interviewDate": "2025-03-01",
+      "company": "Hooli",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-046",
+    "value": "{\"id\": \"job-046\", \"title\": \"Software Engineer 46 @ Tokopedia\", \"status\": \"offer\", \"company\": \"Tokopedia\", \"companyUrl\": \"https://www.tokopedia.example.com/careers\", \"salaryRange\": \"IDR 55–60 jt / month\", \"jobDescription\": [\"Build things for Tokopedia.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-03-02\", \"sections\": [], \"createdAt\": \"2025-02-20T08:00:00.000Z\", \"updatedAt\": \"2025-02-23T13:15:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 46 @ Tokopedia",
+      "status": "offer",
+      "updatedAt": "2025-02-23T13:15:00.000Z",
+      "interviewDate": "2025-03-02",
+      "company": "Tokopedia",
+      "owner": "carol@example.com"
+    }
+  },
+  {
+    "key": "job:job-047",
+    "value": "{\"id\": \"job-047\", \"title\": \"Software Engineer 47 @ Gojek\", \"status\": \"rejected\", \"company\": \"Gojek\", \"companyUrl\": \"https://www.gojek.example.com/careers\", \"salaryRange\": \"IDR 56–61 jt / month\", \"jobDescription\": [\"Build things for Gojek.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-21T09:00:00.000Z\", \"updatedAt\": \"2025-02-24T14:22:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 47 @ Gojek",
+      "status": "rejected",
+      "updatedAt": "2025-02-24T14:22:00.000Z",
+      "interviewDate": "",
+      "company": "Gojek",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-048",
+    "value": "{\"id\": \"job-048\", \"title\": \"Software Engineer 48 @ Traveloka\", \"status\": \"accepted\", \"company\": \"Traveloka\", \"companyUrl\": \"https://www.traveloka.example.com/careers\", \"salaryRange\": \"IDR 57–62 jt / month\", \"jobDescription\": [\"Build things for Traveloka.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"2025-03-04\", \"sections\": [], \"createdAt\": \"2025-02-22T10:00:00.000Z\", \"updatedAt\": \"2025-02-25T15:29:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 48 @ Traveloka",
+      "status": "accepted",
+      "updatedAt": "2025-02-25T15:29:00.000Z",
+      "interviewDate": "2025-03-04",
+      "company": "Traveloka",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:job-049",
+    "value": "{\"id\": \"job-049\", \"title\": \"Software Engineer 49 @ Acme\", \"status\": \"saved\", \"company\": \"Acme\", \"companyUrl\": \"https://www.acme.example.com/careers\", \"salaryRange\": \"IDR 58–63 jt / month\", \"jobDescription\": [\"Build things for Acme.\", \"Work with the team.\"], \"requirements\": [\"TypeScript\", \"SQL\"], \"interviewDate\": \"\", \"sections\": [], \"createdAt\": \"2025-02-23T11:00:00.000Z\", \"updatedAt\": \"2025-02-26T16:36:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 49 @ Acme",
+      "status": "saved",
+      "updatedAt": "2025-02-26T16:36:00.000Z",
+      "interviewDate": "",
+      "company": "Acme",
+      "owner": "Dave@Example.com"
+    }
+  },
+  {
+    "key": "job:job-050",
+    "value": "{\"id\": \"job-050\", \"title\": \"Software Engineer 50 @ Globex\", \"status\": \"applied\", \"company\": \"Globex\", \"companyUrl\": \"https://www.globex.example.com/careers\", \"salaryRange\": \"IDR 59–64 jt / month\", \"jobDescription\": [\"Build things for Globex.\", \"Work with the team.\"], \"requirements\": [], \"interviewDate\": \"\", \"sections\": [{\"id\": \"s50a\", \"name\": \"Interviews\", \"items\": [{\"id\": \"i50a\", \"title\": \"Phone screen\", \"notes\": \"Went well\", \"url\": \"https://meet.example.com/x\", \"done\": true}, {\"id\": \"i50b\", \"title\": \"Onsite\", \"notes\": \"\", \"url\": \"\", \"done\": false}]}, {\"id\": \"s50b\", \"name\": \"Contacts\", \"items\": []}], \"createdAt\": \"2025-02-24T12:00:00.000Z\", \"updatedAt\": \"2025-02-27T17:43:00.000Z\"}",
+    "metadata": {
+      "title": "Software Engineer 50 @ Globex",
+      "status": "applied",
+      "updatedAt": "2025-02-27T17:43:00.000Z",
+      "interviewDate": "",
+      "company": "Globex",
+      "owner": ""
+    }
+  },
+  {
+    "key": "job:not-an-object",
+    "value": "[1, 2, 3]"
+  },
+  {
+    "key": "job:orphan-1",
+    "value": "{\"id\": \"orphan-1\", \"title\": \"Orphaned role 1\", \"status\": \"applied\", \"sections\": [], \"createdAt\": \"2024-11-01T00:00:00.000Z\", \"updatedAt\": \"2024-11-02T00:00:00.000Z\"}",
+    "metadata": {
+      "title": "Orphaned role 1",
+      "status": "applied"
+    }
+  },
+  {
+    "key": "job:orphan-2",
+    "value": "{\"id\": \"orphan-2\", \"title\": \"Orphaned role 2\", \"status\": \"interviewing\", \"sections\": [], \"createdAt\": \"2024-11-01T00:00:00.000Z\", \"updatedAt\": \"2024-11-02T00:00:00.000Z\"}",
+    "metadata": {
+      "title": "Orphaned role 2",
+      "status": "interviewing"
+    }
+  },
+  {
+    "key": "job:orphan-3",
+    "value": "{\"id\": \"orphan-3\", \"title\": \"Orphaned role 3\", \"status\": \"offer\", \"sections\": [], \"createdAt\": \"2024-11-01T00:00:00.000Z\", \"updatedAt\": \"2024-11-02T00:00:00.000Z\"}",
+    "metadata": {
+      "title": "Orphaned role 3",
+      "status": "offer"
+    }
+  },
+  {
+    "key": "job:unknown-status",
+    "value": "{\"id\": \"unknown-status\", \"title\": \"Archived role\", \"status\": \"archived\", \"sections\": []}"
+  },
+  {
+    "key": "owner:job:broken-json",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:ghost",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-001",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-002",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-003",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-004",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-005",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-006",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-007",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-008",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-009",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-010",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-011",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-012",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-013",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-014",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-015",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-016",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-017",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-018",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-019",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-020",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-021",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-022",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-023",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-024",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-025",
+    "value": "alice@example.com"
+  },
+  {
+    "key": "owner:job:job-026",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-027",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-028",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-029",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-030",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-031",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-032",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-033",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-034",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-035",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-036",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-037",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-038",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-039",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-040",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:job-041",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-042",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-043",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-044",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-045",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-046",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-047",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-048",
+    "value": "carol@example.com"
+  },
+  {
+    "key": "owner:job:job-049",
+    "value": "Dave@Example.com "
+  },
+  {
+    "key": "owner:job:job-050",
+    "value": "Dave@Example.com "
+  },
+  {
+    "key": "owner:job:not-an-object",
+    "value": "bob@example.com"
+  },
+  {
+    "key": "owner:job:orphan-3",
+    "value": ""
+  },
+  {
+    "key": "owner:job:unknown-status",
+    "value": "carol@example.com"
+  }
+]

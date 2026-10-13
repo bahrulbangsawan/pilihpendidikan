@@ -45,10 +45,14 @@
       "name": "Portfolio builder",
       "description": "Build an Apple Developer Academy portfolio in a fixed A4-landscape layout and export it as a PDF."
     },
+    "jobs": {
+      "name": "Job tracker",
+      "description": "Track applications on a board, discover jobs and apply from your computer with the CLI."
+    },
     "mcp": {
       "heading": "AI assistants",
       "name": "Use it from an AI assistant (MCP)",
-      "description": "An AI assistant that supports MCP can read and edit your CVs, invoices and portfolios for you.",
+      "description": "An AI assistant that supports MCP can read and edit your CVs, invoices, portfolios and job applications for you.",
       "endpointLabel": "MCP endpoint",
       "connect": "Get a personal token"
     }

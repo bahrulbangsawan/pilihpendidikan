@@ -1,0 +1,1465 @@
+{
+  "version": 1,
+  "source": "03 §5.1 with the leaf-1.1 driver interpretation",
+  "actors": ["user", "automation", "system"],
+  "cases": [
+    {
+      "from": "saved",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "ready",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "applied",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "saved",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "saved",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "ready",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "ready",
+      "actor": "system",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "applied",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "preparing",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "preparing",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "ready",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "applied",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "ready",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": true
+    },
+    {
+      "from": "ready",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "ready",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "ready",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "ready",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "applied",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "offer",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "applied",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "applied",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "applied",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "applied",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "offer",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "interviewing",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "interviewing",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "interviewing",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "interviewing",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "offer",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "offer",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "offer",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "offer",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "saved",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "accepted",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "saved",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "rejected",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "rejected",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "saved",
+      "actor": "user",
+      "allowed": true
+    },
+    {
+      "from": "withdrawn",
+      "to": "saved",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "saved",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "preparing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "preparing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "preparing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "ready",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "ready",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "ready",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "applied",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "applied",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "applied",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "interviewing",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "interviewing",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "interviewing",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "offer",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "offer",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "offer",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "accepted",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "accepted",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "accepted",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "rejected",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "rejected",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "rejected",
+      "actor": "system",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "withdrawn",
+      "actor": "user",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "withdrawn",
+      "actor": "automation",
+      "allowed": false
+    },
+    {
+      "from": "withdrawn",
+      "to": "withdrawn",
+      "actor": "system",
+      "allowed": false
+    }
+  ]
+}

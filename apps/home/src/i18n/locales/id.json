@@ -45,10 +45,14 @@
       "name": "Pembuat portofolio",
       "description": "Susun portofolio Apple Developer Academy dalam tata letak A4 lanskap yang tetap, lalu ekspor sebagai PDF."
     },
+    "jobs": {
+      "name": "Pelacak lamaran",
+      "description": "Lacak lamaran di papan, temukan lowongan, dan lamar dari komputer Anda dengan CLI."
+    },
     "mcp": {
       "heading": "Asisten AI",
       "name": "Pakai lewat asisten AI (MCP)",
-      "description": "Asisten AI yang mendukung MCP bisa membaca dan mengedit CV, invoice, dan portofolio Anda.",
+      "description": "Asisten AI yang mendukung MCP bisa membaca dan mengedit CV, invoice, portofolio, dan lamaran kerja Anda.",
       "endpointLabel": "Endpoint MCP",
       "connect": "Dapatkan token pribadi"
     }

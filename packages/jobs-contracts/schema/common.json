@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "AnswerId": {
+      "type": "string",
+      "pattern": "^ans_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "answer id (ans_<ULID>)"
+    },
+    "ApiErrorCode": {
+      "type": "string",
+      "enum": [
+        "invalid_request",
+        "invalid_token",
+        "insufficient_scope",
+        "device_revoked",
+        "device_not_accepting_tasks",
+        "device_required",
+        "not_found",
+        "revision_conflict",
+        "lease_lost",
+        "idempotency_mismatch",
+        "duplicate",
+        "too_late",
+        "approval_expired",
+        "task_expired",
+        "cursor_expired",
+        "payload_too_large",
+        "invalid_transition",
+        "policy_violation",
+        "unsupported_source",
+        "mode_not_allowed",
+        "cli_upgrade_required",
+        "rate_limited",
+        "ai_budget_exhausted",
+        "upstream_unavailable"
+      ]
+    },
+    "ApplicationId": {
+      "type": "string",
+      "pattern": "^app_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "application id (app_<ULID>)"
+    },
+    "ApprovalId": {
+      "type": "string",
+      "pattern": "^apr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "approval id (apr_<ULID>)"
+    },
+    "AttemptId": {
+      "type": "string",
+      "pattern": "^att_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "attempt id (att_<ULID>)"
+    },
+    "BaseRevision": {
+      "type": "object",
+      "properties": {
+        "base_revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": ["base_revision"]
+    },
+    "BinaryBody": {
+      "type": "object",
+      "properties": {
+        "binary": {
+          "type": "boolean",
+          "const": true
+        },
+        "content_type": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_disposition": {
+          "type": "string"
+        }
+      },
+      "required": ["binary", "content_type"],
+      "description": "Marker: the HTTP body is raw bytes, not JSON (headers carry the metadata)"
+    },
+    "CountryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "Cursor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "description": "Opaque base64url cursor of the last sort key (05 §1.5)"
+    },
+    "CvVariantId": {
+      "type": "string",
+      "pattern": "^cvv_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cv_variant id (cvv_<ULID>)"
+    },
+    "Day": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Calendar day YYYY-MM-DD"
+    },
+    "DeletedResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "deleted": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": ["id", "deleted"]
+    },
+    "DeviceId": {
+      "type": "string",
+      "pattern": "^dev_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "device id (dev_<ULID>)"
+    },
+    "Domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253,
+      "pattern": "^[a-z0-9.-]+$",
+      "description": "Lowercase ASCII host or registrable domain (IDN in punycode)"
+    },
+    "EmailId": {
+      "type": "string",
+      "pattern": "^eml_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "email id (eml_<ULID>)"
+    },
+    "EmptyObject": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "ErrorEnvelope": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ApiErrorCode"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {}
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "reason": {
+          "$ref": "#/$defs/InvalidTokenReason"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "required": ["error", "message", "request_id"],
+      "description": "Error envelope of every /api/v1 failure (05 §1.3)"
+    },
+    "EventId": {
+      "type": "string",
+      "pattern": "^evt_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "event id (evt_<ULID>)"
+    },
+    "EvidenceId": {
+      "type": "string",
+      "pattern": "^evd_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "evidence id (evd_<ULID>)"
+    },
+    "FactId": {
+      "type": "string",
+      "pattern": "^fct_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "fact id (fct_<ULID>)"
+    },
+    "FileId": {
+      "type": "string",
+      "pattern": "^fil_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "file id (fil_<ULID>)"
+    },
+    "Fingerprint": {
+      "type": "string",
+      "pattern": "^fp1:[0-9a-f]{64}$",
+      "description": "Posting fingerprint: fp1: + SHA-256 hex of the src|/gen| key (03 §4.2)"
+    },
+    "GrantId": {
+      "type": "string",
+      "pattern": "^grt_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "grant id (grt_<ULID>)"
+    },
+    "HtmlPage": {
+      "type": "string",
+      "minLength": 1,
+      "description": "text/html body: a server-rendered page, not JSON"
+    },
+    "ICalendar": {
+      "type": "string",
+      "format": "starts_with",
+      "pattern": "^BEGIN:VCALENDAR.*",
+      "description": "text/calendar body (RFC 5545), one VEVENT"
+    },
+    "InterviewId": {
+      "type": "string",
+      "pattern": "^ivw_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "interview id (ivw_<ULID>)"
+    },
+    "InvalidTokenReason": {
+      "type": "string",
+      "enum": ["no_bearer", "unknown_token", "expired_token", "revoked_token"]
+    },
+    "JsonObject": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {},
+      "description": "Any JSON object"
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {}
+        }
+      ],
+      "description": "Any JSON value"
+    },
+    "LeaseId": {
+      "type": "string",
+      "pattern": "^lse_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "lease id (lse_<ULID>)"
+    },
+    "Month": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}$",
+      "description": "Calendar month YYYY-MM"
+    },
+    "ObservationId": {
+      "type": "string",
+      "pattern": "^obs_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "observation id (obs_<ULID>)"
+    },
+    "OfferId": {
+      "type": "string",
+      "pattern": "^ofr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "offer id (ofr_<ULID>)"
+    },
+    "PageQuery": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "cursor": {
+          "$ref": "#/$defs/Cursor"
+        }
+      },
+      "description": "Pagination query (05 §1.5): limit 1-200 (default 50), opaque cursor"
+    },
+    "PostingId": {
+      "type": "string",
+      "pattern": "^pst_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "posting id (pst_<ULID>)"
+    },
+    "RefreshTokenId": {
+      "type": "string",
+      "pattern": "^rft_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "refresh_token id (rft_<ULID>)"
+    },
+    "Revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Row revision (D-21); starts at 1 and increments on every update"
+    },
+    "RuleId": {
+      "type": "string",
+      "pattern": "^rul_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "rule id (rul_<ULID>)"
+    },
+    "RunId": {
+      "type": "string",
+      "pattern": "^run_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "run id (run_<ULID>)"
+    },
+    "ScoreId": {
+      "type": "string",
+      "pattern": "^scr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "score id (scr_<ULID>)"
+    },
+    "Semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "description": "Semantic version"
+    },
+    "Sha256Hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256 digest (64 characters)"
+    },
+    "SourceId": {
+      "type": "string",
+      "pattern": "^src_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "source id (src_<ULID>)"
+    },
+    "SupportAccessId": {
+      "type": "string",
+      "pattern": "^sal_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "support_access id (sal_<ULID>)"
+    },
+    "TaskId": {
+      "type": "string",
+      "pattern": "^tsk_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "task id (tsk_<ULID>)"
+    },
+    "Timestamp": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Epoch milliseconds (UTC)"
+    },
+    "Url": {
+      "type": "string",
+      "maxLength": 2048,
+      "format": "uri",
+      "description": "Absolute URL"
+    },
+    "UserId": {
+      "type": "string",
+      "pattern": "^usr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "user id (usr_<ULID>)"
+    },
+    "UserJobId": {
+      "type": "string",
+      "pattern": "^ujb_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "user_job id (ujb_<ULID>)"
+    }
+  }
+}

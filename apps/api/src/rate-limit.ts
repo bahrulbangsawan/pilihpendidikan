@@ -1,5 +1,12 @@
 // KV-backed fixed-window rate limiter. Keys are `rl:{purpose}:{sha256}` so a
 // KV listing never exposes an IP address or an email in plaintext.
+//
+// [LIMITATION] (05 §1.9) the window is a non-atomic KV read-modify-write:
+// fine for abuse damping, never for exact accounting. The AI budget is
+// enforced from D1 counters instead (src/jobs/repo/core/ai-usage.ts).
+//
+// A check may carry a `cost` (default 1): byte-weighted rules such as the
+// daily upload volume count bytes instead of calls.
 
 export interface RateLimitRule {
   purpose: string;
@@ -35,7 +42,8 @@ async function hashKey(purpose: string, subject: string): Promise<string> {
 export async function checkRateLimit(
   kv: KVNamespace,
   rule: RateLimitRule,
-  subject: string
+  subject: string,
+  cost = 1
 ): Promise<CheckRateLimitResult> {
   const key = await hashKey(rule.purpose, subject);
   const now = Date.now();
@@ -44,14 +52,14 @@ export async function checkRateLimit(
     existing && now - existing.windowStart < rule.windowMs
       ? existing
       : { count: 0, windowStart: now };
-  if (value.count >= rule.max) {
+  if (value.count + cost > rule.max) {
     const retryAfterSeconds = Math.max(
       1,
       Math.ceil((value.windowStart + rule.windowMs - now) / 1000)
     );
     return { ok: false, retryAfterSeconds };
   }
-  value.count += 1;
+  value.count += cost;
   await kv.put(key, JSON.stringify(value), {
     expirationTtl: Math.max(
       MIN_KV_TTL_SECONDS,
@@ -66,13 +74,15 @@ export async function checkRateLimit(
 // No RATE_LIMIT_KV binding means rate limiting is off (partial dev env).
 export async function checkRateLimits(
   kv: KVNamespace | undefined,
-  checks: ReadonlyArray<readonly [RateLimitRule, string]>
+  checks: ReadonlyArray<
+    readonly [RateLimitRule, string] | readonly [RateLimitRule, string, number]
+  >
 ): Promise<CheckRateLimitResult> {
   if (!kv) {
     return { ok: true, retryAfterSeconds: 0 };
   }
-  for (const [rule, subject] of checks) {
-    const result = await checkRateLimit(kv, rule, subject);
+  for (const [rule, subject, cost] of checks) {
+    const result = await checkRateLimit(kv, rule, subject, cost ?? 1);
     if (!result.ok) {
       return result;
     }
@@ -125,4 +135,80 @@ export const TOKEN_CREATE_EMAIL: RateLimitRule = {
   purpose: "token-create",
   max: 20,
   windowMs: 60 * MINUTE_MS,
+};
+
+// ---------------------------------------------------------------------------
+// Job Tracker /api/v1 rules (05 §1.9). The v1 router applies them by name
+// (`defineRoute({rateLimit: "sync-batch"})`, src/jobs/core/router.ts); the
+// subject is the device for device rules and the user id otherwise.
+// ---------------------------------------------------------------------------
+
+const HOUR_MS = 60 * MINUTE_MS;
+const DAY_MS = 24 * HOUR_MS;
+
+// Discovery / outbox sync batches, per device.
+export const SYNC_BATCH_DEVICE: RateLimitRule = {
+  purpose: "sync-batch",
+  max: 120,
+  windowMs: MINUTE_MS,
+};
+// Task claim polls, per device.
+export const TASK_POLL_DEVICE: RateLimitRule = {
+  purpose: "task-poll",
+  max: 30,
+  windowMs: MINUTE_MS,
+};
+// AI proxy calls, per user (the daily AI budget is enforced in D1).
+export const AI_INVOKE_USER: RateLimitRule = {
+  purpose: "ai-invoke",
+  max: 60,
+  windowMs: MINUTE_MS,
+};
+// File uploads: 60 per hour per user …
+export const FILE_UPLOAD_USER: RateLimitRule = {
+  purpose: "file-upload",
+  max: 60,
+  windowMs: HOUR_MS,
+};
+// … and 500 MB per day per user (byte-weighted: cost = request bytes).
+export const FILE_UPLOAD_BYTES_USER: RateLimitRule = {
+  purpose: "file-upload-bytes",
+  max: 500 * 1024 * 1024,
+  windowMs: DAY_MS,
+};
+// Automation task creation, per user.
+export const TASK_CREATE_USER: RateLimitRule = {
+  purpose: "task-create",
+  max: 200,
+  windowMs: DAY_MS,
+};
+
+// Names a route may declare, with the subject each rule is keyed by.
+export type V1RateLimitName =
+  | "sync-batch"
+  | "task-poll"
+  | "ai-invoke"
+  | "file-upload"
+  | "task-create";
+
+export type RateLimitSubject = "device" | "user" | "ip";
+
+export interface V1RateLimit {
+  rule: RateLimitRule;
+  subject: RateLimitSubject;
+  // Weighted by the request's Content-Length instead of 1.
+  costFromBytes?: true;
+}
+
+export const V1_RATE_LIMITS: Readonly<
+  Record<V1RateLimitName, readonly V1RateLimit[]>
+> = {
+  "sync-batch": [{ rule: SYNC_BATCH_DEVICE, subject: "device" }],
+  "task-poll": [{ rule: TASK_POLL_DEVICE, subject: "device" }],
+  "ai-invoke": [{ rule: AI_INVOKE_USER, subject: "user" }],
+  "file-upload": [
+    { rule: FILE_UPLOAD_USER, subject: "user" },
+    { rule: FILE_UPLOAD_BYTES_USER, subject: "user", costFromBytes: true },
+  ],
+  "task-create": [{ rule: TASK_CREATE_USER, subject: "user" }],
 };

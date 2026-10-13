@@ -1,0 +1,13 @@
+Subject: Application for {posting.title} — {facts.contact.full_name}
+
+Dear {recipient_name|"Hiring Team"},
+
+I am writing to apply for the {posting.title} position at {posting.company_name}{posting.source_ref_clause}.
+Please find my CV attached.
+
+{optional_paragraph}
+
+Kind regards,
+{facts.contact.full_name}
+{facts.contact.phone}
+{facts.links.linkedin|""}

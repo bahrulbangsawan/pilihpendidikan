@@ -63,3 +63,7 @@ temp
 # Local dev artifacts (dogfood/QA screenshots)
 .dogfood-screenshots/
 dogfood-output/
+
+# unlazy orchestration ledgers (local only)
+.unlazy/
+.unlazy-hook-state.json

@@ -1,0 +1,1081 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "CandidateAction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "fill_field"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "plan_item": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "type", "ref", "plan_item"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "select_option"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "plan_item": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "type", "ref", "plan_item"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "set_checkbox"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "plan_item": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "type", "ref", "plan_item"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "upload_file"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "file_id": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "type", "ref", "file_id"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "click_ref"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "role_hint": {
+              "type": "string",
+              "enum": [
+                "next",
+                "previous",
+                "submit",
+                "add_section",
+                "remove_section",
+                "upload_trigger",
+                "apply_entry",
+                "cookie_consent_reject",
+                "cookie_consent_accept"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 120
+            }
+          },
+          "required": ["id", "type", "ref", "role_hint"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "scroll"
+            },
+            "ref": {
+              "type": ["string", "null"]
+            },
+            "direction": {
+              "type": "string",
+              "enum": ["down", "up"]
+            }
+          },
+          "required": ["id", "type", "ref", "direction"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "wait_for"
+            },
+            "condition": {
+              "type": "string",
+              "enum": ["network_idle", "url_change"]
+            },
+            "timeout_ms": {
+              "type": "number",
+              "maximum": 15000
+            }
+          },
+          "required": ["id", "type", "condition", "timeout_ms"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "pause_for_human"
+            },
+            "reason": {
+              "$ref": "#/$defs/PauseReason"
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "required": ["id", "type", "reason", "message"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "stop"
+            },
+            "outcome": {
+              "type": "string",
+              "enum": ["failed", "cancelled"]
+            },
+            "error_class": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "type", "outcome", "error_class"]
+        }
+      ]
+    },
+    "ControlKind": {
+      "type": "string",
+      "enum": ["button", "link", "submit"]
+    },
+    "ControlRoleHint": {
+      "type": "string",
+      "enum": [
+        "next",
+        "previous",
+        "submit",
+        "add_section",
+        "remove_section",
+        "upload_trigger",
+        "apply_entry",
+        "login",
+        "sign_up",
+        "cookie_consent_accept",
+        "cookie_consent_reject",
+        "navigation",
+        "other"
+      ]
+    },
+    "EvidenceSignals": {
+      "type": "object",
+      "properties": {
+        "url_match": {
+          "type": "boolean"
+        },
+        "dom_marker": {
+          "type": "boolean"
+        },
+        "negative_marker": {
+          "type": "boolean"
+        },
+        "xhr_2xx": {
+          "type": "boolean"
+        },
+        "form_gone": {
+          "type": "boolean"
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "application_received": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "still_form_or_error": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "user_confirmed": {
+          "type": "boolean"
+        },
+        "provider_accepted": {
+          "type": "boolean"
+        },
+        "message_id": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "inferred": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "FieldKind": {
+      "type": "string",
+      "enum": [
+        "text",
+        "email",
+        "tel",
+        "url",
+        "number",
+        "date",
+        "month",
+        "textarea",
+        "select",
+        "radio_group",
+        "checkbox",
+        "checkbox_group",
+        "file",
+        "combobox",
+        "contenteditable"
+      ]
+    },
+    "FieldPlan": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FieldPlanItem"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "question_key": {
+                "type": ["string", "null"]
+              },
+              "why": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": ["ref", "label", "question_key", "why"]
+          }
+        }
+      },
+      "required": ["items", "missing"]
+    },
+    "FieldPlanItem": {
+      "type": "object",
+      "properties": {
+        "plan_item": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "action": {
+          "$ref": "#/$defs/PlanAction"
+        },
+        "value_source": {
+          "$ref": "#/$defs/ValueSource"
+        },
+        "fact_key": {
+          "type": ["string", "null"]
+        },
+        "answer_id": {
+          "type": ["string", "null"]
+        },
+        "option_value": {
+          "type": ["string", "null"]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "needs_human": {
+          "type": "boolean"
+        },
+        "question_key": {
+          "type": ["string", "null"]
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "plan_item",
+        "ref",
+        "signature",
+        "action",
+        "value_source",
+        "fact_key",
+        "answer_id",
+        "option_value",
+        "value",
+        "confidence",
+        "sensitivity",
+        "needs_human",
+        "question_key",
+        "reason"
+      ]
+    },
+    "FieldPlanRequest": {
+      "type": "object",
+      "properties": {
+        "lease_ref": {
+          "$ref": "#/$defs/LeaseRef"
+        },
+        "observation": {
+          "$ref": "#/$defs/PageObservation"
+        },
+        "fact_keys": {
+          "maxItems": 200,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "file_slots": {
+          "type": "object",
+          "properties": {
+            "cv_file": {
+              "type": "boolean"
+            },
+            "cover_letter_file": {
+              "type": "boolean"
+            }
+          },
+          "required": ["cv_file", "cover_letter_file"]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      "required": ["lease_ref", "observation", "file_slots"]
+    },
+    "LeaseId": {
+      "type": "string",
+      "pattern": "^lse_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "lease id (lse_<ULID>)"
+    },
+    "LeaseRef": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "lease_id": {
+          "$ref": "#/$defs/LeaseId"
+        }
+      },
+      "required": ["task_id", "lease_id"]
+    },
+    "NextActionRequest": {
+      "type": "object",
+      "properties": {
+        "lease_ref": {
+          "$ref": "#/$defs/LeaseRef"
+        },
+        "observation_id": {
+          "type": "string"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "page_kind": {
+          "$ref": "#/$defs/PageKind"
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "required_remaining": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "errors": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "form_hash": {
+              "type": "string",
+              "minLength": 64,
+              "maxLength": 64
+            }
+          },
+          "required": ["required_remaining", "errors", "form_hash"]
+        },
+        "candidates": {
+          "minItems": 1,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateAction"
+          }
+        }
+      },
+      "required": [
+        "lease_ref",
+        "observation_id",
+        "step",
+        "page_kind",
+        "state",
+        "candidates"
+      ]
+    },
+    "NextActionResponse": {
+      "type": "object",
+      "properties": {
+        "choice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refused": {
+          "type": "boolean"
+        }
+      },
+      "required": ["choice", "confidence", "refused"]
+    },
+    "ObservedControl": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ControlKind"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "role_hint": {
+          "$ref": "#/$defs/ControlRoleHint"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "in_viewport": {
+          "type": "boolean"
+        }
+      },
+      "required": ["ref", "kind", "text", "role_hint", "enabled", "in_viewport"]
+    },
+    "ObservedField": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^(fr\\d+:)?f\\d+$"
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 16
+        },
+        "kind": {
+          "$ref": "#/$defs/FieldKind"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "label_sources": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "options": {
+          "maxItems": 200,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ObservedFieldOption"
+          }
+        },
+        "options_dynamic": {
+          "type": "boolean"
+        },
+        "accept": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "multiple": {
+          "type": "boolean"
+        },
+        "has_value": {
+          "type": "boolean"
+        },
+        "user_touched": {
+          "type": "boolean"
+        },
+        "invalid": {
+          "type": "boolean"
+        },
+        "validation_message": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 120
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "signature",
+        "kind",
+        "label",
+        "label_sources",
+        "description",
+        "required",
+        "options",
+        "options_dynamic",
+        "accept",
+        "multiple",
+        "has_value",
+        "user_touched",
+        "invalid",
+        "validation_message",
+        "section"
+      ]
+    },
+    "ObservedFieldOption": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": ["value", "label", "selected", "disabled"]
+    },
+    "PageClassifyRequest": {
+      "type": "object",
+      "properties": {
+        "lease_ref": {
+          "$ref": "#/$defs/LeaseRef"
+        },
+        "observation": {
+          "$ref": "#/$defs/PageObservation"
+        }
+      },
+      "required": ["lease_ref", "observation"]
+    },
+    "PageClassifyResponse": {
+      "type": "object",
+      "properties": {
+        "page_kind": {
+          "$ref": "#/$defs/PageKind"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "probabilities": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/PageKind"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "injection_suspected": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "form_requires_upload": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "form_present": {
+          "type": "boolean"
+        },
+        "refused": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "page_kind",
+        "confidence",
+        "injection_suspected",
+        "form_requires_upload",
+        "form_present",
+        "refused"
+      ]
+    },
+    "PageKind": {
+      "type": "string",
+      "enum": [
+        "job_description",
+        "application_form",
+        "login_required",
+        "account_creation_required",
+        "captcha_or_challenge",
+        "review_page",
+        "confirmation",
+        "error_page",
+        "email_instructions",
+        "external_redirect",
+        "unrelated",
+        "other"
+      ]
+    },
+    "PageObservation": {
+      "type": "object",
+      "properties": {
+        "observation_id": {
+          "type": "string"
+        },
+        "attempt_id": {
+          "type": "string"
+        },
+        "step": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "registrable_domain": {
+          "type": "string"
+        },
+        "allowlisted": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "aria_snapshot": {
+          "type": "string",
+          "maxLength": 24576
+        },
+        "visible_text_excerpt": {
+          "type": "string",
+          "maxLength": 8192
+        },
+        "fields": {
+          "maxItems": 300,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ObservedField"
+          }
+        },
+        "controls": {
+          "maxItems": 80,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ObservedControl"
+          }
+        },
+        "errors": {
+          "maxItems": 30,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": ["string", "null"]
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": ["ref", "text"]
+          }
+        },
+        "opaque_regions": {
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "origin": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 120
+              }
+            },
+            "required": ["origin", "title"]
+          }
+        },
+        "challenge": {
+          "type": "object",
+          "properties": {
+            "detected": {
+              "type": "boolean"
+            },
+            "kind": {
+              "type": ["string", "null"]
+            }
+          },
+          "required": ["detected", "kind"]
+        },
+        "form_hash": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "screenshot_jpeg_b64": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "observation_id",
+        "attempt_id",
+        "step",
+        "url",
+        "origin",
+        "registrable_domain",
+        "allowlisted",
+        "title",
+        "http_status",
+        "aria_snapshot",
+        "visible_text_excerpt",
+        "fields",
+        "controls",
+        "errors",
+        "opaque_regions",
+        "challenge",
+        "form_hash",
+        "screenshot_jpeg_b64"
+      ]
+    },
+    "PauseReason": {
+      "type": "string",
+      "enum": [
+        "captcha_or_challenge",
+        "login_required",
+        "account_creation_required",
+        "mfa_required",
+        "credential_field",
+        "missing_information",
+        "protected_question",
+        "unknown_question",
+        "unsupported_form",
+        "unclear_page",
+        "off_domain_navigation",
+        "validation_unresolved",
+        "stuck_loop",
+        "needs_headed_restart",
+        "payment_requested",
+        "network_offline",
+        "resource_exhausted",
+        "low_confidence",
+        "injection_suspected",
+        "ai_unavailable",
+        "user_requested"
+      ]
+    },
+    "PlanAction": {
+      "type": "string",
+      "enum": ["fill", "select", "check", "uncheck", "upload", "skip"]
+    },
+    "Sensitivity": {
+      "type": "string",
+      "enum": ["none", "personal", "protected"]
+    },
+    "TaskId": {
+      "type": "string",
+      "pattern": "^tsk_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "task id (tsk_<ULID>)"
+    },
+    "ValueSource": {
+      "type": "string",
+      "enum": [
+        "fact",
+        "answer",
+        "option",
+        "cv_file",
+        "cover_letter_file",
+        "generated_text",
+        "none"
+      ]
+    },
+    "VerificationVerdict": {
+      "type": "string",
+      "enum": ["verified", "unverified", "negative", "outcome_unknown"]
+    },
+    "VerifySubmissionRequest": {
+      "type": "object",
+      "properties": {
+        "lease_ref": {
+          "$ref": "#/$defs/LeaseRef"
+        },
+        "observation_id": {
+          "type": ["string", "null"]
+        },
+        "final_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "page_title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "text_excerpt": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "screenshot_jpeg_b64": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "signals": {
+          "$ref": "#/$defs/EvidenceSignals"
+        }
+      },
+      "required": [
+        "lease_ref",
+        "observation_id",
+        "final_url",
+        "page_title",
+        "text_excerpt",
+        "screenshot_jpeg_b64",
+        "signals"
+      ]
+    },
+    "VerifySubmissionResponse": {
+      "type": "object",
+      "properties": {
+        "application_received": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "still_form_or_error": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verdict": {
+          "$ref": "#/$defs/VerificationVerdict"
+        },
+        "refused": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "application_received",
+        "still_form_or_error",
+        "verdict",
+        "refused"
+      ]
+    }
+  }
+}

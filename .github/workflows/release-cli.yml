@@ -1,0 +1,361 @@
+# Release pipeline of the pilih-jobs CLI (job-tracker-spec 22 §7). Runs on a
+# tag `cli-vX.Y.Z` (stable) or `cli-vX.Y.Z-beta.N` (beta); the tag must equal
+# `__version__` in apps/jobs-cli/src/pilih_jobs/version.py and the
+# `pyproject.toml` version (PEP 440 spelling, e.g. 0.2.0b1).
+#
+#   1  verify            uv sync --locked; ruff; pyright; pytest (unit +
+#                        component + policy)
+#   2  matrix            cli-matrix.yml: OS × Python smoke incl. browser install,
+#                        headless launch, agent fixtures, discover --dry-run
+#      e2e               e2e.yml: the full-stack suite (13 §7 pre-release leg)
+#   3  contracts         bun run contracts:check at the tagged commit
+#   4–5 build            THIRD_PARTY_NOTICES regenerated; uv build (sdist +
+#                        wheel); CycloneDX SBOM from uv.lock; SHA256SUMS (incl.
+#                        the hub's install scripts); Homebrew / Scoop rendered
+#   6  publish           TestPyPI, then PyPI, via Trusted Publishing (OIDC, no
+#                        stored token) with PEP 740 attestations. The `testpypi`
+#                        and `pypi` environments carry the owner's approval rule
+#   7  github-release    SBOM, checksums, changelog, tested matrix
+#   8  packaging         stable only: bot PRs to the Homebrew tap and the Scoop
+#                        bucket, opt-in (vars.PACKAGING_BOT = 1 + secret
+#                        PACKAGING_BOT_TOKEN); otherwise the rendered files stay
+#                        release assets
+#   9  recommend-version stable only, MANUAL OWNER GATE (environment
+#                        `cli-version-bump`): opens a PR that raises
+#                        JOBS_RECOMMENDED_CLI_VERSION in apps/api/wrangler.jsonc.
+#                        It never deploys; min_cli_version is raised by hand
+#                        (22 §10.4, 13 §9: 14 days' notice).
+#
+# Owner setup before the first tag: DEPLOY.md § "pilih-jobs CLI releases".
+name: Release CLI
+
+on:
+  push:
+    tags: ["cli-v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-cli-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FORCE_COLOR: "1"
+  UV_VERSION: "0.12.1"
+
+jobs:
+  meta:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      channel: ${{ steps.version.outputs.channel }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+      - name: The tag matches __version__ and pyproject.toml
+        id: version
+        working-directory: apps/jobs-cli
+        run: |
+          version="${GITHUB_REF_NAME#cli-v}"
+          uv run --no-project --with "packaging>=24" python - "$version" <<'PY'
+          import re, sys, tomllib
+          from packaging.version import Version
+          tag = sys.argv[1]
+          semver = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-beta\.(0|[1-9]\d*))?$")
+          if not semver.match(tag):
+              sys.exit(f"tag cli-v{tag}: expected cli-vX.Y.Z or cli-vX.Y.Z-beta.N")
+          source = open("src/pilih_jobs/version.py", encoding="utf-8").read()
+          module = re.search(r'^__version__: Final = "([^"]+)"', source, re.M)
+          project = tomllib.load(open("pyproject.toml", "rb"))["project"]["version"]
+          if module is None or module[1] != tag:
+              sys.exit(f"__version__ is {module and module[1]!r}, the tag says {tag!r}")
+          if Version(project) != Version(tag.replace("-beta.", "b")):
+              sys.exit(f"pyproject.toml version {project!r} does not match the tag {tag!r}")
+          PY
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          case "$version" in
+            *-*) echo "channel=beta" >> "$GITHUB_OUTPUT" ;;
+            *) echo "channel=stable" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+  verify:
+    needs: meta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: apps/jobs-cli
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+      - run: uv sync --locked
+      - run: uv run ruff check src tests scripts
+      - run: uv run ruff format --check src tests scripts
+      - run: uv run lint-imports
+      - run: uv run pyright
+      - name: Unit, component and policy tests
+        run: uv run pytest -m "not e2e and not live and not browser"
+
+  matrix:
+    needs: meta
+    uses: ./.github/workflows/cli-matrix.yml
+
+  e2e:
+    needs: meta
+    uses: ./.github/workflows/e2e.yml
+
+  contracts:
+    needs: meta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+      - run: bun install --frozen-lockfile
+      - name: Generated models == packages/jobs-contracts at the tagged commit
+        run: bun run contracts:check
+
+  build:
+    needs: [meta, verify, matrix, e2e, contracts]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/jobs-cli
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: "3.12"
+      - run: uv sync --locked
+      - name: THIRD_PARTY_NOTICES from the locked runtime closure
+        run: uv run python scripts/gen_notices.py
+      - name: uv build (sdist + pure-Python wheel)
+        run: uv build --out-dir dist
+      - name: SBOM, checksums, Homebrew formula and Scoop manifest
+        run: |
+          mkdir -p assets
+          uv export --frozen --no-dev --format cyclonedx1.5 \
+            -o "assets/pilih-jobs-$VERSION.cdx.json"
+          cp THIRD_PARTY_NOTICES "assets/THIRD_PARTY_NOTICES-$VERSION.txt"
+          cp ../home/public/install-cli.sh ../home/public/install-cli.ps1 assets/
+          uv run python packaging/render.py --dist dist --out assets
+          (cd dist && sha256sum ./*) > SHA256SUMS
+          (cd assets && sha256sum ./*) >> SHA256SUMS
+          mv SHA256SUMS assets/
+          cat assets/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-dist
+          path: apps/jobs-cli/dist/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-assets
+          path: apps/jobs-cli/assets/
+          if-no-files-found: error
+
+  publish-testpypi:
+    needs: [meta, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/pilih-jobs/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+          attestations: true
+
+  publish-pypi:
+    needs: [meta, publish-testpypi]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/pilih-jobs/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          attestations: true
+
+  github-release:
+    needs: [meta, publish-pypi]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+      CHANNEL: ${{ needs.meta.outputs.channel }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: release/dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-assets
+          path: release/assets
+      - name: Release notes (changelog, tested matrix, checksums)
+        run: |
+          tag="$GITHUB_REF_NAME"
+          prev="$(git tag --list 'cli-v*' --sort=-v:refname | grep -vx "$tag" | head -n 1 || true)"
+          range="${prev:+$prev..}$tag"
+          pins="$(uv export --project apps/jobs-cli --frozen --no-dev --no-hashes \
+            --format requirements-txt --quiet | grep -E '^(playwright|scrapling)' | sed 's/ *;.*//' || true)"
+          {
+            echo "## pilih-jobs $VERSION ($CHANNEL)"
+            echo
+            echo '```sh'
+            if [ "$CHANNEL" = "beta" ]; then
+              echo "uv tool install --prerelease allow pilih-jobs==$VERSION"
+            else
+              echo "uv tool install pilih-jobs"
+            fi
+            echo '```'
+            echo
+            echo "### Changes${prev:+ since $prev}"
+            echo
+            git log --no-merges --pretty='- %s (%h)' "$range" -- apps/jobs-cli packages/jobs-contracts
+            echo
+            echo "### Tested matrix"
+            echo
+            echo "- Python 3.11, 3.12, 3.13 on ubuntu-24.04 (unit, component, contract)"
+            echo "- macOS 14 arm64, macOS 15 x64, Windows Server 2022, Ubuntu 22.04 x64, Ubuntu 24.04 arm64:"
+            echo "  wheel install, doctor, browser install + headless launch, agent fixtures, discover --dry-run"
+            echo "- Full-stack e2e suite on ubuntu-24.04"
+            echo "- Pinned: $(echo "$pins" | tr '\n' ' ')"
+            echo
+            echo "### Checksums (SHA-256)"
+            echo
+            echo '```'
+            cat release/assets/SHA256SUMS
+            echo '```'
+            echo
+            echo "Attestations (PEP 740) are on PyPI; the SBOM is \`pilih-jobs-$VERSION.cdx.json\`."
+          } > release/notes.md
+          cat release/notes.md
+      - name: gh release create
+        run: |
+          flags=()
+          if [ "$CHANNEL" = "beta" ]; then flags+=(--prerelease); fi
+          gh release create "$GITHUB_REF_NAME" --verify-tag \
+            --title "pilih-jobs $VERSION" --notes-file release/notes.md "${flags[@]}" \
+            release/dist/* release/assets/*
+
+  packaging:
+    needs: [meta, github-release]
+    if: needs.meta.outputs.channel == 'stable'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+      BOT_TOKEN: ${{ secrets.PACKAGING_BOT_TOKEN }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-assets
+          path: assets
+      - name: Bot PRs to the Homebrew tap and the Scoop bucket (opt-in)
+        run: |
+          if [ "${{ vars.PACKAGING_BOT }}" != "1" ] || [ -z "$BOT_TOKEN" ]; then
+            echo "::notice::Packaging bot is off (vars.PACKAGING_BOT=1 + secret PACKAGING_BOT_TOKEN). pilih-jobs.rb and pilih-jobs.json are attached to the GitHub release."
+            exit 0
+          fi
+          export GH_TOKEN="$BOT_TOKEN"
+          git config --global user.name "pilihpendidikan-bot"
+          git config --global user.email "bot@pilihpendidikan.com"
+          branch="pilih-jobs-$VERSION"
+          open_pr() { # repo, source file, destination path
+            rm -rf target
+            gh repo clone "$1" target -- --depth 1
+            mkdir -p "target/$(dirname "$3")"
+            cp "$2" "target/$3"
+            (
+              cd target
+              git switch -c "$branch"
+              git add "$3"
+              git commit -m "pilih-jobs $VERSION"
+              git push origin "$branch"
+              gh pr create --title "pilih-jobs $VERSION" \
+                --body "Generated by release-cli.yml for $GITHUB_REF_NAME ($GITHUB_SERVER_URL/$GITHUB_REPOSITORY)."
+            )
+          }
+          open_pr pilihpendidikan/homebrew-tap assets/pilih-jobs.rb Formula/pilih-jobs.rb
+          open_pr pilihpendidikan/scoop-bucket assets/pilih-jobs.json bucket/pilih-jobs.json
+
+  recommend-version:
+    needs: [meta, github-release]
+    if: needs.meta.outputs.channel == 'stable'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # Manual owner gate: the `cli-version-bump` environment requires the
+    # owner's review before this job starts.
+    environment: cli-version-bump
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: PR raising JOBS_RECOMMENDED_CLI_VERSION
+        run: |
+          file=apps/api/wrangler.jsonc
+          sed -i -E "s/(\"JOBS_RECOMMENDED_CLI_VERSION\": \")[^\"]+(\")/\1$VERSION\2/" "$file"
+          if git diff --quiet; then
+            echo "::notice::JOBS_RECOMMENDED_CLI_VERSION is already $VERSION."
+            exit 0
+          fi
+          branch="cli-recommend-$VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "Recommend pilih-jobs $VERSION (JOBS_RECOMMENDED_CLI_VERSION)"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "Recommend pilih-jobs $VERSION" \
+            --body "Raises \`JOBS_RECOMMENDED_CLI_VERSION\` to $VERSION (22 §7 step 9). Takes effect only after an owner-approved \`apps/api\` deploy (DEPLOY.md). \`JOBS_MIN_CLI_VERSION\` is unchanged; raise it by hand with 14 days' notice (13 §9, 22 §10.4)."

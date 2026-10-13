@@ -1,0 +1,25 @@
+{
+  "total": 3,
+  "jobPostings": [
+    {
+      "title": "Systems Software Engineer",
+      "externalPath": "/job/Jakarta/Systems-Software-Engineer_JR1987654",
+      "locationsText": "Jakarta",
+      "postedOn": "Posted 3 Days Ago",
+      "bulletFields": [
+        "JR1987654"
+      ]
+    },
+    {
+      "title": "Solutions Architect",
+      "externalPath": "/job/Jakarta/Solutions-Architect_JR1987655",
+      "locationsText": "Jakarta",
+      "postedOn": "Posted Yesterday",
+      "bulletFields": [
+        "JR1987655"
+      ]
+    }
+  ],
+  "facets": [],
+  "userAuthenticated": false
+}

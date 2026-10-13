@@ -1,5 +1,5 @@
+import type { CVStyle } from "@pilihpendidikan/cv-engine/types";
 import { createFileRoute } from "@tanstack/react-router";
-import type { CVStyle } from "@/components/cv-form";
 import { CVGenerator } from "@/components/cv-generator";
 import { headForLocale } from "@/i18n";
 

@@ -1,0 +1,944 @@
+{
+  "personalInfo": {
+    "fullName": "Bahrul Bangsawan",
+    "jobTitle": "GTM Engineer",
+    "email": "project@bahrul.me",
+    "phone": "+6281234567890",
+    "location": "Makassar, Indonesia",
+    "linkedIn": "bahrulbangsawan",
+    "photoUrl": "",
+    "usePhoto": false
+  },
+  "sectionOrder": [
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "awards",
+    "certificates",
+    "languages",
+    "projects",
+    "volunteer"
+  ],
+  "summaryTitle": "Professional Summary",
+  "summary": "GTM Engineer at the intersection of Data, Marketing, and Tech with 8+ years of experience across digital strategy, product growth, and full-stack development.\nHelping brands scale with data-driven strategies, marketing automation, and modern web technology.\nCo-founded Growthacker, a business acceleration provider offering growth hacking consultation and boot camps.\nProven track record of delivering 25+ web projects for clients across SaaS, e-commerce, media, and enterprise sectors.",
+  "experienceTitle": "Work Experience",
+  "experience": [
+    {
+      "id": "exp-1",
+      "company": "KYZN",
+      "url": "",
+      "title": "Digital Marketing, Product Growth Analyst & Data Engineer",
+      "workType": "full-time",
+      "locationPolicy": "hybrid",
+      "startDate": "2022-02",
+      "endDate": "",
+      "current": true,
+      "description": "Leading marketing operations, multi-channel funnel optimization, and data infrastructure for a family wellness club\nDriving product growth analytics and user acquisition strategy\nBuilding and maintaining data pipelines for business intelligence"
+    },
+    {
+      "id": "exp-2",
+      "company": "Article36",
+      "url": "",
+      "title": "Digital Strategist",
+      "workType": "full-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2024-07",
+      "endDate": "2024-12",
+      "current": false,
+      "description": "Drove brand awareness, paid advertising optimization, and marketing automation for a design agency\nManaged digital campaigns across multiple channels"
+    },
+    {
+      "id": "exp-3",
+      "company": "Skill Academy by Ruangguru",
+      "url": "",
+      "title": "Assistant Lecturer",
+      "workType": "part-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2023-08",
+      "endDate": "2023-11",
+      "current": false,
+      "description": "Delivered digital marketing strategy and keyword research webinar training\nTaught SEO fundamentals and data-driven marketing methodologies"
+    },
+    {
+      "id": "exp-4",
+      "company": "The Surga Villa Estate",
+      "url": "",
+      "title": "Digital Strategist",
+      "workType": "full-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2022-05",
+      "endDate": "2023-08",
+      "current": false,
+      "description": "Handled paid advertising analysis, social media management, and website design for a luxury Bali villa estate\nOptimized digital presence and conversion funnels for hospitality clients"
+    },
+    {
+      "id": "exp-5",
+      "company": "The Rabbit Wins",
+      "url": "",
+      "title": "Digital Strategist",
+      "workType": "full-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2022-08",
+      "endDate": "2023-08",
+      "current": false,
+      "description": "Managed pre-launch social media strategy, content planning, and lead generation across all digital channels\nBuilt digital marketing foundations from ground up for a new brand"
+    },
+    {
+      "id": "exp-6",
+      "company": "Growthacker",
+      "url": "",
+      "title": "Co-Founder & Chief of Hacker",
+      "workType": "full-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2021-09",
+      "endDate": "",
+      "current": true,
+      "description": "Co-founded a business acceleration and growth hacking provider\nOffer consultation and online boot camps on data-driven Growth Hacking methodologies\nHelp clients achieve aggressive growth targets through rapid experimentation and conversion optimization"
+    },
+    {
+      "id": "exp-7",
+      "company": "Mulai Coding",
+      "url": "",
+      "title": "Digital Strategist",
+      "workType": "full-time",
+      "locationPolicy": "work-from-anywhere",
+      "startDate": "2021-08",
+      "endDate": "2022-01",
+      "current": false,
+      "description": "Managed social media, community of 10,400+ members, and customer engagement for an edutech coding platform\nDrove user acquisition and community growth strategies"
+    },
+    {
+      "id": "exp-8",
+      "company": "Sultan Alauddin Hotel & Convention",
+      "url": "",
+      "title": "IT Support Technician",
+      "workType": "internship",
+      "locationPolicy": "work-from-office",
+      "startDate": "2019-06",
+      "endDate": "2019-07",
+      "current": false,
+      "description": "Handled network maintenance, website development, and IT procurement"
+    },
+    {
+      "id": "exp-9",
+      "company": "Chevalier Laboratory SAS",
+      "url": "",
+      "title": "Assistant Lecturer",
+      "workType": "part-time",
+      "locationPolicy": "work-from-office",
+      "startDate": "2018-01",
+      "endDate": "2019-12",
+      "current": false,
+      "description": "Supported practicum sessions in web, Android, and game development at a student-run lab in Telkom University\nMentored students on software development fundamentals and best practices"
+    },
+    {
+      "id": "exp-10",
+      "company": "Badan Mentoring Telkom University",
+      "url": "",
+      "title": "Mentor",
+      "workType": "part-time",
+      "locationPolicy": "work-from-office",
+      "startDate": "2016-12",
+      "endDate": "2018-05",
+      "current": false,
+      "description": "Facilitated mentoring sessions, academic support, and activities for first-year students"
+    },
+    {
+      "id": "exp-11",
+      "company": "Badan Pemeriksa Keuangan RI",
+      "url": "",
+      "title": "IT Support Intern",
+      "workType": "internship",
+      "locationPolicy": "work-from-office",
+      "startDate": "2016-10",
+      "endDate": "2016-12",
+      "current": false,
+      "description": "Troubleshot network systems, managed data input, and maintained hardware at Indonesia's Audit Board"
+    }
+  ],
+  "educationTitle": "Education",
+  "education": [
+    {
+      "id": "edu-1",
+      "category": "university",
+      "institution": "Universitas Telkom",
+      "degree": "Diploma of Education, Teknik Informatika",
+      "gpa": "",
+      "startDate": "2017-08",
+      "endDate": "2022-01",
+      "current": false
+    },
+    {
+      "id": "edu-2",
+      "category": "online-platform",
+      "institution": "RevoU",
+      "degree": "Full Stack Digital Marketing",
+      "gpa": "",
+      "startDate": "2021-09",
+      "endDate": "2021-12",
+      "current": false
+    },
+    {
+      "id": "edu-3",
+      "category": "online-platform",
+      "institution": "DataCamp",
+      "degree": "Data Analyst Associate, Data Scientist",
+      "gpa": "",
+      "startDate": "2022-09",
+      "endDate": "2022-11",
+      "current": false
+    },
+    {
+      "id": "edu-4",
+      "category": "online-platform",
+      "institution": "RevoU",
+      "degree": "Full Stack Product Management",
+      "gpa": "",
+      "startDate": "2022-10",
+      "endDate": "2023-01",
+      "current": false
+    }
+  ],
+  "skillsTitle": "Skills",
+  "skills": [
+    {
+      "id": "skill-cat-1",
+      "name": "Development",
+      "items": [
+        "TypeScript",
+        "React",
+        "Next.js",
+        "TanStack Start",
+        "Tailwind CSS",
+        "Python",
+        "Node.js",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "id": "skill-cat-2",
+      "name": "Marketing & Analytics",
+      "items": [
+        "Growth Hacking",
+        "SEO",
+        "A/B Testing",
+        "Google Analytics",
+        "Meta Ads",
+        "Ahrefs",
+        "WordPress",
+        "Shopify"
+      ]
+    },
+    {
+      "id": "skill-cat-3",
+      "name": "Design & AI",
+      "items": ["Figma", "Canva", "Framer", "OpenAI", "Anthropic", "n8n"]
+    },
+    {
+      "id": "skill-cat-4",
+      "name": "Cloud & DevOps",
+      "items": ["Cloudflare", "Vercel", "Docker", "GitHub", "Supabase"]
+    }
+  ],
+  "awardsTitle": "Awards",
+  "awards": [],
+  "certificatesTitle": "Certificates",
+  "certificates": [
+    {
+      "id": "cert-1",
+      "name": "Glide Certification Level 4",
+      "issuer": "GlideApps",
+      "date": "2024-10",
+      "expiryDate": "",
+      "credentialId": "GLIDE435384",
+      "url": ""
+    },
+    {
+      "id": "cert-2",
+      "name": "Glide Certification Level 3",
+      "issuer": "GlideApps",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "GLIDE163962",
+      "url": ""
+    },
+    {
+      "id": "cert-3",
+      "name": "Glide Certification Level 2",
+      "issuer": "GlideApps",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "GLIDE98686",
+      "url": ""
+    },
+    {
+      "id": "cert-4",
+      "name": "Glide Certification Level 1",
+      "issuer": "GlideApps",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "GLIDE947467",
+      "url": ""
+    },
+    {
+      "id": "cert-5",
+      "name": "Google Analytics Individual Qualification",
+      "issuer": "Google Digital Academy (Skillshop)",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "257289764",
+      "url": ""
+    },
+    {
+      "id": "cert-6",
+      "name": "English for Office",
+      "issuer": "Cariilmu.co.id",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "0651/212/CI/Prakerja/2023",
+      "url": ""
+    },
+    {
+      "id": "cert-7",
+      "name": "Digital Marketing",
+      "issuer": "Badan Nasional Sertifikasi Profesi (BNSP)",
+      "date": "2023-07",
+      "expiryDate": "",
+      "credentialId": "620902431000605962023",
+      "url": ""
+    },
+    {
+      "id": "cert-8",
+      "name": "Full Stack Product Management",
+      "issuer": "RevoU",
+      "date": "2023-01",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-9",
+      "name": "Cyber Security",
+      "issuer": "Dicoding",
+      "date": "2022-12",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-10",
+      "name": "Mini Course Product Management",
+      "issuer": "RevoU",
+      "date": "2022-12",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-11",
+      "name": "Microsoft Certified: Power Platform Fundamentals",
+      "issuer": "Microsoft",
+      "date": "2022-01",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-12",
+      "name": "Microsoft Certified: Security, Compliance, and Identity Fundamentals",
+      "issuer": "Microsoft",
+      "date": "2022-01",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-13",
+      "name": "Gojek Digital Entrepreneurship",
+      "issuer": "Digital Talent Scholarship",
+      "date": "2022-01",
+      "expiryDate": "",
+      "credentialId": "071249105121-33/DTS.DEA/BLSDM.KOMINFO/08/2021",
+      "url": ""
+    },
+    {
+      "id": "cert-14",
+      "name": "Microsoft Certified: Azure Fundamentals",
+      "issuer": "Microsoft",
+      "date": "2022-01",
+      "expiryDate": "",
+      "credentialId": "a52daca1-42c6-4625-a71f-16aeb66ebe67",
+      "url": ""
+    },
+    {
+      "id": "cert-15",
+      "name": "Full Stack Digital Marketing",
+      "issuer": "RevoU",
+      "date": "2021-12",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-16",
+      "name": "Master Digital Marketing",
+      "issuer": "RevoU",
+      "date": "2021-12",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-17",
+      "name": "Local SEO",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-18",
+      "name": "Social Media for Leadership",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-19",
+      "name": "Marketing Tools: SEO",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-20",
+      "name": "Marketing Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-21",
+      "name": "International SEO",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-22",
+      "name": "WordPress: SEO",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-23",
+      "name": "Advanced SEO: Search Factors",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-24",
+      "name": "SEO for Social Media",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-25",
+      "name": "Introduction to Graphic Design",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-26",
+      "name": "Ads Videos",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-27",
+      "name": "SEO: Keyword Strategy",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-28",
+      "name": "SEO: Link Building",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-29",
+      "name": "Become an Online Marketing Manager",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-30",
+      "name": "Google Ads Essential Training",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-31",
+      "name": "Social Media Marketing: ROI",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-32",
+      "name": "Apple Search Ads Certified",
+      "issuer": "Apple",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-33",
+      "name": "Advertising on Twitter",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-34",
+      "name": "Content Marketing Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-35",
+      "name": "Marketing on Instagram",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-36",
+      "name": "Google Universal Analytics Essential Training (2020)",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-37",
+      "name": "Become a Social Media Marketer",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-38",
+      "name": "Advertising on YouTube",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-39",
+      "name": "Social Media Marketing: ROI (2019)",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-40",
+      "name": "Advertising on Instagram",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-41",
+      "name": "Advertising on Facebook",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-42",
+      "name": "Marketing on Facebook",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-43",
+      "name": "Marketing on Twitter",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-44",
+      "name": "Intro To Digital Marketing Mini Course",
+      "issuer": "RevoU",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-45",
+      "name": "Social Media Marketing with Facebook and Twitter",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-46",
+      "name": "Social Media Marketing for Small Business",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-47",
+      "name": "Social Media Marketing: Managing Online Communities",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-48",
+      "name": "Social Media Marketing: Strategy and Optimization",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-49",
+      "name": "Intro To Sales In Tech Mini Course",
+      "issuer": "RevoU",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-50",
+      "name": "Marketing Tools: Social Media (2019)",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-51",
+      "name": "Email and Newsletter Marketing Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-52",
+      "name": "Social Media Marketing Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-53",
+      "name": "Cloud Practitioner Essentials (Belajar Dasar AWS Cloud)",
+      "issuer": "Dicoding Indonesia (AWS re/Start Scholarship Program)",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-54",
+      "name": "AWS Cloud Practitioner Essentials",
+      "issuer": "Amazon Web Services (AWS)",
+      "date": "2021-07",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-55",
+      "name": "SEO Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-06",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-56",
+      "name": "Growth Hacking Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-06",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-57",
+      "name": "Advanced Branding",
+      "issuer": "LinkedIn",
+      "date": "2021-06",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    },
+    {
+      "id": "cert-58",
+      "name": "Digital Marketing Foundations",
+      "issuer": "LinkedIn",
+      "date": "2021-06",
+      "expiryDate": "",
+      "credentialId": "",
+      "url": ""
+    }
+  ],
+  "languagesTitle": "Languages",
+  "languages": [
+    {
+      "id": "lang-1",
+      "language": "Indonesian",
+      "proficiency": "Native"
+    },
+    {
+      "id": "lang-2",
+      "language": "English",
+      "proficiency": "Professional"
+    },
+    {
+      "id": "lang-3",
+      "language": "Buginese",
+      "proficiency": "Native"
+    }
+  ],
+  "projectsTitle": "Projects",
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "Bengkele",
+      "url": "bengkele.com",
+      "description": "SaaS POS & Inventory management system for auto and motorcycle repair shops"
+    },
+    {
+      "id": "proj-2",
+      "name": "Bisa Chat",
+      "url": "bisa.chat",
+      "description": "AI-powered SaaS Omnichannel platform for customer service with NLP optimized for Indonesian context"
+    },
+    {
+      "id": "proj-3",
+      "name": "Bisa Hukum",
+      "url": "bisahukum.com",
+      "description": "Legal SaaS platform with AI-powered consultation, legal assistance, and document services"
+    },
+    {
+      "id": "proj-4",
+      "name": "Growthacker",
+      "url": "growthacker.id",
+      "description": "Digital marketing agency focused on Growth Hacking, SEO, and conversion optimization"
+    },
+    {
+      "id": "proj-5",
+      "name": "Indonesia Local Pride",
+      "url": "indonesialocalpride.com",
+      "description": "SaaS-based web directory and promotional platform for curated Indonesian local brands"
+    },
+    {
+      "id": "proj-6",
+      "name": "Kantongku",
+      "url": "kantongku.com",
+      "description": "Personal finance management SaaS with bank/e-wallet sync and gamification"
+    },
+    {
+      "id": "proj-7",
+      "name": "PT Celebes Niaga Jaya",
+      "url": "celebesniagajaya.com",
+      "description": "Company profile for a multi-sector business services company in South Sulawesi"
+    },
+    {
+      "id": "proj-8",
+      "name": "Good to Grid",
+      "url": "goodtogrid.com",
+      "description": "Brand identity and website for a professional design agency"
+    },
+    {
+      "id": "proj-9",
+      "name": "4ufeed",
+      "url": "4ufeed.com",
+      "description": "Pop Culture news and digital trends platform for Gen Z in Indonesia"
+    },
+    {
+      "id": "proj-10",
+      "name": "Klinik Visit",
+      "url": "klinikvisit.com",
+      "description": "SaaS aggregator connecting customers with specialist home-visit healthcare practitioners"
+    },
+    {
+      "id": "proj-11",
+      "name": "Mulai Dari Desa",
+      "url": "mulaidaridesa.com",
+      "description": "SaaS platform for village administration and operational data management"
+    },
+    {
+      "id": "proj-12",
+      "name": "Sosial Padel",
+      "url": "sosialpadel.com",
+      "description": "Competition app for Americano Padel tournament management, registration, and scoring"
+    },
+    {
+      "id": "proj-13",
+      "name": "Dewan Sipil",
+      "url": "dewansipil.com",
+      "description": "Cross-platform Sentiment Analysis tool for content creators (YouTube, TikTok, X)"
+    },
+    {
+      "id": "proj-14",
+      "name": "One Percent Kaizen",
+      "url": "onepercentkaizen.com",
+      "description": "AI-powered Health Analytics platform with personalized wellness recommendations"
+    },
+    {
+      "id": "proj-15",
+      "name": "Jasa Bikin Website Murah",
+      "url": "jasabikinwebsitemurah.com",
+      "description": "Professional website development agency with affordable pricing for SMEs"
+    },
+    {
+      "id": "proj-16",
+      "name": "Jasa Pindahin",
+      "url": "jasapindahin.com",
+      "description": "Professional moving and relocation services platform"
+    },
+    {
+      "id": "proj-17",
+      "name": "CV Manuju Jaya",
+      "url": "manujujaya.com",
+      "description": "Company profile website showcasing portfolio and services"
+    },
+    {
+      "id": "proj-18",
+      "name": "Mokanata",
+      "url": "mokanata.com",
+      "description": "Digital and web agency providing marketing, branding, and website development"
+    },
+    {
+      "id": "proj-19",
+      "name": "PT Setiap Hari Panen",
+      "url": "setiapharipanen.com",
+      "description": "Distribution platform for agricultural, livestock, and fishery harvest products"
+    },
+    {
+      "id": "proj-20",
+      "name": "Pilih Pendidikan",
+      "url": "pilihpendidikan.com",
+      "description": "Education planning platform with scholarship database and counselor consultation"
+    },
+    {
+      "id": "proj-21",
+      "name": "Skincare Aman",
+      "url": "skincareaman.com",
+      "description": "BPOM-verified directory and review platform for safe skincare brands"
+    },
+    {
+      "id": "proj-22",
+      "name": "Berita Sipil",
+      "url": "beritasipil.com",
+      "description": "Populist news website covering social and political issues in Indonesia"
+    },
+    {
+      "id": "proj-23",
+      "name": "Rakyat Papua",
+      "url": "rakyatpapua.com",
+      "description": "Online news platform specifically covering the Papua region"
+    },
+    {
+      "id": "proj-24",
+      "name": "Suara Rakyat Papua",
+      "url": "suararakyatpapua.com",
+      "description": "Digital directory of influential figures from the Papua region"
+    },
+    {
+      "id": "proj-25",
+      "name": "Himpunan Mahasiswa Islam",
+      "url": "himpunanmahasiswaislam.com",
+      "description": "Official HMI website with activity news and cadre training information"
+    }
+  ],
+  "volunteerTitle": "Volunteer & Community",
+  "volunteer": []
+}

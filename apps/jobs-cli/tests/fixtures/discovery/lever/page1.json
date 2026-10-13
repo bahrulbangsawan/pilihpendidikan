@@ -1,0 +1,73 @@
+[
+  {
+    "additionalPlain": "We offer equity, a learning budget and a remote-friendly culture.",
+    "additional": "<div>We offer equity, a learning budget and a remote-friendly culture.</div>",
+    "categories": {
+      "commitment": "Full-time",
+      "department": "Product & Engineering",
+      "location": "Jakarta",
+      "team": "Web",
+      "allLocations": [
+        "Jakarta"
+      ]
+    },
+    "createdAt": 1790586400000,
+    "descriptionPlain": "Frontend Engineer at Acme. You will design, build and run features used by millions of learners every day.",
+    "description": "<div><b>Frontend Engineer</b> at Acme. You will design, build and run features used by millions of learners every day.</div>",
+    "lists": [
+      {
+        "text": "Requirements",
+        "content": "<li>3+ years of professional experience</li><li>Comfortable with TypeScript and React</li>"
+      },
+      {
+        "text": "Nice to have",
+        "content": "<li>Experience with EdTech</li>"
+      }
+    ],
+    "id": "5ac21346-8e0c-4494-8e7a-3eb92ff77001",
+    "text": "Frontend Engineer",
+    "country": "ID",
+    "workplaceType": "hybrid",
+    "hostedUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77001",
+    "applyUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77001/apply",
+    "salaryRange": {
+      "currency": "IDR",
+      "interval": "per-month-salary",
+      "min": 25000000,
+      "max": 35000000
+    },
+    "salaryDescriptionPlain": "Base salary range for Jakarta."
+  },
+  {
+    "additionalPlain": "We offer equity, a learning budget and a remote-friendly culture.",
+    "additional": "<div>We offer equity, a learning budget and a remote-friendly culture.</div>",
+    "categories": {
+      "commitment": "Full-time",
+      "department": "Product & Engineering",
+      "location": "Bandung",
+      "team": "Design",
+      "allLocations": [
+        "Bandung"
+      ]
+    },
+    "createdAt": 1790672800000,
+    "descriptionPlain": "Product Designer at Acme. You will design, build and run features used by millions of learners every day.",
+    "description": "<div><b>Product Designer</b> at Acme. You will design, build and run features used by millions of learners every day.</div>",
+    "lists": [
+      {
+        "text": "Requirements",
+        "content": "<li>3+ years of professional experience</li><li>Comfortable with TypeScript and React</li>"
+      },
+      {
+        "text": "Nice to have",
+        "content": "<li>Experience with EdTech</li>"
+      }
+    ],
+    "id": "5ac21346-8e0c-4494-8e7a-3eb92ff77002",
+    "text": "Product Designer",
+    "country": "ID",
+    "workplaceType": "onsite",
+    "hostedUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77002",
+    "applyUrl": "https://jobs.lever.co/acme/5ac21346-8e0c-4494-8e7a-3eb92ff77002/apply"
+  }
+]

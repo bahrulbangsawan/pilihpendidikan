@@ -1,0 +1,82 @@
+# Opt-in nightly legs that reach the outside world (job-tracker-spec 13 §7,
+# 15 §16, 22 §9 `cli-canary`, A-01). Both are OFF until the owner opts in:
+#
+#   cli-canary    live adapters against one public board each (Greenhouse,
+#                 Lever, Ashby). Opt in with the repository variable
+#                 PILIH_JOBS_LIVE_CANARY = 1. Never Workday, LinkedIn or Indeed.
+#   ai-live       T7-11, the contract test against the live OpenAI Decisions
+#                 API (apps/api/src/jobs/ai/openai.live.test.ts). Opt in with
+#                 the repository variable JOBS_AI_LIVE = 1 AND the secret
+#                 OPENAI_API_KEY (a key with a hard monthly cap; the test makes
+#                 a handful of small calls, well under the $1/night budget).
+#
+# A failure here is a signal (adapter drift, provider contract change), not a
+# merge gate. Nothing here deploys or writes to a Cloudflare resource.
+name: Nightly live checks
+
+on:
+  schedule:
+    - cron: "41 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  cli-canary:
+    if: vars.PILIH_JOBS_LIVE_CANARY == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/jobs-cli
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: apps/jobs-cli/uv.lock
+      - run: uv sync --locked
+      - name: Live adapter canaries (15 §16)
+        env:
+          PILIH_JOBS_LIVE: "1"
+          # Optional board overrides (defaults live in the test).
+          PILIH_JOBS_LIVE_GREENHOUSE: ${{ vars.PILIH_JOBS_LIVE_GREENHOUSE }}
+          PILIH_JOBS_LIVE_LEVER: ${{ vars.PILIH_JOBS_LIVE_LEVER }}
+          PILIH_JOBS_LIVE_ASHBY: ${{ vars.PILIH_JOBS_LIVE_ASHBY }}
+        run: uv run pytest -m live tests/discovery/test_live_canary.py -v
+
+  ai-live:
+    if: vars.JOBS_AI_LIVE == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - name: Require the OPENAI_API_KEY secret
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::JOBS_AI_LIVE=1 but the OPENAI_API_KEY secret is not set."
+            exit 1
+          fi
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Install the workspace
+        working-directory: .
+        run: bun install --frozen-lockfile
+      - name: T7-11 live Decisions contract (A-01)
+        env:
+          JOBS_AI_LIVE: "1"
+          # Optional: an OpenAI-compatible base URL (e.g. a regional endpoint).
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
+        run: bun test src/jobs/ai/openai.live.test.ts

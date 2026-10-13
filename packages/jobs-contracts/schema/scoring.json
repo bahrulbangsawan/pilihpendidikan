@@ -1,0 +1,693 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "AiComponent": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/AiComponentStatus"
+        },
+        "overall_fit": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "confidence": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["score", "confidence"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "predicates": {
+          "type": "object",
+          "properties": {
+            "requires_unavailable_work_authorization": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "requires_degree_user_lacks": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "requires_onsite_outside_user_locations": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "refused": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["status", "overall_fit", "weight", "predicates", "refused"]
+    },
+    "AiComponentStatus": {
+      "type": "string",
+      "enum": ["ok", "budget", "error", "dlq", "disabled", "skipped"]
+    },
+    "CountryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "EducationLevel": {
+      "type": "string",
+      "enum": [
+        "none",
+        "secondary",
+        "diploma",
+        "bachelor",
+        "master",
+        "doctorate"
+      ]
+    },
+    "FreshnessComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "age_days": {
+          "type": "number",
+          "minimum": 0
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "age_days", "weight"]
+    },
+    "GateLevel": {
+      "type": "string",
+      "enum": ["blocking", "possible"]
+    },
+    "GatePredicate": {
+      "type": "string",
+      "enum": [
+        "requires_unavailable_work_authorization",
+        "requires_degree_user_lacks",
+        "requires_onsite_outside_user_locations"
+      ]
+    },
+    "LanguageFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "required", "missing", "weight"]
+    },
+    "LanguageLevel": {
+      "type": "string",
+      "enum": ["native", "fluent", "professional", "conversational", "basic"]
+    },
+    "LocationFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "reason", "weight"]
+    },
+    "PreferredWorkplace": {
+      "type": "string",
+      "enum": ["onsite", "hybrid", "remote"]
+    },
+    "ProfileLocation": {
+      "type": "object",
+      "properties": {
+        "country_code": {
+          "$ref": "#/$defs/CountryCode"
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 120
+        }
+      },
+      "required": ["country_code"]
+    },
+    "RuleScoreCriteria": {
+      "type": "object",
+      "properties": {
+        "min_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "require_ai_component": {
+          "type": "boolean"
+        },
+        "max_score_age_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "exclude_blocking_gates": {
+          "type": "boolean",
+          "const": true
+        },
+        "exclude_possible_gates": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "min_score",
+        "require_ai_component",
+        "max_score_age_days",
+        "exclude_blocking_gates",
+        "exclude_possible_gates"
+      ]
+    },
+    "SalaryFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "posting_max_yearly": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "floor_yearly": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 3
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "value",
+        "posting_max_yearly",
+        "floor_yearly",
+        "currency",
+        "weight"
+      ]
+    },
+    "SalaryFloor": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "period": {
+          "type": "string",
+          "enum": ["year", "month", "hour"]
+        }
+      },
+      "required": ["amount", "currency", "period"]
+    },
+    "ScoreComponents": {
+      "type": "object",
+      "properties": {
+        "rubric_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "skills_overlap": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SkillsOverlapComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title_similarity": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TitleSimilarityComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "location_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocationFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "seniority_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SeniorityFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "salary_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SalaryFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "language_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LanguageFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "freshness": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/FreshnessComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "skills_overlap",
+            "title_similarity",
+            "location_fit",
+            "seniority_fit",
+            "salary_fit",
+            "language_fit",
+            "freshness"
+          ]
+        },
+        "ai": {
+          "$ref": "#/$defs/AiComponent"
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScoreGate"
+          }
+        },
+        "base": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "posting_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["rubric_version", "features", "ai", "gates", "base", "score"]
+    },
+    "ScoreGate": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "$ref": "#/$defs/GatePredicate"
+        },
+        "level": {
+          "$ref": "#/$defs/GateLevel"
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "multiplier": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["predicate", "level", "probability", "multiplier"]
+    },
+    "ScoringProfile": {
+      "type": "object",
+      "properties": {
+        "profile_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "target_titles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "seniority": {
+          "$ref": "#/$defs/SeniorityLevel"
+        },
+        "years_experience_total": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skills": {
+          "maxItems": 150,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "experience_digest": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "years": {
+                "type": "number",
+                "minimum": 0
+              },
+              "keywords": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 100
+                }
+              }
+            },
+            "required": ["title", "years", "keywords"]
+          }
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "$ref": "#/$defs/EducationLevel"
+              },
+              "field": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": ["level", "field"]
+          }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 8
+              },
+              "level": {
+                "$ref": "#/$defs/LanguageLevel"
+              }
+            },
+            "required": ["code", "level"]
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProfileLocation"
+          }
+        },
+        "workplace_prefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PreferredWorkplace"
+          }
+        },
+        "work_authorization": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "country_code": {
+                "$ref": "#/$defs/CountryCode"
+              },
+              "status": {
+                "$ref": "#/$defs/WorkAuthStatus"
+              }
+            },
+            "required": ["country_code", "status"]
+          }
+        },
+        "salary_floor": {
+          "$ref": "#/$defs/SalaryFloor"
+        }
+      },
+      "required": [
+        "profile_version",
+        "target_titles",
+        "seniority",
+        "years_experience_total",
+        "skills",
+        "experience_digest",
+        "education",
+        "languages",
+        "locations",
+        "workplace_prefs",
+        "work_authorization"
+      ]
+    },
+    "SeniorityFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "posting": {
+          "$ref": "#/$defs/SeniorityLevel"
+        },
+        "user": {
+          "$ref": "#/$defs/SeniorityLevel"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "posting", "user", "weight"]
+    },
+    "SeniorityLevel": {
+      "type": "string",
+      "enum": [
+        "intern",
+        "junior",
+        "mid",
+        "senior",
+        "lead",
+        "principal",
+        "unknown"
+      ]
+    },
+    "SkillsOverlapComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "matched": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "matched", "missing", "weight"]
+    },
+    "TitleSimilarityComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "best_target": {
+          "type": ["string", "null"]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "best_target", "weight"]
+    },
+    "WorkAuthStatus": {
+      "type": "string",
+      "enum": [
+        "citizen",
+        "permanent_resident",
+        "work_visa",
+        "needs_sponsorship",
+        "none"
+      ]
+    }
+  }
+}

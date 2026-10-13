@@ -1,12 +1,15 @@
-// Worker entry for api.pilihpendidikan.com: the HTTP router from ./app.ts,
-// the `PilihMcpServer` Durable Object behind the MCP_OBJECT binding, and the
-// daily cron that purges expired request_log rows.
+// Worker entry for api.pilihpendidikan.com: the HTTP router from ./app.ts
+// (incl. the /api/v1 Job Tracker kernel), the `PilihMcpServer` Durable Object
+// behind the MCP_OBJECT binding, the crons (`scheduled`) and the `jobs-ai`
+// queue consumer (`queue`).
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { McpAgent } from "agents/mcp";
 import { createApp, SESSION_MISMATCH } from "./app";
 import type { Caller } from "./auth";
 import type { Env, McpProps } from "./env";
+import { scopesForCredential } from "./jobs/core/scopes";
+import { ensureUser } from "./jobs/repo/core/users";
 import { registerAllTools } from "./mcp-tools";
 
 export class PilihMcpServer extends McpAgent<Env, unknown, Partial<McpProps>> {
@@ -33,13 +36,17 @@ export class PilihMcpServer extends McpAgent<Env, unknown, Partial<McpProps>> {
     await super.__unsafe_ensureInitialized(props);
   }
 
-  init(): Promise<void> {
+  async init(): Promise<void> {
     const props = this.props ?? {};
     const caller: Caller | null = props.email
       ? {
           email: props.email,
           isAdmin: props.isAdmin ?? false,
           scope: props.scope === "write" ? "write" : "read",
+          userId: props.userId ?? (await this.resolveUserId(props.email)),
+          scopes: scopesForCredential(
+            props.scope === "write" ? "oauth_mcp" : "personal_read"
+          ),
         }
       : null;
     const installed = registerAllTools(this.server, this.env, caller, {
@@ -50,7 +57,20 @@ export class PilihMcpServer extends McpAgent<Env, unknown, Partial<McpProps>> {
     if (!installed) {
       console.warn("MCP tool aliases not installed; legacy names will fail");
     }
-    return Promise.resolve();
+  }
+
+  // The route hands the DO only {email, isAdmin, scope}; the canonical user
+  // id (03 §2) is resolved here. A D1 hiccup leaves it unset: the legacy
+  // document tools do not need it, and Job Tracker tools re-resolve it.
+  private async resolveUserId(email: string): Promise<string | undefined> {
+    try {
+      return (await ensureUser(this.env.DB, email, Date.now())).id;
+    } catch (err) {
+      console.error("MCP user id resolution failed", {
+        err: err instanceof Error ? err.message : String(err),
+      });
+      return undefined;
+    }
   }
 }
 

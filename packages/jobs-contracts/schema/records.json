@@ -1,0 +1,5485 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ActorKind": {
+      "type": "string",
+      "enum": ["user", "automation", "system", "mcp", "legacy_migration"]
+    },
+    "AdapterId": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url"
+      ]
+    },
+    "AiComponent": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/AiComponentStatus"
+        },
+        "overall_fit": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "confidence": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["score", "confidence"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "predicates": {
+          "type": "object",
+          "properties": {
+            "requires_unavailable_work_authorization": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "requires_degree_user_lacks": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "requires_onsite_outside_user_locations": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "refused": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["status", "overall_fit", "weight", "predicates", "refused"]
+    },
+    "AiComponentStatus": {
+      "type": "string",
+      "enum": ["ok", "budget", "error", "dlq", "disabled", "skipped"]
+    },
+    "AiUsagePurpose": {
+      "type": "string",
+      "enum": ["score", "tailor_cv", "agent", "email_draft"]
+    },
+    "AiUsageRecord": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "month": {
+          "$ref": "#/$defs/Month"
+        },
+        "purpose": {
+          "$ref": "#/$defs/AiUsagePurpose"
+        },
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_micro_usd": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calls": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "user_id",
+        "month",
+        "purpose",
+        "input_tokens",
+        "output_tokens",
+        "cost_micro_usd",
+        "calls"
+      ]
+    },
+    "AnalyticsDailyMetrics": {
+      "type": "object",
+      "properties": {
+        "tracked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "applied": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "applied_unverified": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "interviews_scheduled": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "offers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejected": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "withdrawn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "discovered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scored": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tasks": {
+          "type": "object",
+          "properties": {
+            "submitted": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "paused": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "outcome_unknown": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "ai_cost_micro_usd": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": {}
+    },
+    "AnalyticsDailyRecord": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "day": {
+          "$ref": "#/$defs/Day"
+        },
+        "metrics": {
+          "$ref": "#/$defs/AnalyticsDailyMetrics"
+        }
+      },
+      "required": ["user_id", "day", "metrics"]
+    },
+    "AnswerApprovalPayload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "answer"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "questions": {
+          "minItems": 1,
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "question": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "field_kind": {
+                "type": "string",
+                "maxLength": 40
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "label": {
+                      "type": "string",
+                      "maxLength": 200
+                    }
+                  },
+                  "required": ["value", "label"]
+                }
+              },
+              "question_key": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sensitivity": {
+                "$ref": "#/$defs/Sensitivity"
+              },
+              "suggestion": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string",
+                        "maxLength": 4000
+                      },
+                      "value_source": {
+                        "type": "string",
+                        "enum": ["fact", "answer", "option"]
+                      },
+                      "fact_key": {
+                        "type": ["string", "null"]
+                      },
+                      "answer_id": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/AnswerId"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": ["value", "value_source"]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "ref",
+              "question",
+              "required",
+              "options",
+              "question_key",
+              "sensitivity",
+              "suggestion"
+            ]
+          }
+        }
+      },
+      "required": ["type", "questions"]
+    },
+    "AnswerId": {
+      "type": "string",
+      "pattern": "^ans_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "answer id (ans_<ULID>)"
+    },
+    "AnswerKind": {
+      "type": "string",
+      "enum": ["text", "choice", "number", "boolean", "date"]
+    },
+    "ApplicantFactRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/FactId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "value": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "source": {
+          "$ref": "#/$defs/FactSource"
+        },
+        "cv_id": {
+          "type": ["string", "null"]
+        },
+        "cv_entry_id": {
+          "type": ["string", "null"]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "key",
+        "value",
+        "source",
+        "cv_id",
+        "cv_entry_id",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ApplicationEventRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EventId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "type": {
+          "$ref": "#/$defs/EventType"
+        },
+        "from_value": {
+          "type": ["string", "null"]
+        },
+        "to_value": {
+          "type": ["string", "null"]
+        },
+        "payload": {
+          "$ref": "#/$defs/EventPayload"
+        },
+        "actor_kind": {
+          "$ref": "#/$defs/ActorKind"
+        },
+        "actor_device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AttemptId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "applied_to_state": {
+          "type": "boolean"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "type",
+        "from_value",
+        "to_value",
+        "payload",
+        "actor_kind",
+        "actor_device_id",
+        "task_id",
+        "attempt_id",
+        "applied_to_state",
+        "occurred_at",
+        "recorded_at",
+        "idempotency_key"
+      ]
+    },
+    "ApplicationId": {
+      "type": "string",
+      "pattern": "^app_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "application id (app_<ULID>)"
+    },
+    "ApplicationMode": {
+      "type": "string",
+      "enum": ["manual", "assisted", "approval", "auto"]
+    },
+    "ApplicationRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "user_job_id": {
+          "$ref": "#/$defs/UserJobId"
+        },
+        "legacy_job_id": {
+          "type": ["string", "null"]
+        },
+        "stage": {
+          "$ref": "#/$defs/Stage"
+        },
+        "stage_changed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "submission_status": {
+          "$ref": "#/$defs/SubmissionStatus"
+        },
+        "submitted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "submission_method": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SubmissionMethod"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mode": {
+          "$ref": "#/$defs/ApplicationMode"
+        },
+        "automation_rule_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuleId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cv_variant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CvVariantId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "base_cv_id": {
+          "type": ["string", "null"]
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "board_rank": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "follow_up_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LegacyJobSection"
+          }
+        },
+        "last_change_source": {
+          "$ref": "#/$defs/ChangeSource"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "user_job_id",
+        "legacy_job_id",
+        "stage",
+        "stage_changed_at",
+        "submission_status",
+        "submitted_at",
+        "submission_method",
+        "mode",
+        "automation_rule_id",
+        "cv_variant_id",
+        "base_cv_id",
+        "priority",
+        "board_rank",
+        "archived",
+        "follow_up_at",
+        "sections",
+        "last_change_source",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ApplicationSupport": {
+      "type": "string",
+      "enum": [
+        "browser_supported",
+        "browser_unsupported",
+        "email",
+        "external_redirect",
+        "prohibited",
+        "unknown"
+      ]
+    },
+    "ApprovalDecidedVia": {
+      "type": "string",
+      "enum": ["web", "cli", "mcp"]
+    },
+    "ApprovalEventPayload": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "$ref": "#/$defs/ApprovalId"
+        },
+        "kind": {
+          "$ref": "#/$defs/ApprovalKind"
+        },
+        "decision": {
+          "$ref": "#/$defs/ApprovalState"
+        }
+      },
+      "required": ["approval_id"],
+      "additionalProperties": {}
+    },
+    "ApprovalId": {
+      "type": "string",
+      "pattern": "^apr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "approval id (apr_<ULID>)"
+    },
+    "ApprovalKind": {
+      "type": "string",
+      "enum": ["submit", "answer", "cv_variant", "rule_activation"]
+    },
+    "ApprovalPayload": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/BrowserSubmitApprovalPayload"
+        },
+        {
+          "$ref": "#/$defs/EmailSubmitApprovalPayload"
+        },
+        {
+          "$ref": "#/$defs/AnswerApprovalPayload"
+        },
+        {
+          "$ref": "#/$defs/CvVariantApprovalPayload"
+        },
+        {
+          "$ref": "#/$defs/RuleActivationApprovalPayload"
+        }
+      ]
+    },
+    "ApprovalRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ApprovalId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "kind": {
+          "$ref": "#/$defs/ApprovalKind"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "application_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/ApprovalPayload"
+        },
+        "payload_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "state": {
+          "$ref": "#/$defs/ApprovalState"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApprovalResponse"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decided_via": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApprovalDecidedVia"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decided_by_user_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decided_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "kind",
+        "task_id",
+        "application_id",
+        "payload",
+        "payload_hash",
+        "state",
+        "response",
+        "decided_via",
+        "decided_by_user_id",
+        "decided_at",
+        "expires_at",
+        "created_at",
+        "revision"
+      ]
+    },
+    "ApprovalResponse": {
+      "type": "object",
+      "properties": {
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "save_to_bank": {
+                "type": "boolean"
+              },
+              "sensitivity": {
+                "$ref": "#/$defs/Sensitivity"
+              },
+              "auto_use": {
+                "$ref": "#/$defs/AutoUse"
+              }
+            },
+            "required": ["ref", "value"]
+          }
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": {}
+    },
+    "ApprovalState": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "expired"]
+    },
+    "AttemptId": {
+      "type": "string",
+      "pattern": "^att_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "attempt id (att_<ULID>)"
+    },
+    "AttemptOutcome": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "lease_expired",
+        "outcome_unknown",
+        "paused"
+      ]
+    },
+    "AutoUse": {
+      "type": "string",
+      "enum": ["never", "approval", "always"]
+    },
+    "AutomationAttemptRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "task_id": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "device_id": {
+          "$ref": "#/$defs/DeviceId"
+        },
+        "lease_id": {
+          "$ref": "#/$defs/LeaseId"
+        },
+        "attempt_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "started_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "last_heartbeat_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AttemptOutcome"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_class": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "steps_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ai_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "log_file_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cli_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "task_id",
+        "user_id",
+        "device_id",
+        "lease_id",
+        "attempt_no",
+        "started_at",
+        "last_heartbeat_at",
+        "ended_at",
+        "outcome",
+        "error_class",
+        "steps_count",
+        "ai_calls",
+        "log_file_id",
+        "cli_version"
+      ]
+    },
+    "AutomationRuleRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "mode": {
+          "$ref": "#/$defs/RuleMode"
+        },
+        "criteria": {
+          "$ref": "#/$defs/RuleCriteria"
+        },
+        "limits": {
+          "$ref": "#/$defs/RuleLimits"
+        },
+        "allowed_domains": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Domain"
+          }
+        },
+        "cv_policy": {
+          "$ref": "#/$defs/CvPolicy"
+        },
+        "activated_approval_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApprovalId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "name",
+        "enabled",
+        "mode",
+        "criteria",
+        "limits",
+        "allowed_domains",
+        "cv_policy",
+        "activated_approval_id",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "AutomationTaskEventPayload": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "state": {
+          "$ref": "#/$defs/TaskState"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stage": {
+          "$ref": "#/$defs/ProgressStage"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "pause_reason": {
+          "$ref": "#/$defs/PauseReason"
+        },
+        "error_class": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["task_id", "state"],
+      "additionalProperties": {}
+    },
+    "AutomationTaskRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "kind": {
+          "$ref": "#/$defs/TaskKind"
+        },
+        "application_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cv_variant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CvVariantId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/TaskPayload"
+        },
+        "state": {
+          "$ref": "#/$defs/TaskState"
+        },
+        "target_device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DeviceCapability"
+          }
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "not_before": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "lease_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LeaseId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempt_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "submit_intent_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pause_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PauseReason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resume_requested": {
+          "type": "boolean"
+        },
+        "retry_of": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancel_requested": {
+          "type": "boolean"
+        },
+        "progress": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskProgress"
+            },
+            {
+              "$ref": "#/$defs/EmptyObject"
+            }
+          ]
+        },
+        "local_state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LocalTaskState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_class": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_message": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_by": {
+          "$ref": "#/$defs/TaskCreatedBy"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "kind",
+        "application_id",
+        "cv_variant_id",
+        "payload",
+        "state",
+        "target_device_id",
+        "required_capabilities",
+        "priority",
+        "not_before",
+        "expires_at",
+        "lease_id",
+        "lease_device_id",
+        "lease_expires_at",
+        "attempt_count",
+        "max_attempts",
+        "submit_intent_at",
+        "pause_reason",
+        "resume_requested",
+        "retry_of",
+        "cancel_requested",
+        "progress",
+        "local_state",
+        "error_class",
+        "error_message",
+        "created_by",
+        "idempotency_key",
+        "revision",
+        "created_at",
+        "updated_at",
+        "finished_at"
+      ]
+    },
+    "BrowserSubmitApprovalPayload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "browser_submit"
+        },
+        "form_hash": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "posting_id": {
+          "$ref": "#/$defs/PostingId"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "device_id": {
+          "$ref": "#/$defs/DeviceId"
+        },
+        "fields": {
+          "maxItems": 300,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "value_display": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "value_source": {
+                "type": "string",
+                "enum": [
+                  "fact",
+                  "answer",
+                  "option",
+                  "cv_file",
+                  "cover_letter_file",
+                  "generated_text",
+                  "user"
+                ]
+              },
+              "sensitivity": {
+                "$ref": "#/$defs/Sensitivity"
+              },
+              "ai_written": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "label",
+              "value_display",
+              "value_source",
+              "sensitivity",
+              "ai_written"
+            ]
+          }
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "file_id": {
+                "$ref": "#/$defs/FileId"
+              },
+              "sha256": {
+                "$ref": "#/$defs/Sha256Hex"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 255
+              }
+            },
+            "required": ["file_id", "sha256", "name"]
+          }
+        },
+        "screenshot_file_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "injection_suspected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "form_hash",
+        "url",
+        "posting_id",
+        "fields",
+        "attachments"
+      ]
+    },
+    "BulletOperation": {
+      "type": "string",
+      "enum": ["keep", "reorder", "rephrase", "merge"]
+    },
+    "ChangeEntity": {
+      "type": "string",
+      "enum": [
+        "application",
+        "user_job",
+        "posting",
+        "event",
+        "interview",
+        "offer",
+        "task",
+        "attempt",
+        "approval",
+        "evidence",
+        "rule",
+        "source",
+        "run",
+        "fact",
+        "answer",
+        "score",
+        "cv_variant",
+        "file",
+        "email",
+        "settings",
+        "device"
+      ]
+    },
+    "ChangeLogRecord": {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "entity": {
+          "$ref": "#/$defs/ChangeEntity"
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "op": {
+          "$ref": "#/$defs/ChangeOp"
+        },
+        "changed_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "seq",
+        "user_id",
+        "entity",
+        "entity_id",
+        "revision",
+        "op",
+        "changed_at"
+      ]
+    },
+    "ChangeOp": {
+      "type": "string",
+      "enum": ["upsert", "delete"]
+    },
+    "ChangeSource": {
+      "type": "string",
+      "enum": ["web", "cli", "mcp", "system", "legacy_migration"]
+    },
+    "ConflictRecordedEventPayload": {
+      "type": "object",
+      "properties": {
+        "attempted": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "current": {
+          "$ref": "#/$defs/JsonValue"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": ["attempted", "current", "reason"],
+      "additionalProperties": {}
+    },
+    "CountryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "CreatedEventPayload": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "stage": {
+          "$ref": "#/$defs/Stage"
+        },
+        "legacy_status": {
+          "$ref": "#/$defs/LegacyJobStatus"
+        }
+      },
+      "required": ["origin"],
+      "additionalProperties": {}
+    },
+    "CursorState": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "listing": {
+          "type": "object",
+          "properties": {
+            "etag": {
+              "type": ["string", "null"]
+            },
+            "last_modified": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "watermark_updated_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seen_refs_digest": {
+          "type": ["string", "null"]
+        },
+        "detail_etags": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": {}
+    },
+    "CvPolicy": {
+      "type": "object",
+      "properties": {
+        "base_cv_id": {
+          "type": ["string", "null"]
+        },
+        "tailor": {
+          "type": "boolean"
+        },
+        "require_cv_approval": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CvSectionId": {
+      "type": "string",
+      "enum": [
+        "summary",
+        "experience",
+        "education",
+        "skills",
+        "awards",
+        "certificates",
+        "languages",
+        "projects",
+        "volunteer"
+      ]
+    },
+    "CvTemplate": {
+      "type": "string",
+      "enum": ["basic", "harvard", "simple", "standard"]
+    },
+    "CvVariantApprovalPayload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "cv_variant"
+        },
+        "cv_variant_id": {
+          "$ref": "#/$defs/CvVariantId"
+        },
+        "file_id": {
+          "$ref": "#/$defs/FileId"
+        },
+        "sha256": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "template": {
+          "$ref": "#/$defs/CvTemplate"
+        },
+        "rephrased_bullets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes_for_user": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "required": [
+        "type",
+        "cv_variant_id",
+        "file_id",
+        "sha256",
+        "template",
+        "rephrased_bullets",
+        "notes_for_user"
+      ]
+    },
+    "CvVariantAttachedEventPayload": {
+      "type": "object",
+      "properties": {
+        "cv_variant_id": {
+          "$ref": "#/$defs/CvVariantId"
+        },
+        "file_id": {
+          "$ref": "#/$defs/FileId"
+        }
+      },
+      "required": ["cv_variant_id", "file_id"],
+      "additionalProperties": {}
+    },
+    "CvVariantDiff": {
+      "type": "object",
+      "properties": {
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "section_order": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CvSectionId"
+              }
+            },
+            "to": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CvSectionId"
+              }
+            }
+          },
+          "required": ["from", "to"]
+        },
+        "excluded_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "entry_id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": ["section", "entry_id", "label"]
+          }
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entry_id": {
+                "type": "string"
+              },
+              "operation": {
+                "$ref": "#/$defs/BulletOperation"
+              },
+              "text": {
+                "type": "string"
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "text"]
+                }
+              }
+            },
+            "required": ["entry_id", "operation", "text", "sources"]
+          }
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": ["from", "to", "sources"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes_for_user": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validator": {
+          "type": "object",
+          "properties": {
+            "fallbacks_to_keep": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "violations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["fallbacks_to_keep"]
+        },
+        "tailored_cv_sha256": {
+          "$ref": "#/$defs/Sha256Hex"
+        }
+      },
+      "required": [
+        "prompt_version",
+        "model",
+        "section_order",
+        "excluded_entries",
+        "bullets",
+        "summary",
+        "notes_for_user",
+        "validator"
+      ]
+    },
+    "CvVariantId": {
+      "type": "string",
+      "pattern": "^cvv_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cv_variant id (cvv_<ULID>)"
+    },
+    "CvVariantRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/CvVariantId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "base_cv_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tailored_cv_id": {
+          "type": ["string", "null"]
+        },
+        "template": {
+          "$ref": "#/$defs/CvTemplate"
+        },
+        "status": {
+          "$ref": "#/$defs/CvVariantStatus"
+        },
+        "file_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "diff": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CvVariantDiff"
+            },
+            {
+              "$ref": "#/$defs/EmptyObject"
+            }
+          ]
+        },
+        "model": {
+          "type": ["string", "null"]
+        },
+        "approved_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "base_cv_id",
+        "tailored_cv_id",
+        "template",
+        "status",
+        "file_id",
+        "diff",
+        "model",
+        "approved_at",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "CvVariantStatus": {
+      "type": "string",
+      "enum": ["generating", "draft", "approved", "rejected", "failed"]
+    },
+    "Day": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Calendar day YYYY-MM-DD"
+    },
+    "DeviceCapability": {
+      "type": "string",
+      "enum": ["discover", "apply", "render_cv", "headed_browser"]
+    },
+    "DeviceId": {
+      "type": "string",
+      "pattern": "^dev_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "device id (dev_<ULID>)"
+    },
+    "DevicePlatform": {
+      "type": "string",
+      "enum": ["macos", "windows", "linux"]
+    },
+    "DeviceRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/DeviceId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "grant_id": {
+          "$ref": "#/$defs/GrantId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "platform": {
+          "$ref": "#/$defs/DevicePlatform"
+        },
+        "arch": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "cli_version": {
+          "type": "string"
+        },
+        "public_key": {
+          "type": ["string", "null"]
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DeviceCapability"
+          }
+        },
+        "accepts_tasks": {
+          "type": "boolean"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "last_seen_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_ip_hash": {
+          "type": ["string", "null"]
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "grant_id",
+        "name",
+        "platform",
+        "arch",
+        "cli_version",
+        "public_key",
+        "capabilities",
+        "accepts_tasks",
+        "created_at",
+        "last_seen_at",
+        "last_ip_hash",
+        "revoked_at",
+        "revision"
+      ]
+    },
+    "DiscoveryErrorClass": {
+      "type": "string",
+      "enum": [
+        "network",
+        "timeout",
+        "http_5xx",
+        "rate_limited",
+        "access_denied",
+        "challenge_detected",
+        "robots_disallowed",
+        "not_found",
+        "source_closed",
+        "source_unavailable",
+        "parse_error",
+        "schema_invalid",
+        "selector_drift",
+        "unsupported_content",
+        "policy_blocked",
+        "cancelled"
+      ]
+    },
+    "DiscoveryRunItemRecord": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/RunId"
+        },
+        "posting_id": {
+          "$ref": "#/$defs/PostingId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "outcome": {
+          "$ref": "#/$defs/RunItemOutcome"
+        }
+      },
+      "required": ["run_id", "posting_id", "user_id", "outcome"]
+    },
+    "DiscoveryRunRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/RunId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "device_id": {
+          "$ref": "#/$defs/DeviceId"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RunSource"
+          }
+        },
+        "status": {
+          "$ref": "#/$defs/DiscoveryRunStatus"
+        },
+        "started_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stats": {
+          "$ref": "#/$defs/RunStats"
+        },
+        "errors": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RunError"
+          }
+        },
+        "engine_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "device_id",
+        "task_id",
+        "sources",
+        "status",
+        "started_at",
+        "finished_at",
+        "stats",
+        "errors",
+        "engine_version",
+        "revision"
+      ]
+    },
+    "DiscoveryRunStatus": {
+      "type": "string",
+      "enum": ["running", "completed", "partial", "failed", "cancelled"]
+    },
+    "Domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253,
+      "pattern": "^[a-z0-9.-]+$",
+      "description": "Lowercase ASCII host or registrable domain (IDN in punycode)"
+    },
+    "EmailApplicationRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EmailId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "to_address": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 254
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "body_text": {
+          "type": "string",
+          "maxLength": 20480
+        },
+        "attachment_file_ids": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FileId"
+          }
+        },
+        "delivery": {
+          "$ref": "#/$defs/EmailDelivery"
+        },
+        "status": {
+          "$ref": "#/$defs/EmailStatus"
+        },
+        "provider_message_id": {
+          "type": ["string", "null"]
+        },
+        "approved_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sent_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "to_address",
+        "subject",
+        "body_text",
+        "attachment_file_ids",
+        "delivery",
+        "status",
+        "provider_message_id",
+        "approved_at",
+        "sent_at",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "EmailDelivery": {
+      "type": "string",
+      "enum": ["local_handoff", "server_send"]
+    },
+    "EmailId": {
+      "type": "string",
+      "pattern": "^eml_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "email id (eml_<ULID>)"
+    },
+    "EmailSentEventPayload": {
+      "type": "object",
+      "properties": {
+        "email_application_id": {
+          "$ref": "#/$defs/EmailId"
+        },
+        "message_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["email_application_id", "message_id"],
+      "additionalProperties": {}
+    },
+    "EmailStatus": {
+      "type": "string",
+      "enum": ["draft", "approved", "sent", "failed", "handed_off"]
+    },
+    "EmailSubmitApprovalPayload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "email_submit"
+        },
+        "email_application_id": {
+          "$ref": "#/$defs/EmailId"
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 254
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 254
+          }
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "body_text": {
+          "type": "string",
+          "maxLength": 20480
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "file_id": {
+                "$ref": "#/$defs/FileId"
+              },
+              "sha256": {
+                "$ref": "#/$defs/Sha256Hex"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 255
+              }
+            },
+            "required": ["file_id", "sha256", "name"]
+          }
+        },
+        "ai_drafted": {
+          "type": "boolean"
+        },
+        "recipient_confirmed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "email_application_id",
+        "to",
+        "cc",
+        "subject",
+        "body_text",
+        "attachments",
+        "ai_drafted",
+        "recipient_confirmed"
+      ]
+    },
+    "EmploymentType": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "contract",
+        "temporary",
+        "internship",
+        "volunteer",
+        "unknown"
+      ]
+    },
+    "EmptyObject": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "EventId": {
+      "type": "string",
+      "pattern": "^evt_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "event id (evt_<ULID>)"
+    },
+    "EventPayload": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CreatedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/StageChangedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/SubmissionStatusChangedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/NoteAddedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/NoteDeletedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/CvVariantAttachedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/AutomationTaskEventPayload"
+        },
+        {
+          "$ref": "#/$defs/ApprovalEventPayload"
+        },
+        {
+          "$ref": "#/$defs/SubmitIntentEventPayload"
+        },
+        {
+          "$ref": "#/$defs/InterviewEventPayload"
+        },
+        {
+          "$ref": "#/$defs/OfferRecordedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/EmailSentEventPayload"
+        },
+        {
+          "$ref": "#/$defs/ConflictRecordedEventPayload"
+        },
+        {
+          "$ref": "#/$defs/LegacyImportedEventPayload"
+        }
+      ]
+    },
+    "EventType": {
+      "type": "string",
+      "enum": [
+        "created",
+        "stage_changed",
+        "submission_status_changed",
+        "note_added",
+        "note_deleted",
+        "cv_variant_attached",
+        "automation_task_created",
+        "automation_task_claimed",
+        "automation_task_progress",
+        "automation_task_paused",
+        "automation_task_finished",
+        "approval_requested",
+        "approval_decided",
+        "submit_intent",
+        "interview_scheduled",
+        "interview_updated",
+        "offer_recorded",
+        "email_sent",
+        "conflict_recorded",
+        "legacy_imported"
+      ]
+    },
+    "EvidenceId": {
+      "type": "string",
+      "pattern": "^evd_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "evidence id (evd_<ULID>)"
+    },
+    "EvidenceKind": {
+      "type": "string",
+      "enum": [
+        "browser_confirmation",
+        "ats_api_response",
+        "email_sent",
+        "user_attestation",
+        "confirmation_email"
+      ]
+    },
+    "EvidenceScreenshotMode": {
+      "type": "string",
+      "enum": ["off", "on_submit", "all_steps"]
+    },
+    "EvidenceSignals": {
+      "type": "object",
+      "properties": {
+        "url_match": {
+          "type": "boolean"
+        },
+        "dom_marker": {
+          "type": "boolean"
+        },
+        "negative_marker": {
+          "type": "boolean"
+        },
+        "xhr_2xx": {
+          "type": "boolean"
+        },
+        "form_gone": {
+          "type": "boolean"
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "application_received": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "still_form_or_error": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "user_confirmed": {
+          "type": "boolean"
+        },
+        "provider_accepted": {
+          "type": "boolean"
+        },
+        "message_id": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "inferred": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "EvidenceVerdict": {
+      "type": "string",
+      "enum": ["verified", "unverified", "negative"]
+    },
+    "ExtractionMethod": {
+      "type": "string",
+      "enum": ["json_api", "json_ld", "css", "xpath", "adaptive"]
+    },
+    "ExtractionProvenance": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "adapter": {
+          "$ref": "#/$defs/AdapterId"
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine": {
+          "type": "object",
+          "properties": {
+            "pilih_jobs": {
+              "type": "string"
+            },
+            "scrapling": {
+              "type": "string"
+            },
+            "playwright": {
+              "type": "string"
+            }
+          }
+        },
+        "fetch_mode": {
+          "$ref": "#/$defs/FetchMode"
+        },
+        "method": {
+          "$ref": "#/$defs/ExtractionMethod"
+        },
+        "source_urls": {
+          "type": "object",
+          "properties": {
+            "listing": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            }
+          }
+        },
+        "relocated_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "adapter",
+        "adapter_version",
+        "fetch_mode",
+        "method",
+        "confidence",
+        "observed_at"
+      ],
+      "additionalProperties": {}
+    },
+    "FactId": {
+      "type": "string",
+      "pattern": "^fct_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "fact id (fct_<ULID>)"
+    },
+    "FactSource": {
+      "type": "string",
+      "enum": ["user_entered", "cv_import", "verified_document"]
+    },
+    "FeatureFlagKey": {
+      "type": "string",
+      "enum": [
+        "JOBS_V1_ENABLED",
+        "JOBS_CLI_LOGIN_ENABLED",
+        "JOBS_AUTOMATION_ENABLED",
+        "JOBS_AUTO_MODE_ENABLED",
+        "JOBS_EMAIL_SERVER_SEND_ENABLED",
+        "AI_DISABLED",
+        "JOBS_LEGACY_BACKEND"
+      ]
+    },
+    "FeatureFlagRecord": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/FeatureFlagKey"
+        },
+        "value": {
+          "type": ["boolean", "number", "string", "null"]
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_by": {
+          "type": "string"
+        }
+      },
+      "required": ["key", "value", "updated_at", "updated_by"]
+    },
+    "FetchMode": {
+      "type": "string",
+      "enum": ["json_api", "static_html", "browser"]
+    },
+    "FileId": {
+      "type": "string",
+      "pattern": "^fil_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "file id (fil_<ULID>)"
+    },
+    "FileKind": {
+      "type": "string",
+      "enum": [
+        "cv_pdf",
+        "cover_letter",
+        "attachment",
+        "evidence_screenshot",
+        "run_log"
+      ]
+    },
+    "FileRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/FileId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "kind": {
+          "$ref": "#/$defs/FileKind"
+        },
+        "r2_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "original_name": {
+          "type": ["string", "null"]
+        },
+        "status": {
+          "$ref": "#/$defs/FileStatus"
+        },
+        "retention_until": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "kind",
+        "r2_key",
+        "content_type",
+        "size_bytes",
+        "sha256",
+        "original_name",
+        "status",
+        "retention_until",
+        "created_at"
+      ]
+    },
+    "FileStatus": {
+      "type": "string",
+      "enum": ["pending", "ready", "deleted"]
+    },
+    "Fingerprint": {
+      "type": "string",
+      "pattern": "^fp1:[0-9a-f]{64}$",
+      "description": "Posting fingerprint: fp1: + SHA-256 hex of the src|/gen| key (03 §4.2)"
+    },
+    "FreshnessComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "age_days": {
+          "type": "number",
+          "minimum": 0
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "age_days", "weight"]
+    },
+    "GateLevel": {
+      "type": "string",
+      "enum": ["blocking", "possible"]
+    },
+    "GatePredicate": {
+      "type": "string",
+      "enum": [
+        "requires_unavailable_work_authorization",
+        "requires_degree_user_lacks",
+        "requires_onsite_outside_user_locations"
+      ]
+    },
+    "GrantId": {
+      "type": "string",
+      "pattern": "^grt_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "grant id (grt_<ULID>)"
+    },
+    "GrantRevokedReason": {
+      "type": "string",
+      "enum": [
+        "user",
+        "device_revoked",
+        "refresh_reuse",
+        "admin",
+        "account_deleted"
+      ]
+    },
+    "IdempotencyKeyRecord": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "request_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "status_code": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "response_body": {
+          "type": "string"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "user_id",
+        "key",
+        "request_hash",
+        "status_code",
+        "response_body",
+        "created_at",
+        "expires_at"
+      ]
+    },
+    "InboxState": {
+      "type": "string",
+      "enum": ["new", "seen", "dismissed", "tracked"]
+    },
+    "InterviewEventPayload": {
+      "type": "object",
+      "properties": {
+        "interview_id": {
+          "$ref": "#/$defs/InterviewId"
+        },
+        "kind": {
+          "$ref": "#/$defs/InterviewKind"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scheduled_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outcome": {
+          "$ref": "#/$defs/InterviewOutcome"
+        }
+      },
+      "required": ["interview_id"],
+      "additionalProperties": {}
+    },
+    "InterviewId": {
+      "type": "string",
+      "pattern": "^ivw_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "interview id (ivw_<ULID>)"
+    },
+    "InterviewKind": {
+      "type": "string",
+      "enum": [
+        "phone_screen",
+        "technical",
+        "take_home",
+        "onsite",
+        "behavioral",
+        "final",
+        "other"
+      ]
+    },
+    "InterviewOutcome": {
+      "type": "string",
+      "enum": ["pending", "passed", "failed", "cancelled", "no_show"]
+    },
+    "InterviewRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/InterviewId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "$ref": "#/$defs/InterviewKind"
+        },
+        "scheduled_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration_min": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1440
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timezone": {
+          "type": ["string", "null"]
+        },
+        "location": {
+          "type": ["string", "null"]
+        },
+        "interviewers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "outcome": {
+          "$ref": "#/$defs/InterviewOutcome"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "round",
+        "kind",
+        "scheduled_at",
+        "duration_min",
+        "timezone",
+        "location",
+        "interviewers",
+        "outcome",
+        "notes",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "JobPostingRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/PostingId"
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/Fingerprint"
+        },
+        "visibility": {
+          "$ref": "#/$defs/PostingVisibility"
+        },
+        "owner_user_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_kind": {
+          "$ref": "#/$defs/SourceKind"
+        },
+        "source_org": {
+          "type": ["string", "null"]
+        },
+        "source_job_ref": {
+          "type": ["string", "null"]
+        },
+        "canonical_url": {
+          "type": ["string", "null"]
+        },
+        "apply_url": {
+          "type": ["string", "null"]
+        },
+        "apply_domain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Domain"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "company_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "company_domain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Domain"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "department": {
+          "type": ["string", "null"]
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PostingLocation"
+          }
+        },
+        "workplace_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WorkplaceType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmploymentType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seniority": {
+          "type": ["string", "null"]
+        },
+        "salary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Salary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description_text": {
+          "type": "string"
+        },
+        "description_truncated": {
+          "type": "boolean"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "dedupe_group": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sha256Hex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "posted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "first_seen_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "last_seen_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "last_checked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/PostingStatus"
+        },
+        "closed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "missed_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "extraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExtractionProvenance"
+            },
+            {
+              "$ref": "#/$defs/EmptyObject"
+            }
+          ]
+        },
+        "application_support": {
+          "$ref": "#/$defs/ApplicationSupport"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "fingerprint",
+        "visibility",
+        "owner_user_id",
+        "source_kind",
+        "source_org",
+        "source_job_ref",
+        "canonical_url",
+        "apply_url",
+        "apply_domain",
+        "company_name",
+        "company_domain",
+        "title",
+        "department",
+        "locations",
+        "workplace_type",
+        "employment_type",
+        "seniority",
+        "salary",
+        "description_text",
+        "description_truncated",
+        "requirements",
+        "content_hash",
+        "dedupe_group",
+        "posted_at",
+        "first_seen_at",
+        "last_seen_at",
+        "last_checked_at",
+        "status",
+        "closed_at",
+        "missed_runs",
+        "extraction",
+        "application_support",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "JobSourceRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/SourceId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "adapter": {
+          "$ref": "#/$defs/AdapterId"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "config": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "schedule": {
+          "type": ["string", "null"]
+        },
+        "last_run_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_success_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cursor_state": {
+          "$ref": "#/$defs/CursorState"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "adapter",
+        "label",
+        "config",
+        "enabled",
+        "schedule",
+        "last_run_id",
+        "last_success_at",
+        "cursor_state",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "JsonObject": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {},
+      "description": "Any JSON object"
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {}
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {}
+        }
+      ],
+      "description": "Any JSON value"
+    },
+    "LanguageFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "required", "missing", "weight"]
+    },
+    "LeaseId": {
+      "type": "string",
+      "pattern": "^lse_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "lease id (lse_<ULID>)"
+    },
+    "LegacyImportedEventPayload": {
+      "type": "object",
+      "properties": {
+        "legacy_job_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "legacy_status": {
+          "$ref": "#/$defs/LegacyJobStatus"
+        }
+      },
+      "required": ["legacy_job_id"],
+      "additionalProperties": {}
+    },
+    "LegacyJobItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "done": {
+          "type": "boolean"
+        }
+      },
+      "required": ["id", "title", "notes", "url", "done"]
+    },
+    "LegacyJobSection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LegacyJobItem"
+          }
+        }
+      },
+      "required": ["id", "name", "items"]
+    },
+    "LegacyJobStatus": {
+      "type": "string",
+      "enum": [
+        "saved",
+        "applied",
+        "interviewing",
+        "offer",
+        "rejected",
+        "accepted"
+      ]
+    },
+    "LegacyTokenScope": {
+      "type": "string",
+      "enum": ["write", "read"]
+    },
+    "LocalTaskState": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "running",
+        "paused",
+        "awaiting_approval",
+        "submit_intent",
+        "sync_pending",
+        "done",
+        "orphaned"
+      ]
+    },
+    "Locale": {
+      "type": "string",
+      "enum": ["en", "id"]
+    },
+    "LocationFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "reason", "weight"]
+    },
+    "MatchScoreRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ScoreId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "posting_id": {
+          "$ref": "#/$defs/PostingId"
+        },
+        "profile_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rubric_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "components": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScoreComponents"
+            },
+            {
+              "$ref": "#/$defs/EmptyObject"
+            }
+          ]
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/MatchScoreStatus"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "posting_id",
+        "profile_version",
+        "rubric_version",
+        "model",
+        "score",
+        "confidence",
+        "components",
+        "explanation",
+        "status",
+        "created_at"
+      ]
+    },
+    "MatchScoreStatus": {
+      "type": "string",
+      "enum": ["queued", "ready", "failed"]
+    },
+    "McpTokenRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user_email": {
+          "type": "string"
+        },
+        "token_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "label": {
+          "type": ["string", "null"]
+        },
+        "status": {
+          "$ref": "#/$defs/TokenStatus"
+        },
+        "kind": {
+          "$ref": "#/$defs/TokenKind"
+        },
+        "scope": {
+          "$ref": "#/$defs/LegacyTokenScope"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_used_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UserId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopes": {
+          "type": ["string", "null"]
+        },
+        "grant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GrantId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "user_email",
+        "token_hash",
+        "label",
+        "status",
+        "kind",
+        "scope",
+        "created_at",
+        "revoked_at",
+        "last_used_at",
+        "expires_at",
+        "user_id",
+        "scopes",
+        "grant_id",
+        "device_id"
+      ]
+    },
+    "Month": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}$",
+      "description": "Calendar month YYYY-MM"
+    },
+    "NoteAddedEventPayload": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "kind": {
+          "type": "string",
+          "maxLength": 40
+        }
+      },
+      "required": ["text"],
+      "additionalProperties": {}
+    },
+    "NoteDeletedEventPayload": {
+      "type": "object",
+      "properties": {
+        "note_event_id": {
+          "$ref": "#/$defs/EventId"
+        }
+      },
+      "required": ["note_event_id"],
+      "additionalProperties": {}
+    },
+    "OAuthClientRecord": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret_hash": {
+          "type": "string"
+        },
+        "client_name": {
+          "type": ["string", "null"]
+        },
+        "redirect_uris": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "token_endpoint_auth_method": {
+          "$ref": "#/$defs/TokenEndpointAuthMethod"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "first_party": {
+          "type": "boolean"
+        },
+        "allowed_scopes": {
+          "type": ["string", "null"]
+        },
+        "loopback_any_port": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "client_id",
+        "client_secret_hash",
+        "client_name",
+        "redirect_uris",
+        "token_endpoint_auth_method",
+        "created_at",
+        "first_party",
+        "allowed_scopes",
+        "loopback_any_port"
+      ]
+    },
+    "OAuthGrantRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/GrantId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scopes": {
+          "type": "string"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "last_used_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revoked_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GrantRevokedReason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "client_id",
+        "device_id",
+        "scopes",
+        "created_at",
+        "last_used_at",
+        "revoked_at",
+        "revoked_reason"
+      ]
+    },
+    "OAuthRefreshTokenRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/RefreshTokenId"
+        },
+        "grant_id": {
+          "$ref": "#/$defs/GrantId"
+        },
+        "token_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RefreshTokenId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "used_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revoked_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "grant_id",
+        "token_hash",
+        "parent_id",
+        "created_at",
+        "expires_at",
+        "used_at",
+        "revoked_at"
+      ]
+    },
+    "OfferCompensation": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "period": {
+          "$ref": "#/$defs/SalaryPeriod"
+        },
+        "bonus": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "maxLength": 200
+            }
+          ]
+        },
+        "equity": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "raw": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "OfferId": {
+      "type": "string",
+      "pattern": "^ofr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "offer id (ofr_<ULID>)"
+    },
+    "OfferRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/OfferId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "received_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "compensation": {
+          "$ref": "#/$defs/OfferCompensation"
+        },
+        "deadline_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/OfferStatus"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "received_at",
+        "compensation",
+        "deadline_at",
+        "status",
+        "notes",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "OfferRecordedEventPayload": {
+      "type": "object",
+      "properties": {
+        "offer_id": {
+          "$ref": "#/$defs/OfferId"
+        }
+      },
+      "required": ["offer_id"],
+      "additionalProperties": {}
+    },
+    "OfferStatus": {
+      "type": "string",
+      "enum": ["open", "accepted", "declined", "expired", "rescinded"]
+    },
+    "PauseReason": {
+      "type": "string",
+      "enum": [
+        "captcha_or_challenge",
+        "login_required",
+        "account_creation_required",
+        "mfa_required",
+        "credential_field",
+        "missing_information",
+        "protected_question",
+        "unknown_question",
+        "unsupported_form",
+        "unclear_page",
+        "off_domain_navigation",
+        "validation_unresolved",
+        "stuck_loop",
+        "needs_headed_restart",
+        "payment_requested",
+        "network_offline",
+        "resource_exhausted",
+        "low_confidence",
+        "injection_suspected",
+        "ai_unavailable",
+        "user_requested"
+      ]
+    },
+    "PostingId": {
+      "type": "string",
+      "pattern": "^pst_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "posting id (pst_<ULID>)"
+    },
+    "PostingLocation": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "region": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "country_code": {
+          "$ref": "#/$defs/CountryCode"
+        }
+      },
+      "required": ["raw"]
+    },
+    "PostingStatus": {
+      "type": "string",
+      "enum": ["open", "closed", "unknown"]
+    },
+    "PostingVisibility": {
+      "type": "string",
+      "enum": ["public", "private"]
+    },
+    "ProgressStage": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "preparing_cv",
+        "opening",
+        "inspecting",
+        "filling",
+        "uploading",
+        "reviewing",
+        "awaiting_approval",
+        "submitting",
+        "verifying",
+        "discovering",
+        "rendering",
+        "done"
+      ]
+    },
+    "RefreshTokenId": {
+      "type": "string",
+      "pattern": "^rft_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "refresh_token id (rft_<ULID>)"
+    },
+    "RequestLogCategory": {
+      "type": "string",
+      "enum": ["cv", "invoice", "portfolio", "jobs"]
+    },
+    "RequestLogRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ts": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "caller_email": {
+          "type": "string"
+        },
+        "caller_email_hash": {
+          "type": ["string", "null"]
+        },
+        "tool": {
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/$defs/RequestLogCategory"
+        },
+        "resource_id": {
+          "type": ["string", "null"]
+        },
+        "status": {
+          "$ref": "#/$defs/RequestLogStatus"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "params": {
+          "type": ["string", "null"]
+        },
+        "retention_until": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "ts",
+        "caller_email",
+        "caller_email_hash",
+        "tool",
+        "category",
+        "resource_id",
+        "status",
+        "duration_ms",
+        "params",
+        "retention_until"
+      ]
+    },
+    "RequestLogStatus": {
+      "type": "string",
+      "enum": ["ok", "error"]
+    },
+    "Revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Row revision (D-21); starts at 1 and increments on every update"
+    },
+    "RuleActivationApprovalPayload": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "rule_activation"
+        },
+        "rule_id": {
+          "$ref": "#/$defs/RuleId"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "mode": {
+          "$ref": "#/$defs/RuleMode"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "criteria": {
+          "$ref": "#/$defs/RuleCriteria"
+        },
+        "limits": {
+          "$ref": "#/$defs/RuleLimits"
+        },
+        "allowed_domains": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Domain"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "rule_id",
+        "name",
+        "mode",
+        "summary",
+        "criteria",
+        "limits",
+        "allowed_domains"
+      ]
+    },
+    "RuleCriteria": {
+      "type": "object",
+      "properties": {
+        "min_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "require_ai_component": {
+          "type": "boolean"
+        },
+        "max_score_age_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "exclude_blocking_gates": {
+          "type": "boolean",
+          "const": true
+        },
+        "exclude_possible_gates": {
+          "type": "boolean"
+        },
+        "keywords": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "title_patterns": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "companies": {
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "exclude_companies": {
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "source_ids": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceId"
+          }
+        },
+        "locations": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "workplace_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkplaceType"
+          }
+        },
+        "seniority": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SeniorityLevel"
+          }
+        }
+      },
+      "required": [
+        "min_score",
+        "require_ai_component",
+        "max_score_age_days",
+        "exclude_blocking_gates",
+        "exclude_possible_gates"
+      ]
+    },
+    "RuleId": {
+      "type": "string",
+      "pattern": "^rul_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "rule id (rul_<ULID>)"
+    },
+    "RuleLimits": {
+      "type": "object",
+      "properties": {
+        "max_per_day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 25
+        },
+        "max_per_company_per_30d": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "active_hours": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                },
+                "end": {
+                  "type": "string",
+                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                }
+              },
+              "required": ["start", "end"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["max_per_day", "max_per_company_per_30d"]
+    },
+    "RuleMode": {
+      "type": "string",
+      "enum": ["assisted", "approval", "auto"]
+    },
+    "RunError": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "error_class": {
+          "$ref": "#/$defs/DiscoveryErrorClass"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": ["error_class"]
+    },
+    "RunId": {
+      "type": "string",
+      "pattern": "^run_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "run id (run_<ULID>)"
+    },
+    "RunItemOutcome": {
+      "type": "string",
+      "enum": ["new", "updated", "unchanged", "invalid"]
+    },
+    "RunSource": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter": {
+          "$ref": "#/$defs/AdapterId"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": ["adapter", "label"]
+    },
+    "RunStats": {
+      "type": "object",
+      "properties": {
+        "pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "postings_found": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "new": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updated": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unchanged": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errors_by_class": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/DiscoveryErrorClass"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "selector_drift": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "Salary": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "period": {
+          "$ref": "#/$defs/SalaryPeriod"
+        },
+        "raw": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "SalaryFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "posting_max_yearly": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "floor_yearly": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 3
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "value",
+        "posting_max_yearly",
+        "floor_yearly",
+        "currency",
+        "weight"
+      ]
+    },
+    "SalaryPeriod": {
+      "type": "string",
+      "enum": ["year", "month", "week", "day", "hour"]
+    },
+    "ScoreComponents": {
+      "type": "object",
+      "properties": {
+        "rubric_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "skills_overlap": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SkillsOverlapComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title_similarity": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TitleSimilarityComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "location_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocationFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "seniority_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SeniorityFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "salary_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/SalaryFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "language_fit": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LanguageFitComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "freshness": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/FreshnessComponent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "skills_overlap",
+            "title_similarity",
+            "location_fit",
+            "seniority_fit",
+            "salary_fit",
+            "language_fit",
+            "freshness"
+          ]
+        },
+        "ai": {
+          "$ref": "#/$defs/AiComponent"
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ScoreGate"
+          }
+        },
+        "base": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "posting_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["rubric_version", "features", "ai", "gates", "base", "score"]
+    },
+    "ScoreGate": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "$ref": "#/$defs/GatePredicate"
+        },
+        "level": {
+          "$ref": "#/$defs/GateLevel"
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "multiplier": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["predicate", "level", "probability", "multiplier"]
+    },
+    "ScoreId": {
+      "type": "string",
+      "pattern": "^scr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "score id (scr_<ULID>)"
+    },
+    "ScreeningAnswerRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/AnswerId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "question_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "match_patterns": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "answer": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "answer_kind": {
+          "$ref": "#/$defs/AnswerKind"
+        },
+        "sensitivity": {
+          "$ref": "#/$defs/Sensitivity"
+        },
+        "auto_use": {
+          "$ref": "#/$defs/AutoUse"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "question_key",
+        "match_patterns",
+        "answer",
+        "answer_kind",
+        "sensitivity",
+        "auto_use",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "SeniorityFitComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "posting": {
+          "$ref": "#/$defs/SeniorityLevel"
+        },
+        "user": {
+          "$ref": "#/$defs/SeniorityLevel"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "posting", "user", "weight"]
+    },
+    "SeniorityLevel": {
+      "type": "string",
+      "enum": [
+        "intern",
+        "junior",
+        "mid",
+        "senior",
+        "lead",
+        "principal",
+        "unknown"
+      ]
+    },
+    "Sensitivity": {
+      "type": "string",
+      "enum": ["none", "personal", "protected"]
+    },
+    "Sha256Hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256 digest (64 characters)"
+    },
+    "SkillsOverlapComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "matched": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "matched", "missing", "weight"]
+    },
+    "SourceId": {
+      "type": "string",
+      "pattern": "^src_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "source id (src_<ULID>)"
+    },
+    "SourceKind": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url",
+        "manual",
+        "email",
+        "legacy"
+      ]
+    },
+    "Stage": {
+      "type": "string",
+      "enum": [
+        "saved",
+        "preparing",
+        "ready",
+        "applied",
+        "interviewing",
+        "offer",
+        "accepted",
+        "rejected",
+        "withdrawn"
+      ]
+    },
+    "StageChangedEventPayload": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/Stage"
+        },
+        "to": {
+          "$ref": "#/$defs/Stage"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": ["from", "to"],
+      "additionalProperties": {}
+    },
+    "SubmissionEvidenceRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EvidenceId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "application_id": {
+          "$ref": "#/$defs/ApplicationId"
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TaskId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AttemptId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "$ref": "#/$defs/EvidenceKind"
+        },
+        "verdict": {
+          "$ref": "#/$defs/EvidenceVerdict"
+        },
+        "signals": {
+          "$ref": "#/$defs/EvidenceSignals"
+        },
+        "final_url": {
+          "type": ["string", "null"]
+        },
+        "page_title": {
+          "type": ["string", "null"]
+        },
+        "text_excerpt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "screenshot_file_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FileId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "form_hash": {
+          "type": ["string", "null"]
+        },
+        "captured_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "application_id",
+        "task_id",
+        "attempt_id",
+        "kind",
+        "verdict",
+        "signals",
+        "final_url",
+        "page_title",
+        "text_excerpt",
+        "screenshot_file_id",
+        "form_hash",
+        "captured_at",
+        "recorded_at"
+      ]
+    },
+    "SubmissionMethod": {
+      "type": "string",
+      "enum": ["browser", "email", "ats_api", "manual"]
+    },
+    "SubmissionStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "submitted_verified",
+        "submitted_unverified",
+        "failed",
+        "outcome_unknown"
+      ]
+    },
+    "SubmissionStatusChangedEventPayload": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/SubmissionStatus"
+        },
+        "to": {
+          "$ref": "#/$defs/SubmissionStatus"
+        },
+        "evidence_id": {
+          "$ref": "#/$defs/EvidenceId"
+        },
+        "via": {
+          "type": "string",
+          "enum": ["assisted_user_click", "late_evidence"]
+        }
+      },
+      "required": ["from", "to"],
+      "additionalProperties": {}
+    },
+    "SubmitIntentEventPayload": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "form_hash": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      },
+      "required": ["task_id", "attempt_id", "form_hash"],
+      "additionalProperties": {}
+    },
+    "SupportAccessId": {
+      "type": "string",
+      "pattern": "^sal_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "support_access id (sal_<ULID>)"
+    },
+    "SupportAccessLogRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/SupportAccessId"
+        },
+        "operator_email": {
+          "type": "string"
+        },
+        "subject_user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ticket_ref": {
+          "type": ["string", "null"]
+        },
+        "scope": {
+          "type": "string"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "operator_email",
+        "subject_user_id",
+        "reason",
+        "ticket_ref",
+        "scope",
+        "created_at"
+      ]
+    },
+    "TaskCreatedBy": {
+      "type": "string",
+      "enum": ["web", "cli", "rule", "mcp", "system"]
+    },
+    "TaskId": {
+      "type": "string",
+      "pattern": "^tsk_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "task id (tsk_<ULID>)"
+    },
+    "TaskKind": {
+      "type": "string",
+      "enum": ["apply", "discover", "render_cv"]
+    },
+    "TaskPayload": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/ApplicationMode"
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuleId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceId"
+          }
+        },
+        "urls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Url"
+          }
+        },
+        "check_tracked": {
+          "type": "boolean"
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "resume_from_approval": {
+          "$ref": "#/$defs/ApprovalId"
+        },
+        "retry_hint": {
+          "type": "string",
+          "enum": ["needs_headed"]
+        },
+        "cancel_reason": {
+          "type": "string",
+          "maxLength": 60
+        }
+      },
+      "additionalProperties": {}
+    },
+    "TaskProgress": {
+      "type": "object",
+      "properties": {
+        "stage": {
+          "$ref": "#/$defs/ProgressStage"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": ["stage", "step", "message"]
+    },
+    "TaskState": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "claimed",
+        "running",
+        "paused",
+        "awaiting_approval",
+        "submitted",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "outcome_unknown",
+        "expired"
+      ]
+    },
+    "TelemetryCounters": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "error_classes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "exit_codes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "duration_buckets": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "agent_steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "outcomes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": ["commands", "error_classes"],
+      "additionalProperties": {}
+    },
+    "TelemetryDailyRecord": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "$ref": "#/$defs/Day"
+        },
+        "install_hash": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 64
+        },
+        "cli_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "platform": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "counters": {
+          "$ref": "#/$defs/TelemetryCounters"
+        }
+      },
+      "required": ["day", "install_hash", "cli_version", "platform", "counters"]
+    },
+    "Timestamp": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Epoch milliseconds (UTC)"
+    },
+    "TitleSimilarityComponent": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "best_target": {
+          "type": ["string", "null"]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["value", "best_target", "weight"]
+    },
+    "TokenEndpointAuthMethod": {
+      "type": "string",
+      "enum": ["client_secret_basic", "client_secret_post", "none"]
+    },
+    "TokenKind": {
+      "type": "string",
+      "enum": ["personal", "session", "oauth"]
+    },
+    "TokenStatus": {
+      "type": "string",
+      "enum": ["active", "revoked"]
+    },
+    "Url": {
+      "type": "string",
+      "maxLength": 2048,
+      "format": "uri",
+      "description": "Absolute URL"
+    },
+    "UserId": {
+      "type": "string",
+      "pattern": "^usr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "user id (usr_<ULID>)"
+    },
+    "UserJobId": {
+      "type": "string",
+      "pattern": "^ujb_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "user_job id (ujb_<ULID>)"
+    },
+    "UserJobOrigin": {
+      "type": "string",
+      "enum": ["discovered", "manual", "imported", "legacy", "mcp"]
+    },
+    "UserJobRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/UserJobId"
+        },
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "posting_id": {
+          "$ref": "#/$defs/PostingId"
+        },
+        "origin": {
+          "$ref": "#/$defs/UserJobOrigin"
+        },
+        "inbox_state": {
+          "$ref": "#/$defs/InboxState"
+        },
+        "first_run_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user_notes": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "user_id",
+        "posting_id",
+        "origin",
+        "inbox_state",
+        "first_run_id",
+        "source_id",
+        "user_notes",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "UserRecord": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 254
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "deleted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["id", "email", "created_at", "updated_at", "deleted_at"]
+    },
+    "UserSettingsRecord": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "$ref": "#/$defs/UserId"
+        },
+        "locale": {
+          "$ref": "#/$defs/Locale"
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "default_mode": {
+          "$ref": "#/$defs/ApplicationMode"
+        },
+        "automation_paused": {
+          "type": "boolean"
+        },
+        "generated_text_allowed": {
+          "type": "boolean"
+        },
+        "allow_mcp_approvals": {
+          "type": "boolean"
+        },
+        "ai_consent_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ai_scoring_sensitive": {
+          "type": "boolean"
+        },
+        "evidence_screenshots": {
+          "$ref": "#/$defs/EvidenceScreenshotMode"
+        },
+        "evidence_retention_days": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 730
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "user_id",
+        "locale",
+        "timezone",
+        "default_mode",
+        "automation_paused",
+        "generated_text_allowed",
+        "allow_mcp_approvals",
+        "ai_consent_at",
+        "ai_scoring_sensitive",
+        "evidence_screenshots",
+        "evidence_retention_days",
+        "revision",
+        "updated_at"
+      ]
+    },
+    "WorkplaceType": {
+      "type": "string",
+      "enum": ["onsite", "hybrid", "remote", "unknown"]
+    }
+  }
+}
