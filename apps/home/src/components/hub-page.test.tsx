@@ -90,14 +90,24 @@ describe("service links follow SERVICES status", () => {
 });
 
 describe("job tracker (job-tracker-spec 12 §15)", () => {
-  it("ships as soon: listed with its copy, never linked", () => {
-    expect(SERVICES.jobs.status).toBe("soon");
+  it("is live: listed with its copy and linked to the dashboard", () => {
+    expect(SERVICES.jobs.status).toBe("live");
     for (const locale of LOCALES) {
       const html = render(SERVICES, locale);
       const card = cardHtml(html, "jobs");
       expect(card).toContain(getT(locale)("services.jobs.name"));
+      expect(card).not.toContain(getT(locale)("status.soon"));
+      expect(linksTo(html, SERVICES.jobs.url).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("while soon: listed with its copy, never linked", () => {
+    const soon = withStatuses({ jobs: "soon" });
+    for (const locale of LOCALES) {
+      const html = render(soon, locale);
+      const card = cardHtml(html, "jobs");
       expect(card).toContain(getT(locale)("status.soon"));
-      expect(linksTo(html, SERVICES.jobs.url)).toEqual([]);
+      expect(linksTo(html, soon.jobs.url)).toEqual([]);
     }
   });
 

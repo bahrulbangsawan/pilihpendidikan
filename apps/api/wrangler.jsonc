@@ -11,8 +11,8 @@
 //
 // Job Tracker (job-tracker-spec/14 §3): the second D1 database JOBS_DB, the
 // R2 bucket JOBS_FILES, the `jobs-ai` queue (+ DLQ) and the 5-minute cron.
-// `REPLACE_WITH_JOBS_DB_ID` is filled in when the owner creates the database
-// (14 §8); local mode (`wrangler dev`, `--local` migrations) never needs it.
+// JOBS_DB is `pilihpendidikan-jobs` on the bisa.digital account (created
+// 2026-10-13, 14 §8).
 // Kill switches are NOT vars: they live in DB.feature_flags (D-33).
 //
 // Secrets never live in this file — `.dev.vars` locally (see
@@ -50,6 +50,10 @@
     // "live" calls OpenAI with OPENAI_API_KEY; "fake" (.dev.vars, tests) is
     // the deterministic provider. Optional: OPENAI_BASE_URL, TAILOR_MODEL.
     "JOBS_AI_MODE": "live",
+    // Live provider: "openai" (OPENAI_API_KEY) or "openrouter"
+    // (OPENROUTER_API_KEY, zero-data-retention routing). Optional:
+    // OPENROUTER_BASE_URL, OPENROUTER_MODEL_{DECISIONS,STRUCTURED,ESCALATION}.
+    "JOBS_AI_PROVIDER": "openrouter",
     // Per-user AI budget (D-34): monthly cap; the daily sub-cap is $0.50.
     "JOBS_AI_MONTHLY_BUDGET_USD": "3.00",
     // The dashboard origin (render-ticket URLs, emailed links).
@@ -77,7 +81,7 @@
     {
       "binding": "JOBS_DB",
       "database_name": "pilihpendidikan-jobs",
-      "database_id": "REPLACE_WITH_JOBS_DB_ID",
+      "database_id": "bfd99836-ac60-4710-b75f-9b3b449d9f9b",
       "migrations_dir": "migrations-jobs"
     }
   ],

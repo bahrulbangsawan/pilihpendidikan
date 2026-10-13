@@ -41,8 +41,9 @@ describe("llms.txt", () => {
 
 describe("job tracker while soon", () => {
   it("is not in llms.txt or JSON-LD until it is live", () => {
-    expect(buildLlmsTxt(SERVICES)).not.toContain("jobs.pilihpendidikan.com");
-    expect(JSON.stringify(buildJsonLd(SERVICES))).not.toContain(
+    const soon = services(["cv", "invoice", "portfolio", "api"]);
+    expect(buildLlmsTxt(soon)).not.toContain("jobs.pilihpendidikan.com");
+    expect(JSON.stringify(buildJsonLd(soon))).not.toContain(
       "jobs.pilihpendidikan.com"
     );
   });

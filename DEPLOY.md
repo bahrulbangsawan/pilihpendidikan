@@ -311,7 +311,16 @@ bunx wrangler r2 bucket lifecycle add pilihpendidikan-jobs-files abort-multipart
 bunx wrangler queues create jobs-ai
 bunx wrangler queues create jobs-ai-dlq
 bunx wrangler secret put OPENAI_API_KEY                   # a key with a hard monthly cap (D-34, 14 §9.4)
+# …or, to route through OpenRouter instead of OpenAI directly:
+# bunx wrangler secret put OPENROUTER_API_KEY             # also with a hard credit limit
 ```
+
+To use OpenRouter, set the var `JOBS_AI_PROVIDER` to `openrouter` in
+`apps/api/wrangler.jsonc` (default `openai`) before the deploy. Every
+OpenRouter call asks for zero data retention (`provider: {data_collection:
+"deny", zdr: true, require_parameters: true}`); the models default to
+`openai/gpt-6-luna` / `openai/gpt-6.1-sol` / `openai/gpt-6-astra` and can be
+overridden with `OPENROUTER_MODEL_DECISIONS` / `_STRUCTURED` / `_ESCALATION`.
 
 If wrangler offers to add a binding to the config, answer no: the bindings are
 already in `apps/api/wrangler.jsonc` (`JOBS_DB`, `JOBS_FILES`,

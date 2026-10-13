@@ -14,8 +14,10 @@
 // those primitives in compose.ts, so a provider implements two functions.
 //
 // `getAiProvider(env)` returns the deterministic fake when
-// `JOBS_AI_MODE=fake` (dev, tests: never the network) and the OpenAI provider
-// otherwise. Every result carries `usage` (tokens + cost in micro-USD) and
+// `JOBS_AI_MODE=fake` (dev, tests: never the network), else the live provider
+// `JOBS_AI_PROVIDER` names: "openai" (default, openai.ts) or "openrouter"
+// (openrouter.ts: Chat Completions with the Decisions API emulated, ZDR
+// routing). Every result carries `usage` (tokens + cost in micro-USD) and
 // `calls` (provider requests made) for the D-34 budget
 // (src/jobs/repo/core/ai-usage.ts).
 //
@@ -44,6 +46,8 @@ import { composeProvider } from "./compose";
 import type { FakeAiOptions } from "./fake";
 import { createFakePrimitives } from "./fake";
 import { createOpenAiPrimitives } from "./openai";
+import type { OpenRouterEnv } from "./openrouter";
+import { createOpenRouterPrimitives } from "./openrouter";
 import type { AiPrimitives, AiUsage } from "./primitives";
 
 // ---------------------------------------------------------------------------
@@ -240,13 +244,29 @@ export function aiMode(env: Pick<Env, "JOBS_AI_MODE">): "fake" | "live" {
   return env.JOBS_AI_MODE?.trim().toLowerCase() === "fake" ? "fake" : "live";
 }
 
+/** The live provider: "openrouter" when JOBS_AI_PROVIDER says so, else "openai". */
+export function liveAiProvider(
+  env: Pick<Env, "JOBS_AI_PROVIDER">
+): "openai" | "openrouter" {
+  return env.JOBS_AI_PROVIDER?.trim().toLowerCase() === "openrouter"
+    ? "openrouter"
+    : "openai";
+}
+
 /** The provider for this environment (19 §12). */
 export function getAiProvider(
-  env: Pick<Env, "JOBS_AI_MODE" | "OPENAI_API_KEY" | "OPENAI_BASE_URL">,
+  env: Pick<
+    Env,
+    "JOBS_AI_MODE" | "JOBS_AI_PROVIDER" | "OPENAI_API_KEY" | "OPENAI_BASE_URL"
+  > &
+    OpenRouterEnv,
   options: AiProviderOptions = {}
 ): AiProvider {
   if (aiMode(env) === "fake") {
     return composeProvider(createFakePrimitives(options.fake));
+  }
+  if (liveAiProvider(env) === "openrouter") {
+    return composeProvider(createOpenRouterPrimitives(env, options.fetch));
   }
   return composeProvider(createOpenAiPrimitives(env, options.fetch));
 }

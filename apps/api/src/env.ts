@@ -54,6 +54,17 @@ export interface Env {
   OPENAI_BASE_URL?: string;
   // Optional Responses model override for CV tailoring (08).
   TAILOR_MODEL?: string;
+  // Live AI provider: "openai" (default) or "openrouter". JOBS_AI_MODE=fake
+  // still wins.
+  JOBS_AI_PROVIDER?: string;
+  // Secret (wrangler secret put / .dev.vars). Only src/jobs/ai/** reads it.
+  OPENROUTER_API_KEY?: string;
+  // Optional; default https://openrouter.ai/api.
+  OPENROUTER_BASE_URL?: string;
+  // OpenRouter model ids (defaults in src/jobs/ai/openrouter.ts).
+  OPENROUTER_MODEL_DECISIONS?: string;
+  OPENROUTER_MODEL_STRUCTURED?: string;
+  OPENROUTER_MODEL_ESCALATION?: string;
 }
 
 export type TokenScope = "write" | "read";

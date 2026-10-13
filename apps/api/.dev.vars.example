@@ -1,7 +1,8 @@
 # Local overrides for `wrangler dev` (apps/api). Copy to `.dev.vars` (gitignored).
 # Values here replace the same-named `vars` in wrangler.jsonc while running
 # locally. Every credential the Worker accepts is minted by the Worker itself
-# and stored hashed in D1 / KV; the only external secret is OPENAI_API_KEY.
+# and stored hashed in D1 / KV; the only external secret is OPENAI_API_KEY
+# (or OPENROUTER_API_KEY with JOBS_AI_PROVIDER=openrouter).
 #
 # Restart `wrangler dev` after editing; it does not hot-reload vars.
 #
@@ -29,6 +30,16 @@ OPENAI_API_KEY=
 # Responses model used for CV tailoring.
 # OPENAI_BASE_URL=https://api.openai.com
 # TAILOR_MODEL=gpt-6.1-sol
+
+# Live AI provider: "openai" (default, OPENAI_API_KEY) or "openrouter"
+# (OPENROUTER_API_KEY; every call asks for zero data retention). The model
+# overrides default to openai/gpt-6-luna, openai/gpt-6.1-sol, openai/gpt-6-astra.
+JOBS_AI_PROVIDER=openai
+# OPENROUTER_API_KEY=sk-or-...
+# OPENROUTER_BASE_URL=https://openrouter.ai/api
+# OPENROUTER_MODEL_DECISIONS=openai/gpt-6-luna
+# OPENROUTER_MODEL_STRUCTURED=openai/gpt-6.1-sol
+# OPENROUTER_MODEL_ESCALATION=openai/gpt-6-astra
 
 # The dashboard origin used in render-ticket URLs and emailed links.
 JOBS_APP_ORIGIN=http://localhost:4007

@@ -18,7 +18,7 @@ export const SERVICES = {
   cv: { status: "live", url: "https://cv.pilihpendidikan.com" },
   invoice: { status: "live", url: "https://invoice.pilihpendidikan.com" },
   portfolio: { status: "live", url: "https://portfolio.pilihpendidikan.com" },
-  jobs: { status: "soon", url: "https://jobs.pilihpendidikan.com" },
+  jobs: { status: "live", url: "https://jobs.pilihpendidikan.com" },
   api: { status: "live", url: "https://api.pilihpendidikan.com" },
 } as const satisfies Services;
 

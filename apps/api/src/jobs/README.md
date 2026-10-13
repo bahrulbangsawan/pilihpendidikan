@@ -37,6 +37,8 @@ ai/          provider.ts    AiProvider (19 §12) + getAiProvider(env)
              compose.ts     the six domain methods over the primitives
              fake.ts        deterministic provider (JOBS_AI_MODE=fake)
              openai.ts      live Decisions + Responses (store: false)
+             openrouter.ts  live alternative: Chat Completions, Decisions
+                            emulated, ZDR routing (JOBS_AI_PROVIDER)
 queue/       consumer.ts    jobs-ai consumer, QUEUE_HANDLERS registry
              handlers/<type>.ts   one per JobsAiMessage type + dlq.ts
 cron/        index.ts       CRON_JOBS registry, runScheduled
@@ -315,7 +317,26 @@ domain results also carry `calls` (provider requests).
   `StructuredRequest.fake`) → conservative default. `onDecide` /
   `onStructured` capture requests. Script it with `getAiProvider(env,
   {fake: {...}})` or inject `createV1Client(t, {ai: () => provider})`.
-- Both providers enforce the self-imposed Decisions limits (≤ 6 questions,
+- Live provider: `JOBS_AI_PROVIDER` = `openai` (default; `OPENAI_API_KEY`)
+  or `openrouter` (`openrouter.ts`, `OPENROUTER_API_KEY`, optional
+  `OPENROUTER_BASE_URL`); `JOBS_AI_MODE=fake` still wins. OpenRouter goes
+  through `POST /v1/chat/completions` with `HTTP-Referer` / `X-Title` and
+  sends `provider: {data_collection: "deny", zdr: true,
+  require_parameters: true}` on every call (never `store`). `structured()`
+  is a strict `json_schema` `response_format` (`message.refusal` → refusal,
+  `finish_reason: "length"` → `invalid_output`); `decide()` emulates
+  Decisions with one strict schema holding a property per question
+  (predicate `{probability}`, choice `{choice: enum}`, score `{score:
+  level index}`), a fixed system prompt that treats the input as untrusted,
+  images as `image_url` parts, 10 s timeout, mapped onto a Decisions
+  envelope so `answersFor()` (and its refusals) is shared. Models:
+  `OPENROUTER_MODEL_DECISIONS` / `_STRUCTURED` / `_ESCALATION` (default
+  `openai/gpt-6-luna`, `openai/gpt-6.1-sol`, `openai/gpt-6-astra`); a
+  request naming an `AI_MODELS` id is mapped, so escalation escalates.
+  Cost is `usage.cost` (USD credits → micro-USD) when reported, else the
+  token estimate. Status mapping as openai.ts, plus 402 (no credits) →
+  `unavailable`.
+- All providers enforce the self-imposed Decisions limits (≤ 6 questions,
   ≤ 40 choices, ≤ 1 inline base64 image) with a non-retryable
   `bad_request`.
 - Cost estimates for budget pre-checks: `estimateDecisionCost(request)`,

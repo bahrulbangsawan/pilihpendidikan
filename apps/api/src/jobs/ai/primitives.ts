@@ -3,11 +3,11 @@
 // shapes (Decisions and Responses Structured Outputs), the request limits we
 // self-impose, the Zod shapes of the provider envelopes (T7-11) and
 // `AiProviderError`. provider.ts builds the full `AiProvider` on top; fake.ts
-// and openai.ts implement `AiPrimitives`.
+// openai.ts and openrouter.ts implement `AiPrimitives`.
 
 import { z } from "zod";
 
-export type AiProviderId = "openai" | "anthropic" | "fake";
+export type AiProviderId = "openai" | "openrouter" | "anthropic" | "fake";
 
 /** Server-configured models (19 §6.1, 07 §4.1, 08). */
 export const AI_MODELS = {
