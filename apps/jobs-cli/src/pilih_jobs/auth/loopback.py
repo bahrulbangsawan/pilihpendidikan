@@ -7,6 +7,11 @@
   400 and is ignored, as is any second request.
 - The success page is static: no scripts and no external assets (no referrer leak).
 - The whole wait times out after 300 s (`LoginTimeoutError`, exit 2).
+- Pasted fallback (`submit_pasted`): when the browser cannot reach the loopback (Chrome's
+  Local Network Access blocks a public site's redirect to 127.0.0.1 unless the user allows
+  it), the user pastes the callback address from the address bar. It passes the same checks
+  (this listener's host, port and path; `state` in constant time; `iss`), but a paste that
+  fails them is a typo or an old attempt, not CSRF: it is refused and the wait goes on.
 """
 
 from __future__ import annotations
@@ -182,6 +187,72 @@ class LoopbackListener:
         finally:
             deadline.cancel()
             await self.close()
+
+    def submit_pasted(self, text: str) -> str | None:
+        """Settle the wait with a callback URL pasted from the browser's address bar.
+
+        Returns `None` when the paste settled the wait (a code, or the server's error) or the
+        wait is already settled; otherwise the reason it was refused, for the user. A refused
+        paste never aborts the login.
+        """
+        if self._result is None or self._result.done():
+            return None
+        pasted = text.strip()
+        if not pasted:
+            return None
+        try:
+            url = urlsplit(pasted)
+            port = url.port
+        except ValueError:
+            url, port = None, None
+        if (
+            url is None
+            or url.scheme != "http"
+            or url.hostname != LOOPBACK_HOST
+            or port != self.port
+            or url.path != CALLBACK_PATH
+        ):
+            return (
+                "That is not this login's callback address. Paste the whole address from the "
+                f"browser's address bar (it starts with {self.redirect_uri}?)."
+            )
+        query = parse_qs(url.query, keep_blank_values=True)
+
+        def first(name: str) -> str | None:
+            values = query.get(name)
+            return values[0] if values else None
+
+        state = first("state") or ""
+        if not hmac.compare_digest(state.encode("utf-8"), self.expected_state.encode("utf-8")):
+            log_event(_log, "pasted_state_mismatch", "pasted callback state did not match")
+            return (
+                "That address belongs to another login attempt. Paste the address this login's "
+                "browser tab shows."
+            )
+        iss = first("iss")
+        if (iss is not None and iss.rstrip("/") != self.issuer) or (
+            iss is None and self.require_iss
+        ):
+            log_event(_log, "pasted_iss_mismatch", "pasted callback iss missing or wrong")
+            return "That address was not issued by this server."
+        error = first("error")
+        if error is not None:
+            if error == "access_denied":
+                self._settle(error=AuthorizationDeniedError("Authorization was denied."))
+            else:
+                self._settle(
+                    error=AuthorizationFailedError(
+                        f"The authorization server returned an error: {error}.",
+                        details={"error": error},
+                    )
+                )
+            return None
+        code = first("code")
+        if not code:
+            return "That address has no authorization code. Paste the whole address."
+        log_event(_log, "loopback_pasted", "callback settled from a pasted address")
+        self._settle(result=CallbackResult(code=code, iss=iss))
+        return None
 
     # ------------------------------------------------------------------ requests
     def _settle(

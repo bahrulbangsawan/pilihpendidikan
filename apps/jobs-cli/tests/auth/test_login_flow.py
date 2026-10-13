@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 from collections.abc import Callable
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
@@ -67,6 +68,39 @@ async def test_T16_COMPONENT_login_registers_the_device_and_stores_credentials(
     row = runtime.db.account(runtime.issuer)
     assert row is not None
     assert row["device_id"] == result.device_id
+
+
+async def test_T16_COMPONENT_login_completes_from_a_pasted_callback_address(
+    runtime: Runtime, fake_api: FakeApi, user_id: str, keyring_backend: MemoryKeyring
+) -> None:
+    """Chrome's Local Network Access blocks the redirect: the user pastes the address."""
+    redirects: list[str] = []
+    announced: list[str] = []
+
+    def blocked_browser(url: str) -> bool:
+        redirects.append(fake_api.consent(url, user_id=user_id))
+        return True
+
+    def paste_reader(on_line: Callable[[str], None]) -> None:
+        def run() -> None:
+            on_line("http://127.0.0.1:1/callback?code=typo\n")
+            on_line(redirects[0] + "\n")
+
+        threading.Thread(target=run, daemon=True).start()
+
+    result = await login(
+        runtime,
+        LoginOptions(
+            open_browser=blocked_browser,
+            capabilities=["discover"],
+            announce=announced.append,
+            paste_reader=paste_reader,
+        ),
+    )
+    assert result.user_id == user_id
+    assert any("ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS" in m for m in announced)
+    assert any("not this login's callback address" in m for m in announced)
+    assert keyring_backend.get_password("pilih-jobs", refresh_account(runtime.issuer, user_id))
 
 
 async def test_T16_COMPONENT_relogin_reuses_the_device_with_device_hint(

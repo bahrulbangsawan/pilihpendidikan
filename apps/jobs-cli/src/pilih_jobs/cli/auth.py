@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import sys
+import threading
 import webbrowser
+from collections.abc import Callable
 from typing import Annotated, Any, cast
 from urllib.parse import urlsplit
 
@@ -15,6 +18,16 @@ from pilih_jobs.cli.output import key_value_table
 from pilih_jobs.errors import NotAuthenticatedError, UsageError
 from pilih_jobs.runtime import Runtime
 from pilih_jobs.sync.engine import SyncEngine
+
+
+def _read_pasted_lines(on_line: Callable[[str], None]) -> None:
+    """Feed terminal lines to `on_line` from a daemon thread (it never blocks exit)."""
+
+    def run() -> None:
+        for line in sys.stdin:
+            on_line(line)
+
+    threading.Thread(target=run, name="login-paste", daemon=True).start()
 
 
 def web_origin(issuer: str) -> str:
@@ -82,6 +95,9 @@ def _login(
         scopes=list(scopes or []),
         credential_store=credential_store,
     )
+    # Chrome may block the redirect to 127.0.0.1: the address can be pasted instead.
+    if st.interactive and sys.stdin.isatty():
+        options.paste_reader = _read_pasted_lines
     # The URL is needed even with --json / -q: always on stderr, never in stdout JSON.
     options.announce = lambda message: st.out.console(err=True).print(message, markup=False)
     result = st.run(login(rt, options))

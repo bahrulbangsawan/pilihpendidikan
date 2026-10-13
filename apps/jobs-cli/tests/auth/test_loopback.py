@@ -120,6 +120,52 @@ async def test_T17_10_times_out_after_300_seconds_with_a_fake_clock() -> None:
     assert "timed out" in info.value.message
 
 
+async def test_T17_10_pasted_callback_address_settles_the_wait() -> None:
+    async with LoopbackListener(expected_state=STATE, issuer=ISSUER) as listener:
+        waiter = asyncio.create_task(listener.wait())
+        pasted = f"  {listener.redirect_uri}?code=pasted&state={STATE}&iss={ISSUER}\n"
+        assert listener.submit_pasted(pasted) is None
+        result = await waiter
+        assert result.code == "pasted"
+        assert result.iss == ISSUER
+
+
+async def test_T17_10_refused_pastes_keep_waiting() -> None:
+    async with LoopbackListener(expected_state=STATE, issuer=ISSUER) as listener:
+        waiter = asyncio.create_task(listener.wait())
+        uri = listener.redirect_uri
+        other_port = f"http://127.0.0.1:{listener.port + 1}/callback"
+        refused = [
+            "not a url",
+            f"https://127.0.0.1:{listener.port}/callback?code=x&state={STATE}&iss={ISSUER}",
+            f"http://localhost:{listener.port}/callback?code=x&state={STATE}&iss={ISSUER}",
+            f"{other_port}?code=x&state={STATE}&iss={ISSUER}",
+            f"http://127.0.0.1:{listener.port}/other?code=x&state={STATE}&iss={ISSUER}",
+            f"{uri}?code=x&state=old-attempt&iss={ISSUER}",
+            f"{uri}?code=x&state={STATE}&iss=https://evil.test",
+            f"{uri}?code=x&state={STATE}",
+            f"{uri}?state={STATE}&iss={ISSUER}",
+        ]
+        for text in refused:
+            message = listener.submit_pasted(text)
+            assert message, text
+            assert STATE not in message
+        assert listener.submit_pasted("   ") is None
+        await asyncio.sleep(0)
+        assert not waiter.done()
+        assert listener.submit_pasted(f"{uri}?code=good&state={STATE}&iss={ISSUER}") is None
+        assert (await waiter).code == "good"
+
+
+async def test_T17_10_pasted_access_denied_fails_the_login() -> None:
+    async with LoopbackListener(expected_state=STATE, issuer=ISSUER) as listener:
+        waiter = asyncio.create_task(listener.wait())
+        pasted = f"{listener.redirect_uri}?error=access_denied&state={STATE}&iss={ISSUER}"
+        assert listener.submit_pasted(pasted) is None
+        with pytest.raises(AuthorizationDeniedError):
+            await waiter
+
+
 def test_T17_10_callback_pages_have_no_external_urls_or_scripts() -> None:
     for page in (SUCCESS_PAGE, callback_page("t", "m")):
         lowered = page.lower()

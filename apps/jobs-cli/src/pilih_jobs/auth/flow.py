@@ -1,7 +1,8 @@
 """`pilih-jobs login` / `logout` (17 §6, §8, §10).
 
 Login (17 §10.1): RFC 8414 metadata → PKCE + state → loopback listener on `127.0.0.1` →
-system browser (`webbrowser.open`, never the automation browser) → callback checks →
+system browser (`webbrowser.open`, never the automation browser) → callback checks (or
+the callback address pasted into the terminal, `LoginOptions.paste_reader`) →
 token exchange → `GET /api/v1/me` → device registration (`POST /api/v1/devices`, or reuse
 through `device_hint`) → secrets in the store, metadata in `credentials.json`, the
 `account` row in `state.db`. If device registration fails the fresh refresh token is
@@ -14,6 +15,8 @@ the new scopes and the same device (`device_hint`).
 
 from __future__ import annotations
 
+import asyncio
+import contextlib
 import webbrowser
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -46,6 +49,14 @@ from pilih_jobs.version import __version__, arch, device_platform
 _log = get_logger("auth.flow")
 
 OpenBrowser = Callable[[str], bool]
+# Starts delivering pasted lines to the callback (from any thread) and returns at once.
+PasteReader = Callable[[Callable[[str], None]], None]
+
+PASTE_HINT = (
+    "If the browser shows an error page instead (Chrome: "
+    "ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS), copy the whole address from its address "
+    "bar, paste it here and press Enter."
+)
 
 
 class LoginError(PilihError):
@@ -64,6 +75,7 @@ class LoginOptions:
     announce: Callable[[str], None] = lambda _message: None
     sleep: Sleeper | None = None
     capabilities: list[str] | None = None
+    paste_reader: PasteReader | None = None
 
 
 @dataclass
@@ -142,6 +154,24 @@ async def _revoke(client: ApiClient, metadata: AuthServerMetadata, token: str, h
     return True
 
 
+def _paste_handler(
+    listener: LoopbackListener, announce: Callable[[str], None]
+) -> Callable[[str], None]:
+    """A thread-safe line callback that hands pasted addresses to the listener."""
+    loop = asyncio.get_running_loop()
+
+    def submit(line: str) -> None:
+        refused = listener.submit_pasted(line)
+        if refused is not None:
+            announce(refused)
+
+    def on_line(line: str) -> None:
+        with contextlib.suppress(RuntimeError):  # the loop is gone once login has returned
+            loop.call_soon_threadsafe(submit, line)
+
+    return on_line
+
+
 async def login(rt: Runtime, options: LoginOptions) -> LoginResult:
     store_name = options.credential_store or rt.config.credentials.store
     store = rt.secret_store(store_name)  # refuses null/plaintext backends before anything
@@ -187,6 +217,9 @@ async def login(rt: Runtime, options: LoginOptions) -> LoginResult:
                     "Open this URL in a browser on this machine (or through an SSH tunnel to "
                     f"127.0.0.1:{urlsplit(redirect_uri).port}):\n{url}"
                 )
+            if options.paste_reader is not None:
+                options.announce(PASTE_HINT)
+                options.paste_reader(_paste_handler(listener, options.announce))
             callback = await listener.wait()
         finally:
             await listener.close()
