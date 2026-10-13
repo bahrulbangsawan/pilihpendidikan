@@ -9,6 +9,7 @@ import {
   tabsTriggerVariants,
 } from "@rulisme/ui/ui/tabs-variants";
 import { Link, Outlet } from "@tanstack/react-router";
+import { PageHeader } from "@/components/shell/page";
 import { useBoard } from "@/hooks/use-board";
 import { useTranslation } from "@/i18n";
 import { POLL_POLICIES } from "@/lib/polling";
@@ -72,17 +73,15 @@ export function AutomationLayout() {
   const { t } = useTranslation();
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="band flex flex-col gap-1 px-4 pt-3 sm:px-5">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="type-title-compact">{t("automation.title")}</h1>
-          <p className="type-caption text-muted-foreground">
-            {t("automation.intro")}
-          </p>
-        </div>
+      <PageHeader
+        description={t("automation.intro")}
+        title={t("automation.title")}
+        wide
+      >
         <div className="no-scrollbar -mb-px overflow-x-auto">
           <AutomationTabs />
         </div>
-      </div>
+      </PageHeader>
       <Outlet />
     </div>
   );

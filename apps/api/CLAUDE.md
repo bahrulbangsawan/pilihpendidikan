@@ -16,6 +16,7 @@ migration are in the root `DEPLOY.md`.
 - `bun run db:migrate:local` — apply `migrations/` to the local `DB` (run once before `dev`)
 - `bun run db:migrate:jobs:local` — apply `migrations-jobs/` to the local `JOBS_DB`
 - `bun run db:seed:local` — turn the Job Tracker flags on in the local `DB.feature_flags` (`scripts/seed-local.ts`; `--flag KEY=value`, `--persist-to`, `--dry-run`; never remote)
+- `bun run db:seed:demo -- --email you@example.com [--reset]` — fill the LOCAL stack with demo Job Tracker data for that user (`scripts/seed-demo.ts`, data in `scripts/seed-demo-data.ts`; see § Demo data)
 - `bun run test` — `bun test` (fake KV / R2 / Queue, real SQLite for both D1s); inside Claude Code run `env -u CLAUDECODE bun test` to see passing lines
 - `bun run typecheck` — `wrangler types` + `tsc` for `src/` and for tests/scripts
 - `bun run build` — `wrangler types` + `wrangler deploy --dry-run` into `dist/`
@@ -26,6 +27,44 @@ migration are in the root `DEPLOY.md`.
 - `bun scripts/migrate-jobs-kv-to-d1.ts` — legacy jobs `JOBS_KV` → `JOBS_DB` (06 §12.4): inventory, classify, plan (`migration-plan.jsonl`, `--out <dir>`), `--execute`, `--verify`; dry run unless `--execute`, owner go-ahead for remote
 - `bun scripts/support-access.ts --email … --ticket … --reason … --operator … [--scope …] [--execute]` — break-glass, read-only support access to one user's Job Tracker data, logged in `support_access_log` (11 §6.2, D-26)
 - `bun scripts/migrate-cv-kv.ts`, `bun scripts/migrate-tokens.ts` — the original cv / token data migrations (dry run unless `--execute`)
+
+## Demo data
+
+`bun run db:seed:demo -- --email you@example.com` (flags: `--reset`,
+`--api-url` default `http://localhost:8788`, `--persist-to`) talks to a
+RUNNING local api (`bun run dev`, after the migrations and
+`db:seed:local`; it runs `db:seed:local` itself when `/api/v1` is dark) and
+writes everything through the real routes, so stages, revisions, events and
+invariants hold. It never touches a remote: `--remote` and non-localhost
+URLs are refused.
+
+- Auth: a random bearer stored as `auth:session:<sha256>` = `{email,
+  createdAt}` in the local `AUTH_KV` (`wrangler kv key put --local`, the same
+  record the e-mail sign-in writes), deleted again at the end. Signing in on
+  the dashboard (:4007) with the same e-mail shows the data (same `users` row).
+- The demo device `Demo laptop (seed)` signs in like `pilih-jobs login`
+  (consent with that session, PKCE code exchange, `POST /api/v1/devices`,
+  `device_hint` re-binds it on later runs) and sends one heartbeat.
+- Seeds: settings (AI consent, Asia/Jakarta), 15 profile facts, 5 saved
+  answers, a base CV in the CV builder store (MCP `cv_create` + `PUT
+  /api/cv/:id`) with one tailored CV variant; 24 manual applications over
+  every column (notes, 14 interviews past and upcoming, 2 offers, follow-ups,
+  priorities); 4 sources and one discovery run per enabled source (15
+  postings) with 2 tracked, 3 seen, 1 dismissed, all scored by the queue;
+  4 apply tasks (2 claimed by the device that ask for a submit / answer
+  approval and release the lease, 1 queued, 1 cancelled); 3 rules (created
+  after scoring; the `auto` one stays off unless `JOBS_AUTO_MODE_ENABLED`).
+- Re-running is idempotent for applications, sources, answers and postings
+  (stable refs, `unchanged`); each run adds 3 discovery-run records, and the
+  enabled `Backend roles in Jakarta` rule may then act on matching inbox
+  postings (the real rule engine: `ready` cards with queued tasks).
+- `--reset` first cancels live tasks, revokes the demo device, purges every
+  application, deletes rules, answers, facts and non-demo sources. Inbox
+  states cannot be reset through the API (no route returns a job to `new`, and
+  a purged card leaves its job `dismissed`), so seeded postings keep their
+  state; the seed tracks its two again. Not seeded: submitted / failed /
+  `outcome_unknown` attempts and evidence (they need a real CLI run), e-mail
+  drafts, and `rule_activation` approvals while auto mode is off.
 
 ## Routes
 
@@ -75,7 +114,7 @@ The same Worker exports `scheduled` (`0 3 * * *` daily jobs incl. the
 - `migrations/` — `DB` schema: `0001` tokens/clients/request log, `0002` users, grants, refresh tokens, devices, feature flags (seeded dark), support access log, `mcp_tokens` rebuilt with `kind` ∈ personal/session/oauth; `0003` the `pilih-jobs-cli` client
 - `migrations-jobs/` — `JOBS_DB` schema (`0001_jobs_core.sql` = 04 §2 verbatim)
 - `src/jobs/legacy/` — the `/api/jobs` + MCP `jobs_*` facade over `JOBS_KV` (`kv.ts`) or `JOBS_DB` (`d1.ts`, with the P3 on-the-fly KV fallback that logs `legacy_kv_fallback`); its SQL lives in `src/jobs/repo/legacy/`
-- `scripts/` — gated data migrations (dry run unless `--execute`), `seed-local.ts`, `support-access.ts`, `scoring-eval.ts`, `analytics-rebuild.ts`
+- `scripts/` — gated data migrations (dry run unless `--execute`), `seed-local.ts`, `seed-demo.ts`, `support-access.ts`, `scoring-eval.ts`, `analytics-rebuild.ts`
 - `test/fakes.ts` — fake bindings for `bun test` (both D1s, R2, Queue + `drain()`, fake clock, `createV1Client`); `test/seed-jobs.ts` — direct JOBS_DB seeding
 
 ## KV keys (Job Tracker / OAuth, all in `AUTH_KV`)

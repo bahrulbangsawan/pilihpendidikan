@@ -98,7 +98,7 @@ function StepRow({ step, cv }: { step: StepView; cv: CvStatusView | null }) {
     <li
       aria-current={step.status === "current" ? "step" : undefined}
       className={cn(
-        "type-body-compact flex items-center gap-2 border-line border-b px-4 py-2 sm:px-5",
+        "type-body-compact flex items-center gap-2 border-line border-b px-4 py-2 sm:px-6",
         active && "bg-pane-2"
       )}
     >

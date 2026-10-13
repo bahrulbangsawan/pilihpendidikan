@@ -12,7 +12,6 @@ import {
   AlertTitle,
 } from "@rulisme/ui/ui/alert";
 import { Button } from "@rulisme/ui/ui/button";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
 import { useQueryClient } from "@tanstack/react-query";
 import { CircleAlert } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -32,6 +31,7 @@ import { ActivityBand } from "./activity-band";
 import { ConnectBand } from "./connect-band";
 import { DevicesBand } from "./devices-band";
 import { useCliTasks } from "./use-cli-data";
+import { PageHeader } from "@/components/shell/page";
 
 const TICK_MS = 5000;
 
@@ -97,19 +97,16 @@ export function CliPage() {
   return (
     <div className="flex flex-col">
       {hero ? null : (
-        <Band>
-          <Rail className="flex flex-col gap-1 px-4 py-6 sm:px-8" nodes={false}>
-            <h1 className="type-title">{t("cliPage.title")}</h1>
-            <p className="type-caption max-w-2xl text-muted-foreground">
-              {t("cliPage.intro")}
+        <PageHeader description={t("cliPage.intro")} title={t("cliPage.title")}>
+          {devicesQuery.stale ? (
+            <p
+              className="type-caption pb-5 text-muted-foreground"
+              role="status"
+            >
+              {t("cliPage.stale")}
             </p>
-            {devicesQuery.stale ? (
-              <p className="type-caption text-muted-foreground" role="status">
-                {t("cliPage.stale")}
-              </p>
-            ) : null}
-          </Rail>
-        </Band>
+          ) : null}
+        </PageHeader>
       )}
       <ConnectBand
         connected={connected}

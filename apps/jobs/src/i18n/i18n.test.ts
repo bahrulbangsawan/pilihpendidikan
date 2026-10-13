@@ -45,11 +45,7 @@ import {
   WORK_AUTH_STATUSES,
 } from "@pilihpendidikan/jobs-contracts/scoring";
 import { describe, expect, it } from "vitest";
-import {
-  ACCOUNT_NAV,
-  BAND_LINKS,
-  MAIN_NAV,
-} from "@/components/shell/nav-items";
+import { NAV_GROUPS, NAV_ITEMS } from "@/components/shell/nav-items";
 import { FACT_GROUPS } from "@/lib/facts-form";
 import { FOLLOW_UP_PRESETS } from "@/lib/follow-up";
 import { SHORTCUTS } from "@/lib/shortcuts";
@@ -133,7 +129,11 @@ function dynamicKeys(): string[] {
     ...each("settings.screenshotModes", EVIDENCE_SCREENSHOT_MODES),
     ...each(
       "nav",
-      [...MAIN_NAV, ...ACCOUNT_NAV, ...BAND_LINKS].map((item) => item.key)
+      NAV_ITEMS.map((item) => item.key)
+    ),
+    ...each(
+      "nav.group",
+      NAV_GROUPS.map((group) => group.key)
     ),
     ...each(
       "shortcuts.actions",

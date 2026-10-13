@@ -119,7 +119,7 @@ export function ApplicationHeader({
   ].filter(Boolean);
 
   return (
-    <header className="band flex flex-col gap-3 px-4 py-4 sm:px-5">
+    <header className="band flex flex-col gap-3 px-4 py-4 sm:px-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col gap-0.5">
           <span className="type-caption text-muted-foreground">

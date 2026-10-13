@@ -1,5 +1,5 @@
-// The navigation of 12 §2.1: primary links in the nav band, the full list in
-// the sidebar, with single-key shortcuts (12 §2.2) and sidebar counters.
+// The navigation of 12 §2.1: every section lives in the sidebar, grouped by
+// what the user is doing, with single-key shortcuts (12 §2.2) and counters.
 
 import type { BoardResponse } from "@pilihpendidikan/jobs-contracts/api";
 
@@ -24,73 +24,80 @@ export interface NavItem {
   icon: LucideIcon;
   /** i18n key under `nav.` */
   key: string;
-  /** Shown in the nav band on wide screens. */
-  primary?: boolean;
   /** Paths that also mark this item as current. */
   prefix?: string;
   shortcut?: string;
 }
 
-export const MAIN_NAV: readonly NavItem[] = [
-  {
-    key: "board",
-    href: "/board",
-    icon: Kanban,
-    shortcut: "B",
-    primary: true,
-    prefix: "/applications",
-  },
-  {
-    key: "inbox",
-    href: "/inbox",
-    icon: Inbox,
-    shortcut: "I",
-    count: "inbox_new",
-    primary: true,
-    prefix: "/jobs",
-  },
-  {
-    key: "approvals",
-    href: "/automation",
-    icon: CircleCheck,
-    shortcut: "A",
-    count: "approvals_pending",
-  },
-  {
-    key: "runs",
-    href: "/automation/runs",
-    icon: ListChecks,
-    shortcut: "R",
-    count: "tasks_live",
-  },
-  { key: "sources", href: "/sources", icon: Rss },
-  { key: "stats", href: "/stats", icon: BarChart3, primary: true },
-];
-
-export const ACCOUNT_NAV: readonly NavItem[] = [
-  { key: "cli", href: "/cli", icon: Terminal },
-  { key: "profile", href: "/profile", icon: UserRound },
-  { key: "settings", href: "/settings", icon: Settings },
-];
-
-/** The nav band's links: Board, Inbox, Automation, Stats (12 §2.1). */
-export const BAND_LINKS: readonly {
+export interface NavGroup {
+  items: readonly NavItem[];
+  /** i18n key under `nav.group.` */
   key: string;
-  href: string;
-  prefix: string;
-}[] = [
-  { key: "board", href: "/board", prefix: "/applications" },
-  { key: "inbox", href: "/inbox", prefix: "/jobs" },
-  { key: "automation", href: "/automation", prefix: "/automation" },
-  { key: "stats", href: "/stats", prefix: "/stats" },
+}
+
+export const NAV_GROUPS: readonly NavGroup[] = [
+  {
+    key: "track",
+    items: [
+      {
+        key: "board",
+        href: "/board",
+        icon: Kanban,
+        shortcut: "B",
+        prefix: "/applications",
+      },
+      {
+        key: "inbox",
+        href: "/inbox",
+        icon: Inbox,
+        shortcut: "I",
+        count: "inbox_new",
+        prefix: "/jobs",
+      },
+      { key: "stats", href: "/stats", icon: BarChart3 },
+    ],
+  },
+  {
+    key: "automate",
+    items: [
+      {
+        key: "approvals",
+        href: "/automation",
+        icon: CircleCheck,
+        shortcut: "A",
+        count: "approvals_pending",
+        prefix: "/automation/rules",
+      },
+      {
+        key: "runs",
+        href: "/automation/runs",
+        icon: ListChecks,
+        shortcut: "R",
+        count: "tasks_live",
+      },
+      { key: "sources", href: "/sources", icon: Rss },
+    ],
+  },
+  {
+    key: "setup",
+    items: [
+      { key: "cli", href: "/cli", icon: Terminal },
+      { key: "profile", href: "/profile", icon: UserRound },
+      { key: "settings", href: "/settings", icon: Settings },
+    ],
+  },
 ];
 
 export function isCurrent(
   pathname: string,
   item: Pick<NavItem, "href" | "prefix">
 ): boolean {
-  if (item.href === "/automation" && item.prefix === undefined) {
-    return pathname === "/automation" || pathname === "/automation/";
+  if (item.href === "/automation") {
+    return (
+      pathname === "/automation" ||
+      pathname === "/automation/" ||
+      (item.prefix !== undefined && pathname.startsWith(item.prefix))
+    );
   }
   return (
     pathname === item.href ||
@@ -98,3 +105,8 @@ export function isCurrent(
     (item.prefix !== undefined && pathname.startsWith(item.prefix))
   );
 }
+
+/** Every section in sidebar order (the ⌘K palette and the tests). */
+export const NAV_ITEMS: readonly NavItem[] = NAV_GROUPS.flatMap(
+  (group) => group.items
+);

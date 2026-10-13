@@ -10,7 +10,7 @@ import type {
 } from "@pilihpendidikan/jobs-contracts/records";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -52,6 +52,7 @@ import {
 } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
 import { ANY_DEVICE, runNowTask } from "@/lib/sources-model";
+import { PageGutter } from "@/components/shell/page";
 
 /** Recent activity lists at most this many runs (12 §7). */
 export const RECENT_TASKS = 20;
@@ -412,7 +413,7 @@ export function ActivityBand({
   const { t } = useTranslation();
   return (
     <Band>
-      <Rail className="flex flex-col gap-6 px-4 py-6 sm:px-8" nodes={false}>
+      <PageGutter className="flex flex-col gap-6 py-6">
         <h2 className="type-subtitle weight-semibold">
           {t("cliPage.activity.title")}
         </h2>
@@ -449,7 +450,7 @@ export function ActivityBand({
           </h3>
           <OutboxWarnings devices={devices} nowMs={nowMs} />
         </section>
-      </Rail>
+      </PageGutter>
     </Band>
   );
 }

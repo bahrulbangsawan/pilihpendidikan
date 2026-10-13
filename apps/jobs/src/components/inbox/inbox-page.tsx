@@ -31,6 +31,7 @@ import {
   useInboxSources,
 } from "@/hooks/use-inbox";
 import { PHONE_QUERY, useMediaQuery } from "@/hooks/use-media-query";
+import { PageHeader } from "@/components/shell/page";
 import { useTranslation } from "@/i18n";
 import { bulkFailedOutright, bulkToastText } from "@/lib/inbox-bulk";
 import type { InboxSearch } from "@/lib/inbox-filters";
@@ -90,7 +91,7 @@ function isPlainClick(event: MouseEvent | undefined): boolean {
 
 function InboxSkeleton() {
   return (
-    <div aria-hidden="true" className="flex flex-col gap-2 px-4 py-4 sm:px-5">
+    <div aria-hidden="true" className="flex flex-col gap-2 px-4 py-4 sm:px-6">
       {["a", "b", "c", "d", "e", "f"].map((key) => (
         <Skeleton className="h-9 w-full" key={key} />
       ))}
@@ -396,6 +397,11 @@ export function InboxPage({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      <PageHeader
+        description={t("inbox.intro")}
+        title={t("pages.inbox")}
+        wide
+      />
       <InboxToolbar
         newCount={newCount}
         onSearchChange={(patch) => onSearchChange({ ...search, ...patch })}

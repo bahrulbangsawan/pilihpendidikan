@@ -18,7 +18,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { CircleAlert, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,6 +32,7 @@ import { RunsTable } from "./runs-table";
 import type { SheetTarget } from "./source-sheet";
 import { SourceSheet } from "./source-sheet";
 import { SourcesTable } from "./sources-table";
+import { PageGutter, PageHeader } from "@/components/shell/page";
 
 const TICK_MS = 30_000;
 
@@ -98,27 +99,20 @@ export function SourcesPage() {
 
   return (
     <div className="flex flex-col">
-      <Band>
-        <Rail
-          className="flex flex-wrap items-end gap-3 px-4 py-6 sm:px-8"
-          nodes={false}
-        >
-          <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <h1 className="type-title">{t("sources.title")}</h1>
-            <p className="type-caption max-w-2xl text-muted-foreground">
-              {t("sources.intro")}
-            </p>
-          </div>
-          {list.length > 0 ? (
+      <PageHeader
+        actions={
+          list.length > 0 ? (
             <Button onClick={openAdd} size="sm" variant="outline">
               <Plus aria-hidden="true" data-icon="inline-start" />
               {t("sources.add")}
             </Button>
-          ) : null}
-        </Rail>
-      </Band>
+          ) : null
+        }
+        description={t("sources.intro")}
+        title={t("sources.title")}
+      />
       <Band>
-        <Rail className="flex flex-col gap-3 px-4 py-6 sm:px-8" nodes={false}>
+        <PageGutter className="flex flex-col gap-3 py-6">
           <h2 className="type-subtitle weight-semibold">
             {t("sources.listTitle")}
           </h2>
@@ -152,10 +146,10 @@ export function SourcesPage() {
               sources={list}
             />
           ) : null}
-        </Rail>
+        </PageGutter>
       </Band>
       <Band id="runs">
-        <Rail className="flex flex-col gap-3 px-4 py-6 sm:px-8" nodes={false}>
+        <PageGutter className="flex flex-col gap-3 py-6">
           <h2 className="type-subtitle weight-semibold">
             {t("sources.runs.title")}
           </h2>
@@ -168,7 +162,7 @@ export function SourcesPage() {
           {runs.isSuccess ? (
             <RunsTable byId={byId} nowMs={nowMs} runs={runs.data} />
           ) : null}
-        </Rail>
+        </PageGutter>
       </Band>
       <SourceSheet
         excluded={registry.excluded}

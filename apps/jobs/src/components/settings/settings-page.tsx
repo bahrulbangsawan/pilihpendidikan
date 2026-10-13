@@ -35,7 +35,7 @@ import {
   FieldLabel,
 } from "@rulisme/ui/ui/field";
 import { Input } from "@rulisme/ui/ui/input";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -48,7 +48,6 @@ import { Switch } from "@rulisme/ui/ui/switch";
 import { useQueryClient } from "@tanstack/react-query";
 import { Download, LogOut, Trash2 } from "lucide-react";
 import { useTheme } from "next-themes";
-import type { ReactNode } from "react";
 import { useEffect, useId, useState } from "react";
 import { toast } from "sonner";
 import type { SessionState } from "@/functions/session.functions";
@@ -61,6 +60,7 @@ import { api } from "@/lib/api-client";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { modeLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
+import { PageGutter, PageHeader, PageSection } from "@/components/shell/page";
 
 type SettingsPatch = Omit<UpdateSettingsRequest, "base_revision">;
 
@@ -77,40 +77,7 @@ const SETTINGS_FIELDS = [
   "evidence_retention_days",
 ] as const;
 
-function Section({
-  id,
-  title,
-  description,
-  children,
-}: {
-  id: string;
-  title: string;
-  description?: string;
-  children: ReactNode;
-}) {
-  return (
-    <Band asChild>
-      <section aria-labelledby={id}>
-        <Rail
-          className="grid gap-4 px-4 py-6 sm:px-8 md:grid-cols-[240px_1fr]"
-          nodes={false}
-        >
-          <div className="flex flex-col gap-1">
-            <h2 className="type-subtitle weight-semibold" id={id}>
-              {title}
-            </h2>
-            {description ? (
-              <p className="type-caption text-muted-foreground">
-                {description}
-              </p>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-5">{children}</div>
-        </Rail>
-      </section>
-    </Band>
-  );
-}
+const Section = PageSection;
 
 function SwitchRow({
   id,
@@ -176,7 +143,7 @@ function DangerZone() {
   return (
     <Band asChild>
       <section aria-labelledby="danger-heading">
-        <Rail className="px-4 py-6 sm:px-8" nodes={false}>
+        <PageGutter className="py-6">
           <div className="flex flex-col gap-4 border border-destructive/25 p-4">
             <h2 className="type-subtitle weight-semibold" id="danger-heading">
               {t("settings.dangerTitle")}
@@ -263,7 +230,7 @@ function DangerZone() {
               </AlertDialog>
             </div>
           </div>
-        </Rail>
+        </PageGutter>
       </section>
     </Band>
   );
@@ -328,14 +295,10 @@ export function SettingsPage() {
 
   return (
     <div className="flex flex-col">
-      <Band>
-        <Rail className="flex flex-col gap-1 px-4 py-6 sm:px-8" nodes={false}>
-          <h1 className="type-title">{t("settings.title")}</h1>
-          <p className="type-caption text-muted-foreground">
-            {t("settings.intro")}
-          </p>
-        </Rail>
-      </Band>
+      <PageHeader
+        description={t("settings.intro")}
+        title={t("settings.title")}
+      />
       <Section id="account-heading" title={t("settings.account")}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-col">
@@ -554,7 +517,7 @@ export function SettingsPage() {
         </>
       ) : (
         <Band>
-          <Rail className="px-4 py-6 sm:px-8" nodes={false}>
+          <PageGutter className="py-6">
             {settings.isError ? (
               <p className="type-body text-destructive">
                 {t("settings.loadFailed")}
@@ -562,7 +525,7 @@ export function SettingsPage() {
             ) : (
               <Skeleton className="h-40 w-full" />
             )}
-          </Rail>
+          </PageGutter>
         </Band>
       )}
       <DangerZone />

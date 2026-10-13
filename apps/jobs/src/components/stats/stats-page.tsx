@@ -21,7 +21,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { BarChart3, CircleAlert } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -49,6 +49,7 @@ import {
   TimingSection,
   UnconfirmedCallout,
 } from "./stats-sections";
+import { PageGutter, PageHeader } from "@/components/shell/page";
 
 const DEFAULT_METRIC: SeriesMetric = "applied";
 const DEFAULT_BREAKDOWN: AnalyticsBreakdown = "source";
@@ -184,45 +185,33 @@ export function StatsPage({
 
   return (
     <div className="flex flex-col">
-      <Band>
-        <Rail
-          className="flex flex-col gap-4 px-4 py-6 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:px-8"
-          nodes={false}
-        >
-          <div className="flex min-w-0 flex-col gap-1">
-            <h1 className="type-title">{t("pages.stats")}</h1>
-            <p className="type-caption max-w-xl text-muted-foreground">
-              {t("stats.intro")}
-            </p>
-          </div>
+      <PageHeader
+        actions={
           <RangePicker
             onChange={(next) => update(next)}
             range={range}
             today={today}
           />
-        </Rail>
-      </Band>
+        }
+        description={t("stats.intro")}
+        title={t("pages.stats")}
+      />
       {summary.data && !isEmptySummary(summary.data) ? (
         <Band>
-          <Rail nodes={false}>
-            <StatCells summary={summary.data} />
-          </Rail>
+          <StatCells summary={summary.data} />
         </Band>
       ) : null}
       {summary.isPending ? (
         <Band>
-          <Rail nodes={false}>
-            <StatCellsSkeleton />
-          </Rail>
+          <StatCellsSkeleton />
         </Band>
       ) : null}
-      <Rail
+      <PageGutter
         aria-busy={summary.isPending}
-        className="flex min-w-0 flex-col gap-6 px-4 py-6 sm:px-8"
-        nodes={false}
+        className="flex min-w-0 flex-col gap-6 py-6"
       >
         {content}
-      </Rail>
+      </PageGutter>
     </div>
   );
 }

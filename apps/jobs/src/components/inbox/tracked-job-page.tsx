@@ -15,7 +15,7 @@ import {
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, CircleAlert, ExternalLink, X } from "lucide-react";
@@ -36,6 +36,7 @@ import { queryKeys } from "@/lib/query";
 import { safeHref } from "@/lib/safe-url";
 import { DuplicateListings, ProvenanceFacts } from "./inbox-row-details";
 import { ScoreBreakdown } from "./score-breakdown";
+import { PageGutter } from "@/components/shell/page";
 
 export type NavigateTo = (
   href: string,
@@ -64,7 +65,7 @@ export function salaryText(
 
 function JobSkeleton() {
   return (
-    <div aria-hidden="true" className="flex flex-col gap-3 px-4 py-6 sm:px-8">
+    <div aria-hidden="true" className="flex flex-col gap-3 px-4 py-6 sm:px-6">
       <Skeleton className="h-4 w-32" />
       <Skeleton className="h-7 w-96 max-w-full" />
       <Skeleton className="h-4 w-72 max-w-full" />
@@ -108,7 +109,7 @@ export function TrackedJobView({
   return (
     <div className="flex flex-col">
       <Band>
-        <Rail className="flex flex-col gap-3 px-4 py-6 sm:px-8" nodes={false}>
+        <PageGutter className="flex flex-col gap-3 py-6">
           <a
             className="type-caption inline-flex w-fit items-center gap-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
             href="/inbox"
@@ -175,12 +176,9 @@ export function TrackedJobView({
               {t("trackedJob.dismissedHelp")}
             </p>
           ) : null}
-        </Rail>
+        </PageGutter>
       </Band>
-      <Rail
-        className="grid gap-8 px-4 py-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_20rem]"
-        nodes={false}
-      >
+      <PageGutter className="grid gap-8 py-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="flex min-w-0 flex-col gap-8">
           <section
             aria-labelledby="job-description-heading"
@@ -291,7 +289,7 @@ export function TrackedJobView({
             <DuplicateListings duplicates={0} posting={posting} />
           </section>
         </aside>
-      </Rail>
+      </PageGutter>
     </div>
   );
 }

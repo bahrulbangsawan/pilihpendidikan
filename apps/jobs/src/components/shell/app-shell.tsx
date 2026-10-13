@@ -18,7 +18,7 @@ import { useTranslation } from "@/i18n";
 import { POLL_POLICIES } from "@/lib/polling";
 import { NAV_SHORTCUTS } from "@/lib/shortcuts";
 import { CommandPalette } from "./command-palette";
-import { NavBand } from "./nav-band";
+import { NavBand, SIDEBAR_WIDTH_CLASS } from "./nav-band";
 import { NewJobDialog } from "./new-job-dialog";
 import { ShellActionsProvider } from "./shell-context";
 import { ShortcutSheet } from "./shortcut-sheet";
@@ -120,7 +120,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           onPalette={actions.openPalette}
         />
         <div className="flex min-h-0 flex-1">
-          <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-52 shrink-0 border-line border-r bg-sidebar md:block">
+          <aside
+            className={`sticky top-14 hidden h-[calc(100dvh-3.5rem)] shrink-0 border-line border-r bg-background md:block ${SIDEBAR_WIDTH_CLASS}`}
+          >
             <SidebarNav counts={counts} />
           </aside>
           <main
@@ -132,7 +134,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </main>
         </div>
         <Sheet onOpenChange={setMenuOpen} open={menuOpen}>
-          <SheetContent className="w-64 p-0" side="left">
+          <SheetContent className="w-64 bg-background p-0" side="left">
             <SheetHeader className="sr-only">
               <SheetTitle>{t("nav.menuTitle")}</SheetTitle>
               <SheetDescription>{t("nav.menuDescription")}</SheetDescription>

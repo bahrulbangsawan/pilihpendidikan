@@ -1,12 +1,12 @@
 // Profile (12 §9): Facts, Answers, CVs — what the agent may use when it fills
 // a form, and where each value came from.
 
-import { Band, Rail } from "@rulisme/ui/ui/rails";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rulisme/ui/ui/tabs";
 import { useTranslation } from "@/i18n";
 import { AnswersTab } from "./answers-tab";
 import { CvsTab } from "./cvs-tab";
 import { FactsTab } from "./facts-tab";
+import { PageGutter, PageHeader } from "@/components/shell/page";
 
 export type ProfileTab = "facts" | "answers" | "cvs";
 
@@ -20,24 +20,13 @@ export function ProfilePage({
   const { t } = useTranslation();
   return (
     <div className="flex flex-col">
-      <Band>
-        <Rail className="flex flex-col gap-1 px-4 py-6 sm:px-8" nodes={false}>
-          <h1 className="type-title">{t("profile.title")}</h1>
-          <p className="type-caption max-w-2xl text-muted-foreground">
-            {t("profile.intro")}
-          </p>
-        </Rail>
-      </Band>
       <Tabs
         className="gap-0"
         onValueChange={(value) => onTabChange(value as ProfileTab)}
         value={tab}
       >
-        <Band>
-          <Rail
-            className="no-scrollbar overflow-x-auto px-4 sm:px-8"
-            nodes={false}
-          >
+        <PageHeader description={t("profile.intro")} title={t("profile.title")}>
+          <div className="no-scrollbar -mb-px overflow-x-auto">
             <TabsList
               aria-label={t("profile.tabsLabel")}
               className="border-b-0"
@@ -49,9 +38,9 @@ export function ProfilePage({
               </TabsTrigger>
               <TabsTrigger value="cvs">{t("profile.tabs.cvs")}</TabsTrigger>
             </TabsList>
-          </Rail>
-        </Band>
-        <Rail className="px-4 py-6 sm:px-8" nodes={false}>
+          </div>
+        </PageHeader>
+        <PageGutter className="py-6">
           <TabsContent value="facts">
             <FactsTab />
           </TabsContent>
@@ -61,7 +50,7 @@ export function ProfilePage({
           <TabsContent value="cvs">
             <CvsTab />
           </TabsContent>
-        </Rail>
+        </PageGutter>
       </Tabs>
     </div>
   );

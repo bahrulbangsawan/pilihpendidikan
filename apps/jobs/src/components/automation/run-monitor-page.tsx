@@ -375,7 +375,7 @@ function Header({
       : t("monitor.deviceOffline", { device: data.deviceName });
   }
   return (
-    <div className="band flex flex-col gap-1 px-4 py-3 sm:px-5">
+    <div className="band flex flex-col gap-1 px-4 py-3 sm:px-6">
       <div className="flex flex-wrap items-center gap-2">
         <h1 className="type-title-compact">{heading}</h1>
         <TaskStateBadge state={task.state} />
@@ -678,7 +678,7 @@ function Monitor({
       <Header data={data} task={task} />
       {stale ? (
         <p
-          className="type-caption band inline-flex items-center gap-1 px-4 py-1.5 text-muted-foreground sm:px-5"
+          className="type-caption band inline-flex items-center gap-1 px-4 py-1.5 text-muted-foreground sm:px-6"
           role="status"
         >
           <CloudOff aria-hidden="true" className="size-3.5" />

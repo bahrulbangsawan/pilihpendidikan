@@ -15,7 +15,7 @@ import {
   CollapsibleTrigger,
 } from "@rulisme/ui/ui/collapsible";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rulisme/ui/ui/tabs";
 import { Check, ChevronDown, Copy, ExternalLink } from "lucide-react";
@@ -35,6 +35,7 @@ import { detectPlatform } from "@/lib/devices-model";
 import { platformLabel } from "@/lib/labels";
 import { safeHref } from "@/lib/safe-url";
 import { translateOr } from "@/lib/sources-model";
+import { PageGutter } from "@/components/shell/page";
 
 const COPIED_MS = 1500;
 
@@ -525,7 +526,7 @@ export function ConnectBand({
 
   return (
     <Band>
-      <Rail className="flex flex-col gap-5 px-4 py-6 sm:px-8" nodes={false}>
+      <PageGutter className="flex flex-col gap-5 py-6">
         <Collapsible onOpenChange={setOpen} open={open}>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -570,7 +571,7 @@ export function ConnectBand({
             </section>
           </CollapsibleContent>
         </Collapsible>
-      </Rail>
+      </PageGutter>
     </Band>
   );
 }

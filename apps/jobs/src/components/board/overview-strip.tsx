@@ -33,7 +33,7 @@ function Stat({
   hint?: string;
 }) {
   return (
-    <div className="flex min-w-0 flex-col gap-0.5 border-line border-r border-b px-4 py-2 even:border-r-0 sm:border-b-0 sm:px-5 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0">
+    <div className="flex min-w-0 flex-col gap-0.5 border-line border-r border-b px-4 py-2 even:border-r-0 sm:border-b-0 sm:px-6 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0">
       <dt className="type-caption truncate text-muted-foreground">{label}</dt>
       <dd className="type-title-compact text-foreground tabular-nums">
         {value}

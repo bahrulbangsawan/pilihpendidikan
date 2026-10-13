@@ -30,7 +30,7 @@ export function SelectionBar({
   return (
     <section
       aria-label={t("inbox.selection.label")}
-      className="sticky bottom-0 z-10 flex flex-wrap items-center gap-2 border-line border-t bg-background px-4 py-2 sm:px-5"
+      className="sticky bottom-0 z-10 flex flex-wrap items-center gap-2 border-line border-t bg-background px-4 py-2 sm:px-6"
     >
       <p
         aria-live="polite"

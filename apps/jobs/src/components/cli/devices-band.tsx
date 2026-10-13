@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
+import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Switch } from "@rulisme/ui/ui/switch";
 import {
@@ -54,6 +54,7 @@ import { platformLabel, taskKindLabel, taskStateLabel } from "@/lib/labels";
 import { translateOr } from "@/lib/sources-model";
 import { useDeviceActions } from "./device-actions";
 import { RenameDialog, RevokeDialog } from "./device-dialogs";
+import { PageGutter } from "@/components/shell/page";
 
 /** "Device signed out — suspicious token reuse" (17 §7.2). */
 export function signedOutText(t: Translate, reason: string | null): string {
@@ -325,7 +326,7 @@ export function DevicesBand({
 
   return (
     <Band>
-      <Rail className="flex flex-col gap-3 px-4 py-6 sm:px-8" nodes={false}>
+      <PageGutter className="flex flex-col gap-3 py-6">
         <div className="flex items-baseline gap-2">
           <h2 className="type-subtitle weight-semibold" id="cli-devices">
             {t("devices.title")}
@@ -472,7 +473,7 @@ export function DevicesBand({
             />
           </div>
         ) : null}
-      </Rail>
+      </PageGutter>
       <RenameDialog
         device={renaming}
         onClose={() => setRenaming(null)}

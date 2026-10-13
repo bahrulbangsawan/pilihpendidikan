@@ -314,7 +314,7 @@ export function RulesPage() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-5">
+      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
         <p className="type-caption max-w-2xl text-muted-foreground">
           {t("rules.intro")}
         </p>
@@ -328,7 +328,7 @@ export function RulesPage() {
           {t("rules.new")}
         </Button>
       </div>
-      <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
+      <div className="flex flex-col gap-4 px-4 py-5 sm:px-6">
         {rules.isError && !rules.data ? (
           <Alert role="alert" variant="destructive">
             <CircleAlert aria-hidden="true" />

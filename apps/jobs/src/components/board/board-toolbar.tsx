@@ -59,8 +59,7 @@ export function BoardToolbar({
   ].filter(Boolean).length;
 
   return (
-    <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-5">
-      <h1 className="type-title-compact mr-2">{t("board.title")}</h1>
+    <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm" variant="ghost">

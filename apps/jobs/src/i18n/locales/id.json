@@ -26,7 +26,6 @@
     "search": "Cari",
     "new": "Baru",
     "home": "Pilih Jobs, buka papan",
-    "primary": "Utama",
     "sidebar": "Bagian",
     "skip": "Langsung ke konten",
     "openMenu": "Buka menu",
@@ -35,7 +34,13 @@
     "countLabel": "{count} menunggu",
     "devicesNone": "Tidak ada perangkat online",
     "devicesOne": "1 perangkat online",
-    "devicesMany": "{count} perangkat online"
+    "devicesMany": "{count} perangkat online",
+    "group": {
+      "track": "Lacak",
+      "automate": "Otomasi",
+      "setup": "Penyiapan"
+    },
+    "account": "Pengaturan akun untuk {email}"
   },
   "signIn": {
     "pageTitle": "Masuk",
@@ -371,7 +376,8 @@
       "ratesLater": "setelah 5 lamaran",
       "interviewsUpcoming": "Wawancara mendatang",
       "followUpsDue": "Tindak lanjut jatuh tempo"
-    }
+    },
+    "intro": "Semua lamaran per tahap. Seret kartu untuk memindahkannya."
   },
   "card": {
     "label": "{company}, {title}, di {stage}",
@@ -2341,7 +2347,8 @@
       "emptyTabTitle": "Belum ada apa-apa",
       "emptySeen": "Lowongan yang Anda tandai dilihat muncul di sini.",
       "emptyDismissed": "Lowongan yang Anda abaikan muncul di sini."
-    }
+    },
+    "intro": "Lowongan yang ditemukan CLI untukmu, paling cocok di atas."
   },
   "trackedJob": {
     "back": "Kotak masuk",

@@ -82,7 +82,7 @@ export function StatCells({ summary }: { summary: Summary }) {
     >
       {cells.map((cell) => (
         <div
-          className="flex min-w-0 flex-col gap-1 border-line border-r border-b px-4 py-4 even:border-r-0 sm:border-b-0 sm:px-5 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0"
+          className="flex min-w-0 flex-col gap-1 border-line border-r border-b px-4 py-4 even:border-r-0 sm:border-b-0 sm:px-6 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0"
           data-stat={cell.key}
           key={cell.key}
         >
@@ -105,7 +105,7 @@ export function StatCellsSkeleton() {
   return (
     <div aria-hidden="true" className="grid grid-cols-2 sm:grid-cols-4">
       {["a", "b", "c", "d"].map((key) => (
-        <div className="flex flex-col gap-2 px-4 py-4 sm:px-5" key={key}>
+        <div className="flex flex-col gap-2 px-4 py-4 sm:px-6" key={key}>
           <Skeleton className="h-3 w-24" />
           <Skeleton className="h-7 w-16" />
         </div>

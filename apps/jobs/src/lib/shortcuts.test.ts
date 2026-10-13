@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ACCOUNT_NAV, MAIN_NAV } from "@/components/shell/nav-items";
+import { NAV_ITEMS } from "@/components/shell/nav-items";
 import {
   CARD_KEYS,
   cardKeyAction,
@@ -90,7 +90,7 @@ describe("TW-SHORTCUTS keyboard shortcuts (12 §2.2, 06 §10)", () => {
   });
 
   it("TW-SHORTCUTS sidebar hints match the navigation shortcuts", () => {
-    for (const item of [...MAIN_NAV, ...ACCOUNT_NAV]) {
+    for (const item of NAV_ITEMS) {
       if (item.shortcut) {
         const key = item.shortcut.toLowerCase() as keyof typeof NAV_SHORTCUTS;
         expect(NAV_SHORTCUTS[key], item.key).toBe(item.href);

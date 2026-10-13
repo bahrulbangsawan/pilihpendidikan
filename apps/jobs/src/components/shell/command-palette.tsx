@@ -33,7 +33,7 @@ import { useTranslation } from "@/i18n";
 import { allCards, columnsFromBoard } from "@/lib/board-model";
 import { stageLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
-import { ACCOUNT_NAV, MAIN_NAV } from "./nav-items";
+import { NAV_ITEMS } from "./nav-items";
 
 /** Most applications the palette searches (the board cache). */
 const MAX_APPLICATIONS = 200;
@@ -152,7 +152,7 @@ export function CommandPalette({
           ) : null}
           <CommandSeparator />
           <CommandGroup heading={t("palette.goTo")}>
-            {[...MAIN_NAV, ...ACCOUNT_NAV].map((item) => (
+            {NAV_ITEMS.map((item) => (
               <CommandItem
                 key={item.key}
                 onSelect={() => run(() => navigate(item.href))}

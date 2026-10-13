@@ -67,7 +67,7 @@ export function ImportStrip({
   return (
     <section
       aria-label={t("inbox.strip.label")}
-      className="band flex flex-wrap items-center gap-x-3 gap-y-1 bg-pane/30 px-4 py-1.5 sm:px-5"
+      className="band flex flex-wrap items-center gap-x-3 gap-y-1 bg-pane/30 px-4 py-1.5 sm:px-6"
     >
       {activeRun ? (
         <p className="type-caption inline-flex items-center gap-1.5 text-foreground">

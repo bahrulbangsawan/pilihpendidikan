@@ -26,7 +26,6 @@
     "search": "Search",
     "new": "New",
     "home": "Pilih Jobs, go to the board",
-    "primary": "Main",
     "sidebar": "Sections",
     "skip": "Skip to content",
     "openMenu": "Open the menu",
@@ -35,7 +34,13 @@
     "countLabel": "{count} waiting",
     "devicesNone": "No devices online",
     "devicesOne": "1 device online",
-    "devicesMany": "{count} devices online"
+    "devicesMany": "{count} devices online",
+    "group": {
+      "track": "Track",
+      "automate": "Automate",
+      "setup": "Setup"
+    },
+    "account": "Account settings for {email}"
   },
   "signIn": {
     "pageTitle": "Sign in",
@@ -371,7 +376,8 @@
       "ratesLater": "after 5 applications",
       "interviewsUpcoming": "Interviews coming up",
       "followUpsDue": "Follow-ups due"
-    }
+    },
+    "intro": "Every application by stage. Drag a card to move it."
   },
   "card": {
     "label": "{company}, {title}, in {stage}",
@@ -2341,7 +2347,8 @@
       "emptyTabTitle": "Nothing here",
       "emptySeen": "Jobs you mark as seen show up here.",
       "emptyDismissed": "Jobs you dismiss show up here."
-    }
+    },
+    "intro": "Jobs the CLI found for you, best match first."
   },
   "trackedJob": {
     "back": "Inbox",

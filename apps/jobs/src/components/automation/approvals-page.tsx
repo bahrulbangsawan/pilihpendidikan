@@ -223,7 +223,7 @@ function ApprovalRow({
       <button
         aria-current={selected ? "true" : undefined}
         className={cn(
-          "flex w-full flex-col gap-0.5 border-line border-b px-4 py-2.5 text-left outline-none transition-[background-color] duration-150 ease-standard hover:bg-pane/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 sm:px-5",
+          "flex w-full flex-col gap-0.5 border-line border-b px-4 py-2.5 text-left outline-none transition-[background-color] duration-150 ease-standard hover:bg-pane/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 sm:px-6",
           selected && "bg-pane-2 hover:bg-pane-2"
         )}
         data-approval-id={approval.id}
@@ -434,7 +434,7 @@ function ApprovalDetail({
 
 function ListSkeleton() {
   return (
-    <div aria-hidden="true" className="flex flex-col gap-3 px-4 py-4 sm:px-5">
+    <div aria-hidden="true" className="flex flex-col gap-3 px-4 py-4 sm:px-6">
       <Skeleton className="h-10 w-full" />
       <Skeleton className="h-10 w-full" />
       <Skeleton className="h-10 w-full" />
@@ -596,7 +596,7 @@ function Toolbar({
 }) {
   const { locale, t } = useTranslation();
   return (
-    <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-5">
+    <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
       <ToggleGroup
         aria-label={t("approvals.viewLabel")}
         onValueChange={(value) => {
@@ -658,7 +658,7 @@ function EmptyQueue({ view }: { view: ApprovalView }) {
 function LoadError({ onRetry }: { onRetry: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="px-4 py-4 sm:px-5">
+    <div className="px-4 py-4 sm:px-6">
       <Alert role="alert" variant="destructive">
         <CircleAlert aria-hidden="true" />
         <AlertTitle>{t("approvals.loadErrorTitle")}</AlertTitle>

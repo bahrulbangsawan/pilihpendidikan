@@ -231,7 +231,7 @@ export function RunsPage({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-5">
+      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
         <label
           className="type-body-compact text-muted-foreground"
           htmlFor={`${id}-state`}
@@ -271,7 +271,7 @@ export function RunsPage({
           </p>
         ) : null}
       </div>
-      <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
+      <div className="flex flex-col gap-4 px-4 py-5 sm:px-6">
         {tasks.isError && !tasks.data ? (
           <Alert role="alert" variant="destructive">
             <CircleAlert aria-hidden="true" />

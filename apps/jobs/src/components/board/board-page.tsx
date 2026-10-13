@@ -30,6 +30,7 @@ import { useShellActions } from "@/components/shell/shell-context";
 import { useAnnouncer } from "@/hooks/use-announcer";
 import { useBoard } from "@/hooks/use-board";
 import { PHONE_QUERY, useMediaQuery } from "@/hooks/use-media-query";
+import { PageHeader } from "@/components/shell/page";
 import { useTranslation } from "@/i18n";
 import type {
   BoardColumns,
@@ -256,6 +257,11 @@ export function BoardPage({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      <PageHeader
+        description={t("board.intro")}
+        title={t("board.title")}
+        wide
+      />
       <BoardToolbar
         filters={filters}
         includeArchived={includeArchived}
@@ -276,7 +282,7 @@ export function BoardPage({
         nowMs={now}
       />
       {filtered && visible && order.length === 0 ? (
-        <div className="band flex items-center gap-3 px-4 py-2 sm:px-5">
+        <div className="band flex items-center gap-3 px-4 py-2 sm:px-6">
           <p className="type-caption text-muted-foreground">
             {t("board.noMatches")}
           </p>
