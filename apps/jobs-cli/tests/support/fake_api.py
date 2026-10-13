@@ -1149,7 +1149,11 @@ class FakeApi:
                 {
                     "user_job_id": ujb,
                     "status": "ok",
-                    "inbox_state": "dismissed" if req.body["action"] == "dismiss" else "seen",
+                    "inbox_state": {
+                        "dismiss": "dismissed",
+                        "track": "tracked",
+                        "restore": "seen",
+                    }.get(req.body["action"], "seen"),
                 }
                 for ujb in req.body["user_job_ids"]
             ]

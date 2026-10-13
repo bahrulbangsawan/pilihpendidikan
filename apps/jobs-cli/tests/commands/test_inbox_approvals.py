@@ -51,8 +51,12 @@ def test_TCMD_INBOX_track_and_dismiss_report_per_id(cli_cloud: Cli, cloud: Cloud
         "--json", "inbox", "track", ids[0], "--mode", "approval", "--stage", "ready"
     ).json["data"]
     assert created["results"][0]["application_id"].startswith("app_")
-    dismissed = cli_cloud("--json", "inbox", "dismiss", *ids).json["data"]["results"]
+    third = cloud.add_inbox_item()["user_job"]["id"]
+    dismissed = cli_cloud("--json", "inbox", "dismiss", third).json["data"]["results"]
     assert {r["inbox_state"] for r in dismissed} == {"dismissed"}
+    tracked = cli_cloud("--json", "inbox", "dismiss", *ids)  # tracked: archive the app instead
+    assert tracked.code == 6
+    assert {r["status"] for r in tracked.json["data"]["results"]} == {"conflict"}
 
 
 def test_TCMD_INBOX_dismissing_many_needs_confirmation_and_offline_queues(

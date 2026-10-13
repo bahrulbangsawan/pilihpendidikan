@@ -21,7 +21,7 @@ import time
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any, TextIO, cast
 
-from rich.console import Console
+from rich.console import Console, ConsoleOptions, RenderResult
 from rich.table import Table
 
 from pilih_jobs.errors import PilihError
@@ -189,12 +189,74 @@ def key_value_table(rows: Mapping[str, Any], *, title: str | None = None) -> Tab
     return table
 
 
-def items_table(items: Sequence[Mapping[str, Any]], columns: Sequence[str] | None = None) -> Table:
+def is_id_column(name: str) -> bool:
+    return name == "id" or name.endswith("_id")
+
+
+# A wrapping column never gets narrower than this (or its header), so text stays readable.
+_MIN_TEXT_WIDTH = 12
+_COLUMN_GAP = 1
+
+
+class FitTable:
+    """A borderless table sized to the console at print time.
+
+    Id columns are never truncated or wrapped (users copy them into the multi-id
+    commands). Every other column keeps a readable minimum width and wraps; when the
+    columns still do not fit, the rightmost ones are left out and named in a note
+    (`--json` always has every field).
+    """
+
+    def __init__(self, items: Sequence[Mapping[str, Any]], columns: Sequence[str]) -> None:
+        self.columns = list(columns)
+        self.rows = [[_scalar(item.get(c)) for c in self.columns] for item in items]
+
+    @property
+    def row_count(self) -> int:
+        return len(self.rows)
+
+    def _longest(self, index: int) -> int:
+        return max([len(self.columns[index]), *(len(row[index]) for row in self.rows)])
+
+    def _min_width(self, index: int) -> int:
+        longest = self._longest(index)
+        if is_id_column(self.columns[index]):
+            return longest
+        return min(longest, max(_MIN_TEXT_WIDTH, len(self.columns[index])))
+
+    def fitted(self, max_width: int) -> tuple[Table, list[str]]:
+        keep: list[int] = []
+        used = 0
+        for index in range(len(self.columns)):
+            need = self._min_width(index) + (_COLUMN_GAP if keep else 0)
+            if keep and used + need > max_width:
+                break
+            keep.append(index)
+            used += need
+        table = Table(box=None, pad_edge=False, header_style="bold")
+        for index in keep:
+            name = self.columns[index]
+            if is_id_column(name):
+                table.add_column(name, no_wrap=True, min_width=self._longest(index))
+            else:
+                table.add_column(name, overflow="fold", min_width=self._min_width(index))
+        for row in self.rows:
+            table.add_row(*(row[index] for index in keep))
+        return table, self.columns[len(keep) :]
+
+    def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+        table, hidden = self.fitted(options.max_width)
+        yield table
+        if hidden:
+            yield f"(not shown at this width: {', '.join(hidden)}; use --json for every field)"
+
+
+def items_table(
+    items: Sequence[Mapping[str, Any]], columns: Sequence[str] | None = None
+) -> FitTable:
+    """A borderless table that fits the console (see `FitTable`)."""
     cols = list(columns or (items[0].keys() if items else []))
-    table = Table(*cols, box=None, pad_edge=False, header_style="bold")
-    for item in items:
-        table.add_row(*(_scalar(item.get(c)) for c in cols))
-    return table
+    return FitTable(items, cols)
 
 
 def render_value(console: Console, data: Any) -> None:

@@ -13,6 +13,15 @@ import {
   CV_TEMPLATES,
   STAGES,
 } from "@pilihpendidikan/jobs-contracts/enums";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@rulisme/ui/ui/alert-dialog";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import {
@@ -30,7 +39,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
-import { Field, FieldLabel } from "@rulisme/ui/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@rulisme/ui/ui/field";
+import { Input } from "@rulisme/ui/ui/input";
 import {
   Select,
   SelectContent,
@@ -49,9 +59,12 @@ import { api } from "@/lib/api-client";
 import { canMoveTo, hasLiveTask } from "@/lib/board-move";
 import type { BulkItemResult } from "@/lib/bulk";
 import {
+  autoModeAllowed,
   BULK_CV_LIMIT,
   BulkSkip,
+  bulkArchiveTarget,
   bulkMoveSkip,
+  bulkPurgeBlock,
   runBulk,
   summarizeBulk,
 } from "@/lib/bulk";
@@ -86,6 +99,7 @@ export function BulkBar({
   const queryClient = useQueryClient();
   const [busy, setBusy] = useState(false);
   const [cvOpen, setCvOpen] = useState(false);
+  const [purgeOpen, setPurgeOpen] = useState(false);
 
   async function run(
     action: string,
@@ -110,6 +124,7 @@ export function BulkBar({
       (summary.failed + summary.conflict > 0 ? toast.warning : toast.success)(
         message,
         {
+          description: action,
           action: { label: t("bulk.details"), onClick: () => onReport(report) },
         }
       );
@@ -124,9 +139,39 @@ export function BulkBar({
 
   function patchAll(action: string, body: PatchBody) {
     return run(action, selected, async (card) => {
+      // A PATCH that changes nothing would still bump the revision and add a
+      // timeline event: report it as already done instead.
+      if (patchIsNoOp(card, body)) {
+        throw new BulkSkip("unchanged", t("bulk.unchanged"));
+      }
       const { application } = await api("PATCH /api/v1/applications/{app_id}", {
         params: { app_id: card.id },
         body: { ...body, base_revision: card.revision },
+        idempotencyKey: newIdempotencyKey(),
+      });
+      commitApplicationToBoard(queryClient, application);
+    });
+  }
+
+  /**
+   * `auto` only where an enabled auto rule matched (06 §9): each card's
+   * application is read first (the board card lacks the rule) and the PATCH
+   * uses that fresh revision; the others are skipped with the reason.
+   */
+  function setAutoMode() {
+    return run(t("bulk.mode"), selected, async (card) => {
+      if (card.mode === "auto") {
+        throw new BulkSkip("unchanged", t("bulk.unchanged"));
+      }
+      const detail = await api("GET /api/v1/applications/{app_id}", {
+        params: { app_id: card.id },
+      });
+      if (!autoModeAllowed(detail.application)) {
+        throw new BulkSkip("no_auto_rule", t("bulk.autoNeedsRule"));
+      }
+      const { application } = await api("PATCH /api/v1/applications/{app_id}", {
+        params: { app_id: card.id },
+        body: { mode: "auto", base_revision: detail.application.revision },
         idempotencyKey: newIdempotencyKey(),
       });
       commitApplicationToBoard(queryClient, application);
@@ -187,6 +232,9 @@ export function BulkBar({
       if (card.mode === "manual") {
         throw new BulkSkip("manual_mode", t("bulk.manualMode"));
       }
+      if (hasLiveTask(card)) {
+        throw new BulkSkip("live_task", t("bulk.alreadyRunning"));
+      }
       const key = newIdempotencyKey();
       await api("POST /api/v1/tasks", {
         body: {
@@ -215,10 +263,33 @@ export function BulkBar({
     });
   }
 
+  function purgeAll() {
+    setPurgeOpen(false);
+    return run(t("bulk.purge"), selected, async (card) => {
+      const block = bulkPurgeBlock(card);
+      if (block === "submission_in_flight") {
+        throw new BulkSkip(block, t("bulk.purgeSubmission"));
+      }
+      if (block === "live_task") {
+        throw new BulkSkip(block, t("bulk.purgeLiveTask"));
+      }
+      await api("DELETE /api/v1/applications/{app_id}", {
+        params: { app_id: card.id },
+        query: { purge: "1", base_revision: card.revision },
+        idempotencyKey: newIdempotencyKey(),
+      });
+      queryClient.removeQueries({ queryKey: queryKeys.application(card.id) });
+    });
+  }
+
   if (selected.length === 0) {
     return null;
   }
-  const allArchived = selected.every((card) => card.archived);
+  const archiveTarget = bulkArchiveTarget(selected);
+  const archiveLabel = archiveTarget ? t("bulk.archive") : t("bulk.unarchive");
+  const purgeBlocked = selected.filter(
+    (card) => bulkPurgeBlock(card) !== null
+  ).length;
   return (
     <div
       aria-label={t("bulk.toolbar")}
@@ -256,15 +327,11 @@ export function BulkBar({
       </DropdownMenu>
       <Button
         disabled={busy}
-        onClick={() =>
-          patchAll(allArchived ? t("bulk.unarchive") : t("bulk.archive"), {
-            archived: !allArchived,
-          })
-        }
+        onClick={() => patchAll(archiveLabel, { archived: archiveTarget })}
         size="sm"
         variant="outline"
       >
-        {allArchived ? t("bulk.unarchive") : t("bulk.archive")}
+        {archiveLabel}
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -315,9 +382,15 @@ export function BulkBar({
           {APPLICATION_MODES.map((mode) => (
             <DropdownMenuItem
               key={mode}
-              onSelect={() => patchAll(t("bulk.mode"), { mode })}
+              onSelect={() =>
+                mode === "auto"
+                  ? setAutoMode()
+                  : patchAll(t("bulk.mode"), { mode })
+              }
             >
-              {t("bulk.setMode", { mode: modeLabel(t, mode) })}
+              {mode === "auto"
+                ? t("bulk.setModeAuto")
+                : t("bulk.setMode", { mode: modeLabel(t, mode) })}
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />
@@ -329,6 +402,13 @@ export function BulkBar({
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={queueApply}>
             {t("bulk.queueApply")}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onSelect={() => setPurgeOpen(true)}
+            variant="destructive"
+          >
+            {t("bulk.purgeMenu")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -342,7 +422,94 @@ export function BulkBar({
         onOpenChange={setCvOpen}
         open={cvOpen}
       />
+      <PurgeDialog
+        blocked={purgeBlocked}
+        count={selected.length - purgeBlocked}
+        onConfirm={purgeAll}
+        onOpenChange={setPurgeOpen}
+        open={purgeOpen}
+      />
     </div>
+  );
+}
+
+function patchIsNoOp(card: BoardCard, body: PatchBody): boolean {
+  return Object.entries(body).every(
+    ([key, value]) => card[key as keyof PatchBody] === value
+  );
+}
+
+/**
+ * Bulk permanent delete (06 §11): the same `DELETE …?purge=1` as the detail
+ * page, behind the same typed confirmation word.
+ */
+function PurgeDialog({
+  open,
+  onOpenChange,
+  onConfirm,
+  count,
+  blocked,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onConfirm: () => void;
+  count: number;
+  blocked: number;
+}) {
+  const { t } = useTranslation();
+  const id = useId();
+  const [confirmText, setConfirmText] = useState("");
+  const confirmWord = t("detail.purgeWord");
+  const confirmed =
+    confirmText.trim().toLocaleLowerCase() === confirmWord.toLocaleLowerCase();
+  return (
+    <AlertDialog
+      onOpenChange={(next) => {
+        onOpenChange(next);
+        setConfirmText("");
+      }}
+      open={open}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t("bulk.purgeTitle", { count })}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("detail.purgeBody")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        {blocked > 0 ? (
+          <p className="type-caption text-muted-foreground">
+            {t("bulk.purgeBlocked", { count: blocked })}
+          </p>
+        ) : null}
+        <Field>
+          <FieldLabel htmlFor={`${id}-confirm`}>
+            {t("detail.purgeConfirm", { word: confirmWord })}
+          </FieldLabel>
+          <Input
+            autoComplete="off"
+            className="field-touch"
+            id={`${id}-confirm`}
+            onChange={(event) => setConfirmText(event.target.value)}
+            value={confirmText}
+          />
+          <FieldDescription>{t("detail.purgeHelp")}</FieldDescription>
+        </Field>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+          <Button
+            disabled={!confirmed || count === 0}
+            onClick={() => {
+              setConfirmText("");
+              onConfirm();
+            }}
+            variant="destructive"
+          >
+            {t("bulk.purgeAction", { count })}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

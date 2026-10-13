@@ -1,4 +1,7 @@
-"""`devices list / rename / revoke` (05 §3; needs the step-up scope `devices:manage`)."""
+"""`devices list / rename / revoke` (05 §3; needs the step-up scope `devices:manage`).
+
+`revoke` takes several ids (one confirmation, per-id results; this device goes last).
+"""
 
 from __future__ import annotations
 
@@ -7,6 +10,7 @@ from typing import Annotated, Any, cast
 import typer
 from rich.console import Console
 
+from pilih_jobs.cli.bulk import Outcome, check_ids, emit, ok, print_ids, run_each, summary
 from pilih_jobs.cli.context import state
 from pilih_jobs.cli.output import items_table
 from pilih_jobs.contracts.ids import is_id
@@ -51,11 +55,19 @@ def _check_id(device_id: str) -> None:
 
 
 @group.command("list")
-def list_cmd(ctx: typer.Context) -> None:
+def list_cmd(
+    ctx: typer.Context,
+    ids_only: Annotated[
+        bool, typer.Option("--ids", help="Print only the dev_… ids, one per line (for piping).")
+    ] = False,
+) -> None:
     """List devices with online/active status."""
     st = state(ctx)
     rt = st.runtime()
     items = st.run(_list(rt))
+    if ids_only:
+        print_ids(st, (d.get("id") for d in items))
+        return
     account = rt.account()
     current = account.device_id if account is not None else None
     for item in items:
@@ -106,24 +118,51 @@ async def _revoke(rt: Runtime, device_id: str) -> dict[str, Any]:
 
 @group.command("revoke")
 def revoke_cmd(
-    ctx: typer.Context, device_id: Annotated[str, typer.Argument(help="dev_… id")]
+    ctx: typer.Context,
+    device_ids: Annotated[list[str], typer.Argument(help="dev_… ids", metavar="DEV_ID...")],
 ) -> None:
-    """Revoke a device: signs it out and stops its running tasks."""
+    """Revoke devices: signs them out and stops their running tasks (one confirmation).
+
+    This device may be in the set (you are warned); it is revoked last so the others still go
+    through with this login.
+    """
     st = state(ctx)
-    _check_id(device_id)
+    values = check_ids("dev", device_ids, label="device id (dev_…)")
     rt = st.runtime()
     account = rt.account()
-    this_device = account is not None and account.device_id == device_id
-    question = (
-        f"Revoke {device_id}"
-        + (" (THIS device — you will be signed out)" if this_device else "")
-        + "? Running tasks stop; tasks past submit_intent are marked for review."
-    )
+    current = account.device_id if account is not None else None
+    this_device = current in values
+    if len(values) == 1:
+        question = (
+            f"Revoke {values[0]}"
+            + (" (THIS device — you will be signed out)" if this_device else "")
+            + "? Running tasks stop; tasks past submit_intent are marked for review."
+        )
+    else:
+        question = (
+            f"Revoke {len(values)} devices ({', '.join(values)})"
+            + (f" including THIS device {current} — you will be signed out" if this_device else "")
+            + "? Running tasks stop; tasks past submit_intent are marked for review."
+        )
     if not st.confirm(question):
-        st.out.result({"revoked": False})
+        if len(values) == 1:
+            st.out.result({"revoked": False})
+        else:
+            st.out.result({"results": [], "summary": summary([]), "cancelled": True})
         return
-    result = st.run(_revoke(rt, device_id))
-    st.out.result({"revoked": True, **result})
+    if len(values) == 1:
+        result = st.run(_revoke(rt, values[0]))
+        st.out.result({"revoked": True, **result})
+        return
+    order = [v for v in values if v != current] + ([current] if this_device and current else [])
+
+    async def one(device_id: str) -> Outcome:
+        result = await _revoke(rt, device_id)
+        tasks = cast(dict[str, Any], result.get("tasks") or {})
+        return ok(device_id, revoked=True, this_device=device_id == current, tasks=tasks)
+
+    done = {o.id: o for o in st.run(run_each(order, one))}
+    emit(st, [done[v] for v in values], columns=["id", "status", "revoked", "this_device"])
 
 
 def register(app: typer.Typer) -> None:

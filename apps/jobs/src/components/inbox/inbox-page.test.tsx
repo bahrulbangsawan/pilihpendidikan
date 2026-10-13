@@ -225,6 +225,77 @@ describe("TW-INBOX inbox screen (12 §4)", () => {
     ).toEqual({ action: "dismiss", user_job_ids: [items[0]?.user_job.id] });
   });
 
+  it("TW-INBOX the dismissed tab selects all and restores through inbox:bulk, with no Dismiss button", async () => {
+    const dismissed = [
+      makeInboxItem({
+        company: "Hooli",
+        title: "Platform Engineer",
+        score: 80,
+        inboxState: "dismissed",
+      }),
+      makeInboxItem({
+        company: "Pied Piper",
+        title: "Compression Engineer",
+        score: 70,
+        inboxState: "dismissed",
+      }),
+    ];
+    const requests = fakeApi(
+      handlers({
+        "GET /api/v1/inbox": () => ({ items: dismissed, next_cursor: null }),
+        "POST /api/v1/inbox:bulk": (request) => {
+          const body = request.body as InboxBulkRequest;
+          return {
+            results: body.user_job_ids.map((id) => ({
+              user_job_id: id,
+              status: "ok",
+              inbox_state: "seen",
+            })),
+          };
+        },
+      })
+    );
+    const { container } = renderWithQuery(
+      <InboxPage
+        onNavigate={vi.fn()}
+        onSearchChange={vi.fn()}
+        search={{ state: "dismissed" }}
+      />
+    );
+    await waitFor(
+      () => container.querySelectorAll("tr[data-row-id]").length === 2
+    );
+    const selectAll = container.querySelector<HTMLElement>(
+      "[aria-label='Select every row']"
+    );
+    await act(async () => {
+      selectAll?.click();
+      await Promise.resolve();
+    });
+    await waitFor(() => container.textContent?.includes("2 selected"));
+    const buttons = [...container.querySelectorAll("button")];
+    expect(buttons.some((button) => button.textContent === "DismissD")).toBe(
+      false
+    );
+    const restore = buttons.find((button) =>
+      button.textContent?.includes("Restore")
+    );
+    await act(async () => {
+      restore?.click();
+      await Promise.resolve();
+    });
+    await waitFor(() =>
+      requests.some((request) => request.route === "POST /api/v1/inbox:bulk")
+    );
+    expect(
+      requests.find((request) => request.route === "POST /api/v1/inbox:bulk")
+        ?.body
+    ).toEqual({
+      action: "restore",
+      user_job_ids: dismissed.map((item) => item.user_job.id),
+    });
+  });
+
   it("TW-INBOX empty inbox: no sources asks for one; sources without runs show the discover command; otherwise all caught up", async () => {
     fakeApi(
       handlers({

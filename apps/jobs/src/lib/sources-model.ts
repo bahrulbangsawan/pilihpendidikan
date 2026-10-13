@@ -3,7 +3,10 @@
 // summary, a default label, the dry-run test command, the "Run now" task
 // body, and a discovery run's errors grouped by class.
 
-import type { CreateTaskRequest } from "@pilihpendidikan/jobs-contracts/api";
+import type {
+  CreateTaskRequest,
+  DeviceView,
+} from "@pilihpendidikan/jobs-contracts/api";
 import type {
   AdapterManifest,
   AdaptersFile,
@@ -132,6 +135,32 @@ export function runNowTask(
     idempotency_key: idempotencyKey,
     queue_without_device: !hasEligibleDevice,
   };
+}
+
+/** A `discover` task names at most this many sources (DiscoverPayload). */
+export const RUN_NOW_MAX_SOURCES = 50;
+
+/** Source ids split into "Run now" tasks of at most `max` sources each. */
+export function runNowBatches(
+  sourceIds: readonly string[],
+  max: number = RUN_NOW_MAX_SOURCES
+): string[][] {
+  const unique = [...new Set(sourceIds)];
+  const batches: string[][] = [];
+  for (let start = 0; start < unique.length; start += max) {
+    batches.push(unique.slice(start, start + max));
+  }
+  return batches;
+}
+
+/** Devices that can take a `discover` task now (not revoked, accepting). */
+export function discoverCapable(devices: readonly DeviceView[]): DeviceView[] {
+  return devices.filter(
+    (device) =>
+      device.revoked_at === null &&
+      device.capabilities.includes("discover") &&
+      device.accepts_tasks
+  );
 }
 
 export interface RunErrorGroup {

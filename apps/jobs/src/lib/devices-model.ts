@@ -304,3 +304,53 @@ export function devicesPollPolicy(input: {
     ? POLL_POLICIES.devicesConnecting
     : POLL_POLICIES.devices;
 }
+
+export interface BulkRevokePlan {
+  /** Selected devices already revoked: skipped, never sent. */
+  alreadyRevoked: number;
+  /** Summed over the devices that will be revoked. */
+  consequences: RevokeConsequences;
+  /**
+   * True when the selection holds every signed-in device: afterwards no
+   * computer can sync, discover or apply until the CLI signs in again.
+   */
+  leavesNone: boolean;
+}
+
+/** What revoking `selected` (ids) does, for the bulk confirmation. */
+export function bulkRevokePlan(
+  selected: readonly string[],
+  devices: readonly DeviceView[],
+  tasks: readonly AutomationTaskRecord[]
+): BulkRevokePlan {
+  const chosen = new Set(selected);
+  const consequences: RevokeConsequences = {
+    pinned: 0,
+    running: 0,
+    submitting: 0,
+  };
+  let alreadyRevoked = 0;
+  let selectedSignedIn = 0;
+  let remainingSignedIn = 0;
+  for (const device of devices) {
+    const signedIn = deviceStatus(device).kind !== "signed_out";
+    if (!chosen.has(device.id)) {
+      remainingSignedIn += signedIn ? 1 : 0;
+      continue;
+    }
+    if (device.revoked_at !== null) {
+      alreadyRevoked += 1;
+      continue;
+    }
+    selectedSignedIn += signedIn ? 1 : 0;
+    const each = revokeConsequences(device.id, tasks);
+    consequences.pinned += each.pinned;
+    consequences.running += each.running;
+    consequences.submitting += each.submitting;
+  }
+  return {
+    alreadyRevoked,
+    consequences,
+    leavesNone: selectedSignedIn > 0 && remainingSignedIn === 0,
+  };
+}

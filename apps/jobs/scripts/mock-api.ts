@@ -29,6 +29,7 @@ import {
   detailOf,
   extraEvents,
   fresh,
+  purgeApplication,
   state,
 } from "./mock/state";
 import type { MockRequest, MockRoute, Reply } from "./mock/types";
@@ -206,7 +207,12 @@ function patchApplication(
   return { status: 200, body: { application: next } };
 }
 
-function applicationRoute({ method, path, body }: MockRequest): Reply | null {
+function applicationRoute({
+  method,
+  path,
+  body,
+  url,
+}: MockRequest): Reply | null {
   const app = APP_RE.exec(path);
   if (!app) {
     return null;
@@ -221,7 +227,27 @@ function applicationRoute({ method, path, body }: MockRequest): Reply | null {
   if (method === "PATCH") {
     return patchApplication(card, body);
   }
+  if (method === "DELETE") {
+    return deleteApplication(card, url);
+  }
   return null;
+}
+
+/** Only the purge the web sends (the archive form is a PATCH there). */
+function deleteApplication(card: BoardCard, url: URL): Reply | null {
+  if (url.searchParams.get("purge") !== "1") {
+    return null;
+  }
+  const base = Number(
+    url.searchParams.get("base_revision") ?? applicationOf(card).revision
+  );
+  if (!purgeApplication(card.id, base)) {
+    return revisionConflict(applicationOf(card));
+  }
+  return {
+    status: 200,
+    body: { id: card.id, archived: false, purged: true, application: null },
+  };
 }
 
 function settingsRoute({ method, path, body }: MockRequest): Reply | null {

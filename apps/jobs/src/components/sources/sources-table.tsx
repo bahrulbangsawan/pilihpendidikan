@@ -61,9 +61,11 @@ import {
   Search,
   Send,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { RowCheckbox, SelectAllCheckbox } from "@/components/bulk/bulk-toolbar";
 import { CopyCommand } from "@/components/copy-command";
 import { PHONE_QUERY, useMediaQuery } from "@/hooks/use-media-query";
+import { useSelection } from "@/hooks/use-selection";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { formatDateTime, relativeTime } from "@/lib/format";
@@ -72,11 +74,13 @@ import {
   ANY_DEVICE,
   configSummary,
   disabledReason,
+  discoverCapable,
   requiresOptIn,
   testCommand,
   translateOr,
 } from "@/lib/sources-model";
 import { useSourceActions } from "./source-actions";
+import { SourcesBulkBar } from "./sources-bulk";
 
 interface Capability {
   icon: LucideIcon;
@@ -236,12 +240,7 @@ function RunNowMenu({
   source: JobSourceRecord;
 }) {
   const { t } = useTranslation();
-  const capable = devices.filter(
-    (device) =>
-      device.revoked_at === null &&
-      device.capabilities.includes("discover") &&
-      device.accepts_tasks
-  );
+  const capable = discoverCapable(devices);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -468,6 +467,8 @@ export function SourcesTable({
   const actions = useSourceActions();
   const [testing, setTesting] = useState<JobSourceRecord | null>(null);
   const [deleting, setDeleting] = useState<JobSourceRecord | null>(null);
+  const ids = useMemo(() => sources.map((source) => source.id), [sources]);
+  const selection = useSelection(ids);
   const manifestOf = (adapter: string) =>
     manifests.find((manifest) => manifest.id === adapter);
   const runOf = (id: string | null) =>
@@ -478,6 +479,9 @@ export function SourcesTable({
   const toggle = (source: JobSourceRecord) => (value: boolean) =>
     actions.update(source, { enabled: value });
 
+  const bulkBar = (
+    <SourcesBulkBar devices={devices} selection={selection} sources={sources} />
+  );
   const dialogs = (
     <>
       <TestDialog onClose={() => setTesting(null)} source={testing} />
@@ -488,6 +492,13 @@ export function SourcesTable({
   if (phone) {
     return (
       <>
+        <div className="flex items-center gap-2">
+          <SelectAllCheckbox selection={selection} />
+          <span className="type-caption text-muted-foreground">
+            {t("bulk.selectAll")}
+          </span>
+        </div>
+        {bulkBar}
         <ul
           aria-label={t("sources.listLabel")}
           className="flex flex-col border border-line"
@@ -499,6 +510,13 @@ export function SourcesTable({
               key={source.id}
             >
               <div className="flex items-start gap-2">
+                <div className="pt-0.5">
+                  <RowCheckbox
+                    id={source.id}
+                    label={source.label}
+                    selection={selection}
+                  />
+                </div>
                 <div className="type-body min-w-0 flex-1">
                   <LabelCell source={source} />
                 </div>
@@ -555,6 +573,7 @@ export function SourcesTable({
 
   return (
     <>
+      {bulkBar}
       <div className="border border-line">
         <Table
           aria-label={t("sources.listLabel")}
@@ -562,6 +581,9 @@ export function SourcesTable({
         >
           <TableHeader>
             <TableRow>
+              <TableHead className="w-8">
+                <SelectAllCheckbox selection={selection} />
+              </TableHead>
               <TableHead>{t("sources.columns.label")}</TableHead>
               <TableHead>{t("sources.columns.adapter")}</TableHead>
               <TableHead>{t("sources.columns.config")}</TableHead>
@@ -575,7 +597,20 @@ export function SourcesTable({
           </TableHeader>
           <TableBody>
             {sources.map((source) => (
-              <TableRow data-source={source.id} key={source.id}>
+              <TableRow
+                data-source={source.id}
+                data-state={
+                  selection.isSelected(source.id) ? "selected" : undefined
+                }
+                key={source.id}
+              >
+                <TableCell>
+                  <RowCheckbox
+                    id={source.id}
+                    label={source.label}
+                    selection={selection}
+                  />
+                </TableCell>
                 <TableCell>
                   <LabelCell source={source} />
                 </TableCell>

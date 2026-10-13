@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buttonByText,
   cleanup,
+  FakeFailure,
   fakeApi,
   itemByText,
   pointerDown,
@@ -40,7 +41,27 @@ vi.mock("@/components/app-link", () => ({
   useAppNavigate: () => () => undefined,
 }));
 
-afterEach(cleanup);
+const toasts = vi.hoisted(() => ({ calls: [] as [string, string][] }));
+vi.mock("sonner", () => {
+  const record =
+    (kind: string) =>
+    (message: string): void => {
+      toasts.calls.push([kind, message]);
+    };
+  return {
+    toast: Object.assign(record("default"), {
+      success: record("success"),
+      warning: record("warning"),
+      info: record("info"),
+      error: record("error"),
+    }),
+  };
+});
+
+afterEach(() => {
+  cleanup();
+  toasts.calls.length = 0;
+});
 
 const CREATE: SheetTarget = { mode: "create" };
 
@@ -237,6 +258,130 @@ describe("TW-SOURCES the /sources screens (12 §8, D-17, C-11)", () => {
       expect(call?.idempotency_key).toBe(
         (call?.body as { idempotency_key: string }).idempotency_key
       );
+    },
+    DOM_TEST_TIMEOUT
+  );
+
+  it(
+    "TW-SOURCES bulk: select all, Disable skips the disabled one, Run now sends one discover task for the enabled ones, Delete is confirmed and reports conflicts",
+    async () => {
+      const first = makeSource({ label: "Acme", revision: 2 });
+      const second = makeSource({ label: "Globex", revision: 3 });
+      const off = makeSource({ label: "Initech", enabled: false, revision: 4 });
+      const api = fakeApi({
+        "PATCH /api/v1/sources/{src_id}": (request) => ({
+          source: { ...first, ...(request.body as object) },
+        }),
+        "POST /api/v1/tasks": () => ({
+          task: { id: "tsk_01JA0000000000000000000000" },
+        }),
+        "DELETE /api/v1/sources/{src_id}": (request) =>
+          request.params?.src_id === second.id
+            ? new FakeFailure(409, "revision_conflict")
+            : { id: request.params?.src_id, deleted: true },
+      });
+      renderWithProviders(
+        <SourcesTable
+          devices={[makeDevice({ name: "MacBook" })]}
+          manifests={ADAPTER_MANIFESTS}
+          nowMs={NOW}
+          onEdit={() => undefined}
+          runs={[]}
+          sources={[first, second, off]}
+        />
+      );
+      await act(async () => {
+        document
+          .querySelector<HTMLElement>("[aria-label='Select all']")
+          ?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(document.body.textContent).toContain("3 selected");
+      });
+      // Clicking a row checkbox never opens anything else.
+      expect(document.querySelector("[role='dialog']")).toBeNull();
+
+      await act(async () => {
+        buttonByText("Disable")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(toasts.calls).toHaveLength(1);
+      });
+      expect(
+        api
+          .calls("PATCH /api/v1/sources/{src_id}")
+          .map((call) => [call.params?.src_id, call.body])
+      ).toEqual([
+        [first.id, { enabled: false, base_revision: 2 }],
+        [second.id, { enabled: false, base_revision: 3 }],
+      ]);
+      expect(toasts.calls[0]?.[1]).toBe(
+        "2 done · 1 skipped · 0 changed elsewhere · 0 failed"
+      );
+
+      // The selection was cleared after a success: select all again.
+      await act(async () => {
+        document
+          .querySelector<HTMLElement>("[aria-label='Select all']")
+          ?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(buttonByText("Run now")).toBeDefined();
+      });
+      const bulkRun = [
+        ...document.querySelectorAll<HTMLButtonElement>(
+          "[role='toolbar'] button"
+        ),
+      ].find((button) => button.textContent?.includes("Run now"));
+      await pointerDown(bulkRun ?? null);
+      await waitFor(() => {
+        expect(itemByText("Any of my devices")).toBeDefined();
+      });
+      await act(async () => {
+        itemByText("Any of my devices")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(api.calls("POST /api/v1/tasks")).toHaveLength(1);
+      });
+      expect(api.calls("POST /api/v1/tasks")[0]?.body).toMatchObject({
+        kind: "discover",
+        payload: { source_ids: [first.id, second.id] },
+        target_device_id: null,
+      });
+
+      await act(async () => {
+        document
+          .querySelector<HTMLElement>("[aria-label='Select all']")
+          ?.click();
+        await Promise.resolve();
+      });
+      await act(async () => {
+        buttonByText("Delete")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(document.body.textContent).toContain("Delete 3 sources?");
+      });
+      expect(api.calls("DELETE /api/v1/sources/{src_id}")).toHaveLength(0);
+      await act(async () => {
+        buttonByText("Delete 3")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(api.calls("DELETE /api/v1/sources/{src_id}")).toHaveLength(3);
+      });
+      expect(api.calls("DELETE /api/v1/sources/{src_id}")[0]?.query).toEqual({
+        base_revision: 2,
+      });
+      await waitFor(() => {
+        expect(toasts.calls.at(-1)?.[1]).toBe(
+          "2 done · 0 skipped · 1 changed elsewhere · 0 failed"
+        );
+      });
     },
     DOM_TEST_TIMEOUT
   );

@@ -403,12 +403,16 @@ export const InboxStateSchema = defineSchema(
 );
 export type InboxState = z.infer<typeof InboxStateSchema>;
 
-/** `POST /api/v1/inbox:bulk` actions (05 §4). */
+/**
+ * `POST /api/v1/inbox:bulk` actions (05 §4). `restore` brings a dismissed
+ * job back to the inbox as `seen`.
+ */
 export const INBOX_BULK_ACTIONS = [
   "track",
   "dismiss",
   "seen",
   "score",
+  "restore",
 ] as const;
 export const InboxBulkActionSchema = defineSchema(
   "enums",

@@ -5,6 +5,7 @@ import { makeMeta, makeRun, makeTask } from "@/test/fixtures-rest";
 import { CLI_COMMANDS, installCommand } from "./devices-install";
 import {
   awaitingFirstContact,
+  bulkRevokePlan,
   CONNECT_WATCH_MS,
   detectPlatform,
   deviceExtras,
@@ -285,5 +286,28 @@ describe("TW-DEVICES device status, versions and outbox (12 §7)", () => {
     const fresh = makeDevice({ created_at: NOW - 60_000, name: "Laptop" });
     expect(justConnected([old, fresh], NOW)?.name).toBe("Laptop");
     expect(justConnected([old], NOW)).toBeNull();
+  });
+});
+
+describe("TW-DEVICES bulk revoke plan (12 §7, 21 §10)", () => {
+  it("TW-DEVICES sums the consequences, skips revoked devices and warns when no signed-in device is left", () => {
+    const mac = makeDevice({ name: "MacBook" });
+    const desk = makeDevice({ name: "Desktop" });
+    const old = makeDevice({ name: "Old", revoked_at: NOW - DAY });
+    const tasks = [
+      makeTask({ lease_device_id: mac.id, state: "running" }),
+      makeTask({ lease_device_id: desk.id, state: "running" }),
+    ];
+    const all = bulkRevokePlan(
+      [mac.id, desk.id, old.id],
+      [mac, desk, old],
+      tasks
+    );
+    expect(all).toMatchObject({ alreadyRevoked: 1, leavesNone: true });
+    expect(all.consequences.running).toBe(2);
+    const some = bulkRevokePlan([mac.id], [mac, desk, old], tasks);
+    expect(some).toMatchObject({ alreadyRevoked: 0, leavesNone: false });
+    expect(some.consequences.running).toBe(1);
+    expect(bulkRevokePlan([old.id], [mac, old], tasks).leavesNone).toBe(false);
   });
 });

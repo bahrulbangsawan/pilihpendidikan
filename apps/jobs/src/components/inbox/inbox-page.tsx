@@ -240,6 +240,9 @@ export function InboxPage({
       if (action === "dismiss" && tab === "dismissed") {
         return;
       }
+      if (action === "restore" && tab !== "dismissed") {
+        return;
+      }
       const previous = new Map(
         inbox.items.map((item) => [item.user_job.id, item.user_job.inbox_state])
       );

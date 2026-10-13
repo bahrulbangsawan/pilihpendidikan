@@ -180,4 +180,31 @@ describe("TW-INBOX bulk actions (12 §4, 05 §4 inbox:bulk)", () => {
     expect(bulkFailedOutright(nothing)).toBe(true);
     expect(bulkToastText(t, nothing)).toBe("1 failed");
   });
+
+  it("TW-INBOX restore counts dismissed rows as restored and every other state as already there", () => {
+    const previous = new Map<string, InboxState>([
+      ["a", "dismissed"],
+      ["b", "dismissed"],
+      ["c", "seen"],
+      ["d", "tracked"],
+    ]);
+    const summary = summarizeInboxBulk(
+      "restore",
+      [
+        { user_job_id: "a", status: "ok", inbox_state: "seen" },
+        { user_job_id: "b", status: "ok", inbox_state: "seen" },
+        { user_job_id: "c", status: "ok", inbox_state: "seen" },
+        { user_job_id: "d", status: "ok", inbox_state: "tracked" },
+        { user_job_id: "e", status: "not_found" },
+      ],
+      previous
+    );
+    expect(summary).toMatchObject({ done: 2, already: 2, failed: 1 });
+    expect(bulkToastText(getT("en"), summary)).toBe(
+      "Restored 2 · 2 already in the inbox · 1 failed"
+    );
+    expect(bulkToastText(getT("id"), summary)).toBe(
+      "2 dipulihkan · 2 sudah ada di kotak masuk · 1 gagal"
+    );
+  });
 });

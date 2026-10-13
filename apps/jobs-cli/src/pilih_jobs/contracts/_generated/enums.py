@@ -225,8 +225,10 @@ class GrantRevokedReason(
     root: Literal["user", "device_revoked", "refresh_reuse", "admin", "account_deleted"]
 
 
-class InboxBulkAction(RootModel[Literal["track", "dismiss", "seen", "score"]]):
-    root: Literal["track", "dismiss", "seen", "score"]
+class InboxBulkAction(
+    RootModel[Literal["track", "dismiss", "seen", "score", "restore"]]
+):
+    root: Literal["track", "dismiss", "seen", "score", "restore"]
 
 
 class InboxState(RootModel[Literal["new", "seen", "dismissed", "tracked"]]):

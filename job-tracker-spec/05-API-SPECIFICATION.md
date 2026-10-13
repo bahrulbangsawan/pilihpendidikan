@@ -170,7 +170,7 @@ AI budget is enforced from D1 counters instead (exact).
 | POST | `/api/v1/discovery/runs/{run_id}/complete` | `discovery:write` | `{status, stats, errors[], complete_sources[]}` — for each source listed as complete, increments `missed_runs` of that source's postings not seen in this run and closes those reaching 2 (03 §4.3). |
 | GET | `/api/v1/discovery/runs?limit&cursor` | `jobs:read` | History |
 | GET | `/api/v1/inbox?state=new&min_score&source&q&cursor` | `jobs:read` | Discovery results joined with scores and provenance |
-| POST | `/api/v1/inbox:bulk` | `jobs:write` | `{user_job_ids[] (≤ 200), action: track|dismiss|seen|score}` ⇒ per-id results |
+| POST | `/api/v1/inbox:bulk` | `jobs:write` | `{user_job_ids[] (≤ 200), action: track|dismiss|seen|score|restore}` ⇒ per-id results |
 | POST | `/api/v1/user-jobs` | `jobs:write` | Manual add: `{url}` (server stores a `custom_url` stub posting; the CLI or web enriches it) or full posting fields |
 | GET | `/api/v1/user-jobs/{ujb_id}` | `jobs:read` | Tracked job + posting + latest score |
 

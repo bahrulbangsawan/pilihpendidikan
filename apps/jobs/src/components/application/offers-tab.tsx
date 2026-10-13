@@ -56,12 +56,23 @@ import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import type { FormEvent } from "react";
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
+import {
+  BulkConfirmDialog,
+  BulkRunResultsDialog,
+  BulkToolbar,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import { commitApplicationToBoard } from "@/hooks/use-board";
+import { useBulkRun } from "@/hooks/use-bulk-run";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
+import type { Selection } from "@/hooks/use-selection";
+import { useSelection } from "@/hooks/use-selection";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
+import { BulkSkip } from "@/lib/bulk";
 import {
   formatDate,
   formatMoney,
@@ -153,6 +164,8 @@ export function OffersTab({
   const set = (patch: Partial<Draft>) =>
     setDraft((current) => ({ ...current, ...patch }));
   const sorted = [...offers].sort((a, b) => b.received_at - a.received_at);
+  const ids = useMemo(() => sorted.map((offer) => offer.id), [sorted]);
+  const selection = useSelection(ids);
   const movable =
     editing === "new"
       ? ["applied", "interviewing"].includes(application.stage)
@@ -267,13 +280,17 @@ export function OffersTab({
           {t("offers.add")}
         </Button>
       </div>
+      <OffersBulkBar appId={appId} offers={sorted} selection={selection} />
       {sorted.length === 0 ? (
         <p className="type-body text-muted-foreground">{t("offers.empty")}</p>
       ) : (
-        <div className="border border-line">
+        <div className="overflow-x-auto border border-line">
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-8">
+                  <SelectAllCheckbox selection={selection} />
+                </TableHead>
                 <TableHead>{t("offers.received")}</TableHead>
                 <TableHead>{t("offers.base")}</TableHead>
                 <TableHead>{t("offers.deadline")}</TableHead>
@@ -285,7 +302,21 @@ export function OffersTab({
             </TableHeader>
             <TableBody>
               {sorted.map((offer) => (
-                <TableRow key={offer.id}>
+                <TableRow
+                  data-state={
+                    selection.isSelected(offer.id) ? "selected" : undefined
+                  }
+                  key={offer.id}
+                >
+                  <TableCell>
+                    <RowCheckbox
+                      id={offer.id}
+                      label={t("offers.rowLabel", {
+                        date: formatDate(offer.received_at, locale),
+                      })}
+                      selection={selection}
+                    />
+                  </TableCell>
                   <TableCell>{formatDate(offer.received_at, locale)}</TableCell>
                   <TableCell className="text-foreground tabular-nums">
                     {offer.compensation.base == null
@@ -534,5 +565,82 @@ export function OffersTab({
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+/** Bulk Delete of the selected offers (confirmed, one DELETE each). */
+function OffersBulkBar({
+  appId,
+  offers,
+  selection,
+}: {
+  appId: string;
+  offers: readonly OfferRecord[];
+  selection: Selection;
+}) {
+  const { locale, t } = useTranslation();
+  const invalidate = useMemo(
+    () => [
+      queryKeys.application(appId),
+      queryKeys.applicationEvents(appId),
+      queryKeys.boardAll,
+    ],
+    [appId]
+  );
+  const bulk = useBulkRun({ invalidate, onSucceeded: selection.clear });
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const byId = new Map(offers.map((offer) => [offer.id, offer]));
+  const rows = selection.selectedIds.flatMap((id) => {
+    const offer = byId.get(id);
+    return offer
+      ? [
+          {
+            id,
+            label: t("offers.rowLabel", {
+              date: formatDate(offer.received_at, locale),
+            }),
+          },
+        ]
+      : [];
+  });
+
+  async function remove() {
+    await bulk.run(t("offers.bulk.delete"), rows, async (id) => {
+      const offer = byId.get(id);
+      if (!offer) {
+        throw new BulkSkip("gone", t("offers.bulk.gone"));
+      }
+      await api("DELETE /api/v1/applications/{app_id}/offers/{ofr_id}", {
+        params: { app_id: appId, ofr_id: id },
+        query: { base_revision: offer.revision },
+        idempotencyKey: newIdempotencyKey(),
+      });
+    });
+    setConfirmDelete(false);
+  }
+
+  return (
+    <>
+      <BulkToolbar count={rows.length} onClear={selection.clear}>
+        <Button
+          disabled={bulk.busy}
+          onClick={() => setConfirmDelete(true)}
+          size="sm"
+          variant="ghost"
+        >
+          {t("offers.bulk.delete")}
+        </Button>
+      </BulkToolbar>
+      <BulkConfirmDialog
+        body={t("offers.bulk.deleteBody")}
+        busy={bulk.busy}
+        confirmLabel={t("bulk.delete", { count: rows.length })}
+        onConfirm={remove}
+        onOpenChange={setConfirmDelete}
+        open={confirmDelete}
+        title={t("offers.bulk.deleteTitle", { count: rows.length })}
+      />
+      <BulkRunResultsDialog onClose={bulk.closeReport} report={bulk.report} />
+    </>
   );
 }

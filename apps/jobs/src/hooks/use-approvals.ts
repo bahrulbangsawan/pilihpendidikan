@@ -58,22 +58,28 @@ export interface DecideInput {
 /**
  * `POST /api/v1/approvals/{id}/decide` with the approval's own payload_hash
  * (03 §8): if the device changed the form since, the API refuses and the
- * agent asks again. Refreshes everything the decision touches.
+ * agent asks again. One idempotency key per call (one intent per approval);
+ * the single flow and the bulk decide both send through here.
  */
+export function sendDecision({ approval, decision, response }: DecideInput) {
+  return api("POST /api/v1/approvals/{apr_id}/decide", {
+    params: { apr_id: approval.id },
+    body: {
+      decision,
+      payload_hash: approval.payload_hash,
+      ...(response ? { response } : {}),
+    },
+    idempotencyKey: newIdempotencyKey(),
+  });
+}
+
+/** `sendDecision`, then refreshes everything the decision touches. */
 export function useDecideApproval() {
   const queryClient = useQueryClient();
   return useCallback(
-    async ({ approval, decision, response }: DecideInput) => {
-      const result = await api("POST /api/v1/approvals/{apr_id}/decide", {
-        params: { apr_id: approval.id },
-        body: {
-          decision,
-          payload_hash: approval.payload_hash,
-          ...(response ? { response } : {}),
-        },
-        idempotencyKey: newIdempotencyKey(),
-      });
-      await refreshAfterDecision(queryClient, approval);
+    async (input: DecideInput) => {
+      const result = await sendDecision(input);
+      await refreshAfterDecision(queryClient, input.approval);
       return result;
     },
     [queryClient]

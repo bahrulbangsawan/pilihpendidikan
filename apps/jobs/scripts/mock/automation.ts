@@ -981,6 +981,9 @@ function updateRule(rule: AutomationRuleRecord, request: MockRequest): Reply {
     next.enabled = false;
     next.activated_approval_id = null;
     approval = activationFor(next, now);
+  } else if (changes.enabled === false) {
+    // Turning a rule off drops its activation (an auto rule needs a fresh one).
+    next.activated_approval_id = null;
   }
   rules.set(next.id, next);
   return ok(approval ? { rule: next, approval } : { rule: next });
@@ -1115,6 +1118,14 @@ function resumeTask(task: AutomationTaskRecord, now: number): Reply {
 }
 
 function cancelTask(task: AutomationTaskRecord, now: number): Reply {
+  // As the api (21 §13.3): cancelling twice is a no-op, a submission in
+  // flight is too late to stop.
+  if (task.state === "cancelled" || (isLive(task) && task.cancel_requested)) {
+    return ok({ task }, task.state === "cancelled" ? 200 : 202);
+  }
+  if (task.submit_intent_at !== null) {
+    return apiError(409, "too_late", "Submission already in progress.");
+  }
   if (!isLive(task)) {
     return apiError(
       422,

@@ -191,3 +191,26 @@ export function detailOf(card: BoardCard): ApplicationDetail {
 export function cardByCompany(company: string): BoardCard | undefined {
   return cards().find((card) => card.posting.company_name === company);
 }
+
+/**
+ * `DELETE /api/v1/applications/{id}?purge=1` (06 §11): the card leaves the
+ * board for good. Returns false when the base revision is stale.
+ */
+export function purgeApplication(appId: string, baseRevision: number): boolean {
+  const card = cards().find((entry) => entry.id === appId);
+  if (!card || applicationOf(card).revision !== baseRevision) {
+    return false;
+  }
+  state.applications.delete(appId);
+  state.board = {
+    ...state.board,
+    columns: state.board.columns.map((column) => {
+      const rest = column.cards.filter((entry) => entry.id !== appId);
+      return rest.length === column.cards.length
+        ? column
+        : { ...column, cards: rest, total: rest.length };
+    }),
+  };
+  bumpBoard();
+  return true;
+}

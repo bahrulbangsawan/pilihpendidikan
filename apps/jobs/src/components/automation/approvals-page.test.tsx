@@ -1,12 +1,16 @@
 // @vitest-environment happy-dom
 import type { ApprovalRecord } from "@pilihpendidikan/jobs-contracts/records";
-import { afterEach, describe, expect, it } from "vitest";
+import { act } from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { setBffTransport } from "@/lib/api-client";
 import type { BffRequest } from "@/lib/bff";
-import { makeBoard, makeCard } from "@/test/fixtures";
+import { fixtureId, makeBoard, makeCard } from "@/test/fixtures";
 import {
   answerPayload,
+  cvVariantPayload,
   makeApproval,
+  makeRule,
+  ruleActivationPayload,
   submitPayload,
 } from "@/test/fixtures-rest";
 import { click } from "@/test/render";
@@ -38,9 +42,30 @@ const answer = makeApproval(answerPayload(), {
 
 const WEB_KEY_RE = /^web:/;
 
+interface ToastOptions {
+  action?: { onClick: () => void };
+}
+const toasts = vi.hoisted(() => ({ calls: [] as [string, unknown][] }));
+vi.mock("sonner", () => {
+  const record =
+    (kind: string) =>
+    (message: string, options?: unknown): void => {
+      toasts.calls.push([kind, { message, ...(options as object) }]);
+    };
+  return {
+    toast: Object.assign(record("default"), {
+      success: record("success"),
+      warning: record("warning"),
+      info: record("info"),
+      error: record("error"),
+    }),
+  };
+});
+
 let cleanup: (() => void) | null = null;
 
 afterEach(() => {
+  toasts.calls.length = 0;
   cleanup?.();
   cleanup = null;
   setBffTransport(null);
@@ -170,7 +195,7 @@ describe("TW-APPROVAL approval queue (12 §6.1)", () => {
       "Do you require visa sponsorship?"
     );
     const save = screen.container.querySelector<HTMLButtonElement>(
-      "button[role=checkbox]"
+      "article button[role=checkbox]"
     );
     await click(save);
     await press("y");
@@ -188,5 +213,146 @@ describe("TW-APPROVAL approval queue (12 §6.1)", () => {
         auto_use: "approval",
       },
     ]);
+  });
+});
+
+// Bulk decisions: every approval far from expiry (the fixtures' clock is fixed).
+const LATER = Date.now() + 86_400_000;
+const bulkSubmit = { ...submit, expires_at: LATER };
+const bulkAnswer = { ...answer, expires_at: LATER + 1 };
+const cv = makeApproval(cvVariantPayload(fixtureId("cvv"), fixtureId("fil")), {
+  application_id: acme.id,
+  payload_hash: "c".repeat(64),
+  expires_at: LATER + 2,
+});
+const otherCv = makeApproval(
+  cvVariantPayload(fixtureId("cvv"), fixtureId("fil")),
+  {
+    application_id: acme.id,
+    payload_hash: "d".repeat(64),
+    expires_at: LATER + 3,
+  }
+);
+const ruleActivation = makeApproval(ruleActivationPayload(makeRule()), {
+  payload_hash: "b".repeat(64),
+  expires_at: LATER + 4,
+});
+
+function selectAll(root: Element) {
+  return root.querySelector<HTMLButtonElement>(
+    "button[role=checkbox][aria-label='Select all']"
+  );
+}
+
+/** Opens the per-row results from the summary toast's "Details" action. */
+async function openReport(): Promise<string> {
+  const options = toasts.calls.at(-1)?.[1] as ToastOptions | undefined;
+  await act(async () => {
+    options?.action?.onClick();
+    await Promise.resolve();
+  });
+  await flush(2);
+  return document.body.querySelector("[role=dialog]")?.textContent ?? "";
+}
+
+describe("TW-APPROVAL bulk decisions", () => {
+  it("TW-APPROVAL bulk approve sends only approvals that need no input, each with its own payload_hash, and skips submissions, answers and rule activations", async () => {
+    const requests = fakeApi(
+      queue([bulkSubmit, bulkAnswer, cv, otherCv, ruleActivation], (request) =>
+        request.params?.apr_id === otherCv.id
+          ? {
+              ok: false,
+              status: 409,
+              error: "revision_conflict",
+              details: { reason: "payload_hash_mismatch" },
+            }
+          : undefined
+      ),
+      board
+    );
+    const screen = await renderScreen(<ApprovalsPage />);
+    cleanup = screen.unmount;
+    await click(selectAll(screen.container));
+    expect(screen.container.textContent).toContain("5 selected");
+    await click(buttonByText(screen.container, "Approve…"));
+    await flush();
+    expect(dialog()?.textContent).toContain("2 will be approved and 3 skipped");
+    expect(decides(requests)).toHaveLength(0);
+    await click(buttonByText(dialog() ?? document.body, "Approve 2"));
+    await flush();
+    const sent = decides(requests);
+    expect(sent.map((request) => request.params?.apr_id).sort()).toEqual(
+      [cv.id, otherCv.id].sort()
+    );
+    for (const request of sent) {
+      const own = request.params?.apr_id === cv.id ? cv : otherCv;
+      expect(request.body).toEqual({
+        decision: "approve",
+        payload_hash: own.payload_hash,
+      });
+      expect(request.idempotency_key).toMatch(WEB_KEY_RE);
+    }
+    expect(sent[0]?.idempotency_key).not.toBe(sent[1]?.idempotency_key);
+    expect(toasts.calls.at(-1)?.[1]).toMatchObject({
+      message: "1 done · 3 skipped · 1 changed elsewhere · 0 failed",
+    });
+    const report = await openReport();
+    expect(report).toContain(
+      "Submissions are reviewed one at a time: open it on its own."
+    );
+    expect(report).toContain("Needs your answers: open it on its own.");
+    expect(report).toContain(
+      "Needs the rule's name typed: open it on its own."
+    );
+    expect(report).toContain("Changed elsewhere");
+    expect(report).toContain(
+      "The form changed since this was prepared. The agent will ask again."
+    );
+  });
+
+  it("TW-APPROVAL bulk reject covers every pending kind, still asks first, and selection checkboxes do not change the open approval", async () => {
+    const requests = fakeApi(queue([bulkSubmit, cv]), board);
+    const screen = await renderScreen(<ApprovalsPage />);
+    cleanup = screen.unmount;
+    const current = () =>
+      screen.container
+        .querySelector("[aria-current=true]")
+        ?.getAttribute("data-approval-id");
+    expect(current()).toBe(bulkSubmit.id);
+    const rows = screen.container.querySelectorAll<HTMLButtonElement>(
+      "li button[role=checkbox]"
+    );
+    expect(rows).toHaveLength(2);
+    await click(rows[1]);
+    await click(rows[0]);
+    expect(current()).toBe(bulkSubmit.id);
+    await click(buttonByText(screen.container, "Reject…"));
+    await flush();
+    expect(dialog()?.textContent).toContain("2 will be rejected and 0 skipped");
+    await click(buttonByText(dialog() ?? document.body, "Reject 2"));
+    await flush();
+    expect(
+      decides(requests)
+        .map((request) => request.body)
+        .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)))
+    ).toEqual([
+      { decision: "reject", payload_hash: cv.payload_hash },
+      { decision: "reject", payload_hash: bulkSubmit.payload_hash },
+    ]);
+  });
+
+  it("TW-APPROVAL a selection of submissions only cannot be bulk approved", async () => {
+    const requests = fakeApi(queue([bulkSubmit]), board);
+    const screen = await renderScreen(<ApprovalsPage />);
+    cleanup = screen.unmount;
+    await click(selectAll(screen.container));
+    await click(buttonByText(screen.container, "Approve…"));
+    await flush();
+    expect(dialog()?.textContent).toContain("0 will be approved and 1 skipped");
+    const confirm = buttonByText(dialog() ?? document.body, "Approve 0");
+    expect(confirm?.disabled).toBe(true);
+    await click(confirm);
+    await flush();
+    expect(decides(requests)).toHaveLength(0);
   });
 });

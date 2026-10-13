@@ -11,6 +11,7 @@
 //   seen     new → seen (other states unchanged)
 //   dismiss  new / seen → dismissed; a tracked job is a `conflict` (archive
 //            the application instead)
+//   restore  dismissed → seen (other states unchanged)
 //   track    leaf-2.3's planTrackApplications (set-based: application +
 //            created event + inbox_state tracked for all ids in ~30
 //            statements); already tracked → its application
@@ -163,18 +164,21 @@ export interface BulkResult {
   user_job_id: string;
 }
 
+type StateAction = "dismiss" | "restore" | "seen";
+
 const STATE_MOVES: Record<
-  "dismiss" | "seen",
+  StateAction,
   { from: readonly InboxState[]; to: InboxState }
 > = {
   seen: { from: ["new"], to: "seen" },
   dismiss: { from: ["new", "seen"], to: "dismissed" },
+  restore: { from: ["dismissed"], to: "seen" },
 };
 
 function stateResult(
   id: string,
   job: UserJobRecord | undefined,
-  action: "dismiss" | "seen"
+  action: StateAction
 ): { move: boolean; result: BulkResult } {
   if (!job) {
     return { move: false, result: { user_job_id: id, status: "not_found" } };
@@ -207,7 +211,7 @@ function stateResult(
 async function bulkState(
   c: DiscoveryContext,
   ids: readonly string[],
-  action: "dismiss" | "seen"
+  action: StateAction
 ): Promise<Response> {
   const { response } = await commitPlanned(c, async () => {
     const jobs = await getUserJobs(c.db, c.scope, ids);

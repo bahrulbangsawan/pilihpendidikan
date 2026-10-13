@@ -154,31 +154,31 @@ Long-running commands stream NDJSON events (§5) and end with one envelope line.
 | `login` | OAuth PKCE loopback login + device registration (17) | `--device-name`, `--no-browser` (prints URL; still needs the loopback on the same machine), `--scopes` (advanced) | `{user_id, email, device_id, scopes[]}` |
 | `logout` | Revoke the refresh token (RFC 7009), delete keyring entries | `--all-devices` (opens web device page) | `{revoked: true}` |
 | `whoami` | `GET /api/v1/me` | — | `{user_id, email, device: {id,name}, scopes[]}` |
-| `status` | One-screen overview: auth, device, worker, outbox depth, browser, last sync, pending approvals | — | `{auth, device, worker, outbox, browser, last_sync_at, approvals_pending}` |
+| `status` | One-screen overview: auth, device, worker, outbox depth, browser, last sync (local time and age), pending approvals | — | `{auth, device, worker, outbox, browser, last_sync_at (epoch ms), approvals_pending}` |
 | `discover` | Run discovery (15) | `--source <src_id\|adapter:org>` (repeatable), `--all` (all enabled sources), `--url <url>` (custom_url), `--keywords`, `--location`, `--private`, `--check-tracked`, `--max-pages`, `--dry-run` (no sync), `--reset-adaptive <src>` | stream events → `{run_id, status, stats}` |
-| `inbox list` | Discovery results from cloud | `--state new\|seen\|dismissed`, `--min-score`, `--source`, `--limit` | `{items:[{user_job_id, title, company, score, source, first_seen_at}]}` |
+| `inbox list` | Discovery results from cloud | `--state new\|seen\|dismissed\|tracked`, `--min-score`, `--source`, `--limit`, `--all` (every page), `--q`, `--ids` (ids only, one per line, for piping) | `{items:[{user_job_id, title, company, score, source, first_seen_at}]}` (`--ids`: `{ids[]}`) |
 | `inbox show <ujb_id>` | Posting detail + score breakdown | `--description` | posting + score |
-| `inbox track <ujb_id…>` | Track (creates applications) | `--mode`, `--stage` | per-id results |
-| `inbox dismiss <ujb_id…>` | Dismiss | — | per-id results |
+| `inbox track <ujb_id…>` | Track (creates applications) | `--mode`, `--stage` | bulk results |
+| `inbox dismiss\|seen\|restore <ujb_id…>` | `POST /api/v1/inbox:bulk` (chunks of ≤ 200; offline every chunk is queued): dismiss (a tracked job is a `conflict`), mark seen, restore dismissed → seen (other states unchanged, `ok`) | `--yes` above 50 ids | bulk results |
 | `score <ujb_id\|pst_id…\|--all-new>` | Request scoring (`POST /api/v1/scores:request`; 07) | `--wait` (up to 30 s) | `{queued, cached}` |
-| `board` | Kanban board grouped by stage (`GET /api/v1/board`; 06 §11) | `--stage S` | `{columns:[{stage, items:[…]}]}` |
-| `list` | List applications | `--stage`, `--q`, `--limit` | `{items:[…]}` |
+| `board` | Kanban board grouped by stage (`GET /api/v1/board`; 06 §11) | `--stage S`, `--archived`, `--ids` | `{columns:[{stage, items:[…]}]}` |
+| `list` | List applications | `--stage`, `--q`, `--limit`, `--all` (every page), `--archived`, `--ids` | `{items:[…]}` |
 | `show <app_id\|legacy_id>` | Application detail with timeline | `--audit` (full event and attempt audit trail, 21 §14) | application detail |
 | `track <ujb_id\|url>` | Track a job (creates an application; a URL creates a `custom_url` posting first) | `--mode`, `--stage` | `{application}` |
-| `move <app_id> <stage>` | Change stage / reorder (`POST …/move`, `base_revision` from cache) | `--before <app_id>`, `--after <app_id>` | `{application}` |
+| `move <app_id…> <stage>` | Change stage / reorder (`POST …/move`, `base_revision` from cache, per id); the last positional is the stage | `--before <app_id>`, `--after <app_id>` (one id only) | `{application}`; several ids: bulk results |
 | `applied <app_id>` | Mark applied manually (user attestation) | `--method`, `--date` | `{application}` |
 | `confirm <app_id>` | Confirm or deny an unverified / unknown submission (`POST …/submission`) | `--yes\|--no` | `{application}` |
-| `edit <app_id>` | Edit fields (`PATCH /api/v1/applications/{id}`) | `--priority`, `--follow-up`, `--mode` | `{application}` |
+| `edit <app_id…>` | Edit fields (`PATCH /api/v1/applications/{id}`; the same change per id) | `--priority`, `--follow-up`, `--mode` | `{application}`; several ids: bulk results |
 | `note <app_id> "text"` | Add a note event | — | `{event_id}` |
 | `checklist <app_id> add\|done\|rm …` | Legacy checklist sections/items | — | `{sections}` |
 | `interview add <app_id>` | Record an interview | `--at`, `--kind`, `--duration`, `--location` | `{interview}` |
 | `offer add <app_id>` | Record an offer | `--base`, `--currency`, `--deadline` | `{offer}` |
-| `follow-up <app_id> <duration\|date>` | Set `follow_up_at` | — | `{application}` |
-| `archive <app_id>` / `rm <app_id> --purge` | Archive; hard delete with confirmation | `--yes` | `{archived\|deleted}` |
+| `follow-up <app_id…> <duration\|date\|done\|clear>` | Set `follow_up_at` (`done` clears it and adds a note) | — | `{application}`; several ids: bulk results |
+| `archive <app_id…>` / `rm <app_id…> [--purge]` | Archive (`--undo`); archive or hard delete with **one** confirmation for the set (count + ids) | `--undo`, `--purge`, `--yes` | `{archived\|deleted}`; several ids: bulk results |
 | `apply <app_id>` | Run the browser agent for one application locally (creates a task targeted at this device with base `automation:execute`, claims it, executes; D-29) | `--mode assisted\|approval\|auto` (`auto` only if a matching active rule exists, and needs step-up `automation:manage`), `--dry-run` (fill and stop before submit; nothing submitted, no submit_intent), `--approve` (decide the final `submit` approval in the CLI **for this run only** in approval mode; needs step-up `automation:manage` (17 §5.1); still shows the summary and requires a TTY confirmation unless `--yes` was also given **and** mode is approval), `--headed/--headless` (assisted is always headed), `--resume` (resume a paused attempt of this device) | stream events → `{task_id, outcome, submission_status, evidence_id?}` |
 | `apply --matched` | Create apply tasks for tracked `ready` applications matching criteria | `--min-score N`, `--limit N`, `--rule <rul_id>`, `--dry-run` (list only) | `{created:[task_id], skipped:[{app_id, reason}]}` |
-| `approvals list` | Pending approvals | `--kind` | `{items:[…]}` |
-| `approvals decide <apr_id>` | Approve/reject (shows payload, verifies `payload_hash`); needs step-up `automation:manage` | `--approve\|--reject`, `--answer <text>` (for `answer` kind) | `{state}` |
+| `approvals list` | Pending approvals | `--kind`, `--state`, `--ids` | `{items:[…]}` |
+| `approvals decide <apr_id…>` | Approve/reject (shows payload, verifies `payload_hash` of every approval); needs step-up `automation:manage`. Several ids need `--approve` or `--reject`; bulk approve **skips** `submit` (`submission_needs_review`: submissions are approved one at a time), `answer` (`needs_input`) and `rule_activation` (`needs_review`), exit 8 | `--approve\|--reject`, `--answer <text>` (one `answer` approval only) | `{state}`; several ids: bulk results |
 | `browser install` | Install Chromium (`python -m playwright install chromium`; Linux `--with-deps` prompts for sudo) (22 §4) | `--channel chrome\|msedge` (use a branded browser instead) | `{installed, path, size_mb}` |
 | `browser launch` | Start a managed browser (Mode A) with a profile, headed, for inspection | `--profile`, `--channel` | `{profile, pid}` |
 | `browser login <profile>` | Open a headed Mode A/C session so the user can log into ATS/email sites manually; closes on Enter | `--url` | `{profile}` |
@@ -201,8 +201,11 @@ Long-running commands stream NDJSON events (§5) and end with one envelope line.
 | `worker status` | Worker PID, current lease/task, last poll, poll interval | — | `{…}` |
 | `worker enable` / `worker disable` | Toggle **this device's** `devices.accepts_tasks` (`PATCH /api/v1/devices/{id}`; allowed for the device's own row with `automation:execute`) | — | `{device_id, accepts_tasks}` |
 | `worker pause-all` / `worker resume-all` | Account-wide kill switch `user_settings.automation_paused` (`PATCH /api/v1/settings`, `jobs:write`). Pausing is always allowed; resuming asks for confirmation | `--yes` | `{automation_paused}` |
-| `rules list` / `rules show` | Read automation rules (editing is web-first; `rules enable/disable` allowed except enabling `auto`, which needs web approval) | — | |
-| `devices list` / `rename` / `revoke <dev_id>` | Device management (`devices:manage`) | — | |
+| `rules list` / `rules show` / `rules enable\|disable <rul_id…>` | Read automation rules (editing is web-first; enable/disable allowed except enabling `auto`, which needs web approval: `failed` / exit 9) | `--ids` (list) | several ids: bulk results |
+| `devices list` / `rename` / `revoke <dev_id…>` | Device management (`devices:manage`); `revoke` asks once for the set and revokes this device last | `--ids` (list), `--yes` | several ids: bulk results |
+| `tasks list` | Automation tasks (`GET /api/v1/tasks`) | `--state`, `--kind`, `--app <app_id>`, `--limit`, `--ids` | `{items:[…]}` |
+| `tasks cancel <tsk_id…>` | `POST …/cancel`: queued ⇒ `cancelled`, leased ⇒ `cancel_requested` (heartbeat), past `submit_intent` ⇒ `conflict` (`too_late`); step-up `automation:manage` | — | `{task}`; several ids: bulk results |
+| `tasks retry <tsk_id…>` | `POST …/retry` from `failed` / `outcome_unknown` (new task with `retry_of`); step-up `automation:manage` | `--confirm-not-submitted` (required for `outcome_unknown`: the user checked nothing was submitted) | `{task}`; several ids: bulk results |
 | `logs` | Show/tail local logs | `--follow`, `--run <run_id>`, `--task <tsk_id>`, `--level` | NDJSON passthrough |
 | `config get/set/list/path` | Local config (§9) | — | |
 | `config purge` | Delete local caches, logs, staging files and (with `--profiles`) browser profiles; never touches cloud data | `--profiles`, `--yes` | `{deleted:[…]}` |
@@ -210,6 +213,23 @@ Long-running commands stream NDJSON events (§5) and end with one envelope line.
 | `version` | Versions of pilih-jobs, Python, Playwright, Scrapling, browser | — | |
 | `update` | Self-update via the detected installer (22 §5) | `--check` | `{current, latest, action}` |
 | `uninstall` | Log out, stop the worker service, and print the installer-specific removal command (22 §11) | `--purge-data` | `{steps:[…]}` |
+
+**Bulk results.** Every list-item mutation (`inbox track|dismiss|seen|restore`, `move`,
+`edit`, `follow-up`, `archive`, `rm`, `rules enable|disable`, `devices revoke`,
+`approvals decide`, `tasks cancel|retry`) takes several ids. Ids are checked for their prefix
+up front (exit 2), deduplicated in order, and processed one by one: one id failing never
+stops the others (errors that hold for every id — not signed in, a missing scope, an
+upgrade — abort as usual). With one id a command keeps its single-id output (the `inbox`
+commands always report results). With several, `data` is
+`{results: [{id, status, error?, message?, …fields}], summary: {ok, skipped, conflict,
+not_found, failed, queued}}`; `status` is `ok` (done, or an expected no-op), `skipped`
+(deliberately not attempted, `error` says why), `conflict` (409, already decided, hash
+mismatch), `not_found`, `failed` or `queued` (offline, in the outbox). Conflicts are reported,
+never prompted. Exit 0 when every id is `ok`; otherwise the first `failed` id's own code, then
+7 (queued), 6 (conflict), 8 (a skip that needs a one-by-one decision), 5 (not found). Human
+mode prints a table and a summary line. List commands take `--ids` (one id per line, also
+with `-q`; JSON `{ids[]}`) so a listing pipes into a bulk command, and human tables never
+truncate id columns.
 
 ---
 

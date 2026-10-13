@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from typing import Any, cast
 
 import typer
@@ -10,6 +11,7 @@ from rich.console import Console
 from pilih_jobs.api.errors import ApiError, NetworkError
 from pilih_jobs.cli.context import state
 from pilih_jobs.cli.output import key_value_table
+from pilih_jobs.contracts import ids
 from pilih_jobs.environment import installed_browsers
 from pilih_jobs.errors import NotAuthenticatedError
 from pilih_jobs.runtime import Runtime
@@ -80,6 +82,23 @@ def collect_status(rt: Runtime, *, offline_reason: str | None) -> dict[str, Any]
     }
 
 
+def fmt_since(value: Any, *, now_ms: int) -> str:
+    """`2026-10-13 09:41 (5 min ago)` in local time; `never` when there is no timestamp."""
+    if not isinstance(value, int) or isinstance(value, bool):
+        return "never"
+    when = datetime.fromtimestamp(value / 1000, tz=UTC).astimezone().strftime("%Y-%m-%d %H:%M")
+    seconds = max(0, (now_ms - value) // 1000)
+    if seconds < 60:
+        ago = "just now"
+    elif seconds < 3600:
+        ago = f"{seconds // 60} min ago"
+    elif seconds < 86_400:
+        ago = f"{seconds // 3600} h ago"
+    else:
+        ago = f"{seconds // 86_400} d ago"
+    return f"{when} ({ago})"
+
+
 def _human(console: Console, value: Any) -> None:
     data = cast(dict[str, Any], value)
     auth = cast(dict[str, Any], data["auth"])
@@ -99,7 +118,7 @@ def _human(console: Console, value: Any) -> None:
                 f"{outbox['dead']} dead",
                 "browser": f"{browser['mode']} ({browser['channel']}); "
                 f"{', '.join(browser['installed']) or 'no browser installed'}",
-                "last sync": data["last_sync_at"] or "never",
+                "last sync": fmt_since(data["last_sync_at"], now_ms=ids.now_ms()),
                 "approvals": f"{data['approvals_pending']} pending",
             }
         )

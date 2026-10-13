@@ -246,3 +246,67 @@ export function stepSelection(
   const next = (index + direction + list.length) % list.length;
   return list[next]?.id ?? null;
 }
+
+/**
+ * Why a selected approval is left out of a bulk decision. Bulk approve only
+ * covers approvals whose single decision needs nothing but a confirmation:
+ * a submission is reviewed one by one (12 §6.1), an answer needs typed
+ * answers (21 §6.3), a rule activation needs its name typed (D-35).
+ */
+export type BulkDecideSkip =
+  | "not_pending"
+  | "expired"
+  | "submit_review"
+  | "answer_input"
+  | "rule_name";
+
+export function bulkDecideSkip(
+  approval: Pick<ApprovalRecord, "state" | "kind" | "expires_at">,
+  decision: "approve" | "reject",
+  nowMs: number
+): BulkDecideSkip | null {
+  if (approval.state !== "pending") {
+    return "not_pending";
+  }
+  if (approval.expires_at <= nowMs) {
+    return "expired";
+  }
+  if (decision === "reject") {
+    return null;
+  }
+  switch (approval.kind) {
+    case "submit":
+      return "submit_review";
+    case "answer":
+      return "answer_input";
+    case "rule_activation":
+      return "rule_name";
+    default:
+      return null;
+  }
+}
+
+export interface BulkDecidePlan<T> {
+  send: T[];
+  skip: { approval: T; reason: BulkDecideSkip }[];
+}
+
+/** Splits a selection into what a bulk decision sends and what it skips. */
+export function planBulkDecision<
+  T extends Pick<ApprovalRecord, "state" | "kind" | "expires_at">,
+>(
+  approvals: readonly T[],
+  decision: "approve" | "reject",
+  nowMs: number
+): BulkDecidePlan<T> {
+  const plan: BulkDecidePlan<T> = { send: [], skip: [] };
+  for (const approval of approvals) {
+    const reason = bulkDecideSkip(approval, decision, nowMs);
+    if (reason) {
+      plan.skip.push({ approval, reason });
+    } else {
+      plan.send.push(approval);
+    }
+  }
+  return plan;
+}

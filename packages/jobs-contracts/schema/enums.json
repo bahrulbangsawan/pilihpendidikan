@@ -340,7 +340,7 @@
     },
     "InboxBulkAction": {
       "type": "string",
-      "enum": ["track", "dismiss", "seen", "score"]
+      "enum": ["track", "dismiss", "seen", "score", "restore"]
     },
     "InboxState": {
       "type": "string",

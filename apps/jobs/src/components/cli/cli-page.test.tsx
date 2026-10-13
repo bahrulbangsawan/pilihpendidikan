@@ -284,6 +284,116 @@ describe("TW-DEVICES the /cli page (12 §7, 22 §12)", () => {
   );
 
   it(
+    "TW-DEVICES bulk: select all, Take tasks off skips the revoked device, Revoke warns that no computer is left and posts one revoke per live device",
+    async () => {
+      const mac = makeDevice({ name: "MacBook", active: true, revision: 4 });
+      const desk = makeDevice({ name: "Desktop", revision: 6 });
+      const old = makeDevice({
+        name: "Old laptop",
+        revoked_at: NOW - DAY,
+        accepts_tasks: false,
+        online: false,
+      });
+      const tasks = [makeTask({ lease_device_id: mac.id, state: "running" })];
+      const api = fakeApi({
+        "PATCH /api/v1/devices/{dev_id}": (request) => ({
+          device: { ...mac, ...(request.body as object) },
+        }),
+        "POST /api/v1/devices/{dev_id}/revoke": () => ({
+          device: { ...mac, revoked_at: NOW },
+          tasks: {
+            outcome_unknown: 0,
+            requeued: 0,
+            awaiting_approval: 0,
+            cancelled: 0,
+          },
+        }),
+        "GET /api/v1/devices": () => ({ items: [], next_cursor: null }),
+      });
+      renderWithProviders(
+        <DevicesBand
+          devices={[mac, desk, old]}
+          loading={false}
+          meta={makeMeta()}
+          nowMs={NOW}
+          runs={[]}
+          tasks={tasks}
+        />
+      );
+      const selectAll = async () => {
+        await act(async () => {
+          document
+            .querySelector<HTMLElement>("[aria-label='Select all']")
+            ?.click();
+          await Promise.resolve();
+        });
+        await waitFor(() => {
+          expect(document.body.textContent).toContain("3 selected");
+        });
+      };
+      await selectAll();
+      await act(async () => {
+        buttonByText("Take tasks: off")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(api.calls("PATCH /api/v1/devices/{dev_id}")).toHaveLength(2);
+      });
+      expect(
+        api
+          .calls("PATCH /api/v1/devices/{dev_id}")
+          .map((call) => [call.params?.dev_id, call.body])
+      ).toEqual([
+        [mac.id, { accepts_tasks: false, base_revision: 4 }],
+        [desk.id, { accepts_tasks: false, base_revision: 6 }],
+      ]);
+      await waitFor(() => {
+        expect(document.body.textContent).not.toContain("3 selected");
+      });
+
+      await selectAll();
+      await act(async () => {
+        [
+          ...document.querySelectorAll<HTMLButtonElement>(
+            "[role='toolbar'] button"
+          ),
+        ]
+          .find((button) => button.textContent === "Revoke")
+          ?.click();
+        await Promise.resolve();
+      });
+      const dialog = await (async () => {
+        await waitFor(() => {
+          expect(document.querySelector("[role='alertdialog']")).not.toBeNull();
+        });
+        return document.querySelector("[role='alertdialog']");
+      })();
+      expect(dialog?.textContent).toContain("Revoke 2 devices?");
+      expect(dialog?.textContent).toContain("1 running task will be stopped");
+      expect(dialog?.textContent).toContain(
+        "No computer will be left signed in"
+      );
+      expect(dialog?.textContent).toContain("Already revoked, skipped: 1.");
+      expect(api.calls("POST /api/v1/devices/{dev_id}/revoke")).toHaveLength(0);
+      await act(async () => {
+        buttonByText("Revoke 2")?.click();
+        await Promise.resolve();
+      });
+      await waitFor(() => {
+        expect(api.calls("POST /api/v1/devices/{dev_id}/revoke")).toHaveLength(
+          2
+        );
+      });
+      expect(
+        api
+          .calls("POST /api/v1/devices/{dev_id}/revoke")
+          .map((call) => call.params?.dev_id)
+      ).toEqual([mac.id, desk.id]);
+    },
+    DOM_TEST_TIMEOUT
+  );
+
+  it(
     "TW-DEVICES warns about outboxes stuck over an hour and retries a retryable failed task",
     async () => {
       const stuck = makeDevice({

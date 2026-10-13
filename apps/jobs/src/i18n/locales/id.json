@@ -511,6 +511,17 @@
     "resultsTitle": "Hasil per lamaran",
     "illegalReason": "Pemindahan itu tidak diizinkan dari tahapnya sekarang.",
     "liveTask": "Sebuah proses sedang mengerjakannya: pindahkan secara terpisah.",
+    "unchanged": "Sudah sesuai.",
+    "alreadyRunning": "Sudah ada proses yang mengantre atau sedang mengerjakannya.",
+    "autoNeedsRule": "Tidak ada aturan otomatis aktif yang cocok.",
+    "setModeAuto": "Mode: Otomatis (hanya yang cocok dengan aturan)",
+    "purge": "Hapus permanen",
+    "purgeMenu": "Hapus permanen…",
+    "purgeTitle": "Hapus {count} lamaran secara permanen?",
+    "purgeBlocked": "Dilewati karena ada proses atau pengiriman yang berjalan: {count}.",
+    "purgeSubmission": "Pengiriman sedang berlangsung: tunggu sampai selesai.",
+    "purgeLiveTask": "Sebuah proses sedang mengerjakannya: batalkan prosesnya dulu.",
+    "purgeAction": "Hapus permanen {count}",
     "manualMode": "Lamaran manual tidak dapat diantrekan.",
     "scoring": "{queued} masuk antrean penilaian, {cached} sudah dinilai.",
     "scoringFailed": "Tidak dapat meminta penilaian.",
@@ -519,7 +530,13 @@
       "skipped": "Dilewati",
       "conflict": "Berubah di tempat lain",
       "failed": "Gagal"
-    }
+    },
+    "selectAll": "Pilih semua",
+    "selectRow": "Pilih {name}",
+    "resultsTitleRows": "Hasil per item",
+    "deleteTitle": "Hapus {count} item?",
+    "deleteBody": "Tindakan ini tidak bisa dibatalkan.",
+    "delete": "Hapus {count}"
   },
   "followUp": {
     "heading": "Tindak lanjut",
@@ -703,7 +720,17 @@
     "rejectTitle": "Tandai lamaran ditolak?",
     "rejectBody": "Wawancara yang tidak lolos tidak otomatis menolak lamaran. Pindahkan ke Ditolak sekarang?",
     "markRejected": "Pindahkan ke Ditolak",
-    "keepStage": "Nanti saja"
+    "keepStage": "Nanti saja",
+    "rowLabel": "babak {round}, {kind}",
+    "bulk": {
+      "setOutcomeLabel": "Atur hasil",
+      "setOutcome": "Hasil: {outcome}",
+      "unchanged": "Hasilnya sudah ini.",
+      "delete": "Hapus",
+      "deleteTitle": "Hapus {count} wawancara?",
+      "deleteBody": "Wawancara itu hilang dari lamaran ini dan dari ekspor kalender Anda. Tindakan ini tidak bisa dibatalkan.",
+      "gone": "Wawancara ini sudah tidak ada di daftar."
+    }
   },
   "offers": {
     "heading": "Tawaran",
@@ -731,7 +758,14 @@
     "withdrawTitle": "Tarik lamaran?",
     "withdrawBody": "Anda menolak tawaran ini. Pindahkan lamaran ke Ditarik?",
     "withdraw": "Pindahkan ke Ditarik",
-    "keepStage": "Nanti saja"
+    "keepStage": "Nanti saja",
+    "rowLabel": "tawaran yang diterima {date}",
+    "bulk": {
+      "delete": "Hapus",
+      "deleteTitle": "Hapus {count} tawaran?",
+      "deleteBody": "Tawaran itu hilang dari lamaran ini. Tahap lamaran tetap seperti sekarang. Tindakan ini tidak bisa dibatalkan.",
+      "gone": "Tawaran ini sudah tidak ada di daftar."
+    }
   },
   "checklists": {
     "heading": "Daftar periksa",
@@ -993,7 +1027,17 @@
       "never": "Tidak pernah",
       "approval": "Dengan persetujuan saya",
       "always": "Selalu"
-    }
+    },
+    "bulk": {
+      "setAutoUse": "Gunakan: {value}",
+      "unchanged": "Sudah sesuai.",
+      "protectedSkipped": "{count} terlindungi dilewati",
+      "delete": "Hapus",
+      "deleteTitle": "Hapus {count} jawaban?",
+      "deleteBody": "Formulir yang menanyakan pertanyaan ini akan memerlukan jawaban Anda lagi. Tindakan ini tidak bisa dibatalkan.",
+      "gone": "Jawaban ini sudah tidak ada di daftar."
+    },
+    "deleteOneTitle": "Hapus jawaban ini?"
   },
   "cvs": {
     "intro": "CV Anda dari pembuat CV. Impor fakta dari salah satunya untuk mengisi profil Anda.",
@@ -1381,6 +1425,25 @@
     }
   },
   "approvals": {
+    "bulk": {
+      "approve": "Setujui…",
+      "reject": "Tolak…",
+      "approveTitle": "Setujui persetujuan yang dipilih?",
+      "rejectTitle": "Tolak persetujuan yang dipilih?",
+      "approveBody": "{send} akan disetujui dan {skipped} dilewati. Pengiriman, jawaban, dan aktivasi aturan ditinjau satu per satu.",
+      "rejectBody": "{send} akan ditolak dan {skipped} dilewati. Pengiriman yang ditolak tidak pernah dikirim.",
+      "approveConfirm": "Setujui {count}",
+      "rejectConfirm": "Tolak {count}",
+      "actionApprove": "Setujui persetujuan",
+      "actionReject": "Tolak persetujuan",
+      "skip": {
+        "notPending": "Sudah diputuskan.",
+        "expired": "Persetujuan ini kedaluwarsa.",
+        "submitReview": "Pengiriman ditinjau satu per satu: buka secara terpisah.",
+        "answerInput": "Perlu jawaban Anda: buka secara terpisah.",
+        "ruleName": "Nama aturan perlu diketik: buka secara terpisah."
+      }
+    },
     "viewLabel": "Tampilkan",
     "pending": "Menunggu",
     "decided": "Sudah diputuskan",
@@ -1509,6 +1572,23 @@
     "reviewCv": "Tinjau CV di halaman lamaran"
   },
   "rules": {
+    "bulk": {
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "delete": "Hapus…",
+      "actionEnable": "Aktifkan aturan",
+      "actionDisable": "Nonaktifkan aturan",
+      "actionDelete": "Hapus aturan",
+      "deleteTitle": "Hapus aturan yang dipilih?",
+      "deleteBody": "Aturan yang dihapus: {count}. Aktivasi yang menunggu ikut kedaluwarsa; proses yang sudah dimulai tetap berjalan. Tindakan ini tidak bisa dibatalkan.",
+      "deleteConfirm": "Hapus {count}",
+      "skip": {
+        "alreadyOn": "Sudah aktif.",
+        "alreadyOff": "Sudah nonaktif.",
+        "needsActivation": "Aturan otomatis diaktifkan satu per satu: gunakan sakelarnya dan ketik namanya untuk mengaktifkan.",
+        "expired": "Kedaluwarsa: ubah aturan untuk memperpanjangnya dulu."
+      }
+    },
     "intro": "Aturan memulai proses sendiri untuk lowongan yang cocok. Aturan otomatis mengirim tanpa bertanya, dalam batas yang ketat.",
     "new": "Aturan baru",
     "newTitle": "Aturan baru",
@@ -1628,6 +1708,25 @@
     }
   },
   "runs": {
+    "bulk": {
+      "cancel": "Batalkan…",
+      "retry": "Coba lagi…",
+      "cancelTitle": "Batalkan proses yang dipilih?",
+      "cancelBody": "{send} akan dibatalkan dan {skipped} dilewati. Perangkat berhenti sebelum mengirim apa pun.",
+      "retryTitle": "Ulangi proses yang dipilih?",
+      "retryBody": "{send} proses yang gagal diantrekan lagi dan {skipped} dilewati. Proses yang hasilnya tidak diketahui perlu menjawab “Apakah lamaran ini terkirim?” secara terpisah.",
+      "cancelConfirm": "Batalkan {count}",
+      "retryConfirm": "Coba lagi {count}",
+      "actionCancel": "Batalkan proses",
+      "actionRetry": "Ulangi proses",
+      "skip": {
+        "notCancellable": "Sudah selesai.",
+        "alreadyCancelling": "Sedang dihentikan.",
+        "submitting": "Sudah mengirim: terlambat untuk dibatalkan.",
+        "needsAnswer": "Jawab “Apakah lamaran ini terkirim?” di proses ini dulu.",
+        "notRetryable": "Hanya proses yang gagal yang bisa diulang."
+      }
+    },
     "filter": "Status",
     "allStates": "Semua status",
     "stale": "Offline — menampilkan proses dari {time}",
@@ -1973,6 +2072,21 @@
       "resultRequeued": "{count} kembali ke antrean",
       "resultAwaiting": "{count} masih menunggu persetujuan",
       "resultCancelled": "{count} dibatalkan"
+    },
+    "bulk": {
+      "tasksOn": "Menerima tugas: ya",
+      "tasksOff": "Menerima tugas: tidak",
+      "revoke": "Cabut",
+      "revokeTitle": "Cabut {count} perangkat?",
+      "revokeConfirm": "Cabut {count}",
+      "signsOut": "Mengeluarkan {count} perangkat. Perangkat itu tidak bisa sinkron atau mengambil tugas sampai Anda masuk lagi di sana.",
+      "idle": "Tidak ada yang sedang berjalan di perangkat itu.",
+      "pinned": "Tugas dalam antrean untuk perangkat itu akan dibatalkan: {count}.",
+      "leavesNone": "Tidak ada komputer yang tetap masuk: penemuan dan pelamaran berhenti sampai Anda masuk lagi dengan CLI.",
+      "skipRevoked": "Sudah dicabut, dilewati: {count}.",
+      "alreadyRevoked": "Sudah dicabut.",
+      "signedOut": "Sudah keluar: masuk lagi di perangkat itu sebelum mengambil tugas.",
+      "unchanged": "Sudah sesuai."
     }
   },
   "sources": {
@@ -2059,6 +2173,19 @@
     "delete": {
       "title": "Hapus {label}?",
       "body": "Penemuan berhenti memakainya. Lowongan yang sudah ditemukan tetap ada di kotak masuk dan papan Anda."
+    },
+    "bulk": {
+      "enable": "Aktifkan",
+      "disable": "Nonaktifkan",
+      "alreadyEnabled": "Sudah aktif.",
+      "alreadyDisabled": "Sudah nonaktif.",
+      "runNow": "Jalankan sekarang",
+      "disabledSkip": "Sumber nonaktif tidak dijalankan: aktifkan dulu.",
+      "runBatches": "Dikirim sebagai satu tugas penemuan per {max} sumber.",
+      "delete": "Hapus",
+      "deleteTitle": "Hapus {count} sumber?",
+      "deleteBody": "Penemuan berhenti memakainya. Lowongan yang sudah ditemukan tetap ada di kotak masuk dan papan Anda. Tindakan ini tidak bisa dibatalkan.",
+      "gone": "Sumber ini sudah tidak ada di daftar."
     },
     "sheet": {
       "addTitle": "Tambah sumber",
@@ -2297,6 +2424,7 @@
       "dismiss": "Abaikan",
       "score": "Nilai",
       "seen": "Tandai dilihat",
+      "restore": "Pulihkan",
       "clear": "Batalkan pilihan",
       "working": "Memproses…"
     },
@@ -2305,13 +2433,15 @@
         "track": "{count} dilacak",
         "dismiss": "{count} diabaikan",
         "seen": "{count} ditandai dilihat",
-        "score": "Menilai {count}"
+        "score": "Menilai {count}",
+        "restore": "{count} dipulihkan"
       },
       "already": {
         "track": "{count} sudah dilacak",
         "dismiss": "{count} sudah diabaikan",
         "seen": "{count} sudah dilihat",
-        "score": "{count} sudah dinilai"
+        "score": "{count} sudah dinilai",
+        "restore": "{count} sudah ada di kotak masuk"
       },
       "conflicts": "{count} sudah dilacak, tidak diabaikan",
       "failed": "{count} gagal",

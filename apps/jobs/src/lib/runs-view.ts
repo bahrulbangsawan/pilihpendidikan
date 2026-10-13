@@ -116,3 +116,47 @@ export const RUN_FILTERS: readonly (TaskState | "all")[] = [
   "expired",
   "claimed",
 ];
+
+/**
+ * Why a selected run is left out of a bulk Cancel: only live runs the API
+ * can still stop (21 §12: queued … awaiting approval, no submission in
+ * flight, not already asked to stop).
+ */
+export type BulkCancelSkip =
+  | "not_cancellable"
+  | "already_cancelling"
+  | "submitting";
+
+export function bulkCancelSkip(
+  task: Pick<
+    AutomationTaskRecord,
+    "state" | "cancel_requested" | "submit_intent_at"
+  >
+): BulkCancelSkip | null {
+  if (!isCancellable(task.state)) {
+    return "not_cancellable";
+  }
+  if (task.submit_intent_at !== null) {
+    return "submitting";
+  }
+  if (task.cancel_requested) {
+    return "already_cancelling";
+  }
+  return null;
+}
+
+/**
+ * Why a selected run is left out of a bulk Retry: only `failed` runs. An
+ * `outcome_unknown` run first needs "Did this application go through?"
+ * answered for that run (21 §8, D-19) — never a blind retry.
+ */
+export type BulkRetrySkip = "needs_answer" | "not_retryable";
+
+export function bulkRetrySkip(
+  task: Pick<AutomationTaskRecord, "state">
+): BulkRetrySkip | null {
+  if (task.state === "outcome_unknown") {
+    return "needs_answer";
+  }
+  return task.state === "failed" ? null : "not_retryable";
+}

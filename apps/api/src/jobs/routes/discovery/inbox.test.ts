@@ -318,6 +318,32 @@ describe("TD-BULK inbox:bulk (05 §4)", () => {
     ]);
   });
 
+  it("TD-BULK restore brings dismissed jobs back as seen and leaves the others alone", async () => {
+    const { items } = await discover(
+      await Promise.all([1, 2, 3].map((n) => postingItem({ ref: `${n}` })))
+    );
+    const [a, b, c] = items.map((i) => i.user_job_id ?? "");
+    await bulk(f.web, [a, b], "dismiss");
+    await bulk(f.web, [c], "track");
+    const res = InboxBulkResponseSchema.parse(
+      (await bulk(f.web, [a, b, c, newId("ujb")], "restore")).body
+    );
+    expect(res.results.map((r) => [r.status, r.inbox_state])).toEqual([
+      ["ok", "seen"],
+      ["ok", "seen"],
+      ["ok", "tracked"],
+      ["not_found", undefined],
+    ]);
+    const states = f.t.jobsSqlite
+      .query(
+        "SELECT id, inbox_state FROM user_jobs WHERE user_id = ? AND id IN (?, ?, ?)"
+      )
+      .all(f.cli.userId, a, b, c) as { id: string; inbox_state: string }[];
+    expect(
+      Object.fromEntries(states.map((row) => [row.id, row.inbox_state]))
+    ).toEqual({ [a]: "seen", [b]: "seen", [c]: "tracked" });
+  });
+
   it("TD-BULK track creates applications through the board service; repeat tracks return the same card", async () => {
     const { items } = await discover(
       await Promise.all([1, 2].map((n) => postingItem({ ref: `${n}` })))

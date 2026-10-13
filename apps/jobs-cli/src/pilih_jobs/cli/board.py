@@ -29,6 +29,7 @@ from rich.table import Table
 
 from pilih_jobs.api.client import ApiClient
 from pilih_jobs.api.errors import ApiConflictError, NetworkError
+from pilih_jobs.cli import bulk
 from pilih_jobs.cli.context import CliState, state
 from pilih_jobs.cli.output import items_table, key_value_table
 from pilih_jobs.contracts import ids
@@ -216,6 +217,35 @@ def check_app_id(value: str) -> str:
     return value
 
 
+def check_app_ids(values: list[str]) -> list[str]:
+    """Every value is an `app_…` id (usage error otherwise); duplicates dropped, order kept."""
+    return bulk.check_ids("app", values, label="application id (app_…)")
+
+
+APP_RESULT_COLUMNS: Final = ("id", "status", "stage", "revision", "archived")
+
+
+class _AlreadyThere(Exception):  # noqa: N818 — a control-flow signal, not an error
+    """A multi-id move found the card in the target stage: nothing to send."""
+
+    def __init__(self, current: dict[str, Any]) -> None:
+        super().__init__("already in the target stage")
+        self.current = current
+
+
+def _app_outcome(app_id: str, data: dict[str, Any]) -> bulk.Outcome:
+    app = data.get("application")
+    if not isinstance(app, dict):
+        return bulk.ok(app_id)
+    record = cast(dict[str, Any], app)
+    return bulk.ok(
+        app_id,
+        stage=record.get("stage"),
+        revision=record.get("revision"),
+        archived=record.get("archived"),
+    )
+
+
 async def get_application(api: ApiClient, rt: Runtime, app_id: str) -> dict[str, Any]:
     detail = cast(dict[str, Any], await api.get(f"/api/v1/applications/{app_id}"))
     EntityCache(rt.db, rt.issuer).put("application", cast(dict[str, Any], detail["application"]))
@@ -238,8 +268,12 @@ async def conditional_application_write(
     build: Callable[[dict[str, Any]], tuple[str, str, dict[str, Any]]],
     *,
     describe: str,
+    ask: bool = True,
 ) -> dict[str, Any]:
-    """Send `build(current)` with `base_revision`; on 409 show the change and ask again."""
+    """Send `build(current)` with `base_revision`; on 409 show the change and ask again.
+
+    `ask=False` (multi-id commands) never asks: a conflict is that id's `ConflictError`.
+    """
     async with rt.api_client() as api:
         try:
             current = await base_revision(api, rt, app_id)
@@ -264,7 +298,7 @@ async def conditional_application_write(
                     f"(now {fresh.get('stage')}, revision {fresh.get('revision')}). "
                     f"Still {describe}?"
                 )
-                if not st.interactive:
+                if not (ask and st.interactive):
                     raise ConflictError(
                         question.replace("Still", "Not applied:").rstrip("?") + ".",
                         code="revision_conflict",
@@ -403,6 +437,9 @@ def board_cmd(
     include_archived: Annotated[
         bool, typer.Option("--archived", help="Include archived cards.")
     ] = False,
+    ids_only: Annotated[
+        bool, typer.Option("--ids", help="Print only the ids, one per line (for piping).")
+    ] = False,
 ) -> None:
     """Kanban board grouped by stage (GET /api/v1/board; 06 §11)."""
     st = state(ctx)
@@ -426,6 +463,11 @@ def board_cmd(
         for col in cast(list[dict[str, Any]], raw["columns"])
         if stage is None or col["stage"] == stage
     ]
+    if ids_only:
+        if banner:
+            st.out.notice(banner)
+        bulk.print_ids(st, (c.get("id") for col in columns for c in col["items"]))
+        return
     data: dict[str, Any] = {"columns": columns, "counts": raw.get("counts")}
     if banner:
         data["offline"] = banner
@@ -451,6 +493,12 @@ def list_cmd(
     include_archived: Annotated[
         bool, typer.Option("--archived", help="Include archived applications.")
     ] = False,
+    every: Annotated[
+        bool, typer.Option("--all", help="Every matching item (pages through; ignores --limit).")
+    ] = False,
+    ids_only: Annotated[
+        bool, typer.Option("--ids", help="Print only the ids, one per line (for piping).")
+    ] = False,
 ) -> None:
     """List applications (GET /api/v1/applications)."""
     st = state(ctx)
@@ -459,11 +507,12 @@ def list_cmd(
     rt = st.runtime()
 
     async def fetch(api: ApiClient) -> list[dict[str, Any]]:
-        params: dict[str, Any] = {"stage": stage, "q": q, "limit": limit}
+        params: dict[str, Any] = {"stage": stage, "q": q}
         if include_archived:
             params["include_archived"] = "1"
-        page = cast(dict[str, Any], await api.get("/api/v1/applications", params))
-        return cast(list[dict[str, Any]], page.get("items") or [])
+        return await bulk.collect_pages(
+            api, "/api/v1/applications", params, limit=None if every else limit
+        )
 
     def cached() -> list[dict[str, Any]] | None:
         cards = _cached_cards(rt, stage=stage, archived=include_archived)
@@ -475,9 +524,14 @@ def list_cmd(
                 if needle in str(c["posting"].get("title") or "").lower()
                 or needle in str(c["posting"].get("company_name") or "").lower()
             ]
-        return cards[:limit]
+        return cards if every else cards[:limit]
 
     items, banner = st.run(fetch_or_cache(rt, fetch, cached))
+    if ids_only:
+        if banner:
+            st.out.notice(banner)
+        bulk.print_ids(st, (c.get("id") for c in items))
+        return
     data: dict[str, Any] = {"items": items}
     if banner:
         data["offline"] = banner
@@ -641,51 +695,96 @@ async def track_one(
 
 
 # ============================================================================ move
+def _split_trailing(values: list[str], what: str) -> tuple[list[str], str]:
+    """`<app_id…> <value>`: the last positional is the value, the rest are app ids."""
+    if len(values) < 2:
+        raise UsageError(f"Pass one or more app_… ids followed by the {what}.")
+    return check_app_ids(values[:-1]), values[-1]
+
+
 def move_cmd(
     ctx: typer.Context,
-    app_id: Annotated[str, typer.Argument(help="app_… id")],
-    stage: Annotated[str, typer.Argument(help="Target stage")],
+    args: Annotated[
+        list[str],
+        typer.Argument(
+            help="One or more app_… ids, then the target stage.", metavar="APP_ID... STAGE"
+        ),
+    ],
     before: Annotated[
-        str | None, typer.Option("--before", help="Place before this app_… in the column.")
+        str | None,
+        typer.Option("--before", help="Place before this app_… in the column (one id only)."),
     ] = None,
     after: Annotated[
-        str | None, typer.Option("--after", help="Place after this app_… in the column.")
+        str | None,
+        typer.Option("--after", help="Place after this app_… in the column (one id only)."),
     ] = None,
 ) -> None:
-    """Change stage / reorder (POST …/move with base_revision from the cache)."""
+    """Change stage / reorder (POST …/move with base_revision from the cache).
+
+    Several ids move to the same stage, each with its own base_revision; a conflict or a
+    disallowed transition is reported for that id and the others still move.
+    """
     st = state(ctx)
-    check_app_id(app_id)
+    app_ids, stage = _split_trailing(list(args), "target stage")
     if stage not in STAGES:
         raise UsageError(f"stage must be one of {', '.join(STAGES)}.")
     for neighbour in (before, after):
         if neighbour is not None:
             check_app_id(neighbour)
+    if len(app_ids) > 1 and (before or after):
+        raise UsageError("--before/--after place one card; pass a single app_… id with them.")
     rt = st.runtime()
 
-    def build(current: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
-        here = str(current.get("stage"))
-        if here != stage and not can_transition(here, stage, "user"):
-            raise PilihError(
-                f"{here} → {stage} is not an allowed transition (03 §5.1).",
-                code="invalid_transition",
-            )
-        body: dict[str, Any] = {"base_revision": current["revision"], "stage": stage}
-        if before:
-            body["before_id"] = before
-        if after:
-            body["after_id"] = after
-        return "POST", f"/api/v1/applications/{app_id}/move", body
+    def builder(app_id: str) -> Callable[[dict[str, Any]], tuple[str, str, dict[str, Any]]]:
+        def build(current: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
+            here = str(current.get("stage"))
+            if here == stage and len(app_ids) > 1:
+                # A same-stage move without a position reorders the card to the end of
+                # its column; in a bulk move that would only reshuffle the column.
+                raise _AlreadyThere(current)
+            if here != stage and not can_transition(here, stage, "user"):
+                raise PilihError(
+                    f"{here} → {stage} is not an allowed transition (03 §5.1).",
+                    code="invalid_transition",
+                )
+            body: dict[str, Any] = {"base_revision": current["revision"], "stage": stage}
+            if before:
+                body["before_id"] = before
+            if after:
+                body["after_id"] = after
+            return "POST", f"/api/v1/applications/{app_id}/move", body
 
-    data = st.run(
-        conditional_application_write(st, rt, app_id, build, describe=f"move it to {stage}")
-    )
-    st.out.result(
-        data,
-        human=lambda c, v: c.print(
-            f"{app_id} → {v['application']['stage']} (revision {v['application']['revision']}).",
-            markup=False,
-        ),
-    )
+        return build
+
+    if len(app_ids) == 1:
+        app_id = app_ids[0]
+        data = st.run(
+            conditional_application_write(
+                st, rt, app_id, builder(app_id), describe=f"move it to {stage}"
+            )
+        )
+        st.out.result(
+            data,
+            human=lambda c, v: c.print(
+                f"{app_id} → {v['application']['stage']} "
+                f"(revision {v['application']['revision']}).",
+                markup=False,
+            ),
+        )
+        return
+
+    async def one(app_id: str) -> bulk.Outcome:
+        try:
+            data = await conditional_application_write(
+                st, rt, app_id, builder(app_id), describe=f"move it to {stage}", ask=False
+            )
+        except _AlreadyThere as same:
+            outcome = _app_outcome(app_id, {"application": same.current})
+            outcome.fields["changed"] = False
+            return outcome
+        return _app_outcome(app_id, data)
+
+    bulk.emit(st, st.run(bulk.run_each(app_ids, one)), columns=APP_RESULT_COLUMNS)
 
 
 # ============================================================================ submission
@@ -757,7 +856,9 @@ def confirm_cmd(
 # ============================================================================ edit, archive
 def edit_cmd(
     ctx: typer.Context,
-    app_id: Annotated[str, typer.Argument(help="app_… id")],
+    app_ids: Annotated[
+        list[str], typer.Argument(help="One or more app_… ids", metavar="APP_ID...")
+    ],
     priority: Annotated[str | None, typer.Option("--priority", help="high|normal|low")] = None,
     follow_up: Annotated[
         str | None,
@@ -767,9 +868,9 @@ def edit_cmd(
         str | None, typer.Option("--mode", help="manual|assisted|approval|auto")
     ] = None,
 ) -> None:
-    """Edit fields (PATCH /api/v1/applications/{id})."""
+    """Edit fields (PATCH /api/v1/applications/{id}); the same change for every id."""
     st = state(ctx)
-    check_app_id(app_id)
+    values = check_app_ids(app_ids)
     changes: dict[str, Any] = {}
     if priority is not None:
         if priority.lower() not in PRIORITIES:
@@ -784,12 +885,20 @@ def edit_cmd(
     if not changes:
         raise UsageError("Nothing to change: pass --priority, --follow-up or --mode.")
     rt = st.runtime()
-    data = st.run(_patch(st, rt, app_id, changes, "edit it"))
-    st.out.result(data)
+    if len(values) == 1:
+        st.out.result(st.run(_patch(st, rt, values[0], changes, "edit it")))
+        return
+    _bulk_patch(st, rt, values, lambda _app_id: changes, "edit it")
 
 
 async def _patch(
-    st: CliState, rt: Runtime, app_id: str, changes: dict[str, Any], describe: str
+    st: CliState,
+    rt: Runtime,
+    app_id: str,
+    changes: dict[str, Any],
+    describe: str,
+    *,
+    ask: bool = True,
 ) -> dict[str, Any]:
     def build(current: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
         return (
@@ -798,40 +907,88 @@ async def _patch(
             {"base_revision": current["revision"], **changes},
         )
 
-    return await conditional_application_write(st, rt, app_id, build, describe=describe)
+    return await conditional_application_write(st, rt, app_id, build, describe=describe, ask=ask)
+
+
+def _bulk_patch(
+    st: CliState,
+    rt: Runtime,
+    app_ids: list[str],
+    changes: Callable[[str], dict[str, Any]],
+    describe: str,
+    *,
+    after: Callable[[str], Awaitable[Any]] | None = None,
+) -> None:
+    async def one(app_id: str) -> bulk.Outcome:
+        data = await _patch(st, rt, app_id, changes(app_id), describe, ask=False)
+        if after is not None:
+            await after(app_id)
+        return _app_outcome(app_id, data)
+
+    bulk.emit(st, st.run(bulk.run_each(app_ids, one)), columns=APP_RESULT_COLUMNS)
 
 
 def follow_up_cmd(
     ctx: typer.Context,
-    app_id: Annotated[str, typer.Argument(help="app_… id")],
-    when: Annotated[str, typer.Argument(help="7d | 2w | YYYY-MM-DD | done | clear")],
+    args: Annotated[
+        list[str],
+        typer.Argument(
+            help="One or more app_… ids, then 7d | 2w | YYYY-MM-DD | done | clear.",
+            metavar="APP_ID... WHEN",
+        ),
+    ],
 ) -> None:
     """Set follow_up_at (`done` clears it and notes the completed follow-up, 06 §7)."""
     st = state(ctx)
-    check_app_id(app_id)
+    app_ids, when = _split_trailing(list(args), "follow-up time")
+    done = when.strip().lower() == "done"
+    at = None if done else parse_when(when)
     rt = st.runtime()
-    if when.strip().lower() == "done":
 
-        async def done() -> dict[str, Any]:
+    async def note_done(app_id: str) -> None:
+        await _note(rt, app_id, "Follow-up done", kind="follow_up_done")
+
+    if len(app_ids) > 1:
+        if done:
+            _bulk_patch(
+                st,
+                rt,
+                app_ids,
+                lambda _a: {"follow_up_at": None},
+                "clear the follow-up",
+                after=note_done,
+            )
+        else:
+            _bulk_patch(st, rt, app_ids, lambda _a: {"follow_up_at": at}, "set the follow-up")
+        return
+    app_id = app_ids[0]
+    if done:
+
+        async def run_done() -> dict[str, Any]:
             result = await _patch(st, rt, app_id, {"follow_up_at": None}, "clear the follow-up")
-            await _note(rt, app_id, "Follow-up done", kind="follow_up_done")
+            await note_done(app_id)
             return result
 
-        st.out.result(st.run(done()))
+        st.out.result(st.run(run_done()))
         return
-    at = parse_when(when)
     st.out.result(st.run(_patch(st, rt, app_id, {"follow_up_at": at}, "set the follow-up")))
 
 
 def archive_cmd(
     ctx: typer.Context,
-    app_id: Annotated[str, typer.Argument(help="app_… id")],
+    app_ids: Annotated[
+        list[str], typer.Argument(help="One or more app_… ids", metavar="APP_ID...")
+    ],
     undo: Annotated[bool, typer.Option("--undo", help="Unarchive.")] = False,
 ) -> None:
     """Archive (hide from the board without changing the stage)."""
     st = state(ctx)
-    check_app_id(app_id)
+    values = check_app_ids(app_ids)
     rt = st.runtime()
+    if len(values) > 1:
+        _bulk_patch(st, rt, values, lambda _a: {"archived": not undo}, "archive it")
+        return
+    app_id = values[0]
     data = st.run(_patch(st, rt, app_id, {"archived": not undo}, "archive it"))
     st.out.result(
         {"archived": not undo, **data},
@@ -841,50 +998,81 @@ def archive_cmd(
     )
 
 
+async def _delete(rt: Runtime, app_id: str, *, purge: bool) -> dict[str, Any]:
+    async with rt.api_client() as api:
+        current = await base_revision(api, rt, app_id)
+        params = {"base_revision": current["revision"]}
+        if purge:
+            params["purge"] = 1
+        response = await api.request("DELETE", f"/api/v1/applications/{app_id}", params=params)
+    data = cast(dict[str, Any], response.data or {})
+    cache = EntityCache(rt.db, rt.issuer)
+    if data.get("purged"):
+        with rt.db.transaction() as conn:
+            conn.execute(
+                "UPDATE entity_cache SET deleted = 1 WHERE issuer = ? AND entity = "
+                "'application' AND entity_id = ?",
+                (rt.issuer, app_id),
+            )
+    elif isinstance(data.get("application"), dict):
+        cache.put("application", cast(dict[str, Any], data["application"]))
+    return data
+
+
 def rm_cmd(
     ctx: typer.Context,
-    app_id: Annotated[str, typer.Argument(help="app_… id")],
+    app_ids: Annotated[
+        list[str], typer.Argument(help="One or more app_… ids", metavar="APP_ID...")
+    ],
     purge: Annotated[
         bool,
         typer.Option("--purge", help="Hard delete (events, interviews, offers, files, tasks)."),
     ] = False,
 ) -> None:
-    """Archive, or with --purge hard-delete an application (asks for confirmation)."""
+    """Archive, or with --purge hard-delete applications (one confirmation for the set)."""
     st = state(ctx)
-    check_app_id(app_id)
-    question = (
-        f"Permanently delete {app_id} with its events, interviews, offers, CV variants, files "
-        "and tasks? This cannot be undone."
-        if purge
-        else f"Archive {app_id}?"
-    )
+    values = check_app_ids(app_ids)
+    if len(values) == 1:
+        target = values[0]
+        question = (
+            f"Permanently delete {target} with its events, interviews, offers, CV variants, "
+            "files and tasks? This cannot be undone."
+            if purge
+            else f"Archive {target}?"
+        )
+    else:
+        question = (
+            f"Permanently delete {len(values)} applications ({_preview(values)}) with their "
+            "events, interviews, offers, CV variants, files and tasks? This cannot be undone."
+            if purge
+            else f"Archive {len(values)} applications ({_preview(values)})?"
+        )
     if not st.confirm(question, default=False):
-        st.out.result({"deleted": False, "archived": False})
+        if len(values) == 1:
+            st.out.result({"deleted": False, "archived": False})
+        else:
+            st.out.result({"results": [], "summary": bulk.summary([]), "cancelled": True})
         return
     rt = st.runtime()
+    if len(values) == 1:
+        data = st.run(_delete(rt, values[0], purge=purge))
+        st.out.result({"deleted": bool(data.get("purged")), **data})
+        return
 
-    async def delete() -> dict[str, Any]:
-        async with rt.api_client() as api:
-            current = await base_revision(api, rt, app_id)
-            params = {"base_revision": current["revision"]}
-            if purge:
-                params["purge"] = 1
-            response = await api.request("DELETE", f"/api/v1/applications/{app_id}", params=params)
-        data = cast(dict[str, Any], response.data or {})
-        cache = EntityCache(rt.db, rt.issuer)
-        if data.get("purged"):
-            with rt.db.transaction() as conn:
-                conn.execute(
-                    "UPDATE entity_cache SET deleted = 1 WHERE issuer = ? AND entity = "
-                    "'application' AND entity_id = ?",
-                    (rt.issuer, app_id),
-                )
-        elif isinstance(data.get("application"), dict):
-            cache.put("application", cast(dict[str, Any], data["application"]))
-        return data
+    async def one(app_id: str) -> bulk.Outcome:
+        data = await _delete(rt, app_id, purge=purge)
+        return bulk.ok(
+            app_id, deleted=bool(data.get("purged")), archived=bool(data.get("archived"))
+        )
 
-    data = st.run(delete())
-    st.out.result({"deleted": bool(data.get("purged")), **data})
+    bulk.emit(
+        st, st.run(bulk.run_each(values, one)), columns=["id", "status", "deleted", "archived"]
+    )
+
+
+def _preview(values: list[str], limit: int = 3) -> str:
+    shown = ", ".join(values[:limit])
+    return shown if len(values) <= limit else f"{shown}, … {len(values) - limit} more"
 
 
 # ============================================================================ notes / checklists

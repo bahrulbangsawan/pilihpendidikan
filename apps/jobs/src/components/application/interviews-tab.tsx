@@ -33,6 +33,12 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@rulisme/ui/ui/field";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   Select,
@@ -61,14 +67,25 @@ import {
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@rulisme/ui/ui/toggle-group";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarPlus, Plus } from "lucide-react";
+import { CalendarPlus, ChevronDown, Plus } from "lucide-react";
 import type { FormEvent } from "react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { toast } from "sonner";
+import {
+  BulkConfirmDialog,
+  BulkRunResultsDialog,
+  BulkToolbar,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import { commitApplicationToBoard } from "@/hooks/use-board";
+import { useBulkRun } from "@/hooks/use-bulk-run";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
+import type { Selection } from "@/hooks/use-selection";
+import { useSelection } from "@/hooks/use-selection";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
+import { BulkSkip } from "@/lib/bulk";
 import {
   browserTimeZone,
   formatDateTime,
@@ -173,6 +190,8 @@ export function InterviewsTab({
     (a, b) => (a.scheduled_at ?? 0) - (b.scheduled_at ?? 0)
   );
   const canMove = application.stage === "applied" && interviews.length === 0;
+  const ids = useMemo(() => sorted.map((entry) => entry.id), [sorted]);
+  const selection = useSelection(ids);
 
   useEffect(() => {
     if (autoOpen) {
@@ -289,15 +308,28 @@ export function InterviewsTab({
           {t("interviews.add")}
         </Button>
       </div>
+      <InterviewsBulkBar
+        appId={appId}
+        interviews={sorted}
+        onFailed={() => {
+          if (!["rejected", "withdrawn"].includes(application.stage)) {
+            setAskReject(true);
+          }
+        }}
+        selection={selection}
+      />
       {sorted.length === 0 ? (
         <p className="type-body text-muted-foreground">
           {t("interviews.empty")}
         </p>
       ) : (
-        <div className="border border-line">
+        <div className="overflow-x-auto border border-line">
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-8">
+                  <SelectAllCheckbox selection={selection} />
+                </TableHead>
                 <TableHead>{t("interviews.round")}</TableHead>
                 <TableHead>{t("interviews.kind")}</TableHead>
                 <TableHead>{t("interviews.when")}</TableHead>
@@ -312,7 +344,24 @@ export function InterviewsTab({
               {sorted.map((interview) => {
                 const href = safeHref(interview.location);
                 return (
-                  <TableRow key={interview.id}>
+                  <TableRow
+                    data-state={
+                      selection.isSelected(interview.id)
+                        ? "selected"
+                        : undefined
+                    }
+                    key={interview.id}
+                  >
+                    <TableCell>
+                      <RowCheckbox
+                        id={interview.id}
+                        label={t("interviews.rowLabel", {
+                          round: interview.round,
+                          kind: interviewKindLabel(t, interview.kind),
+                        })}
+                        selection={selection}
+                      />
+                    </TableCell>
                     <TableCell className="tabular-nums">
                       {interview.round}
                     </TableCell>
@@ -586,5 +635,139 @@ export function InterviewsTab({
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+/**
+ * Bulk actions on the selected interviews: set the outcome (one PATCH per
+ * interview with its base_revision; a `failed` outcome asks "Mark
+ * application rejected?" once afterwards, like the single edit) and Delete
+ * (confirmed). The application, its timeline and the board are refreshed.
+ */
+function InterviewsBulkBar({
+  appId,
+  interviews,
+  selection,
+  onFailed,
+}: {
+  appId: string;
+  interviews: readonly InterviewRecord[];
+  onFailed: () => void;
+  selection: Selection;
+}) {
+  const { t } = useTranslation();
+  const invalidate = useMemo(
+    () => [
+      queryKeys.application(appId),
+      queryKeys.applicationEvents(appId),
+      queryKeys.boardAll,
+    ],
+    [appId]
+  );
+  const bulk = useBulkRun({ invalidate, onSucceeded: selection.clear });
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const byId = new Map(interviews.map((entry) => [entry.id, entry]));
+  const rows = selection.selectedIds.flatMap((id) => {
+    const interview = byId.get(id);
+    return interview
+      ? [
+          {
+            id,
+            label: t("interviews.rowLabel", {
+              round: interview.round,
+              kind: interviewKindLabel(t, interview.kind),
+            }),
+          },
+        ]
+      : [];
+  });
+
+  function interviewOf(id: string): InterviewRecord {
+    const interview = byId.get(id);
+    if (!interview) {
+      throw new BulkSkip("gone", t("interviews.bulk.gone"));
+    }
+    return interview;
+  }
+
+  async function setOutcome(outcome: InterviewOutcome) {
+    const results = await bulk.run(
+      t("interviews.bulk.setOutcome", {
+        outcome: interviewOutcomeLabel(t, outcome),
+      }),
+      rows,
+      async (id) => {
+        const interview = interviewOf(id);
+        if (interview.outcome === outcome) {
+          throw new BulkSkip("unchanged", t("interviews.bulk.unchanged"));
+        }
+        await api("PATCH /api/v1/applications/{app_id}/interviews/{ivw_id}", {
+          params: { app_id: appId, ivw_id: id },
+          body: { outcome, base_revision: interview.revision },
+          idempotencyKey: newIdempotencyKey(),
+        });
+      }
+    );
+    if (
+      outcome === "failed" &&
+      results.some((result) => result.status === "ok")
+    ) {
+      onFailed();
+    }
+  }
+
+  async function remove() {
+    await bulk.run(t("interviews.bulk.delete"), rows, async (id) => {
+      const interview = interviewOf(id);
+      await api("DELETE /api/v1/applications/{app_id}/interviews/{ivw_id}", {
+        params: { app_id: appId, ivw_id: id },
+        query: { base_revision: interview.revision },
+        idempotencyKey: newIdempotencyKey(),
+      });
+    });
+    setConfirmDelete(false);
+  }
+
+  return (
+    <>
+      <BulkToolbar count={rows.length} onClear={selection.clear}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button disabled={bulk.busy} size="sm" variant="outline">
+              {t("interviews.bulk.setOutcomeLabel")}
+              <ChevronDown aria-hidden="true" data-icon="inline-end" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {INTERVIEW_OUTCOMES.map((outcome) => (
+              <DropdownMenuItem
+                key={outcome}
+                onSelect={() => setOutcome(outcome)}
+              >
+                {interviewOutcomeLabel(t, outcome)}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button
+          disabled={bulk.busy}
+          onClick={() => setConfirmDelete(true)}
+          size="sm"
+          variant="ghost"
+        >
+          {t("interviews.bulk.delete")}
+        </Button>
+      </BulkToolbar>
+      <BulkConfirmDialog
+        body={t("interviews.bulk.deleteBody")}
+        busy={bulk.busy}
+        confirmLabel={t("bulk.delete", { count: rows.length })}
+        onConfirm={remove}
+        onOpenChange={setConfirmDelete}
+        open={confirmDelete}
+        title={t("interviews.bulk.deleteTitle", { count: rows.length })}
+      />
+      <BulkRunResultsDialog onClose={bulk.closeReport} report={bulk.report} />
+    </>
   );
 }

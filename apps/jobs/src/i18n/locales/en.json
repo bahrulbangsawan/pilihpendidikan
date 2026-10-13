@@ -511,6 +511,17 @@
     "resultsTitle": "Results per application",
     "illegalReason": "That move isn't allowed from its current stage.",
     "liveTask": "A run is working on it: move it on its own.",
+    "unchanged": "Already set.",
+    "alreadyRunning": "A run is already queued or working on it.",
+    "autoNeedsRule": "No enabled auto rule matches it.",
+    "setModeAuto": "Mode: Auto (rule matches only)",
+    "purge": "Delete for good",
+    "purgeMenu": "Delete for good…",
+    "purgeTitle": "Delete {count} applications for good?",
+    "purgeBlocked": "Skipped because a run or submission is in progress: {count}.",
+    "purgeSubmission": "A submission is in progress: wait for it to finish.",
+    "purgeLiveTask": "A run is working on it: cancel the run first.",
+    "purgeAction": "Delete {count} for good",
     "manualMode": "Manual applications can't be queued.",
     "scoring": "{queued} queued for scoring, {cached} already scored.",
     "scoringFailed": "Couldn't request scoring.",
@@ -519,7 +530,13 @@
       "skipped": "Skipped",
       "conflict": "Changed elsewhere",
       "failed": "Failed"
-    }
+    },
+    "selectAll": "Select all",
+    "selectRow": "Select {name}",
+    "resultsTitleRows": "Results per item",
+    "deleteTitle": "Delete {count} items?",
+    "deleteBody": "This can't be undone.",
+    "delete": "Delete {count}"
   },
   "followUp": {
     "heading": "Follow-up",
@@ -703,7 +720,17 @@
     "rejectTitle": "Mark the application rejected?",
     "rejectBody": "A failed interview doesn't reject the application on its own. Move it to Rejected now?",
     "markRejected": "Move to Rejected",
-    "keepStage": "Not now"
+    "keepStage": "Not now",
+    "rowLabel": "round {round}, {kind}",
+    "bulk": {
+      "setOutcomeLabel": "Set outcome",
+      "setOutcome": "Outcome: {outcome}",
+      "unchanged": "Already has this outcome.",
+      "delete": "Delete",
+      "deleteTitle": "Delete {count} interviews?",
+      "deleteBody": "They leave this application and your calendar exports. This can't be undone.",
+      "gone": "This interview is no longer listed."
+    }
   },
   "offers": {
     "heading": "Offers",
@@ -731,7 +758,14 @@
     "withdrawTitle": "Withdraw the application?",
     "withdrawBody": "You declined the offer. Move the application to Withdrawn?",
     "withdraw": "Move to Withdrawn",
-    "keepStage": "Not now"
+    "keepStage": "Not now",
+    "rowLabel": "the offer received {date}",
+    "bulk": {
+      "delete": "Delete",
+      "deleteTitle": "Delete {count} offers?",
+      "deleteBody": "They leave this application. The application's stage stays as it is. This can't be undone.",
+      "gone": "This offer is no longer listed."
+    }
   },
   "checklists": {
     "heading": "Checklists",
@@ -993,7 +1027,17 @@
       "never": "Never",
       "approval": "With my approval",
       "always": "Always"
-    }
+    },
+    "bulk": {
+      "setAutoUse": "Use it: {value}",
+      "unchanged": "Already set.",
+      "protectedSkipped": "{count} protected skipped",
+      "delete": "Delete",
+      "deleteTitle": "Delete {count} answers?",
+      "deleteBody": "Forms that ask these questions will need your answer again. This can't be undone.",
+      "gone": "This answer is no longer listed."
+    },
+    "deleteOneTitle": "Delete this answer?"
   },
   "cvs": {
     "intro": "Your CVs from the CV builder. Import facts from one to fill your profile.",
@@ -1381,6 +1425,25 @@
     }
   },
   "approvals": {
+    "bulk": {
+      "approve": "Approve…",
+      "reject": "Reject…",
+      "approveTitle": "Approve the selected approvals?",
+      "rejectTitle": "Reject the selected approvals?",
+      "approveBody": "{send} will be approved and {skipped} skipped. Submissions, answers and rule activations are reviewed one at a time.",
+      "rejectBody": "{send} will be rejected and {skipped} skipped. Rejected submissions are never sent.",
+      "approveConfirm": "Approve {count}",
+      "rejectConfirm": "Reject {count}",
+      "actionApprove": "Approve approvals",
+      "actionReject": "Reject approvals",
+      "skip": {
+        "notPending": "Already decided.",
+        "expired": "This approval has expired.",
+        "submitReview": "Submissions are reviewed one at a time: open it on its own.",
+        "answerInput": "Needs your answers: open it on its own.",
+        "ruleName": "Needs the rule's name typed: open it on its own."
+      }
+    },
     "viewLabel": "Show",
     "pending": "Pending",
     "decided": "Decided",
@@ -1509,6 +1572,23 @@
     "reviewCv": "Review the CV on the application"
   },
   "rules": {
+    "bulk": {
+      "enable": "Turn on",
+      "disable": "Turn off",
+      "delete": "Delete…",
+      "actionEnable": "Turn rules on",
+      "actionDisable": "Turn rules off",
+      "actionDelete": "Delete rules",
+      "deleteTitle": "Delete the selected rules?",
+      "deleteBody": "Rules to delete: {count}. Their pending activations expire with them; runs already started keep going. This can't be undone.",
+      "deleteConfirm": "Delete {count}",
+      "skip": {
+        "alreadyOn": "Already on.",
+        "alreadyOff": "Already off.",
+        "needsActivation": "Auto rules are turned on one at a time: use its switch and type its name to activate it.",
+        "expired": "Expired: edit the rule to extend it first."
+      }
+    },
     "intro": "Rules start runs on their own for jobs that match. Auto rules submit without asking, within strict limits.",
     "new": "New rule",
     "newTitle": "New rule",
@@ -1628,6 +1708,25 @@
     }
   },
   "runs": {
+    "bulk": {
+      "cancel": "Cancel…",
+      "retry": "Retry…",
+      "cancelTitle": "Cancel the selected runs?",
+      "cancelBody": "{send} will be cancelled and {skipped} skipped. Devices stop before submitting anything.",
+      "retryTitle": "Retry the selected runs?",
+      "retryBody": "{send} failed runs will be queued again and {skipped} skipped. A run whose outcome is unknown needs “Did this application go through?” answered on its own.",
+      "cancelConfirm": "Cancel {count}",
+      "retryConfirm": "Retry {count}",
+      "actionCancel": "Cancel runs",
+      "actionRetry": "Retry runs",
+      "skip": {
+        "notCancellable": "Already finished.",
+        "alreadyCancelling": "Already stopping.",
+        "submitting": "Already submitting: too late to cancel.",
+        "needsAnswer": "Answer “Did this application go through?” on this run first.",
+        "notRetryable": "Only failed runs can be retried."
+      }
+    },
     "filter": "State",
     "allStates": "All states",
     "stale": "Offline — showing runs from {time}",
@@ -1973,6 +2072,21 @@
       "resultRequeued": "{count} back in the queue",
       "resultAwaiting": "{count} still waiting for approval",
       "resultCancelled": "{count} cancelled"
+    },
+    "bulk": {
+      "tasksOn": "Take tasks: on",
+      "tasksOff": "Take tasks: off",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke {count} devices?",
+      "revokeConfirm": "Revoke {count}",
+      "signsOut": "Signs {count} devices out. They can't sync or take tasks until you sign in on them again.",
+      "idle": "Nothing is running on them right now.",
+      "pinned": "Queued tasks waiting for these devices will be cancelled: {count}.",
+      "leavesNone": "No computer will be left signed in: discovery and applying stop until you sign in with the CLI again.",
+      "skipRevoked": "Already revoked, skipped: {count}.",
+      "alreadyRevoked": "Already revoked.",
+      "signedOut": "Signed out: sign in on it before it takes tasks.",
+      "unchanged": "Already set."
     }
   },
   "sources": {
@@ -2059,6 +2173,19 @@
     "delete": {
       "title": "Delete {label}?",
       "body": "Discovery stops using it. Jobs it already found stay in your inbox and on your board."
+    },
+    "bulk": {
+      "enable": "Enable",
+      "disable": "Disable",
+      "alreadyEnabled": "Already enabled.",
+      "alreadyDisabled": "Already disabled.",
+      "runNow": "Run now",
+      "disabledSkip": "Disabled sources don't run: enable it first.",
+      "runBatches": "Sent as one discovery task per {max} sources.",
+      "delete": "Delete",
+      "deleteTitle": "Delete {count} sources?",
+      "deleteBody": "Discovery stops using them. Jobs they already found stay in your inbox and on your board. This can't be undone.",
+      "gone": "This source is no longer listed."
     },
     "sheet": {
       "addTitle": "Add a source",
@@ -2297,6 +2424,7 @@
       "dismiss": "Dismiss",
       "score": "Score",
       "seen": "Mark seen",
+      "restore": "Restore",
       "clear": "Clear selection",
       "working": "Working…"
     },
@@ -2305,13 +2433,15 @@
         "track": "Tracked {count}",
         "dismiss": "Dismissed {count}",
         "seen": "Marked {count} as seen",
-        "score": "Scoring {count}"
+        "score": "Scoring {count}",
+        "restore": "Restored {count}"
       },
       "already": {
         "track": "{count} already tracked",
         "dismiss": "{count} already dismissed",
         "seen": "{count} already seen",
-        "score": "{count} already scored"
+        "score": "{count} already scored",
+        "restore": "{count} already in the inbox"
       },
       "conflicts": "{count} tracked, not dismissed",
       "failed": "{count} failed",

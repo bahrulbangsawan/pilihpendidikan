@@ -1947,7 +1947,7 @@ class ImportCvFactsResponse(BaseModel):
 
 class InboxBulkRequest(BaseModel):
     user_job_ids: Annotated[list[UserJobId], Field(max_length=200, min_length=1)]
-    action: Literal["track", "dismiss", "seen", "score"]
+    action: Literal["track", "dismiss", "seen", "score", "restore"]
 
 
 class InboxBulkResponse(BaseModel):

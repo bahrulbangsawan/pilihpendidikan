@@ -31,28 +31,46 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight, CircleAlert, CircleCheck, CloudOff } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useBoard } from "@/hooks/use-board";
-import { useDevices } from "@/hooks/use-devices";
+import {
+  BulkConfirmDialog,
+  BulkRunResultsDialog,
+  BulkToolbar,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import type { ApprovalView } from "@/hooks/use-approvals";
 import {
+  sendDecision,
   useDecideApproval,
   useDecidedApprovals,
   usePendingApprovals,
 } from "@/hooks/use-approvals";
+import { useBoard } from "@/hooks/use-board";
+import { useBulkRun } from "@/hooks/use-bulk-run";
+import { useDevices } from "@/hooks/use-devices";
 import { useRuleSources } from "@/hooks/use-rules";
+import type { Selection } from "@/hooks/use-selection";
+import { useSelection } from "@/hooks/use-selection";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
-import type { AnswerInput, DecideFailure } from "@/lib/approval-view";
+import type {
+  AnswerInput,
+  BulkDecideSkip,
+  DecideFailure,
+} from "@/lib/approval-view";
 import {
   answersComplete,
   buildAnswerResponse,
+  bulkDecideSkip,
   countdown,
   decideFailure,
   decideFailureKey,
   initialAnswer,
+  planBulkDecision,
   stepSelection,
 } from "@/lib/approval-view";
+import { BulkConflict, BulkSkip } from "@/lib/bulk";
 import { formatClock, relativeTime } from "@/lib/format";
 import { approvalKindLabel, approvalStateLabel } from "@/lib/labels";
 import { POLL_POLICIES } from "@/lib/polling";
@@ -203,28 +221,56 @@ function approveLabel(t: Translate, approval: ApprovalRecord): string {
   }
 }
 
+/** The row's name for its checkbox and the bulk results ("Submit · Acme"). */
+function rowLabel(
+  t: Translate,
+  approval: ApprovalRecord,
+  subject: Subject | null
+): string {
+  const hint = rowHint(approval, subject);
+  const kind = approvalKindLabel(t, approval.kind);
+  return hint ? `${kind} · ${hint}` : kind;
+}
+
 function ApprovalRow({
   approval,
   subject,
   selected,
   nowMs,
   onSelect,
+  selection,
 }: {
   approval: ApprovalRecord;
   subject: Subject | null;
   selected: boolean;
   nowMs: number;
   onSelect: () => void;
+  /** Pending view only: the bulk selection. */
+  selection?: Selection;
 }) {
   const { locale, t } = useTranslation();
   const hint = rowHint(approval, subject);
   return (
-    <li>
+    <li
+      className={cn(
+        "flex border-line border-b transition-[background-color] duration-150 ease-standard hover:bg-pane/50",
+        selected && "bg-pane-2 hover:bg-pane-2"
+      )}
+    >
+      {selection ? (
+        <div className="flex shrink-0 items-start pt-3 pl-4 sm:pl-6">
+          <RowCheckbox
+            id={approval.id}
+            label={rowLabel(t, approval, subject)}
+            selection={selection}
+          />
+        </div>
+      ) : null}
       <button
         aria-current={selected ? "true" : undefined}
         className={cn(
-          "flex w-full flex-col gap-0.5 border-line border-b px-4 py-2.5 text-left outline-none transition-[background-color] duration-150 ease-standard hover:bg-pane/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 sm:px-6",
-          selected && "bg-pane-2 hover:bg-pane-2"
+          "flex min-w-0 flex-1 flex-col gap-0.5 px-4 py-2.5 text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 sm:px-6",
+          selection && "pl-3 sm:pl-3"
         )}
         data-approval-id={approval.id}
         onClick={onSelect}
@@ -721,6 +767,175 @@ function DecisionDialog({
   );
 }
 
+const BULK_INVALIDATE = [
+  queryKeys.approvalsAll,
+  queryKeys.boardAll,
+  queryKeys.tasksAll,
+  queryKeys.taskAll,
+  queryKeys.rules,
+  queryKeys.applicationAll,
+] as const;
+
+const SKIPPED_FAILURES: ReadonlySet<DecideFailure> = new Set([
+  "already_decided",
+  "expired",
+  "gone",
+  "rule_changed",
+  "not_allowed",
+]);
+
+function bulkSkipMessage(t: Translate, reason: BulkDecideSkip): string {
+  switch (reason) {
+    case "not_pending":
+      return t("approvals.bulk.skip.notPending");
+    case "expired":
+      return t("approvals.bulk.skip.expired");
+    case "submit_review":
+      return t("approvals.bulk.skip.submitReview");
+    case "answer_input":
+      return t("approvals.bulk.skip.answerInput");
+    default:
+      return t("approvals.bulk.skip.ruleName");
+  }
+}
+
+interface BulkIntent {
+  approvals: ApprovalRecord[];
+  decision: "approve" | "reject";
+  nowMs: number;
+}
+
+/**
+ * Bulk Approve / Reject on the selected pending approvals. Each decision is
+ * the single flow's own request (`sendDecision`: the approval's payload_hash,
+ * one idempotency key per approval); approvals that need individual review
+ * are reported as skipped, never sent. Always asks first, with the counts.
+ */
+function BulkDecisions({
+  list,
+  selection,
+  cards,
+  disabled,
+  bulk,
+}: {
+  list: readonly ApprovalRecord[];
+  selection: Selection;
+  cards: ReadonlyMap<string, BoardCard>;
+  disabled: boolean;
+  bulk: ReturnType<typeof useBulkRun>;
+}) {
+  const { t } = useTranslation();
+  const [intent, setIntent] = useState<BulkIntent | null>(null);
+  const plan = intent
+    ? planBulkDecision(intent.approvals, intent.decision, intent.nowMs)
+    : null;
+
+  function open(decision: "approve" | "reject") {
+    const chosen = new Set(selection.selectedIds);
+    setIntent({
+      decision,
+      approvals: list.filter((approval) => chosen.has(approval.id)),
+      nowMs: Date.now(),
+    });
+  }
+
+  async function confirm() {
+    if (!intent) {
+      return;
+    }
+    const { approvals, decision, nowMs } = intent;
+    const byId = new Map(approvals.map((approval) => [approval.id, approval]));
+    await bulk.run(
+      decision === "approve"
+        ? t("approvals.bulk.actionApprove")
+        : t("approvals.bulk.actionReject"),
+      approvals.map((approval) => ({
+        id: approval.id,
+        label: rowLabel(t, approval, subjectOf(approval, cards)),
+      })),
+      async (id) => {
+        const approval = byId.get(id);
+        if (!approval) {
+          throw new BulkSkip("gone", t("approvals.errors.gone"));
+        }
+        const reason = bulkDecideSkip(approval, decision, nowMs);
+        if (reason) {
+          throw new BulkSkip(reason, bulkSkipMessage(t, reason));
+        }
+        try {
+          await sendDecision({ approval, decision });
+        } catch (error) {
+          const failure = decideFailure(error);
+          if (SKIPPED_FAILURES.has(failure)) {
+            throw new BulkSkip(failure, t(decideFailureKey(failure)));
+          }
+          if (failure === "hash_mismatch") {
+            throw new BulkConflict(failure, t(decideFailureKey(failure)));
+          }
+          throw error;
+        }
+      }
+    );
+    setIntent(null);
+  }
+
+  const approving = intent?.decision === "approve";
+  const counts = {
+    send: plan?.send.length ?? 0,
+    skipped: plan?.skip.length ?? 0,
+  };
+  return (
+    <>
+      <BulkToolbar count={selection.size} onClear={selection.clear}>
+        <Button
+          disabled={disabled || bulk.busy}
+          onClick={() => open("approve")}
+          size="sm"
+          variant="outline"
+        >
+          {t("approvals.bulk.approve")}
+        </Button>
+        <Button
+          disabled={disabled || bulk.busy}
+          onClick={() => open("reject")}
+          size="sm"
+          variant="outline"
+        >
+          {t("approvals.bulk.reject")}
+        </Button>
+      </BulkToolbar>
+      <BulkConfirmDialog
+        body={
+          approving
+            ? t("approvals.bulk.approveBody", counts)
+            : t("approvals.bulk.rejectBody", counts)
+        }
+        busy={bulk.busy}
+        confirmDisabled={counts.send === 0}
+        confirmLabel={
+          approving
+            ? t("approvals.bulk.approveConfirm", { count: counts.send })
+            : t("approvals.bulk.rejectConfirm", { count: counts.send })
+        }
+        confirmVariant={approving ? "default" : "destructive"}
+        onConfirm={confirm}
+        onOpenChange={(next) => {
+          if (!next) {
+            setIntent(null);
+          }
+        }}
+        open={intent !== null}
+        title={
+          approving
+            ? t("approvals.bulk.approveTitle")
+            : t("approvals.bulk.rejectTitle")
+        }
+      />
+      <BulkRunResultsDialog onClose={bulk.closeReport} report={bulk.report} />
+    </>
+  );
+}
+
 export function ApprovalsPage({
   search = {},
   onSearchChange,
@@ -762,6 +977,21 @@ export function ApprovalsPage({
     onDecided: select,
     refetch: pending.refetch,
   });
+  const selectableIds = useMemo(
+    () =>
+      view === "pending"
+        ? list
+            .filter((approval) => approval.state === "pending")
+            .map((approval) => approval.id)
+        : [],
+    [list, view]
+  );
+  const selection = useSelection(selectableIds);
+  const bulk = useBulkRun({
+    invalidate: BULK_INVALIDATE,
+    onSucceeded: selection.clear,
+  });
+  const busy = flow.busy || bulk.busy;
 
   useEffect(() => {
     if (!selectedId) {
@@ -811,6 +1041,15 @@ export function ApprovalsPage({
         staleSince={staleSince}
         view={view}
       />
+      {view === "pending" ? (
+        <BulkDecisions
+          bulk={bulk}
+          cards={cards}
+          disabled={flow.busy}
+          list={list}
+          selection={selection}
+        />
+      ) : null}
       {query.isError && !query.data ? (
         <LoadError onRetry={() => query.refetch()} />
       ) : null}
@@ -822,6 +1061,14 @@ export function ApprovalsPage({
             aria-label={t("approvals.listLabel")}
             className="min-h-0 border-line border-b md:max-h-[calc(100dvh-10rem)] md:overflow-y-auto md:border-r md:border-b-0"
           >
+            {view === "pending" ? (
+              <div className="flex items-center gap-3 border-line border-b px-4 py-2 sm:px-6">
+                <SelectAllCheckbox disabled={busy} selection={selection} />
+                <span className="type-caption text-muted-foreground">
+                  {t("bulk.selectAll")}
+                </span>
+              </div>
+            ) : null}
             <ul ref={listRef}>
               {list.map((approval) => (
                 <ApprovalRow
@@ -830,6 +1077,11 @@ export function ApprovalsPage({
                   nowMs={nowMs}
                   onSelect={() => select(approval.id)}
                   selected={approval.id === selectedId}
+                  selection={
+                    view === "pending" && approval.state === "pending"
+                      ? selection
+                      : undefined
+                  }
                   subject={subjectOf(approval, cards)}
                 />
               ))}
@@ -839,7 +1091,7 @@ export function ApprovalsPage({
             <ApprovalDetail
               answerInputs={answers.inputsFor(selected)}
               approval={selected}
-              busy={flow.busy}
+              busy={busy}
               failure={flow.failures[selected.id] ?? null}
               key={selected.id}
               nowMs={nowMs}

@@ -1,12 +1,13 @@
 // The inbox selection bar (12 §4): appears while rows are selected —
-// "3 selected   [S] Track   [D] Dismiss   Score   Mark seen". Track is the
+// "3 selected   [S] Track   [D] Dismiss   Score   Mark seen" (Restore
+// instead of Dismiss on the dismissed tab). Track is the
 // screen's one primary action. The keys are registered by the page (they
 // also act on the focused row when nothing is selected).
 
 import type { InboxBulkAction } from "@pilihpendidikan/jobs-contracts/enums";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Check, Eye, Gauge, X } from "lucide-react";
+import { Check, Eye, Gauge, Undo2, X } from "lucide-react";
 import { useTranslation } from "@/i18n";
 
 export function SelectionBar({
@@ -50,7 +51,19 @@ export function SelectionBar({
           : t("inbox.selection.track")}
         <Kbd aria-hidden="true">S</Kbd>
       </Button>
-      {tab === "dismissed" ? null : (
+      {tab === "dismissed" ? (
+        <Button
+          disabled={working}
+          onClick={() => onAction("restore")}
+          size="sm"
+          variant="outline"
+        >
+          <Undo2 aria-hidden="true" data-icon="inline-start" />
+          {busy === "restore"
+            ? t("inbox.selection.working")
+            : t("inbox.selection.restore")}
+        </Button>
+      ) : (
         <Button
           aria-keyshortcuts="D"
           disabled={working}

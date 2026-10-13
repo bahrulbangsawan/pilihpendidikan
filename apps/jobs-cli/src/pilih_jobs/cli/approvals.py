@@ -2,7 +2,9 @@
 
 `decide` shows the exact payload, verifies that `payload_hash` matches the content where the
 spec defines the binding (browser submit: 19 §8.2 / the form hash; email submit: 09 §4), and
-sends `POST /api/v1/approvals/{id}/decide {decision, payload_hash, response?}`. It needs the
+sends `POST /api/v1/approvals/{id}/decide {decision, payload_hash, response?}`. Several ids
+decide in one go (per-id results); bulk approve skips `submit`, `answer` and
+`rule_activation` approvals, which are decided one at a time. It needs the
 step-up scope `automation:manage` (D-29). `--yes` never approves a submission: a `submit`
 approval needs the explicit `--approve` flag or an interactive answer.
 """
@@ -16,13 +18,15 @@ import typer
 from rich.console import Console
 
 from pilih_jobs.api.client import ApiClient
+from pilih_jobs.cli import bulk
 from pilih_jobs.cli.board import emit_result, fetch_or_cache, fmt_ms, require_scope
+from pilih_jobs.cli.bulk import check_ids
 from pilih_jobs.cli.context import CliState, state
 from pilih_jobs.cli.output import items_table, key_value_table
-from pilih_jobs.contracts import ids
 from pilih_jobs.email.handoff import canonical_json, email_payload_hash
 from pilih_jobs.errors import (
     ConflictError,
+    ExitCode,
     InputRequiredError,
     NotFoundError,
     UsageError,
@@ -124,6 +128,9 @@ def list_cmd(
     approval_state: Annotated[
         str, typer.Option("--state", help="pending|approved|rejected|expired")
     ] = "pending",
+    ids_only: Annotated[
+        bool, typer.Option("--ids", help="Print only the apr_… ids, one per line (for piping).")
+    ] = False,
 ) -> None:
     """List approvals (pending by default)."""
     st = state(ctx)
@@ -147,6 +154,11 @@ def list_cmd(
         )
 
     items, banner = st.run(fetch_or_cache(rt, fetch, cached))
+    if ids_only:
+        if banner:
+            st.out.notice(banner)
+        bulk.print_ids(st, (a.get("id") for a in items))
+        return
     data: dict[str, Any] = {"items": items}
     if banner:
         data["offline"] = banner
@@ -264,39 +276,44 @@ async def decide(
 @group.command("decide")
 def decide_cmd(
     ctx: typer.Context,
-    approval_id: Annotated[str, typer.Argument(help="apr_… id")],
+    approval_ids: Annotated[list[str], typer.Argument(help="apr_… ids", metavar="APR_ID...")],
     approve: Annotated[
         bool, typer.Option("--approve", help="Approve exactly this content.")
     ] = False,
     reject: Annotated[bool, typer.Option("--reject", help="Reject it.")] = False,
     answer: Annotated[
         list[str] | None,
-        typer.Option("--answer", help="Answer text (REF=VALUE with several questions)."),
+        typer.Option(
+            "--answer", help="Answer text (REF=VALUE with several questions; one id only)."
+        ),
     ] = None,
 ) -> None:
-    """Approve or reject (shows the payload, verifies payload_hash; automation:manage)."""
+    """Approve or reject (shows the payload, verifies payload_hash; automation:manage).
+
+    Several ids need --approve or --reject. Bulk approve still shows and verifies every
+    payload, and skips `submit` approvals (each submission is reviewed on its own) and
+    `answer` / `rule_activation` approvals (they need input or the web); reject takes any kind.
+    """
     st = state(ctx)
-    if not ids.is_id("apr", approval_id):
-        raise UsageError(f"{approval_id!r} is not an approval id (apr_…).")
+    values = check_ids("apr", approval_ids, label="approval id (apr_…)")
     if approve and reject:
         raise UsageError("--approve and --reject are mutually exclusive.")
+    if len(values) > 1:
+        if not (approve or reject):
+            raise UsageError("With several approval ids pass --approve or --reject.")
+        if answer:
+            raise UsageError("--answer applies to one approval; pass a single apr_… id.")
     rt = st.runtime()
     require_scope(st, rt, "automation:manage", purpose="Deciding an approval")
+    if len(values) > 1:
+        _decide_many(st, rt, values, "approve" if approve else "reject")
+        return
+    approval_id = values[0]
 
     async def run() -> dict[str, Any]:
         async with rt.api_client() as api:
             approval = await find_approval(api, rt, approval_id)
-            if approval.get("state") != "pending":
-                raise ConflictError(
-                    f"{approval_id} is already {approval.get('state')}.",
-                    code="already_decided",
-                    details={"state": approval.get("state")},
-                )
-            if verify_payload_hash(approval) is False:
-                raise ConflictError(
-                    "The payload_hash does not match the content shown; refusing to decide.",
-                    code="payload_hash_mismatch",
-                )
+            _check_decidable(approval)
             if not st.out.json_mode and not st.out.quiet:
                 render_payload(st.out.console(err=True), approval)
             decision = _decision(st, approval, approve=approve, reject=reject)
@@ -310,6 +327,76 @@ def decide_cmd(
 
     data = st.run(run())
     st.out.result(data, human=lambda c, v: c.print(f"{approval_id}: {v['state']}", markup=False))
+
+
+def _check_decidable(approval: dict[str, Any]) -> None:
+    approval_id = approval.get("id")
+    if approval.get("state") != "pending":
+        raise ConflictError(
+            f"{approval_id} is already {approval.get('state')}.",
+            code="already_decided",
+            details={"state": approval.get("state")},
+        )
+    if verify_payload_hash(approval) is False:
+        raise ConflictError(
+            "The payload_hash does not match the content shown; refusing to decide.",
+            code="payload_hash_mismatch",
+        )
+
+
+#: Kinds a bulk approve leaves alone, with the reason reported for each.
+BULK_APPROVE_SKIPS: Final = {
+    "submit": (
+        "submission_needs_review",
+        "Submissions are approved one at a time: pilih-jobs approvals decide <apr_id> --approve",
+    ),
+    "answer": (
+        "needs_input",
+        "Answers are given one at a time: pilih-jobs approvals decide <apr_id> --answer …",
+    ),
+    "rule_activation": (
+        "needs_review",
+        "Rule activations are approved one at a time (or on the web).",
+    ),
+}
+
+
+def _decide_many(st: CliState, rt: Runtime, values: list[str], decision: str) -> None:
+    show = not st.out.json_mode and not st.out.quiet
+
+    async def run() -> list[bulk.Outcome]:
+        async with rt.api_client() as api:
+            known: dict[str, dict[str, Any]] = {}
+            for approval_state in ("pending", None):
+                if all(v in known for v in values):
+                    break
+                for item in await list_approvals(api, kind=None, approval_state=approval_state):
+                    known.setdefault(str(item.get("id")), item)
+
+            async def one(approval_id: str) -> bulk.Outcome:
+                approval = known.get(approval_id)
+                if approval is None:
+                    raise NotFoundError(f"No approval {approval_id}.")
+                EntityCache(rt.db, rt.issuer).put("approval", approval)
+                kind = str(approval.get("kind"))
+                _check_decidable(approval)  # state and payload_hash first, whatever the kind
+                if decision == "approve" and kind in BULK_APPROVE_SKIPS:
+                    reason, message = BULK_APPROVE_SKIPS[kind]
+                    outcome = bulk.skipped(
+                        approval_id, reason, message, exit_code=int(ExitCode.PAUSED)
+                    )
+                    outcome.fields.update(kind=kind, state=approval.get("state"))
+                    return outcome
+                if show:
+                    render_payload(st.out.console(err=True), approval)
+                data = await decide(api, approval, decision)
+                decided = cast(dict[str, Any], data["approval"])
+                EntityCache(rt.db, rt.issuer).put("approval", decided)
+                return bulk.ok(approval_id, kind=kind, state=decided.get("state"))
+
+            return await bulk.run_each(values, one)
+
+    bulk.emit(st, st.run(run()), columns=["id", "status", "kind", "state"])
 
 
 def _decision(st: CliState, approval: dict[str, Any], *, approve: bool, reject: bool) -> str | None:

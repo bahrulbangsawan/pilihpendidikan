@@ -1,4 +1,5 @@
-// Bulk actions on inbox rows (12 §4): Track, Dismiss, Score, Mark seen via
+// Bulk actions on inbox rows (12 §4): Track, Dismiss, Score, Mark seen and
+// Restore (dismissed → seen) via
 // `POST /api/v1/inbox:bulk` (05 §4). At most 200 ids per call, and the api
 // tracks at most 100 per call, so selections are sent in chunks, one after
 // the other, each with its own Idempotency-Key; a retry of a chunk reuses
@@ -120,7 +121,27 @@ const TARGET_STATE: Readonly<Partial<Record<InboxBulkAction, InboxState>>> = {
   track: "tracked",
   dismiss: "dismissed",
   seen: "seen",
+  restore: "seen",
 };
+
+/**
+ * Whether an `ok` row was already where the action leads. `restore` only
+ * moves dismissed rows: any other state comes back unchanged (and `ok`).
+ */
+function wasAlready(
+  action: InboxBulkAction,
+  result: InboxBulkResult,
+  previous: ReadonlyMap<string, InboxState>
+): boolean {
+  if (action === "score") {
+    return result.score_status === "cached";
+  }
+  const before = previous.get(result.user_job_id);
+  if (action === "restore") {
+    return before !== undefined && before !== "dismissed";
+  }
+  return before === TARGET_STATE[action];
+}
 
 /**
  * Counts per outcome. `previous` holds each row's state before the call:
@@ -145,11 +166,7 @@ export function summarizeInboxBulk(
       if (action === "track" && result.application_id) {
         summary.applicationIds.push(result.application_id);
       }
-      const already =
-        action === "score"
-          ? result.score_status === "cached"
-          : previous.get(result.user_job_id) === TARGET_STATE[action];
-      if (already) {
+      if (wasAlready(action, result, previous)) {
         summary.already += 1;
       } else {
         summary.done += 1;

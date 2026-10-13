@@ -26,6 +26,8 @@ export const queryKeys = {
   board: (includeArchived: boolean) => ["board", { includeArchived }] as const,
   boardAll: ["board"] as const,
   application: (appId: string) => ["application", appId] as const,
+  /** Every application detail and timeline (bulk runs touch many at once). */
+  applicationAll: ["application"] as const,
   applicationEvents: (appId: string) =>
     ["application", appId, "events"] as const,
   devices: ["devices"] as const,
@@ -48,6 +50,7 @@ export const queryKeys = {
     ["tasks", filters] as const,
   tasksAll: ["tasks"] as const,
   task: (taskId: string) => ["task", taskId] as const,
+  taskAll: ["task"] as const,
   sources: ["sources"] as const,
   adapters: ["sources", "adapters"] as const,
   discoveryRuns: ["discovery-runs"] as const,

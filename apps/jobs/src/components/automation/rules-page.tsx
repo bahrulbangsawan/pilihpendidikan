@@ -52,13 +52,24 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CircleAlert, MoreHorizontal, Plus, ShieldCheck } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import {
+  BulkConfirmDialog,
+  BulkRunResultsDialog,
+  BulkToolbar,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import { useDecideApproval, usePendingApprovals } from "@/hooks/use-approvals";
+import { useBulkRun } from "@/hooks/use-bulk-run";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
 import { useRuleSources, useRules } from "@/hooks/use-rules";
+import type { Selection } from "@/hooks/use-selection";
+import { useSelection } from "@/hooks/use-selection";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { api, isApiError } from "@/lib/api-client";
 import { decideFailure, decideFailureKey } from "@/lib/approval-view";
+import { BulkSkip } from "@/lib/bulk";
 import { formatDate } from "@/lib/format";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { modeLabel } from "@/lib/labels";
@@ -72,6 +83,8 @@ import {
   RULE_FIELDS,
   updateRuleChanges,
 } from "@/lib/rules-form";
+import type { BulkRuleSkip } from "@/lib/rules-bulk";
+import { bulkDisableSkip, bulkEnableSkip } from "@/lib/rules-bulk";
 import { DecideDialog } from "./decide-dialog";
 import { RuleEditor } from "./rule-editor";
 
@@ -142,6 +155,159 @@ function activationText(
       ? formatDate(rule.limits.expires_at, locale)
       : null,
   });
+}
+
+const BULK_INVALIDATE = [queryKeys.rules, queryKeys.approvalsAll] as const;
+
+function bulkSkipMessage(t: Translate, reason: BulkRuleSkip): string {
+  switch (reason) {
+    case "already_on":
+      return t("rules.bulk.skip.alreadyOn");
+    case "already_off":
+      return t("rules.bulk.skip.alreadyOff");
+    case "needs_activation":
+      return t("rules.bulk.skip.needsActivation");
+    default:
+      return t("rules.bulk.skip.expired");
+  }
+}
+
+/** `PATCH /api/v1/rules/{id}` `{enabled}` at the rule's revision, no merge. */
+async function sendEnabled(rule: AutomationRuleRecord, enabled: boolean) {
+  await api("PATCH /api/v1/rules/{rul_id}", {
+    params: { rul_id: rule.id },
+    body: { enabled, base_revision: rule.revision },
+    idempotencyKey: newIdempotencyKey(),
+  });
+}
+
+/** `DELETE /api/v1/rules/{id}` at the rule's revision (the single delete's call). */
+async function sendDelete(rule: AutomationRuleRecord) {
+  await api("DELETE /api/v1/rules/{rul_id}", {
+    params: { rul_id: rule.id },
+    query: { base_revision: rule.revision },
+    idempotencyKey: newIdempotencyKey(),
+  });
+}
+
+/**
+ * Bulk Turn on / Turn off / Delete on the selected rules (each its own
+ * request with its base_revision; a rule changed elsewhere is reported, not
+ * merged). Turning an `auto` rule on is never done in bulk: it needs its own
+ * activation with the name typed, so it is skipped with that reason.
+ */
+function BulkRuleActions({
+  list,
+  selection,
+  disabled,
+}: {
+  list: readonly AutomationRuleRecord[];
+  selection: Selection;
+  disabled: boolean;
+}) {
+  const { t } = useTranslation();
+  const bulk = useBulkRun({
+    invalidate: BULK_INVALIDATE,
+    onSucceeded: selection.clear,
+  });
+  const [deleting, setDeleting] = useState<AutomationRuleRecord[] | null>(null);
+
+  function chosen(): AutomationRuleRecord[] {
+    const ids = new Set(selection.selectedIds);
+    return list.filter((rule) => ids.has(rule.id));
+  }
+
+  async function run(
+    action: string,
+    rules: readonly AutomationRuleRecord[],
+    work: (rule: AutomationRuleRecord) => Promise<void>
+  ) {
+    const byId = new Map(rules.map((rule) => [rule.id, rule]));
+    await bulk.run(
+      action,
+      rules.map((rule) => ({ id: rule.id, label: rule.name })),
+      async (id) => {
+        const rule = byId.get(id);
+        if (rule) {
+          await work(rule);
+        }
+      }
+    );
+  }
+
+  function setEnabled(enabled: boolean) {
+    const nowMs = Date.now();
+    return run(
+      enabled ? t("rules.bulk.actionEnable") : t("rules.bulk.actionDisable"),
+      chosen(),
+      async (rule) => {
+        const reason = enabled
+          ? bulkEnableSkip(rule, nowMs)
+          : bulkDisableSkip(rule);
+        if (reason) {
+          throw new BulkSkip(reason, bulkSkipMessage(t, reason));
+        }
+        await sendEnabled(rule, enabled);
+      }
+    );
+  }
+
+  async function remove() {
+    if (!deleting) {
+      return;
+    }
+    await run(t("rules.bulk.actionDelete"), deleting, sendDelete);
+    setDeleting(null);
+  }
+
+  const off = disabled || bulk.busy;
+  return (
+    <>
+      <BulkToolbar count={selection.size} onClear={selection.clear}>
+        <Button
+          disabled={off}
+          onClick={() => setEnabled(true)}
+          size="sm"
+          variant="outline"
+        >
+          {t("rules.bulk.enable")}
+        </Button>
+        <Button
+          disabled={off}
+          onClick={() => setEnabled(false)}
+          size="sm"
+          variant="outline"
+        >
+          {t("rules.bulk.disable")}
+        </Button>
+        <Button
+          disabled={off}
+          onClick={() => setDeleting(chosen())}
+          size="sm"
+          variant="outline"
+        >
+          {t("rules.bulk.delete")}
+        </Button>
+      </BulkToolbar>
+      <BulkConfirmDialog
+        body={t("rules.bulk.deleteBody", { count: deleting?.length ?? 0 })}
+        busy={bulk.busy}
+        confirmDisabled={(deleting?.length ?? 0) === 0}
+        confirmLabel={t("rules.bulk.deleteConfirm", {
+          count: deleting?.length ?? 0,
+        })}
+        onConfirm={remove}
+        onOpenChange={(next) => {
+          if (!next) {
+            setDeleting(null);
+          }
+        }}
+        open={deleting !== null}
+        title={t("rules.bulk.deleteTitle")}
+      />
+      <BulkRunResultsDialog onClose={bulk.closeReport} report={bulk.report} />
+    </>
+  );
 }
 
 export function RulesPage() {
@@ -310,7 +476,9 @@ export function RulesPage() {
     }
   }
 
-  const list = rules.data ?? [];
+  const list = useMemo(() => rules.data ?? [], [rules.data]);
+  const ruleIds = useMemo(() => list.map((rule) => rule.id), [list]);
+  const selection = useSelection(ruleIds);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -328,6 +496,7 @@ export function RulesPage() {
           {t("rules.new")}
         </Button>
       </div>
+      <BulkRuleActions disabled={busy} list={list} selection={selection} />
       <div className="flex flex-col gap-4 px-4 py-5 sm:px-6">
         {rules.isError && !rules.data ? (
           <Alert role="alert" variant="destructive">
@@ -370,6 +539,9 @@ export function RulesPage() {
             <Table className="type-body-compact">
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-10">
+                    <SelectAllCheckbox disabled={busy} selection={selection} />
+                  </TableHead>
                   <TableHead>{t("rules.name")}</TableHead>
                   <TableHead>{t("rules.mode")}</TableHead>
                   <TableHead>{t("rules.criteria")}</TableHead>
@@ -386,7 +558,19 @@ export function RulesPage() {
                   const pendingActivation = activations.get(rule.id);
                   const status = ruleStatus(rule, pendingActivation, nowMs);
                   return (
-                    <TableRow key={rule.id}>
+                    <TableRow
+                      data-state={
+                        selection.isSelected(rule.id) ? "selected" : undefined
+                      }
+                      key={rule.id}
+                    >
+                      <TableCell>
+                        <RowCheckbox
+                          id={rule.id}
+                          label={rule.name}
+                          selection={selection}
+                        />
+                      </TableCell>
                       <TableCell className="weight-semibold text-foreground">
                         <button
                           className="text-left hover:underline"

@@ -40,6 +40,7 @@ from pilih_jobs.cli import (
     status,
     sync,
     system,
+    tasks,
     worker,
 )
 from pilih_jobs.cli.context import CliState, state
@@ -136,6 +137,7 @@ for _module in (
     email,
     worker,
     approvals,
+    tasks,
     rules,
     logs,
 ):

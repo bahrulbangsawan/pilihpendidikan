@@ -408,6 +408,15 @@ function bulkOne(action: InboxBulkAction, id: string): BulkResult {
         status: "ok",
         inbox_state: updateItem(item, "dismissed").user_job.inbox_state,
       };
+    case "restore":
+      return {
+        user_job_id: id,
+        status: "ok",
+        inbox_state:
+          current === "dismissed"
+            ? updateItem(item, "seen").user_job.inbox_state
+            : current,
+      };
     case "seen":
       return {
         user_job_id: id,

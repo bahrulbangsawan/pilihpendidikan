@@ -50,15 +50,22 @@ import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import type { FormEvent } from "react";
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
+import {
+  BulkConfirmDialog,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
 import { useAnswers } from "@/hooks/use-profile";
+import { useSelection } from "@/hooks/use-selection";
 import { useTranslation } from "@/i18n";
 import { api, isApiError } from "@/lib/api-client";
 import { isProtectedQuestion } from "@/lib/facts-form";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { queryKeys } from "@/lib/query";
+import { AnswersBulkBar } from "./answers-bulk";
 
 interface Draft {
   answer: string;
@@ -100,6 +107,7 @@ export function AnswersTab() {
   );
   const [draft, setDraft] = useState<Draft>(() => draftFrom(null));
   const [busy, setBusy] = useState(false);
+  const [deleting, setDeleting] = useState<ScreeningAnswerRecord | null>(null);
   const set = (patch: Partial<Draft>) =>
     setDraft((current) => {
       const next = { ...current, ...patch };
@@ -173,6 +181,7 @@ export function AnswersTab() {
   }
 
   async function remove(answer: ScreeningAnswerRecord) {
+    setBusy(true);
     try {
       await api("DELETE /api/v1/profile/answers/{ans_id}", {
         params: { ans_id: answer.id },
@@ -180,13 +189,21 @@ export function AnswersTab() {
         idempotencyKey: newIdempotencyKey(),
       });
       setEditing(null);
+      setDeleting(null);
       await queryClient.invalidateQueries({ queryKey: queryKeys.answers });
     } catch {
       toast.error(t("answers.deleteFailed"));
+    } finally {
+      setBusy(false);
     }
   }
 
   const rows = answers.data ?? [];
+  const ids = useMemo(
+    () => (answers.data ?? []).map((answer) => answer.id),
+    [answers.data]
+  );
+  const selection = useSelection(ids);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
@@ -201,10 +218,16 @@ export function AnswersTab() {
         <p className="type-body text-muted-foreground">{t("answers.empty")}</p>
       ) : null}
       {rows.length > 0 ? (
-        <div className="border border-line">
+        <AnswersBulkBar answers={rows} selection={selection} />
+      ) : null}
+      {rows.length > 0 ? (
+        <div className="overflow-x-auto border border-line">
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-8">
+                  <SelectAllCheckbox selection={selection} />
+                </TableHead>
                 <TableHead>{t("answers.question")}</TableHead>
                 <TableHead>{t("answers.answer")}</TableHead>
                 <TableHead>{t("answers.sensitivity")}</TableHead>
@@ -216,7 +239,19 @@ export function AnswersTab() {
             </TableHeader>
             <TableBody>
               {rows.map((answer) => (
-                <TableRow key={answer.id}>
+                <TableRow
+                  data-state={
+                    selection.isSelected(answer.id) ? "selected" : undefined
+                  }
+                  key={answer.id}
+                >
+                  <TableCell>
+                    <RowCheckbox
+                      id={answer.id}
+                      label={answer.question_key}
+                      selection={selection}
+                    />
+                  </TableCell>
                   <TableCell className="text-foreground">
                     {answer.question_key}
                   </TableCell>
@@ -395,7 +430,8 @@ export function AnswersTab() {
             <SheetFooter className="flex-row justify-between border-line border-t">
               {editing && editing !== "new" ? (
                 <Button
-                  onClick={() => remove(editing)}
+                  disabled={busy}
+                  onClick={() => setDeleting(editing)}
                   type="button"
                   variant="destructive"
                 >
@@ -411,6 +447,23 @@ export function AnswersTab() {
           </form>
         </SheetContent>
       </Sheet>
+      <BulkConfirmDialog
+        body={t("answers.bulk.deleteBody")}
+        busy={busy}
+        confirmLabel={t("common.delete")}
+        onConfirm={() => {
+          if (deleting) {
+            remove(deleting);
+          }
+        }}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleting(null);
+          }
+        }}
+        open={deleting !== null}
+        title={t("answers.deleteOneTitle")}
+      />
     </div>
   );
 }

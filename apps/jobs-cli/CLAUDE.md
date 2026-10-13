@@ -35,7 +35,7 @@ Turborepo shim; every script calls `../../scripts/require-uv.sh` first.
 | `cli/app.py`, `context.py`, `output.py`, `auth.py`, `status.py`, `sync.py`, `config.py`, `devices.py`, `system.py` | root app, global flags, envelopes/NDJSON, this leaf's commands | 4.1 |
 | `discovery/` (+ `discovery/engine/`), `adapters/`, `cli/discover.py` | discovery (15); `run_discovery()` | 4.2 |
 | `browser/`, `agent/`, `policy/`, `cli/browser.py` | browser + agent (18, 19); `run_attempt()`, `render_cv_page()`. Tests: `tests/fixtures/ats_server/` (fixture ATS on a random loopback port, reached through Chromium `--host-resolver-rules`; `FakeChannel` + `FakeAi`; prompt-injection corpus) | 4.3 |
-| `tasks/`, `cv/`, `email/`, `cli/{apply,worker,cv,email,board,inbox,approvals,rules,logs}.py` | worker, leases, LeaseChannel, remaining commands | 4.4 |
+| `tasks/`, `cv/`, `email/`, `cli/{apply,worker,cv,email,board,inbox,approvals,rules,tasks,logs}.py`, `cli/bulk.py` | worker, leases, LeaseChannel, remaining commands; `cli/bulk.py` is the multi-id contract (id checks, `{results, summary}`, exit code, `--ids`) shared by every list-item mutation | 4.4 |
 | `tests/integration/` | cross-leaf tests: `sync` hooks, headless config, the worker with the real agent (`CloudFake` + fixture ATS), terminal hooks | 4.5 |
 | `packaging/` | Distribution templates (22 §2): `homebrew/pilih-jobs.rb` (`Language::Python::Virtualenv`, `python@3.12`), `scoop/pilih-jobs.json` (installs uv, then `uv tool install`s the wheel into the app dir) and `render.py`, which fills both for one release from `dist/` and `uv.lock` (`uv run python packaging/render.py --dist dist --out <dir>`). Nothing is published from here | 5.3 |
 

@@ -32,10 +32,12 @@ import {
   TableRow,
 } from "@rulisme/ui/ui/table";
 import { MoreHorizontal, OctagonAlert, TriangleAlert } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AppLink } from "@/components/app-link";
+import { RowCheckbox, SelectAllCheckbox } from "@/components/bulk/bulk-toolbar";
 import { CopyCommand } from "@/components/copy-command";
 import { PHONE_QUERY, useMediaQuery } from "@/hooks/use-media-query";
+import { useSelection } from "@/hooks/use-selection";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { CLI_COMMANDS } from "@/lib/devices-install";
@@ -54,6 +56,7 @@ import { platformLabel, taskKindLabel, taskStateLabel } from "@/lib/labels";
 import { translateOr } from "@/lib/sources-model";
 import { useDeviceActions } from "./device-actions";
 import { RenameDialog, RevokeDialog } from "./device-dialogs";
+import { DevicesBulkBar } from "./devices-bulk";
 import { PageGutter } from "@/components/shell/page";
 
 /** "Device signed out — suspicious token reuse" (17 §7.2). */
@@ -318,6 +321,8 @@ export function DevicesBand({
   const [renaming, setRenaming] = useState<DeviceView | null>(null);
   const [revoking, setRevoking] = useState<DeviceView | null>(null);
   const rows = rowModels(devices, tasks, runs, meta);
+  const ids = useMemo(() => devices.map((device) => device.id), [devices]);
+  const selection = useSelection(ids);
   const outdated = rows.some(
     (row) => row.versionStatus !== "current" && row.versionStatus !== "unknown"
   );
@@ -335,6 +340,21 @@ export function DevicesBand({
             {devices.length}
           </span>
         </div>
+        {!loading && phone && devices.length > 1 ? (
+          <div className="flex items-center gap-2">
+            <SelectAllCheckbox selection={selection} />
+            <span className="type-caption text-muted-foreground">
+              {t("bulk.selectAll")}
+            </span>
+          </div>
+        ) : null}
+        {loading ? null : (
+          <DevicesBulkBar
+            devices={devices}
+            selection={selection}
+            tasks={tasks}
+          />
+        )}
         {loading ? (
           <div aria-hidden="true" className="flex flex-col gap-2">
             <Skeleton className="h-9 w-full" />
@@ -352,6 +372,13 @@ export function DevicesBand({
                 key={row.device.id}
               >
                 <div className="flex items-start gap-2">
+                  <div className="pt-0.5">
+                    <RowCheckbox
+                      id={row.device.id}
+                      label={row.device.name}
+                      selection={selection}
+                    />
+                  </div>
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="type-body weight-semibold truncate text-foreground">
                       {row.device.name}
@@ -404,6 +431,9 @@ export function DevicesBand({
             <Table aria-labelledby="cli-devices" className="type-body-compact">
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-8">
+                    <SelectAllCheckbox selection={selection} />
+                  </TableHead>
                   <TableHead>{t("devices.columns.name")}</TableHead>
                   <TableHead>{t("devices.columns.status")}</TableHead>
                   <TableHead>{t("devices.columns.lastSync")}</TableHead>
@@ -417,7 +447,22 @@ export function DevicesBand({
               </TableHeader>
               <TableBody>
                 {rows.map((row) => (
-                  <TableRow data-device={row.device.id} key={row.device.id}>
+                  <TableRow
+                    data-device={row.device.id}
+                    data-state={
+                      selection.isSelected(row.device.id)
+                        ? "selected"
+                        : undefined
+                    }
+                    key={row.device.id}
+                  >
+                    <TableCell>
+                      <RowCheckbox
+                        id={row.device.id}
+                        label={row.device.name}
+                        selection={selection}
+                      />
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="weight-semibold text-foreground">

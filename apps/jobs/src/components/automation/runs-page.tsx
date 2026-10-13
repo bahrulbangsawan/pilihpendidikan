@@ -38,23 +38,41 @@ import {
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, CircleAlert, CloudOff } from "lucide-react";
 import { useEffect, useId, useMemo, useState } from "react";
+import {
+  BulkConfirmDialog,
+  BulkRunResultsDialog,
+  BulkToolbar,
+  RowCheckbox,
+  SelectAllCheckbox,
+} from "@/components/bulk/bulk-toolbar";
 import { useBoard } from "@/hooks/use-board";
+import { useBulkRun } from "@/hooks/use-bulk-run";
 import { useDevices } from "@/hooks/use-devices";
+import type { Selection } from "@/hooks/use-selection";
+import { useSelection } from "@/hooks/use-selection";
 import { useTasks } from "@/hooks/use-tasks";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
+import { BulkSkip } from "@/lib/bulk";
 import { formatClock, formatDateTime } from "@/lib/format";
 import { taskErrorLabel, taskKindLabel, taskStateLabel } from "@/lib/labels";
 import { POLL_POLICIES } from "@/lib/polling";
-import type { RunsSearch } from "@/lib/runs-view";
+import { queryKeys } from "@/lib/query";
+import type {
+  BulkCancelSkip,
+  BulkRetrySkip,
+  RunsSearch,
+} from "@/lib/runs-view";
 import {
+  bulkCancelSkip,
+  bulkRetrySkip,
   formatDuration,
   RUN_FILTERS,
   runAction,
   runDurationMs,
 } from "@/lib/runs-view";
 import type { RunDialogKind } from "./run-dialogs";
-import { RunDialog } from "./run-dialogs";
+import { cancelTask, RunDialog, retryTask } from "./run-dialogs";
 import { TaskStateBadge } from "./task-state-badge";
 
 const TICK_MS = 15_000;
@@ -106,24 +124,45 @@ function What({
   );
 }
 
+/** "Apply · Acme" for the row's checkbox and the bulk results. */
+function runLabel(
+  t: Translate,
+  task: AutomationTaskRecord,
+  card: BoardCard | undefined
+): string {
+  const kind = taskKindLabel(t, task.kind);
+  return card ? `${kind} · ${card.posting.company_name}` : kind;
+}
+
 function RunRow({
   task,
   card,
   deviceName,
   nowMs,
   onAction,
+  selection,
 }: {
   task: AutomationTaskRecord;
   card: BoardCard | undefined;
   deviceName: string;
   nowMs: number;
   onAction: (kind: RunDialogKind) => void;
+  selection: Selection;
 }) {
   const { locale, t } = useTranslation();
   const action = runAction(task);
   const duration = runDurationMs(task, nowMs);
   return (
-    <TableRow>
+    <TableRow
+      data-state={selection.isSelected(task.id) ? "selected" : undefined}
+    >
+      <TableCell>
+        <RowCheckbox
+          id={task.id}
+          label={runLabel(t, task, card)}
+          selection={selection}
+        />
+      </TableCell>
       <TableCell>{taskKindLabel(t, task.kind)}</TableCell>
       <TableCell className="max-w-64">
         <What card={card} task={task} />
@@ -188,6 +227,159 @@ function RunRow({
   );
 }
 
+const BULK_INVALIDATE = [
+  queryKeys.tasksAll,
+  queryKeys.taskAll,
+  queryKeys.boardAll,
+  queryKeys.applicationAll,
+] as const;
+
+function cancelSkipMessage(t: Translate, reason: BulkCancelSkip): string {
+  switch (reason) {
+    case "already_cancelling":
+      return t("runs.bulk.skip.alreadyCancelling");
+    case "submitting":
+      return t("runs.bulk.skip.submitting");
+    default:
+      return t("runs.bulk.skip.notCancellable");
+  }
+}
+
+function retrySkipMessage(t: Translate, reason: BulkRetrySkip): string {
+  return reason === "needs_answer"
+    ? t("runs.bulk.skip.needsAnswer")
+    : t("runs.bulk.skip.notRetryable");
+}
+
+interface BulkRunIntent {
+  kind: "cancel" | "retry";
+  tasks: AutomationTaskRecord[];
+}
+
+/**
+ * Bulk Cancel (live runs the API can still stop) and bulk Retry (failed
+ * runs only: an `outcome_unknown` run needs "Did this application go
+ * through?" answered on its own, D-19). Both ask first with the counts; each
+ * run is the single action's own request.
+ */
+function BulkRunActions({
+  list,
+  selection,
+  cards,
+}: {
+  list: readonly AutomationTaskRecord[];
+  selection: Selection;
+  cards: ReadonlyMap<string, BoardCard>;
+}) {
+  const { t } = useTranslation();
+  const bulk = useBulkRun({
+    invalidate: BULK_INVALIDATE,
+    onSucceeded: selection.clear,
+  });
+  const [intent, setIntent] = useState<BulkRunIntent | null>(null);
+  const cancelling = intent?.kind === "cancel";
+  const skipOf = (task: AutomationTaskRecord) =>
+    cancelling ? bulkCancelSkip(task) : bulkRetrySkip(task);
+  const send = intent ? intent.tasks.filter((task) => !skipOf(task)).length : 0;
+  const counts = { send, skipped: (intent?.tasks.length ?? 0) - send };
+
+  function open(kind: BulkRunIntent["kind"]) {
+    const ids = new Set(selection.selectedIds);
+    setIntent({ kind, tasks: list.filter((task) => ids.has(task.id)) });
+  }
+
+  async function confirm() {
+    if (!intent) {
+      return;
+    }
+    const { kind, tasks } = intent;
+    const byId = new Map(tasks.map((task) => [task.id, task]));
+    await bulk.run(
+      kind === "cancel"
+        ? t("runs.bulk.actionCancel")
+        : t("runs.bulk.actionRetry"),
+      tasks.map((task) => ({
+        id: task.id,
+        label: runLabel(
+          t,
+          task,
+          task.application_id ? cards.get(task.application_id) : undefined
+        ),
+      })),
+      async (id) => {
+        const task = byId.get(id);
+        if (!task) {
+          return;
+        }
+        if (kind === "cancel") {
+          const reason = bulkCancelSkip(task);
+          if (reason) {
+            throw new BulkSkip(reason, cancelSkipMessage(t, reason));
+          }
+          await cancelTask(task);
+          return;
+        }
+        const reason = bulkRetrySkip(task);
+        if (reason) {
+          throw new BulkSkip(reason, retrySkipMessage(t, reason));
+        }
+        await retryTask(task, false);
+      }
+    );
+    setIntent(null);
+  }
+
+  return (
+    <>
+      <BulkToolbar count={selection.size} onClear={selection.clear}>
+        <Button
+          disabled={bulk.busy}
+          onClick={() => open("retry")}
+          size="sm"
+          variant="outline"
+        >
+          {t("runs.bulk.retry")}
+        </Button>
+        <Button
+          disabled={bulk.busy}
+          onClick={() => open("cancel")}
+          size="sm"
+          variant="outline"
+        >
+          {t("runs.bulk.cancel")}
+        </Button>
+      </BulkToolbar>
+      <BulkConfirmDialog
+        body={
+          cancelling
+            ? t("runs.bulk.cancelBody", counts)
+            : t("runs.bulk.retryBody", counts)
+        }
+        busy={bulk.busy}
+        cancelLabel={cancelling ? t("runs.keepRunning") : undefined}
+        confirmDisabled={send === 0}
+        confirmLabel={
+          cancelling
+            ? t("runs.bulk.cancelConfirm", { count: send })
+            : t("runs.bulk.retryConfirm", { count: send })
+        }
+        confirmVariant={cancelling ? "destructive" : "default"}
+        onConfirm={confirm}
+        onOpenChange={(next) => {
+          if (!next) {
+            setIntent(null);
+          }
+        }}
+        open={intent !== null}
+        title={
+          cancelling ? t("runs.bulk.cancelTitle") : t("runs.bulk.retryTitle")
+        }
+      />
+      <BulkRunResultsDialog onClose={bulk.closeReport} report={bulk.report} />
+    </>
+  );
+}
+
 export function RunsPage({
   search = {},
   onSearchChange,
@@ -220,7 +412,9 @@ export function RunsPage({
       ),
     [board.data]
   );
-  const list = tasks.data ?? [];
+  const list = useMemo(() => tasks.data ?? [], [tasks.data]);
+  const taskIds = useMemo(() => list.map((task) => task.id), [list]);
+  const selection = useSelection(taskIds);
   const deviceNameOf = (task: AutomationTaskRecord) => {
     const deviceId = task.lease_device_id ?? task.target_device_id;
     if (!deviceId) {
@@ -271,6 +465,7 @@ export function RunsPage({
           </p>
         ) : null}
       </div>
+      <BulkRunActions cards={cards} list={list} selection={selection} />
       <div className="flex flex-col gap-4 px-4 py-5 sm:px-6">
         {tasks.isError && !tasks.data ? (
           <Alert role="alert" variant="destructive">
@@ -310,6 +505,9 @@ export function RunsPage({
             <Table className="type-body-compact">
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-10">
+                    <SelectAllCheckbox selection={selection} />
+                  </TableHead>
                   <TableHead>{t("runs.kind")}</TableHead>
                   <TableHead>{t("runs.what")}</TableHead>
                   <TableHead>{t("runs.device")}</TableHead>
@@ -334,6 +532,7 @@ export function RunsPage({
                     key={task.id}
                     nowMs={now}
                     onAction={(kind) => setDialog({ kind, task })}
+                    selection={selection}
                     task={task}
                   />
                 ))}

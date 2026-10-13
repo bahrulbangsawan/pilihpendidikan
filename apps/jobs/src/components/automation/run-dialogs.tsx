@@ -45,7 +45,7 @@ function useRefreshRuns() {
 }
 
 /** Retry (failed) or "Not submitted" (outcome_unknown): a new task. */
-async function retryTask(
+export async function retryTask(
   task: AutomationTaskRecord,
   confirmNotSubmitted: boolean
 ): Promise<AutomationTaskRecord> {
@@ -59,6 +59,16 @@ async function retryTask(
     idempotencyKey: key,
   });
   return result.task;
+}
+
+/** Cancel a live run (202 while a device holds it: stopped on its next heartbeat). */
+export async function cancelTask(
+  task: Pick<AutomationTaskRecord, "id">
+): Promise<void> {
+  await api("POST /api/v1/tasks/{tsk_id}/cancel", {
+    params: { tsk_id: task.id },
+    idempotencyKey: newIdempotencyKey(),
+  });
 }
 
 export function RunDialog({
@@ -128,10 +138,7 @@ export function RunDialog({
 
   const cancel = () =>
     run(async () => {
-      await api("POST /api/v1/tasks/{tsk_id}/cancel", {
-        params: { tsk_id: task.id },
-        idempotencyKey: newIdempotencyKey(),
-      });
+      await cancelTask(task);
       toast.success(t("runs.cancelRequested"));
     });
 

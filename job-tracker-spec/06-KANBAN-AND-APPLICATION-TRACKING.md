@@ -304,6 +304,13 @@ keep conflict handling exact. The Discovery inbox *does* have a bulk endpoint
 | Request scoring | `POST /api/v1/scores:request` with the posting ids (one request) |
 | Generate CV variants | Creates one `cv_variants` per card (queue). Capped at 20 per action. |
 | Queue apply tasks | `POST /api/v1/tasks` per card. Requires mode ≠ `manual`. Policy-checked per card (21 §2). |
+| Delete permanently | `DELETE /api/v1/applications/{id}?purge=1` per card after one confirmation; cards with a live task or a submission in flight are skipped |
+
+The same pattern (multi-select, one request per row, per-row results,
+confirmation for destructive actions, single-row guards kept) covers every
+other list of the dashboard: approvals, rules, runs, sources, devices, saved
+answers, interviews and offers (12). The CLI takes several ids per command
+(16 §3.3).
 
 ---
 

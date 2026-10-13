@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { makeCard } from "@/test/fixtures";
+import { fixtureId, makeCard, NOW } from "@/test/fixtures";
 import { ApiError } from "./api-client";
-import { BULK_CONCURRENCY, bulkMoveSkip, runBulk, summarizeBulk } from "./bulk";
+import {
+  answerAutoUseBlock,
+  autoModeAllowed,
+  BULK_CONCURRENCY,
+  bulkArchiveTarget,
+  bulkMoveSkip,
+  bulkPurgeBlock,
+  runBulk,
+  summarizeBulk,
+} from "./bulk";
 
 describe("T6-08 bulk actions report per-card results", () => {
   it("T6-08 bulk move with valid, invalid and conflicting cards reports each one", async () => {
@@ -91,7 +100,7 @@ describe("T6-08 bulk actions report per-card results", () => {
     expect(results.map((result) => result.id)).toEqual(ids);
     expect(results[7]).toMatchObject({
       status: "failed",
-      message: "Error: boom",
+      message: "boom",
     });
     expect(summarizeBulk(results)).toEqual({
       ok: 10,
@@ -118,5 +127,82 @@ describe("T6-08 bulk actions report per-card results", () => {
     expect(bulkMoveSkip(card, "withdrawn")?.reason).toBe(
       "submission_in_flight"
     );
+  });
+});
+
+describe("T6-08 bulk guards (06 §9, §11)", () => {
+  const liveTask = (state: "running" | "queued", submitting: boolean) => ({
+    id: fixtureId("tsk"),
+    kind: "apply" as const,
+    state,
+    device_id: null,
+    device_name: null,
+    pause_reason: null,
+    progress_stage: null,
+    submit_intent_at: submitting ? NOW : null,
+    updated_at: NOW,
+  });
+
+  it("T6-08 purge skips cards with a live task or a submission in flight", () => {
+    expect(
+      bulkPurgeBlock(makeCard({ stage: "saved", company: "A", title: "T" }))
+    ).toBeNull();
+    expect(
+      bulkPurgeBlock(
+        makeCard({ stage: "ready", company: "B", title: "T" }, 0, {
+          live_task: liveTask("queued", false),
+        })
+      )
+    ).toBe("live_task");
+    expect(
+      bulkPurgeBlock(
+        makeCard({ stage: "ready", company: "C", title: "T" }, 0, {
+          live_task: liveTask("running", true),
+        })
+      )
+    ).toBe("submission_in_flight");
+    expect(
+      bulkPurgeBlock(
+        makeCard({ stage: "ready", company: "D", title: "T" }, 0, {
+          submission_status: "in_progress",
+        })
+      )
+    ).toBe("submission_in_flight");
+  });
+
+  it("T6-08 archive on a mixed selection archives; only an all-archived selection unarchives", () => {
+    expect(bulkArchiveTarget([{ archived: true }, { archived: false }])).toBe(
+      true
+    );
+    expect(bulkArchiveTarget([{ archived: true }, { archived: true }])).toBe(
+      false
+    );
+    expect(bulkArchiveTarget([{ archived: false }])).toBe(true);
+  });
+
+  it("T6-08 auto mode needs a matching auto rule (or the card already in auto)", () => {
+    expect(
+      autoModeAllowed({ automation_rule_id: null, mode: "approval" })
+    ).toBe(false);
+    expect(
+      autoModeAllowed({
+        automation_rule_id: fixtureId("rul"),
+        mode: "approval",
+      })
+    ).toBe(true);
+    expect(autoModeAllowed({ automation_rule_id: null, mode: "auto" })).toBe(
+      true
+    );
+  });
+
+  it("TW-PROFILE a protected answer is never set to always; unchanged answers are skipped", () => {
+    const protectedAnswer = { sensitivity: "protected", auto_use: "approval" };
+    expect(answerAutoUseBlock(protectedAnswer, "always")).toBe(
+      "protected_always"
+    );
+    expect(answerAutoUseBlock(protectedAnswer, "never")).toBeNull();
+    expect(
+      answerAutoUseBlock({ sensitivity: "none", auto_use: "always" }, "always")
+    ).toBe("unchanged");
   });
 });

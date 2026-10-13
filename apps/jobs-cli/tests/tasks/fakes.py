@@ -99,6 +99,8 @@ class CloudFake:
         self.handed_off: list[dict[str, Any]] = []
         self.rules: dict[str, dict[str, Any]] = {}
         self.inbox: list[dict[str, Any]] = []
+        self.inbox_bulk_calls: list[dict[str, Any]] = []
+        self.retries: list[dict[str, Any]] = []
         self.user_jobs: dict[str, dict[str, Any]] = {}
         self.postings: dict[str, dict[str, Any]] = {}
         self.score_requests: list[dict[str, Any]] = []
@@ -1092,6 +1094,105 @@ class CloudFake:
                 copy.deepcopy(i) for i in self.inbox if i["user_job"]["inbox_state"] == state_filter
             ]
             return FakeResponse(200, {"items": items, "next_cursor": None})
+
+        @fake.route("POST", "/api/v1/inbox:bulk")
+        def inbox_bulk(req: FakeRequest) -> FakeResponse:
+            """The api's state machine (inbox.ts): unknown ids `not_found`, dismissing a
+            tracked job `conflict`, other no-op moves `ok` with the unchanged state."""
+            action = req.body["action"]
+            moves = {
+                "seen": (("new",), "seen"),
+                "dismiss": (("new", "seen"), "dismissed"),
+                "restore": (("dismissed",), "seen"),
+                "track": (("new", "seen", "dismissed"), "tracked"),
+            }
+            self.inbox_bulk_calls.append(dict(req.body))
+            results: list[dict[str, Any]] = []
+            for ujb in req.body["user_job_ids"]:
+                job = self.user_jobs.get(ujb)
+                if job is None:
+                    results.append({"user_job_id": ujb, "status": "not_found"})
+                    continue
+                sources, target = moves.get(action, ((), job["inbox_state"]))
+                if job["inbox_state"] in sources:
+                    job["inbox_state"] = target
+                elif action == "dismiss" and job["inbox_state"] == "tracked":
+                    results.append(
+                        {
+                            "user_job_id": ujb,
+                            "status": "conflict",
+                            "inbox_state": "tracked",
+                            "error": "This job is tracked; archive its application instead.",
+                        }
+                    )
+                    continue
+                results.append(
+                    {"user_job_id": ujb, "status": "ok", "inbox_state": job["inbox_state"]}
+                )
+            return FakeResponse(200, {"results": results})
+
+        # ---------------------------------------------------------------- tasks (05 §8)
+        @fake.route("GET", "/api/v1/tasks")
+        def list_tasks(req: FakeRequest) -> FakeResponse:
+            items = [
+                self.task_view(t)
+                for t in self.tasks.values()
+                if t["user_id"] == req.user_id
+                and all(
+                    req.query.get(key) in (None, t[key])
+                    for key in ("state", "kind", "application_id")
+                )
+            ]
+            items.sort(key=lambda t: t["id"], reverse=True)
+            limit = int(req.query.get("limit", "50"))
+            return FakeResponse(200, {"items": items[:limit], "next_cursor": None})
+
+        @fake.route("POST", "/api/v1/tasks/{tsk_id}/cancel")
+        def cancel_task(req: FakeRequest) -> FakeResponse:
+            task = self._owned_task(req)
+            if task["state"] == "cancelled":
+                return FakeResponse(200, {"task": self.task_view(task)})
+            if task["submit_intent_at"] is not None:
+                raise FakeHttpError(409, "too_late", "the task is past submit_intent")
+            if task["lease_id"] is None and task["state"] in ("queued", "awaiting_approval"):
+                task.update(state="cancelled", error_class="cancelled", finished_at=self.now())
+                task["revision"] += 1
+                return FakeResponse(200, {"task": self.task_view(task)})
+            if task["lease_id"] is not None:
+                task["cancel_requested"] = True
+                task["revision"] += 1
+                return FakeResponse(202, {"task": self.task_view(task)})
+            raise FakeHttpError(
+                409,
+                "invalid_transition",
+                f"A {task['state']} task cannot be cancelled.",
+                details={"state": task["state"]},
+            )
+
+        @fake.route("POST", "/api/v1/tasks/{tsk_id}/retry")
+        def retry_task(req: FakeRequest) -> FakeResponse:
+            task = self._owned_task(req)
+            if task["state"] not in ("failed", "outcome_unknown"):
+                raise FakeHttpError(
+                    409,
+                    "invalid_transition",
+                    "Only failed or outcome_unknown tasks can be retried.",
+                    details={"state": task["state"]},
+                )
+            body = req.body or {}
+            if task["state"] == "outcome_unknown" and body.get("confirm_not_submitted") is not True:
+                raise FakeHttpError(
+                    422,
+                    "policy_violation",
+                    "Confirm that nothing was submitted before retrying.",
+                    details={"reason": "confirm_not_submitted_required"},
+                )
+            self.retries.append({"task_id": task["id"], **body})
+            new = self.queue_task(
+                task["kind"], app_id=task["application_id"], payload=task["payload"]
+            )
+            new["retry_of"] = task["id"]
+            return FakeResponse(201, {"task": self.task_view(new)})
 
         @fake.route("GET", "/api/v1/user-jobs/{ujb_id}")
         def user_job_detail(req: FakeRequest) -> FakeResponse:
