@@ -21,6 +21,7 @@ on:
       - "scripts/require-uv.sh"
       - ".github/workflows/cli-matrix.yml"
       - ".github/scripts/**"
+      - "apps/home/public/install-cli.*"
   push:
     branches: [main]
     paths:
@@ -29,6 +30,7 @@ on:
       - "scripts/require-uv.sh"
       - ".github/workflows/cli-matrix.yml"
       - ".github/scripts/**"
+      - "apps/home/public/install-cli.*"
   workflow_dispatch:
   workflow_call:
 
@@ -165,7 +167,7 @@ jobs:
           PILIH_JOBS_NO_BROWSER: "1"
         run: |
           PILIH_JOBS_PACKAGE="$(ls "$PWD"/dist/*.whl)" sh ../home/public/install-cli.sh
-          uv tool dir --bin >> "$GITHUB_PATH"
+          uv --color never tool dir --bin >> "$GITHUB_PATH"
 
       - name: install-cli.ps1 <wheel>
         if: runner.os == 'Windows'
@@ -175,7 +177,7 @@ jobs:
         run: |
           $env:PILIH_JOBS_PACKAGE = (Get-ChildItem dist\*.whl).FullName
           & ..\home\public\install-cli.ps1
-          uv tool dir --bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          uv --color never tool dir --bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: pilih-jobs --json doctor (before the browser)
         run: |
@@ -223,7 +225,16 @@ jobs:
         run: |
           uv run --no-project --python 3.12 python .github/scripts/fixture-boards.py \
             --port-file boards.port 2> boards.log &
-          for _ in $(seq 1 50); do [ -s boards.port ] && break; sleep 0.2; done
+          # Stop the server with the step: a live `uv run` keeps the uv cache locked
+          # and the setup-uv post step (cache prune) times out waiting for it.
+          boards_pid=$!
+          trap 'kill "$boards_pid" 2>/dev/null || true; wait "$boards_pid" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 150); do [ -s boards.port ] && break; sleep 0.2; done
+          if [ ! -s boards.port ]; then
+            echo "::error::fixture-boards.py did not start within 30 s"
+            cat boards.log
+            exit 1
+          fi
           base="http://127.0.0.1:$(cat boards.port)"
           export PILIH_JOBS_ENV=test
           export PILIH_JOBS_TEST_BASE_URLS="{\"greenhouse\":\"$base\",\"lever\":\"$base\",\"ashby\":\"$base\"}"

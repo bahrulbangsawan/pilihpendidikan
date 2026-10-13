@@ -6,12 +6,26 @@ through a JSON file (used by the cross-process refresh test, T17-12).
 
 from __future__ import annotations
 
-import fcntl
 import json
+import sys
 from pathlib import Path
+from typing import IO
 
 from keyring.backend import KeyringBackend
 from keyring.errors import PasswordDeleteError
+
+
+def _lock_exclusive(handle: IO[str]) -> None:
+    """Block until this process holds the file (released when the handle closes)."""
+    if sys.platform == "win32":
+        import msvcrt
+
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+    else:
+        import fcntl
+
+        fcntl.flock(handle, fcntl.LOCK_EX)
 
 
 class MemoryKeyring(KeyringBackend):
@@ -43,7 +57,7 @@ class FileKeyring(KeyringBackend):
     def _locked(self, write: bool, mutate=None):
         self.path.touch(exist_ok=True)
         with self.path.open("r+") as handle:
-            fcntl.flock(handle, fcntl.LOCK_EX)
+            _lock_exclusive(handle)
             raw = handle.read()
             data = json.loads(raw) if raw else {}
             result = mutate(data) if mutate else None
