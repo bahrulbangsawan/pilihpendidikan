@@ -5,7 +5,6 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import os
-import signal
 import socket
 import threading
 import time
@@ -67,7 +66,7 @@ class FixtureState:
         return [h for h in self.hits if h.host == host]
 
     def kill_browser(self) -> int:
-        """SIGKILL every browser process using the test profile (scenarios 13/14)."""
+        """Kill every browser process using the test profile (scenarios 13/14)."""
         target = self.kill_profile_dir
         if target is None:
             return 0
@@ -82,8 +81,9 @@ class FixtureState:
                 arg == f"--user-data-dir={real}" or arg == f"--user-data-dir={target}"
                 for arg in cmdline
             ):
+                # SIGKILL on POSIX, TerminateProcess on Windows (no signal.SIGKILL there).
                 with contextlib.suppress(psutil.Error, OSError):
-                    os.kill(proc.info["pid"], signal.SIGKILL)
+                    proc.kill()
                     killed += 1
         return killed
 
