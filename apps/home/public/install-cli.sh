@@ -71,7 +71,7 @@ main() {
   say "installing ${spec} with uv (Python 3.12)"
   uv tool install --python 3.12 --upgrade "$spec"
 
-  bin_dir="$(uv tool dir --bin)"
+  bin_dir="$(uv --color never tool dir --bin)"
   pilih_jobs="${bin_dir}/pilih-jobs"
   [ -x "$pilih_jobs" ] || fail "pilih-jobs was not found in ${bin_dir}"
 

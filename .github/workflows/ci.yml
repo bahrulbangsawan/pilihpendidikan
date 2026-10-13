@@ -54,6 +54,10 @@ jobs:
           enable-cache: true
           cache-dependency-glob: apps/jobs-cli/uv.lock
 
+      # lint:typography (scripts/lint-typography.sh) greps with ripgrep.
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
       - name: Install the workspace
         run: bun install --frozen-lockfile
 

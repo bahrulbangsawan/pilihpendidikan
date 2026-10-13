@@ -61,7 +61,7 @@ function Install-PilihJobs {
   Say "installing $spec with uv (Python 3.12)"
   Invoke-Checked "uv tool install" { uv tool install --python 3.12 --upgrade $spec }
 
-  $binDir = (uv tool dir --bin).Trim()
+  $binDir = (uv --color never tool dir --bin).Trim()
   $pilihJobs = Join-Path $binDir "pilih-jobs.exe"
   if (-not (Test-Path $pilihJobs)) {
     throw "pilih-jobs installer: pilih-jobs.exe was not found in $binDir"
