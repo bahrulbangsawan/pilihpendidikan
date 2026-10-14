@@ -37,6 +37,25 @@ describe("scraper worker routing (24 §3)", () => {
     });
   });
 
+  test("routes the scheduler fallback clock (24 §6.6)", () => {
+    expect(routeRequest("POST", "/clock/ensure", null)).toEqual({
+      kind: "clock",
+      action: "ensure",
+    });
+    expect(routeRequest("GET", "/clock", null)).toEqual({
+      kind: "clock",
+      action: "status",
+    });
+    expect(routeRequest("GET", "/clock/ensure", null)).toEqual({
+      kind: "reject",
+      status: 405,
+    });
+    expect(routeRequest("POST", "/clock", null)).toEqual({
+      kind: "reject",
+      status: 405,
+    });
+  });
+
   test("refuses bodies over 4 MB", () => {
     expect(
       routeRequest("POST", "/v1/scrape", String(MAX_BODY_BYTES + 1))

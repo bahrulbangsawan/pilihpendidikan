@@ -216,3 +216,10 @@ Checked 2026-10-13T14:38:12+00:00 to 2026-10-13T14:55:16+00:00 with UA `pilih-jo
 - selectors (verified): `{"item": "div.job-listings-item", "title": "a.job-details-link h3", "link": "a.job-details-link[href]", "company": "a.job-info-link-item[href^='/companies/']", "location": "div.job-details div.d-flex > :nth-child(5)", "posted": "div.job-posted-date", "job_type": "div.job-details div.d-flex > :nth-child(3)", "matched": "10/10 items on /jobs for every field"}`
 - terms: no terms-of-service page found on the fetched pages
 - notes: JBoard-style board (jb-* classes). Honour Crawl-delay 1. Listing shows 10 per page; detail pages carry JobPosting JSON-LD. Employers seen include Toptal, Baymard, Webflow — likely partly aggregated. No terms-of-service link found.
+
+## Added on request (2026-10-14)
+
+| Source | Status | Evidence |
+|---|---|---|
+| Y Combinator Jobs (https://www.ycombinator.com/jobs) | BLOCKED (restricted by terms) | robots.txt allows `/jobs`; the page answers 200 without a challenge and embeds 20 postings in its Inertia `data-page` JSON; applying needs a YC account. The terms (https://www.ycombinator.com/legal) say "you agree not to modify, copy, frame, scrape, … the Site or the Site Content" and "you will not engage in or use any data mining, robots, scraping or similar data gathering or extraction methods", so it is listed but not fetched. |
+

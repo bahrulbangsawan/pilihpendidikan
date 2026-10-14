@@ -121,6 +121,8 @@ describe("T24-SEED the audited catalog", () => {
   it("T24-SEED-01 registers every audited platform once and lists only job boards", async () => {
     const w = await world();
     const first = await catalog(w.user);
+    // API traffic arms the scraper's scheduler fallback clock (24 §6.6).
+    expect(w.scraper.clockEnsures).toBeGreaterThanOrEqual(1);
     const nonBoards = CLOUD_SOURCES_FILE.sources.filter(
       (s) => s.health === "UNSUPPORTED" && s.enabled
     );

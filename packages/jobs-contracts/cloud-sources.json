@@ -2812,6 +2812,39 @@
           "GET https://www.zirtual.com → 200, title '#1 Virtual Assistant Company | Zirtual'"
         ]
       }
+    },
+    {
+      "slug": "ycombinator.com",
+      "name": "Y Combinator Jobs",
+      "homepage_url": "https://www.ycombinator.com/jobs",
+      "listing_url": "https://www.ycombinator.com/jobs",
+      "canonical_domain": "ycombinator.com",
+      "category": "job_board",
+      "from_directory": false,
+      "directory_ref": null,
+      "description": "Startup jobs at Y Combinator companies (Work at a Startup).",
+      "strategy": "none",
+      "strategy_config": {},
+      "health": "BLOCKED",
+      "status_reason": "Restricted: Y Combinator's terms forbid scraping (\"you will not engage in or use any data mining, robots, scraping or similar data gathering or extraction methods\"), so the board is listed but never fetched. robots.txt allows /jobs and the page embeds 20 postings as JSON, so it could be added with YC's written permission. Applying goes through a Y Combinator account (Work at a Startup); you can still track a YC job by pasting its URL with New.",
+      "enabled": true,
+      "priority": 30,
+      "interval_minutes": 1440,
+      "rate_limit": {},
+      "auth_required": false,
+      "auth_note": null,
+      "terms_url": "https://www.ycombinator.com/legal",
+      "terms_note": "Except as expressly authorized by Y Combinator, you agree not to modify, copy, frame, scrape, rent, lease, loan, sell, distribute or create derivative works based on the Site or the Site Content … In connection with your use of the Site you will not engage in or use any data mining, robots, scraping or similar data gathering or extraction methods.",
+      "allow_browser": false,
+      "audit": {
+        "checked_at": "2026-10-14T09:40:00+00:00",
+        "evidence": [
+          "GET https://www.ycombinator.com/robots.txt → 200, User-Agent * allows / (disallows /verify/*, /library?*, /companies?*)",
+          "GET https://www.ycombinator.com/jobs → 200, no challenge; Inertia data-page props.jobPostings: 20 postings (title, companyName, location, salaryRange, equityRange, visa, skills, createdAt, applyUrl)",
+          "applyUrl → account.ycombinator.com/authenticate (Work at a Startup account required to apply)",
+          "GET https://www.ycombinator.com/legal → 200, terms prohibit scraping, robots and data mining (quoted in terms_note)"
+        ]
+      }
     }
   ]
 }

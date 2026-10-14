@@ -507,7 +507,10 @@ Needs the **Workers Paid** plan (Containers). Every step is [owner].
 
 **Order matters:** the next `apps/api` deploy carries the `jobs-scrape`
 producer/consumers and the `SCRAPER` binding, so the queues and the scraper
-Worker must exist first, or `wrangler deploy` of the api fails.
+Worker must exist first, or `wrangler deploy` of the api fails. The scraper in
+turn binds the api's `CloudScheduler` RPC entrypoint (the scheduler fallback,
+24 §6.6): on a first install deploy the scraper without that binding or deploy
+the api once before it; afterwards, when both change, deploy the api first.
 
 ### C1. Resources
 
@@ -564,6 +567,17 @@ using the service "to build a competitive product"; Remotive's API terms
 (≤ 4 calls a day, link back, no display to collect signups) need its written
 OK, and it currently challenges our crawler; Dynamite Jobs only exposes its 6
 featured jobs without a browser.
+
+### Scheduler fallback (24 §6.6)
+
+If the api's Cron Triggers are not dispatched (check Workers & Pages →
+api-pilihpendidikan → Triggers → Past Events), the scraper Worker's
+`DispatchClock` alarm ticks the `*/5` and hourly schedules instead. It arms
+itself from api traffic (any request, at most every 10 min per isolate) and
+from the scraper's hourly cron. Check it with
+`bunx wrangler tail jobs-scraper-pilihpendidikan` (one
+`scheduler_clock_tick` line every 5 minutes) or in the api logs
+(`cloud_dispatch_done` on the hour).
 
 ### Rollback (cloud discovery)
 

@@ -169,6 +169,8 @@ export type ScrapeHandler = (
 
 export interface FakeScraper {
   binding: Fetcher;
+  /** `POST /clock/ensure` calls (not protocol requests). */
+  clockEnsures: number;
   directory: (() => DirectoryResponse) | null;
   probe: ((url: string) => ProbeResponse) | null;
   readonly requests: Array<{ body: unknown; path: string }>;
@@ -193,6 +195,7 @@ function requestUrl(input: RequestInfo | URL): string {
 export function createFakeScraper(): FakeScraper {
   const fake: FakeScraper = {
     requests: [],
+    clockEnsures: 0,
     scrape: null,
     probe: null,
     directory: null,
@@ -214,6 +217,13 @@ export function createFakeScraper(): FakeScraper {
   fake.binding = {
     async fetch(input: RequestInfo | URL, init?: RequestInit) {
       const url = new URL(requestUrl(input));
+      if (url.pathname.startsWith("/clock")) {
+        // The scheduler fallback clock (24 §6.6): armed by api traffic.
+        fake.clockEnsures += 1;
+        return new Response(JSON.stringify({ armed_for: null }), {
+          status: 200,
+        });
+      }
       const body = JSON.parse(String(init?.body ?? "null"));
       fake.requests.push({ path: url.pathname, body });
       if (fake.down) {

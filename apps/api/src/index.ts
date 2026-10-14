@@ -1,14 +1,17 @@
 // Worker entry for api.pilihpendidikan.com: the HTTP router from ./app.ts
 // (incl. the /api/v1 Job Tracker kernel), the `PilihMcpServer` Durable Object
-// behind the MCP_OBJECT binding, the crons (`scheduled`) and the `jobs-ai`
-// queue consumer (`queue`).
+// behind the MCP_OBJECT binding, the crons (`scheduled`), the queue consumers
+// (`queue`) and the scheduler fallback's RPC entrypoint (`CloudScheduler`).
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { WorkerEntrypoint } from "cloudflare:workers";
 import { McpAgent } from "agents/mcp";
 import { createApp, SESSION_MISMATCH } from "./app";
 import type { Caller } from "./auth";
 import type { Env, McpProps } from "./env";
 import { scopesForCredential } from "./jobs/core/scopes";
+import { runSchedulerTick } from "./jobs/cron/fallback";
+import type { CronRunReport } from "./jobs/cron/index";
 import { ensureUser } from "./jobs/repo/core/users";
 import { registerAllTools } from "./mcp-tools";
 
@@ -71,6 +74,19 @@ export class PilihMcpServer extends McpAgent<Env, unknown, Partial<McpProps>> {
       });
       return undefined;
     }
+  }
+}
+
+/**
+ * `CloudScheduler`: a private RPC entrypoint (job-tracker-spec/24 §6.6). It has
+ * no route; only the scraper Worker's service binding (`entrypoint:
+ * "CloudScheduler"`) can call it. Its alarm clock ticks the 5-minute and
+ * hourly schedules while Cloudflare does not dispatch this Worker's newer
+ * Cron Triggers.
+ */
+export class CloudScheduler extends WorkerEntrypoint<Env> {
+  async tick(cron: string): Promise<CronRunReport> {
+    return await runSchedulerTick(cron, this.env, this.ctx);
   }
 }
 

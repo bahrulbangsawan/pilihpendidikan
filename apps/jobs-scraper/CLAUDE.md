@@ -11,6 +11,14 @@ Reached only through apps/api's `SCRAPER` service binding. See `README.md`.
 - `bun run build` — Worker bundle only (`--containers-rollout=none`, no Docker); `bun run docker:build` — the image
 - `bun run deploy` — owner approval required (builds and pushes the image; Workers Paid)
 
+## Scheduler fallback (24 §6.6)
+
+`DispatchClock` (Durable Object, `src/index.ts`; timing in `src/clock.ts`) fires an
+alarm 30 s after every 5-minute boundary and calls the api's RPC entrypoint
+`CloudScheduler.tick(cron)` through the `API` service binding: `*/5 * * * *`
+always, `0 * * * *` on the hour. `POST /clock/ensure` arms it (the api calls it),
+`GET /clock` shows the last tick; the hourly cron is only a watchdog.
+
 ## Rules
 
 - Every network request goes through `pilih_jobs.discovery.engine.ScraplingJobEngine`

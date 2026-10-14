@@ -41,13 +41,34 @@
       {
         "name": "SCRAPER_CONTAINER",
         "class_name": "ScraperContainer"
+      },
+      // The scheduler fallback clock (job-tracker-spec/24 §6.7).
+      {
+        "name": "DISPATCH_CLOCK",
+        "class_name": "DispatchClock"
       }
     ]
+  },
+  // The api's private RPC entrypoint the clock ticks (deploy the api first).
+  "services": [
+    {
+      "binding": "API",
+      "service": "api-pilihpendidikan",
+      "entrypoint": "CloudScheduler"
+    }
+  ],
+  // Watchdog only: re-arms the clock if its alarm is lost.
+  "triggers": {
+    "crons": ["0 * * * *"]
   },
   "migrations": [
     {
       "tag": "v1",
       "new_sqlite_classes": ["ScraperContainer"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["DispatchClock"]
     }
   ]
 }

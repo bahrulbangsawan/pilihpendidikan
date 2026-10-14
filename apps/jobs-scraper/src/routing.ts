@@ -1,7 +1,8 @@
 // Pure request routing of the scraper Worker (unit-tested without Docker).
 //
 // Only `GET /healthz` and `POST /v1/{scrape,probe,directory}` reach the
-// container; everything else is 404. Bodies over 4 MB are refused (413). The
+// container, `POST /clock/ensure` and `GET /clock` the scheduler fallback
+// clock; everything else is 404. Bodies over 4 MB are refused (413). The
 // container instance is `pool-<hash(domain) % size>`, so every request for one
 // domain lands on the same process and the engine's per-domain politeness
 // (robots cache, delays) holds across runs.
@@ -16,6 +17,7 @@ const HOST_RE = /^https?:\/\/([^/?#:]+)/i;
 
 export type Route =
   | { kind: "health" }
+  | { kind: "clock"; action: "ensure" | "status" }
   | { kind: "forward"; path: string }
   | { kind: "reject"; status: 404 | 405 | 413 };
 
@@ -24,6 +26,17 @@ export function routeRequest(
   pathname: string,
   contentLength: string | null
 ): Route {
+  // The scheduler fallback clock (24 §6.6): arm it / read its state.
+  if (pathname === "/clock/ensure") {
+    return method === "POST"
+      ? { kind: "clock", action: "ensure" }
+      : { kind: "reject", status: 405 };
+  }
+  if (pathname === "/clock") {
+    return method === "GET"
+      ? { kind: "clock", action: "status" }
+      : { kind: "reject", status: 405 };
+  }
   if (pathname === "/healthz") {
     return method === "GET"
       ? { kind: "health" }

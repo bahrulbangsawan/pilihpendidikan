@@ -241,6 +241,24 @@ are grouped in the inbox (15 §11). After a complete, error-free read,
 postings of the source not seen in the run get `missed_runs + 1` and close at
 2 (or past `expires_at`), with a change row for every linked user.
 
+### 6.6 Scheduler fallback (Durable Object alarm clock)
+
+Cloudflare did not dispatch the Cron Triggers added to `api-pilihpendidikan`
+after 2026-10-06 (incident "Workers – Cron Trigger Activation Issues",
+2026-10-13/14): only the original `0 3 * * *` fired, so neither the hourly
+dispatch nor the `*/5` lease reaper ran. The scraper Worker therefore hosts a
+`DispatchClock` Durable Object whose **alarm** (independent of Cron Trigger
+activation) fires 30 s after every 5-minute boundary (UTC) and calls the api's
+private RPC entrypoint `CloudScheduler.tick(cron)` (service binding with
+`entrypoint: "CloudScheduler"`, no route): `*/5 * * * *` every time, then
+`0 * * * *` on the hour. The alarm re-arms itself even when a tick fails and
+stores its last tick (`GET /clock` on the scraper Worker). It is armed by the
+api (at most once per isolate every 10 min, from requests and its working daily
+cron, `POST /clock/ensure`) and by the scraper's own hourly cron (watchdog).
+Double ticks are harmless: the reaper and expiry jobs are idempotent and the
+dispatch moves `next_run_at` forward; the 30 s offset keeps the clock clear of
+the api's own crons once Cloudflare dispatches them again.
+
 ## 7. Source discovery
 
 ### 7.1 Seed catalog
@@ -261,7 +279,7 @@ Audit result (2026-10-13, after the live smoke of every usable board; the full a
 |---|---|---|
 | ACTIVE, enabled | 7 | We Work Remotely (rss, 89 jobs), Remote OK (json_api, 99, attribution required), Jobspresso (rss, 10), Workew (rss, 10), JustRemote (embedded_json, 84), Remote Freelance ID (json_ld ItemList, 12 per page), Work From Home ID (html_selectors + JSON-LD details, 10 per page) |
 | ACTIVE, disabled pending owner review | 2 | Working Nomads (json_api works, 51 jobs; terms ban using the service "to build a competitive product"), Dynamite Jobs (JavaScript listing: only 6 featured jobs without a browser) |
-| BLOCKED | 17 | 9 refuse our honest client: Remote.co, FlexJobs, SimplyHired, Stack Overflow, Behance, Fancy Hands, Remotive (Cloudflare challenge even on robots.txt; also held back for its API terms), Hubstaff Talent (challenge in headless Chromium), ProBlogger (reCAPTCHA on job pages, no company in the feed). 8 are restricted by terms or robots: SkipTheDrive, EuropeRemotely, Crossover, Dice, Wellfound/AngelList, Dribbble, Coroflot, Teach Away |
+| BLOCKED | 18 | 9 refuse our honest client: Remote.co, FlexJobs, SimplyHired, Stack Overflow, Behance, Fancy Hands, Remotive (Cloudflare challenge even on robots.txt; also held back for its API terms), Hubstaff Talent (challenge in headless Chromium), ProBlogger (reCAPTCHA on job pages, no company in the feed). 9 are restricted by terms or robots: SkipTheDrive, EuropeRemotely, Crossover, Dice, Wellfound/AngelList, Dribbble, Coroflot, Teach Away, and Y Combinator Jobs (added on request 2026-10-14; its terms forbid scraping) |
 | AUTH_REQUIRED | 1 | Virtual Vocations (paid membership) |
 | UNSUPPORTED | 41 | Freelance marketplaces, talent networks, staffing / VA services, tutoring platforms, content services, one community |
 | UNSUPPORTED, disabled (gone) | 12 | Pangian, Remote Global, Outsourcely, CloudPeeps, Hired, GitHub Jobs, HackerRank Jobs, Envato Studio, Working Not Working, Contena, Virtual Assistant Jobs, Chegg Tutors |

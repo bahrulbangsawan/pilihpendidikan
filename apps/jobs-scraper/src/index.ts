@@ -4,6 +4,8 @@
 // for anything else. See src/routing.ts.
 
 import { Container } from "@cloudflare/containers";
+import { DurableObject } from "cloudflare:workers";
+import { boundaryOf, nextAlarmAt, ticksFor } from "./clock";
 import {
   instanceName,
   MAX_BODY_BYTES,
@@ -12,9 +14,98 @@ import {
   routingKey,
 } from "./routing";
 
+/** The api's private RPC entrypoint `CloudScheduler` (apps/api). */
+interface CloudSchedulerRpc {
+  tick(cron: string): Promise<{ failed: string[]; ran: string[] }>;
+}
+
 interface Env {
+  API?: CloudSchedulerRpc;
+  DISPATCH_CLOCK: DurableObjectNamespace<DispatchClock>;
   SCRAPER_CONTAINER: DurableObjectNamespace<ScraperContainer>;
   SCRAPER_POOL_SIZE?: string;
+}
+
+interface ClockState {
+  armed_for: number | null;
+  last_boundary: number | null;
+  last_error: string | null;
+  last_ran: string[];
+  last_tick_at: number | null;
+}
+
+/**
+ * The scheduler fallback (24 §6.6): one Durable Object whose alarm fires 30 s
+ * after every 5-minute boundary and ticks the api's 5-minute and hourly
+ * schedules through the `API` RPC binding. Alarms do not depend on Cron
+ * Trigger activation, which failed for the api Worker (Cloudflare incident,
+ * 2026-10-13/14). The alarm always re-arms itself, even when a tick fails.
+ */
+export class DispatchClock extends DurableObject<Env> {
+  async ensure(): Promise<ClockState> {
+    const current = await this.ctx.storage.getAlarm();
+    if (current === null) {
+      await this.ctx.storage.setAlarm(nextAlarmAt(Date.now()));
+    }
+    return await this.status();
+  }
+
+  async status(): Promise<ClockState> {
+    const last = (await this.ctx.storage.get<Omit<ClockState, "armed_for">>(
+      "last"
+    )) ?? {
+      last_boundary: null,
+      last_tick_at: null,
+      last_ran: [],
+      last_error: null,
+    };
+    return { armed_for: await this.ctx.storage.getAlarm(), ...last };
+  }
+
+  override async alarm(): Promise<void> {
+    const now = Date.now();
+    const boundary = boundaryOf(now);
+    const ran: string[] = [];
+    let lastError: string | null = null;
+    try {
+      if (!this.env.API) {
+        throw new Error("the API service binding is missing");
+      }
+      for (const cron of ticksFor(boundary)) {
+        try {
+          const report = await this.env.API.tick(cron);
+          ran.push(...report.ran);
+          if (report.failed.length > 0) {
+            lastError = `${cron}: ${report.failed.join(", ")} failed`;
+          }
+        } catch (err) {
+          lastError = `${cron}: ${err instanceof Error ? err.message : String(err)}`;
+        }
+      }
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : String(err);
+    } finally {
+      await this.ctx.storage.put("last", {
+        last_boundary: boundary,
+        last_tick_at: now,
+        last_ran: ran,
+        last_error: lastError,
+      });
+      await this.ctx.storage.setAlarm(nextAlarmAt(Date.now()));
+    }
+    console.log(
+      JSON.stringify({
+        evt: "scheduler_clock_tick",
+        boundary: new Date(boundary).toISOString(),
+        ran,
+        error: lastError,
+      })
+    );
+  }
+}
+
+function clockStub(env: Env) {
+  return env.DISPATCH_CLOCK.getByName("scheduler");
 }
 
 export class ScraperContainer extends Container<Env> {
@@ -53,6 +144,12 @@ export default {
     if (route.kind === "reject") {
       return json({ error: "not_routed" }, route.status);
     }
+    if (route.kind === "clock") {
+      const stub = clockStub(env);
+      const state =
+        route.action === "ensure" ? await stub.ensure() : await stub.status();
+      return json(state, 200);
+    }
     const size = poolSize(env.SCRAPER_POOL_SIZE);
     if (route.kind === "health") {
       const stub = env.SCRAPER_CONTAINER.getByName(
@@ -85,5 +182,10 @@ export default {
         body: text,
       })
     );
+  },
+  // Watchdog: re-arms the clock should its alarm ever be lost. The clock, not
+  // this cron, ticks the api (a Cron Trigger may not be dispatched at all).
+  async scheduled(_controller: ScheduledController, env: Env): Promise<void> {
+    await clockStub(env).ensure();
   },
 } satisfies ExportedHandler<Env>;
