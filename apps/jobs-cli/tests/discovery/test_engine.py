@@ -507,3 +507,138 @@ async def test_T15_ENGINE_network_guard_refusal_is_policy_blocked(
 
 async def test_T15_ENGINE_no_guard_by_default(engine: ScraplingJobEngine) -> None:
     assert engine._guard is None  # pyright: ignore[reportPrivateUsage] - the CLI never sets one
+
+
+# ---------------------------------------------------------------- rendered pages (24 §4.4)
+RENDER_SRC = SourceRef(
+    key="test:render",
+    adapter_id="generic_listing",
+    org="acme",
+    per_domain_concurrency=1,
+    min_delay_ms=2000,
+    allow_browser=True,
+)
+LISTING_HTML = (
+    "<html><head><title>Remote jobs</title></head><body><ul>"
+    + "".join(
+        f"<li class='job'><h2>Job {i}</h2><a href='/jobs/{i}'>Apply</a></li>" for i in range(5)
+    )
+    + "</ul>"
+    + "<p>"
+    + "Remote work everywhere. " * 80
+    + "</p></body></html>"
+)
+
+
+def _render_engine(
+    tmp_path: Path, vclock: VirtualClock, guard: _RecordingGuard
+) -> ScraplingJobEngine:
+    return ScraplingJobEngine(
+        data_dir=tmp_path / "data",
+        cache_dir=tmp_path / "cache",
+        clock=vclock,
+        rng=random.Random(7),
+        allow_browser=True,
+        network_guard=guard,
+    )
+
+
+async def test_T24_RENDER_rendered_page_goes_through_the_gates(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    guard = _RecordingGuard()
+    engine = _render_engine(tmp_path, vclock, guard)
+    try:
+        result = await engine.accept_rendered(
+            FetchRequest(site.url("/jobs"), FetchMode.STATIC_HTML),
+            final_url=site.url("/jobs"),
+            status=200,
+            html=LISTING_HTML,
+            source=RENDER_SRC,
+        )
+    finally:
+        await engine.aclose()
+    assert result.fetch_mode is FetchMode.BROWSER
+    assert result.page is not None
+    assert site.hits("/jobs") == []  # nothing fetched but robots.txt
+    assert site.url("/jobs") in guard.urls
+    assert guard.responses[-1][2] == len(LISTING_HTML.encode())
+
+
+async def test_T24_RENDER_a_rendered_challenge_is_classified_never_accepted(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    engine = _render_engine(tmp_path, vclock, _RecordingGuard())
+    challenge = (
+        "<html><head><title>Just a moment...</title></head><body>cf-chl-bypass</body></html>"
+    )
+    try:
+        with pytest.raises(DiscoveryError) as caught:
+            await engine.accept_rendered(
+                FetchRequest(site.url("/jobs"), FetchMode.STATIC_HTML),
+                final_url=site.url("/jobs"),
+                status=403,
+                html=challenge,
+                source=RENDER_SRC,
+            )
+    finally:
+        await engine.aclose()
+    assert caught.value.error_class in {"challenge_detected", "access_denied"}
+    assert not caught.value.retryable
+
+
+async def test_T24_RENDER_robots_wins_over_a_render(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    site.server.clear_all_handlers()
+    site.robots("User-agent: *\nDisallow: /jobs\n")
+    engine = _render_engine(tmp_path, vclock, _RecordingGuard())
+    try:
+        with pytest.raises(DiscoveryError) as caught:
+            await engine.accept_rendered(
+                FetchRequest(site.url("/jobs"), FetchMode.STATIC_HTML),
+                final_url=site.url("/jobs"),
+                status=200,
+                html=LISTING_HTML,
+                source=RENDER_SRC,
+            )
+    finally:
+        await engine.aclose()
+    assert caught.value.error_class == "robots_disallowed"
+
+
+async def test_T24_RENDER_needs_browser_opt_in(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    engine = _render_engine(tmp_path, vclock, _RecordingGuard())
+    try:
+        with pytest.raises(DiscoveryError) as caught:
+            await engine.accept_rendered(
+                FetchRequest(site.url("/jobs"), FetchMode.STATIC_HTML),
+                final_url=site.url("/jobs"),
+                status=200,
+                html=LISTING_HTML,
+                source=HTML_SRC,
+            )
+    finally:
+        await engine.aclose()
+    assert caught.value.error_class == "unsupported_content"
+
+
+async def test_T24_RENDER_preflight_returns_the_decision_and_robots_text(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    site.server.clear_all_handlers()
+    site.robots("User-agent: *\nDisallow: /api/\n")
+    guard = _RecordingGuard()
+    engine = _render_engine(tmp_path, vclock, guard)
+    try:
+        decision, text = await engine.preflight(site.url("/jobs"))
+        blocked, _ = await engine.preflight(site.url("/api/list"))
+    finally:
+        await engine.aclose()
+    assert decision.allowed
+    assert text is not None
+    assert "Disallow: /api/" in text
+    assert not blocked.allowed
+    assert site.url("/jobs") in guard.urls

@@ -16,6 +16,7 @@
 ## 4. Scraper
 - [x] 4.1 `apps/jobs-scraper`: Worker + Container, Python service on the CLI engine, strategies, SSRF guard, probe, directory
 - [x] 4.2 Dockerfile (image built, `/healthz` in the container), tests, live smoke against accessible sources
+- [x] 4.4 Browser Rendering renderer for the `browser` strategy (24 §4.4): container preflight, Worker render with robots / tracker blocking, `accept_rendered` classification; Dynamite Jobs on it
 - [ ] 4.3 `wrangler dev` of `apps/jobs-scraper` with the container through the Worker (blocked locally: disk full, Docker VM read-only; the Python service was verified natively and inside the container)
 
 ## 5. Dashboard

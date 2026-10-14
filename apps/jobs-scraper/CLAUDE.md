@@ -19,9 +19,20 @@ alarm 30 s after every 5-minute boundary and calls the api's RPC entrypoint
 always, `0 * * * *` on the hour. `POST /clock/ensure` arms it (the api calls it),
 `GET /clock` shows the last tick; the hourly cron is only a watchdog.
 
+## Browser Rendering (24 §4.4)
+
+A `browser` source with `strategy_config.renderer: "browser_rendering"` is rendered
+by the Worker, not the container: `POST /v1/preflight` to the container (SSRF,
+exclusions, robots) → `renderPage` (`src/render.ts`, `BROWSER` binding, honest UA,
+every subrequest through `blockReason` in `src/render-policy.ts`, robots rules from
+`src/robots.ts`) → `/v1/scrape` with `prefetched`, where
+`ScraplingJobEngine.accept_rendered` re-checks and classifies the HTML. Worker-side
+stops become contract-shaped failed answers (`src/scrape-response.ts`). Never add
+challenge solving, stealth, cookies or credentials to the render.
+
 ## Rules
 
-- Every network request goes through `pilih_jobs.discovery.engine.ScraplingJobEngine`
+- Every network request of the container goes through `pilih_jobs.discovery.engine.ScraplingJobEngine`
   (`python/src/pilih_scraper/fetching.py` is the only module that touches engine page
   objects). Never import `scrapling` or `patchright` here (ruff `banned-api`), never
   pass Scrapling kwargs, never add stealth / proxy / CAPTCHA features (D-16).

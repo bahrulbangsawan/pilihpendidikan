@@ -12,6 +12,8 @@ corrected four entries, and the seed catalog
 - Hubstaff Talent: headless Chromium got a Cloudflare challenge → BLOCKED.
 - Dynamite Jobs: only the 6 featured jobs are reachable without a browser →
   held back (disabled).
+  2026-10-14: switched to the browser strategy on Cloudflare Browser Rendering
+  (16 jobs per render) and enabled.
 
 Enabled in the seed: We Work Remotely, Remote OK, Jobspresso, Workew,
 JustRemote, Remote Freelance ID, Work From Home ID. Working Nomads is held
@@ -185,6 +187,7 @@ Checked 2026-10-13T14:38:12+00:00 to 2026-10-13T14:55:16+00:00 with UA `pilih-jo
 - json_ld: `https://dynamitejobs.com/company/backgammon/remote-job/senior-full-stack-engineer-us-remote` — 1 item(s) verified; fields: title, hiringOrganization, datePosted, validThrough, employmentType, jobLocationType, applicantLocationRequirements, description, directApply, identifier, occupationalCategory, image, url
 - also sitemap: `https://dynamitejobs.com/sitemap/jobs-of-companies-index.xml` (475 item(s))
 - also embedded_json: `https://dynamitejobs.com/` (6 item(s))
+- 2026-10-14 browser (Browser Rendering): `/remote-jobs` rendered with the honest UA renders 16 jobs from the site's own Algolia search; no request hits a robots-disallowed path; trackers, images and fonts are blocked. `html_selectors` on `li.result-item` extract 16 items (title, company, type, salary, location, tags); details through JSON-LD. Enabled on this strategy.
 - terms: https://dynamitejobs.com/terms-and-conditions — No clause about scraping, crawling, robots or automated access found (searched the saved page for scrap/crawl/spider/robot/automat/harvest/API).
 - notes: /remote-jobs renders its list client-side (no job anchors; Pinia state holds only SEO data). Job URLs come from the per-company sitemaps (index of 475) or the 6 featured jobs on the home page; each job page carries JSON-LD JobPosting. Expensive discovery; meta robots says 'noarchive'.
 

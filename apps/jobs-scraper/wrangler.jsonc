@@ -49,6 +49,9 @@
       }
     ]
   },
+  // Cloudflare Browser Rendering for `browser` sources with
+  // `renderer: "browser_rendering"` (job-tracker-spec/24 §4.4).
+  "browser": { "binding": "BROWSER" },
   // The api's private RPC entrypoint the clock ticks (deploy the api first).
   "services": [
     {

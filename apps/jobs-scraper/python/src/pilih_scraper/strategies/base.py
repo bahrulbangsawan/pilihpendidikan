@@ -43,6 +43,9 @@ class ScrapeJob:
     cursor_out: dict[str, Any] = field(default_factory=lambda: {})
     complete: bool = False
     ai_candidates: list[dict[str, Any]] = field(default_factory=lambda: [])
+    #: The listing rendered by the scraper Worker (Cloudflare Browser Rendering,
+    #: 24 §4.4): `PrefetchedPage` as a dict, or None.
+    prefetched: dict[str, Any] | None = None
     #: HTML pages read this run (url, title, text) for the AI fallback.
     pages_seen: list[tuple[str, str | None, str]] = field(default_factory=lambda: [])
 

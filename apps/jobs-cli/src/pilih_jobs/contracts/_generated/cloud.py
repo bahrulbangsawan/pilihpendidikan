@@ -68,6 +68,7 @@ class BrowserConfig(BaseModel):
     adaptive: bool | None = None
     detail: DetailConfig | None = None
     wait_selector: Annotated[str | None, Field(max_length=300, min_length=1)] = None
+    renderer: Literal["container", "browser_rendering"] | None = None
 
 
 class CanonicalUrl(RootModel[str]):
@@ -676,6 +677,44 @@ class PostingLocation(BaseModel):
     """
 
 
+class PrefetchedPage(BaseModel):
+    url: Annotated[
+        str,
+        Field(
+            max_length=2048, min_length=10, pattern="^https?:\\/\\/[^\\s/?#]+[^\\s]*$"
+        ),
+    ]
+    final_url: Annotated[
+        str,
+        Field(
+            max_length=2048, min_length=10, pattern="^https?:\\/\\/[^\\s/?#]+[^\\s]*$"
+        ),
+    ]
+    status: Annotated[int, Field(ge=100, le=599)]
+    html: Annotated[str, Field(max_length=3500000)]
+    renderer: Literal["browser_rendering"]
+    blocked_requests: Annotated[int, Field(ge=0)]
+
+
+class PreflightRequest(BaseModel):
+    v: Literal[1]
+    url: Annotated[
+        str,
+        Field(
+            max_length=2048, min_length=10, pattern="^https?:\\/\\/[^\\s/?#]+[^\\s]*$"
+        ),
+    ]
+
+
+class PreflightResponse(BaseModel):
+    v: Literal[1]
+    allowed: bool
+    user_agent: Annotated[str, Field(max_length=200)]
+    robots_txt: RobotsTxt | None
+    crawl_delay_s: CrawlDelayS | None
+    error: CloudRunError | None
+
+
 class ProbeFeed(BaseModel):
     type: Literal["rss", "atom", "json_api"]
     url: Annotated[
@@ -741,6 +780,10 @@ class Robots(BaseModel):
     crawl_delay_s: CrawlDelayS | None
 
 
+class RobotsTxt(RootModel[str]):
+    root: Annotated[str, Field(max_length=524288)]
+
+
 class RssConfig(BaseModel):
     defaults: CloudDefaults | None = None
     attribution: Annotated[str | None, Field(max_length=300)] = None
@@ -799,6 +842,7 @@ class ScrapeRequest(BaseModel):
     cursor_state: CloudCursorState
     deadline_ms: Annotated[int, Field(ge=5000, le=600000)]
     ai_fallback: bool
+    prefetched: PrefetchedPage | None = None
 
 
 class ScrapeResponse(BaseModel):

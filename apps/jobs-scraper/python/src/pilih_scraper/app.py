@@ -1,4 +1,5 @@
-"""The HTTP service (Starlette): `/healthz`, `/v1/scrape`, `/v1/probe`, `/v1/directory`.
+"""The HTTP service (Starlette): `/healthz`, `/v1/scrape`, `/v1/probe`, `/v1/directory`,
+`/v1/preflight`.
 
 Requests are validated with the generated contract models (400 otherwise); a
 source-level failure is a 200 with `error` set (24 §3). Bodies are capped at 4 MB.
@@ -14,7 +15,12 @@ from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any, Final
 
-from pilih_jobs.contracts._generated.cloud import DirectoryRequest, ProbeRequest, ScrapeRequest
+from pilih_jobs.contracts._generated.cloud import (
+    DirectoryRequest,
+    PreflightRequest,
+    ProbeRequest,
+    ScrapeRequest,
+)
 from pydantic import BaseModel, ValidationError
 from starlette.applications import Starlette
 from starlette.requests import Request
@@ -24,6 +30,7 @@ from starlette.routing import Route
 from pilih_scraper import fetching
 from pilih_scraper.directory import directory
 from pilih_scraper.netguard import NetGuard
+from pilih_scraper.preflight import preflight
 from pilih_scraper.probe import probe
 from pilih_scraper.scrape import scrape, versions
 
@@ -101,5 +108,6 @@ def create_app(factory: fetching.EngineFactory | None = None) -> Starlette:
             Route("/v1/scrape", endpoint(ScrapeRequest, scrape), methods=["POST"]),
             Route("/v1/probe", endpoint(ProbeRequest, probe), methods=["POST"]),
             Route("/v1/directory", endpoint(DirectoryRequest, directory), methods=["POST"]),
+            Route("/v1/preflight", endpoint(PreflightRequest, preflight), methods=["POST"]),
         ]
     )

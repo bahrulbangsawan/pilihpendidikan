@@ -14,7 +14,7 @@ from pilih_scraper.errors import ScrapeStop
 from pilih_scraper.postings import JobDraft
 from pilih_scraper.strategies.base import ScrapeJob
 from pilih_scraper.strategies.jsonld import from_jobposting
-from pilih_scraper.strategies.paging import Paging
+from pilih_scraper.strategies.paging import Paging, RenderedPage
 
 _TAG_SPLIT = re.compile(r"\s*[,;|•·]\s*")
 
@@ -95,13 +95,20 @@ async def run_html(job: ScrapeJob, config: dict[str, Any], *, browser: bool) -> 
             )
         browser_cfg = BrowserConfig.model_validate(config)
         wait_selector = browser_cfg.wait_selector
-        cfg = HtmlSelectorsConfig.model_validate(browser_cfg.model_dump(exclude={"wait_selector"}))
+        cfg = HtmlSelectorsConfig.model_validate(
+            browser_cfg.model_dump(exclude={"wait_selector", "renderer"})
+        )
     else:
         cfg = HtmlSelectorsConfig.model_validate(config)
     mode = FetchMode.BROWSER if browser else FetchMode.STATIC_HTML
     adaptive = cfg.adaptive is not False
     specs = _fields(cfg, adaptive)
-    paging = Paging(job, cfg.url, mode, next_css=cfg.next_page, wait_selector=wait_selector)
+    paging: Paging | RenderedPage
+    if browser and job.prefetched is not None:
+        # Rendered by the scraper Worker with Cloudflare Browser Rendering (24 §4.4).
+        paging = RenderedPage(job, job.prefetched)
+    else:
+        paging = Paging(job, cfg.url, mode, next_css=cfg.next_page, wait_selector=wait_selector)
     details_done = 0
     first = True
     async for url, result in paging.pages():

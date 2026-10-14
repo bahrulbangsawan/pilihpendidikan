@@ -109,6 +109,9 @@ async def scrape(body: dict[str, Any], factory: fetching.EngineFactory) -> dict[
         cursor_in=cast(dict[str, Any], body.get("cursor_state") or {}),
         allow_browser=allow_browser,
         ai_fallback=bool(body.get("ai_fallback")),
+        prefetched=cast(dict[str, Any], body["prefetched"])
+        if isinstance(body.get("prefetched"), dict)
+        else None,
     )
     ctx.add_log("info", "scrape_started", f"Strategy {strategy} for {source['name']}")
     error: dict[str, Any] | None = None

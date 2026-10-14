@@ -104,6 +104,10 @@
         },
         "wait_selector": {
           "$ref": "#/$defs/CssSelector"
+        },
+        "renderer": {
+          "type": "string",
+          "enum": ["container", "browser_rendering"]
         }
       },
       "required": ["url", "item", "fields"]
@@ -1835,6 +1839,111 @@
       "type": "string",
       "enum": ["public", "private"]
     },
+    "PrefetchedPage": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "final_url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "html": {
+          "type": "string",
+          "maxLength": 3500000
+        },
+        "renderer": {
+          "type": "string",
+          "const": "browser_rendering"
+        },
+        "blocked_requests": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "url",
+        "final_url",
+        "status",
+        "html",
+        "renderer",
+        "blocked_requests"
+      ]
+    },
+    "PreflightRequest": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        }
+      },
+      "required": ["v", "url"]
+    },
+    "PreflightResponse": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "user_agent": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "robots_txt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 524288
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "crawl_delay_s": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudRunError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "allowed",
+        "user_agent",
+        "robots_txt",
+        "crawl_delay_s",
+        "error"
+      ]
+    },
     "ProbeFeed": {
       "type": "object",
       "properties": {
@@ -2126,6 +2235,9 @@
         },
         "ai_fallback": {
           "type": "boolean"
+        },
+        "prefetched": {
+          "$ref": "#/$defs/PrefetchedPage"
         }
       },
       "required": [

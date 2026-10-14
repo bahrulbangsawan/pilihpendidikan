@@ -92,3 +92,45 @@ class Paging:
                 )
                 return
             url = following
+
+
+class RenderedPage:
+    """The one listing page the scraper Worker rendered (24 §4.4).
+
+    It goes through `engine.accept_rendered` (robots, SSRF guard, challenge and
+    login-wall classification, parser). A rendered listing only shows the newest
+    jobs, so the run is never `complete`: absences must not close postings that
+    merely scrolled off the first screen (their JSON-LD `validThrough` does).
+    """
+
+    complete = False
+
+    def __init__(self, job: ScrapeJob, prefetched: dict[str, object]) -> None:
+        self.job = job
+        self.prefetched = prefetched
+
+    async def pages(self) -> AsyncIterator[tuple[str, FetchResult]]:
+        job = self.job
+        pre = self.prefetched
+        url = str(pre["url"])
+        status = pre["status"]
+        blocked = pre.get("blocked_requests", 0)
+        result = await job.engine.accept_rendered(
+            fetching.request(url, FetchMode.STATIC_HTML),
+            final_url=str(pre["final_url"]),
+            status=status if isinstance(status, int) else 200,
+            html=str(pre["html"]),
+            source=job.ref,
+        )
+        job.note_page(result)
+        job.ctx.add_log(
+            "info",
+            "page_rendered",
+            f"Listing rendered by Cloudflare Browser Rendering ({blocked} robots-disallowed, "
+            "tracker or media requests blocked)",
+            url=result.url,
+            http_status=result.status,
+        )
+        job.cursor_out["resume_url"] = None
+        job.cursor_out["resume_page"] = 0
+        yield url, result

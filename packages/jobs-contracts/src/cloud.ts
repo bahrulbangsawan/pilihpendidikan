@@ -59,6 +59,29 @@ export const ScrapeSourceSchema = defineSchema(
 );
 export type ScrapeSource = z.infer<typeof ScrapeSourceSchema>;
 
+/** Largest rendered page the scraper Worker hands to the container. */
+export const PREFETCHED_HTML_MAX = 3_500_000;
+
+/**
+ * A listing page rendered by the scraper Worker with Cloudflare Browser
+ * Rendering (24 §4.4). The container treats it like a page it fetched: same
+ * robots gate, SSRF guard, challenge / login-wall classification and parser.
+ */
+export const PrefetchedPageSchema = defineSchema(
+  "cloud",
+  "PrefetchedPage",
+  z.object({
+    url: CloudUrlSchema,
+    final_url: CloudUrlSchema,
+    status: z.number().int().min(100).max(599),
+    html: z.string().max(PREFETCHED_HTML_MAX),
+    renderer: z.literal("browser_rendering"),
+    /** Requests the renderer blocked (robots, trackers, media). */
+    blocked_requests: z.number().int().min(0),
+  })
+);
+export type PrefetchedPage = z.infer<typeof PrefetchedPageSchema>;
+
 export const ScrapeRequestSchema = defineSchema(
   "cloud",
   "ScrapeRequest",
@@ -71,6 +94,8 @@ export const ScrapeRequestSchema = defineSchema(
     deadline_ms: z.number().int().min(5000).max(600_000),
     /** Return page excerpts for the AI fallback (24 §4.3). */
     ai_fallback: z.boolean(),
+    /** The listing, already rendered by the scraper Worker (24 §4.4). */
+    prefetched: PrefetchedPageSchema.optional(),
   })
 );
 export type ScrapeRequest = z.infer<typeof ScrapeRequestSchema>;
@@ -167,6 +192,39 @@ export const ScrapeResponseSchema = defineSchema(
   })
 );
 export type ScrapeResponse = z.infer<typeof ScrapeResponseSchema>;
+
+// --- preflight ---------------------------------------------------------------------
+
+/**
+ * Before rendering a page, the scraper Worker asks the container whether the
+ * URL may be fetched (SSRF guard, D-17 exclusions, robots.txt for our UA) and
+ * gets the host's robots.txt to filter the render's own subrequests (24 §4.4).
+ */
+export const PreflightRequestSchema = defineSchema(
+  "cloud",
+  "PreflightRequest",
+  z.object({
+    v: z.literal(SCRAPER_PROTOCOL_VERSION),
+    url: CloudUrlSchema,
+  })
+);
+export type PreflightRequest = z.infer<typeof PreflightRequestSchema>;
+
+export const PreflightResponseSchema = defineSchema(
+  "cloud",
+  "PreflightResponse",
+  z.object({
+    v: z.literal(SCRAPER_PROTOCOL_VERSION),
+    allowed: z.boolean(),
+    /** The UA the renderer must send. */
+    user_agent: z.string().max(200),
+    /** The host's robots.txt (null when absent / unreadable = no rules). */
+    robots_txt: z.string().max(524_288).nullable(),
+    crawl_delay_s: z.number().min(0).nullable(),
+    error: CloudRunErrorSchema.nullable(),
+  })
+);
+export type PreflightResponse = z.infer<typeof PreflightResponseSchema>;
 
 // --- probe -----------------------------------------------------------------------
 

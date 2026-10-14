@@ -565,8 +565,18 @@ the scraper.
 Before enabling a held-back board, review it: Working Nomads' terms ban
 using the service "to build a competitive product"; Remotive's API terms
 (≤ 4 calls a day, link back, no display to collect signups) need its written
-OK, and it currently challenges our crawler; Dynamite Jobs only exposes its 6
-featured jobs without a browser.
+OK, and it currently challenges our crawler.
+
+### Browser Rendering (24 §4.4)
+
+The scraper Worker binds Cloudflare Browser Rendering (`"browser": {"binding":
+"BROWSER"}` in `apps/jobs-scraper/wrangler.jsonc`; Workers Paid, 10 browser-hours
+a month included, then $0.09 / hour). No resource to create. Sources opt in with
+`strategy: "browser"`, `allow_browser: true` and `strategy_config.renderer:
+"browser_rendering"` (seed: Dynamite Jobs, every 6 hours). A deploy that changes
+`apps/jobs-scraper/python` must roll out the container (plain `bun run deploy`,
+not `--containers-rollout=none`). Usage: Workers & Pages → Browser Rendering;
+renders log `page_rendered` in the run log.
 
 ### Scheduler fallback (24 §6.6)
 

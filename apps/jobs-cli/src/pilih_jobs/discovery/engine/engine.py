@@ -39,7 +39,7 @@ from pilih_jobs.discovery.engine.page import ScraplingPage
 from pilih_jobs.discovery.errors import DiscoveryError
 from pilih_jobs.discovery.politeness import PolitenessScheduler
 from pilih_jobs.discovery.retry import RetryPolicy
-from pilih_jobs.discovery.robots import RobotsGate
+from pilih_jobs.discovery.robots import RobotsDecision, RobotsGate
 from pilih_jobs.discovery.schema_org import has_type
 from pilih_jobs.discovery.types import (
     CrawlConfig,
@@ -176,6 +176,84 @@ class ScraplingJobEngine:
     async def fetch_detail(self, req: FetchRequest, *, source: SourceRef) -> FetchResult:
         detail = req if req.purpose == "detail" else _replace_purpose(req, "detail")
         return await self._fetch(detail, source=source, first_page=False)
+
+    async def preflight(self, url: str) -> tuple[RobotsDecision, str | None]:
+        """Whether `url` may be fetched, without fetching it (24 §4.4).
+
+        Runs the target checks, the network guard and the robots gate (which
+        fetches robots.txt once); returns the decision and the robots.txt text
+        (None when the host has none) so a remote renderer can apply the same
+        rules to the page's own subrequests.
+        """
+        self._check_target(url)
+        if self._guard is not None:
+            await asyncio.to_thread(self._guard.check_url, url)
+        decision = await self.robots.check(url)
+        cached = self.robots.cached(url)
+        text = cached[1] if cached is not None and cached[0] == 200 else None
+        return decision, text
+
+    async def accept_rendered(
+        self,
+        req: FetchRequest,
+        *,
+        final_url: str,
+        status: int,
+        html: str,
+        source: SourceRef,
+    ) -> FetchResult:
+        """A page rendered outside this engine (Cloudflare Browser Rendering, 24 §4.4).
+
+        It goes through what a fetched page goes through: D-17 exclusions, the
+        robots gate (for the requested and the final URL), the network guard on
+        the final URL and the body size, the response classification
+        (challenges, login walls, error statuses) and the parser. Nothing is
+        fetched here except robots.txt; a challenge is never retried or bypassed.
+        """
+        if not self.browser_enabled(source):
+            raise DiscoveryError(
+                "unsupported_content",
+                "browser discovery is not enabled for this source (15 §5)",
+                url=req.url,
+            )
+        for url in dict.fromkeys((req.url, final_url)):
+            self._check_target(url)
+            decision = await self.robots.check(url)
+            if not decision.allowed:
+                raise DiscoveryError(
+                    "robots_disallowed",
+                    f"robots.txt disallows {url} ({decision.reason})",
+                    url=url,
+                )
+        body = html.encode("utf-8")
+        if self._guard is not None:
+            await asyncio.to_thread(self._guard.check_url, final_url)
+            await asyncio.to_thread(self._guard.check_response, req.url, final_url, len(body))
+        rendered = _replace_mode(req, FetchMode.BROWSER)
+        raw = _Raw(
+            url=final_url,
+            status=status,
+            headers={},
+            body=body,
+            encoding="utf-8",
+            native=None,
+            elapsed_ms=0,
+            attempt=1,
+        )
+        error = classify_response(
+            status,
+            {},
+            _decode(body, "utf-8", limit=CLASSIFY_SAMPLE_BYTES),
+            url=final_url,
+            purpose=rendered.purpose,
+            first_listing_page=rendered.purpose == "listing",
+            now_s=self.clock.now_ms() / 1000.0,
+        )
+        self._record(rendered, 1, raw, error)
+        if error is not None:
+            self._count_failure(source, error)
+            raise error
+        return await self._result(rendered, raw)
 
     async def _fetch(
         self, req: FetchRequest, *, source: SourceRef, first_page: bool
@@ -612,3 +690,7 @@ class ScraplingJobEngine:
 
 def _replace_purpose(req: FetchRequest, purpose: FetchPurpose) -> FetchRequest:
     return replace(req, purpose=purpose)
+
+
+def _replace_mode(req: FetchRequest, mode: FetchMode) -> FetchRequest:
+    return replace(req, mode=mode)

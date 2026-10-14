@@ -504,21 +504,47 @@
       "from_directory": true,
       "directory_ref": "recommendations-dynamite-jobs",
       "description": "Remote jobs from vetted, fast-growing companies.",
-      "strategy": "none",
-      "strategy_config": {},
+      "strategy": "browser",
+      "strategy_config": {
+        "url": "https://dynamitejobs.com/remote-jobs",
+        "renderer": "browser_rendering",
+        "item": "li.result-item",
+        "wait_selector": "li.result-item",
+        "fields": {
+          "title": "h2::text",
+          "link": "h2::attr(href)",
+          "company": "p::text",
+          "employment_type": "div.truncate > span:nth-of-type(1)::text",
+          "salary": "div.truncate > span:nth-of-type(2)::text",
+          "location": "div.truncate > span:nth-of-type(3) span::text",
+          "tags": "div.inline-block::text"
+        },
+        "adaptive": true,
+        "detail": {
+          "enabled": true
+        },
+        "defaults": {
+          "workplace_type": "remote"
+        }
+      },
       "health": "ACTIVE",
-      "status_reason": "Held back: /remote-jobs is rendered by JavaScript, so without a browser only the 6 featured jobs on the home page are reachable (job pages carry JSON-LD). Full coverage would need the 475 per-company sitemaps or the opt-in browser strategy with selectors.",
-      "enabled": false,
+      "status_reason": null,
+      "enabled": true,
       "priority": 50,
       "interval_minutes": 360,
-      "rate_limit": {},
+      "rate_limit": {
+        "min_delay_ms": 3000,
+        "max_pages": 1,
+        "max_items": 30,
+        "max_details": 16
+      },
       "auth_required": false,
       "auth_note": null,
       "terms_url": "https://dynamitejobs.com/terms-and-conditions",
       "terms_note": "No clause about scraping, crawling, robots or automated access found (searched the saved page for scrap/crawl/spider/robot/automat/harvest/API).",
-      "allow_browser": false,
+      "allow_browser": true,
       "audit": {
-        "checked_at": "2026-10-13T14:55:16+00:00",
+        "checked_at": "2026-10-14T10:30:00+00:00",
         "evidence": [
           "GET https://dynamitejobs.com/robots.txt → 200",
           "GET https://dynamitejobs.com → 200, title '🧨 Dynamite Jobs: The Best Remote Jobs in October 2026'",
@@ -527,7 +553,8 @@
           "GET https://dynamitejobs.com/terms-and-conditions → 200, title 'Terms and Conditions - Dynamite Jobs'",
           "GET https://dynamitejobs.com/remote-jobs → 200, title 'Remote Jobs'",
           "GET https://dynamitejobs.com/sitemap/jobs-of-companies-index.xml → 200, application/xml, 0 feed items",
-          "2026-10-13 live smoke: json_ld from the home page → 6 featured jobs"
+          "2026-10-13 live smoke: json_ld from the home page → 6 featured jobs",
+          "2026-10-14 Browser Rendering check: /remote-jobs renders 16 jobs (listing data from the site's Algolia search, no robots-disallowed requests; trackers, images and fonts blocked); selectors extract 16 items, job pages carry JSON-LD"
         ]
       }
     },

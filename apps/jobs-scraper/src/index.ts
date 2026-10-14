@@ -6,6 +6,10 @@
 import { Container } from "@cloudflare/containers";
 import { DurableObject } from "cloudflare:workers";
 import { boundaryOf, nextAlarmAt, ticksFor } from "./clock";
+import { RenderError, renderPage } from "./render";
+import { wantsBrowserRendering } from "./render-policy";
+import { parseRobots, productToken } from "./robots";
+import { failedScrape } from "./scrape-response";
 import {
   instanceName,
   MAX_BODY_BYTES,
@@ -21,6 +25,8 @@ interface CloudSchedulerRpc {
 
 interface Env {
   API?: CloudSchedulerRpc;
+  /** Cloudflare Browser Rendering (24 §4.4). */
+  BROWSER?: Fetcher;
   DISPATCH_CLOCK: DurableObjectNamespace<DispatchClock>;
   SCRAPER_CONTAINER: DurableObjectNamespace<ScraperContainer>;
   SCRAPER_POOL_SIZE?: string;
@@ -104,6 +110,135 @@ export class DispatchClock extends DurableObject<Env> {
   }
 }
 
+/** Largest rendered page handed to the container (PREFETCHED_HTML_MAX). */
+const RENDERED_HTML_MAX = 3_500_000;
+const RENDER_TIMEOUT_MS = 45_000;
+
+interface Preflight {
+  allowed: boolean;
+  crawl_delay_s: number | null;
+  error: {
+    error_class: string;
+    http_status?: number | null;
+    message: string;
+    url?: string | null;
+  } | null;
+  robots_txt: string | null;
+  user_agent: string;
+}
+
+type Prepared =
+  | { kind: "failed"; response: Record<string, unknown> }
+  | { kind: "ready"; payload: string };
+
+/**
+ * Browser Rendering for a scrape (24 §4.4): the container's preflight (SSRF,
+ * exclusions, robots for our UA) first, then the render with that host's
+ * robots rules applied to every subrequest, then the scrape body with the
+ * rendered page attached for the container to classify and extract.
+ */
+async function withBrowserRendering(
+  binding: Fetcher,
+  body: unknown,
+  renderUrl: string,
+  post: (path: string, payload: string) => Promise<Response>
+): Promise<Prepared> {
+  const started = Date.now();
+  const preflightResponse = await post(
+    "/v1/preflight",
+    JSON.stringify({ v: 1, url: renderUrl })
+  );
+  const preflight = preflightResponse.ok
+    ? ((await preflightResponse.json().catch(() => null)) as Preflight | null)
+    : null;
+  if (preflight === null) {
+    return {
+      kind: "failed",
+      response: failedScrape(
+        body,
+        {
+          error_class: "engine_unavailable",
+          message: `The scraper's robots preflight failed (HTTP ${preflightResponse.status}).`,
+          http_status: preflightResponse.status,
+          url: renderUrl,
+        },
+        Date.now() - started
+      ),
+    };
+  }
+  if (!preflight.allowed) {
+    return {
+      kind: "failed",
+      response: failedScrape(
+        body,
+        preflight.error ?? {
+          error_class: "robots_disallowed",
+          message: `robots.txt disallows ${renderUrl}`,
+          url: renderUrl,
+        },
+        Date.now() - started
+      ),
+    };
+  }
+  const config = (
+    body as { source: { strategy_config: { wait_selector?: unknown } } }
+  ).source.strategy_config;
+  try {
+    const rendered = await renderPage(binding, {
+      url: renderUrl,
+      userAgent: preflight.user_agent,
+      robots: parseRobots(
+        preflight.robots_txt,
+        productToken(preflight.user_agent)
+      ),
+      timeoutMs: RENDER_TIMEOUT_MS,
+      waitSelector:
+        typeof config.wait_selector === "string" ? config.wait_selector : null,
+    });
+    if (rendered.html.length > RENDERED_HTML_MAX) {
+      return {
+        kind: "failed",
+        response: failedScrape(
+          body,
+          {
+            error_class: "unsupported_content",
+            message: "The rendered page is larger than 3.5 MB.",
+            url: rendered.finalUrl,
+          },
+          Date.now() - started
+        ),
+      };
+    }
+    return {
+      kind: "ready",
+      payload: JSON.stringify({
+        ...(body as Record<string, unknown>),
+        prefetched: {
+          url: renderUrl,
+          final_url: rendered.finalUrl,
+          status: rendered.status || 200,
+          html: rendered.html,
+          renderer: "browser_rendering",
+          blocked_requests: rendered.blocked,
+        },
+      }),
+    };
+  } catch (err) {
+    const error =
+      err instanceof RenderError
+        ? { error_class: err.errorClass, message: err.message, url: renderUrl }
+        : {
+            error_class: "engine_unavailable",
+            message: `Browser Rendering failed (${err instanceof Error ? err.name : "error"}).`,
+            url: renderUrl,
+          };
+    return {
+      kind: "failed",
+      response: failedScrape(body, error, Date.now() - started),
+    };
+  }
+}
+
 function clockStub(env: Env) {
   return env.DISPATCH_CLOCK.getByName("scheduler");
 }
@@ -175,13 +310,29 @@ export default {
     const stub = env.SCRAPER_CONTAINER.getByName(
       instanceName(routingKey(body), size)
     );
-    return await stub.fetch(
-      new Request(new URL(route.path, url), {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: text,
-      })
-    );
+    const post = (path: string, payload: string) =>
+      stub.fetch(
+        new Request(new URL(path, url), {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: payload,
+        })
+      );
+    const renderUrl =
+      route.path === "/v1/scrape" ? wantsBrowserRendering(body) : null;
+    if (renderUrl && env.BROWSER) {
+      const prepared = await withBrowserRendering(
+        env.BROWSER,
+        body,
+        renderUrl,
+        post
+      );
+      if (prepared.kind === "failed") {
+        return json(prepared.response, 200);
+      }
+      return await post(route.path, prepared.payload);
+    }
+    return await post(route.path, text);
   },
   // Watchdog: re-arms the clock should its alarm ever be lost. The clock, not
   // this cron, ticks the api (a Cron Trigger may not be dispatched at all).

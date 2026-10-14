@@ -17,7 +17,8 @@
     "audit": "sh ../../scripts/require-uv.sh && cd python && uv export --frozen --format requirements-txt --no-emit-project --all-groups --quiet | uv run --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin"
   },
   "dependencies": {
-    "@cloudflare/containers": "0.3.7"
+    "@cloudflare/containers": "0.3.7",
+    "@cloudflare/puppeteer": "1.4.0"
   },
   "devDependencies": {
     "@pilihpendidikan/config": "workspace:*",

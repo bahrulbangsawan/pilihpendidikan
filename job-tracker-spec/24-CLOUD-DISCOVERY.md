@@ -91,9 +91,10 @@ The api calls the scraper Worker through the `SCRAPER` service binding (dev:
 
 | Endpoint | Request | Response |
 |---|---|---|
-| `POST /v1/scrape` | `ScrapeRequest {run_id, source{id, slug, name, homepage_url, listing_url, canonical_domain, strategy, strategy_config, rate_limit, allow_browser}, cursor_state, deadline_ms, ai_fallback}` | `ScrapeResponse {outcome, complete, items: CloudPostingItem[] ≤ 500, ai_candidates ≤ 5, cursor_state, stats, error, warnings, log, engine}` |
+| `POST /v1/scrape` | `ScrapeRequest {run_id, source{id, slug, name, homepage_url, listing_url, canonical_domain, strategy, strategy_config, rate_limit, allow_browser}, cursor_state, deadline_ms, ai_fallback, prefetched?}` | `ScrapeResponse {outcome, complete, items: CloudPostingItem[] ≤ 500, ai_candidates ≤ 5, cursor_state, stats, error, warnings, log, engine}` |
 | `POST /v1/probe` | `ProbeRequest {url}` | `ProbeResponse {final_url, http_status, reachable, robots, protection, auth_wall, title, meta_description, feeds[], jsonld_job_postings, embedded_json[], job_link_count, text_excerpt, error, log, engine}` |
 | `POST /v1/directory` | `DirectoryRequest {directory: DirectoryConfig}` | `DirectoryResponse {final_url, http_status, entries[], error, log, engine}` |
+| `POST /v1/preflight` | `PreflightRequest {url}` | `PreflightResponse {allowed, user_agent, robots_txt, crawl_delay_s, error}` (Browser Rendering only, §4.4) |
 | `GET /healthz` | — | `200` |
 
 A source-level failure is `error` in a `200` answer, never an HTTP error; a
@@ -116,7 +117,7 @@ generic_listing`, `source_org` = canonical domain, `visibility: public`) +
 | `json_ld` | `listing_url`, `detail_link_selector`, `detail_url_pattern`, `listing_jsonld`, `next_page` | schema.org `JobPosting` / `ItemList` |
 | `embedded_json` | `url`, `script_selector`, `global_name`, `items_path`, `fields`, `url_base` | `__NEXT_DATA__`, `window.X = {…}` parsed as JSON, never executed |
 | `html_selectors` | `url`, `item`, `fields{title, link, company, location, posted_at, …}`, `next_page`, `adaptive`, `detail` | Scrapling CSS with `::text` / `::attr()`; adaptive relocation on a miss |
-| `browser` | `html_selectors` + `wait_selector` | Only with `allow_browser`; headless Chromium in the container |
+| `browser` | `html_selectors` + `wait_selector`, `renderer` (`container` default / `browser_rendering`) | Only with `allow_browser`; headless Chromium in the container, or Cloudflare Browser Rendering in the scraper Worker (§4.4) |
 | `ai` | `url` | Page text goes to the AI extractor |
 | `none` | — | Never scheduled |
 
@@ -149,6 +150,40 @@ nothing or the strategy is `ai`; the api reads ≤ 3 per run.
   `extraction.flags: ["suspicious:<reason>"]` plus a warning.
 - Directory classification uses `decide()` with a category choice only when
   the deterministic probe rules leave `unknown`.
+
+### 4.4 Browser Rendering (`renderer: "browser_rendering"`)
+
+For boards whose listing is drawn by JavaScript (Dynamite Jobs: the list
+comes from the site's own Algolia search), the scraper Worker renders the
+listing page with Cloudflare Browser Rendering (`BROWSER` binding,
+`@cloudflare/puppeteer`) and hands the HTML to the container, which treats it
+exactly like a page it fetched itself.
+
+1. **Preflight** — the Worker asks the container (`POST /v1/preflight`): the
+   same SSRF guard, D-17 exclusions and robots.txt gate as any fetch. A
+   refusal ends the run as a failed scrape (`robots_disallowed`,
+   `policy_blocked`, …) without opening a browser.
+2. **Render** (`src/render.ts`, 45 s, then `wait_selector` up to 10 s) with
+   the honest `pilih-jobs/…` User-Agent. Every subrequest passes
+   `blockReason` (`src/render-policy.ts`): images, fonts and media,
+   analytics / tracker hosts, local hosts and IP literals, non-http(s)
+   schemes, and any path on the site's own host that its robots.txt
+   disallows for our product token (`src/robots.ts`, RFC 9309) are aborted.
+   No challenge is solved or waited out, no cookies or credentials are set.
+3. **Accept** (`ScraplingJobEngine.accept_rendered`) — the container re-checks
+   exclusions and robots for the requested and final URLs, runs the SSRF and
+   response checks and `classify_response` on the HTML, so a challenge page,
+   login wall or error status is reported as BLOCKED / AUTH_REQUIRED /
+   failed like any fetch, never as jobs. Pages over 3.5 MB are
+   `unsupported_content`.
+4. **Extract** — the `html_selectors` fields on the rendered listing (one
+   page, `RenderedPage` in `strategies/paging.py`), then detail pages through
+   the normal engine fetch (JSON-LD), with the source's politeness delay.
+
+Only the listing is rendered; Browser Rendering never runs for a BLOCKED or
+AUTH_REQUIRED source (the strategy cannot unblock one, D-16). Cost: Workers
+Paid includes 10 browser-hours / month, then $0.09 / hour; one render takes
+5–15 s, so a source every 6 hours uses well under an hour a month.
 
 ## 5. API and dashboard
 
@@ -277,8 +312,8 @@ Audit result (2026-10-13, after the live smoke of every usable board; the full a
 
 | Seed status | Count | Platforms |
 |---|---|---|
-| ACTIVE, enabled | 7 | We Work Remotely (rss, 89 jobs), Remote OK (json_api, 99, attribution required), Jobspresso (rss, 10), Workew (rss, 10), JustRemote (embedded_json, 84), Remote Freelance ID (json_ld ItemList, 12 per page), Work From Home ID (html_selectors + JSON-LD details, 10 per page) |
-| ACTIVE, disabled pending owner review | 2 | Working Nomads (json_api works, 51 jobs; terms ban using the service "to build a competitive product"), Dynamite Jobs (JavaScript listing: only 6 featured jobs without a browser) |
+| ACTIVE, enabled | 8 | Dynamite Jobs (browser via Browser Rendering, 16 jobs on the rendered listing + JSON-LD details; enabled 2026-10-14), We Work Remotely (rss, 89 jobs), Remote OK (json_api, 99, attribution required), Jobspresso (rss, 10), Workew (rss, 10), JustRemote (embedded_json, 84), Remote Freelance ID (json_ld ItemList, 12 per page), Work From Home ID (html_selectors + JSON-LD details, 10 per page) |
+| ACTIVE, disabled pending owner review | 1 | Working Nomads (json_api works, 51 jobs; terms ban using the service "to build a competitive product") |
 | BLOCKED | 18 | 9 refuse our honest client: Remote.co, FlexJobs, SimplyHired, Stack Overflow, Behance, Fancy Hands, Remotive (Cloudflare challenge even on robots.txt; also held back for its API terms), Hubstaff Talent (challenge in headless Chromium), ProBlogger (reCAPTCHA on job pages, no company in the feed). 9 are restricted by terms or robots: SkipTheDrive, EuropeRemotely, Crossover, Dice, Wellfound/AngelList, Dribbble, Coroflot, Teach Away, and Y Combinator Jobs (added on request 2026-10-14; its terms forbid scraping) |
 | AUTH_REQUIRED | 1 | Virtual Vocations (paid membership) |
 | UNSUPPORTED | 41 | Freelance marketplaces, talent networks, staffing / VA services, tutoring platforms, content services, one community |
@@ -310,8 +345,10 @@ UNSUPPORTED.
   **[LIMITATION]** Scrapling does not expose curl's connected address, so a
   DNS answer that changes between the check and curl's connect (rebinding) is
   only caught by the post-response re-check, not at the socket; bodies over
-  5 MB are discarded after download; the browser strategy guards the
-  top-level page only.
+  5 MB are discarded after download; the container browser strategy guards the
+  top-level page only; a Browser Rendering render aborts local hosts and IP
+  literals in every subrequest but cannot check what a public name resolves
+  to (it runs on Cloudflare's network, not in our container).
 - Scraped content is stored as plain text and rendered as text; links pass
   `safeHref`.
 - AI input is fenced untrusted text; outputs are schema-validated and cannot
@@ -331,14 +368,15 @@ UNSUPPORTED.
 - Cost (Workers Paid list prices, Oct 2026): ≈ $1–2 / month for the
   container (basic instance, active-CPU billing, 5 min sleep), queue
   operations and D1 writes well inside the included allowances; AI capped by
-  its budget.
+  its budget; Browser Rendering inside the 10 included browser-hours (§4.4).
 
 ## 10. Limitations
 
 - Adaptive selector fingerprints live on the container's ephemeral disk and
   are rebuilt after a restart.
 - Boards whose listings render client-side need the opt-in browser strategy
-  and selectors configured by an operator.
+  and selectors configured by an operator; Browser Rendering renders one
+  listing page per run (no pagination by clicking).
 - Free feeds carry only recent jobs (Remotive's API holds 16, delayed 24 h;
   Jobspresso / Workew feeds the latest 10).
 - Remote Freelance ID re-lists Upwork, SEEK and Glints jobs; their apply

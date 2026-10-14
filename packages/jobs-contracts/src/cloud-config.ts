@@ -234,12 +234,19 @@ export const HtmlSelectorsConfigSchema = defineSchema(
 );
 export type HtmlSelectorsConfig = z.infer<typeof HtmlSelectorsConfigSchema>;
 
-/** `browser`: like html_selectors, rendered in headless Chromium first. */
+/** `browser`: like html_selectors, rendered in a headless browser first. */
 export const BrowserConfigSchema = defineSchema(
   "cloud",
   "BrowserConfig",
   HtmlSelectorsConfigSchema.extend({
     wait_selector: CssSelectorSchema.optional(),
+    /**
+     * Who renders the listing: `container` (Chromium in the scraper container,
+     * the default) or `browser_rendering` (Cloudflare Browser Rendering in the
+     * scraper Worker, 24 §4.4). Either way robots-disallowed requests, trackers
+     * and media are blocked, and nothing behind a challenge is rendered.
+     */
+    renderer: z.enum(["container", "browser_rendering"]).optional(),
   })
 );
 export type BrowserConfig = z.infer<typeof BrowserConfigSchema>;
