@@ -199,7 +199,7 @@ describe("TCORE-MIGRATION identity migrations 0002/0003 (04 §1, 17 §3.2)", () 
     ).toThrow("CHECK constraint failed");
   });
 
-  it("TCORE-MIGRATION seeds every D-33 flag dark and the CLI client of 17 §3.2", () => {
+  it("TCORE-MIGRATION seeds every D-33 flag dark (incl. the 24 cloud flags) and the CLI client of 17 §3.2", () => {
     const db = legacyDb();
     migrate(db);
     const flags = Object.fromEntries(
@@ -218,6 +218,8 @@ describe("TCORE-MIGRATION identity migrations 0002/0003 (04 §1, 17 §3.2)", () 
       JOBS_EMAIL_SERVER_SEND_ENABLED: "false",
       AI_DISABLED: "false",
       JOBS_LEGACY_BACKEND: '"kv"',
+      JOBS_CLOUD_DISCOVERY_ENABLED: "false",
+      JOBS_CLOUD_AI_ENABLED: "false",
     });
     const cli = db
       .query("SELECT * FROM oauth_clients WHERE client_id = 'pilih-jobs-cli'")

@@ -50,6 +50,8 @@ const LSE = fixedId("lse");
 const APR = fixedId("apr");
 const EVD = fixedId("evd");
 const OBS = fixedId("obs");
+const CSR = fixedId("csr");
+const CRN = fixedId("crn");
 
 const locations = [
   { raw: "Jakarta, Indonesia", city: "Jakarta", country_code: "ID" },
@@ -195,6 +197,18 @@ const SUBMIT_PAYLOAD = {
 // ===========================================================================
 // One row per table
 // ===========================================================================
+
+const CLOUD_LOG = [
+  {
+    at: T - 4 * MIN,
+    level: "info",
+    event: "page_fetched",
+    message: "Listing page 1: 42 items",
+    url: "https://weworkremotely.com/remote-jobs.rss",
+    http_status: 200,
+    ms: 380,
+  },
+] as const;
 
 export const RECORD_EXAMPLES = {
   users: {
@@ -345,6 +359,14 @@ export const RECORD_EXAMPLES = {
     revision: 1,
     created_at: T - 2 * DAY,
     updated_at: T - 2 * DAY,
+    cloud_source_id: null,
+    expires_at: T + 28 * DAY,
+    skills: ["Go", "PostgreSQL", "AWS"],
+    benefits: ["Remote budget"],
+    employment_detail: "full_time",
+    application_method: "external_url",
+    auth_required: false,
+    raw_metadata: {},
   },
   user_jobs: {
     id: UJB,
@@ -784,6 +806,112 @@ export const RECORD_EXAMPLES = {
       ai_cost_micro_usd: 41_200,
     },
   },
+  cloud_sources: {
+    id: CSR,
+    slug: "weworkremotely.com",
+    name: "We Work Remotely",
+    homepage_url: "https://weworkremotely.com",
+    listing_url: "https://weworkremotely.com/remote-jobs",
+    canonical_domain: "weworkremotely.com",
+    category: "job_board",
+    origin: "directory",
+    directory_ref: "recommendations-we-work-remotely",
+    description: "One of the largest remote-only job boards.",
+    strategy: "rss",
+    strategy_config: {
+      url: "https://weworkremotely.com/remote-jobs.rss",
+      title_pattern: "company_title",
+      separator: ": ",
+      location_field: "region",
+      defaults: { workplace_type: "remote" },
+    },
+    health: "ACTIVE",
+    status_reason: null,
+    enabled: true,
+    priority: 80,
+    interval_minutes: 60,
+    rate_limit: { min_delay_ms: 2000, max_pages: 1, max_items: 200 },
+    auth_required: false,
+    auth_note: null,
+    terms_url: "https://weworkremotely.com/terms-of-service",
+    terms_note: null,
+    ai_enabled: false,
+    allow_browser: false,
+    next_run_at: T + 55 * MIN,
+    lease_id: null,
+    lease_expires_at: null,
+    last_run_id: CRN,
+    last_run_status: "succeeded",
+    last_run_at: T - 5 * MIN,
+    last_success_at: T - 4 * MIN,
+    last_error_class: null,
+    last_error_message: null,
+    consecutive_failures: 0,
+    circuit_open_until: null,
+    cursor_state: { v: 1, listing: { etag: 'W/"wwr"' } },
+    stats: {
+      runs: 12,
+      successes: 12,
+      failures: 0,
+      total_duration_ms: 54_000,
+      jobs_found_last_run: 42,
+      jobs_new_last_run: 3,
+      confidence_avg_last_run: 0.9,
+      warnings_last_run: 0,
+      ai_calls: 0,
+    },
+    user_modified: ["priority"],
+    revision: 3,
+    created_at: T - 10 * DAY,
+    updated_at: T - 4 * MIN,
+  },
+  cloud_runs: {
+    id: CRN,
+    source_id: CSR,
+    kind: "scrape",
+    trigger: "schedule",
+    status: "succeeded",
+    attempt: 1,
+    requested_by: null,
+    queued_at: T - 5 * MIN,
+    started_at: T - 5 * MIN,
+    finished_at: T - 4 * MIN,
+    duration_ms: 4500,
+    strategy: "rss",
+    stats: {
+      pages: 1,
+      postings_found: 42,
+      new: 3,
+      updated: 1,
+      unchanged: 38,
+      duplicates: 0,
+      invalid: 0,
+      closed: 0,
+      linked: 3,
+      confidence_avg: 0.9,
+      scraper_ms: 2100,
+    },
+    error_class: null,
+    error_message: null,
+    http_status: 200,
+    warnings: [
+      {
+        code: "missing_field",
+        message: "2 postings have no location",
+        field: "location",
+        count: 2,
+      },
+    ],
+    log: [...CLOUD_LOG],
+    engine_version: "pilih-scraper 0.1.0; pilih-jobs 0.1.0; scrapling 0.4.15",
+    updated_at: T - 4 * MIN,
+  },
+  cloud_source_follows: { user_id: USR, source_id: CSR, created_at: T - DAY },
+  cloud_state: {
+    key: "directory_refreshed_at",
+    value: String(T - DAY),
+    updated_at: T - DAY,
+  },
 };
 
 const R = RECORD_EXAMPLES;
@@ -1048,6 +1176,45 @@ export interface RouteExample {
 const I = "/api/v1/applications/{app_id}/interviews";
 const O = "/api/v1/applications/{app_id}/offers";
 const L = "/api/v1/tasks/{tsk_id}/lease/{lease_id}";
+
+const CLOUD_VIEW = {
+  ...(({ lease_id, lease_expires_at, cursor_state, ...rest }) => rest)(
+    RECORD_EXAMPLES.cloud_sources
+  ),
+  status: "ACTIVE",
+  following: true,
+  followers: 4,
+  jobs_total: 310,
+  jobs_open: 188,
+  success_rate: 1,
+  avg_duration_ms: 4500,
+};
+const CLOUD_PIPELINE = {
+  enabled: true,
+  ai_enabled: false,
+  schedule: "0 * * * *",
+  directory_url: "https://bahrul.me/tools?category=remote-jobs",
+  last_directory_refresh_at: T - DAY,
+  ai_budget: null,
+};
+const DIRECTORY_RUN = {
+  ...RECORD_EXAMPLES.cloud_runs,
+  id: fixedId("crn", 2),
+  source_id: null,
+  kind: "directory",
+  trigger: "manual",
+  status: "queued",
+  requested_by: USR,
+  started_at: null,
+  finished_at: null,
+  duration_ms: null,
+  strategy: null,
+  stats: {},
+  http_status: null,
+  warnings: [],
+  log: [],
+  engine_version: null,
+};
 
 export const ROUTE_EXAMPLES: Record<string, RouteExample> = {
   "GET /api/v1/meta": {
@@ -2253,6 +2420,72 @@ export const ROUTE_EXAMPLES: Record<string, RouteExample> = {
         form_hash: null,
       },
     },
+  },
+  "GET /api/v1/cloud-sources": {
+    query: { status: "ACTIVE", following: "1" },
+    response: {
+      items: [CLOUD_VIEW],
+      viewer: { operator: false },
+      pipeline: CLOUD_PIPELINE,
+    },
+  },
+  "POST /api/v1/cloud-sources": {
+    request: {
+      name: "Remote Freelance ID",
+      url: "https://remotefreelance.id/jobs",
+      priority: 60,
+    },
+    response: {
+      source: {
+        ...CLOUD_VIEW,
+        origin: "operator",
+        following: false,
+        followers: 0,
+        jobs_total: 0,
+        jobs_open: 0,
+        success_rate: null,
+        avg_duration_ms: null,
+      },
+      run: { ...DIRECTORY_RUN, kind: "probe", source_id: CSR },
+    },
+  },
+  "GET /api/v1/cloud-sources/{csr_id}": {
+    response: { source: CLOUD_VIEW, runs: [RECORD_EXAMPLES.cloud_runs] },
+  },
+  "PATCH /api/v1/cloud-sources/{csr_id}": {
+    request: { base_revision: 3, interval_minutes: 120, enabled: true },
+    response: {
+      source: { ...CLOUD_VIEW, interval_minutes: 120, revision: 4 },
+    },
+  },
+  "PUT /api/v1/cloud-sources/{csr_id}/follow": {
+    response: { source: CLOUD_VIEW, backfilled: 12 },
+  },
+  "DELETE /api/v1/cloud-sources/{csr_id}/follow": {
+    response: { source: { ...CLOUD_VIEW, following: false, followers: 3 } },
+  },
+  "GET /api/v1/cloud-sources/{csr_id}/runs": {
+    query: { limit: "20" },
+    response: { items: [RECORD_EXAMPLES.cloud_runs], next_cursor: null },
+  },
+  "POST /api/v1/cloud-sources/{csr_id}/runs": {
+    request: { retry: true },
+    response: {
+      run: {
+        ...DIRECTORY_RUN,
+        kind: "scrape",
+        source_id: CSR,
+        trigger: "retry",
+        strategy: "rss",
+      },
+    },
+  },
+  "GET /api/v1/cloud-discovery/runs": {
+    query: { limit: "20" },
+    response: { items: [DIRECTORY_RUN], next_cursor: null },
+  },
+  "POST /api/v1/cloud-discovery/refresh": {
+    response: { run: DIRECTORY_RUN },
   },
 };
 

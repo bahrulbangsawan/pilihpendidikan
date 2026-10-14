@@ -28,6 +28,16 @@ import type { EventType } from "./enums";
 import {
   ActorKindSchema,
   AdapterIdSchema,
+  ApplicationMethodSchema,
+  CloudErrorClassSchema,
+  CloudRunKindSchema,
+  CloudRunStatusSchema,
+  CloudRunTriggerSchema,
+  CloudSourceCategorySchema,
+  CloudSourceHealthSchema,
+  CloudSourceOriginSchema,
+  CloudStrategySchema,
+  EmploymentDetailSchema,
   AiUsagePurposeSchema,
   ApplicationModeSchema,
   ApplicationSupportSchema,
@@ -95,6 +105,8 @@ import {
   ApprovalIdSchema,
   AnswerIdSchema,
   AttemptIdSchema,
+  CloudRunIdSchema,
+  CloudSourceIdSchema,
   CvVariantIdSchema,
   DeviceIdSchema,
   EmailIdSchema,
@@ -116,7 +128,18 @@ import {
   TaskIdSchema,
   UserIdSchema,
   UserJobIdSchema,
+  UserJobSourceIdSchema,
 } from "./ids";
+import {
+  CloudCursorStateSchema,
+  CloudLogEntrySchema,
+  CloudRateLimitSchema,
+  CloudRunStatsSchema,
+  CloudSourceStatsSchema,
+  CloudWarningSchema,
+  CLOUD_LOG_MAX,
+  CLOUD_WARNINGS_MAX,
+} from "./cloud-config";
 import { defineSchema } from "./registry";
 import {
   RuleScoreCriteriaSchema,
@@ -175,6 +198,9 @@ export const EXTRACTION_METHODS = [
   "css",
   "xpath",
   "adaptive",
+  "rss",
+  "embedded_json",
+  "ai",
 ] as const;
 export const ExtractionMethodSchema = defineSchema(
   "records",
@@ -1061,6 +1087,20 @@ const jobPostingObject = z.object({
   revision: RevisionSchema,
   created_at: ts,
   updated_at: ts,
+  // Cloud discovery columns (24 §2.3, migration 0002). Optional so records
+  // written before the migration, and CLI-built shapes, stay valid.
+  /** The catalog source that first delivered the posting. */
+  cloud_source_id: CloudSourceIdSchema.nullable().optional(),
+  expires_at: tsOrNull.optional(),
+  skills: z.array(z.string()).optional(),
+  benefits: z.array(z.string()).optional(),
+  /** employment_type plus `freelance` (stored there as `contract`). */
+  employment_detail: EmploymentDetailSchema.nullable().optional(),
+  application_method: ApplicationMethodSchema.nullable().optional(),
+  /** Applying needs an account on the board. */
+  auth_required: z.boolean().optional(),
+  /** Source-specific fields kept verbatim (tags, category, attribution). */
+  raw_metadata: JsonObjectSchema.optional(),
 });
 /** The posting columns, without the cross-column CHECK (for derived views). */
 export const JOB_POSTING_SHAPE = jobPostingObject.shape;
@@ -1090,7 +1130,8 @@ export const UserJobRecordSchema = defineSchema(
     origin: UserJobOriginSchema,
     inbox_state: InboxStateSchema,
     first_run_id: RunIdSchema.nullable(),
-    source_id: SourceIdSchema.nullable(),
+    /** A CLI source (`src_…`) or a followed cloud source (`csr_…`, 24 §5.3). */
+    source_id: UserJobSourceIdSchema.nullable(),
     user_notes: z.string().max(10_000),
     revision: RevisionSchema,
     created_at: ts,
@@ -1701,6 +1742,119 @@ export const AnalyticsDailyRecordSchema = defineSchema(
 export type AnalyticsDailyRecord = z.infer<typeof AnalyticsDailyRecordSchema>;
 
 // ===========================================================================
+// Cloud discovery (24 §2, migration 0002)
+// ===========================================================================
+
+export const CloudSourceRecordSchema = defineSchema(
+  "records",
+  "CloudSourceRecord",
+  z.object({
+    id: CloudSourceIdSchema,
+    /** Canonical key: registrable domain (+ path when one domain hosts two boards). */
+    slug: z.string().min(1).max(200),
+    name: z.string().min(1).max(200),
+    homepage_url: z.string().max(2048),
+    listing_url: textOrNull,
+    canonical_domain: DomainSchema,
+    category: CloudSourceCategorySchema,
+    origin: CloudSourceOriginSchema,
+    /** Anchor / id of the entry on the directory page. */
+    directory_ref: textOrNull,
+    description: textOrNull,
+    strategy: CloudStrategySchema,
+    /** Validated by `parseStrategyConfig(strategy, …)` (cloud-config.ts). */
+    strategy_config: JsonObjectSchema,
+    health: CloudSourceHealthSchema,
+    /** Actionable note: why it is blocked, what the login requires, … */
+    status_reason: textOrNull,
+    enabled: z.boolean(),
+    priority: z.number().int().min(0).max(100),
+    interval_minutes: z.number().int().min(60).max(10_080),
+    rate_limit: CloudRateLimitSchema,
+    auth_required: z.boolean(),
+    auth_note: textOrNull,
+    terms_url: textOrNull,
+    terms_note: textOrNull,
+    ai_enabled: z.boolean(),
+    allow_browser: z.boolean(),
+    next_run_at: tsOrNull,
+    lease_id: textOrNull,
+    lease_expires_at: tsOrNull,
+    last_run_id: CloudRunIdSchema.nullable(),
+    last_run_status: CloudRunStatusSchema.nullable(),
+    last_run_at: tsOrNull,
+    last_success_at: tsOrNull,
+    last_error_class: CloudErrorClassSchema.nullable(),
+    last_error_message: textOrNull,
+    consecutive_failures: z.number().int().min(0),
+    circuit_open_until: tsOrNull,
+    cursor_state: CloudCursorStateSchema,
+    stats: CloudSourceStatsSchema,
+    /** Fields an operator edited; directory refreshes never overwrite them. */
+    user_modified: z.array(z.string().max(64)),
+    revision: RevisionSchema,
+    created_at: ts,
+    updated_at: ts,
+  })
+);
+export type CloudSourceRecord = z.infer<typeof CloudSourceRecordSchema>;
+
+export const CloudRunRecordSchema = defineSchema(
+  "records",
+  "CloudRunRecord",
+  z.object({
+    id: CloudRunIdSchema,
+    /** Null for directory refreshes. */
+    source_id: CloudSourceIdSchema.nullable(),
+    kind: CloudRunKindSchema,
+    trigger: CloudRunTriggerSchema,
+    status: CloudRunStatusSchema,
+    attempt: z.number().int().min(1),
+    /** Operator who started a manual / retry run. */
+    requested_by: UserIdSchema.nullable(),
+    queued_at: ts,
+    started_at: tsOrNull,
+    finished_at: tsOrNull,
+    duration_ms: z.number().int().min(0).nullable(),
+    strategy: CloudStrategySchema.nullable(),
+    stats: CloudRunStatsSchema,
+    error_class: CloudErrorClassSchema.nullable(),
+    error_message: textOrNull,
+    http_status: z.number().int().nullable(),
+    warnings: z.array(CloudWarningSchema).max(CLOUD_WARNINGS_MAX),
+    log: z.array(CloudLogEntrySchema).max(CLOUD_LOG_MAX),
+    engine_version: textOrNull,
+    updated_at: ts,
+  })
+);
+export type CloudRunRecord = z.infer<typeof CloudRunRecordSchema>;
+
+export const CloudSourceFollowRecordSchema = defineSchema(
+  "records",
+  "CloudSourceFollowRecord",
+  z.object({
+    user_id: UserIdSchema,
+    source_id: CloudSourceIdSchema,
+    created_at: ts,
+  })
+);
+export type CloudSourceFollowRecord = z.infer<
+  typeof CloudSourceFollowRecordSchema
+>;
+
+/** Pipeline key/value state: directory refresh time, monthly AI spend. */
+export const CloudStateRecordSchema = defineSchema(
+  "records",
+  "CloudStateRecord",
+  z.object({
+    key: z.string().min(1).max(100),
+    value: z.string(),
+    updated_at: ts,
+  })
+);
+export type CloudStateRecord = z.infer<typeof CloudStateRecordSchema>;
+
+// ===========================================================================
 // Table map
 // ===========================================================================
 
@@ -1743,6 +1897,10 @@ export const TABLE_RECORDS = {
   ai_usage: AiUsageRecordSchema,
   telemetry_daily: TelemetryDailyRecordSchema,
   analytics_daily: AnalyticsDailyRecordSchema,
+  cloud_sources: CloudSourceRecordSchema,
+  cloud_runs: CloudRunRecordSchema,
+  cloud_source_follows: CloudSourceFollowRecordSchema,
+  cloud_state: CloudStateRecordSchema,
 } as const;
 export type TableName = keyof typeof TABLE_RECORDS;
 
@@ -1783,6 +1941,10 @@ export const TABLE_DATABASE: Readonly<Record<TableName, "DB" | "JOBS_DB">> = {
   ai_usage: "JOBS_DB",
   telemetry_daily: "JOBS_DB",
   analytics_daily: "JOBS_DB",
+  cloud_sources: "JOBS_DB",
+  cloud_runs: "JOBS_DB",
+  cloud_source_follows: "JOBS_DB",
+  cloud_state: "JOBS_DB",
 };
 
 /** The raw device and file shapes, for API views that omit columns. */

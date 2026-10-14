@@ -322,8 +322,16 @@ interface ColumnCodec {
 /** JSON and boolean columns of every JOBS_DB table (04 §2). */
 export const ROW_CODECS: Readonly<Record<string, ColumnCodec>> = {
   job_postings: {
-    json: { locations: [], salary: null, requirements: [], extraction: {} },
-    bool: ["description_truncated"],
+    json: {
+      locations: [],
+      salary: null,
+      requirements: [],
+      extraction: {},
+      skills: [],
+      benefits: [],
+      raw_metadata: {},
+    },
+    bool: ["description_truncated", "auth_required"],
   },
   user_jobs: { json: {}, bool: [] },
   applications: { json: { sections: [] }, bool: ["archived"] },
@@ -364,6 +372,20 @@ export const ROW_CODECS: Readonly<Record<string, ColumnCodec>> = {
   ai_usage: { json: {}, bool: [] },
   telemetry_daily: { json: { counters: {} }, bool: [] },
   analytics_daily: { json: { metrics: {} }, bool: [] },
+  // Cloud discovery (24 §2, migration 0002).
+  cloud_sources: {
+    json: {
+      strategy_config: {},
+      rate_limit: {},
+      cursor_state: {},
+      stats: {},
+      user_modified: [],
+    },
+    bool: ["enabled", "auth_required", "ai_enabled", "allow_browser"],
+  },
+  cloud_runs: { json: { stats: {}, warnings: [], log: [] }, bool: [] },
+  cloud_source_follows: { json: {}, bool: [] },
+  cloud_state: { json: {}, bool: [] },
 };
 
 /**

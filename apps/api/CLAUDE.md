@@ -4,7 +4,8 @@ Cloudflare Worker `api-pilihpendidikan` on `api.pilihpendidikan.com`. It
 stores the documents the three builder apps save, signs people in by email,
 mints personal tokens, serves an MCP server so AI apps can edit those
 documents, and hosts the Job Tracker API under `/api/v1` (D-01,
-`job-tracker-spec/`). No framework: a hand-written router over the Workers
+`job-tracker-spec/`), including the hourly cloud discovery of remote-job
+boards (`job-tracker-spec/24`, D-37 … D-41). No framework: a hand-written router over the Workers
 runtime. The Job Tracker kernel and its rules are in `src/jobs/README.md`.
 
 Workspace-wide rules live in the root `CLAUDE.md`; provisioning and data
@@ -15,7 +16,8 @@ migration are in the root `DEPLOY.md`.
 - `bun run dev` — `wrangler dev` on **8788** (the apps call `http://localhost:8788` in dev)
 - `bun run db:migrate:local` — apply `migrations/` to the local `DB` (run once before `dev`)
 - `bun run db:migrate:jobs:local` — apply `migrations-jobs/` to the local `JOBS_DB`
-- `bun run db:seed:local` — turn the Job Tracker flags on in the local `DB.feature_flags` (`scripts/seed-local.ts`; `--flag KEY=value`, `--persist-to`, `--dry-run`; never remote)
+- `bun run db:seed:local` — turn the Job Tracker flags on in the local `DB.feature_flags` (`scripts/seed-local.ts`; `--flag KEY=value`, `--persist-to`, `--dry-run`; never remote). It turns `JOBS_CLOUD_DISCOVERY_ENABLED` on (AI fallback off)
+- Cloud discovery locally: start the scraper (`bun run dev:python` in `apps/jobs-scraper`, :8791) and set `SCRAPER_FALLBACK_URL=http://localhost:8791` in `.dev.vars`; trigger the hourly dispatch with `curl "http://localhost:8788/cdn-cgi/handler/scheduled?cron=0+*+*+*+*"` or "Run now" in `/sources` (operator = an `ADMIN_EMAILS` address)
 - `bun run db:seed:demo -- --email you@example.com [--reset]` — fill the LOCAL stack with demo Job Tracker data for that user (`scripts/seed-demo.ts`, data in `scripts/seed-demo-data.ts`; see § Demo data)
 - `bun run test` — `bun test` (fake KV / R2 / Queue, real SQLite for both D1s); inside Claude Code run `env -u CLAUDECODE bun test` to see passing lines
 - `bun run typecheck` — `wrangler types` + `tsc` for `src/` and for tests/scripts
@@ -82,7 +84,7 @@ URLs are refused.
 | `POST /oauth/authorize/decision` | first-party approve / deny of the consent page (session-aware; same-origin + HMAC CSRF token) |
 | `POST /oauth/revoke` | RFC 7009 revocation (200 for unknown tokens; a refresh token kills its family; `forget_device=true` also revokes the bound device) |
 | `/mcp` (Streamable HTTP), `/sse` (legacy) | MCP server: `cv_*`, `invoice_*`, `portfolio_*`, `jobs_*` + 48 legacy aliases (the `jobs_*` tools go through the same facade and `JOBS_DB` services; no admin bypass) |
-| `/api/v1/*` | Job Tracker API (05), bearer only, 404 while `JOBS_V1_ENABLED` is off (except `/meta`); `listRouteTable()` (`src/jobs/routes/table.ts`) lists all 105 routes with their scopes. Areas below |
+| `/api/v1/*` | Job Tracker API (05), bearer only, 404 while `JOBS_V1_ENABLED` is off (except `/meta`); `listRouteTable()` (`src/jobs/routes/table.ts`) lists all 115 routes with their scopes. Areas below |
 | `GET /api/v1/meta`, `GET /api/v1/me` | public versions / flags; the caller (`routes/meta`) |
 | `/api/v1/devices[/{dev_id}[/revoke\|/heartbeat]]` | register (`offline_access`), list (`?limit&cursor&include_revoked`), rename / pause, revoke (leases → outcome_unknown / queued), heartbeat (`routes/devices`) |
 | `/api/v1/sources*`, `/api/v1/discovery/runs*`, `/api/v1/inbox[:bulk]`, `/api/v1/user-jobs*` | sources + adapters, CLI discovery runs and `postings:batch`, the inbox (bulk track ≤ 200), manual jobs (`routes/discovery`) |
@@ -96,10 +98,14 @@ URLs are refused.
 | `/api/v1/changes`, `/api/v1/snapshot` | sync feed and snapshot (`routes/sync`) |
 | `/api/v1/analytics/{summary,timeseries,breakdown}` | analytics (`routes/analytics`) |
 | `/api/v1/applications/{app_id}/emails`, `/api/v1/emails/{eml_id}[/approve\|/handed-off]` | email applications: draft, show (with `payload_hash`), approve, hand-off (`routes/email`) |
+| `/api/v1/cloud-sources[/{csr_id}[/follow\|/runs]]`, `/api/v1/cloud-discovery/{runs,refresh}` | cloud catalog of remote-job boards (05 §15, 24): reads and follows for everyone; create / edit / run / retry / refresh for `ADMIN_EMAILS` operators, else `403 operator_required` (`routes/cloud`) |
 
 The same Worker exports `scheduled` (`0 3 * * *` daily jobs incl. the
-`request_log` purge, `*/5 * * * *` leases; `src/jobs/cron`) and `queue`
-(the `jobs-ai` consumer + `jobs-ai-dlq`; `src/jobs/queue`).
+`request_log` purge, `*/5 * * * *` leases + the cloud lease reaper,
+`0 * * * *` the cloud dispatch; `src/jobs/cron`) and `queue` (the `jobs-ai`
+consumer + `jobs-ai-dlq` in `src/jobs/queue`; the `jobs-scrape` consumer +
+`jobs-scrape-dlq` in `src/jobs/cloud`, which calls the scraper Worker through
+the `SCRAPER` service binding).
 
 ## Structure
 
@@ -112,7 +118,8 @@ The same Worker exports `scheduled` (`0 3 * * *` daily jobs incl. the
 - `src/mcp-tools.ts` — `registerAllTools()`: scope filter → request logger → ownership guard → tools (`src/tools/*`)
 - `src/ownership.ts` — the single owner-stamp resolver (`owner:cv:`, `owner:inv:`, `owner:portfolio:`, `owner:job:`)
 - `migrations/` — `DB` schema: `0001` tokens/clients/request log, `0002` users, grants, refresh tokens, devices, feature flags (seeded dark), support access log, `mcp_tokens` rebuilt with `kind` ∈ personal/session/oauth; `0003` the `pilih-jobs-cli` client
-- `migrations-jobs/` — `JOBS_DB` schema (`0001_jobs_core.sql` = 04 §2 verbatim)
+- `migrations-jobs/` — `JOBS_DB` schema (`0001_jobs_core.sql` = 04 §2 verbatim; `0002_cloud_discovery.sql` = 24 §2: catalog, runs, follows, state, posting columns by ADD COLUMN); `migrations/0004_cloud_discovery_flags.sql` seeds the two cloud flags dark
+- Cloud discovery (24): `src/jobs/cloud/` (consumer, scrape / probe runner, directory refresh), `src/jobs/services/cloud/` (catalog routes, seed sync, dispatch, ingestion, fan-out, health / breaker, probe classification, AI fallback, scraper client, URL checks), `src/jobs/repo/cloud/`; tests in `src/jobs/cloud/cloud.test.ts` (scripted scraper + queue from `test/cloud-fakes.ts`) and `src/jobs/services/cloud/units.test.ts`
 - `src/jobs/legacy/` — the `/api/jobs` + MCP `jobs_*` facade over `JOBS_KV` (`kv.ts`) or `JOBS_DB` (`d1.ts`, with the P3 on-the-fly KV fallback that logs `legacy_kv_fallback`); its SQL lives in `src/jobs/repo/legacy/`
 - `scripts/` — gated data migrations (dry run unless `--execute`), `seed-local.ts`, `seed-demo.ts`, `support-access.ts`, `scoring-eval.ts`, `analytics-rebuild.ts`
 - `test/fakes.ts` — fake bindings for `bun test` (both D1s, R2, Queue + `drain()`, fake clock, `createV1Client`); `test/seed-jobs.ts` — direct JOBS_DB seeding

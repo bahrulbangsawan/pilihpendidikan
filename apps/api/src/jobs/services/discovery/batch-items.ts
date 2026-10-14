@@ -126,7 +126,8 @@ export interface ItemContext {
     string,
     { adapter: string; config: Record<string, unknown> }
   >;
-  runId: string;
+  /** The discovery run (null for cloud runs, whose id goes in `cloud`). */
+  runId: string | null;
 }
 
 /** Source kinds whose URLs a user typed in: `http:` is accepted (15 §10.2). */

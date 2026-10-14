@@ -30,6 +30,7 @@ import {
   SourceIdSchema,
   TaskIdSchema,
   UserJobIdSchema,
+  UserJobSourceIdSchema,
 } from "../ids";
 import {
   ApplicationRecordSchema,
@@ -311,7 +312,7 @@ export const InboxQuerySchema = defineSchema(
   PageQuerySchema.extend({
     state: InboxStateSchema.optional(),
     min_score: z.coerce.number().int().min(0).max(100).optional(),
-    /** A source id (`src_…`) or an adapter / source kind. */
+    /** A source id (`src_…` / `csr_…`) or an adapter / source kind. */
     source: z.string().max(64).optional(),
     q: z.string().max(200).optional(),
   })
@@ -326,7 +327,8 @@ export const InboxItemSchema = defineSchema(
     score: ScoreSummarySchema.nullable(),
     provenance: z.object({
       run_id: RunIdSchema.nullable(),
-      source_id: SourceIdSchema.nullable(),
+      /** A CLI source (`src_…`) or a followed cloud source (`csr_…`, 24 §5.3). */
+      source_id: UserJobSourceIdSchema.nullable(),
       source_label: z.string().nullable(),
       source_kind: SourceKindSchema,
     }),

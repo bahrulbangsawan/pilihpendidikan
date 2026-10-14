@@ -526,6 +526,218 @@ class ChangeLogRecord(BaseModel):
     """
 
 
+class CloudCursorState(BaseModel):
+    model_config = ConfigDict(
+        extra="allow",
+    )
+    __annotations__ = {
+        "__pydantic_extra__": Dict[str, Any],
+    }
+    v: Literal[1] | None = None
+    listing: Listing | None = None
+    resume_url: ResumeUrl | None = None
+    resume_page: Annotated[int | None, Field(ge=0, le=100)] = None
+    detail_seen: Annotated[list[DetailSeenItem] | None, Field(max_length=500)] = None
+    last_complete_at: Annotated[int | None, Field(ge=0)] = None
+    """
+    Epoch milliseconds (UTC)
+    """
+
+
+class CloudLogEntry(BaseModel):
+    at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+    level: Literal["info", "warn", "error"]
+    event: Annotated[str, Field(max_length=64, min_length=1)]
+    message: Annotated[str, Field(max_length=500)]
+    url: Annotated[str | None, Field(max_length=2048)] = None
+    http_status: int | None = None
+    ms: Annotated[int | None, Field(ge=0)] = None
+
+
+class CloudRateLimit(BaseModel):
+    min_delay_ms: Annotated[int | None, Field(ge=1000, le=60000)] = None
+    max_pages: Annotated[int | None, Field(ge=1, le=10)] = None
+    max_items: Annotated[int | None, Field(ge=1, le=500)] = None
+    max_details: Annotated[int | None, Field(ge=0, le=50)] = None
+
+
+class CloudRunId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_run id (crn_<ULID>)
+    """
+
+
+class CloudRunRecord(BaseModel):
+    id: Annotated[str, Field(pattern="^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_run id (crn_<ULID>)
+    """
+    source_id: CloudSourceId | None
+    kind: Literal["scrape", "directory", "probe"]
+    trigger: Literal["schedule", "manual", "retry"]
+    status: Literal["queued", "running", "succeeded", "partial", "failed", "blocked", "auth_required", "rate_limited", "unsupported", "skipped"]
+    attempt: Annotated[int, Field(ge=1)]
+    requested_by: UserId | None
+    queued_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+    started_at: Timestamp | None
+    finished_at: Timestamp | None
+    duration_ms: DurationMs | None
+    strategy: Literal["json_api", "rss", "json_ld", "embedded_json", "html_selectors", "browser", "ai", "none"] | None
+    stats: CloudRunStats
+    error_class: Literal["network", "timeout", "http_5xx", "rate_limited", "access_denied", "challenge_detected", "robots_disallowed", "not_found", "source_closed", "source_unavailable", "parse_error", "schema_invalid", "selector_drift", "unsupported_content", "policy_blocked", "cancelled", "auth_required", "engine_unavailable", "invalid_config"] | None
+    error_message: str | None
+    http_status: int | None
+    warnings: Annotated[list[CloudWarning], Field(max_length=50)]
+    log: Annotated[list[CloudLogEntry], Field(max_length=100)]
+    engine_version: str | None
+    updated_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+
+
+class CloudRunStats(BaseModel):
+    pages: Annotated[int | None, Field(ge=0)] = None
+    postings_found: Annotated[int | None, Field(ge=0)] = None
+    new: Annotated[int | None, Field(ge=0)] = None
+    updated: Annotated[int | None, Field(ge=0)] = None
+    unchanged: Annotated[int | None, Field(ge=0)] = None
+    duplicates: Annotated[int | None, Field(ge=0)] = None
+    invalid: Annotated[int | None, Field(ge=0)] = None
+    closed: Annotated[int | None, Field(ge=0)] = None
+    relocated: Annotated[int | None, Field(ge=0)] = None
+    robots_skipped: Annotated[int | None, Field(ge=0)] = None
+    linked: Annotated[int | None, Field(ge=0)] = None
+    ai_calls: Annotated[int | None, Field(ge=0)] = None
+    ai_items: Annotated[int | None, Field(ge=0)] = None
+    ai_cost_micro_usd: Annotated[int | None, Field(ge=0)] = None
+    confidence_avg: Annotated[float | None, Field(ge=0.0, le=1.0)] = None
+    scraper_ms: Annotated[int | None, Field(ge=0)] = None
+    entries: Annotated[int | None, Field(ge=0)] = None
+    registered: Annotated[int | None, Field(ge=0)] = None
+
+
+class CloudSourceFollowRecord(BaseModel):
+    user_id: Annotated[str, Field(pattern="^usr_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    user id (usr_<ULID>)
+    """
+    source_id: Annotated[str, Field(pattern="^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_source id (csr_<ULID>)
+    """
+    created_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+
+
+class CloudSourceId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_source id (csr_<ULID>)
+    """
+
+
+class CloudSourceRecord(BaseModel):
+    id: Annotated[str, Field(pattern="^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_source id (csr_<ULID>)
+    """
+    slug: Annotated[str, Field(max_length=200, min_length=1)]
+    name: Annotated[str, Field(max_length=200, min_length=1)]
+    homepage_url: Annotated[str, Field(max_length=2048)]
+    listing_url: str | None
+    canonical_domain: Annotated[
+        str, Field(max_length=253, min_length=1, pattern="^[a-z0-9.-]+$")
+    ]
+    """
+    Lowercase ASCII host or registrable domain (IDN in punycode)
+    """
+    category: Literal["job_board", "aggregator", "freelance_marketplace", "talent_network", "staffing_service", "tutoring_platform", "content_marketplace", "community", "directory", "defunct", "unknown"]
+    origin: Literal["default", "directory", "operator"]
+    directory_ref: str | None
+    description: str | None
+    strategy: Literal["json_api", "rss", "json_ld", "embedded_json", "html_selectors", "browser", "ai", "none"]
+    strategy_config: dict[str, Any]
+    """
+    Any JSON object
+    """
+    health: Literal["ACTIVE", "FAILED", "BLOCKED", "AUTH_REQUIRED", "RATE_LIMITED", "UNSUPPORTED"]
+    status_reason: str | None
+    enabled: bool
+    priority: Annotated[int, Field(ge=0, le=100)]
+    interval_minutes: Annotated[int, Field(ge=60, le=10080)]
+    rate_limit: CloudRateLimit
+    auth_required: bool
+    auth_note: str | None
+    terms_url: str | None
+    terms_note: str | None
+    ai_enabled: bool
+    allow_browser: bool
+    next_run_at: Timestamp | None
+    lease_id: str | None
+    lease_expires_at: Timestamp | None
+    last_run_id: CloudRunId | None
+    last_run_status: Literal["queued", "running", "succeeded", "partial", "failed", "blocked", "auth_required", "rate_limited", "unsupported", "skipped"] | None
+    last_run_at: Timestamp | None
+    last_success_at: Timestamp | None
+    last_error_class: Literal["network", "timeout", "http_5xx", "rate_limited", "access_denied", "challenge_detected", "robots_disallowed", "not_found", "source_closed", "source_unavailable", "parse_error", "schema_invalid", "selector_drift", "unsupported_content", "policy_blocked", "cancelled", "auth_required", "engine_unavailable", "invalid_config"] | None
+    last_error_message: str | None
+    consecutive_failures: Annotated[int, Field(ge=0)]
+    circuit_open_until: Timestamp | None
+    cursor_state: CloudCursorState
+    stats: CloudSourceStats
+    user_modified: list[UserModifiedItem]
+    revision: Annotated[int, Field(ge=1)]
+    """
+    Row revision (D-21); starts at 1 and increments on every update
+    """
+    created_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+    updated_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+
+
+class CloudSourceStats(BaseModel):
+    runs: Annotated[int | None, Field(ge=0)] = None
+    successes: Annotated[int | None, Field(ge=0)] = None
+    failures: Annotated[int | None, Field(ge=0)] = None
+    total_duration_ms: Annotated[int | None, Field(ge=0)] = None
+    jobs_found_last_run: Annotated[int | None, Field(ge=0)] = None
+    jobs_new_last_run: Annotated[int | None, Field(ge=0)] = None
+    confidence_avg_last_run: Annotated[float | None, Field(ge=0.0, le=1.0)] = None
+    warnings_last_run: Annotated[int | None, Field(ge=0)] = None
+    ai_calls: Annotated[int | None, Field(ge=0)] = None
+
+
+class CloudStateRecord(BaseModel):
+    key: Annotated[str, Field(max_length=100, min_length=1)]
+    value: str
+    updated_at: Annotated[int, Field(ge=0)]
+    """
+    Epoch milliseconds (UTC)
+    """
+
+
+class CloudWarning(BaseModel):
+    code: Annotated[str, Field(max_length=64, min_length=1)]
+    message: Annotated[str, Field(max_length=500)]
+    field: Annotated[str | None, Field(max_length=64)] = None
+    count: Annotated[int | None, Field(ge=0)] = None
+
+
 CommandsAdditionalProperty = TypeAliasType(
     "CommandsAdditionalProperty", Annotated[int, Field(ge=0)]
 )
@@ -585,7 +797,7 @@ class CursorState(BaseModel):
         "__pydantic_extra__": Dict[str, Any],
     }
     v: Literal[1] | None = None
-    listing: Listing | None = None
+    listing: Listing3 | None = None
     watermark_updated_at: Timestamp | None = None
     seen_refs_digest: str | None = None
     detail_etags: dict[str, str] | None = None
@@ -685,6 +897,10 @@ class CvVariantRecord(BaseModel):
     """
     Epoch milliseconds (UTC)
     """
+
+
+class DetailSeenItem(RootModel[str]):
+    root: Annotated[str, Field(max_length=200)]
 
 
 class DeviceId(RootModel[str]):
@@ -942,7 +1158,7 @@ class ExtractionProvenance(BaseModel):
     adapter_version: Annotated[str, Field(min_length=1)]
     engine: Engine | None = None
     fetch_mode: Literal["json_api", "static_html", "browser"]
-    method: Literal["json_api", "json_ld", "css", "xpath", "adaptive"]
+    method: Literal["json_api", "json_ld", "css", "xpath", "adaptive", "rss", "embedded_json", "ai"]
     source_urls: SourceUrls | None = None
     relocated_fields: list[str] | None = None
     confidence: Annotated[float, Field(ge=0.0, le=1.0)]
@@ -956,7 +1172,7 @@ class ExtractionProvenance(BaseModel):
 
 
 class FeatureFlagRecord(BaseModel):
-    key: Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND"]
+    key: Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND", "JOBS_CLOUD_DISCOVERY_ENABLED", "JOBS_CLOUD_AI_ENABLED"]
     value: bool | float | str | None
     updated_at: Annotated[int, Field(ge=0)]
     """
@@ -1177,6 +1393,21 @@ class JobPostingRecord(BaseModel):
     """
     Epoch milliseconds (UTC)
     """
+    cloud_source_id: CloudSourceId | None = None
+    expires_at: Timestamp | None = None
+    skills: list[str] | None = None
+    benefits: list[str] | None = None
+    employment_detail: Literal["full_time", "part_time", "contract", "freelance", "temporary", "internship", "volunteer"] | None = (
+        None
+    )
+    application_method: Literal["external_url", "email", "platform_account", "unknown"] | None = (
+        None
+    )
+    auth_required: bool | None = None
+    raw_metadata: dict[str, Any] | None = None
+    """
+    Any JSON object
+    """
 
 
 class JobSourceRecord(BaseModel):
@@ -1259,6 +1490,11 @@ class LegacyJobSection(BaseModel):
 
 
 class Listing(BaseModel):
+    etag: Annotated[str | None, Field(max_length=200)] = None
+    last_modified: Annotated[str | None, Field(max_length=100)] = None
+
+
+class Listing3(BaseModel):
     etag: str | None = None
     last_modified: str | None = None
 
@@ -1579,6 +1815,10 @@ class RequiresOnsiteOutsideUserLocations(RootModel[float]):
 
 class RequiresUnavailableWorkAuthorization(RootModel[float]):
     root: Annotated[float, Field(ge=0.0, le=1.0)]
+
+
+class ResumeUrl(RootModel[str]):
+    root: Annotated[str, Field(max_length=2048)]
 
 
 class RuleActivationApprovalPayload(BaseModel):
@@ -2028,7 +2268,7 @@ class UserJobRecord(BaseModel):
     origin: Literal["discovered", "manual", "imported", "legacy", "mcp"]
     inbox_state: Literal["new", "seen", "dismissed", "tracked"]
     first_run_id: RunId | None
-    source_id: SourceId | None
+    source_id: UserJobSourceId | None
     user_notes: Annotated[str, Field(max_length=10000)]
     revision: Annotated[int, Field(ge=1)]
     """
@@ -2042,6 +2282,17 @@ class UserJobRecord(BaseModel):
     """
     Epoch milliseconds (UTC)
     """
+
+
+class UserJobSourceId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^(?:src|csr)_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    job source id (src_<ULID>) or cloud source id (csr_<ULID>)
+    """
+
+
+class UserModifiedItem(RootModel[str]):
+    root: Annotated[str, Field(max_length=64)]
 
 
 class UserRecord(BaseModel):

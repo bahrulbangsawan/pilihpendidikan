@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { useBoard } from "@/hooks/use-board";
 import { useDevices } from "@/hooks/use-devices";
 import {
+  useFollowedCloudSources,
   useInboxBulk,
   useInboxItems,
   useInboxRuns,
@@ -119,6 +120,7 @@ export function InboxPage({
   const runActive = anyRunActive(runs.data);
   const inbox = useInboxItems(search, runActive);
   const sources = useInboxSources();
+  const cloudSources = useFollowedCloudSources();
   const { byId } = useDevices();
   const board = useBoard({ policy: POLL_POLICIES.shell });
   const bulk = useInboxBulk();
@@ -293,12 +295,17 @@ export function InboxPage({
   });
 
   const sourceOptions = useMemo<SourceOption[]>(
-    () =>
-      (sources.data ?? []).map((source) => ({
+    () => [
+      ...(sources.data ?? []).map((source) => ({
         value: source.id,
         label: source.label,
       })),
-    [sources.data]
+      ...(cloudSources.data ?? []).map((source) => ({
+        value: source.id,
+        label: source.name,
+      })),
+    ],
+    [sources.data, cloudSources.data]
   );
   const stripRun = importStripRun(runs.data, nowMs);
   const activeRun =

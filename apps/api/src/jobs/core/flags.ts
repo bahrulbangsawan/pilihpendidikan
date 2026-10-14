@@ -11,6 +11,8 @@
 //   JOBS_EMAIL_SERVER_SEND_ENABLED  false  server-sent email (leaf-2.9)
 //   AI_DISABLED                     false  global AI kill switch (leaf-2.5)
 //   JOBS_LEGACY_BACKEND             "kv"   /api/jobs + MCP backend (leaf-2.10)
+//   JOBS_CLOUD_DISCOVERY_ENABLED    false  hourly cloud pipeline + manual runs (24)
+//   JOBS_CLOUD_AI_ENABLED           false  cloud AI fallback / classification (24)
 //
 // `value` is a JSON scalar. Booleans also accept "1"/"0"; the backend also
 // accepts the bare `kv`/`d1`.
@@ -22,6 +24,8 @@ import type { Env } from "../../env";
 export interface FeatureFlags {
   AI_DISABLED: boolean;
   JOBS_AUTO_MODE_ENABLED: boolean;
+  JOBS_CLOUD_AI_ENABLED: boolean;
+  JOBS_CLOUD_DISCOVERY_ENABLED: boolean;
   JOBS_AUTOMATION_ENABLED: boolean;
   JOBS_CLI_LOGIN_ENABLED: boolean;
   JOBS_EMAIL_SERVER_SEND_ENABLED: boolean;
@@ -37,6 +41,8 @@ export const FLAG_DEFAULTS: Readonly<FeatureFlags> = Object.freeze({
   JOBS_EMAIL_SERVER_SEND_ENABLED: false,
   AI_DISABLED: false,
   JOBS_LEGACY_BACKEND: "kv",
+  JOBS_CLOUD_DISCOVERY_ENABLED: false,
+  JOBS_CLOUD_AI_ENABLED: false,
 });
 
 export const FLAG_CACHE_TTL_MS = 30_000;

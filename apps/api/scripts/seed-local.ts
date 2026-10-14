@@ -17,6 +17,8 @@ import { FEATURE_FLAG_KEYS } from "@pilihpendidikan/jobs-contracts/enums";
 // Local development defaults: the v1 API, CLI login and automation on;
 // auto mode and server-sent email stay off (A-03, D-35), AI stays on (the
 // local AI provider is the fake unless JOBS_AI_MODE=live in .dev.vars).
+// Cloud discovery (24) is on so the local pipeline runs against the local
+// scraper (SCRAPER_FALLBACK_URL); its AI fallback stays off.
 export const LOCAL_FLAGS: Readonly<
   Partial<Record<FeatureFlagKey, boolean | "kv" | "d1">>
 > = {
@@ -27,6 +29,8 @@ export const LOCAL_FLAGS: Readonly<
   JOBS_EMAIL_SERVER_SEND_ENABLED: false,
   AI_DISABLED: false,
   JOBS_LEGACY_BACKEND: "kv",
+  JOBS_CLOUD_DISCOVERY_ENABLED: true,
+  JOBS_CLOUD_AI_ENABLED: false,
 };
 
 interface Options {

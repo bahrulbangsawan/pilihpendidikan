@@ -94,7 +94,8 @@ jobs:
             jobs-add-email-applications \
             jobs-add-analytics \
             jobs-add-auto-apply \
-            jobs-add-bulk-actions; do
+            jobs-add-bulk-actions \
+            jobs-add-cloud-discovery; do
             if [ -d "openspec/changes/$id" ]; then
               bunx @fission-ai/openspec@1.13.2 validate "$id" --strict --no-interactive
             fi

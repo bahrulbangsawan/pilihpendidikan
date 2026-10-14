@@ -497,6 +497,85 @@ must come back as text).
 
 ---
 
+## Cloud discovery (job-tracker-spec/24)
+
+The hourly remote-job pipeline: `apps/api` cron `0 * * * *` → queue
+`jobs-scrape` → `apps/api` consumer → service binding `SCRAPER` → Worker
+`jobs-scraper-pilihpendidikan` (`apps/jobs-scraper`) → Cloudflare Container
+(Python + Scrapling). It ships dark behind `JOBS_CLOUD_DISCOVERY_ENABLED`.
+Needs the **Workers Paid** plan (Containers). Every step is [owner].
+
+**Order matters:** the next `apps/api` deploy carries the `jobs-scrape`
+producer/consumers and the `SCRAPER` binding, so the queues and the scraper
+Worker must exist first, or `wrangler deploy` of the api fails.
+
+### C1. Resources
+
+```sh
+bunx wrangler queues create jobs-scrape
+bunx wrangler queues create jobs-scrape-dlq
+```
+
+### C2. Deploy the scraper (Docker running locally)
+
+```sh
+cd apps/jobs-scraper
+bun run test                    # Worker routing + pytest (SSRF, strategies, errors)
+bunx wrangler deploy            # builds the linux/amd64 image, pushes it, creates the container app
+```
+
+The Worker has no route and `workers_dev: false`: only the api's service
+binding reaches it. The first container start takes a few minutes after the
+first deploy.
+
+### C3. Migrate and deploy the api
+
+```sh
+cd apps/api
+bunx wrangler d1 time-travel info pilihpendidikan-jobs              # bookmark
+bunx wrangler d1 migrations apply pilihpendidikan --remote          # 0004_cloud_discovery_flags.sql (flags, dark)
+bunx wrangler d1 migrations apply pilihpendidikan-jobs --remote     # 0002_cloud_discovery.sql (ADD COLUMN only + new tables)
+cd ../.. && bun run build && cd apps/api && bun run deploy          # jobs-scrape consumers, hourly cron, SCRAPER binding
+```
+
+Set `ADMIN_EMAILS` (a var in `apps/api/wrangler.jsonc`) to the operators'
+emails before this deploy: only they can edit the catalog, run, retry and
+refresh. It also grants document support access (D-26 keeps it away from
+Job Tracker data). The catalog seeds itself from
+`packages/jobs-contracts/cloud-sources.json` on the first read of
+`/sources` or the first hourly tick.
+
+### C4. Turn it on
+
+```sh
+flag JOBS_CLOUD_DISCOVERY_ENABLED true      # hourly dispatch, manual runs, weekly directory refresh
+# optional, after the AI privacy items of J5:
+flag JOBS_CLOUD_AI_ENABLED true             # AI fallback for sources with ai_enabled; budget JOBS_CLOUD_AI_MONTHLY_BUDGET_USD
+```
+
+Smoke test: open `/sources` as an operator, "Run now" on We Work Remotely,
+watch the run log turn `succeeded` with new jobs, follow the board and check
+the inbox. `bunx wrangler tail api-pilihpendidikan` shows
+`cloud_scrape_finished` lines; `bunx wrangler tail jobs-scraper-pilihpendidikan`
+the scraper.
+
+Before enabling a held-back board, review it: Working Nomads' terms ban
+using the service "to build a competitive product"; Remotive's API terms
+(≤ 4 calls a day, link back, no display to collect signups) need its written
+OK, and it currently challenges our crawler; Dynamite Jobs only exposes its 6
+featured jobs without a browser.
+
+### Rollback (cloud discovery)
+
+- Instant: `flag JOBS_CLOUD_DISCOVERY_ENABLED false` (queued messages are
+  skipped, nothing new is dispatched); `flag JOBS_CLOUD_AI_ENABLED false`.
+- One source: disable it in `/sources` (or `PATCH enabled: false`).
+- Workers: `bunx wrangler rollback` in `apps/api` / `apps/jobs-scraper`.
+- Data: the migration only adds tables and nullable columns; cloud postings
+  are ordinary public postings (`cloud_source_id` set).
+
+---
+
 ## pilih-jobs CLI releases
 
 `.github/workflows/release-cli.yml` runs on a tag `cli-vX.Y.Z` (or

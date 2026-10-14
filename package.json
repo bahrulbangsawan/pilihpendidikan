@@ -28,7 +28,7 @@
     "contracts:check": "bun run --cwd packages/jobs-contracts check && bun run --cwd apps/jobs-cli contracts:check",
     "e2e": "bun test e2e --timeout 900000",
     "audit": "bun audit && bun run audit:python",
-    "audit:python": "sh scripts/require-uv.sh && uv --color never export --project apps/jobs-cli --frozen --format requirements-txt --no-emit-project --all-groups --quiet | uv run --project apps/jobs-cli --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin",
+    "audit:python": "sh scripts/require-uv.sh && uv --color never export --project apps/jobs-cli --frozen --format requirements-txt --no-emit-project --all-groups --quiet | uv run --project apps/jobs-cli --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin && uv --color never export --project apps/jobs-scraper/python --frozen --format requirements-txt --no-emit-project --no-emit-package pilih-jobs --all-groups --quiet | uv run --project apps/jobs-cli --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin",
     "audit:ci": "bun audit --prod",
     "fix": "biome check --write",
     "lint:typography": "bash scripts/lint-typography.sh",

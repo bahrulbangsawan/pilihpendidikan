@@ -6,6 +6,7 @@ import asyncio
 import itertools
 import random
 import socket
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -438,3 +439,71 @@ def test_T15_ENGINE_politeness_floors_cannot_be_lowered() -> None:
     assert PolitenessScheduler.effective_delay(html=False, min_delay_s=3.0) == 3.0
     assert PolitenessScheduler.effective_concurrency(html=False, concurrency=8) == 2
     assert PolitenessScheduler.effective_concurrency(html=True, concurrency=2) == 1
+
+
+# ---------------------------------------------------------------- optional network guard
+class _RecordingGuard:
+    """A server-side guard (24 §9): refuses one path, records every check."""
+
+    def __init__(self, refuse: str | None = None) -> None:
+        self.refuse = refuse
+        self.urls: list[str] = []
+        self.responses: list[tuple[str, str, int]] = []
+
+    def check_url(self, url: str) -> None:
+        self.urls.append(url)
+        if self.refuse is not None and self.refuse in url:
+            raise DiscoveryError("policy_blocked", "refused by the network guard", url=url)
+
+    def check_response(self, url: str, final_url: str, body_size: int) -> None:
+        self.responses.append((url, final_url, body_size))
+
+
+def _guarded_engine(
+    tmp_path: Path, vclock: VirtualClock, guard: _RecordingGuard
+) -> ScraplingJobEngine:
+    return ScraplingJobEngine(
+        data_dir=tmp_path / "data",
+        cache_dir=tmp_path / "cache",
+        clock=vclock,
+        rng=random.Random(7),
+        network_guard=guard,
+    )
+
+
+async def test_T15_ENGINE_network_guard_checks_every_request(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    guard = _RecordingGuard()
+    engine = _guarded_engine(tmp_path, vclock, guard)
+    site.json("/api", {"ok": True})
+    try:
+        result = await engine.fetch(
+            FetchRequest(site.url("/api"), FetchMode.JSON_API), source=JSON_SRC
+        )
+    finally:
+        await engine.aclose()
+    assert result.json == {"ok": True}
+    assert guard.urls == [site.url("/robots.txt"), site.url("/api")]
+    final = guard.responses[-1]
+    assert final[:2] == (site.url("/api"), site.url("/api"))
+    assert final[2] == result.body_size
+
+
+async def test_T15_ENGINE_network_guard_refusal_is_policy_blocked(
+    site: Site, tmp_path: Path, vclock: VirtualClock
+) -> None:
+    guard = _RecordingGuard(refuse="/private")
+    engine = _guarded_engine(tmp_path, vclock, guard)
+    site.json("/private", {"secret": True})
+    try:
+        error = await _fail(engine, site.url("/private"))
+    finally:
+        await engine.aclose()
+    assert error.error_class == "policy_blocked"
+    assert not error.retryable
+    assert site.hits("/private") == []
+
+
+async def test_T15_ENGINE_no_guard_by_default(engine: ScraplingJobEngine) -> None:
+    assert engine._guard is None  # pyright: ignore[reportPrivateUsage] - the CLI never sets one

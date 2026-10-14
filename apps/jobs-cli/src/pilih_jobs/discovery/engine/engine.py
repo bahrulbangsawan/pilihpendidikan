@@ -34,6 +34,7 @@ from pilih_jobs.contracts.psl import ascii_host, registrable_domain
 from pilih_jobs.discovery.classify import classify_response, classify_transport_error
 from pilih_jobs.discovery.clock import EngineClock, default_engine_clock
 from pilih_jobs.discovery.engine import _scrapling, adaptive, policy
+from pilih_jobs.discovery.engine.guard import NetworkGuard
 from pilih_jobs.discovery.engine.page import ScraplingPage
 from pilih_jobs.discovery.errors import DiscoveryError
 from pilih_jobs.discovery.politeness import PolitenessScheduler
@@ -115,6 +116,7 @@ class ScraplingJobEngine:
         allow_browser: bool = False,
         retry: RetryPolicy | None = None,
         headless: bool = True,
+        network_guard: NetworkGuard | None = None,
     ) -> None:
         policy.install_guard()
         self.api = _scrapling.load()
@@ -131,6 +133,7 @@ class ScraplingJobEngine:
         self._browser_root = cache_dir / "discovery-browser"
         self._allow_browser = allow_browser
         self._headless = headless
+        self._guard = network_guard
         self._http: dict[str, tuple[Any, Any]] = {}
         self._http_lock = asyncio.Lock()
         self._browser: tuple[Any, Any, Path] | None = None
@@ -307,6 +310,9 @@ class ScraplingJobEngine:
         )
 
     async def _send(self, req: FetchRequest, attempt: int) -> _Raw:
+        if self._guard is not None:
+            # Every attempt (robots.txt included) re-checks: DNS answers can change.
+            await asyncio.to_thread(self._guard.check_url, req.url)
         started = self.clock.monotonic()
         try:
             if req.mode is FetchMode.BROWSER:
@@ -325,8 +331,11 @@ class ScraplingJobEngine:
         elapsed = int((self.clock.monotonic() - started) * 1000)
         headers = {str(k).lower(): str(v) for k, v in dict(native.headers or {}).items()}
         body = cast(bytes, native.body or b"")
+        final_url = str(native.url or req.url)
+        if self._guard is not None:
+            await asyncio.to_thread(self._guard.check_response, req.url, final_url, len(body))
         return _Raw(
-            url=str(native.url or req.url),
+            url=final_url,
             status=int(native.status),
             headers=headers,
             body=body,

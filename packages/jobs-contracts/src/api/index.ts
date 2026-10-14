@@ -3,6 +3,7 @@ export * from "./ai";
 export * from "./analytics";
 export * from "./applications";
 export * from "./automation";
+export * from "./cloud";
 export * from "./cv";
 export * from "./devices";
 export * from "./discovery";

@@ -1,6 +1,8 @@
 // biome-ignore-all lint/performance/noBarrelFile: the package root "." of PLAN C1 exports everything; subpaths stay available for narrow imports.
 export * from "./adapters";
 export * from "./agent";
+export * from "./cloud";
+export * from "./cloud-config";
 export * from "./api/index";
 export * from "./common";
 export * from "./cv-tailoring";

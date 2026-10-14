@@ -162,7 +162,7 @@ describe("table records (04)", () => {
 describe("API routes (05)", () => {
   test("TC-ROUNDTRIP API_ROUTE_SCHEMAS is keyed by method + exact path and complete", () => {
     const keys = Object.keys(API_ROUTE_SCHEMAS);
-    expect(keys).toHaveLength(105);
+    expect(keys).toHaveLength(115);
     const operations = new Set<string>();
     for (const [key, contract] of Object.entries(API_ROUTE_SCHEMAS)) {
       expect(key).toBe(`${contract.method} ${contract.path}`);

@@ -18,13 +18,13 @@ import {
 const NOW = 1_791_770_000_000;
 
 describe("prefixed ULIDs (03 §1)", () => {
-  test("TC-IDS ID_PREFIXES lists every 00 §7 prefix plus obs_", () => {
+  test("TC-IDS ID_PREFIXES lists every 00 §7 prefix plus obs_ and the cloud prefixes (24)", () => {
     const readme =
       "usr_ pst_ ujb_ app_ evt_ ivw_ ofr_ scr_ rul_ dev_ grt_ rft_ tsk_ att_ lse_ apr_ evd_ fil_ cvv_ run_ src_ fct_ ans_ eml_ sal_".split(
         " "
       );
     expect<string[]>([...ID_PREFIXES].sort()).toEqual(
-      [...readme, "obs_"].sort()
+      [...readme, "obs_", "csr_", "crn_"].sort()
     );
   });
 

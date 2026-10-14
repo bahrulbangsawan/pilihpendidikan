@@ -11,6 +11,9 @@
 //
 // Job Tracker (job-tracker-spec/14 §3): the second D1 database JOBS_DB, the
 // R2 bucket JOBS_FILES, the `jobs-ai` queue (+ DLQ) and the 5-minute cron.
+// Cloud discovery (job-tracker-spec/24): the `jobs-scrape` queue (+ DLQ),
+// the hourly cron and the SCRAPER service binding to the scraper Worker
+// (apps/jobs-scraper), which must be deployed first.
 // JOBS_DB is `pilihpendidikan-jobs` on the bisa.digital account (created
 // 2026-10-13, 14 §8).
 // Kill switches are NOT vars: they live in DB.feature_flags (D-33).
@@ -36,9 +39,10 @@
     "host": "localhost:8788"
   },
   "vars": {
-    // Comma-separated emails that bypass per-owner scoping (support access).
-    // Empty means nobody does.
-    "ADMIN_EMAILS": "",
+    // Comma-separated emails that bypass per-owner scoping (support access)
+    // and operate the cloud discovery catalog (job-tracker-spec/24 §5.4).
+    // Never applies to Job Tracker data (D-26).
+    "ADMIN_EMAILS": "work@bahrul.me",
     // Sender for sign-in emails. The pilihpendidikan.com domain must be
     // onboarded to Cloudflare Email Sending before this delivers.
     "EMAIL_FROM": "noreply@pilihpendidikan.com",
@@ -57,7 +61,9 @@
     // Per-user AI budget (D-34): monthly cap; the daily sub-cap is $0.50.
     "JOBS_AI_MONTHLY_BUDGET_USD": "3.00",
     // The dashboard origin (render-ticket URLs, emailed links).
-    "JOBS_APP_ORIGIN": "https://jobs.pilihpendidikan.com"
+    "JOBS_APP_ORIGIN": "https://jobs.pilihpendidikan.com",
+    // Cloud discovery AI fallback (24 §4.3): system budget, USD per month.
+    "JOBS_CLOUD_AI_MONTHLY_BUDGET_USD": "2.00"
   },
   "send_email": [
     {
@@ -98,7 +104,12 @@
   // purge/export/rollup. Consumer values per 14 §3; the DLQ consumer never
   // leaves a record stuck (14 §6).
   "queues": {
-    "producers": [{ "binding": "JOBS_AI_QUEUE", "queue": "jobs-ai" }],
+    "producers": [
+      { "binding": "JOBS_AI_QUEUE", "queue": "jobs-ai" },
+      // Cloud discovery (24 §6): one message per source scrape / probe /
+      // directory refresh.
+      { "binding": "JOBS_SCRAPE_QUEUE", "queue": "jobs-scrape" }
+    ],
     "consumers": [
       {
         "queue": "jobs-ai",
@@ -113,9 +124,31 @@
         "max_batch_size": 10,
         "max_batch_timeout": 30,
         "max_retries": 1
+      },
+      // One source per invocation (a scrape can take minutes), four sources
+      // in parallel; the consumer retries transient errors itself with
+      // jittered exponential backoff, the DLQ closes the run (24 §6.3).
+      {
+        "queue": "jobs-scrape",
+        "max_batch_size": 1,
+        "max_batch_timeout": 1,
+        "max_retries": 3,
+        "dead_letter_queue": "jobs-scrape-dlq",
+        "max_concurrency": 4
+      },
+      {
+        "queue": "jobs-scrape-dlq",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 1
       }
     ]
   },
+  // The scraper Worker (apps/jobs-scraper): no public route, reachable only
+  // through this binding. Dev: SCRAPER_FALLBACK_URL in .dev.vars wins.
+  "services": [
+    { "binding": "SCRAPER", "service": "jobs-scraper-pilihpendidikan" }
+  ],
   "kv_namespaces": [
     // Sessions, magic-link tokens, one-time codes and OAuth state. New.
     {
@@ -166,9 +199,10 @@
     }
   ],
   // `0 3 * * *`: request_log purge + daily jobs (retention, file retention,
-  // analytics rollup). `*/5 * * * *`: lease reaper, approval and task expiry.
+  // analytics rollup). `*/5 * * * *`: lease reaper, approval and task expiry,
+  // cloud lease reaper. `0 * * * *`: cloud discovery dispatch (24 §6.1).
   // Dispatched by `controller.cron` in src/jobs/cron/index.ts.
   "triggers": {
-    "crons": ["0 3 * * *", "*/5 * * * *"]
+    "crons": ["0 3 * * *", "*/5 * * * *", "0 * * * *"]
   }
 }

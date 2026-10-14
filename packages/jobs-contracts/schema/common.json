@@ -32,7 +32,8 @@
         "cli_upgrade_required",
         "rate_limited",
         "ai_budget_exhausted",
-        "upstream_unavailable"
+        "upstream_unavailable",
+        "operator_required"
       ]
     },
     "ApplicationId": {
@@ -82,6 +83,16 @@
       },
       "required": ["binary", "content_type"],
       "description": "Marker: the HTTP body is raw bytes, not JSON (headers carry the metadata)"
+    },
+    "CloudRunId": {
+      "type": "string",
+      "pattern": "^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cloud_run id (crn_<ULID>)"
+    },
+    "CloudSourceId": {
+      "type": "string",
+      "pattern": "^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cloud_source id (csr_<ULID>)"
     },
     "CountryCode": {
       "type": "string",
@@ -363,6 +374,11 @@
       "type": "string",
       "pattern": "^ujb_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
       "description": "user_job id (ujb_<ULID>)"
+    },
+    "UserJobSourceId": {
+      "type": "string",
+      "pattern": "^(?:src|csr)_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "job source id (src_<ULID>) or cloud source id (csr_<ULID>)"
     }
   }
 }

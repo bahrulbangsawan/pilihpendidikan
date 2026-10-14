@@ -1,0 +1,28 @@
+{
+  "name": "@pilihpendidikan/jobs-scraper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloud scraper of the Job Tracker (job-tracker-spec/24): a Worker fronting a Cloudflare Container that runs the Python pilih-scraper service over the pilih-jobs Scrapling engine.",
+  "scripts": {
+    "cf-typegen": "wrangler types --config wrangler.jsonc --include-env=false",
+    "dev": "wrangler dev --config wrangler.jsonc --port 8792",
+    "dev:python": "sh ../../scripts/require-uv.sh && uv run --project python pilih-scraper serve --port 8791",
+    "build": "bun run cf-typegen && wrangler deploy --config wrangler.jsonc --dry-run --outdir dist --containers-rollout=none",
+    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "docker:build": "docker build --platform linux/amd64 -f Dockerfile -t pilih-scraper:dev ../..",
+    "lint": "biome check . && sh ../../scripts/require-uv.sh && cd python && uv run ruff check src tests && uv run ruff format --check src tests",
+    "typecheck": "bun run cf-typegen && tsc --noEmit && sh ../../scripts/require-uv.sh && cd python && uv run pyright",
+    "test": "bun test && sh ../../scripts/require-uv.sh && cd python && uv run pytest -m \"not live\"",
+    "audit": "sh ../../scripts/require-uv.sh && cd python && uv export --frozen --format requirements-txt --no-emit-project --all-groups --quiet | uv run --frozen pip-audit --strict --disable-pip --progress-spinner off -r /dev/stdin"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "0.3.7"
+  },
+  "devDependencies": {
+    "@pilihpendidikan/config": "workspace:*",
+    "@types/bun": "^1.3.0",
+    "typescript": "catalog:",
+    "wrangler": "^4.147.0"
+  }
+}

@@ -31,6 +31,11 @@
 // Outcomes (per item and per discovery_run_items row): `new` = this batch
 // linked the posting to the caller; `updated` = it changed the posting's
 // content or status; `unchanged` otherwise; `invalid` for rejected items.
+//
+// System mode (`userId: null`, cloud discovery 24 §6.5): the same merge rules
+// without a caller — no user_jobs links, run items or scoring; `new` means the
+// batch inserted the posting. Followers are linked afterwards by the cloud
+// service. Only public items are planned in system mode.
 
 import {
   dedupeGroup,
@@ -89,7 +94,8 @@ export interface PlanInput {
   now: number;
   runId: string;
   stored: ReadonlyMap<string, StoredPosting>;
-  userId: string;
+  /** The caller; null plans in system mode (no links, 24 §6.5). */
+  userId: string | null;
 }
 
 /** Most alternates kept per posting. */
@@ -251,7 +257,7 @@ async function mergeContent(
 
 async function newPostingValues(
   item: PreparedFullItem,
-  userId: string,
+  userId: string | null,
   now: number
 ): Promise<PostingValues> {
   const c = item.content;
@@ -455,10 +461,29 @@ class Planner {
     return w;
   }
 
+  get #system(): boolean {
+    return this.#input.userId === null;
+  }
+
   async #full(item: PreparedFullItem): Promise<void> {
     const key = `${item.visibility}|${item.fingerprint}`;
+    if (this.#system && item.visibility !== "public") {
+      this.#results.push({
+        client_ref: item.clientRef,
+        outcome: "invalid",
+        errors: [
+          {
+            code: "private_conflict",
+            message: "System ingestion only stores public postings.",
+            path: "visibility",
+          },
+        ],
+      });
+      return;
+    }
     let w = this.#existing(key);
     let changed = false;
+    let inserted = false;
     if (w) {
       changed = await applyFull(w, item);
     } else {
@@ -480,8 +505,17 @@ class Planner {
       };
       this.#byKey.set(key, w);
       this.#order.push(w);
+      inserted = true;
     }
     w.changed ||= changed;
+    if (this.#system) {
+      this.#results.push({
+        client_ref: item.clientRef,
+        outcome: this.#outcome(inserted, changed),
+        posting_id: w.id,
+      });
+      return;
+    }
     let linkedNow = false;
     if (!w.link) {
       w.link = { id: this.#input.newId("ujb"), inboxState: "new", isNew: true };
@@ -551,6 +585,14 @@ class Planner {
   }
 
   #planPosting(plan: BatchPlan, w: Working): void {
+    if (this.#system) {
+      if (w.stored) {
+        this.#planExisting(plan, w, w.stored);
+      } else {
+        plan.inserts.push({ id: w.id, values: w.values });
+      }
+      return;
+    }
     const link = w.link;
     if (!link) {
       // Touched only by items that were rejected afterwards: nothing to do.

@@ -36,6 +36,8 @@ export const ID_PREFIXES = [
   "eml_",
   "sal_",
   "obs_",
+  "csr_",
+  "crn_",
 ] as const;
 export type IdPrefix = (typeof ID_PREFIXES)[number];
 /** The prefix without its underscore, e.g. `"app"`. */
@@ -71,6 +73,8 @@ export const ID_PREFIX_ENTITIES: Readonly<
   eml_: { entity: "email", table: "email_applications" },
   sal_: { entity: "support_access", table: "support_access_log" },
   obs_: { entity: "observation", table: null },
+  csr_: { entity: "cloud_source", table: "cloud_sources" },
+  crn_: { entity: "cloud_run", table: "cloud_runs" },
 };
 
 /** Crockford base32 alphabet used by ULID. */
@@ -225,3 +229,12 @@ export const AnswerIdSchema = idSchema("ans_", "AnswerId");
 export const EmailIdSchema = idSchema("eml_", "EmailId");
 export const SupportAccessIdSchema = idSchema("sal_", "SupportAccessId");
 export const ObservationIdSchema = idSchema("obs_", "ObservationId");
+export const CloudSourceIdSchema = idSchema("csr_", "CloudSourceId");
+export const CloudRunIdSchema = idSchema("crn_", "CloudRunId");
+/** `user_jobs.source_id`: a CLI source (`src_…`) or a cloud source (`csr_…`, 24 §5.3). */
+export const UserJobSourceIdSchema = defineSchema(
+  "common",
+  "UserJobSourceId",
+  z.string().regex(/^(?:src|csr)_[0-7][0-9A-HJKMNP-TV-Z]{25}$/),
+  "job source id (src_<ULID>) or cloud source id (csr_<ULID>)"
+);

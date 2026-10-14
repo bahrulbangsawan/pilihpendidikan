@@ -26,6 +26,10 @@ export const POLL_POLICIES = {
   runs: { visible: 15_000, hidden: false },
   /** The shell's own light refresh of sidebar counts off the board screen. */
   shell: { visible: 60_000, hidden: false },
+  /** /sources: the cloud catalog (24 §5), paused while hidden. */
+  cloudSources: { visible: 30_000, hidden: false },
+  /** A cloud source is scraping, or a run the user just queued is live. */
+  cloudSourcesActive: { visible: 5000, hidden: false },
 } as const satisfies Record<string, PollPolicy>;
 
 export type PollPolicyName = keyof typeof POLL_POLICIES;

@@ -4,5 +4,5 @@
 """Pydantic v2 models of `packages/jobs-contracts` (one module per schema group)."""
 
 CONTRACTS_VERSION = "0.1.0"
-SCHEMA_SHA256 = "77bccf6915006b046e643700d7a4fef80813225830f842d9130f7f51e0effb94"
-GROUPS = ('adapters', 'agent', 'api', 'common', 'cv_tailoring', 'data', 'email', 'enums', 'facts', 'queue', 'records', 'scoring')
+SCHEMA_SHA256 = "7eb89265652cb8c5a67e0eeee6d08f491f2e11b2b22e8453693d60c04abb8bff"
+GROUPS = ('adapters', 'agent', 'api', 'cloud', 'common', 'cv_tailoring', 'data', 'email', 'enums', 'facts', 'queue', 'records', 'scoring')

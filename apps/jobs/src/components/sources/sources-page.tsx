@@ -1,7 +1,9 @@
-// Sources (`/sources`, 12 §8): the job sources the CLI discovers from, an
-// add / edit sheet whose config form is generated from each adapter's JSON
-// Schema, "Run now" on a device, and the discovery runs with their errors
-// by class. Excluded platforms are shown, disabled, with the reason (D-17).
+// Sources (`/sources`, 12 §8, 24 §5): first the remote job boards our
+// servers check every hour (the cloud catalog, followed per user), then the
+// job sources the CLI discovers from, an add / edit sheet whose config form
+// is generated from each adapter's JSON Schema, "Run now" on a device, and
+// the discovery runs with their errors by class. Excluded platforms are
+// shown, disabled, with the reason (D-17).
 
 import type { JobSourceRecord } from "@pilihpendidikan/jobs-contracts/records";
 import {
@@ -28,6 +30,7 @@ import { useAdapters, useDiscoveryRuns, useSources } from "@/hooks/use-sources";
 import { useTranslation } from "@/i18n";
 import { cliStep } from "@/lib/devices-install";
 import { splitRegistry } from "@/lib/sources-model";
+import { CloudSourcesSection } from "./cloud-sources-section";
 import { RunsTable } from "./runs-table";
 import type { SheetTarget } from "./source-sheet";
 import { SourceSheet } from "./source-sheet";
@@ -111,6 +114,11 @@ export function SourcesPage() {
         description={t("sources.intro")}
         title={t("sources.title")}
       />
+      <Band id="cloud">
+        <PageGutter className="py-6">
+          <CloudSourcesSection nowMs={nowMs} />
+        </PageGutter>
+      </Band>
       <Band>
         <PageGutter className="flex flex-col gap-3 py-6">
           <h2 className="type-subtitle weight-semibold">

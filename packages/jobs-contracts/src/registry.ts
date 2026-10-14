@@ -29,6 +29,7 @@ export const SCHEMA_GROUPS = [
   "adapters",
   "email",
   "data",
+  "cloud",
 ] as const;
 export type SchemaGroup = (typeof SCHEMA_GROUPS)[number];
 

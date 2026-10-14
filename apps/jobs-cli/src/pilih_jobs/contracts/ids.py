@@ -43,6 +43,8 @@ ID_PREFIXES: Final = (
     "eml_",
     "sal_",
     "obs_",
+    "csr_",
+    "crn_",
 )
 
 CROCKFORD_ALPHABET: Final = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"

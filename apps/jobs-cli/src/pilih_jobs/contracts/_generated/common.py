@@ -59,6 +59,20 @@ class BinaryBody(BaseModel):
     content_disposition: str | None = None
 
 
+class CloudRunId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_run id (crn_<ULID>)
+    """
+
+
+class CloudSourceId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    cloud_source id (csr_<ULID>)
+    """
+
+
 class CountryCode(RootModel[str]):
     root: Annotated[str, Field(pattern="^[A-Z]{2}$")]
     """
@@ -117,7 +131,7 @@ class ErrorEnvelope(BaseModel):
     Error envelope of every /api/v1 failure (05 §1.3)
     """
 
-    error: Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable"]
+    error: Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable", "operator_required"]
     message: str
     details: dict[str, Any] | None = None
     request_id: str
@@ -341,4 +355,11 @@ class UserJobId(RootModel[str]):
     root: Annotated[str, Field(pattern="^ujb_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
     """
     user_job id (ujb_<ULID>)
+    """
+
+
+class UserJobSourceId(RootModel[str]):
+    root: Annotated[str, Field(pattern="^(?:src|csr)_[0-7][0-9A-HJKMNP-TV-Z]{25}$")]
+    """
+    job source id (src_<ULID>) or cloud source id (csr_<ULID>)
     """

@@ -42,6 +42,7 @@ Playwright browser automation on the user's machine, and the Cloudflare backend
 | 20 | `20-LOCAL-CLOUD-SYNCHRONIZATION.md` | Sync protocol, revisions, outbox, change feed |
 | 21 | `21-AUTOMATION-EXECUTION-PROTOCOL.md` | Remote-to-local tasks, leases, heartbeats, recovery |
 | 22 | `22-CLI-DISTRIBUTION-AND-OPERATIONS.md` | Install, upgrade, packaging, telemetry, support |
+| 24 | `24-CLOUD-DISCOVERY.md` | Server-side catalog of remote-job boards: hourly cron, queue, Python scraper container, AI fallback, `/sources` |
 
 Read order for implementers: 00 → 02 → 03 → 04 → 05, then the area you build.
 
@@ -129,10 +130,15 @@ renumber.
 | D-30 | Refresh-token reuse: the same child token is re-issued for up to 60 s while unused; later reuse revokes the family and the device's leases. | 17 |
 | D-31 | CLI automation command group is `worker` (hidden alias `automation`); one worker per device (lock file + local IPC). | 16 |
 | D-32 | Discovery and apply browser profiles are always separate; connected mode (B) is limited to `assisted`/`approval`. | 18 |
-| D-33 | Feature flags / kill switches live in `DB.feature_flags` (30 s isolate cache), never in wrangler vars. Canonical keys: `JOBS_V1_ENABLED`, `JOBS_CLI_LOGIN_ENABLED`, `JOBS_AUTOMATION_ENABLED`, `JOBS_AUTO_MODE_ENABLED`, `JOBS_EMAIL_SERVER_SEND_ENABLED`, `AI_DISABLED`, `JOBS_LEGACY_BACKEND`. Only versions (`JOBS_MIN_CLI_VERSION`, `JOBS_RECOMMENDED_CLI_VERSION`) are vars. | 13, 14 |
+| D-33 | Feature flags / kill switches live in `DB.feature_flags` (30 s isolate cache), never in wrangler vars. Canonical keys: `JOBS_V1_ENABLED`, `JOBS_CLI_LOGIN_ENABLED`, `JOBS_AUTOMATION_ENABLED`, `JOBS_AUTO_MODE_ENABLED`, `JOBS_EMAIL_SERVER_SEND_ENABLED`, `AI_DISABLED`, `JOBS_LEGACY_BACKEND`, `JOBS_CLOUD_DISCOVERY_ENABLED`, `JOBS_CLOUD_AI_ENABLED` (24). Only versions (`JOBS_MIN_CLI_VERSION`, `JOBS_RECOMMENDED_CLI_VERSION`) are vars. | 13, 14 |
 | D-34 | AI budget: $3.00/user/month, $0.50/day sub-cap, 80 % warning; exhaustion ⇒ `429 ai_budget_exhausted` and deterministic-only scoring; the agent pauses (`ai_unavailable`). | 14, 19 |
 | D-35 | Abuse caps: rule `max_per_day` default 10 (ceiling 25), `max_per_company_per_30d` default 2 (ceiling 3), global 40 submissions/user/day, `auto` needs `min_score ≥ 70`. | 11, 19 |
 | D-36 | The CLI talks to Scrapling in-process (`pilih_jobs.discovery.engine`); never via the `scrapling` CLI/MCP. Three-layer forbidden-feature guard. | 15 |
+| D-37 | **Server-side discovery is allowed** for the cloud catalog of public remote-job boards, under every rule of 15 (honest UA, robots.txt, no stealth/challenge solving/proxies/login, D-17 exclusions, stop on `access_denied` / `challenge_detected`); listings behind an account are `AUTH_REQUIRED` and never fetched. Amends D-16. | 24 |
+| D-38 | Topology: `apps/api` cron `0 * * * *` → queue `jobs-scrape` (+ DLQ) → `apps/api` consumer (D1 lease per source) → service binding → Worker `jobs-scraper-pilihpendidikan` → Cloudflare Container running the Python scraper, which reuses `pilih_jobs.discovery` (`ScraplingJobEngine`). `apps/api` stays the only `JOBS_DB` writer. Amends D-06 (second queue) and D-36 (a server-side Python consumer of the engine). | 24 |
+| D-39 | One system catalog (`cloud_sources`), scraped once for everyone into public postings; users **follow** sources to get them in their inbox; operators (`ADMIN_EMAILS`) manage the catalog (`403 operator_required` otherwise). | 24 |
+| D-40 | Extraction order `json_api` → `rss` → `json_ld` → `embedded_json` → `html_selectors` (+ Scrapling adaptive) → `browser` (opt-in) → `ai`; AI runs in `apps/api` only (D-12), behind `JOBS_CLOUD_AI_ENABLED`, per-source `ai_enabled` and the system budget `JOBS_CLOUD_AI_MONTHLY_BUDGET_USD`; schema-validated, never invents fields, confidence ≤ 0.7. | 24 |
+| D-41 | Postings are extended, never forked: ADD COLUMN only (`cloud_source_id`, `expires_at`, `skills`, `benefits`, `employment_detail` (+ `freelance`), `application_method`, `auth_required`, `raw_metadata`); cloud postings are `generic_listing` with the `gen|` fingerprint, cross-board copies share `dedupe_group`. Flags `JOBS_CLOUD_DISCOVERY_ENABLED`, `JOBS_CLOUD_AI_ENABLED` (D-33). | 24 |
 
 ---
 
@@ -207,14 +213,14 @@ renumber.
 | R2 | bucket `pilihpendidikan-jobs-files`, binding `JOBS_FILES` |
 | Queue | `jobs-ai` (binding `JOBS_AI_QUEUE`), DLQ `jobs-ai-dlq` |
 | Secrets | `OPENAI_API_KEY` (apps/api only); `BFF_COOKIE_KEY` (apps/jobs, AES-GCM for `__Host-jobs-session`) |
-| Flags | `DB.feature_flags` (D-33): `JOBS_V1_ENABLED`, `JOBS_CLI_LOGIN_ENABLED`, `JOBS_AUTOMATION_ENABLED`, `JOBS_AUTO_MODE_ENABLED`, `JOBS_EMAIL_SERVER_SEND_ENABLED`, `AI_DISABLED`, `JOBS_LEGACY_BACKEND` (`kv`\|`d1`) |
+| Flags | `DB.feature_flags` (D-33): `JOBS_V1_ENABLED`, `JOBS_CLI_LOGIN_ENABLED`, `JOBS_AUTOMATION_ENABLED`, `JOBS_AUTO_MODE_ENABLED`, `JOBS_EMAIL_SERVER_SEND_ENABLED`, `AI_DISABLED`, `JOBS_LEGACY_BACKEND` (`kv`\|`d1`), `JOBS_CLOUD_DISCOVERY_ENABLED`, `JOBS_CLOUD_AI_ENABLED` |
 | Vars | `JOBS_MIN_CLI_VERSION`, `JOBS_RECOMMENDED_CLI_VERSION` (apps/api) |
 | Crons (apps/api) | `0 3 * * *` (existing daily) + `*/5 * * * *` (lease reaper, expiries) |
 | CLI | `apps/jobs-cli`, PyPI dist `pilih-jobs`, package `pilih_jobs`, executable `pilih-jobs` |
 | OAuth client | `client_id = pilih-jobs-cli` (public, `token_endpoint_auth_method = none`) |
 | Contracts | `packages/jobs-contracts` (Zod → JSON Schema → Pydantic) |
 | CV engine | `packages/cv-engine` (extracted from `apps/cv`) |
-| ID prefixes | `usr_ pst_ ujb_ app_ evt_ ivw_ ofr_ scr_ rul_ dev_ grt_ rft_ tsk_ att_ lse_ apr_ evd_ fil_ cvv_ run_ src_ fct_ ans_ eml_ sal_` + ULID |
+| ID prefixes | `usr_ pst_ ujb_ app_ evt_ ivw_ ofr_ scr_ rul_ dev_ grt_ rft_ tsk_ att_ lse_ apr_ evd_ fil_ cvv_ run_ src_ fct_ ans_ eml_ sal_` + ULID; cloud discovery (24): `csr_` (cloud source), `crn_` (cloud run) |
 
 ---
 

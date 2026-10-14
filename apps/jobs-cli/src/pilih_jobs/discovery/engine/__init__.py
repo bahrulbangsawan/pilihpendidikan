@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from pilih_jobs.discovery.engine import policy
 from pilih_jobs.discovery.engine.engine import RequestRecord, ScraplingJobEngine
+from pilih_jobs.discovery.engine.guard import NetworkGuard
 
 policy.install_guard()
 
-__all__ = ["RequestRecord", "ScraplingJobEngine", "policy"]
+__all__ = ["NetworkGuard", "RequestRecord", "ScraplingJobEngine", "policy"]

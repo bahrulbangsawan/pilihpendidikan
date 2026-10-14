@@ -50,9 +50,15 @@ class AnswerKind(RootModel[Literal["text", "choice", "number", "boolean", "date"
 
 
 class ApiErrorCode(
-    RootModel[Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable"]]
+    RootModel[Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable", "operator_required"]]
 ):
-    root: Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable"]
+    root: Literal["invalid_request", "invalid_token", "insufficient_scope", "device_revoked", "device_not_accepting_tasks", "device_required", "not_found", "revision_conflict", "lease_lost", "idempotency_mismatch", "duplicate", "too_late", "approval_expired", "task_expired", "cursor_expired", "payload_too_large", "invalid_transition", "policy_violation", "unsupported_source", "mode_not_allowed", "cli_upgrade_required", "rate_limited", "ai_budget_exhausted", "upstream_unavailable", "operator_required"]
+
+
+class ApplicationMethod(
+    RootModel[Literal["external_url", "email", "platform_account", "unknown"]]
+):
+    root: Literal["external_url", "email", "platform_account", "unknown"]
 
 
 class ApplicationMode(RootModel[Literal["manual", "assisted", "approval", "auto"]]):
@@ -117,6 +123,54 @@ class ChangeSource(
     root: Literal["web", "cli", "mcp", "system", "legacy_migration"]
 
 
+class CloudErrorClass(
+    RootModel[Literal["network", "timeout", "http_5xx", "rate_limited", "access_denied", "challenge_detected", "robots_disallowed", "not_found", "source_closed", "source_unavailable", "parse_error", "schema_invalid", "selector_drift", "unsupported_content", "policy_blocked", "cancelled", "auth_required", "engine_unavailable", "invalid_config"]]
+):
+    root: Literal["network", "timeout", "http_5xx", "rate_limited", "access_denied", "challenge_detected", "robots_disallowed", "not_found", "source_closed", "source_unavailable", "parse_error", "schema_invalid", "selector_drift", "unsupported_content", "policy_blocked", "cancelled", "auth_required", "engine_unavailable", "invalid_config"]
+
+
+class CloudRunKind(RootModel[Literal["scrape", "directory", "probe"]]):
+    root: Literal["scrape", "directory", "probe"]
+
+
+class CloudRunStatus(
+    RootModel[Literal["queued", "running", "succeeded", "partial", "failed", "blocked", "auth_required", "rate_limited", "unsupported", "skipped"]]
+):
+    root: Literal["queued", "running", "succeeded", "partial", "failed", "blocked", "auth_required", "rate_limited", "unsupported", "skipped"]
+
+
+class CloudRunTrigger(RootModel[Literal["schedule", "manual", "retry"]]):
+    root: Literal["schedule", "manual", "retry"]
+
+
+class CloudSourceCategory(
+    RootModel[Literal["job_board", "aggregator", "freelance_marketplace", "talent_network", "staffing_service", "tutoring_platform", "content_marketplace", "community", "directory", "defunct", "unknown"]]
+):
+    root: Literal["job_board", "aggregator", "freelance_marketplace", "talent_network", "staffing_service", "tutoring_platform", "content_marketplace", "community", "directory", "defunct", "unknown"]
+
+
+class CloudSourceHealth(
+    RootModel[Literal["ACTIVE", "FAILED", "BLOCKED", "AUTH_REQUIRED", "RATE_LIMITED", "UNSUPPORTED"]]
+):
+    root: Literal["ACTIVE", "FAILED", "BLOCKED", "AUTH_REQUIRED", "RATE_LIMITED", "UNSUPPORTED"]
+
+
+class CloudSourceOrigin(RootModel[Literal["default", "directory", "operator"]]):
+    root: Literal["default", "directory", "operator"]
+
+
+class CloudSourceStatus(
+    RootModel[Literal["ACTIVE", "DISABLED", "SCRAPING", "FAILED", "BLOCKED", "AUTH_REQUIRED", "RATE_LIMITED", "UNSUPPORTED"]]
+):
+    root: Literal["ACTIVE", "DISABLED", "SCRAPING", "FAILED", "BLOCKED", "AUTH_REQUIRED", "RATE_LIMITED", "UNSUPPORTED"]
+
+
+class CloudStrategy(
+    RootModel[Literal["json_api", "rss", "json_ld", "embedded_json", "html_selectors", "browser", "ai", "none"]]
+):
+    root: Literal["json_api", "rss", "json_ld", "embedded_json", "html_selectors", "browser", "ai", "none"]
+
+
 class CredentialKind(
     RootModel[Literal["browser_session", "personal_write", "personal_read", "oauth_mcp", "oauth_cli"]]
 ):
@@ -169,6 +223,12 @@ class EmailStatus(
     root: Literal["draft", "approved", "sent", "failed", "handed_off"]
 
 
+class EmploymentDetail(
+    RootModel[Literal["full_time", "part_time", "contract", "freelance", "temporary", "internship", "volunteer"]]
+):
+    root: Literal["full_time", "part_time", "contract", "freelance", "temporary", "internship", "volunteer"]
+
+
 class EmploymentType(
     RootModel[Literal["full_time", "part_time", "contract", "temporary", "internship", "volunteer", "unknown"]]
 ):
@@ -204,9 +264,9 @@ class FactSource(RootModel[Literal["user_entered", "cv_import", "verified_docume
 
 
 class FeatureFlagKey(
-    RootModel[Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND"]]
+    RootModel[Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND", "JOBS_CLOUD_DISCOVERY_ENABLED", "JOBS_CLOUD_AI_ENABLED"]]
 ):
-    root: Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND"]
+    root: Literal["JOBS_V1_ENABLED", "JOBS_CLI_LOGIN_ENABLED", "JOBS_AUTOMATION_ENABLED", "JOBS_AUTO_MODE_ENABLED", "JOBS_EMAIL_SERVER_SEND_ENABLED", "AI_DISABLED", "JOBS_LEGACY_BACKEND", "JOBS_CLOUD_DISCOVERY_ENABLED", "JOBS_CLOUD_AI_ENABLED"]
 
 
 class FileKind(

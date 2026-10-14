@@ -92,6 +92,18 @@ export const WEB_ROUTE_KEYS = [
   "POST /api/v1/emails/{eml_id}/approve",
   "POST /api/v1/emails/{eml_id}/handed-off",
   "GET /api/v1/emails/{eml_id}",
+  // Cloud discovery (05 §15). Operator-only routes are web routes too: the
+  // api answers 403 operator_required to anyone outside ADMIN_EMAILS.
+  "GET /api/v1/cloud-sources",
+  "POST /api/v1/cloud-sources",
+  "GET /api/v1/cloud-sources/{csr_id}",
+  "PATCH /api/v1/cloud-sources/{csr_id}",
+  "PUT /api/v1/cloud-sources/{csr_id}/follow",
+  "DELETE /api/v1/cloud-sources/{csr_id}/follow",
+  "GET /api/v1/cloud-sources/{csr_id}/runs",
+  "POST /api/v1/cloud-sources/{csr_id}/runs",
+  "GET /api/v1/cloud-discovery/runs",
+  "POST /api/v1/cloud-discovery/refresh",
 ] as const satisfies readonly ApiRouteKey[];
 
 export type WebRouteKey = (typeof WEB_ROUTE_KEYS)[number];

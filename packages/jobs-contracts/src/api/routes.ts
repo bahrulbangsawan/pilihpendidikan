@@ -5,6 +5,7 @@ import { aiRoutes } from "./ai";
 import { analyticsRoutes } from "./analytics";
 import { applicationsRoutes } from "./applications";
 import { automationRoutes } from "./automation";
+import { cloudRoutes } from "./cloud";
 import { cvRoutes } from "./cv";
 import { devicesRoutes } from "./devices";
 import { discoveryRoutes } from "./discovery";
@@ -16,7 +17,7 @@ import { scoringRoutes } from "./scoring";
 import { settingsRoutes } from "./settings";
 import { syncRoutes } from "./sync";
 
-/** Route contracts in 05 order (§2 … §13). */
+/** Route contracts in 05 order (§2 … §14). */
 export const API_ROUTE_SCHEMAS = {
   ...metaRoutes,
   ...devicesRoutes,
@@ -31,6 +32,7 @@ export const API_ROUTE_SCHEMAS = {
   ...syncRoutes,
   ...analyticsRoutes,
   ...emailRoutes,
+  ...cloudRoutes,
 } as const satisfies Record<string, RouteContract>;
 
 export type ApiRouteKey = keyof typeof API_ROUTE_SCHEMAS;

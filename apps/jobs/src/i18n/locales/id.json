@@ -10,7 +10,8 @@
     "loading": "Memuat…",
     "retry": "Coba lagi",
     "save": "Simpan",
-    "undo": "Urungkan"
+    "undo": "Urungkan",
+    "close": "Tutup"
   },
   "nav": {
     "board": "Papan",
@@ -2091,8 +2092,8 @@
   },
   "sources": {
     "title": "Sumber",
-    "intro": "Papan lowongan dan halaman karier tempat CLI Anda menemukan lowongan. Server kami tidak mengambil apa pun.",
-    "listTitle": "Sumber Anda",
+    "intro": "Papan lowongan remote yang dicek server kami setiap jam, serta papan lowongan dan halaman karier tempat CLI Anda menemukan lowongan.",
+    "listTitle": "Sumber CLI Anda",
     "listLabel": "Sumber lowongan",
     "add": "Tambah sumber",
     "emptyTitle": "Tambahkan sumber untuk mulai menemukan lowongan",
@@ -2478,7 +2479,7 @@
       "emptySeen": "Lowongan yang Anda tandai dilihat muncul di sini.",
       "emptyDismissed": "Lowongan yang Anda abaikan muncul di sini."
     },
-    "intro": "Lowongan yang ditemukan CLI untukmu, paling cocok di atas."
+    "intro": "Lowongan dari CLI-mu dan papan lowongan remote yang kamu ikuti, paling cocok di atas."
   },
   "trackedJob": {
     "back": "Kotak masuk",
@@ -2620,5 +2621,312 @@
       "title": "Statistik gagal dimuat",
       "body": "Periksa koneksi Anda, lalu coba lagi."
     }
+  },
+  "cloudSources": {
+    "title": "Papan lowongan remote",
+    "intro": "Papan lowongan remote publik yang dicek server kami setiap jam, dengan sopan dan sesuai aturan tiap situs. Ikuti sebuah papan agar lowongan barunya masuk ke kotak masuk Anda; tidak ada yang diambil dari balik login.",
+    "listLabel": "Papan lowongan remote",
+    "empty": "Belum ada papan di katalog.",
+    "noMatch": "Tidak ada papan yang cocok dengan filter ini.",
+    "errorTitle": "Gagal memuat papan lowongan remote",
+    "error": "Periksa koneksi Anda lalu coba lagi.",
+    "stale": "Offline: menampilkan data lama",
+    "never": "Belum pernah",
+    "what": "{name}",
+    "refused": "Tidak dilakukan: {message}",
+    "statusWithReason": "{status}: {reason}",
+    "openDetails": "Buka {name}",
+    "lastRunWas": "Run terakhir: {status}",
+    "newLastRun": "+{count} run terakhir",
+    "statuses": {
+      "ACTIVE": "Aktif",
+      "DISABLED": "Nonaktif",
+      "SCRAPING": "Sedang dicek",
+      "FAILED": "Gagal",
+      "BLOCKED": "Diblokir",
+      "AUTH_REQUIRED": "Perlu akun",
+      "RATE_LIMITED": "Dibatasi",
+      "UNSUPPORTED": "Bukan papan lowongan"
+    },
+    "categories": {
+      "job_board": "Papan lowongan",
+      "aggregator": "Agregator",
+      "freelance_marketplace": "Marketplace freelance",
+      "talent_network": "Jaringan talenta",
+      "staffing_service": "Layanan penyalur",
+      "tutoring_platform": "Platform les",
+      "content_marketplace": "Marketplace konten",
+      "community": "Komunitas",
+      "directory": "Direktori",
+      "defunct": "Sudah tutup",
+      "unknown": "Belum diklasifikasi"
+    },
+    "strategies": {
+      "json_api": "API publik",
+      "rss": "Feed RSS",
+      "json_ld": "Data terstruktur",
+      "embedded_json": "Data dalam halaman",
+      "html_selectors": "Selektor halaman",
+      "browser": "Render browser",
+      "ai": "Ekstraksi AI",
+      "none": "Tidak diambil"
+    },
+    "strategyHelp": {
+      "json_api": "Endpoint publik terdokumentasi yang mengembalikan lowongan sebagai data. Konfigurasi: url, items_path, fields.",
+      "rss": "Feed RSS atau Atom berisi lowongan. Konfigurasi: url, title_pattern, serta kolom perusahaan / lokasi opsional.",
+      "json_ld": "Halaman detail dengan data schema.org JobPosting. Konfigurasi: listing_url, detail_link_selector.",
+      "embedded_json": "Lowongan di dalam skrip halaman seperti __NEXT_DATA__. Konfigurasi: url, items_path, fields.",
+      "html_selectors": "Selektor CSS pada halaman daftar, dengan relokasi adaptif saat tata letak berubah. Konfigurasi: url, item, fields.",
+      "browser": "Seperti selektor halaman, setelah halaman dirender di browser headless. Render browser harus diizinkan.",
+      "ai": "Teks halaman dibaca oleh cadangan AI; hanya dipakai bila ekstraksi AI aktif dan masih dalam anggaran. Konfigurasi: url.",
+      "none": "Papan tercantum tetapi tidak pernah diambil."
+    },
+    "origins": {
+      "default": "Bawaan",
+      "directory": "Direktori",
+      "operator": "Ditambahkan"
+    },
+    "runStatuses": {
+      "queued": "Antre",
+      "running": "Berjalan",
+      "succeeded": "Berhasil",
+      "partial": "Sebagian",
+      "failed": "Gagal",
+      "blocked": "Diblokir",
+      "auth_required": "Perlu akun",
+      "rate_limited": "Dibatasi",
+      "unsupported": "Tidak didukung",
+      "skipped": "Dilewati"
+    },
+    "errors": {
+      "network": "Galat jaringan",
+      "timeout": "Waktu habis",
+      "http_5xx": "Galat server",
+      "rate_limited": "Dibatasi",
+      "access_denied": "Akses ditolak",
+      "challenge_detected": "Pemeriksaan bot",
+      "robots_disallowed": "Diblokir robots.txt",
+      "not_found": "Tidak ditemukan",
+      "source_closed": "Papan ditutup",
+      "source_unavailable": "Sumber tidak tersedia",
+      "parse_error": "Gagal dibaca",
+      "schema_invalid": "Format berubah",
+      "selector_drift": "Tata letak halaman berubah",
+      "unsupported_content": "Halaman tidak didukung",
+      "policy_blocked": "Tidak diizinkan",
+      "cancelled": "Dibatalkan",
+      "auth_required": "Perlu login",
+      "engine_unavailable": "Scraper tidak tersedia",
+      "invalid_config": "Konfigurasi tidak valid",
+      "operatorOnly": "Hanya operator katalog yang bisa melakukan ini."
+    },
+    "diagnostics": {
+      "challenge": "Situs menampilkan pemeriksaan bot kepada crawler yang jujur. Pilih tidak pernah menembusnya; operator bisa mencoba lagi nanti atau menonaktifkan sumber ini.",
+      "denied": "Situs menolak akses crawler kami. Pilih berhenti alih-alih memaksa; operator bisa mencoba lagi nanti atau menonaktifkan sumber ini.",
+      "auth": "Lowongan hanya terlihat dengan akun di situs itu. Pilih tidak pernah login atau mengumpulkan kata sandi, jadi papan ini tidak diambil.",
+      "robots": "robots.txt situs tidak mengizinkan daftar lowongan dirayapi, jadi Pilih membiarkannya.",
+      "rate_limited": "Situs meminta kami memperlambat. Pengecekan berikutnya menunggu sampai diizinkan.",
+      "rate_limitedUntil": "Situs meminta kami memperlambat. Pengecekan berikutnya menunggu sampai {at}.",
+      "layout": "Tata letak halaman atau format data berubah dan tidak ada lowongan yang terbaca. Operator bisa memperbarui konfigurasi strategi lalu mencoba lagi.",
+      "engine": "Scraper kami tidak dapat dihubungi. Run akan dicoba ulang otomatis.",
+      "config": "Konfigurasi strategi tidak valid. Operator perlu memperbaikinya.",
+      "transient": "Masalah jaringan atau server sementara. Run dicoba ulang otomatis dengan jeda yang makin panjang.",
+      "gone": "Halaman daftar lowongan sudah tidak ada. Papan mungkin pindah atau tutup.",
+      "policy": "Sumber ini tidak diizinkan oleh aturan penemuan Pilih.",
+      "other": "Run terakhir tidak selesai. Lihat lognya di bawah."
+    },
+    "intervals": {
+      "m60": "Setiap jam",
+      "m120": "Setiap 2 jam",
+      "m180": "Setiap 3 jam",
+      "m360": "Setiap 6 jam",
+      "m720": "Setiap 12 jam",
+      "m1440": "Setiap hari",
+      "m10080": "Setiap minggu",
+      "custom": "Setiap {minutes} menit"
+    },
+    "next": {
+      "scraping": "Sedang dicek",
+      "due": "Pada run per jam berikutnya",
+      "breaker": "Dijeda setelah gagal; dicoba lagi {time}",
+      "paused": {
+        "pipeline_off": "Dijeda: penemuan cloud mati",
+        "disabled": "Dijeda: nonaktif",
+        "breaker": "Dijeda setelah gagal",
+        "needs_retry": "Menunggu operator",
+        "unsupported": "Tidak diambil",
+        "no_strategy": "Tidak diambil"
+      }
+    },
+    "columns": {
+      "board": "Papan",
+      "type": "Jenis",
+      "status": "Status",
+      "lastSuccess": "Terakhir berhasil",
+      "nextRun": "Cek berikutnya",
+      "jobs": "Lowongan",
+      "successRate": "Tingkat berhasil",
+      "follow": "Ikuti",
+      "checks": "Pengecekan"
+    },
+    "filters": {
+      "status": "Status",
+      "following": "Diikuti",
+      "search": "Cari papan",
+      "searchPlaceholder": "Cari nama atau domain",
+      "groups": {
+        "all": "Semua",
+        "active": "Aktif",
+        "attention": "Perlu perhatian",
+        "inactive": "Tidak didukung dan nonaktif"
+      }
+    },
+    "pipeline": {
+      "offTitle": "Penemuan cloud sedang mati",
+      "off": "Papan sedang tidak dicek. Mengikuti tetap bisa; lowongan baru masuk setelah dinyalakan.",
+      "offOperator": "Papan sedang tidak dicek. Nyalakan feature flag {flag} untuk memulai run per jam.",
+      "schedule": "Dicek setiap jam",
+      "directoryRefreshed": "direktori diperbarui {time}"
+    },
+    "directory": {
+      "refresh": "Perbarui direktori",
+      "queued": "Pembaruan direktori diantrekan. Papan baru muncul setelah dicek.",
+      "failed": "Gagal mengantrekan pembaruan direktori. Coba lagi."
+    },
+    "add": {
+      "open": "Tambah papan",
+      "title": "Tambah papan lowongan remote",
+      "description": "Pilih mengecek situs lebih dulu: robots.txt, feed, data terstruktur, dan apakah lowongan memerlukan akun.",
+      "name": "Nama",
+      "nameRequired": "Isi nama.",
+      "url": "Situs web",
+      "urlHelp": "Halaman utama papan atau halaman lowongannya.",
+      "listingUrl": "Halaman daftar lowongan (opsional)",
+      "category": "Kategori",
+      "strategy": "Strategi",
+      "detect": "Deteksi otomatis",
+      "submit": "Tambah dan cek",
+      "added": "{name} ditambahkan. Situs sedang dicek.",
+      "failed": "Gagal menambah papan. Coba lagi.",
+      "duplicate": "Papan ini sudah ada di katalog.",
+      "probeStatus": "Cek situs:",
+      "probeHelp": "Papan diklasifikasi dalam beberapa menit; papan muncul di daftar beserta statusnya.",
+      "urlProblems": {
+        "empty": "Isi alamat web papan.",
+        "invalid": "Isi alamat web lengkap, misalnya https://jobs.example.com.",
+        "scheme": "Gunakan alamat yang diawali https:// atau http://.",
+        "credentials": "Jangan sertakan nama pengguna atau kata sandi.",
+        "local": "Gunakan situs publik, bukan alamat lokal atau privat."
+      }
+    },
+    "follow": {
+      "label": "Ikuti papan ini",
+      "help": "Lowongan barunya masuk ke kotak masuk Anda dan dinilai untuk Anda. Berhenti mengikuti tidak menghapus yang sudah ada.",
+      "switchFor": "Ikuti {name}",
+      "followed": "Mengikuti {name}.",
+      "unfollowed": "Berhenti mengikuti {name}.",
+      "backfilled": "Mengikuti {name}: {count} lowongan terbaru ditambahkan ke kotak masuk Anda.",
+      "failed": "Gagal mengubah status mengikuti {name}. Coba lagi."
+    },
+    "run": {
+      "now": "Jalankan sekarang",
+      "retry": "Coba lagi",
+      "probe": "Cek ulang situs",
+      "queued": "{name} diantrekan untuk dicek.",
+      "retryQueued": "{name}: pemutus dibuka kembali dan percobaan ulang diantrekan.",
+      "probeQueued": "{name}: cek situs diantrekan.",
+      "failed": "Gagal mengantrekan run. Coba lagi."
+    },
+    "retry": {
+      "title": "Coba lagi {name}?",
+      "body": "Ini mengosongkan hitungan gagal, menutup pemutus dan mencabut status diblokir, perlu login, atau dibatasi, lalu mengantrekan pengecekan. Jika situs masih menolak crawler yang jujur, sumber berhenti lagi.",
+      "confirm": "Coba lagi sekarang"
+    },
+    "editor": {
+      "title": "Pengaturan operator",
+      "intro": "Perubahan berlaku untuk semua yang mengikuti papan ini dan tetap dipertahankan saat direktori diperbarui.",
+      "enabled": "Aktif",
+      "enabledHelp": "Papan nonaktif tidak pernah dicek dan tetap nonaktif setelah direktori diperbarui.",
+      "priority": "Prioritas",
+      "priorityHelp": "0 sampai 100; yang lebih tinggi berjalan lebih dulu.",
+      "priorityError": "Isi bilangan bulat dari 0 sampai 100.",
+      "interval": "Cek setiap",
+      "strategy": "Strategi ekstraksi",
+      "config": "Konfigurasi strategi (JSON)",
+      "configSyntax": "Ini bukan JSON yang valid.",
+      "configInvalid": "Konfigurasi tidak cocok dengan strategi ini:",
+      "configValid": "Valid untuk strategi ini.",
+      "rateTitle": "Batas kesopanan",
+      "rateDefault": "Bawaan",
+      "rangeError": "Isi bilangan bulat dari {min} sampai {max}.",
+      "rate": {
+        "minDelayMs": "Jeda antarpermintaan (ms)",
+        "maxPages": "Halaman daftar per run",
+        "maxItems": "Lowongan per run",
+        "maxDetails": "Halaman detail per run"
+      },
+      "ai": "Cadangan ekstraksi AI",
+      "aiHelp": "Hanya bila ekstraksi deterministik tidak menemukan apa pun, AI aktif secara global, dan masih dalam anggaran bulanan.",
+      "browser": "Izinkan render browser",
+      "browserHelp": "Merender halaman di browser headless untuk situs yang membangun daftar lowongan dengan JavaScript. Lebih lambat; pakai hanya bila perlu.",
+      "health": "Kondisi",
+      "healthKeep": "Pertahankan",
+      "healthActive": "Aktif (aktifkan lagi)",
+      "healthUnsupported": "Bukan papan lowongan (pensiunkan)",
+      "authRequired": "Lowongan perlu akun",
+      "statusReason": "Catatan status",
+      "authNote": "Catatan akun",
+      "reset": "Atur ulang"
+    },
+    "sheet": {
+      "stats": "Statistik",
+      "runs": "Run",
+      "avgDuration": "Durasi rata-rata",
+      "jobs": "Lowongan ditemukan",
+      "jobsValue": "{total} ({open} masih buka)",
+      "newLastRun": "Baru di run terakhir",
+      "followers": "Pengikut",
+      "confidence": "Keyakinan ekstraksi",
+      "warnings": "Peringatan di run terakhir",
+      "aiCalls": "Panggilan AI",
+      "listing": "Halaman daftar",
+      "terms": "Ketentuan",
+      "termsLink": "Baca ketentuan situs",
+      "attribution": "Atribusi",
+      "authTitle": "Perlu akun",
+      "authBody": "Papan ini hanya menampilkan lowongan kepada pengguna yang login. Pilih tidak pernah login atas nama Anda."
+    },
+    "runs": {
+      "title": "Run terbaru",
+      "loading": "Memuat run…",
+      "none": "Belum ada run.",
+      "error": "Gagal memuat run.",
+      "loadMore": "Muat run lama",
+      "showLog": "Tampilkan log ({count})",
+      "hideLog": "Sembunyikan log",
+      "warnings": "Peringatan",
+      "log": "Log run",
+      "http": "HTTP {status}",
+      "counts": "{found} ditemukan, {added} baru, {updated} diperbarui",
+      "directoryCounts": "{entries} entri, {registered} papan baru",
+      "confidence": "keyakinan {value}%",
+      "attempt": "percobaan {n}",
+      "levels": {
+        "info": "Info",
+        "warn": "Peringatan",
+        "error": "Galat"
+      },
+      "triggers": {
+        "schedule": "Terjadwal",
+        "manual": "Manual",
+        "retry": "Coba lagi"
+      },
+      "kinds": {
+        "scrape": "Pengambilan",
+        "directory": "Pembaruan direktori",
+        "probe": "Cek situs"
+      }
+    },
+    "nextPrefix": "Berikutnya:"
   }
 }

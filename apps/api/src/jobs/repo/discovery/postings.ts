@@ -113,6 +113,31 @@ export async function findPostingsByFingerprint(
   return found;
 }
 
+/**
+ * Public postings by fingerprint, keyed `public|${fp}`: the merge view of
+ * system ingestion (cloud discovery, 24 §6.5), which has no caller.
+ */
+export async function findPublicPostingsByFingerprint(
+  db: JobsDb,
+  fingerprints: readonly string[]
+): Promise<Map<string, StoredPosting>> {
+  const found = new Map<string, StoredPosting>();
+  for (const group of chunk([...new Set(fingerprints)], IN_CHUNK)) {
+    const rows = await queryAll<Record<string, unknown>>(
+      db,
+      // sql-allow: public-posting — system ingestion merges shared rows by
+      // fingerprint; nothing read here reaches a client
+      `SELECT ${MERGE_SELECT} FROM job_postings WHERE visibility = 'public' AND fingerprint IN (${marks(group.length)})`,
+      ...group
+    );
+    for (const row of rows) {
+      const posting = decodeRow<StoredPosting>("job_postings", row);
+      found.set(`public|${posting.fingerprint}`, posting);
+    }
+  }
+  return found;
+}
+
 export interface UserJobLink {
   id: string;
   inbox_state: string;

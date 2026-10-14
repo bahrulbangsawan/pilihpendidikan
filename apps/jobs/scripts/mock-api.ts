@@ -18,6 +18,7 @@ import type { ApplicationRecord } from "@pilihpendidikan/jobs-contracts/records"
 import { DAY, makeEvent, NOW, USER_ID } from "../src/test/fixtures";
 import { routes as analyticsRoutes } from "./mock/analytics";
 import { routes as automationRoutes } from "./mock/automation";
+import { routes as cloudRoutes } from "./mock/cloud";
 import { routes as cvRoutes, ticketRoute } from "./mock/cv";
 import { routes as devicesRoutes } from "./mock/devices";
 import { routes as inboxRoutes } from "./mock/inbox";
@@ -326,6 +327,7 @@ const AREA_ROUTES: MockRoute[] = [
   ...automationRoutes,
   ...devicesRoutes,
   ...sourcesRoutes,
+  ...cloudRoutes,
   ...analyticsRoutes,
   ...cvRoutes,
 ];

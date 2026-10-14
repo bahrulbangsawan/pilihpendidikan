@@ -479,6 +479,187 @@ export const DiscoveryErrorClassSchema = defineSchema(
 );
 export type DiscoveryErrorClass = z.infer<typeof DiscoveryErrorClassSchema>;
 
+// ---------------------------------------------------------------------------
+// Cloud discovery (24, D-37 … D-41)
+// ---------------------------------------------------------------------------
+
+/** What a catalog entry is (24 §2.1 `cloud_sources.category`). */
+export const CLOUD_SOURCE_CATEGORIES = [
+  "job_board",
+  "aggregator",
+  "freelance_marketplace",
+  "talent_network",
+  "staffing_service",
+  "tutoring_platform",
+  "content_marketplace",
+  "community",
+  "directory",
+  "defunct",
+  "unknown",
+] as const;
+export const CloudSourceCategorySchema = defineSchema(
+  "enums",
+  "CloudSourceCategory",
+  z.enum(CLOUD_SOURCE_CATEGORIES)
+);
+export type CloudSourceCategory = z.infer<typeof CloudSourceCategorySchema>;
+
+/** Who registered a catalog entry (24 §2.1 `cloud_sources.origin`). */
+export const CLOUD_SOURCE_ORIGINS = [
+  "default",
+  "directory",
+  "operator",
+] as const;
+export const CloudSourceOriginSchema = defineSchema(
+  "enums",
+  "CloudSourceOrigin",
+  z.enum(CLOUD_SOURCE_ORIGINS)
+);
+export type CloudSourceOrigin = z.infer<typeof CloudSourceOriginSchema>;
+
+/** Extraction strategies in preference order (24 §4, D-40). */
+export const CLOUD_STRATEGIES = [
+  "json_api",
+  "rss",
+  "json_ld",
+  "embedded_json",
+  "html_selectors",
+  "browser",
+  "ai",
+  "none",
+] as const;
+export const CloudStrategySchema = defineSchema(
+  "enums",
+  "CloudStrategy",
+  z.enum(CLOUD_STRATEGIES)
+);
+export type CloudStrategy = z.infer<typeof CloudStrategySchema>;
+
+/** Stored health of a source (24 §2.1 `cloud_sources.health`). */
+export const CLOUD_SOURCE_HEALTH = [
+  "ACTIVE",
+  "FAILED",
+  "BLOCKED",
+  "AUTH_REQUIRED",
+  "RATE_LIMITED",
+  "UNSUPPORTED",
+] as const;
+export const CloudSourceHealthSchema = defineSchema(
+  "enums",
+  "CloudSourceHealth",
+  z.enum(CLOUD_SOURCE_HEALTH)
+);
+export type CloudSourceHealth = z.infer<typeof CloudSourceHealthSchema>;
+
+/**
+ * Operational status shown for a source (24 §5): `DISABLED` when switched
+ * off, `SCRAPING` while a run holds its lease, else its health.
+ */
+export const CLOUD_SOURCE_STATUSES = [
+  "ACTIVE",
+  "DISABLED",
+  "SCRAPING",
+  "FAILED",
+  "BLOCKED",
+  "AUTH_REQUIRED",
+  "RATE_LIMITED",
+  "UNSUPPORTED",
+] as const;
+export const CloudSourceStatusSchema = defineSchema(
+  "enums",
+  "CloudSourceStatus",
+  z.enum(CLOUD_SOURCE_STATUSES)
+);
+export type CloudSourceStatus = z.infer<typeof CloudSourceStatusSchema>;
+
+/** What a `cloud_runs` row did (24 §2.2). */
+export const CLOUD_RUN_KINDS = ["scrape", "directory", "probe"] as const;
+export const CloudRunKindSchema = defineSchema(
+  "enums",
+  "CloudRunKind",
+  z.enum(CLOUD_RUN_KINDS)
+);
+export type CloudRunKind = z.infer<typeof CloudRunKindSchema>;
+
+export const CLOUD_RUN_TRIGGERS = ["schedule", "manual", "retry"] as const;
+export const CloudRunTriggerSchema = defineSchema(
+  "enums",
+  "CloudRunTrigger",
+  z.enum(CLOUD_RUN_TRIGGERS)
+);
+export type CloudRunTrigger = z.infer<typeof CloudRunTriggerSchema>;
+
+export const CLOUD_RUN_STATUSES = [
+  "queued",
+  "running",
+  "succeeded",
+  "partial",
+  "failed",
+  "blocked",
+  "auth_required",
+  "rate_limited",
+  "unsupported",
+  "skipped",
+] as const;
+export const CloudRunStatusSchema = defineSchema(
+  "enums",
+  "CloudRunStatus",
+  z.enum(CLOUD_RUN_STATUSES)
+);
+export type CloudRunStatus = z.infer<typeof CloudRunStatusSchema>;
+
+/**
+ * Cloud error classes: the discovery taxonomy (15 §8) plus what only the
+ * cloud pipeline can see (24 §6): a login wall, the scraper being
+ * unreachable, and a strategy config the scraper cannot use.
+ */
+export const CLOUD_ERROR_CLASSES = [
+  ...DISCOVERY_ERROR_CLASSES,
+  "auth_required",
+  "engine_unavailable",
+  "invalid_config",
+] as const;
+export const CloudErrorClassSchema = defineSchema(
+  "enums",
+  "CloudErrorClass",
+  z.enum(CLOUD_ERROR_CLASSES)
+);
+export type CloudErrorClass = z.infer<typeof CloudErrorClassSchema>;
+
+/**
+ * `job_postings.employment_detail` (24 §2.3): `employment_type` plus
+ * `freelance`, which `employment_type` stores as `contract`.
+ */
+export const EMPLOYMENT_DETAILS = [
+  "full_time",
+  "part_time",
+  "contract",
+  "freelance",
+  "temporary",
+  "internship",
+  "volunteer",
+] as const;
+export const EmploymentDetailSchema = defineSchema(
+  "enums",
+  "EmploymentDetail",
+  z.enum(EMPLOYMENT_DETAILS)
+);
+export type EmploymentDetail = z.infer<typeof EmploymentDetailSchema>;
+
+/** How a candidate applies (24 §2.3 `job_postings.application_method`). */
+export const APPLICATION_METHODS = [
+  "external_url",
+  "email",
+  "platform_account",
+  "unknown",
+] as const;
+export const ApplicationMethodSchema = defineSchema(
+  "enums",
+  "ApplicationMethod",
+  z.enum(APPLICATION_METHODS)
+);
+export type ApplicationMethod = z.infer<typeof ApplicationMethodSchema>;
+
 /** Which discovery error classes the wrapper retries (15 §8). */
 export const DISCOVERY_ERROR_RETRYABLE: Readonly<
   Record<DiscoveryErrorClass, boolean>
@@ -1198,6 +1379,8 @@ export const FEATURE_FLAG_KEYS = [
   "JOBS_EMAIL_SERVER_SEND_ENABLED",
   "AI_DISABLED",
   "JOBS_LEGACY_BACKEND",
+  "JOBS_CLOUD_DISCOVERY_ENABLED",
+  "JOBS_CLOUD_AI_ENABLED",
 ] as const;
 export const FeatureFlagKeySchema = defineSchema(
   "enums",
@@ -1379,6 +1562,7 @@ export const API_ERROR_STATUS = {
   rate_limited: 429,
   ai_budget_exhausted: 429,
   upstream_unavailable: 503,
+  operator_required: 403,
 } as const;
 export type ApiErrorCode = keyof typeof API_ERROR_STATUS;
 export const API_ERROR_CODES = Object.keys(

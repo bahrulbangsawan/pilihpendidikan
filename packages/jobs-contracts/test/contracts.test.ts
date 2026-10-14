@@ -95,7 +95,7 @@ describe("enums match the spec text", () => {
         }
       }
     }
-    expect(API_ERROR_CODES).toHaveLength(24);
+    expect(API_ERROR_CODES).toHaveLength(25);
   });
 
   test("TC-STAGE every task error class has a retry policy", () => {

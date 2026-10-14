@@ -169,7 +169,15 @@
     "application_support": "browser_supported",
     "revision": 1,
     "created_at": 1791597200000,
-    "updated_at": 1791597200000
+    "updated_at": 1791597200000,
+    "cloud_source_id": null,
+    "expires_at": 1794189200000,
+    "skills": ["Go", "PostgreSQL", "AWS"],
+    "benefits": ["Remote budget"],
+    "employment_detail": "full_time",
+    "application_method": "external_url",
+    "auth_required": false,
+    "raw_metadata": {}
   },
   "user_jobs": {
     "id": "ujb_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
@@ -774,5 +782,136 @@
       },
       "ai_cost_micro_usd": 41200
     }
+  },
+  "cloud_sources": {
+    "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "slug": "weworkremotely.com",
+    "name": "We Work Remotely",
+    "homepage_url": "https://weworkremotely.com",
+    "listing_url": "https://weworkremotely.com/remote-jobs",
+    "canonical_domain": "weworkremotely.com",
+    "category": "job_board",
+    "origin": "directory",
+    "directory_ref": "recommendations-we-work-remotely",
+    "description": "One of the largest remote-only job boards.",
+    "strategy": "rss",
+    "strategy_config": {
+      "url": "https://weworkremotely.com/remote-jobs.rss",
+      "title_pattern": "company_title",
+      "separator": ": ",
+      "location_field": "region",
+      "defaults": {
+        "workplace_type": "remote"
+      }
+    },
+    "health": "ACTIVE",
+    "status_reason": null,
+    "enabled": true,
+    "priority": 80,
+    "interval_minutes": 60,
+    "rate_limit": {
+      "min_delay_ms": 2000,
+      "max_pages": 1,
+      "max_items": 200
+    },
+    "auth_required": false,
+    "auth_note": null,
+    "terms_url": "https://weworkremotely.com/terms-of-service",
+    "terms_note": null,
+    "ai_enabled": false,
+    "allow_browser": false,
+    "next_run_at": 1791773300000,
+    "lease_id": null,
+    "lease_expires_at": null,
+    "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "last_run_status": "succeeded",
+    "last_run_at": 1791769700000,
+    "last_success_at": 1791769760000,
+    "last_error_class": null,
+    "last_error_message": null,
+    "consecutive_failures": 0,
+    "circuit_open_until": null,
+    "cursor_state": {
+      "v": 1,
+      "listing": {
+        "etag": "W/\"wwr\""
+      }
+    },
+    "stats": {
+      "runs": 12,
+      "successes": 12,
+      "failures": 0,
+      "total_duration_ms": 54000,
+      "jobs_found_last_run": 42,
+      "jobs_new_last_run": 3,
+      "confidence_avg_last_run": 0.9,
+      "warnings_last_run": 0,
+      "ai_calls": 0
+    },
+    "user_modified": ["priority"],
+    "revision": 3,
+    "created_at": 1790906000000,
+    "updated_at": 1791769760000
+  },
+  "cloud_runs": {
+    "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "kind": "scrape",
+    "trigger": "schedule",
+    "status": "succeeded",
+    "attempt": 1,
+    "requested_by": null,
+    "queued_at": 1791769700000,
+    "started_at": 1791769700000,
+    "finished_at": 1791769760000,
+    "duration_ms": 4500,
+    "strategy": "rss",
+    "stats": {
+      "pages": 1,
+      "postings_found": 42,
+      "new": 3,
+      "updated": 1,
+      "unchanged": 38,
+      "duplicates": 0,
+      "invalid": 0,
+      "closed": 0,
+      "linked": 3,
+      "confidence_avg": 0.9,
+      "scraper_ms": 2100
+    },
+    "error_class": null,
+    "error_message": null,
+    "http_status": 200,
+    "warnings": [
+      {
+        "code": "missing_field",
+        "message": "2 postings have no location",
+        "field": "location",
+        "count": 2
+      }
+    ],
+    "log": [
+      {
+        "at": 1791769760000,
+        "level": "info",
+        "event": "page_fetched",
+        "message": "Listing page 1: 42 items",
+        "url": "https://weworkremotely.com/remote-jobs.rss",
+        "http_status": 200,
+        "ms": 380
+      }
+    ],
+    "engine_version": "pilih-scraper 0.1.0; pilih-jobs 0.1.0; scrapling 0.4.15",
+    "updated_at": 1791769760000
+  },
+  "cloud_source_follows": {
+    "user_id": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+    "created_at": 1791683600000
+  },
+  "cloud_state": {
+    "key": "directory_refreshed_at",
+    "value": "1791683600000",
+    "updated_at": 1791683600000
   }
 }

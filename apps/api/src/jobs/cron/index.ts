@@ -1,6 +1,7 @@
 // The Worker's `scheduled` handler (14 §7): dispatches by `controller.cron`.
 //
-//   "*/5 * * * *"  leases (leaf-2.7)
+//   "*/5 * * * *"  leases (leaf-2.7), cloud-reaper (24 §6.4)
+//   "0 * * * *"    cloud-dispatch (24 §6.1)
 //   "0 3 * * *"    request-log purge (existing), retention (leaf-2.8),
 //                  file retention (leaf-2.6), analytics rollup (leaf-2.9)
 //
@@ -13,6 +14,7 @@ import { systemClock } from "../core/clock";
 import type { KernelDeps } from "../core/deps";
 import { jobsDb } from "../repo/core/db";
 import { runAnalyticsCron } from "./handlers/analytics";
+import { runCloudDispatchCron, runCloudReaperCron } from "./handlers/cloud";
 import { runFileRetentionCron } from "./handlers/file-retention";
 import { runLeaseCron } from "./handlers/leases";
 import { purgeRequestLog } from "./handlers/request-log";
@@ -21,6 +23,7 @@ import type { CronContext, CronHandler } from "./types";
 
 export const CRON_EVERY_FIVE_MINUTES = "*/5 * * * *";
 export const CRON_DAILY = "0 3 * * *";
+export const CRON_HOURLY = "0 * * * *";
 
 export interface CronJob {
   handler: CronHandler;
@@ -29,7 +32,11 @@ export interface CronJob {
 
 /** Jobs per schedule (the triggers of wrangler.jsonc). */
 export const CRON_JOBS: Readonly<Record<string, readonly CronJob[]>> = {
-  [CRON_EVERY_FIVE_MINUTES]: [{ name: "leases", handler: runLeaseCron }],
+  [CRON_EVERY_FIVE_MINUTES]: [
+    { name: "leases", handler: runLeaseCron },
+    { name: "cloud-reaper", handler: runCloudReaperCron },
+  ],
+  [CRON_HOURLY]: [{ name: "cloud-dispatch", handler: runCloudDispatchCron }],
   [CRON_DAILY]: [
     { name: "request-log", handler: purgeRequestLog },
     { name: "retention", handler: runRetentionCron },

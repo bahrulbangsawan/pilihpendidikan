@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Atom jobs</title>
+  <entry>
+    <title>Data Analyst at Initech</title>
+    <link rel="alternate" href="https://example.org/jobs/data-analyst"/>
+    <id>tag:example.org,2026:job-77</id>
+    <updated>2026-10-11T08:00:00Z</updated>
+    <author><name>Initech Recruiting</name></author>
+    <category term="Part-time"/>
+    <summary>Analyse product data with SQL and Python for a remote analytics team in Europe.</summary>
+  </entry>
+</feed>

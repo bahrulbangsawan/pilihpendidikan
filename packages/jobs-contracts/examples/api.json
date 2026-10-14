@@ -1315,7 +1315,15 @@
             "application_support": "browser_supported",
             "revision": 1,
             "created_at": 1791597200000,
-            "updated_at": 1791597200000
+            "updated_at": 1791597200000,
+            "cloud_source_id": null,
+            "expires_at": 1794189200000,
+            "skills": ["Go", "PostgreSQL", "AWS"],
+            "benefits": ["Remote budget"],
+            "employment_detail": "full_time",
+            "application_method": "external_url",
+            "auth_required": false,
+            "raw_metadata": {}
           },
           "score": {
             "posting_id": "pst_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
@@ -1430,7 +1438,15 @@
         "application_support": "browser_supported",
         "revision": 1,
         "created_at": 1791597200000,
-        "updated_at": 1791597200000
+        "updated_at": 1791597200000,
+        "cloud_source_id": null,
+        "expires_at": 1794189200000,
+        "skills": ["Go", "PostgreSQL", "AWS"],
+        "benefits": ["Remote budget"],
+        "employment_detail": "full_time",
+        "application_method": "external_url",
+        "auth_required": false,
+        "raw_metadata": {}
       }
     }
   },
@@ -1518,7 +1534,15 @@
         "application_support": "browser_supported",
         "revision": 1,
         "created_at": 1791597200000,
-        "updated_at": 1791597200000
+        "updated_at": 1791597200000,
+        "cloud_source_id": null,
+        "expires_at": 1794189200000,
+        "skills": ["Go", "PostgreSQL", "AWS"],
+        "benefits": ["Remote budget"],
+        "employment_detail": "full_time",
+        "application_method": "external_url",
+        "auth_required": false,
+        "raw_metadata": {}
       },
       "score": {
         "posting_id": "pst_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
@@ -1888,7 +1912,15 @@
         "application_support": "browser_supported",
         "revision": 1,
         "created_at": 1791597200000,
-        "updated_at": 1791597200000
+        "updated_at": 1791597200000,
+        "cloud_source_id": null,
+        "expires_at": 1794189200000,
+        "skills": ["Go", "PostgreSQL", "AWS"],
+        "benefits": ["Remote budget"],
+        "employment_detail": "full_time",
+        "application_method": "external_url",
+        "auth_required": false,
+        "raw_metadata": {}
       },
       "score": {
         "id": "scr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
@@ -3795,7 +3827,15 @@
           "application_support": "browser_supported",
           "revision": 1,
           "created_at": 1791597200000,
-          "updated_at": 1791597200000
+          "updated_at": 1791597200000,
+          "cloud_source_id": null,
+          "expires_at": 1794189200000,
+          "skills": ["Go", "PostgreSQL", "AWS"],
+          "benefits": ["Remote budget"],
+          "employment_detail": "full_time",
+          "application_method": "external_url",
+          "auth_required": false,
+          "raw_metadata": {}
         },
         "mode": "approval",
         "cv": {
@@ -4144,7 +4184,15 @@
           "application_support": "browser_supported",
           "revision": 1,
           "created_at": 1791597200000,
-          "updated_at": 1791597200000
+          "updated_at": 1791597200000,
+          "cloud_source_id": null,
+          "expires_at": 1794189200000,
+          "skills": ["Go", "PostgreSQL", "AWS"],
+          "benefits": ["Remote budget"],
+          "employment_detail": "full_time",
+          "application_method": "external_url",
+          "auth_required": false,
+          "raw_metadata": {}
         },
         "mode": "approval",
         "cv": {
@@ -6169,6 +6217,695 @@
         "form_hash": null,
         "captured_at": 1791770000000,
         "recorded_at": 1791770000000
+      }
+    }
+  },
+  "GET /api/v1/cloud-sources": {
+    "query": {
+      "status": "ACTIVE",
+      "following": "1"
+    },
+    "response": {
+      "items": [
+        {
+          "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "slug": "weworkremotely.com",
+          "name": "We Work Remotely",
+          "homepage_url": "https://weworkremotely.com",
+          "listing_url": "https://weworkremotely.com/remote-jobs",
+          "canonical_domain": "weworkremotely.com",
+          "category": "job_board",
+          "origin": "directory",
+          "directory_ref": "recommendations-we-work-remotely",
+          "description": "One of the largest remote-only job boards.",
+          "strategy": "rss",
+          "strategy_config": {
+            "url": "https://weworkremotely.com/remote-jobs.rss",
+            "title_pattern": "company_title",
+            "separator": ": ",
+            "location_field": "region",
+            "defaults": {
+              "workplace_type": "remote"
+            }
+          },
+          "health": "ACTIVE",
+          "status_reason": null,
+          "enabled": true,
+          "priority": 80,
+          "interval_minutes": 60,
+          "rate_limit": {
+            "min_delay_ms": 2000,
+            "max_pages": 1,
+            "max_items": 200
+          },
+          "auth_required": false,
+          "auth_note": null,
+          "terms_url": "https://weworkremotely.com/terms-of-service",
+          "terms_note": null,
+          "ai_enabled": false,
+          "allow_browser": false,
+          "next_run_at": 1791773300000,
+          "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "last_run_status": "succeeded",
+          "last_run_at": 1791769700000,
+          "last_success_at": 1791769760000,
+          "last_error_class": null,
+          "last_error_message": null,
+          "consecutive_failures": 0,
+          "circuit_open_until": null,
+          "stats": {
+            "runs": 12,
+            "successes": 12,
+            "failures": 0,
+            "total_duration_ms": 54000,
+            "jobs_found_last_run": 42,
+            "jobs_new_last_run": 3,
+            "confidence_avg_last_run": 0.9,
+            "warnings_last_run": 0,
+            "ai_calls": 0
+          },
+          "user_modified": ["priority"],
+          "revision": 3,
+          "created_at": 1790906000000,
+          "updated_at": 1791769760000,
+          "status": "ACTIVE",
+          "following": true,
+          "followers": 4,
+          "jobs_total": 310,
+          "jobs_open": 188,
+          "success_rate": 1,
+          "avg_duration_ms": 4500
+        }
+      ],
+      "viewer": {
+        "operator": false
+      },
+      "pipeline": {
+        "enabled": true,
+        "ai_enabled": false,
+        "schedule": "0 * * * *",
+        "directory_url": "https://bahrul.me/tools?category=remote-jobs",
+        "last_directory_refresh_at": 1791683600000,
+        "ai_budget": null
+      }
+    }
+  },
+  "POST /api/v1/cloud-sources": {
+    "request": {
+      "name": "Remote Freelance ID",
+      "url": "https://remotefreelance.id/jobs",
+      "priority": 60
+    },
+    "response": {
+      "source": {
+        "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "slug": "weworkremotely.com",
+        "name": "We Work Remotely",
+        "homepage_url": "https://weworkremotely.com",
+        "listing_url": "https://weworkremotely.com/remote-jobs",
+        "canonical_domain": "weworkremotely.com",
+        "category": "job_board",
+        "origin": "operator",
+        "directory_ref": "recommendations-we-work-remotely",
+        "description": "One of the largest remote-only job boards.",
+        "strategy": "rss",
+        "strategy_config": {
+          "url": "https://weworkremotely.com/remote-jobs.rss",
+          "title_pattern": "company_title",
+          "separator": ": ",
+          "location_field": "region",
+          "defaults": {
+            "workplace_type": "remote"
+          }
+        },
+        "health": "ACTIVE",
+        "status_reason": null,
+        "enabled": true,
+        "priority": 80,
+        "interval_minutes": 60,
+        "rate_limit": {
+          "min_delay_ms": 2000,
+          "max_pages": 1,
+          "max_items": 200
+        },
+        "auth_required": false,
+        "auth_note": null,
+        "terms_url": "https://weworkremotely.com/terms-of-service",
+        "terms_note": null,
+        "ai_enabled": false,
+        "allow_browser": false,
+        "next_run_at": 1791773300000,
+        "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "last_run_status": "succeeded",
+        "last_run_at": 1791769700000,
+        "last_success_at": 1791769760000,
+        "last_error_class": null,
+        "last_error_message": null,
+        "consecutive_failures": 0,
+        "circuit_open_until": null,
+        "stats": {
+          "runs": 12,
+          "successes": 12,
+          "failures": 0,
+          "total_duration_ms": 54000,
+          "jobs_found_last_run": 42,
+          "jobs_new_last_run": 3,
+          "confidence_avg_last_run": 0.9,
+          "warnings_last_run": 0,
+          "ai_calls": 0
+        },
+        "user_modified": ["priority"],
+        "revision": 3,
+        "created_at": 1790906000000,
+        "updated_at": 1791769760000,
+        "status": "ACTIVE",
+        "following": false,
+        "followers": 0,
+        "jobs_total": 0,
+        "jobs_open": 0,
+        "success_rate": null,
+        "avg_duration_ms": null
+      },
+      "run": {
+        "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C02",
+        "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "kind": "probe",
+        "trigger": "manual",
+        "status": "queued",
+        "attempt": 1,
+        "requested_by": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "queued_at": 1791769700000,
+        "started_at": null,
+        "finished_at": null,
+        "duration_ms": null,
+        "strategy": null,
+        "stats": {},
+        "error_class": null,
+        "error_message": null,
+        "http_status": null,
+        "warnings": [],
+        "log": [],
+        "engine_version": null,
+        "updated_at": 1791769760000
+      }
+    }
+  },
+  "GET /api/v1/cloud-sources/{csr_id}": {
+    "response": {
+      "source": {
+        "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "slug": "weworkremotely.com",
+        "name": "We Work Remotely",
+        "homepage_url": "https://weworkremotely.com",
+        "listing_url": "https://weworkremotely.com/remote-jobs",
+        "canonical_domain": "weworkremotely.com",
+        "category": "job_board",
+        "origin": "directory",
+        "directory_ref": "recommendations-we-work-remotely",
+        "description": "One of the largest remote-only job boards.",
+        "strategy": "rss",
+        "strategy_config": {
+          "url": "https://weworkremotely.com/remote-jobs.rss",
+          "title_pattern": "company_title",
+          "separator": ": ",
+          "location_field": "region",
+          "defaults": {
+            "workplace_type": "remote"
+          }
+        },
+        "health": "ACTIVE",
+        "status_reason": null,
+        "enabled": true,
+        "priority": 80,
+        "interval_minutes": 60,
+        "rate_limit": {
+          "min_delay_ms": 2000,
+          "max_pages": 1,
+          "max_items": 200
+        },
+        "auth_required": false,
+        "auth_note": null,
+        "terms_url": "https://weworkremotely.com/terms-of-service",
+        "terms_note": null,
+        "ai_enabled": false,
+        "allow_browser": false,
+        "next_run_at": 1791773300000,
+        "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "last_run_status": "succeeded",
+        "last_run_at": 1791769700000,
+        "last_success_at": 1791769760000,
+        "last_error_class": null,
+        "last_error_message": null,
+        "consecutive_failures": 0,
+        "circuit_open_until": null,
+        "stats": {
+          "runs": 12,
+          "successes": 12,
+          "failures": 0,
+          "total_duration_ms": 54000,
+          "jobs_found_last_run": 42,
+          "jobs_new_last_run": 3,
+          "confidence_avg_last_run": 0.9,
+          "warnings_last_run": 0,
+          "ai_calls": 0
+        },
+        "user_modified": ["priority"],
+        "revision": 3,
+        "created_at": 1790906000000,
+        "updated_at": 1791769760000,
+        "status": "ACTIVE",
+        "following": true,
+        "followers": 4,
+        "jobs_total": 310,
+        "jobs_open": 188,
+        "success_rate": 1,
+        "avg_duration_ms": 4500
+      },
+      "runs": [
+        {
+          "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "kind": "scrape",
+          "trigger": "schedule",
+          "status": "succeeded",
+          "attempt": 1,
+          "requested_by": null,
+          "queued_at": 1791769700000,
+          "started_at": 1791769700000,
+          "finished_at": 1791769760000,
+          "duration_ms": 4500,
+          "strategy": "rss",
+          "stats": {
+            "pages": 1,
+            "postings_found": 42,
+            "new": 3,
+            "updated": 1,
+            "unchanged": 38,
+            "duplicates": 0,
+            "invalid": 0,
+            "closed": 0,
+            "linked": 3,
+            "confidence_avg": 0.9,
+            "scraper_ms": 2100
+          },
+          "error_class": null,
+          "error_message": null,
+          "http_status": 200,
+          "warnings": [
+            {
+              "code": "missing_field",
+              "message": "2 postings have no location",
+              "field": "location",
+              "count": 2
+            }
+          ],
+          "log": [
+            {
+              "at": 1791769760000,
+              "level": "info",
+              "event": "page_fetched",
+              "message": "Listing page 1: 42 items",
+              "url": "https://weworkremotely.com/remote-jobs.rss",
+              "http_status": 200,
+              "ms": 380
+            }
+          ],
+          "engine_version": "pilih-scraper 0.1.0; pilih-jobs 0.1.0; scrapling 0.4.15",
+          "updated_at": 1791769760000
+        }
+      ]
+    }
+  },
+  "PATCH /api/v1/cloud-sources/{csr_id}": {
+    "request": {
+      "base_revision": 3,
+      "interval_minutes": 120,
+      "enabled": true
+    },
+    "response": {
+      "source": {
+        "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "slug": "weworkremotely.com",
+        "name": "We Work Remotely",
+        "homepage_url": "https://weworkremotely.com",
+        "listing_url": "https://weworkremotely.com/remote-jobs",
+        "canonical_domain": "weworkremotely.com",
+        "category": "job_board",
+        "origin": "directory",
+        "directory_ref": "recommendations-we-work-remotely",
+        "description": "One of the largest remote-only job boards.",
+        "strategy": "rss",
+        "strategy_config": {
+          "url": "https://weworkremotely.com/remote-jobs.rss",
+          "title_pattern": "company_title",
+          "separator": ": ",
+          "location_field": "region",
+          "defaults": {
+            "workplace_type": "remote"
+          }
+        },
+        "health": "ACTIVE",
+        "status_reason": null,
+        "enabled": true,
+        "priority": 80,
+        "interval_minutes": 120,
+        "rate_limit": {
+          "min_delay_ms": 2000,
+          "max_pages": 1,
+          "max_items": 200
+        },
+        "auth_required": false,
+        "auth_note": null,
+        "terms_url": "https://weworkremotely.com/terms-of-service",
+        "terms_note": null,
+        "ai_enabled": false,
+        "allow_browser": false,
+        "next_run_at": 1791773300000,
+        "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "last_run_status": "succeeded",
+        "last_run_at": 1791769700000,
+        "last_success_at": 1791769760000,
+        "last_error_class": null,
+        "last_error_message": null,
+        "consecutive_failures": 0,
+        "circuit_open_until": null,
+        "stats": {
+          "runs": 12,
+          "successes": 12,
+          "failures": 0,
+          "total_duration_ms": 54000,
+          "jobs_found_last_run": 42,
+          "jobs_new_last_run": 3,
+          "confidence_avg_last_run": 0.9,
+          "warnings_last_run": 0,
+          "ai_calls": 0
+        },
+        "user_modified": ["priority"],
+        "revision": 4,
+        "created_at": 1790906000000,
+        "updated_at": 1791769760000,
+        "status": "ACTIVE",
+        "following": true,
+        "followers": 4,
+        "jobs_total": 310,
+        "jobs_open": 188,
+        "success_rate": 1,
+        "avg_duration_ms": 4500
+      }
+    }
+  },
+  "PUT /api/v1/cloud-sources/{csr_id}/follow": {
+    "response": {
+      "source": {
+        "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "slug": "weworkremotely.com",
+        "name": "We Work Remotely",
+        "homepage_url": "https://weworkremotely.com",
+        "listing_url": "https://weworkremotely.com/remote-jobs",
+        "canonical_domain": "weworkremotely.com",
+        "category": "job_board",
+        "origin": "directory",
+        "directory_ref": "recommendations-we-work-remotely",
+        "description": "One of the largest remote-only job boards.",
+        "strategy": "rss",
+        "strategy_config": {
+          "url": "https://weworkremotely.com/remote-jobs.rss",
+          "title_pattern": "company_title",
+          "separator": ": ",
+          "location_field": "region",
+          "defaults": {
+            "workplace_type": "remote"
+          }
+        },
+        "health": "ACTIVE",
+        "status_reason": null,
+        "enabled": true,
+        "priority": 80,
+        "interval_minutes": 60,
+        "rate_limit": {
+          "min_delay_ms": 2000,
+          "max_pages": 1,
+          "max_items": 200
+        },
+        "auth_required": false,
+        "auth_note": null,
+        "terms_url": "https://weworkremotely.com/terms-of-service",
+        "terms_note": null,
+        "ai_enabled": false,
+        "allow_browser": false,
+        "next_run_at": 1791773300000,
+        "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "last_run_status": "succeeded",
+        "last_run_at": 1791769700000,
+        "last_success_at": 1791769760000,
+        "last_error_class": null,
+        "last_error_message": null,
+        "consecutive_failures": 0,
+        "circuit_open_until": null,
+        "stats": {
+          "runs": 12,
+          "successes": 12,
+          "failures": 0,
+          "total_duration_ms": 54000,
+          "jobs_found_last_run": 42,
+          "jobs_new_last_run": 3,
+          "confidence_avg_last_run": 0.9,
+          "warnings_last_run": 0,
+          "ai_calls": 0
+        },
+        "user_modified": ["priority"],
+        "revision": 3,
+        "created_at": 1790906000000,
+        "updated_at": 1791769760000,
+        "status": "ACTIVE",
+        "following": true,
+        "followers": 4,
+        "jobs_total": 310,
+        "jobs_open": 188,
+        "success_rate": 1,
+        "avg_duration_ms": 4500
+      },
+      "backfilled": 12
+    }
+  },
+  "DELETE /api/v1/cloud-sources/{csr_id}/follow": {
+    "response": {
+      "source": {
+        "id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "slug": "weworkremotely.com",
+        "name": "We Work Remotely",
+        "homepage_url": "https://weworkremotely.com",
+        "listing_url": "https://weworkremotely.com/remote-jobs",
+        "canonical_domain": "weworkremotely.com",
+        "category": "job_board",
+        "origin": "directory",
+        "directory_ref": "recommendations-we-work-remotely",
+        "description": "One of the largest remote-only job boards.",
+        "strategy": "rss",
+        "strategy_config": {
+          "url": "https://weworkremotely.com/remote-jobs.rss",
+          "title_pattern": "company_title",
+          "separator": ": ",
+          "location_field": "region",
+          "defaults": {
+            "workplace_type": "remote"
+          }
+        },
+        "health": "ACTIVE",
+        "status_reason": null,
+        "enabled": true,
+        "priority": 80,
+        "interval_minutes": 60,
+        "rate_limit": {
+          "min_delay_ms": 2000,
+          "max_pages": 1,
+          "max_items": 200
+        },
+        "auth_required": false,
+        "auth_note": null,
+        "terms_url": "https://weworkremotely.com/terms-of-service",
+        "terms_note": null,
+        "ai_enabled": false,
+        "allow_browser": false,
+        "next_run_at": 1791773300000,
+        "last_run_id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "last_run_status": "succeeded",
+        "last_run_at": 1791769700000,
+        "last_success_at": 1791769760000,
+        "last_error_class": null,
+        "last_error_message": null,
+        "consecutive_failures": 0,
+        "circuit_open_until": null,
+        "stats": {
+          "runs": 12,
+          "successes": 12,
+          "failures": 0,
+          "total_duration_ms": 54000,
+          "jobs_found_last_run": 42,
+          "jobs_new_last_run": 3,
+          "confidence_avg_last_run": 0.9,
+          "warnings_last_run": 0,
+          "ai_calls": 0
+        },
+        "user_modified": ["priority"],
+        "revision": 3,
+        "created_at": 1790906000000,
+        "updated_at": 1791769760000,
+        "status": "ACTIVE",
+        "following": false,
+        "followers": 3,
+        "jobs_total": 310,
+        "jobs_open": 188,
+        "success_rate": 1,
+        "avg_duration_ms": 4500
+      }
+    }
+  },
+  "GET /api/v1/cloud-sources/{csr_id}/runs": {
+    "query": {
+      "limit": "20"
+    },
+    "response": {
+      "items": [
+        {
+          "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "kind": "scrape",
+          "trigger": "schedule",
+          "status": "succeeded",
+          "attempt": 1,
+          "requested_by": null,
+          "queued_at": 1791769700000,
+          "started_at": 1791769700000,
+          "finished_at": 1791769760000,
+          "duration_ms": 4500,
+          "strategy": "rss",
+          "stats": {
+            "pages": 1,
+            "postings_found": 42,
+            "new": 3,
+            "updated": 1,
+            "unchanged": 38,
+            "duplicates": 0,
+            "invalid": 0,
+            "closed": 0,
+            "linked": 3,
+            "confidence_avg": 0.9,
+            "scraper_ms": 2100
+          },
+          "error_class": null,
+          "error_message": null,
+          "http_status": 200,
+          "warnings": [
+            {
+              "code": "missing_field",
+              "message": "2 postings have no location",
+              "field": "location",
+              "count": 2
+            }
+          ],
+          "log": [
+            {
+              "at": 1791769760000,
+              "level": "info",
+              "event": "page_fetched",
+              "message": "Listing page 1: 42 items",
+              "url": "https://weworkremotely.com/remote-jobs.rss",
+              "http_status": 200,
+              "ms": 380
+            }
+          ],
+          "engine_version": "pilih-scraper 0.1.0; pilih-jobs 0.1.0; scrapling 0.4.15",
+          "updated_at": 1791769760000
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  "POST /api/v1/cloud-sources/{csr_id}/runs": {
+    "request": {
+      "retry": true
+    },
+    "response": {
+      "run": {
+        "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C02",
+        "source_id": "csr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "kind": "scrape",
+        "trigger": "retry",
+        "status": "queued",
+        "attempt": 1,
+        "requested_by": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "queued_at": 1791769700000,
+        "started_at": null,
+        "finished_at": null,
+        "duration_ms": null,
+        "strategy": "rss",
+        "stats": {},
+        "error_class": null,
+        "error_message": null,
+        "http_status": null,
+        "warnings": [],
+        "log": [],
+        "engine_version": null,
+        "updated_at": 1791769760000
+      }
+    }
+  },
+  "GET /api/v1/cloud-discovery/runs": {
+    "query": {
+      "limit": "20"
+    },
+    "response": {
+      "items": [
+        {
+          "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C02",
+          "source_id": null,
+          "kind": "directory",
+          "trigger": "manual",
+          "status": "queued",
+          "attempt": 1,
+          "requested_by": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+          "queued_at": 1791769700000,
+          "started_at": null,
+          "finished_at": null,
+          "duration_ms": null,
+          "strategy": null,
+          "stats": {},
+          "error_class": null,
+          "error_message": null,
+          "http_status": null,
+          "warnings": [],
+          "log": [],
+          "engine_version": null,
+          "updated_at": 1791769760000
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  "POST /api/v1/cloud-discovery/refresh": {
+    "response": {
+      "run": {
+        "id": "crn_01JA6V8M3W8Z1T6Q4Y2B7K9C02",
+        "source_id": null,
+        "kind": "directory",
+        "trigger": "manual",
+        "status": "queued",
+        "attempt": 1,
+        "requested_by": "usr_01JA6V8M3W8Z1T6Q4Y2B7K9C00",
+        "queued_at": 1791769700000,
+        "started_at": null,
+        "finished_at": null,
+        "duration_ms": null,
+        "strategy": null,
+        "stats": {},
+        "error_class": null,
+        "error_message": null,
+        "http_status": null,
+        "warnings": [],
+        "log": [],
+        "engine_version": null,
+        "updated_at": 1791769760000
       }
     }
   }

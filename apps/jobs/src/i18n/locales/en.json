@@ -10,7 +10,8 @@
     "loading": "Loading…",
     "retry": "Retry",
     "save": "Save",
-    "undo": "Undo"
+    "undo": "Undo",
+    "close": "Close"
   },
   "nav": {
     "board": "Board",
@@ -2091,8 +2092,8 @@
   },
   "sources": {
     "title": "Sources",
-    "intro": "The job boards and career pages your CLI discovers jobs from. Nothing is fetched by our servers.",
-    "listTitle": "Your sources",
+    "intro": "Remote job boards our servers check every hour, and the job boards and career pages your CLI discovers from.",
+    "listTitle": "Your CLI sources",
     "listLabel": "Job sources",
     "add": "Add source",
     "emptyTitle": "Add a source to start discovering jobs",
@@ -2478,7 +2479,7 @@
       "emptySeen": "Jobs you mark as seen show up here.",
       "emptyDismissed": "Jobs you dismiss show up here."
     },
-    "intro": "Jobs the CLI found for you, best match first."
+    "intro": "Jobs your CLI and the remote job boards you follow found for you, best match first."
   },
   "trackedJob": {
     "back": "Inbox",
@@ -2620,5 +2621,312 @@
       "title": "Couldn't load your stats",
       "body": "Check your connection and try again."
     }
+  },
+  "cloudSources": {
+    "title": "Remote job boards",
+    "intro": "Public remote-job boards our servers check every hour, politely and within each site's rules. Follow a board to get its new jobs in your inbox; nothing is fetched behind a login.",
+    "listLabel": "Remote job boards",
+    "empty": "No boards in the catalog yet.",
+    "noMatch": "No board matches these filters.",
+    "errorTitle": "Couldn't load the remote job boards",
+    "error": "Check your connection and try again.",
+    "stale": "Offline: showing older data",
+    "never": "Never",
+    "what": "{name}",
+    "refused": "Not done: {message}",
+    "statusWithReason": "{status}: {reason}",
+    "openDetails": "Open {name}",
+    "lastRunWas": "Last run: {status}",
+    "newLastRun": "+{count} last run",
+    "statuses": {
+      "ACTIVE": "Active",
+      "DISABLED": "Disabled",
+      "SCRAPING": "Checking now",
+      "FAILED": "Failed",
+      "BLOCKED": "Blocked",
+      "AUTH_REQUIRED": "Needs an account",
+      "RATE_LIMITED": "Rate limited",
+      "UNSUPPORTED": "Not a job board"
+    },
+    "categories": {
+      "job_board": "Job board",
+      "aggregator": "Aggregator",
+      "freelance_marketplace": "Freelance marketplace",
+      "talent_network": "Talent network",
+      "staffing_service": "Staffing service",
+      "tutoring_platform": "Tutoring platform",
+      "content_marketplace": "Content marketplace",
+      "community": "Community",
+      "directory": "Directory",
+      "defunct": "Closed down",
+      "unknown": "Unclassified"
+    },
+    "strategies": {
+      "json_api": "Public API",
+      "rss": "RSS feed",
+      "json_ld": "Structured data",
+      "embedded_json": "Embedded page data",
+      "html_selectors": "Page selectors",
+      "browser": "Browser rendering",
+      "ai": "AI extraction",
+      "none": "Not scraped"
+    },
+    "strategyHelp": {
+      "json_api": "A documented public endpoint returning jobs as data. Config: url, items_path, fields.",
+      "rss": "An RSS or Atom feed of jobs. Config: url, title_pattern, and optional company / location fields.",
+      "json_ld": "Detail pages carrying schema.org JobPosting data. Config: listing_url, detail_link_selector.",
+      "embedded_json": "Jobs inside a page script such as __NEXT_DATA__. Config: url, items_path, fields.",
+      "html_selectors": "CSS selectors on the listing page, with adaptive relocation when the layout drifts. Config: url, item, fields.",
+      "browser": "Like page selectors, after rendering the page in a headless browser. Needs browser rendering allowed.",
+      "ai": "Page text is read by the AI fallback; used only with AI extraction on and within the budget. Config: url.",
+      "none": "The board is listed but never fetched."
+    },
+    "origins": {
+      "default": "Default",
+      "directory": "Directory",
+      "operator": "Added"
+    },
+    "runStatuses": {
+      "queued": "Queued",
+      "running": "Running",
+      "succeeded": "Succeeded",
+      "partial": "Partial",
+      "failed": "Failed",
+      "blocked": "Blocked",
+      "auth_required": "Needs an account",
+      "rate_limited": "Rate limited",
+      "unsupported": "Not supported",
+      "skipped": "Skipped"
+    },
+    "errors": {
+      "network": "Network error",
+      "timeout": "Timed out",
+      "http_5xx": "Server error",
+      "rate_limited": "Rate limited",
+      "access_denied": "Access denied",
+      "challenge_detected": "Bot check",
+      "robots_disallowed": "Blocked by robots.txt",
+      "not_found": "Not found",
+      "source_closed": "Board closed",
+      "source_unavailable": "Source unavailable",
+      "parse_error": "Couldn't read",
+      "schema_invalid": "Format changed",
+      "selector_drift": "Page layout drifted",
+      "unsupported_content": "Unsupported page",
+      "policy_blocked": "Not allowed",
+      "cancelled": "Cancelled",
+      "auth_required": "Login required",
+      "engine_unavailable": "Scraper unavailable",
+      "invalid_config": "Invalid configuration",
+      "operatorOnly": "Only catalog operators can do this."
+    },
+    "diagnostics": {
+      "challenge": "The site shows a bot challenge to honest crawlers. Pilih never bypasses it; an operator can retry later or disable the source.",
+      "denied": "The site refused access to our crawler. Pilih stops instead of trying harder; an operator can retry later or disable the source.",
+      "auth": "Listings need an account on the site. Pilih never signs in or collects passwords, so this board is not scraped.",
+      "robots": "The site's robots.txt does not allow crawling the listings, so Pilih leaves them alone.",
+      "rate_limited": "The site asked us to slow down. The next check waits until it allows one.",
+      "rate_limitedUntil": "The site asked us to slow down. The next check waits until {at}.",
+      "layout": "The page layout or data format changed and no jobs could be read. An operator can update the strategy configuration and retry.",
+      "engine": "Our scraper could not be reached. The run is retried automatically.",
+      "config": "The strategy configuration is invalid. An operator needs to fix it.",
+      "transient": "A temporary network or server problem. The run is retried automatically with a growing delay.",
+      "gone": "The listing page no longer exists. The board may have moved or closed.",
+      "policy": "This source is not allowed by Pilih's discovery rules.",
+      "other": "The last run did not finish. Look at its log below."
+    },
+    "intervals": {
+      "m60": "Every hour",
+      "m120": "Every 2 hours",
+      "m180": "Every 3 hours",
+      "m360": "Every 6 hours",
+      "m720": "Every 12 hours",
+      "m1440": "Every day",
+      "m10080": "Every week",
+      "custom": "Every {minutes} minutes"
+    },
+    "next": {
+      "scraping": "Checking now",
+      "due": "At the next hourly run",
+      "breaker": "Paused after failures; tries again {time}",
+      "paused": {
+        "pipeline_off": "Paused: cloud discovery is off",
+        "disabled": "Paused: disabled",
+        "breaker": "Paused after failures",
+        "needs_retry": "Waiting for an operator",
+        "unsupported": "Not scraped",
+        "no_strategy": "Not scraped"
+      }
+    },
+    "columns": {
+      "board": "Board",
+      "type": "Type",
+      "status": "Status",
+      "lastSuccess": "Last success",
+      "nextRun": "Next check",
+      "jobs": "Jobs",
+      "successRate": "Success rate",
+      "follow": "Follow",
+      "checks": "Checks"
+    },
+    "filters": {
+      "status": "Status",
+      "following": "Following",
+      "search": "Search boards",
+      "searchPlaceholder": "Search by name or domain",
+      "groups": {
+        "all": "All",
+        "active": "Active",
+        "attention": "Needs attention",
+        "inactive": "Unsupported and disabled"
+      }
+    },
+    "pipeline": {
+      "offTitle": "Cloud discovery is off",
+      "off": "Boards are not being checked right now. Following still works; new jobs arrive once it is turned on.",
+      "offOperator": "Boards are not being checked. Turn on the {flag} feature flag to start the hourly runs.",
+      "schedule": "Checked every hour",
+      "directoryRefreshed": "directory refreshed {time}"
+    },
+    "directory": {
+      "refresh": "Refresh directory",
+      "queued": "Directory refresh queued. New boards show up after they are checked.",
+      "failed": "Couldn't queue the directory refresh. Try again."
+    },
+    "add": {
+      "open": "Add board",
+      "title": "Add a remote job board",
+      "description": "Pilih checks the site first: robots.txt, feeds, structured data and whether listings need an account.",
+      "name": "Name",
+      "nameRequired": "Enter a name.",
+      "url": "Website",
+      "urlHelp": "The board's home page or jobs page.",
+      "listingUrl": "Listing page (optional)",
+      "category": "Category",
+      "strategy": "Strategy",
+      "detect": "Detect automatically",
+      "submit": "Add and check",
+      "added": "{name} added. Checking the site now.",
+      "failed": "Couldn't add the board. Try again.",
+      "duplicate": "This board is already in the catalog.",
+      "probeStatus": "Site check:",
+      "probeHelp": "The board is classified within a few minutes; it appears in the list with its status.",
+      "urlProblems": {
+        "empty": "Enter the board's web address.",
+        "invalid": "Enter a full web address, like https://jobs.example.com.",
+        "scheme": "Use an address starting with https:// or http://.",
+        "credentials": "Leave out user names and passwords.",
+        "local": "Use a public website, not a local or private address."
+      }
+    },
+    "follow": {
+      "label": "Follow this board",
+      "help": "New jobs from it arrive in your inbox and are scored for you. Unfollowing keeps what you already have.",
+      "switchFor": "Follow {name}",
+      "followed": "Following {name}.",
+      "unfollowed": "Stopped following {name}.",
+      "backfilled": "Following {name}: added {count} recent jobs to your inbox.",
+      "failed": "Couldn't change following {name}. Try again."
+    },
+    "run": {
+      "now": "Run now",
+      "retry": "Retry",
+      "probe": "Re-check site",
+      "queued": "{name} queued for a check.",
+      "retryQueued": "{name}: breaker cleared and a retry queued.",
+      "probeQueued": "{name}: site check queued.",
+      "failed": "Couldn't queue the run. Try again."
+    },
+    "retry": {
+      "title": "Retry {name}?",
+      "body": "This clears the failure count, closes the breaker and lifts a blocked, login or rate-limit stop, then queues a check. If the site still refuses honest crawlers, it stops again.",
+      "confirm": "Retry now"
+    },
+    "editor": {
+      "title": "Operator settings",
+      "intro": "Changes apply to everyone following this board and are kept when the directory is refreshed.",
+      "enabled": "Enabled",
+      "enabledHelp": "Disabled boards are never checked and stay disabled after directory refreshes.",
+      "priority": "Priority",
+      "priorityHelp": "0 to 100; higher runs first.",
+      "priorityError": "Enter a whole number from 0 to 100.",
+      "interval": "Check every",
+      "strategy": "Extraction strategy",
+      "config": "Strategy configuration (JSON)",
+      "configSyntax": "This is not valid JSON.",
+      "configInvalid": "The configuration does not match this strategy:",
+      "configValid": "Valid for this strategy.",
+      "rateTitle": "Politeness limits",
+      "rateDefault": "Default",
+      "rangeError": "Enter a whole number from {min} to {max}.",
+      "rate": {
+        "minDelayMs": "Delay between requests (ms)",
+        "maxPages": "Listing pages per run",
+        "maxItems": "Jobs per run",
+        "maxDetails": "Detail pages per run"
+      },
+      "ai": "AI extraction fallback",
+      "aiHelp": "Only when deterministic extraction finds nothing, with AI on globally and within the monthly budget.",
+      "browser": "Allow browser rendering",
+      "browserHelp": "Renders the page in a headless browser for sites that build listings with JavaScript. Slower; use only when needed.",
+      "health": "Health",
+      "healthKeep": "Keep current",
+      "healthActive": "Active (re-activate)",
+      "healthUnsupported": "Not a job board (retire)",
+      "authRequired": "Listings need an account",
+      "statusReason": "Status note",
+      "authNote": "Account note",
+      "reset": "Reset"
+    },
+    "sheet": {
+      "stats": "Statistics",
+      "runs": "Runs",
+      "avgDuration": "Average duration",
+      "jobs": "Jobs found",
+      "jobsValue": "{total} ({open} open)",
+      "newLastRun": "New in the last run",
+      "followers": "Followers",
+      "confidence": "Extraction confidence",
+      "warnings": "Warnings in the last run",
+      "aiCalls": "AI calls",
+      "listing": "Listing page",
+      "terms": "Terms",
+      "termsLink": "Read the site's terms",
+      "attribution": "Attribution",
+      "authTitle": "Needs an account",
+      "authBody": "This board shows its listings only to signed-in users. Pilih never logs in for you."
+    },
+    "runs": {
+      "title": "Recent runs",
+      "loading": "Loading runs…",
+      "none": "No runs yet.",
+      "error": "Couldn't load the runs.",
+      "loadMore": "Load older runs",
+      "showLog": "Show log ({count})",
+      "hideLog": "Hide log",
+      "warnings": "Warnings",
+      "log": "Run log",
+      "http": "HTTP {status}",
+      "counts": "{found} found, {added} new, {updated} updated",
+      "directoryCounts": "{entries} entries, {registered} new boards",
+      "confidence": "{value}% confidence",
+      "attempt": "attempt {n}",
+      "levels": {
+        "info": "Info",
+        "warn": "Warning",
+        "error": "Error"
+      },
+      "triggers": {
+        "schedule": "Scheduled",
+        "manual": "Manual",
+        "retry": "Retry"
+      },
+      "kinds": {
+        "scrape": "Scrape",
+        "directory": "Directory refresh",
+        "probe": "Site check"
+      }
+    },
+    "nextPrefix": "Next:"
   }
 }

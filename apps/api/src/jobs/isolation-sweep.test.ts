@@ -101,6 +101,12 @@ const RULE_LIMITS = {
 /** A's ids, keyed by the route parameter names of 05. */
 interface Ids {
   ans_id: string;
+  /**
+   * A cloud catalog source A follows (24 §5). Catalog rows are system data
+   * every user may read, so this id is not one of A's secrets; A's follow
+   * row is (snapshot) and must survive B's calls.
+   */
+  csr_id: string;
   app_id: string;
   apr_id: string;
   att_id: string;
@@ -301,12 +307,25 @@ async function buildWorld(bEmail: string): Promise<World> {
   expectStatus(exported, 202, "A export");
   await t.queue.drain(t.env, { deps: { clock } });
 
+  // A follows a cloud catalog source (the catalog is seeded on first read).
+  const cloud = await a.web.get<Body>("/api/v1/cloud-sources");
+  expectStatus(cloud, 200, "A cloud catalog");
+  const csrId = (cloud.body.items as Array<{ id: string; slug: string }>).find(
+    (item) => item.slug === "weworkremotely.com"
+  )?.id as string;
+  expectStatus(
+    await a.web.put<Body>(`/api/v1/cloud-sources/${csrId}/follow`),
+    200,
+    "A follow"
+  );
+
   // B's own data set (11 §13: "users A and B with full data sets").
   const bApp = seedReadyApp(t, userB);
   await seedFile(t, userB);
 
   const ids: Ids = {
     ans_id: answer.body.answer.id,
+    csr_id: csrId,
     app_id: app.appId,
     apr_id: aprId,
     att_id: attempt.id,
@@ -335,7 +354,14 @@ async function buildWorld(bEmail: string): Promise<World> {
     bAppId: bApp.appId,
     ids,
     userA,
-    secrets: [...Object.values(ids), A_EMAIL, A_CV_ID, inbox.posting_id],
+    secrets: [
+      ...Object.entries(ids)
+        .filter(([key]) => key !== "csr_id")
+        .map(([, value]) => value),
+      A_EMAIL,
+      A_CV_ID,
+      inbox.posting_id,
+    ],
   };
 }
 
@@ -883,6 +909,25 @@ function sweepCases(ids: Ids): Record<string, SweepCase> {
       expect: "not_found",
       body: { sent_confirmed: true },
     },
+    // 05 §15 cloud catalog (24): system rows every user reads; operator
+    // routes answer 403 operator_required to B (and 422 to an admin while
+    // the pipeline flag is off). Nothing of A comes back, A's follow stays.
+    "GET /api/v1/cloud-sources": { expect: "no_leak" },
+    "POST /api/v1/cloud-sources": {
+      expect: "no_leak",
+      body: { name: "Bob board", url: "https://bob-board.example.org/jobs" },
+    },
+    "GET /api/v1/cloud-sources/{csr_id}": { expect: "no_leak" },
+    "PATCH /api/v1/cloud-sources/{csr_id}": {
+      expect: "no_leak",
+      body: { base_revision: 1, priority: 51 },
+    },
+    "PUT /api/v1/cloud-sources/{csr_id}/follow": { expect: "no_leak" },
+    "DELETE /api/v1/cloud-sources/{csr_id}/follow": { expect: "no_leak" },
+    "GET /api/v1/cloud-sources/{csr_id}/runs": { expect: "no_leak" },
+    "POST /api/v1/cloud-sources/{csr_id}/runs": { expect: "no_leak", body: {} },
+    "GET /api/v1/cloud-discovery/runs": { expect: "no_leak" },
+    "POST /api/v1/cloud-discovery/refresh": { expect: "no_leak" },
   };
 }
 
@@ -1167,6 +1212,7 @@ function placeholderIds(): Ids {
   const id = (prefix: Parameters<typeof newId>[0]) => newId(prefix, NOW);
   return {
     ans_id: id("ans"),
+    csr_id: id("csr"),
     app_id: id("app"),
     apr_id: id("apr"),
     att_id: id("att"),

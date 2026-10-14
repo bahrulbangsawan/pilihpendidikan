@@ -368,6 +368,27 @@ domain results also carry `calls` (provider requests).
   `file-retention`, `analytics`. A failing job is logged; the others still
   run.
 
+## Cloud discovery (`cloud/`, `services/cloud/`, `repo/cloud/`; 24)
+
+- System tables `cloud_sources`, `cloud_runs`, `cloud_state` have no
+  `user_id` (the T11-SQL lint lists them as system tables);
+  `cloud_source_follows` is user-scoped. Shared postings keep the
+  `sql-allow: public-posting` marker.
+- `cloud/consumer.ts` is a wiring file (`jobsDb`); handlers get `qc = {env,
+  ctx, db, flags, message, attempts, now(), random(), ai(), log}` and return
+  `{action: "ack"}` or `{action: "retry", delaySeconds}`. Make every step
+  idempotent: a redelivered run that is already final is acked; the source
+  lease (`lease_id` = run id) is re-entrant for the same run.
+- Ingestion reuses `prepareItem` and `planBatch` with `userId: null` (system
+  mode: no links, `new` = inserted); pure sightings collapse into one bulk
+  statement per 90 postings. Followers are linked afterwards
+  (`services/cloud/fanout.ts`) with their own trusted scope.
+- Health / breaker / backoff rules are pure functions in
+  `services/cloud/health.ts`; probe classification in `classify.ts`; never
+  add a code path that escalates after a block (D-16, D-37).
+- Tests: `test/cloud-fakes.ts` (`createFakeScrapeQueue`, `createFakeScraper`,
+  `cloudItem`, `scrapeResponse`).
+
 ## Tests (`bun test`; run as `env -u CLAUDECODE bun test <paths>`)
 
 ```ts

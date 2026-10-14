@@ -2,6 +2,7 @@
 // with `--include-env=false`) so optional secrets stay optional and tests can
 // build a fake env without every binding.
 
+import type { CloudQueueMessage } from "@pilihpendidikan/jobs-contracts/cloud";
 import type { JobsAiMessage } from "@pilihpendidikan/jobs-contracts/queue";
 
 export interface Env {
@@ -18,6 +19,21 @@ export interface Env {
   JOBS_FILES: R2Bucket;
   // Queue `jobs-ai` (14 §6). Consumed by src/jobs/queue/consumer.ts.
   JOBS_AI_QUEUE: Queue<JobsAiMessage>;
+  // Queue `jobs-scrape` (24 §6): one message per cloud source scrape, probe
+  // or directory refresh. Consumed by src/jobs/cloud/consumer.ts. Optional so
+  // envs without cloud discovery still boot.
+  JOBS_SCRAPE_QUEUE?: Queue<CloudQueueMessage>;
+  // Service binding to the scraper Worker `jobs-scraper-pilihpendidikan`
+  // (apps/jobs-scraper, 24 §3). Optional: absent in tests and most dev setups.
+  SCRAPER?: Fetcher;
+  // Dev only: base URL of a scraper started outside wrangler (the Python
+  // service on http://localhost:8791, or `wrangler dev` of apps/jobs-scraper
+  // on :8792). When set it is used instead of the SCRAPER binding.
+  SCRAPER_FALLBACK_URL?: string;
+  // System AI budget of cloud discovery (D-40), USD per month; default "2.00".
+  JOBS_CLOUD_AI_MONTHLY_BUDGET_USD?: string;
+  // AI fallback jobs below this model confidence are dropped; default "0.5".
+  JOBS_CLOUD_AI_MIN_CONFIDENCE?: string;
   // Sessions (`auth:session:<hash>`), magic links, one-time codes, OAuth state.
   AUTH_KV: KVNamespace;
   // `cv:{id}` + `owner:cv:{id}`.

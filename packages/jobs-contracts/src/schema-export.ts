@@ -10,6 +10,7 @@
 import { z } from "zod";
 import "./adapters";
 import "./api/routes";
+import "./cloud";
 import "./data";
 import "./email";
 import "./facts";

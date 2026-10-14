@@ -90,6 +90,28 @@ export function formatNumber(value: number, locale: Locale): string {
   return new Intl.NumberFormat(intlLocale(locale)).format(value);
 }
 
+/** A run duration: "850 ms", "4.5 s", "2 min 5 s", "1 h 3 min". */
+export function formatDuration(ms: number, locale: Locale): string {
+  const value = Math.max(0, Math.round(ms));
+  if (value < 1000) {
+    return `${formatNumber(value, locale)} ms`;
+  }
+  if (value < MINUTE) {
+    const seconds = new Intl.NumberFormat(intlLocale(locale), {
+      maximumFractionDigits: 1,
+    }).format(value / 1000);
+    return `${seconds} s`;
+  }
+  if (value < HOUR) {
+    const minutes = Math.floor(value / MINUTE);
+    const seconds = Math.round((value % MINUTE) / 1000);
+    return seconds > 0 ? `${minutes} min ${seconds} s` : `${minutes} min`;
+  }
+  const hours = Math.floor(value / HOUR);
+  const minutes = Math.round((value % HOUR) / MINUTE);
+  return minutes > 0 ? `${hours} h ${minutes} min` : `${hours} h`;
+}
+
 export function formatPercent(value: number, locale: Locale): string {
   return new Intl.NumberFormat(intlLocale(locale), {
     style: "percent",

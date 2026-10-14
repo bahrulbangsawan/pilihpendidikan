@@ -34,7 +34,7 @@ export interface InboxFilter {
   profileVersion: number;
   q: string | null;
   rubricVersion: string;
-  /** A `src_…` id or a source kind. */
+  /** A `src_…` / `csr_…` id or a source kind. */
   source: string | null;
   states: readonly string[];
 }
@@ -62,7 +62,7 @@ export async function listInboxIds(
     where.push("s.status = 'ready' AND s.score >= ?");
     binds.push(filter.minScore);
   }
-  if (filter.source?.startsWith("src_")) {
+  if (filter.source?.startsWith("src_") || filter.source?.startsWith("csr_")) {
     where.push("u.source_id = ?");
     binds.push(filter.source);
   } else if (filter.source) {

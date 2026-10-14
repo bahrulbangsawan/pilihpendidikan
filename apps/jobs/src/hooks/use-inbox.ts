@@ -70,6 +70,21 @@ export function useInboxSources() {
   });
 }
 
+/**
+ * Cloud boards the user follows (24 §5.3): their postings carry the `csr_…`
+ * id as the inbox source, so the source filter offers them by name. Shares
+ * the /sources list cache; a failure only hides the options.
+ */
+export function useFollowedCloudSources() {
+  return useQuery({
+    queryKey: queryKeys.cloudSources,
+    queryFn: () => api("GET /api/v1/cloud-sources", {}),
+    select: (data) => data.items.filter((source) => source.following),
+    staleTime: 5 * MINUTE_MS,
+    retry: false,
+  });
+}
+
 /** The inbox list for `search`, 50 rows a page, "Load more" for the next. */
 export function useInboxItems(search: InboxSearch, runActive: boolean) {
   const failures = useRef(0);

@@ -1,0 +1,2389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "AdapterId": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url"
+      ]
+    },
+    "AiCandidate": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 8192
+        }
+      },
+      "required": ["url", "reason", "title", "text"]
+    },
+    "AiStrategyConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        }
+      },
+      "required": ["url"]
+    },
+    "ApplicationMethod": {
+      "type": "string",
+      "enum": ["external_url", "email", "platform_account", "unknown"]
+    },
+    "ApplicationSupport": {
+      "type": "string",
+      "enum": [
+        "browser_supported",
+        "browser_unsupported",
+        "email",
+        "external_redirect",
+        "prohibited",
+        "unknown"
+      ]
+    },
+    "BrowserConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "item": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "fields": {
+          "$ref": "#/$defs/HtmlFieldMap"
+        },
+        "next_page": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "adaptive": {
+          "type": "boolean"
+        },
+        "detail": {
+          "$ref": "#/$defs/DetailConfig"
+        },
+        "wait_selector": {
+          "$ref": "#/$defs/CssSelector"
+        }
+      },
+      "required": ["url", "item", "fields"]
+    },
+    "CloudAiExtraction": {
+      "type": "object",
+      "properties": {
+        "is_job_listing_page": {
+          "type": "boolean"
+        },
+        "jobs": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudAiJob"
+          }
+        }
+      },
+      "required": ["is_job_listing_page", "jobs"],
+      "additionalProperties": false
+    },
+    "CloudAiJob": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "company": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "location": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "workplace_type": {
+          "$ref": "#/$defs/WorkplaceType"
+        },
+        "employment_type": {
+          "$ref": "#/$defs/EmploymentType"
+        },
+        "employment_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmploymentDetail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "posted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 40
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "salary_min": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "salary_max": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "salary_currency": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 3
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "salary_period": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": ["hour", "day", "week", "month", "year"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "expired", "ambiguous"]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "suspicious": {
+          "type": "boolean"
+        },
+        "suspicious_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "company",
+        "location",
+        "workplace_type",
+        "employment_type",
+        "employment_detail",
+        "url",
+        "posted_at",
+        "salary_min",
+        "salary_max",
+        "salary_currency",
+        "salary_period",
+        "description",
+        "status",
+        "confidence",
+        "suspicious",
+        "suspicious_reason"
+      ],
+      "additionalProperties": false
+    },
+    "CloudCursorState": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "listing": {
+          "type": "object",
+          "properties": {
+            "etag": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "last_modified": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        },
+        "resume_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resume_page": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "detail_seen": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "last_complete_at": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "CloudDefaults": {
+      "type": "object",
+      "properties": {
+        "workplace_type": {
+          "$ref": "#/$defs/WorkplaceType"
+        },
+        "employment_type": {
+          "$ref": "#/$defs/EmploymentType"
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "CloudErrorClass": {
+      "type": "string",
+      "enum": [
+        "network",
+        "timeout",
+        "http_5xx",
+        "rate_limited",
+        "access_denied",
+        "challenge_detected",
+        "robots_disallowed",
+        "not_found",
+        "source_closed",
+        "source_unavailable",
+        "parse_error",
+        "schema_invalid",
+        "selector_drift",
+        "unsupported_content",
+        "policy_blocked",
+        "cancelled",
+        "auth_required",
+        "engine_unavailable",
+        "invalid_config"
+      ]
+    },
+    "CloudLogEntry": {
+      "type": "object",
+      "properties": {
+        "at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "level": {
+          "type": "string",
+          "enum": ["info", "warn", "error"]
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "http_status": {
+          "type": "integer"
+        },
+        "ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["at", "level", "event", "message"]
+    },
+    "CloudPostingExtras": {
+      "type": "object",
+      "properties": {
+        "skills": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "benefits": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmploymentDetail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "application_method": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationMethod"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "auth_required": {
+          "type": "boolean"
+        },
+        "raw_metadata": {
+          "$ref": "#/$defs/JsonObject"
+        }
+      }
+    },
+    "CloudPostingItem": {
+      "type": "object",
+      "properties": {
+        "client_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/Fingerprint"
+        },
+        "visibility": {
+          "$ref": "#/$defs/PostingVisibility"
+        },
+        "source_kind": {
+          "$ref": "#/$defs/SourceKind"
+        },
+        "source_org": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_job_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canonical_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "apply_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "apply_domain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Domain"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "company_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "company_domain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Domain"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "department": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locations": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PostingLocation"
+          }
+        },
+        "workplace_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WorkplaceType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EmploymentType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seniority": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 60
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "salary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Salary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description_text": {
+          "type": "string"
+        },
+        "description_truncated": {
+          "type": "boolean"
+        },
+        "requirements": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "posted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "application_support": {
+          "$ref": "#/$defs/ApplicationSupport"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/Sha256Hex"
+        },
+        "dedupe_group": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sha256Hex"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "extraction": {
+          "$ref": "#/$defs/ExtractionProvenance"
+        },
+        "status_hint": {
+          "type": "string",
+          "enum": ["open", "closed"]
+        },
+        "status_evidence": {
+          "$ref": "#/$defs/StatusEvidence"
+        },
+        "extras": {
+          "$ref": "#/$defs/CloudPostingExtras"
+        }
+      },
+      "required": [
+        "client_ref",
+        "fingerprint",
+        "visibility",
+        "source_kind",
+        "company_name",
+        "title",
+        "locations",
+        "description_text",
+        "requirements",
+        "content_hash",
+        "observed_at",
+        "extraction"
+      ]
+    },
+    "CloudQueueMessage": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "scrape_source"
+            },
+            "v": {
+              "type": "number",
+              "const": 1
+            },
+            "source_id": {
+              "$ref": "#/$defs/CloudSourceId"
+            },
+            "run_id": {
+              "$ref": "#/$defs/CloudRunId"
+            },
+            "trigger": {
+              "$ref": "#/$defs/CloudRunTrigger"
+            }
+          },
+          "required": ["type", "v", "source_id", "run_id", "trigger"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "probe_source"
+            },
+            "v": {
+              "type": "number",
+              "const": 1
+            },
+            "source_id": {
+              "$ref": "#/$defs/CloudSourceId"
+            },
+            "run_id": {
+              "$ref": "#/$defs/CloudRunId"
+            }
+          },
+          "required": ["type", "v", "source_id", "run_id"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "refresh_directory"
+            },
+            "v": {
+              "type": "number",
+              "const": 1
+            },
+            "run_id": {
+              "$ref": "#/$defs/CloudRunId"
+            }
+          },
+          "required": ["type", "v", "run_id"]
+        }
+      ]
+    },
+    "CloudRateLimit": {
+      "type": "object",
+      "properties": {
+        "min_delay_ms": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 60000
+        },
+        "max_pages": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "max_items": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "max_details": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
+        }
+      }
+    },
+    "CloudRunError": {
+      "type": "object",
+      "properties": {
+        "error_class": {
+          "$ref": "#/$defs/CloudErrorClass"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retry_after_s": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["error_class", "message"]
+    },
+    "CloudRunId": {
+      "type": "string",
+      "pattern": "^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cloud_run id (crn_<ULID>)"
+    },
+    "CloudRunStats": {
+      "type": "object",
+      "properties": {
+        "pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "postings_found": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "new": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updated": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unchanged": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "closed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relocated": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "robots_skipped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "linked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ai_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ai_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ai_cost_micro_usd": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confidence_avg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scraper_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "entries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "registered": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "CloudRunTrigger": {
+      "type": "string",
+      "enum": ["schedule", "manual", "retry"]
+    },
+    "CloudSourceCategory": {
+      "type": "string",
+      "enum": [
+        "job_board",
+        "aggregator",
+        "freelance_marketplace",
+        "talent_network",
+        "staffing_service",
+        "tutoring_platform",
+        "content_marketplace",
+        "community",
+        "directory",
+        "defunct",
+        "unknown"
+      ]
+    },
+    "CloudSourceHealth": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "FAILED",
+        "BLOCKED",
+        "AUTH_REQUIRED",
+        "RATE_LIMITED",
+        "UNSUPPORTED"
+      ]
+    },
+    "CloudSourceId": {
+      "type": "string",
+      "pattern": "^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "cloud_source id (csr_<ULID>)"
+    },
+    "CloudSourceSeed": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "homepage_url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "listing_url": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudUrl"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canonical_domain": {
+          "$ref": "#/$defs/Domain"
+        },
+        "category": {
+          "$ref": "#/$defs/CloudSourceCategory"
+        },
+        "from_directory": {
+          "type": "boolean"
+        },
+        "directory_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "strategy": {
+          "$ref": "#/$defs/CloudStrategy"
+        },
+        "strategy_config": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "health": {
+          "$ref": "#/$defs/CloudSourceHealth"
+        },
+        "status_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "interval_minutes": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 10080
+        },
+        "rate_limit": {
+          "$ref": "#/$defs/CloudRateLimit"
+        },
+        "auth_required": {
+          "type": "boolean"
+        },
+        "auth_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "terms_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "terms_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allow_browser": {
+          "type": "boolean"
+        },
+        "audit": {
+          "type": "object",
+          "properties": {
+            "checked_at": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "evidence": {
+              "maxItems": 20,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 500
+              }
+            }
+          },
+          "required": ["checked_at", "evidence"]
+        }
+      },
+      "required": [
+        "slug",
+        "name",
+        "homepage_url",
+        "listing_url",
+        "canonical_domain",
+        "category",
+        "from_directory",
+        "directory_ref",
+        "description",
+        "strategy",
+        "strategy_config",
+        "health",
+        "status_reason",
+        "enabled",
+        "priority",
+        "interval_minutes",
+        "rate_limit",
+        "auth_required",
+        "auth_note",
+        "terms_url",
+        "terms_note",
+        "allow_browser",
+        "audit"
+      ]
+    },
+    "CloudSourceStats": {
+      "type": "object",
+      "properties": {
+        "runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "successes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jobs_found_last_run": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jobs_new_last_run": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confidence_avg_last_run": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "warnings_last_run": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ai_calls": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "CloudSourcesFile": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "directory": {
+          "$ref": "#/$defs/DirectoryConfig"
+        },
+        "sources": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudSourceSeed"
+          }
+        }
+      },
+      "required": ["version", "directory", "sources"]
+    },
+    "CloudStrategy": {
+      "type": "string",
+      "enum": [
+        "json_api",
+        "rss",
+        "json_ld",
+        "embedded_json",
+        "html_selectors",
+        "browser",
+        "ai",
+        "none"
+      ]
+    },
+    "CloudUrl": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 2048,
+      "pattern": "^https?:\\/\\/[^\\s/?#]+[^\\s]*$"
+    },
+    "CloudWarning": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "field": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["code", "message"]
+    },
+    "CountryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "CssSelector": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "DetailConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "description_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "company_selector": {
+          "$ref": "#/$defs/CssSelector"
+        }
+      },
+      "required": ["enabled"]
+    },
+    "DeviceId": {
+      "type": "string",
+      "pattern": "^dev_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "device id (dev_<ULID>)"
+    },
+    "DirectoryConfig": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "link_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "name_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "description_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "anchor_attr": {
+          "type": "string",
+          "maxLength": 60
+        }
+      },
+      "required": ["url", "link_selector"]
+    },
+    "DirectoryEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "anchor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": ["name", "url", "description", "anchor"]
+    },
+    "DirectoryRequest": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "directory": {
+          "$ref": "#/$defs/DirectoryConfig"
+        }
+      },
+      "required": ["v", "directory"]
+    },
+    "DirectoryResponse": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "final_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "entries": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DirectoryEntry"
+          }
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudRunError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "log": {
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudLogEntry"
+          }
+        },
+        "engine": {
+          "$ref": "#/$defs/EngineVersions"
+        }
+      },
+      "required": [
+        "v",
+        "final_url",
+        "http_status",
+        "entries",
+        "error",
+        "log",
+        "engine"
+      ]
+    },
+    "Domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253,
+      "pattern": "^[a-z0-9.-]+$",
+      "description": "Lowercase ASCII host or registrable domain (IDN in punycode)"
+    },
+    "EmbeddedJsonConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "script_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "global_name": {
+          "type": "string",
+          "maxLength": 60,
+          "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$"
+        },
+        "items_path": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "fields": {
+          "$ref": "#/$defs/JsonFieldMap"
+        },
+        "url_base": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "date_format": {
+          "type": "string",
+          "enum": ["iso", "epoch_s", "epoch_ms", "rfc2822"]
+        }
+      },
+      "required": ["url", "items_path", "fields"]
+    },
+    "EmploymentDetail": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "contract",
+        "freelance",
+        "temporary",
+        "internship",
+        "volunteer"
+      ]
+    },
+    "EmploymentType": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "contract",
+        "temporary",
+        "internship",
+        "volunteer",
+        "unknown"
+      ]
+    },
+    "EngineVersions": {
+      "type": "object",
+      "properties": {
+        "scraper": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "pilih_jobs": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "scrapling": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "playwright": {
+          "type": "string",
+          "maxLength": 40
+        }
+      },
+      "required": ["scraper"]
+    },
+    "ExtractionMethod": {
+      "type": "string",
+      "enum": [
+        "json_api",
+        "json_ld",
+        "css",
+        "xpath",
+        "adaptive",
+        "rss",
+        "embedded_json",
+        "ai"
+      ]
+    },
+    "ExtractionProvenance": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "adapter": {
+          "$ref": "#/$defs/AdapterId"
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine": {
+          "type": "object",
+          "properties": {
+            "pilih_jobs": {
+              "type": "string"
+            },
+            "scrapling": {
+              "type": "string"
+            },
+            "playwright": {
+              "type": "string"
+            }
+          }
+        },
+        "fetch_mode": {
+          "$ref": "#/$defs/FetchMode"
+        },
+        "method": {
+          "$ref": "#/$defs/ExtractionMethod"
+        },
+        "source_urls": {
+          "type": "object",
+          "properties": {
+            "listing": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            }
+          }
+        },
+        "relocated_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "device_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeviceId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "adapter",
+        "adapter_version",
+        "fetch_mode",
+        "method",
+        "confidence",
+        "observed_at"
+      ],
+      "additionalProperties": {}
+    },
+    "FetchMode": {
+      "type": "string",
+      "enum": ["json_api", "static_html", "browser"]
+    },
+    "Fingerprint": {
+      "type": "string",
+      "pattern": "^fp1:[0-9a-f]{64}$",
+      "description": "Posting fingerprint: fp1: + SHA-256 hex of the src|/gen| key (03 §4.2)"
+    },
+    "HtmlFieldMap": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "link": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "company": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "location": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "posted_at": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "salary": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "tags": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "employment_type": {
+          "$ref": "#/$defs/CssSelector"
+        }
+      },
+      "required": ["title", "link"]
+    },
+    "HtmlSelectorsConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "item": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "fields": {
+          "$ref": "#/$defs/HtmlFieldMap"
+        },
+        "next_page": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "adaptive": {
+          "type": "boolean"
+        },
+        "detail": {
+          "$ref": "#/$defs/DetailConfig"
+        }
+      },
+      "required": ["url", "item", "fields"]
+    },
+    "JsonApiConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "items_path": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "skip_items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "fields": {
+          "$ref": "#/$defs/JsonFieldMap"
+        },
+        "date_format": {
+          "type": "string",
+          "enum": ["iso", "epoch_s", "epoch_ms", "rfc2822"]
+        }
+      },
+      "required": ["url", "items_path", "fields"]
+    },
+    "JsonFieldMap": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "url": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "company": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "apply_url": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "location": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "posted_at": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "description_html": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "description_text": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "salary_min": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "salary_max": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "salary_currency": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "salary_text": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "tags": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "category": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "employment_type": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "external_id": {
+          "$ref": "#/$defs/JsonPath"
+        },
+        "company_url": {
+          "$ref": "#/$defs/JsonPath"
+        }
+      },
+      "required": ["title", "url"]
+    },
+    "JsonLdConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "listing_url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "detail_link_selector": {
+          "$ref": "#/$defs/CssSelector"
+        },
+        "detail_url_pattern": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "listing_jsonld": {
+          "type": "boolean"
+        },
+        "next_page": {
+          "$ref": "#/$defs/CssSelector"
+        }
+      },
+      "required": ["listing_url", "detail_link_selector"]
+    },
+    "JsonObject": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {},
+      "description": "Any JSON object"
+    },
+    "JsonPath": {
+      "type": "string",
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9_$@.-]*$"
+    },
+    "NoneStrategyConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "PostingLocation": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "region": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "country_code": {
+          "$ref": "#/$defs/CountryCode"
+        }
+      },
+      "required": ["raw"]
+    },
+    "PostingVisibility": {
+      "type": "string",
+      "enum": ["public", "private"]
+    },
+    "ProbeFeed": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["rss", "atom", "json_api"]
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sample_titles": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      },
+      "required": ["type", "url", "items", "sample_titles"]
+    },
+    "ProbeRequest": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        }
+      },
+      "required": ["v", "url"]
+    },
+    "ProbeResponse": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "final_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "reachable": {
+          "type": "boolean"
+        },
+        "robots": {
+          "type": "object",
+          "properties": {
+            "fetched": {
+              "type": "boolean"
+            },
+            "allowed": {
+              "type": ["boolean", "null"]
+            },
+            "crawl_delay_s": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": ["fetched", "allowed", "crawl_delay_s"]
+        },
+        "protection": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 60
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "auth_wall": {
+          "type": "boolean"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "meta_description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "feeds": {
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProbeFeed"
+          }
+        },
+        "jsonld_job_postings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "embedded_json": {
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          }
+        },
+        "job_link_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text_excerpt": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudRunError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "log": {
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudLogEntry"
+          }
+        },
+        "engine": {
+          "$ref": "#/$defs/EngineVersions"
+        }
+      },
+      "required": [
+        "v",
+        "url",
+        "final_url",
+        "http_status",
+        "reachable",
+        "robots",
+        "protection",
+        "auth_wall",
+        "title",
+        "meta_description",
+        "feeds",
+        "jsonld_job_postings",
+        "embedded_json",
+        "job_link_count",
+        "text_excerpt",
+        "error",
+        "log",
+        "engine"
+      ]
+    },
+    "RssConfig": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "$ref": "#/$defs/CloudDefaults"
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "title_pattern": {
+          "type": "string",
+          "enum": ["company_title", "title_company", "title"]
+        },
+        "separator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10
+        },
+        "company_field": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "location_field": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "type_field": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "fetch_details": {
+          "type": "boolean"
+        }
+      },
+      "required": ["url", "title_pattern"]
+    },
+    "RunId": {
+      "type": "string",
+      "pattern": "^run_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "run id (run_<ULID>)"
+    },
+    "Salary": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "period": {
+          "$ref": "#/$defs/SalaryPeriod"
+        },
+        "raw": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "SalaryPeriod": {
+      "type": "string",
+      "enum": ["year", "month", "week", "day", "hour"]
+    },
+    "ScrapeRequest": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "run_id": {
+          "$ref": "#/$defs/CloudRunId"
+        },
+        "source": {
+          "$ref": "#/$defs/ScrapeSource"
+        },
+        "cursor_state": {
+          "$ref": "#/$defs/CloudCursorState"
+        },
+        "deadline_ms": {
+          "type": "integer",
+          "minimum": 5000,
+          "maximum": 600000
+        },
+        "ai_fallback": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "source",
+        "cursor_state",
+        "deadline_ms",
+        "ai_fallback"
+      ]
+    },
+    "ScrapeResponse": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number",
+          "const": 1
+        },
+        "outcome": {
+          "type": "string",
+          "enum": ["ok", "partial", "failed"]
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "items": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudPostingItem"
+          }
+        },
+        "ai_candidates": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AiCandidate"
+          }
+        },
+        "cursor_state": {
+          "$ref": "#/$defs/CloudCursorState"
+        },
+        "stats": {
+          "$ref": "#/$defs/ScrapeStats"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudRunError"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "warnings": {
+          "maxItems": 50,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudWarning"
+          }
+        },
+        "log": {
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CloudLogEntry"
+          }
+        },
+        "engine": {
+          "$ref": "#/$defs/EngineVersions"
+        }
+      },
+      "required": [
+        "v",
+        "outcome",
+        "complete",
+        "items",
+        "ai_candidates",
+        "cursor_state",
+        "stats",
+        "error",
+        "warnings",
+        "log",
+        "engine"
+      ]
+    },
+    "ScrapeSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/CloudSourceId"
+        },
+        "slug": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "homepage_url": {
+          "$ref": "#/$defs/CloudUrl"
+        },
+        "listing_url": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloudUrl"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canonical_domain": {
+          "$ref": "#/$defs/Domain"
+        },
+        "strategy": {
+          "$ref": "#/$defs/CloudStrategy"
+        },
+        "strategy_config": {
+          "$ref": "#/$defs/JsonObject"
+        },
+        "rate_limit": {
+          "$ref": "#/$defs/CloudRateLimit"
+        },
+        "allow_browser": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "homepage_url",
+        "listing_url",
+        "canonical_domain",
+        "strategy",
+        "strategy_config",
+        "rate_limit",
+        "allow_browser"
+      ]
+    },
+    "ScrapeStats": {
+      "type": "object",
+      "properties": {
+        "pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "postings_found": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relocated": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "robots_skipped": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "details_fetched": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fetch_mode": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": ["json_api", "static_html", "browser"]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "pages",
+        "postings_found",
+        "duplicates",
+        "invalid",
+        "relocated",
+        "robots_skipped",
+        "details_fetched",
+        "elapsed_ms",
+        "fetch_mode"
+      ]
+    },
+    "Sha256Hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Lowercase hex SHA-256 digest (64 characters)"
+    },
+    "SourceId": {
+      "type": "string",
+      "pattern": "^src_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "source id (src_<ULID>)"
+    },
+    "SourceKind": {
+      "type": "string",
+      "enum": [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "workable",
+        "workday",
+        "career_page",
+        "generic_listing",
+        "custom_url",
+        "manual",
+        "email",
+        "legacy"
+      ]
+    },
+    "StatusEvidence": {
+      "type": "object",
+      "properties": {
+        "http_status": {
+          "type": ["integer", "null"]
+        },
+        "marker": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Timestamp": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Epoch milliseconds (UTC)"
+    },
+    "WorkplaceType": {
+      "type": "string",
+      "enum": ["onsite", "hybrid", "remote", "unknown"]
+    }
+  }
+}

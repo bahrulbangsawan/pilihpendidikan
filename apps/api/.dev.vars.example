@@ -43,3 +43,11 @@ JOBS_AI_PROVIDER=openai
 
 # The dashboard origin used in render-ticket URLs and emailed links.
 JOBS_APP_ORIGIN=http://localhost:4007
+
+# Cloud discovery (job-tracker-spec/24): where the local pipeline reaches the
+# scraper. Start it with `bun run dev:python` in apps/jobs-scraper (Python
+# service on :8791) or `bun run dev` there (wrangler + Docker on :8792).
+# Leave empty to use the SCRAPER service binding instead.
+SCRAPER_FALLBACK_URL=http://localhost:8791
+# Monthly USD cap of the cloud AI fallback (only with JOBS_CLOUD_AI_ENABLED).
+JOBS_CLOUD_AI_MONTHLY_BUDGET_USD=2.00

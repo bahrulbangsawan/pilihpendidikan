@@ -167,6 +167,19 @@ export async function sourceLabels(
     for (const row of rows) {
       out.set(row.id, row.label);
     }
+    // Followed cloud sources (24 §5.3): catalog rows are system data, their
+    // names are public.
+    const cloudIds = group.filter((id) => id.startsWith("csr_"));
+    if (cloudIds.length > 0) {
+      const cloud = await queryAll<{ id: string; name: string }>(
+        db,
+        `SELECT id, name FROM cloud_sources WHERE id IN (${marks(cloudIds.length)})`,
+        ...cloudIds
+      );
+      for (const row of cloud) {
+        out.set(row.id, row.name);
+      }
+    }
   }
   return out;
 }

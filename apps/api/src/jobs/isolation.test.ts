@@ -105,9 +105,19 @@ function literalText(node: AstNode): string | null {
 // T11-SQL
 // ---------------------------------------------------------------------------
 
-/** User-scoped JOBS_DB tables: every table but the anonymous telemetry. */
+/**
+ * User-scoped JOBS_DB tables: every table but the anonymous telemetry and the
+ * cloud discovery system tables (catalog, runs, pipeline state: no user_id,
+ * 24 §2, D-39). `cloud_source_follows` stays user-scoped.
+ */
+const SYSTEM_TABLES = new Set([
+  "telemetry_daily",
+  "cloud_sources",
+  "cloud_runs",
+  "cloud_state",
+]);
 const USER_SCOPED = new Set(
-  Object.keys(ROW_CODECS).filter((t) => t !== "telemetry_daily")
+  Object.keys(ROW_CODECS).filter((t) => !SYSTEM_TABLES.has(t))
 );
 const STATEMENT_RE = /^\s*(SELECT|INSERT|UPDATE|DELETE|WITH)\b/i;
 const TABLE_RE = /\b(?:FROM|JOIN|INTO|UPDATE)\s+([a-z_]+|__EXPR__)/gi;
@@ -189,6 +199,7 @@ const WIRING_FILES = new Set([
   "jobs/core/router.ts",
   "jobs/core/context.ts",
   "jobs/queue/consumer.ts",
+  "jobs/cloud/consumer.ts",
   "jobs/cron/index.ts",
 ]);
 

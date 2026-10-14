@@ -1,0 +1,15 @@
+# Paths are relative to the build context (the repository root).
+# Allow-list: only the CLI package and the service go into the image.
+*
+!apps/jobs-cli/pyproject.toml
+!apps/jobs-cli/uv.lock
+!apps/jobs-cli/README.md
+!apps/jobs-cli/THIRD_PARTY_NOTICES
+!apps/jobs-cli/src/**
+!apps/jobs-scraper/python/pyproject.toml
+!apps/jobs-scraper/python/uv.lock
+!apps/jobs-scraper/python/README.md
+!apps/jobs-scraper/python/src/**
+**/__pycache__
+**/*.pyc
+**/.venv

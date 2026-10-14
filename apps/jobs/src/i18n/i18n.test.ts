@@ -28,6 +28,16 @@ import {
   WORKPLACE_TYPES,
 } from "@pilihpendidikan/jobs-contracts/enums";
 import {
+  CLOUD_ERROR_CLASSES,
+  CLOUD_RUN_KINDS,
+  CLOUD_RUN_STATUSES,
+  CLOUD_RUN_TRIGGERS,
+  CLOUD_SOURCE_CATEGORIES,
+  CLOUD_SOURCE_ORIGINS,
+  CLOUD_SOURCE_STATUSES,
+  CLOUD_STRATEGIES,
+} from "@pilihpendidikan/jobs-contracts/enums";
+import {
   APPROVAL_KINDS,
   APPROVAL_STATES,
   DISCOVERY_ERROR_CLASSES,
@@ -46,6 +56,7 @@ import {
 } from "@pilihpendidikan/jobs-contracts/scoring";
 import { describe, expect, it } from "vitest";
 import { NAV_GROUPS, NAV_ITEMS } from "@/components/shell/nav-items";
+import { INTERVAL_OPTIONS, STATUS_GROUPS } from "@/lib/cloud-sources-model";
 import { FACT_GROUPS } from "@/lib/facts-form";
 import { FOLLOW_UP_PRESETS } from "@/lib/follow-up";
 import { SHORTCUTS } from "@/lib/shortcuts";
@@ -271,6 +282,56 @@ function dynamicKeys(): string[] {
       "prep_time",
     ]),
     ...each("monitor.pauseTitles", PAUSE_REASONS),
+    ...each("cloudSources.statuses", CLOUD_SOURCE_STATUSES),
+    ...each("cloudSources.categories", CLOUD_SOURCE_CATEGORIES),
+    ...each("cloudSources.strategies", CLOUD_STRATEGIES),
+    ...each("cloudSources.strategyHelp", CLOUD_STRATEGIES),
+    ...each("cloudSources.origins", CLOUD_SOURCE_ORIGINS),
+    ...each("cloudSources.runStatuses", CLOUD_RUN_STATUSES),
+    ...each("cloudSources.errors", CLOUD_ERROR_CLASSES),
+    ...each("cloudSources.diagnostics", [
+      "challenge",
+      "denied",
+      "auth",
+      "robots",
+      "rate_limited",
+      "layout",
+      "engine",
+      "config",
+      "transient",
+      "gone",
+      "policy",
+      "other",
+    ]),
+    ...each(
+      "cloudSources.intervals",
+      INTERVAL_OPTIONS.map((minutes) => `m${minutes}`)
+    ),
+    ...each("cloudSources.next.paused", [
+      "pipeline_off",
+      "disabled",
+      "breaker",
+      "needs_retry",
+      "unsupported",
+      "no_strategy",
+    ]),
+    ...each("cloudSources.filters.groups", STATUS_GROUPS),
+    ...each("cloudSources.add.urlProblems", [
+      "empty",
+      "invalid",
+      "scheme",
+      "credentials",
+      "local",
+    ]),
+    ...each("cloudSources.runs.levels", ["info", "warn", "error"]),
+    ...each("cloudSources.runs.triggers", CLOUD_RUN_TRIGGERS),
+    ...each("cloudSources.runs.kinds", CLOUD_RUN_KINDS),
+    ...each("cloudSources.editor.rate", [
+      "minDelayMs",
+      "maxPages",
+      "maxItems",
+      "maxDetails",
+    ]),
   ];
 }
 
@@ -350,6 +411,8 @@ describe("TW-I18N catalogues (en / id)", () => {
       "AI",
       "CLI",
       "URL",
+      "HTTP",
+      "JSON",
       "PDF",
       "ZIP",
       "APAC",

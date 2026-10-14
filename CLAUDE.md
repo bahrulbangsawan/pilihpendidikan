@@ -30,7 +30,11 @@ a browser with the user's approval (`apps/jobs-cli`, `pilih-jobs`), the
 `/api/v1` API in `apps/api`, and two shared packages: the contracts
 (`packages/jobs-contracts`) and the CV engine (`packages/cv-engine`). It ships
 dark: every surface sits behind `DB.feature_flags` (D-33) until the owner turns
-it on (`DEPLOY.md` § Job Tracker).
+it on (`DEPLOY.md` § Job Tracker). **Cloud discovery** (`job-tracker-spec/24`,
+D-37…D-41) adds a server-side catalog of remote-job boards scraped every hour:
+an `apps/api` cron and queue, and a Python scraper container
+(`apps/jobs-scraper`) built on the CLI's Scrapling engine
+(`DEPLOY.md` § Cloud discovery).
 
 The apps were extracted from the `bahrul` monorepo with their git history.
 This repo is self-contained: it installs, checks and builds on its own.
@@ -44,21 +48,23 @@ This repo is self-contained: it installs, checks and builds on its own.
 - `apps/portfolio` — Apple Developer Academy portfolio builder, A4 landscape (dev port `4005`) → `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`)
 - `apps/jobs` — the Job Tracker dashboard (TanStack Start SSR, dev port `4007`) → `jobs.pilihpendidikan.com` (Worker `jobs-pilihpendidikan`): board, inbox, application detail, automation (approvals, rules, runs, live monitor), CLI & devices, sources, stats, profile, settings, and the chrome-free `/render/cv/$cvvId` page that renders tailored CV PDFs. A BFF: the API bearer lives only in the sealed `__Host-jobs-session` cookie (`BFF_COOKIE_KEY`), server functions call `apps/api` through the `API` service binding. See `apps/jobs/CLAUDE.md`
 - `apps/jobs-cli` — `pilih-jobs` (alias `pj`), the local execution engine (Python 3.12 via uv, hatchling, Typer; PyPI dist `pilih-jobs`, import package `pilih_jobs`): OAuth PKCE login, sync (outbox + change feed), discovery on public ATS APIs with Scrapling behind a policy guard, Playwright browser agent with approvals, the task worker. Talks to `apps/api` only over HTTPS + JSON. See `apps/jobs-cli/CLAUDE.md`
-- `apps/api` — backend Worker at `api.pilihpendidikan.com` (dev `wrangler dev` on `localhost:8788`): cloud save and public reads for cv/invoice/portfolio, the legacy `/api/jobs` facade, email-link sign-in, personal tokens (`/connect`), OAuth 2.1 for MCP clients and the CLI, PDF print redirects, the MCP server (`/mcp`, `/sse`) and the Job Tracker API under `/api/v1` (`src/jobs/`, 105 routes). Hand-written router, D1 `pilihpendidikan` (`DB`: tokens, users, OAuth grants, devices, feature flags) and `pilihpendidikan-jobs` (`JOBS_DB`: every Job Tracker record), R2 `JOBS_FILES`, queue `jobs-ai` (+ `jobs-ai-dlq`), crons `0 3 * * *` and `*/5 * * * *`, KV (`AUTH_KV`, `CV_KV`, rebound `INVOICE_KV` / `PORTFOLIO_KV` / `JOBS_KV`, `RATE_LIMIT_KV`), Durable Object `PilihMcpServer`, tests with `bun test`. See `apps/api/CLAUDE.md` and `apps/api/src/jobs/README.md`
+- `apps/api` — backend Worker at `api.pilihpendidikan.com` (dev `wrangler dev` on `localhost:8788`): cloud save and public reads for cv/invoice/portfolio, the legacy `/api/jobs` facade, email-link sign-in, personal tokens (`/connect`), OAuth 2.1 for MCP clients and the CLI, PDF print redirects, the MCP server (`/mcp`, `/sse`) and the Job Tracker API under `/api/v1` (`src/jobs/`, 115 routes, incl. the cloud catalog `/api/v1/cloud-sources…`). Hand-written router, D1 `pilihpendidikan` (`DB`: tokens, users, OAuth grants, devices, feature flags) and `pilihpendidikan-jobs` (`JOBS_DB`: every Job Tracker record, the cloud catalog and runs), R2 `JOBS_FILES`, queues `jobs-ai` (+ `jobs-ai-dlq`) and `jobs-scrape` (+ `jobs-scrape-dlq`), crons `0 3 * * *`, `*/5 * * * *` and `0 * * * *` (cloud dispatch), service binding `SCRAPER`, KV (`AUTH_KV`, `CV_KV`, rebound `INVOICE_KV` / `PORTFOLIO_KV` / `JOBS_KV`, `RATE_LIMIT_KV`), Durable Object `PilihMcpServer`, tests with `bun test`. See `apps/api/CLAUDE.md` and `apps/api/src/jobs/README.md`
+- `apps/jobs-scraper` — the cloud discovery scraper (`job-tracker-spec/24`): Worker `jobs-scraper-pilihpendidikan` (no route, reached only by the api's `SCRAPER` binding) driving a Cloudflare Container (`ScraperContainer`, Durable Object) that runs `pilih-scraper` (`python/`, uv, Starlette) on the CLI's `pilih_jobs.discovery` engine: JSON API, RSS/Atom, JSON-LD, embedded JSON, CSS + Scrapling adaptive, opt-in browser, AI excerpts; SSRF guard. Dev: `bun run dev:python` (:8791) or `bun run dev` (wrangler + Docker, :8792). See `apps/jobs-scraper/CLAUDE.md`
 - `apps/design` — the Zedative design system page (Vite SPA, dev port `4006`, not deployed): foundations, every `@rulisme/ui` component with pinned states, do/don't pairs, recipes. It renders `@rulisme/ui` from source (`vite.config.ts` alias), so component edits hot-reload there
 - `packages/ui` — `@rulisme/ui`, the shared React 19 component library and the one Zedative theme (`src/styles/theme.css` → `@rulisme/ui/styles/theme.css`). Every app compiles it from `src/` (tsconfig `paths` + Vite `resolve.tsconfigPaths`, and Tailwind `@source`s `packages/ui/src`); `bun run build` also emits a `dist/` for its package exports
 - `packages/jobs-contracts` — `@pilihpendidikan/jobs-contracts` (D-20): Zod schemas for every Job Tracker table and `/api/v1` route, state machines, the `fp1` fingerprint, queue / agent / scoring / tailoring contracts, the adapter manifest and data files. TypeScript source exports; `schema/*.json` (generated, committed) feeds the CLI's generated Pydantic models. See its `CLAUDE.md`
 - `packages/cv-engine` — `@pilihpendidikan/cv-engine` (D-14): `CVData` types, `CVDataSchema`, Markdown export, CV bullets and the four `@react-pdf` templates (`src/pdf/`, browser only), shared by `apps/cv`, `apps/api` and `apps/jobs`. See its `CLAUDE.md`
 - `packages/config` — `@pilihpendidikan/config`: shared `tsconfig.base.json` and `motion.css`
 - `e2e/` — the full-stack Job Tracker scenarios (`bun run e2e`): real `wrangler dev`, `vite dev`, CLI and Chromium processes on this machine (`e2e/README.md`; what is not automated is in `e2e/HANDOFF.md`)
-- `job-tracker-spec/` — the Job Tracker specification (23 documents; `00-README.md` indexes the decisions and assumptions)
-- `openspec/` — spec-driven change management (see `openspec/AGENTS.md`); the Job Tracker changes are `jobs-*`, `api-add-user-ids-and-jobs-db`, `api-extend-oauth-for-cli`, `cv-extract-cv-engine`
+- `job-tracker-spec/` — the Job Tracker specification (24 documents, incl. `24-CLOUD-DISCOVERY.md`; `00-README.md` indexes the decisions and assumptions)
+- `openspec/` — spec-driven change management (see `openspec/AGENTS.md`); the Job Tracker changes are `jobs-*` (cloud discovery: `jobs-add-cloud-discovery`), `api-add-user-ids-and-jobs-db`, `api-extend-oauth-for-cli`, `cv-extract-cv-engine`
 - `.github/workflows/` — CI (`ci.yml`: check, check-types, build, OpenSpec), the CLI OS / Python matrix (`cli-matrix.yml`), the full-stack suite (`e2e.yml`, nightly), opt-in live checks (`nightly-live.yml`) and the CLI release (`release-cli.yml`, tags `cli-v*`)
 
 The builders talk to the backend through one constant per app (`MCP_API` in
 `src/components/*-generator.tsx`): `http://localhost:8788` in dev,
 `https://api.pilihpendidikan.com` in prod. `apps/jobs` uses its `API` service
-binding (dev: `JOBS_API_FALLBACK_URL` in `.dev.vars`), and the CLI
+binding (dev: `JOBS_API_FALLBACK_URL` in `.dev.vars`), `apps/api` reaches the
+scraper through its `SCRAPER` binding (dev: `SCRAPER_FALLBACK_URL`), and the CLI
 `--api-url` / `PILIH_JOBS_API_URL` (default `https://api.pilihpendidikan.com`).
 OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 
@@ -71,6 +77,7 @@ OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 - **UI**: shadcn/ui (all 61 CLI components, lyra geometry, radix base) + `@base-ui/react` / Radix primitives + CVA variants, via `@rulisme/ui`, restyled to Zedative
 - **PDF**: `@react-pdf/renderer` (one `*-pdf.tsx` renderer per document type; the CV's four in `packages/cv-engine/src/pdf/`)
 - **Contracts**: Zod 4 (catalog `^4.6.5`) → JSON Schema (`z.toJSONSchema`) → Pydantic v2 (`datamodel-code-generator`) for the CLI (D-20)
+- **Containers**: Cloudflare Containers (`@cloudflare/containers`) for the scraper (`apps/jobs-scraper`, linux/amd64 image, `basic` instance)
 - **CLI (Python)**: Python 3.12 via uv 0.12 (`requires-python >=3.11,<3.14`), hatchling, Typer, Rich, httpx, Pydantic v2, keyring, Playwright 1.63, Scrapling 0.4.15 (`[fetchers]`, exact pin); ruff, pyright (strict), import-linter, pytest, pip-audit
 - **Lint/format**: Biome 2.5 with the Ultracite rule set (`biome.jsonc`) for TypeScript; ruff for Python
 - **Tests**: Vitest per app; `bun test` for `apps/api`, `packages/jobs-contracts`, `packages/cv-engine` and `e2e/`; pytest for `apps/jobs-cli`
@@ -84,11 +91,12 @@ OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 - `bun run dev:home` / `dev:cv` / `dev:invoice` / `dev:portfolio` — one app plus the `@rulisme/ui` watch build it depends on
 - `bun run dev:jobs` — the Job Tracker dashboard on `:4007` (plus its workspace dependencies). Run `bun run dev:api` next to it (after `bun run db:migrate:local && bun run db:migrate:jobs:local && bun run db:seed:local` in `apps/api`), or `bun run dev:mock-api` in `apps/jobs` for contract fixtures on `:8790`; copy `apps/jobs/.dev.vars.example` to `.dev.vars` first
 - `bun run dev:design` — the design system page on `:4006` (renders `@rulisme/ui` from source; no library build needed)
+- Cloud discovery locally: `bun run dev:python` in `apps/jobs-scraper` + `SCRAPER_FALLBACK_URL=http://localhost:8791` in `apps/api/.dev.vars`, then "Run now" on `/sources` as an `ADMIN_EMAILS` operator (or `curl "http://localhost:8788/cdn-cgi/handler/scheduled?cron=0+*+*+*+*"`)
 - `bun run dev:api` — only the api Worker (`wrangler dev` on `:8788`; run `bun run db:migrate:local` in `apps/api` once first, plus `db:migrate:jobs:local` and `db:seed:local` for the Job Tracker)
 - `bun run db:seed:demo -- --email you@example.com [--reset]` (in `apps/api`, with the local api running) — fill the local Job Tracker with demo data for that user through the real `/api/v1` routes: applications on every board column, interviews, offers, an inbox of scored postings, sources, rules, a demo device and approvals waiting (`apps/api/CLAUDE.md` § Demo data; local only)
 - CLI against the local api: `cd apps/jobs-cli && uv run pilih-jobs --api-url http://localhost:8788 login` (or `PILIH_JOBS_API_URL`)
 - `bun run build` — build `packages/ui`, then every app (`wrangler types` + `vite build`; `apps/api`: `wrangler deploy --dry-run`; `apps/jobs-cli`: `uv build`)
-- `bun run check` — full chain: `biome check` → `turbo lint` (incl. the CLI: ruff, ruff format, import-linter) → `lint:typography` → `parity:typography` → `parity:twmerge` → `parity:showcase` → `parity:cv-templates` → `contracts:check` → `test` (`turbo test`, incl. pytest) → `audit` (`bun audit` + `audit:python`)
+- `bun run check` — full chain: `biome check` → `turbo lint` (incl. the CLI: ruff, ruff format, import-linter) → `lint:typography` → `parity:typography` → `parity:twmerge` → `parity:showcase` → `parity:cv-templates` → `contracts:check` → `test` (`turbo test`, incl. pytest) → `audit` (`bun audit` + `audit:python`: the CLI and the scraper lock files)
 - `bun x ultracite fix` (or `bun run fix`) — format and autofix
 - `bun run check-types` — `tsc` for `scripts/` plus `turbo typecheck` (incl. pyright for the CLI)
 - `bun run e2e` — the full-stack scenarios (`bun test e2e --timeout 900000`, about 30 minutes; needs uv, `uv sync` in `apps/jobs-cli`, Chromium via `uv run --project apps/jobs-cli playwright install chromium`, and free ports 4003 / 4007 / 8788). Not part of `check`; CI runs it nightly (`e2e.yml`)
@@ -98,7 +106,7 @@ OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 - `bun run parity:showcase` — every component file in `packages/ui/src/ui` is rendered on the design page (`apps/design`)
 - `bun run parity:cv-templates` — a change set (uncommitted and untracked files included, against `HEAD`) that touches a CV PDF template in `packages/cv-engine/src/pdf/` also touches its preview in `apps/cv` (`CV_PARITY_OVERRIDE=1` for an intentional PDF-only fix). CI also runs it against the pull request base
 - `bun run contracts:check` — the contracts drift guard (D-20): `packages/jobs-contracts` regenerates its JSON Schema, vectors and data files into a temp dir and `apps/jobs-cli` regenerates its Pydantic models; either differing from the committed files fails
-- `bun run audit:python` — `pip-audit --strict` over the CLI's locked dependencies (`uv export` of `uv.lock`)
+- `bun run audit:python` — `pip-audit --strict` over the locked dependencies of the CLI and of the scraper (`uv export` of each `uv.lock`)
 
 Run `bun x ultracite fix && bun run check` before committing.
 
@@ -122,6 +130,10 @@ resources (D1 `pilihpendidikan-jobs`, R2 `pilihpendidikan-jobs-files`, queues
 migrations → api deployed dark (`JOBS_V1_ENABLED=false`) → legacy `JOBS_KV` →
 `JOBS_DB` migration (dry run, execute, verify) → flags on → deploy `apps/jobs`
 → publish the CLI (`release-cli.yml`) → flip `jobs` live on the hub.
+Cloud discovery deploys the scraper first (queues `jobs-scrape` /
+`jobs-scrape-dlq`, then `apps/jobs-scraper` with Docker, then the api; Workers
+Paid for Containers), then `JOBS_CLOUD_DISCOVERY_ENABLED` (`DEPLOY.md` § Cloud
+discovery).
 Deploys, DNS, Cloudflare resources, data migrations, feature-flag changes and
 CLI releases need the owner's go-ahead.
 

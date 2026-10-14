@@ -1,0 +1,110 @@
+[project]
+name = "pilih-scraper"
+version = "0.1.0"
+description = "Cloud scraper of the pilihpendidikan Job Tracker (24): an HTTP service over the pilih-jobs Scrapling engine, run in a Cloudflare Container."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+authors = [{ name = "pilihpendidikan" }]
+dependencies = [
+  # Every fetch goes through pilih_jobs.discovery.engine (D-38): honest UA, robots,
+  # politeness, retries, challenge detection and the forbidden-feature guard.
+  "pilih-jobs",
+  "starlette>=0.40,<2",
+  "uvicorn>=0.30,<1",
+  "pydantic>=2.9,<3",
+  # Feeds are untrusted XML: no entity expansion, no external entities.
+  "defusedxml>=0.7.1,<1",
+]
+
+[project.scripts]
+pilih-scraper = "pilih_scraper.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.24",
+  "pytest-httpserver>=1.1",
+  "httpx>=0.28,<1",
+  "ruff>=0.8",
+  "pyright>=1.1.390",
+  "pip-audit>=2.7",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.uv.sources]
+pilih-jobs = { path = "../../jobs-cli", editable = true }
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pilih_scraper"]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "PIE", "PT",
+  "RET", "ASYNC", "TID", "PERF", "S", "BLE", "T20", "ERA", "PTH", "TRY",
+]
+ignore = [
+  "TRY003",  # messages in exception constructors are the protocol's diagnostics
+  "RUF001",
+  "RUF002",
+  "RUF003",
+  "PIE807",  # `default_factory=lambda: []` keeps pyright strict's element types
+  "S104",    # the container listens on 0.0.0.0 by design
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E501", "S101", "S105", "S106", "S108", "S311", "S314", "PLR2004", "T20", "BLE001", "ASYNC", "TRY", "N802"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"scrapling".msg = "Scrapling is reached only through pilih_jobs.discovery.engine (D-36, D-38)."
+"patchright".msg = "Stealth browsers are forbidden (D-16)."
+"xml.etree.ElementTree.fromstring".msg = "Parse untrusted XML with defusedxml."
+"xml.etree.ElementTree.parse".msg = "Parse untrusted XML with defusedxml."
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# ---------------------------------------------------------------- pyright
+[tool.pyright]
+include = ["src", "tests"]
+exclude = ["**/__pycache__"]
+strict = ["src"]
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
+reportMissingTypeStubs = false
+# pilih-jobs is an editable path dependency: read it as source (its own pyright strict
+# run checks it), not as an untyped installed library.
+extraPaths = ["src", "../../jobs-cli/src"]
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = ["--strict-markers", "-ra"]
+markers = [
+  "live: tests that reach the public internet; excluded by default",
+]
+filterwarnings = [
+  "error::pytest.PytestUnraisableExceptionWarning",
+  # lxml (via Scrapling) passes a no-op option; not ours to fix.
+  "ignore:The 'strip_cdata' option:DeprecationWarning",
+  # Starlette's TestClient nags about httpx2; the test client still works on httpx.
+  "ignore:Using `httpx` with `starlette.testclient`",
+]

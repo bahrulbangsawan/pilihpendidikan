@@ -54,6 +54,10 @@ export const queryKeys = {
   sources: ["sources"] as const,
   adapters: ["sources", "adapters"] as const,
   discoveryRuns: ["discovery-runs"] as const,
+  /** The cloud catalog list; details and runs share the prefix. */
+  cloudSources: ["cloud-sources"] as const,
+  cloudSource: (id: string) => ["cloud-sources", id] as const,
+  cloudSourceRuns: (id: string) => ["cloud-sources", id, "runs"] as const,
   cvVariant: (cvvId: string) => ["cv-variant", cvvId] as const,
   file: (fileId: string) => ["file", fileId] as const,
   analyticsSummary: (from: string, to: string, tz: string) =>

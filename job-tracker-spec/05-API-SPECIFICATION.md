@@ -69,7 +69,7 @@ Every handler declares its scope; missing scope ⇒ `403 {"error":"insufficient_
 |---|---|---|
 | 400 | `invalid_request` | Malformed JSON / schema failure (`details.issues` = Zod issues) |
 | 401 | `invalid_token` (`reason`: `no_bearer`, `unknown_token`, `expired_token`, `revoked_token`) | Auth failure |
-| 403 | `insufficient_scope`, `device_revoked`, `device_not_accepting_tasks`, `device_required` | Authorization failure. A revoked device's own tokens are revoked with it, so the CLI sees **`401 invalid_token` (`reason: revoked_token`)**; `403 device_revoked` is only returned when another valid credential (e.g. the web session) addresses a revoked device. `device_required`: route needs a device-bound token |
+| 403 | `insufficient_scope`, `device_revoked`, `device_not_accepting_tasks`, `device_required`, `operator_required` | Authorization failure. `operator_required`: an operator-only cloud-catalog route (§15) called by someone outside `ADMIN_EMAILS`. A revoked device's own tokens are revoked with it, so the CLI sees **`401 invalid_token` (`reason: revoked_token`)**; `403 device_revoked` is only returned when another valid credential (e.g. the web session) addresses a revoked device. `device_required`: route needs a device-bound token |
 | 404 | `not_found` | Missing **or not owned** (ids never leak; matches jobs/MCP behaviour today) |
 | 409 | `revision_conflict`, `lease_lost`, `idempotency_mismatch`, `duplicate`, `too_late` | Concurrency (`too_late`: cancel/release after `submit_intent`) |
 | 410 | `approval_expired`, `task_expired`, `cursor_expired` | Expired resources |
@@ -326,3 +326,30 @@ validate model output with Zod before returning; record usage in
 | `GET/POST /api/jobs`, `GET/PUT/DELETE /api/jobs/:id` **[VERIFIED]** | Same request/response shapes, served from `JOBS_DB` via an adapter (`legacy_job_id`). `PUT` maps to application + posting updates and **requires no revision** (legacy clients) but is rejected with `409` if the application changed in the last 5 s from another source (best-effort stale guard). |
 | MCP `jobs_list/get/create/update/delete`, `jobs_section_*`, `jobs_item_*` **[VERIFIED]** | Same tool names and schemas; backed by the adapter; `jobs_list` paginates fully (fixes the 1,000-key cap); `jobs_update` gains `follow_up_at`. New MCP tools: `jobs_board`, `jobs_move`, `jobs_note_add`, `jobs_interview_add`, `jobs_offer_add`, `jobs_approvals_list`, `jobs_approval_decide` (read/write scope split per existing filter). `jobs_approval_decide` works only when `user_settings.allow_mcp_approvals = 1`, only for `answer` and `cv_variant` approvals (never `submit` or `rule_activation`), and is the one MCP exception to the `automation:manage` requirement of `/approvals/{id}/decide` (checked in the tool, not by scope). MCP cannot create automation tasks in v1 (no `jobs_apply_request`). |
 | Admin bypass (`ADMIN_EMAILS`, `?mine=0`) **[VERIFIED]** `apps/api/src/ownership.ts:69-79` | **BREAKING (D-26):** ignored for jobs. Admins see only their own jobs; support access uses the logged break-glass script (11 §6.2). |
+
+## 15. Cloud discovery (24)
+
+The system catalog of remote-job boards scraped server-side every hour (24,
+D-37 … D-41). Every signed-in user reads the catalog and follows sources;
+**operator** routes (marked ⓞ) also require the caller's email in
+`ADMIN_EMAILS` and answer `403 operator_required` otherwise. Catalog rows are
+not user data (no `user_id`), so they are visible to everyone; follows are
+per user.
+
+| Method | Path | Scope | Description |
+|---|---|---|---|
+| GET | `/api/v1/cloud-sources?status&category&following&q` | `jobs:read` | `{items: CloudSourceView[], viewer: {operator}, pipeline: {enabled, ai_enabled, schedule, directory_url, last_directory_refresh_at, ai_budget}}`. A view is the row without lease and cursor plus `status` (`DISABLED` / `SCRAPING` / health), `following`, `followers`, `jobs_total`, `jobs_open`, `success_rate`, `avg_duration_ms` |
+| POST | `/api/v1/cloud-sources` | `jobs:write` ⓞ | Register a board `{name, url, listing_url?, category?, strategy?, strategy_config?, priority?, interval_minutes?}`; the URL is validated (public http(s), no credentials, not excluded), deduplicated by canonical domain (`409 duplicate`), and a probe run classifies it → `201 {source, run}` |
+| GET | `/api/v1/cloud-sources/{csr_id}` | `jobs:read` | `{source, runs}` (ten newest runs with stats, warnings and log) |
+| PATCH | `/api/v1/cloud-sources/{csr_id}` | `jobs:write` ⓞ | Edit with `base_revision`: name, listing URL, category, enabled, priority, interval, strategy + config (validated per strategy), rate limit, AI, browser, health (`ACTIVE` / `UNSUPPORTED` only), status note, auth note. Changed keys join `user_modified` so directory refreshes never overwrite them |
+| PUT/DELETE | `/api/v1/cloud-sources/{csr_id}/follow` | `jobs:write` | Follow (backfills ≤ 50 open postings of the last 14 days into the inbox, `{source, backfilled}`) / unfollow (`{source}`; inbox entries stay) |
+| GET | `/api/v1/cloud-sources/{csr_id}/runs?limit&cursor` | `jobs:read` | Run history, newest first |
+| POST | `/api/v1/cloud-sources/{csr_id}/runs` | `jobs:write` ⓞ | `{retry?, probe?}` → `202 {run}`: queue a scrape now (`retry` also closes the breaker and clears `BLOCKED` / `AUTH_REQUIRED` / `RATE_LIMITED`); a source already leased answers the live run |
+| GET | `/api/v1/cloud-discovery/runs?limit&cursor` | `jobs:read` | Directory refresh and probe runs |
+| POST | `/api/v1/cloud-discovery/refresh` | `jobs:write` ⓞ | Queue a directory refresh → `202 {run}` |
+
+Every route is behind `JOBS_V1_ENABLED` like the rest of `/api/v1`; the
+pipeline itself (cron, queue, manual runs) is behind
+`JOBS_CLOUD_DISCOVERY_ENABLED` — with it off, manual runs answer `422
+policy_violation`.
+
