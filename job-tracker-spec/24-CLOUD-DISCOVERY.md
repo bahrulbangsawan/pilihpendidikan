@@ -174,7 +174,7 @@ directory. Others get `403 operator_required`.
 
 ### 5.5 Dashboard (`apps/jobs` `/sources`)
 
-A "Remote job boards" band above the CLI sources: pipeline notice, filters
+A "Remote job boards" band above the CLI sources (platforms that are not job boards are stored but not listed, `isListed` in `services/cloud/catalog.ts`): pipeline notice, filters
 (status group, following, search), a table (status with reason, category,
 strategy, origin, last success / next check, jobs total / new, success rate,
 average duration, follow switch) and a sheet with diagnostics, auth and terms

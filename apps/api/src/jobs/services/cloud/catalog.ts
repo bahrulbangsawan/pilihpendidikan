@@ -66,6 +66,31 @@ import { statusOf, toCloudSourceView } from "./views";
 
 type Ctx = RouteContext<unknown, unknown, unknown>;
 
+/** Categories that are not job boards (24 §7.1). */
+const NON_BOARD_CATEGORIES: ReadonlySet<string> = new Set([
+  "freelance_marketplace",
+  "talent_network",
+  "staffing_service",
+  "tutoring_platform",
+  "content_marketplace",
+  "community",
+  "directory",
+]);
+
+/**
+ * Whether a source appears in the catalog list (24 §5.5). Platforms that are
+ * not job boards (`UNSUPPORTED` with a non-board category) stay in the table,
+ * so directory refreshes never register them again, but are not listed. Their
+ * detail route still answers.
+ */
+export function isListed(
+  source: Pick<CloudSourceRecord, "category" | "health">
+): boolean {
+  return !(
+    source.health === "UNSUPPORTED" && NON_BOARD_CATEGORIES.has(source.category)
+  );
+}
+
 /** The caller manages the catalog (24 §5.4). */
 export function isOperator(c: Ctx): boolean {
   return c.caller.isAdmin === true;
@@ -156,6 +181,9 @@ export async function listCatalog(
   const needle = query.q?.trim().toLowerCase() ?? "";
   const items = sources
     .filter((source) => {
+      if (!isListed(source)) {
+        return false;
+      }
       if (query.status && statusOf(source, c.now) !== query.status) {
         return false;
       }

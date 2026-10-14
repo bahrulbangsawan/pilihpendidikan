@@ -118,23 +118,37 @@ function run(w: World, id: string): Record<string, unknown> {
 }
 
 describe("T24-SEED the audited catalog", () => {
-  it("T24-SEED-01 registers every audited platform once, the explicit sources included", async () => {
+  it("T24-SEED-01 registers every audited platform once and lists only job boards", async () => {
     const w = await world();
     const first = await catalog(w.user);
-    expect(first.items).toHaveLength(CLOUD_SOURCES_FILE.sources.length);
+    const nonBoards = CLOUD_SOURCES_FILE.sources.filter(
+      (s) => s.health === "UNSUPPORTED" && s.enabled
+    );
+    // Every platform is stored (directory refreshes never re-register one);
+    // platforms that are not job boards are not listed.
+    expect(row(w, "SELECT count(*) AS n FROM cloud_sources").n).toBe(
+      CLOUD_SOURCES_FILE.sources.length
+    );
+    expect(first.items).toHaveLength(
+      CLOUD_SOURCES_FILE.sources.length - nonBoards.length
+    );
+    expect(first.items.some((x) => x.status === "UNSUPPORTED")).toBe(false);
     expect(first.viewer.operator).toBe(false);
     const second = await catalog(w.user);
     expect(second.items).toHaveLength(first.items.length);
-    expect(row(w, "SELECT count(*) AS n FROM cloud_sources").n).toBe(
-      first.items.length
-    );
     for (const slug of ["remotefreelance.id", "workfromhome.id", WWR]) {
       const s = first.items.find((x) => x.slug === slug);
       expect(s?.status).toBe("ACTIVE");
     }
-    const upwork = first.items.find((x) => x.slug === "upwork.com");
-    expect(upwork?.status).toBe("UNSUPPORTED");
-    expect(upwork?.status_reason).toContain("freelance marketplace");
+    expect(first.items.find((x) => x.slug === "upwork.com")).toBeUndefined();
+    const upworkId = String(
+      row(w, "SELECT id FROM cloud_sources WHERE slug = 'upwork.com'").id
+    );
+    const upwork = await w.user.get<{ source: CloudSourceView }>(
+      `/api/v1/cloud-sources/${upworkId}`
+    );
+    expect(upwork.body.source.status).toBe("UNSUPPORTED");
+    expect(upwork.body.source.status_reason).toContain("freelance marketplace");
     const pangian = first.items.find((x) => x.slug === "pangian.com");
     expect(pangian?.status).toBe("DISABLED");
     expect((await catalog(w.admin)).viewer.operator).toBe(true);
