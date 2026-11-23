@@ -1,9 +1,11 @@
-// Settings (12 §9, 05 §10a), laid out like reui's account-settings blocks: a
-// left sub-nav (Account, Language, AI, Your data) and cards of rows. Account
-// shows who is signed in; Language saves the UI language and the timezone;
-// AI holds the consent and the sensitive-scoring switch (11 §11); Your data
-// exports or deletes the account (11 §10). Every change is a PATCH with
-// base_revision under the conflict rules.
+// Settings (12 §9, 05 §10a), laid out like reui's account-settings blocks:
+// every section stacked on one page (Account, Language & region, AI, Your
+// data) and a left sub-nav of anchor links that highlights the section in
+// view (`?section=` scrolls to it). Account shows who is signed in; Language
+// stages the UI language and the timezone; AI stages the consent and the
+// sensitive-scoring switch (11 §11); both save from their Cancel / Save
+// footer. Your data exports or deletes the account (11 §10). Every change is
+// a PATCH with base_revision under the conflict rules.
 
 import type { UpdateSettingsRequest } from "@pilihpendidikan/jobs-contracts/api";
 import type { Locale } from "@pilihpendidikan/jobs-contracts/enums";
@@ -47,7 +49,7 @@ import {
   UserRound,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { SubNavItem } from "@rulisme/ui/blocks/settings";
 import {
@@ -82,6 +84,95 @@ const SETTINGS_FIELDS = [
   "ai_consent_at",
   "ai_scoring_sensitive",
 ] as const;
+
+/** The anchor id of a section (`#settings-language`). */
+function sectionAnchor(section: SettingsSection): string {
+  return `settings-section-${section}`;
+}
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function scrollToSection(section: SettingsSection, smooth: boolean) {
+  document.getElementById(sectionAnchor(section))?.scrollIntoView({
+    behavior: smooth && !prefersReducedMotion() ? "smooth" : "auto",
+    block: "start",
+  });
+}
+
+/** Line under the top bar where a section counts as "in view". */
+const SPY_LINE_PX = 120;
+
+/** The section in view while the page scrolls: the last one whose top has
+ * passed the line under the top bar. A section picked from the sub-nav (or
+ * `?section=` on load) stays current until the reader scrolls by hand, so a
+ * short last section that cannot reach the top still lights up. */
+function useSectionInView(initial: SettingsSection): {
+  active: SettingsSection;
+  pick: (section: SettingsSection) => void;
+} {
+  const [active, setActive] = useState<SettingsSection>(initial);
+  const [initialSection] = useState(initial);
+  const pinned = useRef<SettingsSection | null>(
+    initial === "account" ? null : initial
+  );
+
+  useEffect(() => {
+    if (initialSection !== "account") {
+      scrollToSection(initialSection, false);
+    }
+  }, [initialSection]);
+
+  useEffect(() => {
+    let frame = 0;
+    function measure() {
+      frame = 0;
+      if (pinned.current) {
+        setActive(pinned.current);
+        return;
+      }
+      let current: SettingsSection = SETTINGS_SECTIONS[0];
+      for (const value of SETTINGS_SECTIONS) {
+        const element = document.getElementById(sectionAnchor(value));
+        if (element && element.getBoundingClientRect().top <= SPY_LINE_PX) {
+          current = value;
+        }
+      }
+      setActive(current);
+    }
+    function onScroll() {
+      if (frame === 0) {
+        frame = window.requestAnimationFrame(measure);
+      }
+    }
+    function release() {
+      pinned.current = null;
+    }
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("wheel", release, { passive: true });
+    window.addEventListener("touchmove", release, { passive: true });
+    window.addEventListener("keydown", release);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("wheel", release);
+      window.removeEventListener("touchmove", release);
+      window.removeEventListener("keydown", release);
+      window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const pick = useCallback((section: SettingsSection) => {
+    pinned.current = section;
+    setActive(section);
+    scrollToSection(section, true);
+  }, []);
+
+  return { active, pick };
+}
 
 function AccountSection() {
   const { t } = useTranslation();
@@ -129,6 +220,7 @@ function LanguageSection({
   const session = useSession();
   const changeLocale = useChangeLocale();
   const [timezone, setTimezone] = useState("");
+  const [locale, setLocale] = useState<Locale>(session.locale);
 
   useEffect(() => {
     if (record) {
@@ -136,16 +228,34 @@ function LanguageSection({
     }
   }, [record]);
 
-  const dirty =
+  useEffect(() => {
+    setLocale(session.locale);
+  }, [session.locale]);
+
+  const timezoneDirty =
     record !== undefined &&
     timezone.trim() !== "" &&
     timezone.trim() !== record.timezone;
+  const localeDirty = locale !== session.locale;
+  const dirty = timezoneDirty || localeDirty;
 
-  async function pickLocale(locale: Locale) {
-    try {
-      await changeLocale(locale);
-    } catch {
-      toast.error(t("settings.localeFailed"));
+  function cancel() {
+    setLocale(session.locale);
+    if (record) {
+      setTimezone(record.timezone);
+    }
+  }
+
+  async function save() {
+    if (timezoneDirty) {
+      await change({ timezone: timezone.trim() });
+    }
+    if (localeDirty) {
+      try {
+        await changeLocale(locale);
+      } catch {
+        toast.error(t("settings.localeFailed"));
+      }
     }
   }
 
@@ -156,17 +266,13 @@ function LanguageSection({
         <>
           <Button
             disabled={!dirty}
-            onClick={() => record && setTimezone(record.timezone)}
+            onClick={cancel}
             size="sm"
             variant="outline"
           >
             {t("common.cancel")}
           </Button>
-          <Button
-            disabled={!dirty}
-            onClick={() => change({ timezone: timezone.trim() })}
-            size="sm"
-          >
+          <Button disabled={!dirty} onClick={save} size="sm">
             {t("settings.saveChanges")}
           </Button>
         </>
@@ -181,8 +287,8 @@ function LanguageSection({
         label={t("settings.locale")}
       >
         <Select
-          onValueChange={(value) => pickLocale(value as Locale)}
-          value={session.locale}
+          onValueChange={(value) => setLocale(value as Locale)}
+          value={locale}
         >
           <SelectTrigger className="w-full" id={`${id}-locale`}>
             <SelectValue />
@@ -227,9 +333,52 @@ function AiSection({
 }) {
   const { t } = useTranslation();
   const id = useId();
+  const [consent, setConsent] = useState(record.ai_consent_at !== null);
+  const [sensitive, setSensitive] = useState(record.ai_scoring_sensitive);
+
+  useEffect(() => {
+    setConsent(record.ai_consent_at !== null);
+    setSensitive(record.ai_scoring_sensitive);
+  }, [record]);
+
+  const consentDirty = consent !== (record.ai_consent_at !== null);
+  const sensitiveDirty = sensitive !== record.ai_scoring_sensitive;
+  const dirty = consentDirty || sensitiveDirty;
+
+  function cancel() {
+    setConsent(record.ai_consent_at !== null);
+    setSensitive(record.ai_scoring_sensitive);
+  }
+
+  async function save() {
+    const patch: SettingsPatch = {};
+    if (consentDirty) {
+      patch.ai_consent = consent;
+    }
+    if (sensitiveDirty) {
+      patch.ai_scoring_sensitive = sensitive;
+    }
+    await change(patch);
+  }
+
   return (
     <SettingsCard
       description={t("settings.aiHelp")}
+      footer={
+        <>
+          <Button
+            disabled={!dirty}
+            onClick={cancel}
+            size="sm"
+            variant="outline"
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button disabled={!dirty} onClick={save} size="sm">
+            {t("settings.saveChanges")}
+          </Button>
+        </>
+      }
       id="settings-ai"
       title={t("settings.ai")}
     >
@@ -241,9 +390,9 @@ function AiSection({
         label={t("settings.aiConsent")}
       >
         <Switch
-          checked={record.ai_consent_at !== null}
+          checked={consent}
           id={`${id}-ai`}
-          onCheckedChange={(value) => change({ ai_consent: value })}
+          onCheckedChange={setConsent}
         />
       </SettingsRow>
       <SettingsRow
@@ -254,10 +403,10 @@ function AiSection({
         label={t("settings.aiSensitive")}
       >
         <Switch
-          checked={record.ai_scoring_sensitive}
-          disabled={record.ai_consent_at === null}
+          checked={sensitive}
+          disabled={!consent}
           id={`${id}-sensitive`}
-          onCheckedChange={(value) => change({ ai_scoring_sensitive: value })}
+          onCheckedChange={setSensitive}
         />
       </SettingsRow>
     </SettingsCard>
@@ -388,6 +537,7 @@ export function SettingsPage({
   const settings = useSettings();
   const write = useConflictWrite();
   const record = settings.data;
+  const { active, pick } = useSectionInView(section);
 
   async function change(patch: SettingsPatch) {
     if (!record) {
@@ -424,33 +574,47 @@ export function SettingsPage({
     })
   );
 
-  let body: ReactNode;
-  if (section === "account") {
-    body = <AccountSection />;
-  } else if (section === "language") {
-    body = <LanguageSection change={change} record={record} />;
-  } else if (section === "data") {
-    body = <DataSection />;
-  } else if (record) {
-    body = <AiSection change={change} record={record} />;
+  let ai: ReactNode;
+  if (record) {
+    ai = <AiSection change={change} record={record} />;
   } else if (settings.isError) {
-    body = (
+    ai = (
       <p className="type-body text-destructive">{t("settings.loadFailed")}</p>
     );
   } else {
-    body = <Skeleton className="h-40 w-full rounded-lg" />;
+    ai = <Skeleton className="h-40 w-full rounded-xl" />;
   }
+
+  const bodies: Record<SettingsSection, ReactNode> = {
+    account: <AccountSection />,
+    language: <LanguageSection change={change} record={record} />,
+    ai,
+    data: <DataSection />,
+  };
 
   return (
     <SubNavLayout
       description={t("settings.intro")}
+      hrefOf={(value) => `#${sectionAnchor(value)}`}
       items={items}
       label={t("settings.sectionsLabel")}
-      onChange={onSectionChange}
+      onChange={(value) => {
+        pick(value);
+        onSectionChange(value);
+      }}
       title={t("settings.title")}
-      value={section}
+      value={active}
     >
-      {body}
+      {SETTINGS_SECTIONS.map((value) => (
+        <div
+          className="scroll-mt-16"
+          data-settings-section={value}
+          id={sectionAnchor(value)}
+          key={value}
+        >
+          {bodies[value]}
+        </div>
+      ))}
     </SubNavLayout>
   );
 }

@@ -1,3 +1,4 @@
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import { FormField } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
 import { Button } from "@rulisme/ui/ui/button";
@@ -75,15 +76,18 @@ const ACCENT_PRESETS = [
   "#7c3aed",
 ] as const;
 
-// Each form section is a band of the form pane: 32px above and below, and a
-// 1px `line` hairline above every band after the first. The form is a size
-// container, so its grids follow the pane's width rather than the viewport's.
-const SECTION_CLASS = "border-line border-t px-4 py-8 first:border-t-0 sm:px-6";
+// The form reads like a docs page: a page header, then sections 40px apart
+// with no rules between them, in a 640px column centred in the pane (24px /
+// 32px side padding). The form is a size container, so its grids follow the
+// column's width rather than the viewport's.
+const FORM_COLUMN_CLASS =
+  "@container/form mx-auto flex w-full max-w-176 flex-col gap-10 px-6 pt-10 pb-16 sm:px-8";
 
-// The accent swatches: 20px dots ringed by a 1px `border` hairline; the
-// chosen one gets a 2px ink ring 2px off the dot (SwatchPicker's own ring).
+// The accent swatches: 18px dots ringed by a 1px `border` hairline; the
+// chosen one gets a 2px foreground ring 2px off the dot (SwatchPicker's own
+// ring).
 const SWATCH_SIZE_CLASS =
-  "[&_[data-slot^=swatch-picker-]]:size-5 [&_[data-slot^=swatch-picker-]]:border-border";
+  "[&_[data-slot^=swatch-picker-]]:size-4.5 [&_[data-slot^=swatch-picker-]]:border-border";
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -100,8 +104,8 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// Every section heading: a muted 16px icon and the 16px subtitle role at
-// the semibold weight on a 32px row, with a chevron at the right. The whole row
+// Every section heading: a muted 16px icon and the 18px compact title role
+// at the semibold weight on a 32px row, with a chevron at the right. The whole row
 // toggles the section; the chevron flips instantly (nothing animates layout).
 function SectionToggle({
   icon,
@@ -112,7 +116,7 @@ function SectionToggle({
 }) {
   return (
     <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
-      <span className="type-subtitle weight-semibold flex items-center gap-2 text-foreground">
+      <span className="type-title-compact weight-semibold flex items-center gap-2 text-foreground">
         <span
           aria-hidden="true"
           className="inline-flex shrink-0 text-muted-foreground"
@@ -363,9 +367,16 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   }
 
   return (
-    <div className="@container/form flex flex-col">
+    <div className={FORM_COLUMN_CLASS}>
+      {/* -mb-2: 32px to the first section, not the column's 40px gap. */}
+      <DocHeader
+        area={t("pageHeader.area")}
+        className="-mb-2"
+        lead={t("pageHeader.lead")}
+        title={t("pageHeader.title")}
+      />
       {/* ── Invoice Details ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
+      <Collapsible defaultOpen>
         <SectionToggle icon={<FileText className="size-4" />}>
           {t("form.invoiceDetails")}
         </SectionToggle>
@@ -445,7 +456,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── From (Sender) ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
+      <Collapsible defaultOpen>
         <SectionToggle icon={<Building2 className="size-4" />}>
           {t("form.fromSection")}
         </SectionToggle>
@@ -529,7 +540,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── Bill To ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
+      <Collapsible defaultOpen>
         <SectionToggle icon={<UserRound className="size-4" />}>
           {t("form.billToSection")}
         </SectionToggle>
@@ -583,7 +594,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── Line Items ── */}
-      <div className={SECTION_CLASS}>
+      <div>
         <SectionList
           addLabel={t("form.addItem")}
           collapseLabel={t("a11y.toggleLineItems")}
@@ -709,13 +720,13 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
             item.description || t("form.itemFallback", { n: i + 1 })
           }
           title={t("form.lineItems")}
-          titleClassName="weight-semibold"
+          titleClassName="type-title-compact weight-semibold"
           titleIcon={<ListOrdered className="size-4" />}
         />
       </div>
 
       {/* ── Adjustments ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
+      <Collapsible defaultOpen>
         <SectionToggle icon={<SlidersHorizontal className="size-4" />}>
           {t("form.adjustments")}
         </SectionToggle>
@@ -817,7 +828,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── Notes & Settings ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
+      <Collapsible defaultOpen>
         <SectionToggle icon={<StickyNote className="size-4" />}>
           {t("form.notesSettings")}
         </SectionToggle>

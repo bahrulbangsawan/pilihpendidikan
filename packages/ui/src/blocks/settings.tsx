@@ -6,7 +6,9 @@ import { PAGE_GUTTER } from "./page";
 
 // Settings building blocks (reui's profile and settings blocks):
 // - `SubNavLayout`: a page title + description, a left sub-nav (a row of
-//   tabs on phones) and the content column.
+//   tabs on phones) and the content column. With `hrefOf` the items are
+//   anchor links (a page of stacked sections; the app reports the section
+//   in view as `value`); the current item gets a 1px border.
 // - `SettingsCard`: reui's nested frame. An outer 12px frame (`card`, a 10%
 //   border, 4px padding) carries the title / description header and the
 //   footer (Cancel left, Save right); the rows sit in an inner 8px panel
@@ -35,6 +37,7 @@ function SubNavLayout<T extends string>({
   items,
   value,
   onChange,
+  hrefOf,
   children,
 }: {
   title: React.ReactNode;
@@ -44,8 +47,11 @@ function SubNavLayout<T extends string>({
   items: readonly SubNavItem<T>[];
   value: T;
   onChange: (value: T) => void;
+  /** Anchor links: the `href` of each item (e.g. `#settings-ai`). */
+  hrefOf?: (value: T) => string;
   children: React.ReactNode;
 }) {
+  const currentKind = hrefOf ? "location" : "page";
   return (
     <div
       className={cn("flex w-full max-w-6xl flex-col gap-6 pt-6", PAGE_GUTTER)}
@@ -73,24 +79,49 @@ function SubNavLayout<T extends string>({
               return (
                 <li key={item.value}>
                   <Button
-                    aria-current={current ? "page" : undefined}
+                    aria-current={current ? currentKind : undefined}
+                    asChild={Boolean(hrefOf)}
                     className={cn(
                       "h-8 w-full justify-start gap-2.5 rounded-md px-2.5",
                       current
                         ? "border-border bg-pane-2 text-foreground hover:bg-pane-2"
                         : "text-ink-sec hover:text-foreground"
                     )}
-                    onClick={() => onChange(item.value)}
+                    onClick={(event) => {
+                      if (hrefOf) {
+                        event.preventDefault();
+                      }
+                      onChange(item.value);
+                    }}
                     variant="ghost"
                   >
-                    <Icon
-                      aria-hidden="true"
-                      className={cn(
-                        "size-4 shrink-0",
-                        current ? "text-foreground" : "text-muted-foreground"
-                      )}
-                    />
-                    {item.label}
+                    {hrefOf ? (
+                      <a href={hrefOf(item.value)}>
+                        <Icon
+                          aria-hidden="true"
+                          className={cn(
+                            "size-4 shrink-0",
+                            current
+                              ? "text-foreground"
+                              : "text-muted-foreground"
+                          )}
+                        />
+                        {item.label}
+                      </a>
+                    ) : (
+                      <>
+                        <Icon
+                          aria-hidden="true"
+                          className={cn(
+                            "size-4 shrink-0",
+                            current
+                              ? "text-foreground"
+                              : "text-muted-foreground"
+                          )}
+                        />
+                        {item.label}
+                      </>
+                    )}
                   </Button>
                 </li>
               );
@@ -243,7 +274,7 @@ function SettingsRow({
         {Icon ? (
           <span
             aria-hidden="true"
-            className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-ink-sec"
+            className="flex size-8.5 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-ink-sec"
           >
             <Icon className="size-4" />
           </span>

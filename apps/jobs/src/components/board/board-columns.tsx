@@ -85,10 +85,13 @@ export function CardMenu({
   card,
   onAction,
   className,
+  bordered = false,
 }: {
   card: BoardCard;
   onAction: (action: CardMenuAction) => void;
   className?: string;
+  /** A 28px outlined icon button (list rows) instead of the 24px ghost. */
+  bordered?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -101,10 +104,11 @@ export function CardMenu({
           })}
           className={cn(
             "text-muted-foreground hover:text-foreground",
+            bordered && "border-border",
             className
           )}
-          size="icon-xs"
-          variant="ghost"
+          size={bordered ? "icon-sm" : "icon-xs"}
+          variant={bordered ? "outline" : "ghost"}
         >
           <Ellipsis aria-hidden="true" />
         </Button>
@@ -249,7 +253,7 @@ export function SortableCard({
       </div>
       <CardMenu
         card={card}
-        className="absolute top-2 right-2"
+        className="absolute top-3 right-3"
         onAction={(action) => handlers.onMenuAction(card, action)}
       />
     </li>
@@ -312,7 +316,7 @@ function ColumnBody({
         items={cards.map((card) => card.id)}
         strategy={verticalListSortingStrategy}
       >
-        <ul aria-label={stageLabel(t, stage)} className="flex flex-col gap-2">
+        <ul aria-label={stageLabel(t, stage)} className="flex flex-col gap-3">
           {cards.map((card) => (
             <SortableCard
               card={card}

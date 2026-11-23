@@ -856,6 +856,8 @@
         "age_18_plus": "I am 18 or older"
       }
     },
+    "suggested": "Suggested",
+    "suggestedTitle": "Taken from your full name. Save to keep it.",
     "sources": {
       "user_entered": "You",
       "cv_import": "From CV",
@@ -907,13 +909,13 @@
     },
     "factPlaceholder": {
       "contact": {
-        "full_name": "Ayu Pratama",
-        "first_name": "Ayu",
-        "last_name": "Pratama",
+        "full_name": "Your full name",
+        "first_name": "Given name",
+        "last_name": "Family name",
         "email": "you@example.com",
         "phone": "+62 812 0000 0000",
-        "location": "Bandung",
-        "country": "Indonesia"
+        "location": "City",
+        "country": "Country"
       },
       "links": {
         "linkedin": "https://linkedin.com/in/you",

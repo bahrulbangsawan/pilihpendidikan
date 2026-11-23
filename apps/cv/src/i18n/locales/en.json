@@ -70,6 +70,11 @@
     "invalidJson": "Invalid JSON file. Please select a valid CV JSON export.",
     "pdfFailed": "Failed to generate PDF. Check the browser console for details."
   },
+  "pageHeader": {
+    "area": "Builders",
+    "title": "Your CV",
+    "lead": "Fill in your details and the preview updates as you type. Download a PDF when it reads right."
+  },
   "form": {
     "personalInformation": "Personal Information",
     "fullName": "Full Name",

@@ -1,10 +1,11 @@
 // The details sheet (reui's sheet): opened from a board card, list row or
 // table row and kept in the URL (`/board?app=<id>`) so it can be linked. A
-// floating window 12px off the viewport (reui's sheet-1): a header (company
-// avatar, 22px role, company), one row of 32px property chips (the stage
-// select, then labelled facts), then flat sections (Next step,
-// Notes, Interviews, Follow-up) split by hairlines and 24px of space; the
-// footer stacks the next step's primary action (`Y`) over a full-width
+// floating 480px window 12px off the viewport (reui's sheet-1): a header
+// (40px top padding, company avatar, 22px role, company), one line of 32px
+// property chips (the stage select, then labelled facts), then flat sections
+// (Next step, Notes, Interviews, Follow-up) split by hairlines and 24px of
+// space, scrolling under a 16px fade; the footer (an 8% hairline, 16px
+// padding) stacks the next step's primary action (`Y`) over a full-width
 // secondary "Open full page".
 
 import { SectionCard } from "@rulisme/ui/blocks/settings";
@@ -201,8 +202,9 @@ function SheetBody({
   const step = computeNextStep(detail);
   return (
     <>
-      <SheetHeader className="gap-4 border-border border-b p-6 pr-14">
+      <SheetHeader className="gap-4 border-border border-b px-6! pt-10 pb-6">
         <ApplicationIdentity
+          className="pr-8"
           detail={detail}
           title={
             <SheetTitle className="weight-semibold text-pretty">
@@ -218,7 +220,7 @@ function SheetBody({
           onMove={(target) => onMove(detail, target)}
         />
       </SheetHeader>
-      <div className="flex flex-1 flex-col divide-y divide-border overflow-y-auto px-6 *:py-6">
+      <div className="mask-b-from-[calc(100%-16px)] flex flex-1 flex-col divide-y divide-border overflow-y-auto px-6 *:py-6">
         <NextStepCard
           detail={detail}
           flat
@@ -245,7 +247,7 @@ function SheetBody({
           onEdit={() => onFollowUp(detail)}
         />
       </div>
-      <SheetFooter className="gap-2 border-border border-t p-4">
+      <SheetFooter className="gap-2 border-ink/8 border-t p-4">
         {step ? (
           <NextStepButton
             className="w-full"
@@ -298,7 +300,7 @@ export function ApplicationSheet({
   return (
     <Sheet onOpenChange={(open) => !open && onClose()} open={appId !== null}>
       <SheetContent
-        className="gap-0 overflow-hidden p-0 data-[side=right]:left-3 data-[side=right]:w-auto data-[side=right]:sm:left-auto data-[side=right]:sm:w-full data-[side=right]:sm:max-w-lg"
+        className="gap-0 overflow-hidden p-0 data-[side=right]:left-3 data-[side=right]:w-auto data-[side=right]:sm:left-auto data-[side=right]:sm:w-full data-[side=right]:sm:max-w-120"
         closeLabel={t("common.close")}
         floating
         onOpenAutoFocus={(event) => {

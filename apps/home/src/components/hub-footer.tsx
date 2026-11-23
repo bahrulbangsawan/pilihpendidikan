@@ -1,7 +1,14 @@
-import { Globe } from "lucide-react";
+import { Button } from "@rulisme/ui/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@rulisme/ui/ui/dropdown-menu";
+import { Check, ChevronDown, Globe, Languages } from "lucide-react";
 import type { ReactNode } from "react";
 import { TOOL_IDS } from "@/config/services";
-import { localePath, otherLocale, useTranslation } from "@/i18n";
+import { localePath, useTranslation } from "@/i18n";
 
 // cursor.com's footer links: 14px ink, 4.67px above and below, dimming on
 // hover.
@@ -31,7 +38,6 @@ function FooterColumn({
  */
 export function HubFooter() {
   const { locale, t } = useTranslation();
-  const switchTo = otherLocale(locale);
 
   return (
     <footer className="bg-card px-5 pt-[67.2px] pb-[30px]">
@@ -101,14 +107,35 @@ export function HubFooter() {
       </div>
       <div className="mx-auto mt-[86px] flex max-w-rail flex-wrap items-center justify-between gap-4">
         <p className="type-body text-ink-sec">{t("footer.copyright")}</p>
-        <a
-          className="type-body inline-flex h-7 items-center gap-1.5 rounded-full bg-pane px-2.5 text-foreground transition-colors duration-140 ease-standard hover:bg-pane-2"
-          href={localePath(switchTo)}
-          lang={switchTo}
-        >
-          <Globe aria-hidden="true" className="size-3.5" />
-          {t("nav.switchLanguage")}
-        </a>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" variant="secondary">
+              <Globe aria-hidden="true" data-icon="inline-start" />
+              {locale === "id" ? t("footer.indonesian") : t("footer.english")}
+              <ChevronDown aria-hidden="true" data-icon="inline-end" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top">
+            <DropdownMenuItem asChild>
+              <a href="/" lang="en">
+                <Languages aria-hidden="true" />
+                {t("footer.english")}
+                {locale === "en" ? (
+                  <Check aria-hidden="true" className="ml-auto" />
+                ) : null}
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a href="/id" lang="id">
+                <Languages aria-hidden="true" />
+                {t("footer.indonesian")}
+                {locale === "id" ? (
+                  <Check aria-hidden="true" className="ml-auto" />
+                ) : null}
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </footer>
   );

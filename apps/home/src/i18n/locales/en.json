@@ -182,5 +182,21 @@
       "label": "Job tracker",
       "title": "Your applications as a board, a list or a table"
     }
+  },
+  "templates": {
+    "heading": "Four CV templates",
+    "lead": "Pick one and switch at any time; the PDF follows.",
+    "label": "CV template",
+    "basic": "Basic",
+    "harvard": "Harvard",
+    "simple": "Simple",
+    "standard": "Standard",
+    "alt": "The {{name}} CV template with a sample CV"
+  },
+  "about": {
+    "heading": "Built for students and job seekers",
+    "body": "Pilih Pendidikan is made by Bahrul Bangsawan. Every builder is free, works in English and Bahasa Indonesia, and keeps your documents in your browser until you choose to save them.",
+    "link": "How our crawler works",
+    "shotAlt": "The job tracker's stats page"
   }
 }

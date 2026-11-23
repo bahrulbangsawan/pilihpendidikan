@@ -7,15 +7,16 @@ import { CountBadge } from "./page";
 // an app keeps its own drag and drop (dnd-kit refs, listeners and data go
 // on these elements through `ref` and props).
 // - `Kanban`: the horizontally scrolling row of columns.
-// - `KanbanColumn`: a 288px lane (reui): 12px corners, the `card` fill one
-//   step above the page and no border; cards sit on it in the lighter `pane`
+// - `KanbanColumn`: a 296px lane (reui): 12px corners, the `card` fill one
+//   step above the page and a 1px `border` (the lane well); cards sit on it in the lighter `pane`
 //   with their own 10% border and 8px corners.
-// - `KanbanColumnHeader`: a 44px header: status icon, title, the count in
+// - `KanbanColumnHeader`: a 48px header: status icon, title, the count in
 //   an 18px bordered square, actions at the end.
-// - `KanbanColumnContent`: the droppable body; `state="over"` washes it,
+// - `KanbanColumnContent`: the droppable body (12px padding, 12px between
+//   cards); `state="over"` washes it,
 //   `state="blocked"` tints it red (a move that is not allowed).
 // - `KanbanColumnEmpty`: the dashed placeholder of an empty lane.
-// - `KanbanCard`: the card surface (8px, its own border, 12px padding and
+// - `KanbanCard`: the card surface (8px, its own border, 16px padding and
 //   12px between blocks); `selected`, `pending`, `muted`, `dashed`.
 // - `KanbanCollapsedColumn`: a 44px strip with the title set vertically, a
 //   row button that expands it, still a drop target.
@@ -42,7 +43,7 @@ function KanbanColumn({
   return (
     <section
       className={cn(
-        "relative flex max-h-full w-72 shrink-0 flex-col rounded-xl bg-card",
+        "relative flex max-h-full w-74 shrink-0 flex-col rounded-xl border border-border bg-card",
         className
       )}
       data-slot="kanban-column"
@@ -72,10 +73,7 @@ function KanbanColumnHeader({
 }) {
   return (
     <header
-      className={cn(
-        "flex h-11 shrink-0 items-center gap-2 pr-2 pl-3",
-        className
-      )}
+      className={cn("flex h-12 shrink-0 items-center gap-2 px-3", className)}
       data-slot="kanban-column-header"
       {...props}
     >
@@ -102,7 +100,7 @@ function KanbanColumnContent({
   return (
     <div
       className={cn(
-        "flex min-h-24 flex-1 flex-col gap-2 overflow-y-auto rounded-b-xl px-2 pb-2 transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
+        "flex min-h-24 flex-1 flex-col gap-3 overflow-y-auto rounded-b-xl px-3 pb-3 transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
         className
       )}
       data-slot="kanban-column-content"
@@ -144,7 +142,7 @@ function KanbanCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 rounded-lg border border-border bg-pane p-3 text-left transition-colors duration-140 ease-standard hover:bg-pane-2 data-selected:border-line data-selected:bg-pane-3 data-selected:hover:bg-pane-3",
+        "flex flex-col gap-3 rounded-lg border border-border bg-pane p-4 text-left transition-colors duration-140 ease-standard hover:bg-pane-2 data-selected:border-line data-selected:bg-pane-3 data-selected:hover:bg-pane-3",
         muted && "opacity-75",
         dashed && "border-dashed",
         pending && "opacity-70",
@@ -180,7 +178,7 @@ function KanbanCollapsedColumn({
   return (
     <section
       className={cn(
-        "relative flex w-11 shrink-0 flex-col rounded-xl bg-card transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
+        "relative flex w-11 shrink-0 flex-col rounded-xl border border-border bg-card transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
         className
       )}
       data-slot="kanban-collapsed-column"

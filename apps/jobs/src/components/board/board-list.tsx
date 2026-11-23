@@ -1,9 +1,11 @@
-// The List view (`?view=list`, reui's grouped lists): one collapsible group
-// per stage under a plain label + count + hairline header, one row per
-// application on a proportional grid (reui's list-1) — a 32px company tile
-// with 8px corners, role and company, location,
-// source, the score meter, the stage chip and the age. Rows answer the
-// same clicks and keys as board cards (use-card-handlers.ts).
+// The List view (`?view=list`, reui's grouped lists): one nested-frame card
+// per stage (a 12px outer frame holding the collapsible group header, an 8px
+// bordered inner list), one row per application on a fixed column grid that
+// every group shares (reui's list-1): a 32px company tile, role and company
+// (280–360px), location 160, source 140, match 140 (a 64px bar, the % on its
+// right), stage 110, age 48 and the 28px "…" button, 16px apart. The grid
+// answers the list's width (container queries), not the window's. Rows answer
+// the same clicks and keys as board cards (use-card-handlers.ts).
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
@@ -19,6 +21,7 @@ import { sourceLabel, stageLabel } from "@/lib/labels";
 import type { CardHandlers } from "./board-columns";
 import { CardMenu } from "./board-columns";
 import { ScoreMeter, useLocationLine } from "./card-view";
+import { CountBadge } from "@rulisme/ui/blocks/page";
 import { EntityAvatar } from "@rulisme/ui/ui/entity-avatar";
 import { StageBadge, StageIcon } from "./stage-meta";
 
@@ -48,9 +51,7 @@ function ListRow({
           stage: stageLabel(t, card.stage),
         })}
         className={cn(
-          // reui's list: title block 2fr, location 1fr, source 1fr, match
-          // 120px, stage 110px, age 56px; the 32px menu sits in the pr-12.
-          "grid h-auto! grid-cols-[2rem_minmax(0,1fr)_auto] items-center justify-stretch gap-3 rounded-none py-3 pr-12! pl-3! focus-visible:outline-offset-[-2px] md:grid-cols-[2rem_minmax(0,1fr)_120px_110px_56px] md:gap-4 xl:grid-cols-[2rem_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_120px_110px_56px]",
+          "grid h-auto! @min-[1100px]:grid-cols-[2rem_minmax(280px,360px)_minmax(0,1fr)_160px_140px_140px_110px_3rem_1.75rem] @min-[640px]:grid-cols-[2rem_minmax(0,1fr)_140px_110px_3rem_1.75rem] grid-cols-[2rem_minmax(0,1fr)_3rem_1.75rem] items-center justify-stretch gap-4 rounded-none py-3 pr-3! pl-3! focus-visible:outline-offset-[-2px]",
           selected && "bg-pane-2 hover:bg-pane-2",
           pending && "opacity-70"
         )}
@@ -71,24 +72,25 @@ function ListRow({
             {card.posting.title}
           </span>
           <span className="type-caption truncate text-muted-foreground">
-            <span className="xl:hidden">
+            <span className="@min-[1100px]:hidden">
               {[card.posting.company_name, location]
                 .filter(Boolean)
                 .join(" · ")}
             </span>
-            <span className="hidden xl:inline">
+            <span className="@min-[1100px]:inline hidden">
               {card.posting.company_name}
             </span>
           </span>
         </span>
-        <span className="type-body-compact hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
+        <span aria-hidden="true" className="@min-[1100px]:block hidden" />
+        <span className="type-body-compact @min-[1100px]:flex hidden min-w-0 items-center gap-1.5 text-ink-sec">
           <MapPin
             aria-hidden="true"
             className="size-3.5 shrink-0 text-muted-foreground"
           />
           <span className="truncate">{location || "—"}</span>
         </span>
-        <span className="type-body-compact hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
+        <span className="type-body-compact @min-[1100px]:flex hidden min-w-0 items-center gap-1.5 text-ink-sec">
           <Globe
             aria-hidden="true"
             className="size-3.5 shrink-0 text-muted-foreground"
@@ -97,12 +99,10 @@ function ListRow({
             {sourceLabel(t, card.posting.source_kind)}
           </span>
         </span>
-        <ScoreMeter
-          className="hidden md:flex"
-          label={false}
-          score={card.score}
-        />
-        <span className="hidden md:flex">
+        <span className="@min-[640px]:block hidden min-w-0">
+          <ScoreMeter inline label={false} score={card.score} />
+        </span>
+        <span className="@min-[640px]:flex hidden">
           <StageBadge stage={card.stage} />
         </span>
         <span
@@ -111,8 +111,10 @@ function ListRow({
         >
           {compactAge(card.updated_at, nowMs)}
         </span>
+        <span aria-hidden="true" />
       </Button>
       <CardMenu
+        bordered
         card={card}
         className="absolute top-1/2 right-3 -translate-y-1/2"
         onAction={(action) => handlers.onMenuAction(card, action)}
@@ -137,11 +139,14 @@ function ListGroup({
   const { t } = useTranslation();
   const headingId = `list-${stage}`;
   return (
-    <section aria-labelledby={headingId} className="flex flex-col gap-2">
+    <section
+      aria-labelledby={headingId}
+      className="flex min-w-0 flex-col rounded-xl border border-border bg-card p-1"
+    >
       <h2 className="type-body" id={headingId}>
         <Button
           aria-expanded={expanded}
-          className="h-8 w-full justify-start gap-2 rounded-sm px-1 hover:bg-transparent aria-expanded:bg-transparent"
+          className="h-10 w-full justify-start gap-2 rounded-lg px-2.5 hover:bg-transparent aria-expanded:bg-transparent"
           onClick={() => onExpandedChange(!expanded)}
           variant="row"
         >
@@ -156,11 +161,7 @@ function ListGroup({
           <span className="weight-semibold text-foreground">
             {stageLabel(t, stage)}
           </span>
-          <span className="type-caption text-muted-foreground tabular-nums">
-            <span className="sr-only">{t("board.countLabel", { count })}</span>
-            <span aria-hidden="true">{count}</span>
-          </span>
-          <span aria-hidden="true" className="ml-2 h-px flex-1 bg-border" />
+          <CountBadge count={count} label={t("board.countLabel", { count })} />
         </Button>
       </h2>
       {expanded ? children : null}
@@ -197,7 +198,7 @@ export function BoardList({
     (stage) => visible[stage].length > 0 || !filtered
   );
   return (
-    <div className="flex flex-col gap-5 px-4 pb-8 sm:px-6 lg:px-8">
+    <div className="@container flex flex-col gap-4 px-4 pb-8 sm:px-6 lg:px-8">
       {empty}
       {shown.map((stage) => {
         const cards = visible[stage];
@@ -210,13 +211,13 @@ export function BoardList({
             stage={stage}
           >
             {cards.length === 0 ? (
-              <p className="type-caption rounded-lg border border-hairline border-dashed px-3 py-4 text-muted-foreground">
+              <p className="type-caption rounded-lg border border-border bg-background px-3 py-4 text-muted-foreground">
                 {t("board.emptyColumn")}
               </p>
             ) : (
               <ul
                 aria-label={stageLabel(t, stage)}
-                className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card"
+                className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-background"
               >
                 {cards.map((card) => (
                   <ListRow

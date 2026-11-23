@@ -15,6 +15,7 @@ import {
   PageHeader,
   PageSection,
 } from "@rulisme/ui/blocks/page";
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import {
   SectionCard,
   SettingsCard,
@@ -92,7 +93,7 @@ function KanbanBlock() {
   const [selected, setSelected] = useState("Gojek");
   return (
     <Block
-      description="Render-only lanes after reui's kanban: the app keeps its drag and drop and passes refs and listeners. A lane is a 288px column on card at 50%; the header carries a status icon, the title, a count and a menu; the body washes when a card hovers it and tints red when the move is not allowed; a collapsed lane is a 44px strip that expands on click."
+      description="Render-only lanes after reui's kanban: the app keeps its drag and drop and passes refs and listeners. A lane is a 296px well on card with a 1px border and 12px corners, 12px of padding and 12px between cards (16px inside each); the header carries a status icon, the title, a count and a menu; the body washes when a card hovers it and tints red when the move is not allowed; a collapsed lane is a 44px strip that expands on click."
       title="Kanban"
       wide
     >
@@ -125,14 +126,12 @@ function KanbanBlock() {
                     pending={card.company === "Traveloka"}
                     selected={selected === card.company}
                   >
-                    <div className="flex items-center gap-2">
-                      <EntityAvatar name={card.company} size="xs" />
-                      <span className="type-caption truncate text-ink-sec">
-                        {card.company}
-                      </span>
-                    </div>
                     <span className="type-body weight-semibold text-foreground">
                       {card.title}
+                    </span>
+                    <span className="type-body-compact inline-flex items-center gap-1.5 text-muted-foreground">
+                      <EntityAvatar name={card.company} size="xs" />
+                      {card.company}
                     </span>
                     <Meter label="Match" value={card.score} />
                   </KanbanCard>
@@ -212,7 +211,7 @@ function KanbanBlock() {
 function StatsBlock() {
   return (
     <Block
-      description="StatCard: reui's nested frame (a 12px outer frame, 4px of padding, an 8px inner panel one step darker), a 13px muted label with the … menu in its corner, the 22px value, a tinted delta chip with an arrow and a matching border (green up, red down, a neutral bordered chip at zero) and a 12px footer under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm."
+      description="StatCard: reui's nested frame (a 12px outer frame, 4px of padding, an 8px inner panel one step darker), a 13px muted label with the … menu in its corner, the 22px value, a tinted delta chip with an arrow and a matching border (green up, red down, a neutral bordered chip at zero) and a 12px footer under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm; `inline` is a 64px bar with the value on its right (list rows)."
       title="Stat card and meter"
       wide
     >
@@ -253,7 +252,10 @@ function StatsBlock() {
           />
         </StatGrid>
       </Example>
-      <Example label="Meters: neutral at any value, one fixed tone" stack>
+      <Example
+        label="Meters: neutral at any value, one fixed tone, inline"
+        stack
+      >
         <div className="grid gap-4 sm:grid-cols-4">
           <Meter label="Match" value={86} />
           <Meter label="Match" value={58} />
@@ -264,6 +266,10 @@ function StatsBlock() {
             value={95}
             valueLabel="19 / 20"
           />
+        </div>
+        <div className="flex flex-wrap gap-6">
+          <Meter inline value={87} />
+          <Meter inline value={42} />
         </div>
       </Example>
     </Block>
@@ -471,6 +477,23 @@ function PageBlock() {
   );
 }
 
+function DocHeaderBlock() {
+  return (
+    <Block
+      description="DocHeader: the docs-style header of a document form (cursor.com/docs) — a muted 13px area line, the 22px semibold title and a muted 16px lead, 8px apart with 16px above the lead. The builders put it on top of their form columns with 32px to the first section."
+      title="Document header"
+    >
+      <Example>
+        <DocHeader
+          area="CV builder"
+          lead="Fill in your details; the preview and the PDF follow as you type."
+          title="Your CV"
+        />
+      </Example>
+    </Block>
+  );
+}
+
 function ChromeBlock() {
   return (
     <Block
@@ -576,6 +599,7 @@ export function PatternsSection() {
     >
       <BlockGrid>
         <PageBlock />
+        <DocHeaderBlock />
         <SettingsBlock />
         <KanbanBlock />
         <StatsBlock />

@@ -16,7 +16,7 @@ Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/ho
 - `src/styles/theme.css` → `@rulisme/ui/styles/theme.css`: every Zedative token in its one dark scheme on `:root` (shadcn roles + `ink`, `ink-sec`, `ink-mid`, `line`, `hairline`, `pane`, `pane-2`, `pane-3`, `link`, `success`, `shot`, `primary-deep`, `wash`, `highlight`, `syn-*`; `.dark` is an alias), the eight `type-*` roles and `weight-*` utilities, radius, elevation (`shadow-md` flyout, `shadow-lg` window), the `band` / `rail` / `surface-card` / `typeset` / `field-touch` utilities (`rail-nodes`, `diamond`, `graph-paper`, `hatch` are retired no-ops), and the base layer (focus, selection, mono code). The only place tokens are defined.
 - `src/styles/shadcn.css` → `@rulisme/ui/styles/shadcn.css`: the shadcn runtime variants and utilities (from the CLI, unchanged).
 - `src/ui/` — every shadcn component (button, card, dialog, select, sidebar, chart, …) plus `rails` (`Band`, `Rail` = the 1300px container, `Diamond` = renders nothing), `kbd`, the Blocks `spinner` and `not-found` → `@rulisme/ui/ui/button`. `buttonVariants`, `badgeVariants` and `tabsListVariants` live in their own `*-variants.ts` files.
-- `src/blocks/` — composites (screen patterns): `page` (PageHeader, PageContent, PageSection, PageGutter), `settings` (SubNavLayout, SettingsCard, SettingsRow, SectionCard), `kanban`, `user-menu`, `app-brand`, `ghost-page`, `window-frame` → `@rulisme/ui/blocks/page`. Data-agnostic: content and copy come in as props, no app hooks, routing or i18n inside; apps keep their behaviour (dnd-kit wiring, sessions) and pass refs, handlers and items.
+- `src/blocks/` — composites (screen patterns): `page` (PageHeader, PageContent, PageSection, PageGutter), `doc-header` (DocHeader), `settings` (SubNavLayout, SettingsCard, SettingsRow, SectionCard), `kanban`, `user-menu`, `app-brand`, `ghost-page`, `window-frame` → `@rulisme/ui/blocks/page`. Data-agnostic: content and copy come in as props, no app hooks, routing or i18n inside; apps keep their behaviour (dnd-kit wiring, sessions) and pass refs, handlers and items.
 - `src/form/` — composed form pieces (`form-field`, `month-picker`, `section-list`) → `@rulisme/ui/form/form-field`
 - `src/reui/phone-input.tsx` → `@rulisme/ui/reui/phone-input`
 - `src/hooks/` — `use-shortcut` (single-letter shortcuts behind `<Kbd>` hints), `use-mobile` (sidebar)
@@ -83,19 +83,19 @@ upstream props; the table names what Zedative adds or what to pass.
 | InputGroup (+Addon, Button, Text, Input, Textarea) | `ui/input-group` | Field with addons | `align` |
 | InputOTP (+Group, Slot, Separator) | `ui/input-otp` | One-time code | input-otp |
 | Item (+Media, Content, Title, Description, Actions, Group, Separator, Header, Footer) | `ui/item` | List row | `variant`, `size`, `asChild` |
-| Kbd, KbdGroup | `ui/kbd` | Key chip | — |
+| Kbd, KbdGroup | `ui/kbd` | Key chip (hidden on touch screens and below 640px) | — |
 | Label | `ui/label` | Field label | Radix |
 | Marker (+Icon, Content) | `ui/marker` | Timeline marker | `variant` |
 | Menubar (+parts) | `ui/menubar` | App menu bar | Radix |
 | Message (+Group, Avatar, Content, Header, Footer), MessageScroller (+parts) | `ui/message`, `ui/message-scroller` | Chat thread | composition |
-| Meter | `ui/meter` | Labelled 4px score bar | `value`, `max`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
+| Meter | `ui/meter` | Labelled 4px score bar; `inline`: 64px bar with the value on its right | `value`, `max`, `inline`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
 | NativeSelect (+Option, OptGroup) | `ui/native-select` | Native select | `size` |
 | NavigationMenu (+parts) | `ui/navigation-menu` | Site nav | Radix |
 | NotFound | `ui/not-found` | 404 page | copy props |
 | Pagination (+parts) | `ui/pagination` | Pager | composition |
 | Popover (+Anchor, Content, Header, Title, Description) | `ui/popover` | Flyout panel | Radix |
 | Progress | `ui/progress` | Loading bar | `value` |
-| PropertyChip | `ui/property-chip` | 32px fact chip (8px corners) with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
+| PropertyChip | `ui/property-chip` | 32px fact chip (8px corners, 8px side padding) with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
 | Questionnaire (+parts) | `ui/questionnaire` | Step-by-step form | composition |
 | RadioGroup (+Item) | `ui/radio-group` | Radios | Radix |
 | Band, Rail, Diamond | `ui/rails` | Layout container (Diamond renders nothing) | — |
@@ -110,7 +110,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | Slider | `ui/slider` | Range slider | Radix |
 | Toaster | `ui/sonner` | Toasts | sonner |
 | Spinner | `ui/spinner` | Blocks spinner | size via `--spinner-size` |
-| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card (nested frame: 12px outer, 8px inner panel), its grid, the delta chip | `label` (13px), `value` (22px), `delta {direction, label}` (tint + border + arrow, neutral bordered at zero), `footer` (12px, under a hairline), `action` (e.g. a `…` menu, in foreground) |
+| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card (nested frame: 12px outer, 8px inner panel), its grid, the delta chip | `label` (14px), `value` (22px), 16px grid gap, `delta {direction, label}` (tint + border + arrow, neutral bordered at zero), `footer` (12px, under a hairline), `action` (e.g. a `…` menu, in foreground) |
 | StatusDot | `ui/status-dot` | 8px status dot | `tone` neutral / link / warning (amber) / success / destructive / ink / blue / violet / amber, `pulse` |
 | SwatchPicker | `ui/swatch-picker` | Colour swatches (document colours) | `colors`, `value`, `onValueChange`, `allowCustom` |
 | Switch | `ui/switch` | Toggle switch | `size` |
@@ -125,9 +125,10 @@ upstream props; the table names what Zedative adds or what to pass.
 | Component | File | What it is | Main props |
 | --- | --- | --- | --- |
 | PageHeader, PageContent, PageSection, PageGutter, CountBadge, PAGE_GUTTER, PAGE_COLUMN | `blocks/page` | App screen frame (title 18px at 500); `CountBadge` is the 18px bordered count square (page titles, lanes) | `title`, `description`, `count`, `actions`, `wide`; CountBadge `count`, `label` |
-| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav; reui's nested frame (12px outer frame with 4px padding carrying the header and footer, 8px inner panel one step darker holding the content) for cards of label / control rows and titled cards | `items`, `value`, `onChange`; card `title`, `description`, `action`, `footer` (first of two children sits left), `tone`, `inset`; row `label` (500), `description`, `htmlFor`, `icon`, `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `description`, `action`, `className` (inner panel), `frameClassName`, `flat` (no boxes). Content column capped at 640px |
-| Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop): borderless 12px `card` lanes, 8px bordered cards, the count in a CountBadge | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
-| UserMenu | `blocks/user-menu` | Sidebar account row + menu (32px square avatar, 500-weight name, uniform 28px rows) | `name`, `email`, `label`, `collapsed`, children = menu items (shortcut hints only for keys that exist) |
+| DocHeader | `blocks/doc-header` | Docs-style header of a document form (the builders): muted 13px area line, 22px semibold title, muted 16px lead | `area`, `title`, `lead`, `titleAs` h1 / h2 (default h2); spacing below is the caller's (builders: 32px) |
+| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav; reui's nested frame (12px outer frame with 4px padding carrying the header and footer, 8px inner panel one step darker holding the content) for cards of label / control rows and titled cards | `items`, `value`, `onChange`, `hrefOf` (anchor links for a page of stacked sections; current item bordered); card `title`, `description`, `action`, `footer` (first of two children sits left), `tone`, `inset`; row `label` (500), `description`, `htmlFor`, `icon` (34px bordered tile), `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `description`, `action`, `className` (inner panel), `frameClassName`, `flat` (no boxes). Content column capped at 640px |
+| Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop): 296px `card` lanes with a 1px border, 12px corners and 12px padding; 8px bordered cards with 16px padding and 12px gaps; the count in a CountBadge | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
+| UserMenu | `blocks/user-menu` | Sidebar account row + menu (32px square avatar in the row, 28px round avatar in the menu header, 500-weight name, uniform 28px rows of 14px text) | `name`, `email`, `label`, `collapsed`, children = menu items (shortcut hints only for keys that exist) |
 | AppBrand | `blocks/app-brand` | Mark + name in a toolbar | `name`, `src` |
 | GhostPage | `blocks/ghost-page` | Empty A4 sheet | `title`, `description`, `orientation` |
 | WindowFrame | `blocks/window-frame` | Desktop window for product shots | `title`, children |

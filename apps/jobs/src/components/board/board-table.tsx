@@ -1,7 +1,8 @@
 // The Table view (`?view=table`, reui's deals table / data grid), unboxed:
-// a 36px header of 13px muted labels over its underline, rows split by
-// hairlines, 14px cells with a 12px muted subline where a date has a
-// relative time, 28px ghost row actions. Sortable
+// a 36px header of 13px semibold muted labels over its underline, 56px rows
+// split by hairlines with 32px company tiles, 14px cells (In stage since is
+// a date, Updated a relative time), a 40px actions column of 28px ghost
+// menus. Sortable
 // columns (company and role, stage, score, location, source, in stage since,
 // updated), row actions, and checkbox selection shared with the board's
 // selection and bulk bar. A row opens the details sheet.
@@ -127,7 +128,7 @@ function SortHead({
     <TableHead aria-sort={ariaSort} className={className}>
       <Button
         className={cn(
-          "type-body-compact -ml-2 gap-1 px-2 text-muted-foreground hover:text-foreground",
+          "type-body-compact weight-semibold -ml-2 gap-1 px-2 text-muted-foreground hover:text-foreground",
           active && "text-foreground"
         )}
         size="xs"
@@ -167,7 +168,7 @@ function Row({
   return (
     <TableRow
       aria-busy={pending || undefined}
-      className={cn("cursor-pointer", pending && "opacity-70")}
+      className={cn("h-14 cursor-pointer *:py-2!", pending && "opacity-70")}
       data-state={selected ? "selected" : undefined}
       onClick={(event) => handlers.onCardClick(card, event)}
     >
@@ -224,21 +225,14 @@ function Row({
       <TableCell className="text-ink-sec">
         {sourceLabel(t, card.posting.source_kind)}
       </TableCell>
-      <TableCell className="tabular-nums">
-        <span className="flex flex-col">
-          <span className="text-foreground">
-            {formatDate(card.stage_changed_at, locale)}
-          </span>
-          <span className="type-caption text-muted-foreground">
-            {relativeTime(card.stage_changed_at, nowMs, locale)}
-          </span>
-        </span>
+      <TableCell className="text-foreground tabular-nums">
+        {formatDate(card.stage_changed_at, locale)}
       </TableCell>
       <TableCell className="text-ink-sec tabular-nums">
         {relativeTime(card.updated_at, nowMs, locale)}
       </TableCell>
       <TableCell
-        className="w-12 text-right"
+        className="w-10 px-1.5 text-right"
         onClick={(event) => event.stopPropagation()}
       >
         <CardMenu
@@ -329,7 +323,7 @@ export function BoardTable({
                 label={t("board.table.updated")}
                 {...head}
               />
-              <TableHead className="w-12 text-right">
+              <TableHead className="w-10 px-1.5 text-right">
                 <span className="sr-only">{t("board.table.actions")}</span>
               </TableHead>
             </TableRow>

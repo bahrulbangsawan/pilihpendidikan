@@ -157,3 +157,32 @@ Scores, eyeballed, raw, median of 3 critics (A same model, B Sonnet, C same mode
 
 vs round 3: every shot up 3–10 points; weakest now S05b settings, S10 list.
 Top gaps (3/3 agree): reui's nested card frame (outer 4px padding + inner panel) on settings/profile/stats; radius 8–12px on lanes/cards/sheet; medium weight on titles/labels inside app blocks; tinted stage badges per stage; list row proportional grid + 32px bordered tile; table unboxed, 14px cells; sheet title 22–24px + 32px chips with chevrons + footer hairline; S07 design-page sidebar stops at y≈650 (bug); phone search icon in the top bar; hub: MCP window scale, why-card icon inline, footer links 14px, mock syntax desaturation.
+
+## Round 05
+
+Time: 02:55 to 03:00 (stills) | total elapsed 3.5h | commit e366eca
+Focus: reui app-surface language (nested frames, 12px containers, stage tints, weights), list/table/sheet/dropdown/phone, design-page sidebar bug, builders polish, hub phone menu.
+Scores, eyeballed, raw, median of 3 critics (A same model, B Sonnet, C same model):
+
+| Shot | Layout | Colour | Typography | Components | Detail |
+|---|---|---|---|---|---|
+| S01 | 95 | 94 | 96 | 93 | 90 |
+| S02 | 89 | 93 | 93 | 89 | 86 |
+| S04 | 72 | 92 | 90 | 84 | 80 |
+| S05a | 86 | 90 | 88 | 85 | 84 |
+| S05b | 88 | 92 | 92 | 90 | 87 |
+| S06 | 84 | 90 | 88 | 86 | 82 |
+| S07 | 82 | 92 | 88 | 88 | 84 |
+| S09a | 84 | 88 | 88 | 86 | 83 |
+| S09b | 83 | 88 | 88 | 86 | 83 |
+| S10 | 84 | 90 | 88 | 86 | 82 |
+| S11 | 88 | 88 | 90 | 87 | 84 |
+| S12 | 88 | 88 | 90 | 89 | 86 |
+| S13 | 90 | 90 | 89 | 88 | 84 |
+| S14 | 89 | 90 | 90 | 89 | 86 |
+| S15 | 74 | 88 | 88 | 82 | 80 |
+| S16 | 92 | 92 | 91 | 88 | 85 |
+
+vs round 4: S05b +8, S12 +4, S13/S14/S16 +2–4; S04/S15 flat (phone). Critic B again reported stale facts (4px radii); weighted by median.
+Top gaps: hub page ~1,500px shorter than cursor.com (missing card bands) and phone landing; builders lack a docs-style page header and use hairlines where cursor uses whitespace; list grid alignment; profile values pulled from the CV render in placeholder grey (bug); chart line too bright; phone card "⇄" glyph.
+Next focus (round 6): hub bands (CV templates with real previews, about band), taller feature windows, mock details; jobs list/cards/settings stacking/profile bug/charts/sheet/phone; builders page header + 18px section titles + whitespace.

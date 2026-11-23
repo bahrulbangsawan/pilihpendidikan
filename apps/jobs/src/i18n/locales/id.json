@@ -856,6 +856,8 @@
         "age_18_plus": "Saya berusia 18 tahun atau lebih"
       }
     },
+    "suggested": "Saran",
+    "suggestedTitle": "Diambil dari nama lengkap Anda. Simpan untuk memakainya.",
     "sources": {
       "user_entered": "Anda",
       "cv_import": "Dari CV",
@@ -907,13 +909,13 @@
     },
     "factPlaceholder": {
       "contact": {
-        "full_name": "Ayu Pratama",
-        "first_name": "Ayu",
-        "last_name": "Pratama",
+        "full_name": "Nama lengkap Anda",
+        "first_name": "Nama depan",
+        "last_name": "Nama keluarga",
         "email": "anda@contoh.com",
         "phone": "+62 812 0000 0000",
-        "location": "Bandung",
-        "country": "Indonesia"
+        "location": "Kota",
+        "country": "Negara"
       },
       "links": {
         "linkedin": "https://linkedin.com/in/anda",

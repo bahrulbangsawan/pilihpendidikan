@@ -1,3 +1,4 @@
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
   closestCenter,
@@ -730,7 +731,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
             <div className="flex items-center">
               <EditableTitle
                 aria-label={t("a11y2.summarySectionTitle")}
-                className="weight-semibold"
+                className="type-title-compact weight-semibold"
                 onChange={(e) =>
                   onChange({ ...data, summaryTitle: e.target.value })
                 }
@@ -801,13 +802,22 @@ export function CVForm({ data, onChange }: CVFormProps) {
     }
   }
 
-  // Every section is a band on the form pane, ruled off by a full-width
-  // hairline; the reorderable ones carry a drag grip in the left gutter.
+  // The form reads like a docs page: a page header, then sections 40px
+  // apart with no rules between them, in a 640px column centred in the pane
+  // (24px / 32px side padding). The reorderable sections carry a drag grip
+  // in that side padding.
   return (
-    <div>
+    <div className="mx-auto flex w-full max-w-176 flex-col gap-10 px-6 pt-10 pb-16 sm:px-8">
+      {/* -mb-2: 32px to the first section, not the column's 40px gap. */}
+      <DocHeader
+        area={t("pageHeader.area")}
+        className="-mb-2"
+        lead={t("pageHeader.lead")}
+        title={t("pageHeader.title")}
+      />
       {/* ── Personal Info ── */}
-      <section className="flex flex-col gap-3 px-4 py-8 sm:px-6">
-        <h2 className="type-subtitle weight-semibold flex h-8 items-center text-foreground">
+      <section className="flex flex-col gap-3">
+        <h2 className="type-title-compact weight-semibold flex h-8 items-center text-foreground">
           {t("form.personalInformation")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -1007,11 +1017,13 @@ export function CVForm({ data, onChange }: CVFormProps) {
           items={data.sectionOrder}
           strategy={verticalListSortingStrategy}
         >
-          {data.sectionOrder.map((sectionId) => (
-            <SortableSection id={sectionId} key={sectionId}>
-              {renderSection(sectionId)}
-            </SortableSection>
-          ))}
+          <div className="flex flex-col gap-10">
+            {data.sectionOrder.map((sectionId) => (
+              <SortableSection id={sectionId} key={sectionId}>
+                {renderSection(sectionId)}
+              </SortableSection>
+            ))}
+          </div>
         </SortableContext>
       </DndContext>
     </div>
@@ -1022,7 +1034,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<ExperienceEntry>
         addLabel={t("form.addExperience")}
         emptyHint={t("form.empty.experience")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         hasError={(entry) =>
           !!(
             errors[`exp-${entry.id}-company`] || errors[`exp-${entry.id}-title`]
@@ -1277,7 +1289,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<EducationEntry>
         addLabel={t("form.addEducation")}
         emptyHint={t("form.empty.education")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         hasError={(entry) =>
           !!(
             errors[`edu-${entry.id}-institution`] ||
@@ -1478,7 +1490,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<SkillCategory>
         addLabel={t("form.addCategory")}
         emptyHint={t("form.empty.skills")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.skills}
         onAdd={addSkillCategory}
         onRemove={removeSkillCategory}
@@ -1558,7 +1570,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<AwardEntry>
         addLabel={t("form.addAward")}
         emptyHint={t("form.empty.awards")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.awards}
         onAdd={addAward}
         onRemove={removeAward}
@@ -1654,7 +1666,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<CertificateEntry>
         addLabel={t("form.addCertificate")}
         emptyHint={t("form.empty.certificates")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.certificates}
         onAdd={addCertificate}
         onRemove={removeCertificate}
@@ -1784,7 +1796,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<LanguageEntry>
         addLabel={t("form.addLanguage")}
         emptyHint={t("form.empty.languages")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.languages}
         onAdd={addLanguage}
         onRemove={removeLanguage}
@@ -1842,7 +1854,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<ProjectEntry>
         addLabel={t("form.addProject")}
         emptyHint={t("form.empty.projects")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.projects}
         onAdd={addProject}
         onRemove={removeProject}
@@ -1901,7 +1913,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
       <SectionList<VolunteerEntry>
         addLabel={t("form.addVolunteer")}
         emptyHint={t("form.empty.volunteer")}
-        titleClassName="weight-semibold"
+        titleClassName="type-title-compact weight-semibold"
         items={data.volunteer}
         onAdd={addVolunteer}
         onRemove={removeVolunteer}
@@ -2045,15 +2057,14 @@ function SortableSection({
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
-  // One band of the form, ruled off from the band above by a full-width
-  // hairline. The grip sits
-  // inside the left gutter, level with the section title's 32px row. With a
+  // One section of the form, 40px below the one above. The grip sits in
+  // the column's left padding, level with the section title's 32px row. With a
   // mouse it shows only while the band is hovered or holds focus (it stays a
   // tab stop, so the keyboard always reaches it); touch screens always show it.
   return (
     <div
       className={cn(
-        "group/section relative border-line border-t bg-background px-4 py-8 sm:px-6",
+        "group/section relative bg-background",
         // Above the neighbouring bands, under the sticky toolbar (z-10).
         isDragging && "z-5"
       )}
@@ -2065,7 +2076,7 @@ function SortableSection({
       }}
     >
       <DragHandle
-        className="absolute top-8 left-0 pointer-fine:text-transparent focus-visible:text-foreground pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
+        className="absolute top-0 -left-5 pointer-fine:text-transparent focus-visible:text-foreground pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground"
         label={t("form.dragToReorder")}
         variant="gutter"
         {...attributes}

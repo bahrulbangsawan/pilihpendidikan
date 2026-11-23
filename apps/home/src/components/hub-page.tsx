@@ -1,3 +1,4 @@
+import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
 import { Button } from "@rulisme/ui/ui/button";
 import type { ComponentProps } from "react";
 import {
@@ -37,6 +38,8 @@ const STRIP_ITEMS = [
 ] as const;
 
 const EXPORT_ITEMS = ["cv", "invoice", "portfolio", "jobs"] as const;
+
+const TEMPLATE_ITEMS = ["basic", "harvard", "simple", "standard"] as const;
 
 const WHY_ICONS = {
   preview: Eye,
@@ -172,6 +175,98 @@ function Exports() {
   );
 }
 
+/**
+ * The four CV templates as cursor.com's media cards: a heading and a grey
+ * lead, then four cards each holding a real preview (a fictional sample CV
+ * rendered by the CV builder) above a muted label and the name.
+ */
+function Templates() {
+  const { t } = useTranslation();
+  return (
+    <section aria-labelledby="templates-heading" className={SECTION_CLASS}>
+      <div className={CONTAINER_CLASS}>
+        <h2 className="type-title" id="templates-heading">
+          {t("templates.heading")}
+        </h2>
+        <p className="type-title text-ink-sec">{t("templates.lead")}</p>
+        <ul className="mt-[22px] grid gap-[10px] sm:grid-cols-2 lg:grid-cols-4">
+          {TEMPLATE_ITEMS.map((key) => {
+            const name = t(`templates.${key}`);
+            return (
+              <li
+                className="flex flex-col gap-3 rounded-sm border border-hairline bg-card p-[15px]"
+                key={key}
+              >
+                <div className="h-[220px] overflow-hidden rounded-xs bg-stage-stone px-5 pt-5">
+                  <img
+                    alt={t("templates.alt").replace("{{name}}", name)}
+                    className="block h-auto w-full rounded-xs"
+                    decoding="async"
+                    height={456}
+                    loading="lazy"
+                    src={`/templates/${key}.webp`}
+                    width={480}
+                  />
+                </div>
+                <div>
+                  <p className="type-subtitle text-ink-mid">
+                    {t("templates.label")}
+                  </p>
+                  <p className="type-subtitle">{name}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/** cursor.com's two-column "about" card: copy left, a framed shot right. */
+function About() {
+  const { t } = useTranslation();
+  return (
+    <section aria-labelledby="about-heading" className={SECTION_CLASS}>
+      <div
+        className={`${CONTAINER_CLASS} grid grid-cols-1 gap-x-[10px] gap-y-6 rounded-sm border border-hairline bg-card p-[17.5px] lg:grid-cols-24`}
+      >
+        <div className="flex max-w-[383px] flex-col justify-end px-[2.5px] pb-2 lg:col-span-8">
+          <h2 className="type-subtitle md:type-title" id="about-heading">
+            {t("about.heading")}
+          </h2>
+          <p className="type-subtitle md:type-title text-pretty text-ink-sec">
+            {t("about.body")}
+          </p>
+          <a
+            className="type-subtitle mt-[14.9px] inline-flex items-center gap-1 self-start text-link transition-colors duration-140 ease-standard hover:text-link/75"
+            href="/bot"
+          >
+            {t("about.link")}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div className="relative h-[280px] overflow-hidden rounded-xs bg-stage-warm lg:col-span-16 lg:h-[465px]">
+          <WindowFrame
+            className="absolute inset-x-6 top-6 lg:inset-x-10 lg:top-10"
+            title="Pilih Jobs — Stats"
+          >
+            <img
+              alt={t("about.shotAlt")}
+              className="block h-auto w-full"
+              decoding="async"
+              height={800}
+              loading="lazy"
+              src="/shots/stats.webp"
+              width={1000}
+            />
+          </WindowFrame>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /** A centred 36px headline over six cards, like cursor.com's quotes. */
 function Why() {
   const { t } = useTranslation();
@@ -270,7 +365,9 @@ export function HubPage({ services }: { services: Services }) {
           </div>
         </section>
 
+        <Templates />
         <Exports />
+        <About />
 
         <section
           aria-labelledby="cta-heading"

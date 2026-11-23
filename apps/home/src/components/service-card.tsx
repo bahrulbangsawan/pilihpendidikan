@@ -134,7 +134,7 @@ export function ServiceCard({
             alt={t("features.shotAlt").replace("{{name}}", name)}
             className="block h-auto w-full"
             decoding="async"
-            height={620}
+            height={800}
             loading="lazy"
             src={`/shots/${id}.webp`}
             width={1000}

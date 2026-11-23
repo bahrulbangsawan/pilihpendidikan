@@ -1,0 +1,108 @@
+{
+  "personalInfo": {
+    "fullName": "Rina Putri",
+    "jobTitle": "iOS Developer",
+    "email": "rina@example.com",
+    "phone": "",
+    "location": "Makassar, Indonesia",
+    "linkedIn": "rinaputri",
+    "photoUrl": "",
+    "usePhoto": false
+  },
+  "sectionOrder": [
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "awards",
+    "certificates",
+    "languages",
+    "projects",
+    "volunteer"
+  ],
+  "summaryTitle": "Professional Summary",
+  "summary": "iOS developer who ships calm, accessible apps in SwiftUI. Interned at a ride-hailing company on the trip receipt screen and led a three-person student team that built a study planner used by 400 classmates.",
+  "experienceTitle": "Work Experience",
+  "experience": [
+    {
+      "id": "exp-1",
+      "company": "Gojek",
+      "url": "",
+      "title": "iOS Engineering Intern",
+      "workType": "internship",
+      "locationPolicy": "hybrid",
+      "startDate": "2025-07",
+      "endDate": "2025-12",
+      "current": false,
+      "description": "Built the trip receipt screen in SwiftUI.\nCut the screen's crash rate by adding snapshot tests."
+    },
+    {
+      "id": "exp-2",
+      "company": "Apple Developer Academy",
+      "url": "",
+      "title": "Junior Developer",
+      "workType": "full-time",
+      "locationPolicy": "onsite",
+      "startDate": "2024-03",
+      "endDate": "2024-12",
+      "current": false,
+      "description": "Shipped two App Store apps with a team of five.\nLed accessibility reviews for VoiceOver and Dynamic Type."
+    }
+  ],
+  "educationTitle": "Education",
+  "education": [
+    {
+      "id": "edu-1",
+      "category": "university",
+      "institution": "Universitas Brawijaya",
+      "degree": "S1 Informatika",
+      "gpa": "3.7",
+      "startDate": "2020-08",
+      "endDate": "2024-07",
+      "current": false
+    }
+  ],
+  "skillsTitle": "Skills",
+  "skills": [
+    {
+      "id": "skill-cat-1",
+      "name": "Development",
+      "items": [
+        "Swift",
+        "SwiftUI",
+        "UIKit",
+        "Combine",
+        "XCTest",
+        "Git"
+      ]
+    }
+  ],
+  "awardsTitle": "Awards",
+  "awards": [],
+  "certificatesTitle": "Certificates",
+  "certificates": [],
+  "languagesTitle": "Languages",
+  "languages": [
+    {
+      "id": "lang-1",
+      "language": "Indonesian",
+      "proficiency": "Native"
+    },
+    {
+      "id": "lang-2",
+      "language": "English",
+      "proficiency": "Professional"
+    }
+  ],
+  "projectsTitle": "Projects",
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "Study Planner",
+      "url": "",
+      "description": "A SwiftUI planner for class schedules and assignments."
+    }
+  ],
+  "volunteerTitle": "Volunteer & Community",
+  "volunteer": []
+}

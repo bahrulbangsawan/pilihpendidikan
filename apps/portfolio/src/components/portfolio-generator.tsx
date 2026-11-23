@@ -23,6 +23,7 @@ import {
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
+import { PropertyChip } from "@rulisme/ui/ui/property-chip";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -475,9 +476,11 @@ export function PortfolioGenerator({
         </div>
         <div className="pf-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
           <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
-            <span className="type-caption min-w-0 truncate text-muted-foreground">
-              {t("preview.documentLabel")}
-            </span>
+            {/* The deck's format as a 28px neutral pill, level with the
+                deck's left edge (the pane's 24px gutter). */}
+            <PropertyChip className="h-7 min-w-0 rounded-full">
+              <span className="truncate">{t("preview.documentLabel")}</span>
+            </PropertyChip>
             {portfolioId && cloud.hasToken ? (
               <CloudStatus error={cloud.error} status={cloud.status} />
             ) : null}

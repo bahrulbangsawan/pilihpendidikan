@@ -70,6 +70,11 @@
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON CV yang valid.",
     "pdfFailed": "Gagal membuat PDF. Periksa konsol browser untuk detail."
   },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "CV Anda",
+    "lead": "Isi data Anda dan pratinjau langsung berubah saat Anda mengetik. Unduh PDF jika sudah pas."
+  },
   "form": {
     "personalInformation": "Informasi Pribadi",
     "fullName": "Nama Lengkap",

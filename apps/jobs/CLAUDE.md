@@ -32,14 +32,22 @@ framed section cards, stat cards and chart cards are reui's **nested
 frame**: a 12px outer frame (`bg-card`, 4px padding) with the header and
 footer, around an 8px inner panel on `bg-background` holding the rows
 (`@rulisme/ui/blocks/settings`, `ui/stat-card`), in a 640px column on
-account pages. Kanban lanes are borderless 12px `bg-card` columns; the
-closed lanes (Rejected, Withdrawn) stick to the row's right end as rails
+account pages. Kanban lanes are 296px 12px `bg-card` wells with a 1px
+`border-border` and 12px padding; cards (16px padding, 12px gaps) lead
+with the title, then company and location icon rows, then the match meter
+with the source chip at its right; on phones the same card keeps the
+desktop "…" menu (Move inside). The closed lanes (Rejected, Withdrawn) stick to the row's right end as rails
 while collapsed. Stage tones (`components/board/stage-meta.tsx`, used by
 lane icons, dots and `StageBadge` everywhere): saved neutral, preparing
 violet, ready blue, applied amber, interviewing / offer / accepted success,
-rejected destructive, withdrawn neutral. The list is a proportional grid
-(title 2fr, location 1fr, source 1fr, match 120px, stage 110px, age 56px);
-the table is unboxed. Every control is an
+rejected destructive, withdrawn neutral. The list is one nested-frame card per
+stage (header inside the outer frame) on a fixed grid every group shares
+(32px tile, title 280–360, location 160, source 140, match 140 as a 64px
+inline meter, stage 110, age 48, a 28px outlined menu; 16px gaps; container
+queries); the table is unboxed (56px rows, 13px semibold headers, a 40px
+actions column). The details sheet is a 480px floating window (40px top
+padding, chips on one line above 440px, footer under an 8% hairline with a
+16px fade above it). Every control is an
 `@rulisme/ui` component (no raw `<button>` / `<input>` / `<select>`), and
 select / menu options carry a lucide icon.
 
@@ -120,8 +128,8 @@ await api("POST /api/v1/applications/{app_id}/move", {
 ## Screens of 12 §4–§9 (contracts worth keeping)
 
 - Stats (`components/stats/`): four stat cards (value, delta chip against the period of the same length before — counts in %, the response rate in points — and the previous value; all time has no delta), then every chart in `ChartFrame` (role="img" summary + a `aria-pressed` "Data table" toggle remembered per chart in localStorage); rates hidden for cohorts under 5; range, metric and breakdown in the URL. No automation metrics.
-- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer), Answers and CVs (tables inside cards).
-- Settings (`components/settings/`): Account (email, sign out), Language & region (language saves at once; timezone with Cancel / Save), AI (consent, sensitive scoring), Your data (export, delete). The automation settings (default mode, pause all, MCP approvals, AI-drafted form text, evidence screenshots and retention) are no longer shown.
+- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer; an empty first / last name is filled from the full name with a "Suggested" chip, and placeholders are generic hints, never sample values), Answers and CVs (tables inside cards).
+- Settings (`components/settings/`): every section on one page — Account (email, sign out), Language & region (language and timezone, Cancel / Save), AI (consent, sensitive scoring, Cancel / Save), Your data (export, delete); the sub-nav is anchor links that highlight the section in view, and `?section=` scrolls to its section. The automation settings (default mode, pause all, MCP approvals, AI-drafted form text, evidence screenshots and retention) are no longer shown.
 
 ## Render ticket mode (08 §6, PLAN C8)
 

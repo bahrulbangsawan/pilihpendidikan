@@ -356,7 +356,7 @@ export function BoardPage({
         columns={visible}
         empty={empty}
         nowMs={now}
-        onMove={cards.setPickerCard}
+        onMenuAction={cards.handlers.onMenuAction}
         onOpen={openCard}
         pendingIds={board.pendingIds}
         totals={totals}

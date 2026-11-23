@@ -182,5 +182,21 @@
       "label": "Pelacak lamaran",
       "title": "Lamaran Anda sebagai papan, daftar, atau tabel"
     }
+  },
+  "templates": {
+    "heading": "Empat templat CV",
+    "lead": "Pilih satu dan ganti kapan saja; PDF-nya ikut berubah.",
+    "label": "Templat CV",
+    "basic": "Basic",
+    "harvard": "Harvard",
+    "simple": "Simple",
+    "standard": "Standard",
+    "alt": "Templat CV {{name}} dengan contoh CV"
+  },
+  "about": {
+    "heading": "Dibuat untuk pelajar dan pencari kerja",
+    "body": "Pilih Pendidikan dibuat oleh Bahrul Bangsawan. Setiap pembuat dokumen gratis, tersedia dalam bahasa Inggris dan bahasa Indonesia, dan menyimpan dokumen Anda di browser sampai Anda memilih untuk menyimpannya.",
+    "link": "Cara kerja crawler kami",
+    "shotAlt": "Halaman statistik pelacak lamaran"
   }
 }

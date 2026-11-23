@@ -14,7 +14,9 @@ import { EntityAvatar } from "../ui/entity-avatar";
 // a 48px row with a 32px square letter avatar (8px corners), the name
 // (weight 500) and email and an up-down chevron (only the avatar when
 // `collapsed`), opening a menu to the right of the sidebar (bottom-aligned)
-// headed by the same identity, with uniform 28px rows. Group the items with separators (account pages / preferences /
+// headed by the same identity on a 28px round avatar, with uniform 28px
+// rows of 14px text (the first row is highlighted when the menu opens from
+// the keyboard). Group the items with separators (account pages / preferences /
 // sign out) and put a `DropdownMenuShortcut` only on rows whose key really exists. The menu items are the app's: pass
 // DropdownMenuItem / DropdownMenuSub children (Profile, Settings, Language,
 // Sign out). Presentational: no session, routing or copy inside.
@@ -22,16 +24,20 @@ import { EntityAvatar } from "../ui/entity-avatar";
 function UserIdentity({
   name,
   email,
+  round = false,
 }: {
   name: string | null | undefined;
   email: string;
+  /** The menu header's 28px round avatar (the row keeps the 32px tile). */
+  round?: boolean;
 }) {
   return (
     <>
       <EntityAvatar
+        className={round ? "size-7" : undefined}
         fallback={email}
         name={name}
-        shape="square"
+        shape={round ? "circle" : "square"}
         size="default"
       />
       <span className="flex min-w-0 flex-1 flex-col">
@@ -104,7 +110,7 @@ function UserMenu({
         sideOffset={16}
       >
         <DropdownMenuLabel className="flex items-center gap-2.5 px-2 py-1.5">
-          <UserIdentity email={email} name={name} />
+          <UserIdentity email={email} name={name} round />
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {children}

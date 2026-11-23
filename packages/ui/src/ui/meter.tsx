@@ -6,7 +6,8 @@ import { cn } from "../lib/utils";
 // right). For a score or a quota, not for loading (that is Progress). Data
 // stays neutral by default: an `ink-sec` bar, the number carries the value
 // (orange is for links). `tone="auto"` colours by value (success from
-// `high`, orange from `mid`) for the rare meter that must alarm.
+// `high`, orange from `mid`) for the rare meter that must alarm. `inline`
+// puts a 64px bar and the value on one line (list rows).
 
 type MeterTone = "auto" | "success" | "link" | "neutral" | "destructive";
 
@@ -28,6 +29,7 @@ function Meter({
   mid = 50,
   label,
   valueLabel,
+  inline = false,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
   value: number;
@@ -40,6 +42,8 @@ function Meter({
   label?: React.ReactNode;
   /** The value as text (defaults to `value%`). */
   valueLabel?: React.ReactNode;
+  /** One line: a 64px bar with the value to its right (list rows). */
+  inline?: boolean;
 }) {
   const percent = Math.min(100, Math.max(0, (value / max) * 100));
   let resolved: Exclude<MeterTone, "auto">;
@@ -52,6 +56,40 @@ function Meter({
   } else {
     resolved = "neutral";
   }
+  const bar = (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "relative block h-1 overflow-hidden rounded-full bg-pane-2",
+        inline ? "w-16 shrink-0" : "w-full"
+      )}
+    >
+      <span
+        className={cn("absolute inset-y-0 left-0 rounded-full", FILL[resolved])}
+        style={{ width: `${Math.max(MIN_FILL, percent)}%` }}
+      />
+    </span>
+  );
+  const text = (
+    <span className="text-foreground tabular-nums">
+      {valueLabel ?? `${Math.round(percent)}%`}
+    </span>
+  );
+  if (inline) {
+    return (
+      <div
+        className={cn("type-caption flex items-center gap-2", className)}
+        data-inline=""
+        data-slot="meter"
+        data-tone={resolved}
+        {...props}
+      >
+        {label ? <span className="text-muted-foreground">{label}</span> : null}
+        {bar}
+        {text}
+      </div>
+    );
+  }
   return (
     <div
       className={cn("flex flex-col gap-1.5", className)}
@@ -61,22 +99,9 @@ function Meter({
     >
       <div className="type-caption flex items-center justify-between gap-2">
         {label ? <span className="text-muted-foreground">{label}</span> : null}
-        <span className="ml-auto text-foreground tabular-nums">
-          {valueLabel ?? `${Math.round(percent)}%`}
-        </span>
+        <span className="ml-auto">{text}</span>
       </div>
-      <span
-        aria-hidden="true"
-        className="relative block h-1 w-full overflow-hidden rounded-full bg-pane-2"
-      >
-        <span
-          className={cn(
-            "absolute inset-y-0 left-0 rounded-full",
-            FILL[resolved]
-          )}
-          style={{ width: `${Math.max(MIN_FILL, percent)}%` }}
-        />
-      </span>
+      {bar}
     </div>
   );
 }

@@ -3,11 +3,11 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 
 // Stat cards (reui's stats blocks): the nested frame (an outer 12px frame
-// with 4px padding around an inner 8px panel one step darker), a 13px muted
+// with 4px padding around an inner 8px panel one step darker), a 14px muted
 // label with an optional `…` menu in its corner, the 22px value with an
 // optional delta chip, and a 12px footer line under a hairline (the previous
 // period, or a note). `StatGrid` is the
-// <dl> that lays them out two, then four, across. Every StatCard renders a
+// <dl> that lays them out two, then four, across, 16px apart. Every StatCard renders a
 // <dt> / <dd> pair, so keep them inside a StatGrid.
 
 type DeltaDirection = "up" | "down" | "flat";
@@ -50,10 +50,7 @@ function DeltaChip({
 function StatGrid({ className, ...props }: React.ComponentProps<"dl">) {
   return (
     <dl
-      className={cn(
-        "grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4",
-        className
-      )}
+      className={cn("grid grid-cols-2 gap-4 xl:grid-cols-4", className)}
       data-slot="stat-grid"
       {...props}
     />
@@ -98,7 +95,7 @@ function StatCard({
         ) : null}
         <dt
           className={cn(
-            "type-body-compact truncate text-muted-foreground",
+            "type-body truncate text-muted-foreground",
             action && "pr-8"
           )}
         >

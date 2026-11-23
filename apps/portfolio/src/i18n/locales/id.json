@@ -61,6 +61,11 @@
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON portofolio yang valid.",
     "pdfFailed": "Gagal membuat PDF. Periksa konsol peramban untuk detail."
   },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "Portofolio",
+    "lead": "Ceritakan diri Anda dan hingga lima proyek untuk pendaftaran Apple Developer Academy, ditata di halaman A4 lanskap."
+  },
   "form": {
     "projectCount": "{count} dari {max}",
     "profile": "Profil",

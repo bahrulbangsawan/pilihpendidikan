@@ -1,7 +1,11 @@
 // Facts (12 §9): a grouped form over the canonical keys (03 §9) — contact,
 // links, work authorization, preferences — one card of label / field rows
-// per group, each with its source chip (From CV, You, Verified). Saving sends only what changed, with each fact's
-// revision; a fact changed elsewhere is reported and can be overwritten.
+// per group, each with its source chip (From CV, You, Verified). An empty
+// first / last name is filled from the full name as a real value with a
+// "Suggested" chip (saved with the next Save); placeholders are generic
+// hints ("City"), never sample data that could pass for a value. Saving
+// sends only what changed, with each fact's revision; a fact changed
+// elsewhere is reported and can be overwritten.
 
 import type { PutFactsRequest } from "@pilihpendidikan/jobs-contracts/api";
 import type { ApplicantFactRecord } from "@pilihpendidikan/jobs-contracts/records";
@@ -62,8 +66,41 @@ const WORK_AUTH_ICONS: Record<(typeof WORK_AUTH_STATUSES)[number], LucideIcon> =
     none: Ban,
   };
 
-function SourceChip({ fact }: { fact: ApplicantFactRecord | undefined }) {
+const FULL_NAME_KEY = "contact.full_name";
+const FIRST_NAME_KEY = "contact.first_name";
+const LAST_NAME_KEY = "contact.last_name";
+const WHITESPACE_RE = /\s+/;
+
+/** First and last name read off a saved full name ("Rina Wulandari"). */
+export function nameSuggestions(fullName: unknown): Record<string, string> {
+  if (typeof fullName !== "string") {
+    return {};
+  }
+  const parts = fullName.trim().split(WHITESPACE_RE).filter(Boolean);
+  if (parts.length < 2) {
+    return {};
+  }
+  return {
+    [FIRST_NAME_KEY]: parts[0] ?? "",
+    [LAST_NAME_KEY]: parts.slice(1).join(" "),
+  };
+}
+
+function SourceChip({
+  fact,
+  suggested = false,
+}: {
+  fact: ApplicantFactRecord | undefined;
+  suggested?: boolean;
+}) {
   const { t } = useTranslation();
+  if (suggested) {
+    return (
+      <Badge title={t("profile.suggestedTitle")} variant="outline">
+        {t("profile.suggested")}
+      </Badge>
+    );
+  }
   if (!fact) {
     return null;
   }
@@ -86,6 +123,14 @@ export function FactsTab() {
     [facts.data]
   );
   const [texts, setTexts] = useState<Record<string, string>>({});
+  const suggestions = useMemo(() => {
+    const all = nameSuggestions(byKey.get(FULL_NAME_KEY)?.value);
+    return Object.fromEntries(
+      Object.entries(all).filter(
+        ([key]) => factText(byKey.get(key)?.value, "text") === ""
+      )
+    );
+  }, [byKey]);
   const [workAuth, setWorkAuth] = useState<WorkAuthRow[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -94,7 +139,9 @@ export function FactsTab() {
     const next: Record<string, string> = {};
     for (const group of FACT_GROUPS) {
       for (const field of group.fields) {
-        next[field.key] = factText(byKey.get(field.key)?.value, field.input);
+        next[field.key] =
+          suggestions[field.key] ??
+          factText(byKey.get(field.key)?.value, field.input);
       }
     }
     setTexts(next);
@@ -110,7 +157,7 @@ export function FactsTab() {
     setErrors({});
   }
 
-  useEffect(reset, [byKey]);
+  useEffect(reset, [byKey, suggestions]);
 
   function edits(): FactEdit[] {
     const list: FactEdit[] = [];
@@ -264,9 +311,12 @@ export function FactsTab() {
                 </SettingsRow>
               );
             }
+            const suggested =
+              suggestions[field.key] !== undefined &&
+              texts[field.key] === suggestions[field.key];
             return (
               <SettingsRow
-                badge={<SourceChip fact={fact} />}
+                badge={<SourceChip fact={fact} suggested={suggested} />}
                 description={t(`profile.factHelp.${field.key}`)}
                 htmlFor={fieldId}
                 key={field.key}

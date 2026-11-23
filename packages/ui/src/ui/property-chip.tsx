@@ -3,7 +3,8 @@ import { cn } from "../lib/utils";
 import { badgeVariants } from "./badge-variants";
 
 // A property chip (reui's sheet properties, Linear's issue properties): a
-// 32px outlined chip with 8px corners and a leading 14px icon, an optional muted `label`
+// 32px outlined chip with 8px corners, 8px of side padding and a leading
+// 14px icon, an optional muted `label`
 // ("Match", "Source") and an `ink-sec` value, for the facts under a
 // record's title (location, source, match score, applied date). It is
 // static text; `propertyChipClassName` gives a control (a select trigger)
@@ -11,7 +12,7 @@ import { badgeVariants } from "./badge-variants";
 // opens something ends in a chevron (the select trigger brings its own).
 
 const PROPERTY_CHIP_CLASS =
-  "type-body-compact h-8 max-w-full gap-1.5 rounded-lg px-2.5 text-ink-sec [&>svg]:size-3.5! [&>svg]:text-muted-foreground";
+  "type-body-compact h-8 max-w-full gap-1.5 rounded-lg px-2 text-ink-sec [&>svg]:size-3.5! [&>svg]:text-muted-foreground";
 
 function propertyChipClassName(className?: string) {
   return cn(

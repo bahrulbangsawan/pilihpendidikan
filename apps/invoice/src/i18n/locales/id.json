@@ -46,6 +46,11 @@
     "tokenNotRecognized": "Token tidak dikenali — buat yang baru.",
     "tokenOptional": "Opsional. Tanpa token, perubahan hanya tersimpan di browser ini."
   },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "Invoice",
+    "lead": "Isi data usaha, klien, dan pekerjaan Anda; totalnya dihitung otomatis saat Anda mengetik."
+  },
   "form": {
     "invoiceDetails": "Detail Faktur",
     "invoiceNumber": "No. Faktur",

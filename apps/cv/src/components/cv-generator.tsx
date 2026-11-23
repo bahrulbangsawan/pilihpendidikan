@@ -600,7 +600,12 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               {TEMPLATES.map((s) => {
                 const Icon = TEMPLATE_ICONS[s];
                 return (
-                  <SegmentedControlItem key={s} value={s}>
+                  <SegmentedControlItem
+                    // 13px labels: the switcher is the pane's main control.
+                    className="group-data-[size=sm]/segmented:type-body-compact"
+                    key={s}
+                    value={s}
+                  >
                     <Icon aria-hidden="true" />
                     {t(`template.${s}`)}
                   </SegmentedControlItem>

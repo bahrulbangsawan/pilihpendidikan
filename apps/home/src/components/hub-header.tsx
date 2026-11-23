@@ -62,7 +62,7 @@ export function HubHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <a
-            className="type-body rounded-sm p-1 text-foreground transition-colors duration-140 ease-standard hover:text-ink-sec"
+            className="type-body hidden rounded-sm p-1 text-foreground transition-colors duration-140 ease-standard hover:text-ink-sec sm:inline"
             href={localePath(switchTo)}
             lang={switchTo}
           >
@@ -115,6 +115,13 @@ export function HubHeader() {
                     </a>
                   </SheetClose>
                 ))}
+                <a
+                  className="type-subtitle mt-2 rounded-md border-border border-t px-2 pt-4 pb-2 text-foreground transition-colors duration-140 ease-standard hover:bg-pane"
+                  href={localePath(switchTo)}
+                  lang={switchTo}
+                >
+                  {t("nav.switchLanguage")}
+                </a>
               </nav>
             </SheetContent>
           </Sheet>

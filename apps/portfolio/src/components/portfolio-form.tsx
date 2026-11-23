@@ -1,3 +1,4 @@
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
 import { cn } from "@rulisme/ui/lib/utils";
@@ -125,11 +126,14 @@ const COLLABORATION_OPTIONS: Option<Collaboration["kind"]>[] = [
 
 // Reject oversized uploads before decoding. 1920×1080 PNG/JPEG comfortably
 // fits under this; the ratio guard (16:9) is the real gate.
-// Form sections: 32px above and below, a hairline above every section after
-// the first, a 16px semibold heading.
-const SECTION_CLASS = "space-y-3 border-border border-t px-4 py-8 sm:px-6";
+// The form reads like a docs page: a page header, then sections 40px apart
+// with no rules between them, each under an 18px semibold heading, in a
+// 640px column centred in the pane (24px / 32px side padding).
+const FORM_COLUMN_CLASS =
+  "mx-auto flex w-full max-w-176 flex-col gap-10 px-6 pt-10 pb-16 sm:px-8";
+const SECTION_CLASS = "space-y-3";
 const SECTION_TITLE_CLASS =
-  "type-subtitle weight-semibold flex h-8 items-center text-foreground";
+  "type-title-compact weight-semibold flex h-8 items-center text-foreground";
 
 // Field rows sit on a two-column grid; a third column joins only for a short
 // number, at a fixed width that fits its label (Semester 96px).
@@ -956,13 +960,17 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     );
   }
 
-  // Each form section spans the form pane: 32px above and below, ruled off
-  // from the section above by a 10% hairline, as in the CV and invoice
-  // builders.
   return (
-    <div>
+    <div className={FORM_COLUMN_CLASS}>
+      {/* -mb-2: 32px to the first section, not the column's 40px gap. */}
+      <DocHeader
+        area={t("pageHeader.area")}
+        className="-mb-2"
+        lead={t("pageHeader.lead")}
+        title={t("pageHeader.title")}
+      />
       {/* ── Profile ── */}
-      <section className="space-y-3 px-4 py-8 sm:px-6">
+      <section className={SECTION_CLASS}>
         <h2 className={SECTION_TITLE_CLASS}>{t("form.profile")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField
@@ -1106,9 +1114,10 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 placeholder={t("placeholders.url")}
                 value={social.url}
               />
+              {/* A 32px ghost button, centred on the 36px fields. */}
               <Button
                 aria-label={t("form.remove")}
-                className="size-8 shrink-0 text-muted-foreground hover:text-foreground"
+                className="size-8 shrink-0 self-center text-muted-foreground hover:text-foreground"
                 onClick={() => removeSocial(index)}
                 size="icon"
                 variant="ghost"
@@ -1150,7 +1159,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Projects (max 5) ── */}
-      <div className="border-border border-t px-4 py-8 sm:px-6">
+      <div>
         <SectionList<Project>
           addLabel={
             data.projects.length >= MAX_PROJECTS
@@ -1171,7 +1180,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             project.title || t("form.projectFallback", { index: index + 1 })
           }
           title={t("form.projects")}
-          titleClassName="weight-semibold"
+          titleClassName="type-title-compact weight-semibold"
           titleExtra={
             <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
               {t("form.projectCount", {

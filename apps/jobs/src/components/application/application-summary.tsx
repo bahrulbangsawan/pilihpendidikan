@@ -1,8 +1,9 @@
 // The application's identity and property chips, shared by the details
 // sheet and the full page (reui's sheet: title, then a row of property
-// chips). One chip component throughout: the first is the stage select
-// (`M` opens it; the hint lives in the card menu and the `?` sheet), the others are labelled facts: match
-// score, location, source, applied date, posting status.
+// chips on one line). One chip component throughout: the first is the stage
+// select, its stage icon and name only (`M` opens it; the hint lives in the
+// card menu and the `?` sheet); the others are labelled facts: match score,
+// location, source, applied date, posting status.
 
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
@@ -84,9 +85,6 @@ function StageSelect({
         )}
         ref={trigger}
       >
-        <span className="text-muted-foreground">
-          {t("application.props.stage")}
-        </span>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
@@ -121,7 +119,13 @@ export function ApplicationProperties({
   const { application, posting, score } = detail;
   const location = posting.locations[0]?.raw;
   return (
-    <div className={cn("flex flex-wrap items-center gap-1.5", className)}>
+    // One line (location and source truncate first); wraps only below 440px.
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-2 *:shrink-0 min-[440px]:flex-nowrap",
+        className
+      )}
+    >
       <StageSelect
         onMove={onMove}
         shortcut={shortcut}
@@ -137,17 +141,22 @@ export function ApplicationProperties({
       ) : null}
       {location ? (
         <PropertyChip
+          className="shrink! min-w-0"
           icon={<MapPin aria-hidden="true" />}
           label={t("application.props.location")}
+          title={location}
         >
-          <span className="max-w-48 truncate">{location}</span>
+          <span className="min-w-0 max-w-48 truncate">{location}</span>
         </PropertyChip>
       ) : null}
       <PropertyChip
+        className="shrink! min-w-0"
         icon={<Globe aria-hidden="true" />}
         label={t("application.props.source")}
       >
-        {sourceLabel(t, posting.source_kind)}
+        <span className="min-w-0 truncate">
+          {sourceLabel(t, posting.source_kind)}
+        </span>
       </PropertyChip>
       {application.submitted_at === null ? null : (
         <PropertyChip
