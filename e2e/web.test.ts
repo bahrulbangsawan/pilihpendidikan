@@ -1,5 +1,7 @@
-// Web scenarios (13 §5): S-01 sign-in through the dashboard BFF, S-03 the
-// Kanban board's drag and drop with an illegal move.
+// Web scenarios (13 §5): S-01 sign-in through the dashboard BFF (and the
+// redesigned shell: Board / Stats / Profile / Settings only, the profile
+// dropdown, removed automation URLs 404), S-03 the Kanban board's drag and
+// drop with an illegal move.
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { ApiServer } from "./harness/api";
 import { Browser } from "./harness/browser";
@@ -31,12 +33,10 @@ afterAll(async () => {
 
 describe("dashboard sign-in and board", () => {
   test("S-01 magic-link sign-in to the dashboard sets the BFF cookie; the board is empty; no bearer reaches JS", async () => {
-    const { bearer, cookies } = await webSignIn(
-      browser,
-      api,
-      uniqueEmail("s01"),
-      { confirm: "browser" }
-    );
+    const email = uniqueEmail("s01");
+    const { bearer, cookies } = await webSignIn(browser, api, email, {
+      confirm: "browser",
+    });
     // The empty board state, rendered from GET /api/v1/board through the BFF.
     await browser.waitForText("No applications yet", 60_000);
     // The BFF session cookie is HttpOnly and sealed; the api session cookie
@@ -58,6 +58,26 @@ describe("dashboard sign-in and board", () => {
     }>("GET", "/api/v1/board");
     expect(board.columns.length).toBeGreaterThan(0);
     expect(board.columns.flatMap((c) => c.cards)).toHaveLength(0);
+
+    // The shell: the sidebar links only the manual tracker's sections.
+    const sidebar = 'nav[aria-label="Sections"]';
+    await browser.waitForHydration(sidebar);
+    const links = await browser.eval<string[]>(
+      `[...document.querySelectorAll(${JSON.stringify(`${sidebar} a[href]`)})].map((a) => new URL(a.href).pathname)`
+    );
+    expect([...new Set(links)].sort()).toEqual(
+      ["/board", "/profile", "/settings", "/stats"].sort()
+    );
+    // The profile dropdown in the sidebar footer.
+    await browser.click(`[aria-label="Account menu for ${email}"]`);
+    await browser.waitFor('[role="menuitem"]:has-text("Sign out")');
+    expect(await browser.text('[role="menu"]')).toContain("Settings");
+    await browser.press("Escape");
+    // The removed automation screens fall through to the 404 page.
+    for (const path of ["/approvals", "/inbox", "/cli"]) {
+      await browser.goto(`${WEB_ORIGIN}${path}`);
+      await browser.waitForText("Page not found", 60_000);
+    }
   }, 240_000);
 
   test("S-03 drag a card Saved → Ready → Applied on the board; Applied → Preparing is refused inline", async () => {

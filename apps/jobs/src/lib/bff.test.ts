@@ -327,6 +327,27 @@ describe("TW-BFF requests are validated against the contracts before leaving the
     }
   });
 
+  it("TW-BFF the removed automation screens' routes are not web routes", () => {
+    const automation = [
+      "/api/v1/devices",
+      "/api/v1/sources",
+      "/api/v1/discovery/",
+      "/api/v1/inbox",
+      "/api/v1/rules",
+      "/api/v1/approvals",
+      "/api/v1/cloud-sources",
+      "/api/v1/cloud-discovery/",
+    ];
+    const leaked = WEB_ROUTE_KEYS.filter((key) =>
+      automation.some((prefix) => key.split(" ")[1]?.startsWith(prefix))
+    );
+    expect(leaked).toEqual([]);
+    // Only the cancel that a manual move needs stays among the task routes.
+    expect(
+      WEB_ROUTE_KEYS.filter((key) => key.includes("/api/v1/tasks"))
+    ).toEqual(["POST /api/v1/tasks/{tsk_id}/cancel"]);
+  });
+
   it("TW-BFF path params are encoded plain ids only", () => {
     expect(
       buildApiPath("GET /api/v1/applications/{app_id}", { app_id: "app_01J9" })

@@ -167,7 +167,7 @@ export function ChartFrame({
       className={cn("min-w-0", className)}
       data-chart-frame={id}
     >
-      <Card className="h-full" size="sm">
+      <Card className="h-full rounded-lg border-border" size="sm">
         <FrameHeader
           description={description}
           headingId={headingId}

@@ -26,40 +26,13 @@ export const queryKeys = {
   board: (includeArchived: boolean) => ["board", { includeArchived }] as const,
   boardAll: ["board"] as const,
   application: (appId: string) => ["application", appId] as const,
-  /** Every application detail and timeline (bulk runs touch many at once). */
-  applicationAll: ["application"] as const,
   applicationEvents: (appId: string) =>
     ["application", appId, "events"] as const,
-  devices: ["devices"] as const,
   settings: ["settings"] as const,
   facts: ["profile", "facts"] as const,
   answers: ["profile", "answers"] as const,
   cvs: ["cvs"] as const,
-  overview: (from: string, to: string) =>
-    ["analytics", "summary", from, to] as const,
-  meta: ["meta"] as const,
-  inbox: (filters: Readonly<Record<string, unknown>>) =>
-    ["inbox", filters] as const,
-  inboxAll: ["inbox"] as const,
-  userJob: (ujbId: string) => ["user-job", ujbId] as const,
-  score: (postingId: string) => ["score", postingId] as const,
-  approvals: (state: string) => ["approvals", state] as const,
-  approvalsAll: ["approvals"] as const,
-  rules: ["rules"] as const,
-  tasks: (filters: Readonly<Record<string, unknown>>) =>
-    ["tasks", filters] as const,
-  tasksAll: ["tasks"] as const,
-  task: (taskId: string) => ["task", taskId] as const,
-  taskAll: ["task"] as const,
-  sources: ["sources"] as const,
-  adapters: ["sources", "adapters"] as const,
-  discoveryRuns: ["discovery-runs"] as const,
-  /** The cloud catalog list; details and runs share the prefix. */
-  cloudSources: ["cloud-sources"] as const,
-  cloudSource: (id: string) => ["cloud-sources", id] as const,
-  cloudSourceRuns: (id: string) => ["cloud-sources", id, "runs"] as const,
   cvVariant: (cvvId: string) => ["cv-variant", cvvId] as const,
-  file: (fileId: string) => ["file", fileId] as const,
   analyticsSummary: (from: string, to: string, tz: string) =>
     ["analytics", "summary", from, to, tz] as const,
   analyticsTimeseries: (

@@ -96,6 +96,8 @@ import { newIdempotencyKey } from "@/lib/idempotency";
 import { interviewKindLabel, interviewOutcomeLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
 import { displayUrl, safeHref } from "@/lib/safe-url";
+import { InterviewKindIcon, InterviewOutcomeIcon } from "./option-icons";
+import { DatePicker } from "@rulisme/ui/ui/date-picker";
 
 interface Draft {
   duration: string;
@@ -475,6 +477,7 @@ export function InterviewsTab({
                     <SelectContent>
                       {INTERVIEW_KINDS.map((kind) => (
                         <SelectItem key={kind} value={kind}>
+                          <InterviewKindIcon kind={kind} />
                           {interviewKindLabel(t, kind)}
                         </SelectItem>
                       ))}
@@ -486,12 +489,11 @@ export function InterviewsTab({
                 <FieldLabel htmlFor={`${id}-when`}>
                   {t("interviews.when")}
                 </FieldLabel>
-                <Input
-                  className="field-touch"
+                <DatePicker
                   id={`${id}-when`}
-                  onChange={(event) => set({ scheduled: event.target.value })}
-                  type="datetime-local"
+                  onValueChange={(value) => set({ scheduled: value })}
                   value={draft.scheduled}
+                  withTime
                 />
               </Field>
               <div className="grid grid-cols-2 gap-3">
@@ -564,6 +566,7 @@ export function InterviewsTab({
                 >
                   {INTERVIEW_OUTCOMES.map((outcome) => (
                     <ToggleGroupItem key={outcome} value={outcome}>
+                      <InterviewOutcomeIcon outcome={outcome} />
                       {interviewOutcomeLabel(t, outcome)}
                     </ToggleGroupItem>
                   ))}
@@ -742,6 +745,7 @@ function InterviewsBulkBar({
                 key={outcome}
                 onSelect={() => setOutcome(outcome)}
               >
+                <InterviewOutcomeIcon outcome={outcome} />
                 {interviewOutcomeLabel(t, outcome)}
               </DropdownMenuItem>
             ))}

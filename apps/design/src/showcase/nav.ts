@@ -22,6 +22,7 @@ export const NAV_GROUPS = [
       { id: "feedback", label: "Feedback" },
       { id: "overlays", label: "Overlays" },
       { id: "conversation", label: "Conversation" },
+      { id: "patterns", label: "Patterns" },
     ],
   },
   {

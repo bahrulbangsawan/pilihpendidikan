@@ -1,18 +1,18 @@
 import { cn } from "@rulisme/ui/lib/utils";
-import { Button } from "@rulisme/ui/ui/button";
-import { Calendar } from "@rulisme/ui/ui/calendar";
-import { Label } from "@rulisme/ui/ui/label";
+import type { DateRangeValue } from "@rulisme/ui/ui/date-picker";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@rulisme/ui/ui/popover";
-import { format, isBefore, parse } from "date-fns";
-import { CalendarRange } from "lucide-react";
-import { useState } from "react";
-import type { DateRange } from "react-day-picker";
-import { useIsMobile } from "@/hooks/use-mobile";
+  DateRangePicker,
+  defaultDateRangePresets,
+} from "@rulisme/ui/ui/date-picker";
+import { Label } from "@rulisme/ui/ui/label";
+import { format, parse } from "date-fns";
+import { useId } from "react";
 import { useTranslation } from "@/i18n";
+
+// A line item's service period on the shared DateRangePicker
+// (`@rulisme/ui`). The invoice stores the period as display text
+// ("01 Nov 2026–30 Nov 2026", or one date), which the preview and the PDF
+// print as is, so this adapter converts it to and from the picker's ISO range.
 
 const DATE_FORMATS = [
   "dd MMM yyyy",
@@ -21,54 +21,46 @@ const DATE_FORMATS = [
   "MM/dd/yyyy",
   "yyyy-MM-dd",
 ];
+const SEPARATORS = [" – ", "–", " - "];
+const DISPLAY_FORMAT = "dd MMM yyyy";
 
-function tryParseDate(str: string): Date | undefined {
+function toIso(text: string): string | undefined {
   for (const fmt of DATE_FORMATS) {
-    try {
-      const d = parse(str, fmt, new Date());
-      if (!Number.isNaN(d.getTime())) {
-        return d;
-      }
-    } catch {
-      /* continue */
+    const parsed = parse(text.trim(), fmt, new Date());
+    if (!Number.isNaN(parsed.getTime())) {
+      return format(parsed, "yyyy-MM-dd");
     }
   }
-  return undefined;
+  return;
 }
 
-function parsePeriodString(period: string): DateRange | undefined {
+function parsePeriod(period: string): DateRangeValue | undefined {
   if (!period) {
-    return undefined;
+    return;
   }
-  // Try as range first
-  const separators = [" – ", "–", " - "];
-  for (const sep of separators) {
+  for (const sep of SEPARATORS) {
     const idx = period.indexOf(sep);
     if (idx === -1) {
       continue;
     }
-    const from = tryParseDate(period.slice(0, idx).trim());
-    const to = tryParseDate(period.slice(idx + sep.length).trim());
+    const from = toIso(period.slice(0, idx));
+    const to = toIso(period.slice(idx + sep.length));
     if (from && to) {
       return { from, to };
     }
   }
-  // Try as single date
-  const single = tryParseDate(period.trim());
-  if (single) {
-    return { from: single, to: single };
-  }
-  return undefined;
+  const single = toIso(period);
+  return single ? { from: single, to: single } : undefined;
 }
 
-function formatRange(range: DateRange): string {
-  if (!range.from) {
-    return "";
-  }
-  if (!range.to || range.from.getTime() === range.to.getTime()) {
-    return format(range.from, "dd MMM yyyy");
-  }
-  return `${format(range.from, "dd MMM yyyy")}–${format(range.to, "dd MMM yyyy")}`;
+function displayDate(iso: string): string {
+  return format(parse(iso, "yyyy-MM-dd", new Date()), DISPLAY_FORMAT);
+}
+
+function formatPeriod(range: DateRangeValue): string {
+  return range.from === range.to
+    ? displayDate(range.from)
+    : `${displayDate(range.from)}–${displayDate(range.to)}`;
 }
 
 interface PeriodRangePickerProps {
@@ -85,70 +77,29 @@ export function PeriodRangePicker({
   className,
 }: PeriodRangePickerProps) {
   const { t } = useTranslation();
-  const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
-  const [range, setRange] = useState<DateRange | undefined>(() =>
-    parsePeriodString(value)
-  );
-
-  function handleOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      setRange(parsePeriodString(value));
-    } else if (range?.from) {
-      // Commit single date or range when closing
-      onChange(formatRange(range));
-    }
-    setOpen(isOpen);
-  }
-
-  function handleSelect(selected: DateRange | undefined) {
-    if (!selected) {
-      return;
-    }
-    setRange(selected);
-    if (selected.from && selected.to) {
-      const [from, to] = isBefore(selected.from, selected.to)
-        ? [selected.from, selected.to]
-        : [selected.to, selected.from];
-      onChange(formatRange({ from, to }));
-    }
-  }
+  const id = useId();
+  const presets = defaultDateRangePresets({
+    last7Days: t("form.datePresets.last7Days"),
+    last30Days: t("form.datePresets.last30Days"),
+    thisMonth: t("form.datePresets.thisMonth"),
+    lastMonth: t("form.datePresets.lastMonth"),
+    thisYear: t("form.datePresets.thisYear"),
+  });
 
   return (
     <div className={cn("space-y-1.5", className)}>
-      <Label>{t("form.period")}</Label>
-      <Popover onOpenChange={handleOpenChange} open={open}>
-        <PopoverTrigger asChild>
-          <Button
-            className={cn(
-              // A field, not a pill: the 36px, 8px-radius input shape.
-              "h-9 w-full justify-start rounded-lg border-border bg-background px-3 hover:border-input hover:bg-background",
-              !value && "text-muted-foreground"
-            )}
-            disabled={disabled}
-            variant="outline"
-          >
-            <CalendarRange
-              aria-hidden="true"
-              className="text-muted-foreground"
-              data-icon="inline-start"
-            />
-            <span className="truncate">
-              {value || t("placeholders.selectPeriod")}
-            </span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent align="start" className="w-auto p-0">
-          <Calendar
-            defaultMonth={range?.from}
-            mode="range"
-            numberOfMonths={isMobile ? 1 : 2}
-            onSelect={handleSelect}
-            selected={range}
-            showOutsideDays
-          />
-        </PopoverContent>
-      </Popover>
+      <Label htmlFor={id}>{t("form.period")}</Label>
+      <DateRangePicker
+        clearLabel={t("form.datePresets.clearPeriod")}
+        disabled={disabled}
+        formatValue={formatPeriod}
+        id={id}
+        onValueChange={(range) => onChange(range ? formatPeriod(range) : "")}
+        placeholder={t("placeholders.selectPeriod")}
+        presets={presets}
+        presetsLabel={t("form.datePresets.label")}
+        value={parsePeriod(value)}
+      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 // Lease loss and crash safety (13 §5 S-15, S-16, S-24; 21 §16 item 14):
 // `kill -9` of the CLI at every protocol step, an offline submission that
-// meets a user decision, and the dashboard prompts that follow. One 120 s
+// meets a user decision, and what the dashboard's timeline shows after them
+// (its "Did this go through?" prompt left with the automation surfaces in
+// round 3). One 120 s
 // lease expiry (plus the 2 min retry backoff) is shared by all cases.
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import type { Hook } from "./harness/proxy";
@@ -299,15 +301,25 @@ describe("lease loss and crashes (21 §7, §16)", () => {
     ).toBe("outcome_unknown");
   }, 600_000);
 
-  test("S-16 lease lost right after the Submit click: outcome_unknown, never retried automatically; the dashboard asks “Did this go through?”", async () => {
+  test("S-16 lease lost right after the Submit click: outcome_unknown, never retried automatically; the dashboard's timeline reads “Needs review”", async () => {
     const c = AFTER_CLICK;
-    const detail = await getApplication(lab.user.api, String(c.app?.id));
+    const appId = String(c.app?.id);
+    const detail = await getApplication(lab.user.api, appId);
     expect(detail.application.submission_status).toBe("outcome_unknown");
-    await lab.browser.goto(`${WEB_ORIGIN}/applications/${c.app?.id}`);
-    await lab.browser.waitForText("Review outcome", 60_000);
-    await lab.browser.click('button:has-text("Review outcome")');
-    await lab.browser.waitForText("Did this application go through?");
-    await lab.browser.press("Escape");
+    const events = await listEvents(lab.user.api, appId);
+    expect(
+      events.some(
+        (e) =>
+          e.type === "submission_status_changed" &&
+          e.to_value === "outcome_unknown" &&
+          e.applied_to_state === true
+      )
+    ).toBe(true);
+    // The full page's timeline shows the change ("Submission: Needs review.").
+    await lab.browser.goto(`${WEB_ORIGIN}/applications/${appId}`);
+    await lab.browser.waitForHydration('[role="tab"]');
+    await lab.browser.click('[role="tab"]:has-text("Timeline")');
+    await lab.browser.waitForText("Submission: Needs review.", 60_000);
   }, 300_000);
 
   test("S-24 offline submission meets a user decision: the result lands as events, the stage stays Withdrawn, a conflict is recorded and shown", async () => {

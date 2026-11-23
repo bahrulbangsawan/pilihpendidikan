@@ -156,14 +156,14 @@ function CommandItem({
   return (
     <CommandPrimitive.Item
       className={cn(
-        "group/command-item type-body relative flex min-h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-foreground outline-none data-disabled:pointer-events-none data-selected:bg-pane data-selected:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "group/command-item type-body relative flex min-h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-foreground outline-none data-disabled:pointer-events-none data-selected:bg-pane data-selected:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-ink-sec [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="command-item"
       {...props}
     >
       {children}
-      <CheckIcon className="ml-auto text-foreground opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
+      <CheckIcon className="ml-auto size-3.5 text-foreground opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
     </CommandPrimitive.Item>
   );
 }

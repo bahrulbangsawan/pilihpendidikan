@@ -29,6 +29,8 @@ import { useTranslation } from "@/i18n";
 import type { BoardColumns } from "@/lib/board-model";
 import { canMoveTo } from "@/lib/board-move";
 import { stageLabel } from "@/lib/labels";
+import { StageIcon } from "./stage-meta";
+import { ArrowDownToLine, ArrowUpToLine, CornerDownRight } from "lucide-react";
 
 export interface StagePick {
   afterId: string | null;
@@ -121,6 +123,7 @@ export function StagePickerDialog({
                   const allowed = card ? canMoveTo(card.stage, value) : true;
                   return (
                     <SelectItem disabled={!allowed} key={value} value={value}>
+                      <StageIcon className="size-3.5" stage={value} />
                       {allowed
                         ? stageLabel(t, value)
                         : t("picker.notAllowed", {
@@ -142,10 +145,17 @@ export function StagePickerDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={TOP}>{t("picker.top")}</SelectItem>
-                <SelectItem value={BOTTOM}>{t("picker.bottom")}</SelectItem>
+                <SelectItem value={TOP}>
+                  <ArrowUpToLine aria-hidden="true" />
+                  {t("picker.top")}
+                </SelectItem>
+                <SelectItem value={BOTTOM}>
+                  <ArrowDownToLine aria-hidden="true" />
+                  {t("picker.bottom")}
+                </SelectItem>
                 {others.map((entry) => (
                   <SelectItem key={entry.id} value={entry.id}>
+                    <CornerDownRight aria-hidden="true" />
                     {t("picker.after", {
                       card: `${entry.posting.company_name} · ${entry.posting.title}`,
                     })}

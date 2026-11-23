@@ -32,7 +32,7 @@ import {
 } from "@rulisme/ui/ui/select";
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
-import { CircleCheck, FileText, TriangleAlert } from "lucide-react";
+import { CircleCheck, FileText, Languages, TriangleAlert } from "lucide-react";
 import type { FormEvent } from "react";
 import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -224,8 +224,14 @@ export function EmailApply({ detail }: { detail: ApplicationDetail }) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">{t("email.languages.en")}</SelectItem>
-                  <SelectItem value="id">{t("email.languages.id")}</SelectItem>
+                  <SelectItem value="en">
+                    <Languages aria-hidden="true" />
+                    {t("email.languages.en")}
+                  </SelectItem>
+                  <SelectItem value="id">
+                    <Languages aria-hidden="true" />
+                    {t("email.languages.id")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </Field>

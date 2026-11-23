@@ -212,7 +212,10 @@ export async function waitForTask(
   );
 }
 
-/** Creates an apply task targeting a device (the "Start" button of the Apply tab). */
+/**
+ * Creates an apply task targeting a device: the request the dashboard's Apply
+ * tab sent before the automation surfaces left it (round 3).
+ */
 export async function startApply(
   client: Client,
   appId: string,
@@ -259,7 +262,10 @@ export async function pendingApprovals(
   return page.items.filter(filter);
 }
 
-/** Approves (as the user, on the web) the approval with its `payload_hash`. */
+/**
+ * Decides (as the signed-in user) the approval with its `payload_hash`: what
+ * the dashboard's approvals queue sent before it was removed (round 3).
+ */
 export async function decide(
   client: Client,
   approval: ApprovalRecord,

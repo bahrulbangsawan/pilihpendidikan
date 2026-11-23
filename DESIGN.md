@@ -122,6 +122,9 @@ Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, po
 - **Kbd**: cursor.com's ⌘K chip: no border, ink-grey at 10%, caption role.
 - **Sidebar**: card colour, 12px grey group labels, 30px rows, hover `pane/70`, active `pane-2` (apps) or orange text (docs-style nav).
 - **Tables**: no header fill, caption-role grey headers, `border` rows, hover `pane/60`.
+- **Pickers** (reui's date selector, file upload, toggle group): `DatePicker` / `DateRangePicker` are fields led by a calendar icon with a round clear button, opening presets (row buttons) beside the Calendar; `FileTrigger` turns a Button into a file picker and `FileDropZone` is a dashed 8px drop field; `SegmentedControl` is the tabs track for one of a few choices.
+- **Menu rows with icons**: options and menu items lead with a 16px lucide icon in `ink-sec` (or a `StatusDot`, a flag) and may end in a caption-role description; statuses use the 8px `StatusDot` (orange stands in for warning).
+- **Patterns** (`packages/ui/src/blocks`): `PageHeader` / `PageContent` frame an app screen; `SubNavLayout`, `SettingsCard` and `SettingsRow` build settings; `Kanban` lanes are 288px columns on card at 50% with a 44px header and dashed empty slots; `StatCard`s show a display-role value with a delta chip; `UserMenu`, `AppBrand`, `GhostPage` and `WindowFrame` are app chrome. The design page's Patterns section renders each.
 - **Footer**: the card colour, five 252px columns 10px apart, grey 14px headings, 14px links, then the copyright line and a language pill.
 
 ## Do's and Don'ts
@@ -150,7 +153,7 @@ Everything above is the spec. This section is how the workspace implements it. W
 | Tokens, type roles, radius, elevation, layout utilities, base layer | `packages/ui/src/styles/theme.css` | `@rulisme/ui/styles/theme.css` |
 | Motion: curve, duration, `press` (a no-op), `pulse-dot`, the Blocks spinner, reduced motion | `packages/config/motion.css` | `@pilihpendidikan/config/motion.css` |
 | shadcn runtime variants and utilities | `packages/ui/src/styles/shadcn.css` | `@rulisme/ui/styles/shadcn.css` |
-| Components | `packages/ui/src/{ui,form,reui}` | `@rulisme/ui/ui/<file>` |
+| Components (primitives, composites, form pieces, ports; the full list is in `packages/ui/CLAUDE.md` § Components) | `packages/ui/src/{ui,blocks,form,reui}` | `@rulisme/ui/ui/<file>`, `@rulisme/ui/blocks/<file>` |
 | `cn()` (registers the type utilities with tailwind-merge) | `packages/ui/src/lib/utils.ts` | `@rulisme/ui/lib/utils` |
 | `typeClass()`, role and weight lists | `packages/ui/src/lib/type-scale.ts` | `@rulisme/ui/lib/type-scale` |
 | The living design system page | `apps/design` | `bun run dev:design` → `localhost:4006` |

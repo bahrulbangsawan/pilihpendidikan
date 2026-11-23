@@ -1,6 +1,7 @@
 // Discovery end to end (13 §5 S-06, S-07, S-08; 20 §11): the CLI crawls
 // fixture Greenhouse / Lever / Ashby board APIs, uploads through its outbox to
-// `wrangler dev`, and the inbox shows the postings. S-08 cuts the network
+// `wrangler dev`, and the inbox (`GET /api/v1/inbox`; the dashboard no longer
+// shows it) lists the postings. S-08 cuts the network
 // after the api committed a batch and before the CLI saw the answer.
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { fingerprint } from "../packages/jobs-contracts/src/fingerprint";

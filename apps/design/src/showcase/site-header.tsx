@@ -11,6 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@rulisme/ui/ui/command";
+import { FieldButton } from "@rulisme/ui/ui/field-button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -51,16 +52,16 @@ function JumpSearch() {
 
   return (
     <>
-      <button
+      <FieldButton
         aria-keyshortcuts="/"
-        className="type-body hidden h-9 w-80 items-center gap-2 rounded-lg border border-border bg-background pr-1.5 pl-3 text-muted-foreground outline-none transition-[border-color,color] duration-140 ease-standard hover:border-input hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid md:flex"
+        className="hidden w-80 pr-1.5 hover:text-foreground md:flex"
+        empty
         onClick={() => setOpen(true)}
-        type="button"
       >
-        <Search aria-hidden="true" className="size-3.5" />
-        <span className="flex-1 text-left">Search the system…</span>
+        <Search aria-hidden="true" />
+        <span className="flex-1">Search the system…</span>
         <Kbd>/</Kbd>
-      </button>
+      </FieldButton>
       <CommandDialog
         description="Jump to a section of the design system page."
         onOpenChange={setOpen}

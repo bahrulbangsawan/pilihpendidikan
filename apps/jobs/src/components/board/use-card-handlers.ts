@@ -32,8 +32,10 @@ export interface CardHandlerOptions {
   announce: (message: string) => void;
   /** Every card (for the picker and M). */
   columns: BoardColumns | null;
-  /** Shortcuts pause while a card is lifted or on phones. */
+  /** Shortcuts pause while a card is lifted, a sheet is open or on phones. */
   keysEnabled: boolean;
+  /** Opens the details sheet (`?app=`). */
+  onOpen: (card: BoardCard) => void;
   /** Visible cards in reading order (column by column). */
   order: readonly BoardCard[];
   requestMove: (request: MoveRequest) => void;
@@ -43,6 +45,7 @@ export function useCardHandlers({
   announce,
   columns,
   keysEnabled,
+  onOpen,
   order,
   requestMove,
 }: CardHandlerOptions) {
@@ -70,7 +73,23 @@ export function useCardHandlers({
     });
   }, []);
 
-  const openCard = useCallback(
+  /** Adds (`value`) or removes every id at once (lane menu, table header). */
+  const setSelected = useCallback((ids: readonly string[], value: boolean) => {
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      for (const id of ids) {
+        if (value) {
+          next.add(id);
+        } else {
+          next.delete(id);
+        }
+      }
+      return next;
+    });
+  }, []);
+
+  const openCard = onOpen;
+  const openPage = useCallback(
     (card: BoardCard) =>
       navigate({ to: "/applications/$appId", params: { appId: card.id } }),
     [navigate]
@@ -237,6 +256,7 @@ export function useCardHandlers({
       onMenuAction: (card: BoardCard, action: CardMenuAction) => {
         const actions: Record<CardMenuAction, () => void> = {
           open: () => openCard(card),
+          openPage: () => openPage(card),
           move: () => setPickerCard(card),
           reject: () => moveTo(card, "rejected"),
           withdraw: () => moveTo(card, "withdrawn"),
@@ -256,6 +276,7 @@ export function useCardHandlers({
       moveTo,
       openCard,
       openFollowUp,
+      openPage,
       patch,
       runCardKey,
       t,
@@ -266,6 +287,8 @@ export function useCardHandlers({
   return {
     handlers,
     selectedIds,
+    toggleSelected,
+    setSelected,
     clearSelection: () => setSelectedIds(new Set()),
     pickerCard,
     setPickerCard,

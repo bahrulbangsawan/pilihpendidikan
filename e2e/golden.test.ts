@@ -1,10 +1,16 @@
 // S-12 (13 §5), the golden path in approval mode, end to end across the
 // three components: CLI login and device → discovery → scoring → tracking →
 // AI tailoring (fake provider) → the CV rendered and approved on the
-// dashboard → "Start apply" on the dashboard targeting the device → the
-// worker claims and fills the fixture Greenhouse-like form (with the CV) →
-// the approval appears on the dashboard → approved → submit_intent → submit
-// → verification → the board shows Applied ✓.
+// dashboard → the apply task created for the device → the worker claims and
+// fills the fixture Greenhouse-like form (with the CV) → the submit approval
+// → approved → submit_intent → submit → verification → the board shows the
+// card in Applied and the timeline "Submitted ✓".
+//
+// The dashboard no longer has the Apply tab or the approvals queue (round 3):
+// the apply task and the approval decision go through the same `/api/v1`
+// routes those screens called (`POST /tasks`, `POST /approvals/{id}/decide`),
+// as the signed-in user. The CV approval, the board and the timeline are still
+// driven in the browser.
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { createBaseCv } from "./harness/applicant";
 import { WEB_ORIGIN } from "./harness/env";
@@ -12,8 +18,10 @@ import type { Device } from "./harness/lab";
 import { Lab } from "./harness/lab";
 import { poll } from "./harness/procs";
 import {
+  decide,
   getApplication,
   listEvents,
+  startApply,
   waitForTask,
   webSignIn,
 } from "./harness/scenario";
@@ -69,7 +77,7 @@ function phases(
 }
 
 describe("the golden path (13 §5 S-12)", () => {
-  test("S-12 login → device → discover → score → track → tailor → approve CV → start apply on the web → claim → fill → approval on the web → submit → verify → Applied ✓", async () => {
+  test("S-12 login → device → discover → score → track → tailor → approve CV on the web → start apply → claim → fill → approve submit → submit → verify → Applied ✓", async () => {
     const browser = lab.browser;
     // Login and device (17 §10.1).
     device = await lab.device("golden-laptop");
@@ -156,20 +164,16 @@ describe("the golden path (13 §5 S-12)", () => {
     expect(cv.cv_variant.status).toBe("approved");
     expect(cv.cv_variant.model).not.toBe("copy");
 
-    // The approved CV made the application ready (06 §3); Start apply on the
-    // Apply tab, targeting this device.
-    expect((await getApplication(lab.user.api, appId)).application.stage).toBe(
-      "ready"
-    );
+    // The approved CV made the application ready (06 §3). Start apply,
+    // targeting this device: the request the removed Apply tab sent, with the
+    // application's own mode.
+    const ready = await getApplication(lab.user.api, appId);
+    expect(ready.application.stage).toBe("ready");
     const worker = device.startWorker();
-    await browser.goto(`${WEB_ORIGIN}/applications/${appId}`);
-    await browser.waitForHydration('[role="tab"]');
-    await browser.click('[role="tab"]:has-text("Apply")');
-    await browser.waitForText("Start apply");
-    await browser.click('[role="combobox"][id$="-device"]');
-    await browser.click(`[role="option"]:has-text("golden-laptop")`);
-    await browser.click('button:has-text("Start apply")');
-    await browser.waitForText("Queued. A device picks it up shortly.");
+    const startedId = await startApply(lab.user.api, appId, {
+      mode: String(ready.application.mode ?? "approval"),
+      deviceId: device.id,
+    });
     const detail = await poll(
       "the apply task",
       async () => {
@@ -183,19 +187,16 @@ describe("the golden path (13 §5 S-12)", () => {
       unknown
     >;
     const taskId = String(task.id);
+    expect(taskId).toBe(startedId);
     expect(task.target_device_id).toBe(device.id);
 
-    // The submit approval appears on the dashboard; the user approves it there.
+    // The submit approval is pending; the user approves it with its
+    // payload_hash (what the removed approvals queue's "Approve and submit"
+    // sent).
     const approval = await lab.approvalFor(taskId, "submit", 180_000, worker);
-    await browser.goto(`${WEB_ORIGIN}/automation?approval=${approval.id}`);
-    await browser.waitFor('button:has-text("Approve and submit")', {
-      timeout: 60_000,
-    });
-    await browser.click('button:has-text("Approve and submit")');
-    await browser.waitForText("Submit this application to");
-    await browser.click(
-      '[role="alertdialog"] button:has-text("Approve and submit")'
-    );
+    expect(approval.application_id).toBe(appId);
+    const decided = await decide(lab.user.api, approval);
+    expect(decided.approval.state).toBe("approved");
 
     const result = await worker.taskResult(taskId, 240_000);
     expect(result.outcome).toBe("submitted");
@@ -253,11 +254,16 @@ describe("the golden path (13 §5 S-12)", () => {
       expect(e.applied_to_state).toBe(true);
     }
 
-    // The board shows the card in Applied with the Verified badge ("Applied ✓ Verified").
+    // The board shows the card in the Applied lane, and the full page's
+    // timeline reads "Submission: Submitted ✓." (the redesigned cards carry no
+    // submission badge).
     await browser.goto(`${WEB_ORIGIN}/board`);
     const card = `section[aria-labelledby="column-applied"] [data-card-id="${appId}"]`;
     await browser.waitFor(card, { timeout: 60_000 });
-    expect(await browser.text(card)).toContain("Verified");
+    await browser.goto(`${WEB_ORIGIN}/applications/${appId}`);
+    await browser.waitForHydration('[role="tab"]');
+    await browser.click('[role="tab"]:has-text("Timeline")');
+    await browser.waitForText("Submission: Submitted ✓.", 60_000);
     // The CLI and the api agreed on every request of the run (no 4xx / 5xx).
     const failures = device.proxy.log
       .filter((e) => (e.status ?? 0) >= 400)

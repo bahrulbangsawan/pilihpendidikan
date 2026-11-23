@@ -1,6 +1,6 @@
 // Facts (12 §9): a grouped form over the canonical keys (03 §9) — contact,
-// links, work authorization, preferences — each with its source chip (From
-// CV, You, Verified). Saving sends only what changed, with each fact's
+// links, work authorization, preferences — one card of label / field rows
+// per group, each with its source chip (From CV, You, Verified). Saving sends only what changed, with each fact's
 // revision; a fact changed elsewhere is reported and can be overwritten.
 
 import type { PutFactsRequest } from "@pilihpendidikan/jobs-contracts/api";
@@ -9,14 +9,7 @@ import { WORK_AUTH_STATUSES } from "@pilihpendidikan/jobs-contracts/scoring";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import { Checkbox } from "@rulisme/ui/ui/checkbox";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@rulisme/ui/ui/field";
+import { Field, FieldError, FieldLabel } from "@rulisme/ui/ui/field";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import {
@@ -29,10 +22,21 @@ import {
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Save, Trash2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Ban,
+  BadgeCheck,
+  HandHelping,
+  House,
+  Plane,
+  Plus,
+  Save,
+  Trash2,
+} from "lucide-react";
 import type { FormEvent } from "react";
 import { useEffect, useId, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { SettingsCard, SettingsRow } from "@rulisme/ui/blocks/settings";
 import { useFacts } from "@/hooks/use-profile";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
@@ -48,6 +52,15 @@ import { queryKeys } from "@/lib/query";
 
 const WORK_AUTH_PREFIX = "work_auth.";
 const COUNTRY_RE = /^[A-Z]{2}$/;
+
+const WORK_AUTH_ICONS: Record<(typeof WORK_AUTH_STATUSES)[number], LucideIcon> =
+  {
+    citizen: BadgeCheck,
+    permanent_resident: House,
+    work_visa: Plane,
+    needs_sponsorship: HandHelping,
+    none: Ban,
+  };
 
 function SourceChip({ fact }: { fact: ApplicantFactRecord | undefined }) {
   const { t } = useTranslation();
@@ -193,52 +206,75 @@ export function FactsTab() {
   useShortcut("s", () => save());
 
   if (facts.isPending) {
-    return <Skeleton className="h-64 w-full" />;
+    return <Skeleton className="h-64 w-full rounded-lg" />;
   }
 
+  const footer = (
+    <>
+      <span className="type-caption text-muted-foreground max-sm:hidden">
+        {t("profile.saveHint")}
+      </span>
+      <Button
+        aria-keyshortcuts="S"
+        className="ml-auto"
+        disabled={busy}
+        size="sm"
+        type="submit"
+      >
+        <Save aria-hidden="true" data-icon="inline-start" />
+        {t("profile.save")}
+        <Kbd aria-hidden="true">S</Kbd>
+      </Button>
+    </>
+  );
+
   return (
-    <form className="flex max-w-3xl flex-col gap-8" onSubmit={save}>
+    <form className="flex flex-col gap-6" onSubmit={save}>
       {FACT_GROUPS.map((group) => (
-        <FieldSet key={group.id}>
-          <FieldLegend>{t(`profile.groups.${group.id}`)}</FieldLegend>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {group.fields.map((field) => {
-              const fieldId = `${id}-${field.key}`;
-              const fact = byKey.get(field.key);
-              if (field.input === "boolean") {
-                return (
-                  <Field key={field.key} orientation="horizontal">
-                    <Checkbox
-                      checked={texts[field.key] === "true"}
-                      id={fieldId}
-                      onCheckedChange={(value) =>
-                        setTexts((current) => ({
-                          ...current,
-                          [field.key]: value === true ? "true" : "",
-                        }))
-                      }
-                    />
-                    <FieldLabel htmlFor={fieldId}>
-                      {t(`profile.facts.${field.key}`)}
-                    </FieldLabel>
-                    <SourceChip fact={fact} />
-                  </Field>
-                );
-              }
+        <SettingsCard
+          description={t(`profile.groupHelp.${group.id}`)}
+          id={`${id}-group-${group.id}`}
+          key={group.id}
+          title={t(`profile.groups.${group.id}`)}
+        >
+          {group.fields.map((field) => {
+            const fieldId = `${id}-${field.key}`;
+            const fact = byKey.get(field.key);
+            if (field.input === "boolean") {
               return (
-                <Field
-                  data-invalid={Boolean(errors[field.key])}
+                <SettingsRow
+                  badge={<SourceChip fact={fact} />}
+                  htmlFor={fieldId}
                   key={field.key}
+                  label={t(`profile.facts.${field.key}`)}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <FieldLabel htmlFor={fieldId}>
-                      {t(`profile.facts.${field.key}`)}
-                    </FieldLabel>
-                    <SourceChip fact={fact} />
-                  </div>
+                  <Checkbox
+                    checked={texts[field.key] === "true"}
+                    id={fieldId}
+                    onCheckedChange={(value) =>
+                      setTexts((current) => ({
+                        ...current,
+                        [field.key]: value === true ? "true" : "",
+                      }))
+                    }
+                  />
+                </SettingsRow>
+              );
+            }
+            return (
+              <SettingsRow
+                badge={<SourceChip fact={fact} />}
+                description={
+                  field.input === "list" ? t("profile.listHelp") : undefined
+                }
+                htmlFor={fieldId}
+                key={field.key}
+                label={t(`profile.facts.${field.key}`)}
+              >
+                <Field data-invalid={Boolean(errors[field.key])}>
                   <Input
                     aria-invalid={Boolean(errors[field.key]) || undefined}
-                    className="field-touch"
+                    className="field-touch w-full"
                     id={fieldId}
                     onChange={(event) =>
                       setTexts((current) => ({
@@ -252,92 +288,15 @@ export function FactsTab() {
                   {errors[field.key] ? (
                     <FieldError>{errors[field.key]}</FieldError>
                   ) : null}
-                  {field.input === "list" ? (
-                    <FieldDescription>{t("profile.listHelp")}</FieldDescription>
-                  ) : null}
                 </Field>
-              );
-            })}
-          </div>
-        </FieldSet>
+              </SettingsRow>
+            );
+          })}
+        </SettingsCard>
       ))}
-      <FieldSet>
-        <FieldLegend>{t("profile.groups.workAuth")}</FieldLegend>
-        <FieldDescription>{t("profile.workAuthHelp")}</FieldDescription>
-        <div className="flex flex-col gap-2">
-          {workAuth.map((row) => (
-            <div className="flex items-end gap-2" key={row.rowId}>
-              <Field className="w-24">
-                <FieldLabel htmlFor={`${id}-${row.rowId}-country`}>
-                  {t("profile.country")}
-                </FieldLabel>
-                <Input
-                  className="field-touch"
-                  id={`${id}-${row.rowId}-country`}
-                  maxLength={2}
-                  onChange={(event) =>
-                    setWorkAuth((rows) =>
-                      rows.map((entry) =>
-                        entry.rowId === row.rowId
-                          ? {
-                              ...entry,
-                              country: event.target.value.toUpperCase(),
-                            }
-                          : entry
-                      )
-                    )
-                  }
-                  value={row.country}
-                />
-              </Field>
-              <Field className="flex-1">
-                <FieldLabel htmlFor={`${id}-${row.rowId}-status`}>
-                  {t("profile.workAuthStatus")}
-                </FieldLabel>
-                <Select
-                  onValueChange={(value) =>
-                    setWorkAuth((rows) =>
-                      rows.map((entry) =>
-                        entry.rowId === row.rowId
-                          ? { ...entry, status: value }
-                          : entry
-                      )
-                    )
-                  }
-                  value={row.status}
-                >
-                  <SelectTrigger
-                    className="w-full"
-                    id={`${id}-${row.rowId}-status`}
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {WORK_AUTH_STATUSES.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {t(`profile.workAuthStatuses.${status}`)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Button
-                aria-label={t("common.delete")}
-                onClick={() =>
-                  setWorkAuth((rows) =>
-                    rows.filter((entry) => entry.rowId !== row.rowId)
-                  )
-                }
-                size="icon"
-                type="button"
-                variant="ghost"
-              >
-                <Trash2 aria-hidden="true" />
-              </Button>
-            </div>
-          ))}
+      <SettingsCard
+        action={
           <Button
-            className="self-start"
             onClick={() =>
               setWorkAuth((rows) => [
                 ...rows,
@@ -346,23 +305,98 @@ export function FactsTab() {
             }
             size="sm"
             type="button"
-            variant="ghost"
+            variant="outline"
           >
             <Plus aria-hidden="true" data-icon="inline-start" />
             {t("profile.addCountry")}
           </Button>
-        </div>
-      </FieldSet>
-      <Button
-        aria-keyshortcuts="S"
-        className="self-start"
-        disabled={busy}
-        type="submit"
+        }
+        description={t("profile.workAuthHelp")}
+        footer={footer}
+        id={`${id}-group-workAuth`}
+        title={t("profile.groups.workAuth")}
       >
-        <Save aria-hidden="true" data-icon="inline-start" />
-        {t("profile.save")}
-        <Kbd aria-hidden="true">S</Kbd>
-      </Button>
+        {workAuth.length === 0 ? (
+          <p className="type-body px-4 py-4 text-muted-foreground">
+            {t("profile.workAuthEmpty")}
+          </p>
+        ) : null}
+        {workAuth.map((row) => (
+          <div className="flex items-end gap-2 px-4 py-3" key={row.rowId}>
+            <Field className="w-24">
+              <FieldLabel htmlFor={`${id}-${row.rowId}-country`}>
+                {t("profile.country")}
+              </FieldLabel>
+              <Input
+                className="field-touch"
+                id={`${id}-${row.rowId}-country`}
+                maxLength={2}
+                onChange={(event) =>
+                  setWorkAuth((rows) =>
+                    rows.map((entry) =>
+                      entry.rowId === row.rowId
+                        ? {
+                            ...entry,
+                            country: event.target.value.toUpperCase(),
+                          }
+                        : entry
+                    )
+                  )
+                }
+                value={row.country}
+              />
+            </Field>
+            <Field className="flex-1">
+              <FieldLabel htmlFor={`${id}-${row.rowId}-status`}>
+                {t("profile.workAuthStatus")}
+              </FieldLabel>
+              <Select
+                onValueChange={(value) =>
+                  setWorkAuth((rows) =>
+                    rows.map((entry) =>
+                      entry.rowId === row.rowId
+                        ? { ...entry, status: value }
+                        : entry
+                    )
+                  )
+                }
+                value={row.status}
+              >
+                <SelectTrigger
+                  className="w-full"
+                  id={`${id}-${row.rowId}-status`}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {WORK_AUTH_STATUSES.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {(() => {
+                        const Icon = WORK_AUTH_ICONS[status];
+                        return <Icon aria-hidden="true" />;
+                      })()}
+                      {t(`profile.workAuthStatuses.${status}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
+            <Button
+              aria-label={t("common.delete")}
+              onClick={() =>
+                setWorkAuth((rows) =>
+                  rows.filter((entry) => entry.rowId !== row.rowId)
+                )
+              }
+              size="icon"
+              type="button"
+              variant="ghost"
+            >
+              <Trash2 aria-hidden="true" />
+            </Button>
+          </div>
+        ))}
+      </SettingsCard>
     </form>
   );
 }

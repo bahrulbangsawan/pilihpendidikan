@@ -1,9 +1,17 @@
-// The desktop board (12 §3): a row of unruled columns holding cursor.com
-// cards (one step darker than the page, 4px radius, a hairline), sortable
-// cards (@dnd-kit) and the
-// Closed lane, collapsed by default, that still offers Rejected and Withdrawn
-// as separate drop targets (06 §1.1).
+// The desktop board's lanes (12 §3, reui's kanban board): rounded lanes on
+// `card/50` with a hairline, a header row (stage glyph, name, count, the
+// lane menu), sortable cards (@dnd-kit) and collapsible lanes. A collapsed
+// lane is a narrow vertical strip (reui's "Blocked / Reviewing") that is
+// still a drop target; Rejected and Withdrawn start collapsed (06 §1.1).
 
+import type { DropState } from "@rulisme/ui/blocks/kanban";
+import {
+  KanbanCollapsedColumn,
+  KanbanColumn,
+  KanbanColumnContent,
+  KanbanColumnEmpty,
+  KanbanColumnHeader,
+} from "@rulisme/ui/blocks/kanban";
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
 import { useDroppable } from "@dnd-kit/core";
@@ -13,6 +21,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
 import {
   DropdownMenu,
@@ -22,14 +31,28 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
-import { cn } from "@rulisme/ui/lib/utils";
-import { ToggleGroup, ToggleGroupItem } from "@rulisme/ui/ui/toggle-group";
-import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
+import {
+  Archive,
+  ArchiveRestore,
+  ArrowDown,
+  ArrowRightLeft,
+  ArrowUp,
+  CalendarClock,
+  CircleSlash,
+  CircleX,
+  Ellipsis,
+  FoldHorizontal,
+  ListChecks,
+  Maximize2,
+  Minus,
+  PanelRight,
+  SquareCheck,
+} from "lucide-react";
 import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import { useTranslation } from "@/i18n";
-import type { ClosedStage } from "@/lib/board-model";
 import { stageLabel } from "@/lib/labels";
 import { CardView } from "./card-view";
+import { StageIcon } from "./stage-meta";
 
 export const COLUMN_PREFIX = "column:";
 export const columnId = (stage: Stage) => `${COLUMN_PREFIX}${stage}`;
@@ -46,6 +69,7 @@ export interface CardHandlers {
 
 export type CardMenuAction =
   | "open"
+  | "openPage"
   | "move"
   | "reject"
   | "withdraw"
@@ -57,12 +81,14 @@ export type CardMenuAction =
   | "priorityNormal"
   | "priorityLow";
 
-function CardMenu({
+export function CardMenu({
   card,
   onAction,
+  className,
 }: {
   card: BoardCard;
   onAction: (action: CardMenuAction) => void;
+  className?: string;
 }) {
   const { t } = useTranslation();
   return (
@@ -73,7 +99,10 @@ function CardMenu({
             company: card.posting.company_name,
             title: card.posting.title,
           })}
-          className="absolute top-1.5 right-1.5 opacity-60 hover:opacity-100 focus-visible:opacity-100"
+          className={cn(
+            "text-muted-foreground hover:text-foreground",
+            className
+          )}
           size="icon-xs"
           variant="ghost"
         >
@@ -82,35 +111,51 @@ function CardMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={() => onAction("open")}>
+          <PanelRight aria-hidden="true" />
           {t("card.actions.open")}
           <DropdownMenuShortcut>↵</DropdownMenuShortcut>
         </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => onAction("openPage")}>
+          <Maximize2 aria-hidden="true" />
+          {t("board.openFullPage")}
+        </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onAction("move")}>
+          <ArrowRightLeft aria-hidden="true" />
           {t("card.actions.move")}
           <DropdownMenuShortcut>M</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onAction("select")}>
+          <SquareCheck aria-hidden="true" />
           {t("card.actions.select")}
           <DropdownMenuShortcut>X</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onAction("followUp")}>
+          <CalendarClock aria-hidden="true" />
           {t("card.actions.followUp")}
           <DropdownMenuShortcut>F</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => onAction("priorityHigh")}>
+          <ArrowUp aria-hidden="true" />
           {t("card.actions.priorityHigh")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onAction("priorityNormal")}>
+          <Minus aria-hidden="true" />
           {t("card.actions.priorityNormal")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onAction("priorityLow")}>
+          <ArrowDown aria-hidden="true" />
           {t("card.actions.priorityLow")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => onAction(card.archived ? "unarchive" : "archive")}
         >
+          {card.archived ? (
+            <ArchiveRestore aria-hidden="true" />
+          ) : (
+            <Archive aria-hidden="true" />
+          )}
           {card.archived
             ? t("card.actions.unarchive")
             : t("card.actions.archive")}
@@ -122,6 +167,7 @@ function CardMenu({
           onSelect={() => onAction("reject")}
           variant="destructive"
         >
+          <CircleX aria-hidden="true" />
           {t("card.actions.reject")}
           <DropdownMenuShortcut>R</DropdownMenuShortcut>
         </DropdownMenuItem>
@@ -129,6 +175,7 @@ function CardMenu({
           onSelect={() => onAction("withdraw")}
           variant="destructive"
         >
+          <CircleSlash aria-hidden="true" />
           {t("card.actions.withdraw")}
           <DropdownMenuShortcut>W</DropdownMenuShortcut>
         </DropdownMenuItem>
@@ -177,7 +224,7 @@ export function SortableCard({
           stage: stageLabel(t, card.stage),
         })}
         className={cn(
-          "cursor-grab rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing",
+          "cursor-grab rounded-lg outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing",
           sortable.isDragging && "opacity-40"
         )}
         data-card-id={card.id}
@@ -195,7 +242,6 @@ export function SortableCard({
       >
         <CardView
           card={card}
-          className="pr-8"
           nowMs={nowMs}
           pending={pending}
           selected={selected}
@@ -203,10 +249,19 @@ export function SortableCard({
       </div>
       <CardMenu
         card={card}
+        className="absolute top-2 right-2"
         onAction={(action) => handlers.onMenuAction(card, action)}
       />
     </li>
   );
+}
+
+/** The drop highlight a lane shows for its state. */
+function dropState(state: ColumnState): DropState {
+  if (state.illegalFrom) {
+    return "blocked";
+  }
+  return state.over ? "over" : "idle";
 }
 
 export interface ColumnState {
@@ -225,7 +280,7 @@ function ColumnBody({
   state,
   dragDisabled,
   empty,
-  className,
+  footer,
 }: {
   stage: Stage;
   cards: BoardCard[];
@@ -236,7 +291,7 @@ function ColumnBody({
   state: ColumnState;
   dragDisabled: boolean;
   empty?: ReactNode;
-  className?: string;
+  footer?: ReactNode;
 }) {
   const { t } = useTranslation();
   const droppable = useDroppable({
@@ -244,17 +299,9 @@ function ColumnBody({
     data: { type: "column", stage },
   });
   return (
-    <div
-      className={cn(
-        "flex min-h-32 flex-1 flex-col gap-2 rounded-sm",
-        state.over && !state.illegalFrom && "bg-wash",
-        state.illegalFrom && "cursor-not-allowed bg-destructive/5",
-        className
-      )}
-      ref={droppable.setNodeRef}
-    >
+    <KanbanColumnContent ref={droppable.setNodeRef} state={dropState(state)}>
       {state.illegalFrom ? (
-        <p className="type-caption text-destructive" role="status">
+        <p className="type-caption px-1 text-destructive" role="status">
           {t("move.illegal", {
             from: stageLabel(t, state.illegalFrom),
             to: stageLabel(t, stage),
@@ -279,8 +326,51 @@ function ColumnBody({
           ))}
         </ul>
       </SortableContext>
-      {cards.length === 0 ? empty : null}
-    </div>
+      {cards.length === 0
+        ? (empty ?? (
+            <KanbanColumnEmpty>{t("board.emptyColumn")}</KanbanColumnEmpty>
+          ))
+        : null}
+      {footer}
+    </KanbanColumnContent>
+  );
+}
+
+function LaneMenu({
+  stage,
+  count,
+  onSelectAll,
+  onCollapse,
+}: {
+  stage: Stage;
+  count: number;
+  onSelectAll: () => void;
+  onCollapse: () => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          aria-label={t("board.lane.menu", { stage: stageLabel(t, stage) })}
+          className="text-muted-foreground hover:text-foreground"
+          size="icon-xs"
+          variant="ghost"
+        >
+          <Ellipsis aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem disabled={count === 0} onSelect={onSelectAll}>
+          <ListChecks aria-hidden="true" />
+          {t("board.lane.selectAll")}
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={onCollapse}>
+          <FoldHorizontal aria-hidden="true" />
+          {t("board.lane.collapse")}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -290,170 +380,66 @@ export interface ColumnProps {
   empty?: ReactNode;
   handlers: CardHandlers;
   nowMs: number;
+  onCollapse: () => void;
+  onSelectAll: () => void;
   pendingIds: ReadonlySet<string>;
   selectedIds: ReadonlySet<string>;
   stage: Stage;
   state: ColumnState;
+  /** The server's total; more than `cards` when a closed lane is capped. */
   total: number;
+  /** Filters are on: the count is the visible cards. */
+  filtered: boolean;
 }
 
 export function BoardColumn(props: ColumnProps) {
   const { t } = useTranslation();
-  const { stage, total } = props;
+  const { stage, total, cards, filtered } = props;
+  const count = filtered ? cards.length : total;
+  const capped = !filtered && total > cards.length;
   return (
-    <section
-      aria-labelledby={`column-${stage}`}
-      className="relative flex w-64 shrink-0 flex-col"
-    >
-      <header className="flex h-10 items-center justify-between gap-2 px-1">
-        <h2 className="type-body text-foreground" id={`column-${stage}`}>
-          {stageLabel(t, stage)}
-        </h2>
-        <span className="type-caption text-muted-foreground tabular-nums">
-          <span className="sr-only">
-            {t("board.countLabel", { count: total })}
-          </span>
-          <span aria-hidden="true">{total}</span>
-        </span>
-      </header>
-      <ColumnBody {...props} />
-    </section>
-  );
-}
-
-export function ClosedLane({
-  expanded,
-  onExpandedChange,
-  filter,
-  onFilterChange,
-  columns,
-  totals,
-  states,
-  handlers,
-  nowMs,
-  pendingIds,
-  selectedIds,
-  dragDisabled,
-}: {
-  expanded: boolean;
-  onExpandedChange: (expanded: boolean) => void;
-  filter: ClosedStage | "both";
-  onFilterChange: (filter: ClosedStage | "both") => void;
-  columns: Record<ClosedStage, BoardCard[]>;
-  totals: Record<ClosedStage, number>;
-  states: Record<ClosedStage, ColumnState>;
-  handlers: CardHandlers;
-  nowMs: number;
-  pendingIds: ReadonlySet<string>;
-  selectedIds: ReadonlySet<string>;
-  dragDisabled: boolean;
-}) {
-  const { t } = useTranslation();
-  const stages: ClosedStage[] =
-    filter === "both" ? ["rejected", "withdrawn"] : [filter];
-  if (!expanded) {
-    return (
-      <section
-        aria-label={t("board.closed")}
-        className="relative flex w-28 shrink-0 flex-col gap-2"
-      >
-        <header className="flex h-10 items-center">
-          <Button
-            aria-expanded={false}
-            className="w-full justify-between px-2"
-            onClick={() => onExpandedChange(true)}
-            size="sm"
-            variant="ghost"
-          >
-            <span>{t("board.closed")}</span>
-            <ChevronRight aria-hidden="true" />
-          </Button>
-        </header>
-        {(["rejected", "withdrawn"] as const).map((stage) => (
-          <CollapsedTarget
-            key={stage}
+    <KanbanColumn aria-labelledby={`column-${stage}`}>
+      <KanbanColumnHeader
+        actions={
+          <LaneMenu
+            count={cards.length}
+            onCollapse={props.onCollapse}
+            onSelectAll={props.onSelectAll}
             stage={stage}
-            state={states[stage]}
-            total={totals[stage]}
           />
-        ))}
-      </section>
-    );
-  }
-  return (
-    <section
-      aria-label={t("board.closed")}
-      className="relative flex w-64 shrink-0 flex-col gap-2"
-    >
-      <header className="flex h-10 items-center justify-between gap-1">
-        <Button
-          aria-expanded
-          className="px-2"
-          onClick={() => onExpandedChange(false)}
-          size="sm"
-          variant="ghost"
-        >
-          <ChevronLeft aria-hidden="true" />
-          <span>{t("board.closed")}</span>
-        </Button>
-        <ToggleGroup
-          aria-label={t("board.closedFilter")}
-          onValueChange={(value) =>
-            value && onFilterChange(value as ClosedStage | "both")
-          }
-          size="sm"
-          type="single"
-          value={filter}
-        >
-          <ToggleGroupItem value="both">
-            {t("board.closedBoth")}
-          </ToggleGroupItem>
-          <ToggleGroupItem value="rejected">
-            {stageLabel(t, "rejected")}
-          </ToggleGroupItem>
-          <ToggleGroupItem value="withdrawn">
-            {stageLabel(t, "withdrawn")}
-          </ToggleGroupItem>
-        </ToggleGroup>
-      </header>
-      {stages.map((stage) => (
-        <div className="flex flex-col gap-1.5" key={stage}>
-          <h3 className="type-caption flex items-center justify-between px-1 text-muted-foreground">
-            {stageLabel(t, stage)}
-            <span className="tabular-nums">{totals[stage]}</span>
-          </h3>
-          <ColumnBody
-            cards={columns[stage]}
-            dragDisabled={dragDisabled}
-            handlers={handlers}
-            nowMs={nowMs}
-            pendingIds={pendingIds}
-            selectedIds={selectedIds}
-            stage={stage}
-            state={states[stage]}
-          />
-          {totals[stage] > columns[stage].length ? (
-            <p className="type-caption px-1 pb-2 text-muted-foreground">
-              {t("board.capped", {
-                shown: columns[stage].length,
-                total: totals[stage],
-              })}
+        }
+        count={count}
+        countLabel={t("board.countLabel", { count })}
+        icon={<StageIcon stage={stage} />}
+        title={stageLabel(t, stage)}
+        titleId={`column-${stage}`}
+      />
+      <ColumnBody
+        {...props}
+        footer={
+          capped ? (
+            <p className="type-caption px-1 pt-1 text-muted-foreground">
+              {t("board.capped", { shown: cards.length, total })}
             </p>
-          ) : null}
-        </div>
-      ))}
-    </section>
+          ) : null
+        }
+      />
+    </KanbanColumn>
   );
 }
 
-function CollapsedTarget({
+/** A collapsed lane: a narrow vertical strip that expands on click and still
+ * takes drops (dropping on Rejected keeps it collapsed). */
+export function CollapsedLane({
   stage,
+  count,
   state,
-  total,
+  onExpand,
 }: {
-  stage: ClosedStage;
+  stage: Stage;
+  count: number;
   state: ColumnState;
-  total: number;
+  onExpand: () => void;
 }) {
   const { t } = useTranslation();
   const droppable = useDroppable({
@@ -461,25 +447,24 @@ function CollapsedTarget({
     data: { type: "column", stage },
   });
   return (
-    <div
-      className={cn(
-        "flex flex-1 flex-col gap-1 rounded-sm border border-hairline bg-card p-3 transition-colors",
-        state.over && !state.illegalFrom && "bg-wash",
-        state.illegalFrom && "cursor-not-allowed bg-destructive/5"
-      )}
+    <KanbanCollapsedColumn
+      aria-label={stageLabel(t, stage)}
+      count={count}
+      expandLabel={t("board.lane.expand", {
+        stage: stageLabel(t, stage),
+        count,
+      })}
+      icon={<StageIcon stage={stage} />}
+      onExpand={onExpand}
       ref={droppable.setNodeRef}
+      state={dropState(state)}
+      title={stageLabel(t, stage)}
     >
-      <span className="type-caption text-foreground">
-        {stageLabel(t, stage)}
-      </span>
-      <span className="type-micro text-muted-foreground tabular-nums">
-        {total}
-      </span>
       {state.illegalFrom ? (
-        <span className="type-micro text-destructive" role="status">
+        <span className="sr-only" role="status">
           {t("move.illegalShort")}
         </span>
       ) : null}
-    </div>
+    </KanbanCollapsedColumn>
   );
 }

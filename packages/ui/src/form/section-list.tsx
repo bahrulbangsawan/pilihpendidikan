@@ -15,13 +15,15 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, MinusIcon, Plus, PlusIcon, X } from "lucide-react";
+import { MinusIcon, Plus, PlusIcon, X } from "lucide-react";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
 import { Button } from "../ui/button";
+import { DragHandle } from "../ui/drag-handle";
+import { EditableTitle } from "../ui/editable-title";
 
 interface SectionListProps<T extends { id: string }> {
   title: string;
@@ -143,9 +145,8 @@ export function SectionList<T extends { id: string }>({
               {titleIcon}
             </span>
           )}
-          <input
+          <EditableTitle
             aria-label={placeholder}
-            className="type-subtitle field-touch -ml-2 h-8 min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard placeholder:text-muted-foreground hover:border-border read-only:hover:border-transparent focus-visible:border-input focus-visible:bg-background focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0"
             onChange={(e) => onTitleChange?.(e.target.value)}
             placeholder={placeholder}
             readOnly={!onTitleChange}
@@ -179,19 +180,11 @@ export function SectionList<T extends { id: string }>({
                           and the remove ×. None is nested in another, so
                           each keeps its own name and focus stop. */}
                       <AccordionPrimitive.Header className="flex items-center gap-1 pr-2 pl-1">
-                        <button
-                          aria-label={reorderLabel}
-                          className="inline-flex size-7 shrink-0 cursor-grab items-center justify-center rounded-full text-muted-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:bg-pane hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing"
-                          title={reorderLabel}
-                          type="button"
+                        <DragHandle
+                          label={reorderLabel}
                           {...attributes}
                           {...listeners}
-                        >
-                          <GripVertical
-                            aria-hidden="true"
-                            className="size-3.5"
-                          />
-                        </button>
+                        />
                         <AccordionPrimitive.Trigger
                           className="group/accordion-trigger type-body flex min-w-0 flex-1 items-center gap-2 py-2.5 text-left text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
                           data-slot="accordion-trigger"

@@ -1,14 +1,13 @@
 // Overview (12 §5.1): the posting description as plain text (72ch), the
-// requirements, salary, and the notes journal.
+// requirements and salary, and the user's own email to the employer
+// (composer + drafts, 09) — each in a card. Notes have their own tab.
 
+import { SectionCard } from "@rulisme/ui/blocks/settings";
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
-import type { ApplicationEventRecord } from "@pilihpendidikan/jobs-contracts/records";
 import { PlainText } from "@/components/rich-text";
 import { useTranslation } from "@/i18n";
 import { formatMoney } from "@/lib/format";
-import { deletedNoteIds, NoteComposer, NoteItem } from "./notes";
-
-const RECENT_NOTES = 5;
+import { EmailApply } from "./email-apply";
 
 function salaryText(
   detail: ApplicationDetail,
@@ -31,33 +30,13 @@ function salaryText(
   return salary.raw ?? null;
 }
 
-export function OverviewTab({
-  detail,
-  events,
-  actorName,
-  nowMs,
-}: {
-  detail: ApplicationDetail;
-  events: readonly ApplicationEventRecord[];
-  actorName: (event: ApplicationEventRecord) => string;
-  nowMs: number;
-}) {
+export function OverviewTab({ detail }: { detail: ApplicationDetail }) {
   const { locale, t } = useTranslation();
   const { posting } = detail;
   const salary = salaryText(detail, locale, t);
-  const hidden = deletedNoteIds(events);
-  const notes = events
-    .filter((event) => event.type === "note_added" && !hidden.has(event.id))
-    .slice(0, RECENT_NOTES);
   return (
-    <div className="flex flex-col gap-8">
-      <section
-        aria-labelledby="description-heading"
-        className="flex flex-col gap-2"
-      >
-        <h2 className="type-subtitle" id="description-heading">
-          {t("detail.description")}
-        </h2>
+    <div className="flex flex-col gap-4">
+      <SectionCard id="description-heading" title={t("detail.description")}>
         {posting.description_text ? (
           <PlainText
             className="type-body max-w-[72ch]"
@@ -73,51 +52,31 @@ export function OverviewTab({
             {t("detail.truncated")}
           </p>
         ) : null}
-      </section>
-      {posting.requirements.length > 0 ? (
-        <section
-          aria-labelledby="requirements-heading"
-          className="flex flex-col gap-2"
-        >
-          <h2 className="type-subtitle" id="requirements-heading">
-            {t("detail.requirements")}
-          </h2>
-          <ul className="type-body flex max-w-[72ch] list-disc flex-col gap-1 pl-5">
-            {posting.requirements.map((requirement) => (
-              <li key={requirement}>{requirement}</li>
-            ))}
-          </ul>
-        </section>
+      </SectionCard>
+      {posting.requirements.length > 0 || salary ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          {posting.requirements.length > 0 ? (
+            <SectionCard
+              id="requirements-heading"
+              title={t("detail.requirements")}
+            >
+              <ul className="type-body flex list-disc flex-col gap-1 pl-5">
+                {posting.requirements.map((requirement) => (
+                  <li key={requirement}>{requirement}</li>
+                ))}
+              </ul>
+            </SectionCard>
+          ) : null}
+          {salary ? (
+            <SectionCard id="salary-heading" title={t("detail.salary")}>
+              <p className="type-body">{salary}</p>
+            </SectionCard>
+          ) : null}
+        </div>
       ) : null}
-      {salary ? (
-        <section
-          aria-labelledby="salary-heading"
-          className="flex flex-col gap-1"
-        >
-          <h2 className="type-subtitle" id="salary-heading">
-            {t("detail.salary")}
-          </h2>
-          <p className="type-body">{salary}</p>
-        </section>
-      ) : null}
-      <section
-        aria-labelledby="notes-heading"
-        className="flex max-w-2xl flex-col gap-3"
-      >
-        <h2 className="type-subtitle" id="notes-heading">
-          {t("notes.heading")}
-        </h2>
-        <NoteComposer appId={detail.application.id} />
-        {notes.map((event) => (
-          <NoteItem
-            actor={actorName(event)}
-            appId={detail.application.id}
-            event={event}
-            key={event.id}
-            nowMs={nowMs}
-          />
-        ))}
-      </section>
+      <SectionCard id="email-heading" title={t("application.emailHeading")}>
+        <EmailApply detail={detail} />
+      </SectionCard>
     </div>
   );
 }

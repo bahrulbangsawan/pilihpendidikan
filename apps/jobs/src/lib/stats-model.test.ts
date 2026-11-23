@@ -7,7 +7,6 @@ import {
 } from "@/test/fixtures-rest";
 import { DAY_MS } from "./board-model";
 import {
-  automationModel,
   breakdownTable,
   formatDuration,
   funnelRows,
@@ -17,6 +16,7 @@ import {
   seriesSummary,
   seriesTable,
   statCells,
+  statDeltas,
   timingChartData,
   timingRows,
   timingTable,
@@ -131,33 +131,30 @@ describe("TW-STATS view models (10 §2, §8)", () => {
     expect(table.rows[2]?.cells).toEqual(["3", "—", "—", "—", "3"]);
   });
 
-  it("TW-STATS automation reliability: states, rates and failure classes by count", () => {
-    const summary = makeAnalyticsSummary();
-    summary.automation.failure_classes = {
-      unsupported_form: 1,
-      login_required: 3,
-      some_new_class: 1,
-      cancelled: 0,
-    };
-    const model = automationModel(summary, t, "en");
-    expect(model.total).toBe(15);
-    expect(model.states.map((state) => [state.label, state.value])).toEqual([
-      ["Submitted", "11"],
-      ["Failed", "2"],
-      ["Cancelled", "1"],
-      ["Needs review", "1"],
-      ["Expired", "0"],
-    ]);
-    expect(model.rates.map((rate) => rate.value)).toEqual([
-      "79%",
-      "82%",
-      "27%",
-    ]);
-    expect(model.failures.map((entry) => [entry.label, entry.value])).toEqual([
-      ["Login required", "3"],
-      ["some_new_class", "1"],
-      ["Unsupported form", "1"],
-    ]);
+  it("TW-STATS stat deltas compare counts in percent and rates in points", () => {
+    const current = makeAnalyticsSummary();
+    const previous = makeAnalyticsSummary({
+      cohort_size: 12,
+      funnel: { ...current.funnel, applied: 12, interviewing: 6, offer: 4 },
+      rates: current.rates
+        ? { ...current.rates, response_rate: 0.4 }
+        : current.rates,
+    });
+    const deltas = statDeltas(current, previous, t, "en");
+    expect(deltas.applications).toEqual({
+      direction: "up",
+      label: "+50%",
+      previous: "12",
+    });
+    expect(deltas.interviews?.direction).toBe("flat");
+    expect(deltas.offers).toMatchObject({ direction: "down", label: "−50%" });
+    expect(deltas.responseRate).toMatchObject({
+      direction: "up",
+      label: "+10 pts",
+      previous: "40%",
+    });
+    const small = makeAnalyticsSummary({ cohort_size: 3, rates: null });
+    expect(statDeltas(current, small, t, "en").responseRate).toBeUndefined();
   });
 
   it("TW-STATS the weekly series table and summary match the points", () => {

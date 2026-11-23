@@ -27,7 +27,7 @@ import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { formatDateTime, relativeTime } from "@/lib/format";
 import { stageLabel, submissionLabel } from "@/lib/labels";
-import { deletedNoteIds, NoteComposer, noteText } from "./notes";
+import { deletedNoteIds, noteText } from "./notes";
 
 type Payload = Record<string, unknown>;
 
@@ -210,7 +210,6 @@ function EventRow({
 }
 
 export function TimelineTab({
-  appId,
   events,
   actorName,
   nowMs,
@@ -219,7 +218,6 @@ export function TimelineTab({
   onLoadMore,
   loadingMore,
 }: {
-  appId: string;
   events: readonly ApplicationEventRecord[];
   actorName: (event: ApplicationEventRecord) => string;
   nowMs: number;
@@ -238,7 +236,6 @@ export function TimelineTab({
   );
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <NoteComposer appId={appId} />
       <div className="flex items-center gap-2">
         <Switch
           checked={showDeleted}

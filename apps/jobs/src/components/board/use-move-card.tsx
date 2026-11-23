@@ -22,7 +22,6 @@ import {
 } from "@rulisme/ui/ui/alert-dialog";
 import { Button } from "@rulisme/ui/ui/button";
 import { Field, FieldLabel } from "@rulisme/ui/ui/field";
-import { Input } from "@rulisme/ui/ui/input";
 import {
   Select,
   SelectContent,
@@ -43,6 +42,9 @@ import { formatClock, fromLocalInputValue, toDateValue } from "@/lib/format";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { changeSourceLabel, methodLabel, stageLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
+import { MethodIcon } from "@/components/application/option-icons";
+import { DatePicker } from "@rulisme/ui/ui/date-picker";
+import { isoToday } from "@rulisme/ui/lib/iso-date";
 
 export interface MoveRequest {
   afterId?: string | null;
@@ -467,6 +469,7 @@ function ConfirmAppliedDialog({
               <SelectContent>
                 {SUBMISSION_METHODS.map((value) => (
                   <SelectItem key={value} value={value}>
+                    <MethodIcon method={value} />
                     {methodLabel(t, value)}
                   </SelectItem>
                 ))}
@@ -477,12 +480,11 @@ function ConfirmAppliedDialog({
             <FieldLabel htmlFor={`${id}-date`}>
               {t("move.appliedDate")}
             </FieldLabel>
-            <Input
-              className="field-touch"
+            <DatePicker
+              clearable={false}
               id={`${id}-date`}
-              max={toDateValue(Date.now())}
-              onChange={(event) => setDay(event.target.value)}
-              type="date"
+              max={isoToday()}
+              onValueChange={setDay}
               value={day}
             />
           </Field>

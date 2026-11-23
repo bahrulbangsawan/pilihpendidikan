@@ -1,8 +1,7 @@
 import { FormField } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
-import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
-import { buttonVariants } from "@rulisme/ui/ui/button-variants";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,12 +15,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
+import { SwatchPicker } from "@rulisme/ui/ui/swatch-picker";
 import {
+  Banknote,
   Building2,
   ChevronDown,
+  CircleMinus,
+  CirclePlus,
   FileText,
   ListOrdered,
   Palette,
+  Percent,
   Plus,
   SlidersHorizontal,
   StickyNote,
@@ -75,17 +79,6 @@ const ACCENT_PRESETS = [
 // hairline (DESIGN.md § Layout). The form is a size container, so its grids
 // follow the pane's width rather than the viewport's.
 const SECTION_CLASS = "border-line border-b px-4 py-6 last:border-b-0 sm:px-6";
-
-// Swatches are 24px dots with a hairline inner ring, so six brand colours read
-// as one control; the selected one gets a 2px ink ring, and focus draws the
-// action outline.
-const SWATCH_CLASS =
-  "size-6 shrink-0 cursor-pointer rounded-full border border-hairline";
-const SWATCH_SELECTED_CLASS =
-  "ring-2 ring-foreground ring-offset-2 ring-offset-background";
-
-const FOCUS_WITHIN_CLASS =
-  "has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2";
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -161,10 +154,6 @@ interface InvoiceFormProps {
 
 export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   const { t } = useTranslation();
-  const accent = data.accentColor.toLowerCase();
-  const isCustomAccent = !(ACCENT_PRESETS as readonly string[]).includes(
-    accent
-  );
   const [logoError, setLogoError] = useState<string | undefined>(undefined);
 
   function updateField<K extends keyof InvoiceData>(
@@ -375,9 +364,8 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
   // ── Logo upload ──
 
-  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = "";
+  async function handleLogoUpload(files: File[]) {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -440,6 +428,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
             <DatePicker
               label={t("form.dateDue")}
               onChange={(v) => updateField("dateDue", v)}
+              presetKind="due"
               value={data.dateDue}
             />
           </div>
@@ -451,55 +440,17 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               />
               {t("form.color")}
             </Label>
-            <div className="flex flex-wrap items-center gap-2.5 py-1.5">
-              {ACCENT_PRESETS.map((c) => (
-                <button
-                  aria-label={t("a11y.setAccentColor", { color: c })}
-                  aria-pressed={accent === c}
-                  className={cn(
-                    SWATCH_CLASS,
-                    accent === c && SWATCH_SELECTED_CLASS,
-                    "outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
-                  )}
-                  key={c}
-                  onClick={() => updateField("accentColor", c)}
-                  style={{ backgroundColor: c }}
-                  type="button"
-                />
-              ))}
-              <label
-                aria-label={t("a11y.setAccentColor", {
-                  color: data.accentColor,
-                })}
-                className={cn(
-                  SWATCH_CLASS,
-                  "flex bg-pane",
-                  FOCUS_WITHIN_CLASS,
-                  isCustomAccent && SWATCH_SELECTED_CLASS
-                )}
-                style={
-                  isCustomAccent
-                    ? { backgroundColor: data.accentColor }
-                    : undefined
-                }
-              >
-                {isCustomAccent ? null : (
-                  <Plus
-                    aria-hidden="true"
-                    className="m-auto size-3.5 text-muted-foreground"
-                  />
-                )}
-                <input
-                  aria-label={t("a11y.setAccentColor", {
-                    color: data.accentColor,
-                  })}
-                  className="sr-only"
-                  onChange={(e) => updateField("accentColor", e.target.value)}
-                  type="color"
-                  value={data.accentColor}
-                />
-              </label>
-            </div>
+            <SwatchPicker
+              allowCustom
+              aria-label={t("form.color")}
+              colors={ACCENT_PRESETS}
+              customLabel={t("a11y.setAccentColor", {
+                color: data.accentColor,
+              })}
+              getColorLabel={(color) => t("a11y.setAccentColor", { color })}
+              onValueChange={(color) => updateField("accentColor", color)}
+              value={data.accentColor}
+            />
           </div>
         </div>
       </section>
@@ -563,25 +514,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                     width={32}
                   />
                 )}
-                <label
-                  className={cn(
-                    buttonVariants({ size: "sm", variant: "outline" }),
-                    "cursor-pointer",
-                    FOCUS_WITHIN_CLASS
-                  )}
-                >
-                  <Upload aria-hidden="true" data-icon="inline-start" />
-                  {data.from.logoUrl ? t("form.change") : t("form.upload")}
-                  <input
-                    accept="image/*"
-                    aria-label={
-                      data.from.logoUrl ? t("form.change") : t("form.upload")
-                    }
-                    className="sr-only"
-                    onChange={handleLogoUpload}
-                    type="file"
-                  />
-                </label>
+                <FileTrigger accept="image/*" onFilesSelect={handleLogoUpload}>
+                  <Button size="sm" variant="outline">
+                    <Upload aria-hidden="true" data-icon="inline-start" />
+                    {data.from.logoUrl ? t("form.change") : t("form.upload")}
+                  </Button>
+                </FileTrigger>
                 {data.from.logoUrl && (
                   <Button
                     aria-label={t("a11y.removeLogo")}
@@ -814,8 +752,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="add">{t("form.typeAdd")}</SelectItem>
+                      <SelectItem value="add">
+                        <CirclePlus aria-hidden="true" />
+                        {t("form.typeAdd")}
+                      </SelectItem>
                       <SelectItem value="deduct">
+                        <CircleMinus aria-hidden="true" />
                         {t("form.typeDeduct")}
                       </SelectItem>
                     </SelectContent>
@@ -832,10 +774,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="fixed">
+                        <Banknote aria-hidden="true" />
                         {t("form.modeFixed")}
                       </SelectItem>
                       <SelectItem value="percentage">
-                        {t("form.modePercentage")}
+                        <Percent aria-hidden="true" />
+                        {t("form.modePercent")}
                       </SelectItem>
                     </SelectContent>
                   </Select>

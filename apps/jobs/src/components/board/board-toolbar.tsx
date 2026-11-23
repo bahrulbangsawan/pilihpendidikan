@@ -1,14 +1,12 @@
-// The board's toolbar band (12 §3): title, Filter / Mode / Source menus, Show
-// archived, the `/` search, and the stale-data caption after failed polls.
+// The board's controls (12 §3, reui's page header actions): the Filters
+// menu (follow-up due, needs attention, priority, no response, source, show
+// archived), the Board / List / Table view switcher, and the toolbar row
+// under the title with the `/` search and the stale-data caption.
 
-import type {
-  ApplicationMode,
-  SourceKind,
-} from "@pilihpendidikan/jobs-contracts/enums";
-import { APPLICATION_MODES } from "@pilihpendidikan/jobs-contracts/enums";
+import type { SourceKind } from "@pilihpendidikan/jobs-contracts/enums";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
+import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
-import { Checkbox } from "@rulisme/ui/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -17,195 +15,257 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Label } from "@rulisme/ui/ui/label";
-import { ChevronDown, CloudOff, Search } from "lucide-react";
-import { useId, useRef } from "react";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "@rulisme/ui/ui/segmented-control";
+import {
+  Archive,
+  ArrowUp,
+  CalendarClock,
+  CircleAlert,
+  CloudOff,
+  Globe,
+  Hourglass,
+  LayoutGrid,
+  List,
+  ListFilter,
+  Search,
+  Table,
+  X,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import { useRef } from "react";
 import { useTranslation } from "@/i18n";
 import type { BoardFilters } from "@/lib/board-model";
 import { NO_RESPONSE_DEFAULT_DAYS } from "@/lib/board-model";
 import { formatClock } from "@/lib/format";
-import { modeLabel, sourceLabel } from "@/lib/labels";
+import { sourceLabel } from "@/lib/labels";
+import type { BoardView } from "./board-search";
 
-export function BoardToolbar({
+const NO_RESPONSE_OPTIONS = [7, 14, 21, 30, 45] as const;
+
+/** How many filters are on (search excluded: it has its own field). */
+export function activeFilterCount(
+  filters: BoardFilters,
+  includeArchived: boolean
+): number {
+  return [
+    filters.followUpDue,
+    filters.needsAttention,
+    filters.priority,
+    filters.noResponseDays !== null,
+    filters.source !== "any",
+    includeArchived,
+  ].filter(Boolean).length;
+}
+
+export function BoardFiltersMenu({
   filters,
   onFiltersChange,
   includeArchived,
   onIncludeArchivedChange,
   sources,
-  staleSince,
 }: {
   filters: BoardFilters;
   onFiltersChange: (patch: Partial<BoardFilters>) => void;
   includeArchived: boolean;
   onIncludeArchivedChange: (value: boolean) => void;
   sources: readonly SourceKind[];
-  /** Set when polling failed 3×: the time of the data shown. */
-  staleSince: number | null;
 }) {
-  const { locale, t } = useTranslation();
-  const id = useId();
-  const searchRef = useRef<HTMLInputElement>(null);
-  useShortcut("/", () => searchRef.current?.focus());
-
-  const activeFilters = [
-    filters.followUpDue,
-    filters.needsAttention,
-    filters.priority,
-    filters.noResponseDays !== null,
-  ].filter(Boolean).length;
-
+  const { t } = useTranslation();
+  const active = activeFilterCount(filters, includeArchived);
   return (
-    <div className="flex flex-wrap items-center gap-2 px-4 pb-4 sm:px-6">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="ghost">
-            {t("board.filter")}
-            {activeFilters > 0 ? (
-              <span className="type-micro text-muted-foreground tabular-nums">
-                ({activeFilters})
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm" variant="outline">
+          <ListFilter aria-hidden="true" data-icon="inline-start" />
+          {t("board.filterButton")}
+          {active > 0 ? (
+            <Badge className="tabular-nums" variant="secondary">
+              <span className="sr-only">
+                {t("board.filtersActive", { count: active })}
               </span>
-            ) : null}
-            <ChevronDown aria-hidden="true" data-icon="inline-end" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuCheckboxItem
-            checked={filters.followUpDue}
-            onCheckedChange={(value) =>
-              onFiltersChange({ followUpDue: value === true })
-            }
-          >
-            {t("board.filters.followUpDue")}
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            checked={filters.needsAttention}
-            onCheckedChange={(value) =>
-              onFiltersChange({ needsAttention: value === true })
-            }
-          >
-            {t("board.filters.needsAttention")}
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            checked={filters.priority}
-            onCheckedChange={(value) =>
-              onFiltersChange({ priority: value === true })
-            }
-          >
-            {t("board.filters.priority")}
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            checked={filters.noResponseDays !== null}
-            onCheckedChange={(value) =>
-              onFiltersChange({
-                noResponseDays:
-                  value === true ? NO_RESPONSE_DEFAULT_DAYS : null,
-              })
-            }
-          >
-            {t("board.filters.noResponse", {
-              days: filters.noResponseDays ?? NO_RESPONSE_DEFAULT_DAYS,
-            })}
-          </DropdownMenuCheckboxItem>
-          {filters.noResponseDays !== null ? (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>
-                {t("board.filters.noResponseDays")}
-              </DropdownMenuLabel>
+              <span aria-hidden="true">{active}</span>
+            </Badge>
+          ) : null}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel>{t("board.filter")}</DropdownMenuLabel>
+        <DropdownMenuCheckboxItem
+          checked={filters.followUpDue}
+          onCheckedChange={(value) =>
+            onFiltersChange({ followUpDue: value === true })
+          }
+        >
+          <CalendarClock aria-hidden="true" />
+          {t("board.filters.followUpDue")}
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={filters.needsAttention}
+          onCheckedChange={(value) =>
+            onFiltersChange({ needsAttention: value === true })
+          }
+        >
+          <CircleAlert aria-hidden="true" />
+          {t("board.filters.needsAttention")}
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={filters.priority}
+          onCheckedChange={(value) =>
+            onFiltersChange({ priority: value === true })
+          }
+        >
+          <ArrowUp aria-hidden="true" />
+          {t("board.filters.priority")}
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={filters.noResponseDays !== null}
+          onCheckedChange={(value) =>
+            onFiltersChange({
+              noResponseDays: value === true ? NO_RESPONSE_DEFAULT_DAYS : null,
+            })
+          }
+        >
+          <Hourglass aria-hidden="true" />
+          {t("board.filters.noResponse", {
+            days: filters.noResponseDays ?? NO_RESPONSE_DEFAULT_DAYS,
+          })}
+        </DropdownMenuCheckboxItem>
+        {filters.noResponseDays === null ? null : (
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Hourglass aria-hidden="true" />
+              {t("board.filters.noResponseDays")}
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
               <DropdownMenuRadioGroup
                 onValueChange={(value) =>
                   onFiltersChange({ noResponseDays: Number(value) })
                 }
                 value={String(filters.noResponseDays)}
               >
-                {[7, 14, 21, 30, 45].map((days) => (
+                {NO_RESPONSE_OPTIONS.map((days) => (
                   <DropdownMenuRadioItem key={days} value={String(days)}>
+                    <Hourglass aria-hidden="true" />
                     {t("board.filters.days", { days })}
                   </DropdownMenuRadioItem>
                 ))}
               </DropdownMenuRadioGroup>
-            </>
-          ) : null}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="ghost">
-            {filters.mode === "any"
-              ? t("board.mode")
-              : modeLabel(t, filters.mode)}
-            <ChevronDown aria-hidden="true" data-icon="inline-end" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuRadioGroup
-            onValueChange={(value) =>
-              onFiltersChange({ mode: value as ApplicationMode | "any" })
-            }
-            value={filters.mode}
-          >
-            <DropdownMenuRadioItem value="any">
-              {t("board.anyMode")}
-            </DropdownMenuRadioItem>
-            {APPLICATION_MODES.map((mode) => (
-              <DropdownMenuRadioItem key={mode} value={mode}>
-                {modeLabel(t, mode)}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="ghost">
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Globe aria-hidden="true" />
             {filters.source === "any"
               ? t("board.source")
               : sourceLabel(t, filters.source)}
-            <ChevronDown aria-hidden="true" data-icon="inline-end" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuRadioGroup
-            onValueChange={(value) =>
-              onFiltersChange({ source: value as SourceKind | "any" })
-            }
-            value={filters.source}
-          >
-            <DropdownMenuRadioItem value="any">
-              {t("board.anySource")}
-            </DropdownMenuRadioItem>
-            {sources.map((source) => (
-              <DropdownMenuRadioItem key={source} value={source}>
-                {sourceLabel(t, source)}
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup
+              onValueChange={(value) =>
+                onFiltersChange({ source: value as SourceKind | "any" })
+              }
+              value={filters.source}
+            >
+              <DropdownMenuRadioItem value="any">
+                <Globe aria-hidden="true" />
+                {t("board.anySource")}
               </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <div className="flex items-center gap-2 px-1">
-        <Checkbox
+              {sources.map((source) => (
+                <DropdownMenuRadioItem key={source} value={source}>
+                  <Globe aria-hidden="true" />
+                  {sourceLabel(t, source)}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuCheckboxItem
           checked={includeArchived}
-          id={`${id}-archived`}
           onCheckedChange={(value) => onIncludeArchivedChange(value === true)}
-        />
-        <Label className="type-body-compact" htmlFor={`${id}-archived`}>
-          {t("board.showArchived")}
-        </Label>
-      </div>
-      {staleSince !== null ? (
-        <p
-          className="type-caption inline-flex items-center gap-1 text-muted-foreground"
-          role="status"
         >
-          <CloudOff aria-hidden="true" className="size-3.5" />
-          {t("board.stale", { time: formatClock(staleSince, locale) })}
-        </p>
-      ) : null}
-      <div className="relative ml-auto w-full sm:w-56">
+          <Archive aria-hidden="true" />
+          {t("board.showArchived")}
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+const VIEW_ICONS: Record<BoardView, ReactNode> = {
+  board: <LayoutGrid aria-hidden="true" />,
+  list: <List aria-hidden="true" />,
+  table: <Table aria-hidden="true" />,
+};
+
+/** The segmented Board / List / Table switch (`?view=`). */
+export function ViewSwitcher({
+  value,
+  onChange,
+  views,
+}: {
+  value: BoardView;
+  onChange: (view: BoardView) => void;
+  /** The views offered (phones drop the table). */
+  views: readonly BoardView[];
+}) {
+  const { t } = useTranslation();
+  const labels: Record<BoardView, string> = {
+    board: t("board.view.board"),
+    list: t("board.view.list"),
+    table: t("board.view.table"),
+  };
+  return (
+    <SegmentedControl
+      aria-label={t("board.view.label")}
+      onValueChange={(next) => onChange(next as BoardView)}
+      size="sm"
+      value={value}
+    >
+      {views.map((view) => (
+        <SegmentedControlItem aria-label={labels[view]} key={view} value={view}>
+          {VIEW_ICONS[view]}
+          <span className="hidden md:inline">{labels[view]}</span>
+        </SegmentedControlItem>
+      ))}
+    </SegmentedControl>
+  );
+}
+
+/** The row under the title: search, active filter summary, stale caption. */
+export function BoardSearchRow({
+  query,
+  onQueryChange,
+  activeFilters,
+  onClearFilters,
+  staleSince,
+  children,
+}: {
+  query: string;
+  onQueryChange: (q: string) => void;
+  activeFilters: number;
+  onClearFilters: () => void;
+  /** Set when polling failed 3 times: the time of the data shown. */
+  staleSince: number | null;
+  children?: ReactNode;
+}) {
+  const { locale, t } = useTranslation();
+  const searchRef = useRef<HTMLInputElement>(null);
+  useShortcut("/", () => searchRef.current?.focus());
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="relative w-full sm:w-72">
         <Search
           aria-hidden="true"
           className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground"
@@ -214,11 +274,11 @@ export function BoardToolbar({
           aria-keyshortcuts="/"
           aria-label={t("board.search")}
           className="field-touch h-8 pr-8 pl-8"
-          onChange={(event) => onFiltersChange({ q: event.target.value })}
-          placeholder={t("board.search")}
+          onChange={(event) => onQueryChange(event.target.value)}
+          placeholder={t("board.searchPlaceholder")}
           ref={searchRef}
           type="search"
-          value={filters.q}
+          value={query}
         />
         <Kbd
           aria-hidden="true"
@@ -227,6 +287,22 @@ export function BoardToolbar({
           /
         </Kbd>
       </div>
+      {activeFilters > 0 || query ? (
+        <Button onClick={onClearFilters} size="sm" variant="ghost">
+          <X aria-hidden="true" data-icon="inline-start" />
+          {t("board.clearFilters")}
+        </Button>
+      ) : null}
+      {staleSince === null ? null : (
+        <p
+          className="type-caption inline-flex items-center gap-1 text-muted-foreground"
+          role="status"
+        >
+          <CloudOff aria-hidden="true" className="size-3.5" />
+          {t("board.stale", { time: formatClock(staleSince, locale) })}
+        </p>
+      )}
+      {children}
     </div>
   );
 }

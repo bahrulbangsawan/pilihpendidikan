@@ -1,20 +1,13 @@
-// Settings (12 §9, 05 §10a): account, language and theme, automation defaults,
-// AI consent (11 §11), evidence screenshots and retention, the MCP approvals
-// switch (11 §4.9) and, in a destructive band, export and delete (11 §10).
-// Every change is a PATCH with base_revision under the conflict rules.
+// Settings (12 §9, 05 §10a), laid out like reui's account-settings blocks: a
+// left sub-nav (Account, Language, AI, Your data) and cards of rows. Account
+// shows who is signed in; Language saves the UI language and the timezone;
+// AI holds the consent and the sensitive-scoring switch (11 §11); Your data
+// exports or deletes the account (11 §10). Every change is a PATCH with
+// base_revision under the conflict rules.
 
 import type { UpdateSettingsRequest } from "@pilihpendidikan/jobs-contracts/api";
-import type {
-  ApplicationMode,
-  EvidenceScreenshotMode,
-  Locale,
-} from "@pilihpendidikan/jobs-contracts/enums";
-import {
-  APPLICATION_MODES,
-  EVIDENCE_SCREENSHOT_MODES,
-} from "@pilihpendidikan/jobs-contracts/enums";
+import type { Locale } from "@pilihpendidikan/jobs-contracts/enums";
 import type { UserSettingsRecord } from "@pilihpendidikan/jobs-contracts/records";
-import { EVIDENCE_RETENTION_DAYS } from "@pilihpendidikan/jobs-contracts/records";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,12 +21,7 @@ import {
 } from "@rulisme/ui/ui/alert-dialog";
 import { Button } from "@rulisme/ui/ui/button";
 import { Checkbox } from "@rulisme/ui/ui/checkbox";
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-} from "@rulisme/ui/ui/field";
+import { Field, FieldLabel } from "@rulisme/ui/ui/field";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   Select,
@@ -45,70 +33,233 @@ import {
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Switch } from "@rulisme/ui/ui/switch";
 import { useQueryClient } from "@tanstack/react-query";
-import { Download, LogOut, Trash2 } from "lucide-react";
+import {
+  Clock,
+  Database,
+  Download,
+  Globe,
+  Languages,
+  LogOut,
+  Mail,
+  ShieldCheck,
+  Sparkles,
+  Trash2,
+  UserRound,
+} from "lucide-react";
+import type { ReactNode } from "react";
 import { useEffect, useId, useState } from "react";
 import { toast } from "sonner";
-import type { SessionState } from "@/functions/session.functions";
-import { setLocale } from "@/functions/session.functions";
+import type { SubNavItem } from "@rulisme/ui/blocks/settings";
+import {
+  SettingsCard,
+  SettingsRow,
+  SubNavLayout,
+} from "@rulisme/ui/blocks/settings";
+import { useChangeLocale } from "@/components/shell/use-change-locale";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
 import { useSettings } from "@/hooks/use-profile";
 import { useSession, useSignOut } from "@/hooks/use-session";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
 import { newIdempotencyKey } from "@/lib/idempotency";
-import { modeLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
-import { PageGutter, PageHeader, PageSection } from "@/components/shell/page";
 
 type SettingsPatch = Omit<UpdateSettingsRequest, "base_revision">;
+
+export const SETTINGS_SECTIONS = ["account", "language", "ai", "data"] as const;
+export type SettingsSection = (typeof SETTINGS_SECTIONS)[number];
+
+const SECTION_ICONS = {
+  account: UserRound,
+  language: Languages,
+  ai: Sparkles,
+  data: Database,
+} as const;
 
 const SETTINGS_FIELDS = [
   "locale",
   "timezone",
-  "default_mode",
-  "automation_paused",
-  "generated_text_allowed",
-  "allow_mcp_approvals",
   "ai_consent_at",
   "ai_scoring_sensitive",
-  "evidence_screenshots",
-  "evidence_retention_days",
 ] as const;
 
-const Section = PageSection;
-
-function SwitchRow({
-  id,
-  label,
-  description,
-  checked,
-  onChange,
-  disabled,
-}: {
-  id: string;
-  label: string;
-  description: string;
-  checked: boolean;
-  onChange: (value: boolean) => void;
-  disabled?: boolean;
-}) {
+function AccountSection() {
+  const { t } = useTranslation();
+  const session = useSession();
+  const signOut = useSignOut();
   return (
-    <Field orientation="horizontal">
-      <Switch
-        checked={checked}
-        disabled={disabled}
-        id={id}
-        onCheckedChange={onChange}
-      />
-      <FieldContent>
-        <FieldLabel htmlFor={id}>{label}</FieldLabel>
-        <FieldDescription>{description}</FieldDescription>
-      </FieldContent>
-    </Field>
+    <SettingsCard
+      description={t("settings.accountHelp")}
+      id="settings-account"
+      title={t("settings.account")}
+    >
+      <SettingsRow
+        description={t("settings.emailHelp")}
+        icon={Mail}
+        label={t("settings.email")}
+      >
+        <span className="type-body truncate text-foreground">
+          {session.email}
+        </span>
+      </SettingsRow>
+      <SettingsRow
+        description={t("settings.signOutHelp")}
+        icon={LogOut}
+        label={t("settings.signOut")}
+      >
+        <Button onClick={() => signOut()} size="sm" variant="outline">
+          {t("settings.signOut")}
+        </Button>
+      </SettingsRow>
+    </SettingsCard>
   );
 }
 
-function DangerZone() {
+function LanguageSection({
+  record,
+  change,
+}: {
+  record: UserSettingsRecord | undefined;
+  change: (patch: SettingsPatch) => Promise<void>;
+}) {
+  const { t } = useTranslation();
+  const id = useId();
+  const session = useSession();
+  const changeLocale = useChangeLocale();
+  const [timezone, setTimezone] = useState("");
+
+  useEffect(() => {
+    if (record) {
+      setTimezone(record.timezone);
+    }
+  }, [record]);
+
+  const dirty =
+    record !== undefined &&
+    timezone.trim() !== "" &&
+    timezone.trim() !== record.timezone;
+
+  async function pickLocale(locale: Locale) {
+    try {
+      await changeLocale(locale);
+    } catch {
+      toast.error(t("settings.localeFailed"));
+    }
+  }
+
+  return (
+    <SettingsCard
+      description={t("settings.displayHelp")}
+      footer={
+        <>
+          <Button
+            disabled={!dirty}
+            onClick={() => record && setTimezone(record.timezone)}
+            size="sm"
+            variant="outline"
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button
+            disabled={!dirty}
+            onClick={() => change({ timezone: timezone.trim() })}
+            size="sm"
+          >
+            {t("settings.saveChanges")}
+          </Button>
+        </>
+      }
+      id="settings-language"
+      title={t("settings.display")}
+    >
+      <SettingsRow
+        description={t("settings.localeHelp")}
+        htmlFor={`${id}-locale`}
+        icon={Languages}
+        label={t("settings.locale")}
+      >
+        <Select
+          onValueChange={(value) => pickLocale(value as Locale)}
+          value={session.locale}
+        >
+          <SelectTrigger className="w-full" id={`${id}-locale`}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="en">
+              <Globe aria-hidden="true" />
+              English
+            </SelectItem>
+            <SelectItem value="id">
+              <Globe aria-hidden="true" />
+              Bahasa Indonesia
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </SettingsRow>
+      <SettingsRow
+        description={t("settings.timezoneHelp")}
+        htmlFor={`${id}-tz`}
+        icon={Clock}
+        label={t("settings.timezone")}
+      >
+        <Input
+          className="field-touch w-full"
+          disabled={!record}
+          id={`${id}-tz`}
+          onChange={(event) => setTimezone(event.target.value)}
+          value={timezone}
+        />
+      </SettingsRow>
+    </SettingsCard>
+  );
+}
+
+function AiSection({
+  record,
+  change,
+}: {
+  record: UserSettingsRecord;
+  change: (patch: SettingsPatch) => Promise<void>;
+}) {
+  const { t } = useTranslation();
+  const id = useId();
+  return (
+    <SettingsCard
+      description={t("settings.aiHelp")}
+      id="settings-ai"
+      title={t("settings.ai")}
+    >
+      <SettingsRow
+        description={t("settings.aiConsentHelp")}
+        htmlFor={`${id}-ai`}
+        icon={Sparkles}
+        label={t("settings.aiConsent")}
+      >
+        <Switch
+          checked={record.ai_consent_at !== null}
+          id={`${id}-ai`}
+          onCheckedChange={(value) => change({ ai_consent: value })}
+        />
+      </SettingsRow>
+      <SettingsRow
+        description={t("settings.aiSensitiveHelp")}
+        htmlFor={`${id}-sensitive`}
+        icon={ShieldCheck}
+        label={t("settings.aiSensitive")}
+      >
+        <Switch
+          checked={record.ai_scoring_sensitive}
+          disabled={record.ai_consent_at === null}
+          id={`${id}-sensitive`}
+          onCheckedChange={(value) => change({ ai_scoring_sensitive: value })}
+        />
+      </SettingsRow>
+    </SettingsCard>
+  );
+}
+
+function DataSection() {
   const { t } = useTranslation();
   const id = useId();
   const [confirmText, setConfirmText] = useState("");
@@ -139,113 +290,97 @@ function DangerZone() {
   }
 
   return (
-    <section aria-labelledby="danger-heading">
-      <PageGutter className="py-6">
-        <div className="flex flex-col gap-4 rounded-sm border border-destructive/25 p-4">
-          <h2 className="type-subtitle" id="danger-heading">
-            {t("settings.dangerTitle")}
-          </h2>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-0.5">
-              <p className="type-body text-foreground">
-                {t("settings.exportTitle")}
-              </p>
-              <p className="type-caption text-muted-foreground">
-                {t("settings.exportBody")}
-              </p>
-            </div>
-            <Button className="shrink-0" onClick={exportData} variant="outline">
-              <Download aria-hidden="true" data-icon="inline-start" />
-              {t("settings.export")}
+    <SettingsCard
+      description={t("settings.dataHelp")}
+      id="settings-data"
+      title={t("settings.dangerTitle")}
+      tone="destructive"
+    >
+      <SettingsRow
+        description={t("settings.exportBody")}
+        icon={Download}
+        label={t("settings.exportTitle")}
+      >
+        <Button onClick={exportData} size="sm" variant="outline">
+          <Download aria-hidden="true" data-icon="inline-start" />
+          {t("settings.export")}
+        </Button>
+      </SettingsRow>
+      <SettingsRow
+        description={t("settings.deleteBody")}
+        icon={Trash2}
+        label={t("settings.deleteTitle")}
+      >
+        <AlertDialog onOpenChange={() => setConfirmText("")}>
+          <AlertDialogTrigger asChild>
+            <Button size="sm" variant="destructive">
+              <Trash2 aria-hidden="true" data-icon="inline-start" />
+              {t("settings.delete")}
             </Button>
-          </div>
-          <div className="flex flex-col gap-3 border-destructive/25 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-0.5">
-              <p className="type-body text-foreground">
-                {t("settings.deleteTitle")}
-              </p>
-              <p className="type-caption text-muted-foreground">
-                {t("settings.deleteBody")}
-              </p>
-            </div>
-            <AlertDialog onOpenChange={() => setConfirmText("")}>
-              <AlertDialogTrigger asChild>
-                <Button className="shrink-0" variant="destructive">
-                  <Trash2 aria-hidden="true" data-icon="inline-start" />
-                  {t("settings.delete")}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    {t("settings.deleteConfirmTitle")}
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t("settings.deleteConfirmBody")}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <Field orientation="horizontal">
-                  <Checkbox
-                    checked={alsoCvs}
-                    id={`${id}-cvs`}
-                    onCheckedChange={(value) => setAlsoCvs(value === true)}
-                  />
-                  <FieldLabel htmlFor={`${id}-cvs`}>
-                    {t("settings.alsoCvs")}
-                  </FieldLabel>
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor={`${id}-confirm`}>
-                    {t("settings.deleteType", { word })}
-                  </FieldLabel>
-                  <Input
-                    autoComplete="off"
-                    className="field-touch"
-                    id={`${id}-confirm`}
-                    onChange={(event) => setConfirmText(event.target.value)}
-                    value={confirmText}
-                  />
-                </Field>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-                  <AlertDialogAction
-                    disabled={
-                      confirmText.trim().toLocaleLowerCase() !==
-                      word.toLocaleLowerCase()
-                    }
-                    onClick={deleteAccount}
-                    variant="destructive"
-                  >
-                    {t("settings.deleteAction")}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </div>
-      </PageGutter>
-    </section>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("settings.deleteConfirmTitle")}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("settings.deleteConfirmBody")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <Field orientation="horizontal">
+              <Checkbox
+                checked={alsoCvs}
+                id={`${id}-cvs`}
+                onCheckedChange={(value) => setAlsoCvs(value === true)}
+              />
+              <FieldLabel htmlFor={`${id}-cvs`}>
+                {t("settings.alsoCvs")}
+              </FieldLabel>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${id}-confirm`}>
+                {t("settings.deleteType", { word })}
+              </FieldLabel>
+              <Input
+                autoComplete="off"
+                className="field-touch"
+                id={`${id}-confirm`}
+                onChange={(event) => setConfirmText(event.target.value)}
+                value={confirmText}
+              />
+            </Field>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+              <AlertDialogAction
+                disabled={
+                  confirmText.trim().toLocaleLowerCase() !==
+                  word.toLocaleLowerCase()
+                }
+                onClick={deleteAccount}
+                variant="destructive"
+              >
+                {t("settings.deleteAction")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </SettingsRow>
+    </SettingsCard>
   );
 }
 
-export function SettingsPage() {
+export function SettingsPage({
+  section,
+  onSectionChange,
+}: {
+  section: SettingsSection;
+  onSectionChange: (section: SettingsSection) => void;
+}) {
   const { t } = useTranslation();
-  const id = useId();
-  const session = useSession();
-  const signOut = useSignOut();
   const queryClient = useQueryClient();
   const settings = useSettings();
   const write = useConflictWrite();
-  const [retention, setRetention] = useState("");
-  const [timezone, setTimezone] = useState("");
   const record = settings.data;
-
-  useEffect(() => {
-    if (record) {
-      setRetention(String(record.evidence_retention_days));
-      setTimezone(record.timezone);
-    }
-  }, [record]);
 
   async function change(patch: SettingsPatch) {
     if (!record) {
@@ -274,235 +409,41 @@ export function SettingsPage() {
     );
   }
 
-  async function changeLocale(locale: Locale) {
-    await setLocale({
-      data: { locale, ...(record ? { base_revision: record.revision } : {}) },
-    });
-    queryClient.setQueryData<SessionState>(queryKeys.session, (state) =>
-      state ? { ...state, locale } : state
+  const items: SubNavItem<SettingsSection>[] = SETTINGS_SECTIONS.map(
+    (value) => ({
+      value,
+      icon: SECTION_ICONS[value],
+      label: t(`settings.sections.${value}`),
+    })
+  );
+
+  let body: ReactNode;
+  if (section === "account") {
+    body = <AccountSection />;
+  } else if (section === "language") {
+    body = <LanguageSection change={change} record={record} />;
+  } else if (section === "data") {
+    body = <DataSection />;
+  } else if (record) {
+    body = <AiSection change={change} record={record} />;
+  } else if (settings.isError) {
+    body = (
+      <p className="type-body text-destructive">{t("settings.loadFailed")}</p>
     );
-    await queryClient.invalidateQueries({ queryKey: queryKeys.settings });
+  } else {
+    body = <Skeleton className="h-40 w-full rounded-lg" />;
   }
 
-  // A docs-page measure: the column (gutters included) holds the content to
-  // 760px so line lengths match cursor.com/docs.
   return (
-    <div className="flex max-w-202 flex-col">
-      <PageHeader
-        description={t("settings.intro")}
-        title={t("settings.title")}
-      />
-      <Section id="account-heading" title={t("settings.account")}>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-col">
-            <span className="type-caption text-muted-foreground">
-              {t("settings.email")}
-            </span>
-            <span className="type-body text-foreground">{session.email}</span>
-          </div>
-          <Button onClick={() => signOut()} size="sm" variant="outline">
-            <LogOut aria-hidden="true" data-icon="inline-start" />
-            {t("settings.signOut")}
-          </Button>
-        </div>
-      </Section>
-      <Section
-        description={t("settings.displayHelp")}
-        id="display-heading"
-        title={t("settings.display")}
-      >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field>
-            <FieldLabel htmlFor={`${id}-locale`}>
-              {t("settings.locale")}
-            </FieldLabel>
-            <Select
-              onValueChange={(value) => changeLocale(value as Locale)}
-              value={session.locale}
-            >
-              <SelectTrigger className="w-full" id={`${id}-locale`}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="id">Bahasa Indonesia</SelectItem>
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={`${id}-tz`}>
-              {t("settings.timezone")}
-            </FieldLabel>
-            <Input
-              className="field-touch"
-              disabled={!record}
-              id={`${id}-tz`}
-              onBlur={() =>
-                record &&
-                timezone.trim() &&
-                timezone !== record.timezone &&
-                change({ timezone: timezone.trim() })
-              }
-              onChange={(event) => setTimezone(event.target.value)}
-              value={timezone}
-            />
-          </Field>
-        </div>
-      </Section>
-      {record ? (
-        <>
-          <Section
-            description={t("settings.automationHelp")}
-            id="automation-heading"
-            title={t("settings.automation")}
-          >
-            <Field>
-              <FieldLabel htmlFor={`${id}-mode`}>
-                {t("settings.defaultMode")}
-              </FieldLabel>
-              <Select
-                onValueChange={(value) =>
-                  change({ default_mode: value as ApplicationMode })
-                }
-                value={record.default_mode}
-              >
-                <SelectTrigger className="w-full sm:w-64" id={`${id}-mode`}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {APPLICATION_MODES.map((mode) => (
-                    <SelectItem key={mode} value={mode}>
-                      {modeLabel(t, mode)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FieldDescription>
-                {t("settings.defaultModeHelp")}
-              </FieldDescription>
-            </Field>
-            <SwitchRow
-              checked={record.automation_paused}
-              description={t("settings.pausedHelp")}
-              id={`${id}-paused`}
-              label={t("settings.paused")}
-              onChange={(value) => change({ automation_paused: value })}
-            />
-            <SwitchRow
-              checked={record.allow_mcp_approvals}
-              description={t("settings.mcpHelp")}
-              id={`${id}-mcp`}
-              label={t("settings.mcp")}
-              onChange={(value) => change({ allow_mcp_approvals: value })}
-            />
-          </Section>
-          <Section
-            description={t("settings.aiHelp")}
-            id="ai-heading"
-            title={t("settings.ai")}
-          >
-            <SwitchRow
-              checked={record.ai_consent_at !== null}
-              description={t("settings.aiConsentHelp")}
-              id={`${id}-ai`}
-              label={t("settings.aiConsent")}
-              onChange={(value) => change({ ai_consent: value })}
-            />
-            <SwitchRow
-              checked={record.ai_scoring_sensitive}
-              description={t("settings.aiSensitiveHelp")}
-              disabled={record.ai_consent_at === null}
-              id={`${id}-sensitive`}
-              label={t("settings.aiSensitive")}
-              onChange={(value) => change({ ai_scoring_sensitive: value })}
-            />
-            <SwitchRow
-              checked={record.generated_text_allowed}
-              description={t("settings.generatedTextHelp")}
-              disabled={record.ai_consent_at === null}
-              id={`${id}-generated`}
-              label={t("settings.generatedText")}
-              onChange={(value) => change({ generated_text_allowed: value })}
-            />
-          </Section>
-          <Section
-            description={t("settings.evidenceHelp")}
-            id="evidence-heading"
-            title={t("settings.evidence")}
-          >
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor={`${id}-shots`}>
-                  {t("settings.screenshots")}
-                </FieldLabel>
-                <Select
-                  onValueChange={(value) =>
-                    change({
-                      evidence_screenshots: value as EvidenceScreenshotMode,
-                    })
-                  }
-                  value={record.evidence_screenshots}
-                >
-                  <SelectTrigger className="w-full" id={`${id}-shots`}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {EVIDENCE_SCREENSHOT_MODES.map((mode) => (
-                      <SelectItem key={mode} value={mode}>
-                        {t(`settings.screenshotModes.${mode}`)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor={`${id}-retention`}>
-                  {t("settings.retention")}
-                </FieldLabel>
-                <Input
-                  className="field-touch"
-                  id={`${id}-retention`}
-                  max={EVIDENCE_RETENTION_DAYS.max}
-                  min={EVIDENCE_RETENTION_DAYS.min}
-                  onBlur={() => {
-                    const days = Number.parseInt(retention, 10);
-                    if (
-                      Number.isInteger(days) &&
-                      days >= EVIDENCE_RETENTION_DAYS.min &&
-                      days <= EVIDENCE_RETENTION_DAYS.max &&
-                      days !== record.evidence_retention_days
-                    ) {
-                      change({ evidence_retention_days: days });
-                    }
-                  }}
-                  onChange={(event) => setRetention(event.target.value)}
-                  type="number"
-                  value={retention}
-                />
-                <FieldDescription>
-                  {t("settings.retentionHelp", {
-                    min: EVIDENCE_RETENTION_DAYS.min,
-                    max: EVIDENCE_RETENTION_DAYS.max,
-                  })}
-                </FieldDescription>
-              </Field>
-            </div>
-          </Section>
-        </>
-      ) : (
-        <div>
-          <PageGutter className="py-6">
-            {settings.isError ? (
-              <p className="type-body text-destructive">
-                {t("settings.loadFailed")}
-              </p>
-            ) : (
-              <Skeleton className="h-40 w-full" />
-            )}
-          </PageGutter>
-        </div>
-      )}
-      <DangerZone />
-    </div>
+    <SubNavLayout
+      description={t("settings.intro")}
+      items={items}
+      label={t("settings.sectionsLabel")}
+      onChange={onSectionChange}
+      title={t("settings.title")}
+      value={section}
+    >
+      {body}
+    </SubNavLayout>
   );
 }

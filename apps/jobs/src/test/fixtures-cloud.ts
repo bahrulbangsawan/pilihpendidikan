@@ -7,12 +7,10 @@
 import type {
   CloudPipeline,
   CloudRunView,
-  CloudSourceListResponse,
   CloudSourceView,
 } from "@pilihpendidikan/jobs-contracts/api";
 import {
   CloudRunViewSchema,
-  CloudSourceListResponseSchema,
   CloudSourceViewSchema,
 } from "@pilihpendidikan/jobs-contracts/api";
 import { DAY, fixtureId, NOW } from "./fixtures";
@@ -331,15 +329,4 @@ export function sampleCloudSources(): CloudSourceView[] {
       followers: 0,
     }),
   ];
-}
-
-export function makeCloudList(
-  overrides: Partial<CloudSourceListResponse> = {}
-): CloudSourceListResponse {
-  return CloudSourceListResponseSchema.parse({
-    items: sampleCloudSources(),
-    viewer: { operator: false },
-    pipeline: makePipeline(),
-    ...overrides,
-  });
 }

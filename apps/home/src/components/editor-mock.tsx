@@ -1,3 +1,4 @@
+import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
 import { cn } from "@rulisme/ui/lib/utils";
 import { FileBraces } from "lucide-react";
 import { useTranslation } from "@/i18n";
@@ -44,7 +45,6 @@ const ADDED_COUNT = "+9";
 
 const ACTIVE_DOCUMENT = "cv.json";
 const DOCUMENTS = [ACTIVE_DOCUMENT, "invoice.json", "portfolio.json"] as const;
-const TRAFFIC_LIGHTS = ["close", "minimize", "zoom"] as const;
 
 function punct(text: string): Token {
   return { text, tone: "punctuation" };
@@ -132,25 +132,14 @@ function cvLines(description: string): CodeLine[] {
   return lines.map((line, index) => ({ ...line, number: FIRST_LINE + index }));
 }
 
-function TitleBar({ title }: { title: string }) {
-  return (
-    <div className="grid h-7 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-3 border-border border-b px-3">
-      <div className="flex gap-1.5">
-        {TRAFFIC_LIGHTS.map((light) => (
-          <span className="size-2.5 rounded-full bg-pane-3" key={light} />
-        ))}
-      </div>
-      <p className="type-caption truncate text-ink-sec">{title}</p>
-    </div>
-  );
-}
-
 /** The exported PDF in a second window, overlapping like cursor.com's CLI. */
 function PreviewWindow() {
   const { t } = useTranslation();
   return (
-    <div className="absolute top-[278px] right-[-78px] hidden w-[480px] overflow-hidden rounded-lg border border-border bg-card shadow-lg lg:block">
-      <TitleBar title={t("editor.previewTitle")} />
+    <WindowFrame
+      className="absolute top-[278px] right-[-78px] hidden w-[480px] lg:flex"
+      title={t("editor.previewTitle")}
+    >
       <div className="bg-pane px-10 pt-6">
         <div className="h-[300px] bg-white px-7 pt-6 font-print text-neutral-900">
           <p className="type-subtitle weight-bold">{t("editor.name")}</p>
@@ -176,7 +165,7 @@ function PreviewWindow() {
           <p className="type-caption text-neutral-600">S1 Informatika</p>
         </div>
       </div>
-    </div>
+    </WindowFrame>
   );
 }
 
@@ -322,14 +311,16 @@ export function EditorMock({ className }: { className?: string }) {
       <div aria-hidden="true">
         {/* cursor.com's desktop window: 1080 × 620, 8px corners, a 28px
             title bar, three panes. */}
-        <div className="flex h-[420px] flex-col overflow-hidden rounded-t-lg border border-border bg-card shadow-lg sm:h-[620px] sm:rounded-lg">
-          <TitleBar title={`pilihpendidikan — ${ACTIVE_DOCUMENT}`} />
+        <WindowFrame
+          className="h-[420px] max-sm:rounded-b-none sm:h-[620px]"
+          title={`pilihpendidikan — ${ACTIVE_DOCUMENT}`}
+        >
           <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:grid-cols-[13rem_minmax(0,1fr)_minmax(0,1.25fr)]">
             <Sidebar />
             <Thread />
             <CodePane lines={lines} />
           </div>
-        </div>
+        </WindowFrame>
         <PreviewWindow />
       </div>
     </figure>

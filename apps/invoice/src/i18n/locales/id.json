@@ -76,8 +76,8 @@
     "type": "Tipe",
     "mode": "Mode",
     "addAdjustment": "Tambah Penyesuaian",
-    "typeAdd": "+ Tambah",
-    "typeDeduct": "- Kurangi",
+    "typeAdd": "Tambah",
+    "typeDeduct": "Kurangi",
     "modeFixed": "Tetap",
     "modePercentage": "%",
     "notesSettings": "Catatan & Pengaturan",
@@ -91,7 +91,23 @@
     "postalCode": "Kode Pos",
     "country": "Negara",
     "period": "Periode",
-    "itemFallback": "Item {n}"
+    "itemFallback": "Item {n}",
+    "datePresets": {
+      "today": "Hari ini",
+      "tomorrow": "Besok",
+      "inAWeek": "Seminggu lagi",
+      "in14Days": "14 hari lagi",
+      "in30Days": "30 hari lagi",
+      "last7Days": "7 hari terakhir",
+      "last30Days": "30 hari terakhir",
+      "thisMonth": "Bulan ini",
+      "lastMonth": "Bulan lalu",
+      "thisYear": "Tahun ini",
+      "label": "Pilihan cepat",
+      "clearDate": "Hapus tanggal",
+      "clearPeriod": "Hapus periode"
+    },
+    "modePercent": "Persentase"
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",
@@ -120,7 +136,8 @@
     "stateSender": "California",
     "cityRecipient": "Jakarta",
     "stateRecipient": "DKI Jakarta",
-    "postalCode": "Kode Pos"
+    "postalCode": "Kode Pos",
+    "selectDate": "Pilih tanggal…"
   },
   "preview": {
     "emptyState": "Mulai isi formulir untuk melihat pratinjau faktur Anda",

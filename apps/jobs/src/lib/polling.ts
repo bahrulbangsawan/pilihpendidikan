@@ -13,23 +13,13 @@ export interface PollPolicy {
 export const POLL_POLICIES = {
   board: { visible: 15_000, hidden: false },
   application: { visible: 15_000, hidden: false },
-  /** A task for this application is claimed / running / awaiting approval. */
+  /**
+   * A task for this application is claimed / running / awaiting approval:
+   * the CLI is working on it, so its detail and timeline refresh faster.
+   */
   applicationLive: { visible: 2000, hidden: 10_000 },
-  runMonitor: { visible: 2000, hidden: 10_000 },
-  approvals: { visible: 10_000, hidden: 60_000 },
-  /** Only while a discovery run is active on some device. */
-  inboxActive: { visible: 30_000, hidden: false },
-  devices: { visible: 10_000, hidden: false },
-  /** /cli while waiting for a new device to connect (22 §12 step 4). */
-  devicesConnecting: { visible: 3000, hidden: false },
-  /** Automation → Runs and the discovery runs table. */
-  runs: { visible: 15_000, hidden: false },
-  /** The shell's own light refresh of sidebar counts off the board screen. */
+  /** The shell's own light refresh of the board off the board screen. */
   shell: { visible: 60_000, hidden: false },
-  /** /sources: the cloud catalog (24 §5), paused while hidden. */
-  cloudSources: { visible: 30_000, hidden: false },
-  /** A cloud source is scraping, or a run the user just queued is live. */
-  cloudSourcesActive: { visible: 5000, hidden: false },
 } as const satisfies Record<string, PollPolicy>;
 
 export type PollPolicyName = keyof typeof POLL_POLICIES;

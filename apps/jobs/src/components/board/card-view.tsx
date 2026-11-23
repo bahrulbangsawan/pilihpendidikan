@@ -1,250 +1,162 @@
-// One Kanban card (06 §1.3, 12 §3): company, title, location, then the
-// badges — score, source, mode, CV, submission, live task, posting closed —
-// and the follow-up / interview / offer markers and the age of the last
-// change. Status is never colour alone: every badge carries text.
+// One Kanban card (06 §1.3, reui's kanban / Deal Risk Board cards): the
+// company avatar and name, the role, the location line, the match score as
+// a meter, neutral chips, and a footer with the age, the follow-up and the
+// CV. Status is never colour alone: every chip and meter carries text.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
-import { Badge } from "@rulisme/ui/ui/badge";
 import { cn } from "@rulisme/ui/lib/utils";
+import { KanbanCard } from "@rulisme/ui/blocks/kanban";
+import { Badge } from "@rulisme/ui/ui/badge";
+import { EntityAvatar } from "@rulisme/ui/ui/entity-avatar";
+import { Meter } from "@rulisme/ui/ui/meter";
 import {
   ArrowUp,
   CalendarClock,
   Check,
   Clock,
-  FileCheck2,
-  Hand,
-  ShieldCheck,
-  Zap,
+  FileText,
+  MapPin,
 } from "lucide-react";
-import type { ReactNode } from "react";
 import { useTranslation } from "@/i18n";
 import { isFollowUpDue } from "@/lib/board-model";
-import { compactAge, formatDateTime, relativeTime } from "@/lib/format";
-import {
-  modeLabel,
-  sourceBadge,
-  sourceLabel,
-  taskStateLabel,
-} from "@/lib/labels";
+import { compactAge, formatDate, relativeTime } from "@/lib/format";
+import { sourceBadge, sourceLabel } from "@/lib/labels";
 
 const HIGH_SCORE = 80;
 const MID_SCORE = 60;
 
-function ScoreBadge({ card }: { card: BoardCard }) {
+/** A 4px meter with the percentage: the score on cards, rows and the sheet. */
+export function ScoreMeter({
+  score,
+  className,
+  label = true,
+}: {
+  score: BoardCard["score"];
+  className?: string;
+  /** Show the "Match" caption on the left (cards); rows show only the %. */
+  label?: boolean;
+}) {
   const { t } = useTranslation();
-  const score = card.score;
   if (!score || score.status === "failed") {
     return null;
   }
   if (score.status === "queued") {
     return (
-      <Badge variant="ghost">
-        <span aria-hidden="true">◌</span>
+      <span className={cn("type-caption text-muted-foreground", className)}>
         {t("card.scoring")}
-      </Badge>
+      </span>
     );
   }
-  let tone = "text-ink-sec";
-  if (score.score >= HIGH_SCORE) {
-    tone = "text-link";
-  } else if (score.score >= MID_SCORE) {
-    tone = "text-foreground";
-  }
   return (
-    <Badge
-      className={cn("tabular-nums", tone)}
+    <Meter
+      className={className}
+      high={HIGH_SCORE}
+      label={label ? t("board.match") : undefined}
+      mid={MID_SCORE}
       title={score.deterministic_only ? t("card.aiOff") : undefined}
-      variant="secondary"
-    >
-      <span className="sr-only">{t("card.score")} </span>
-      {score.score}
-      <span aria-hidden="true" className="relative h-1 w-3 bg-pane-3">
-        <span
-          className="absolute inset-y-0 left-0 bg-offgray"
-          style={{ width: `${Math.max(8, score.score)}%` }}
-        />
-      </span>
-      {score.deterministic_only ? (
-        <span className="text-ink-sec">{t("card.aiOffShort")}</span>
-      ) : null}
-    </Badge>
-  );
-}
-
-/** A status dot inside a neutral chip: the only colour a status carries. */
-function StatusDot({
-  tone,
-  pulse = false,
-}: {
-  tone: "destructive" | "link" | "neutral";
-  pulse?: boolean;
-}) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "size-1.5 shrink-0 rounded-full",
-        tone === "destructive" && "bg-destructive",
-        tone === "link" && "bg-link",
-        tone === "neutral" && "bg-offgray",
-        pulse && "pulse-dot"
-      )}
+      value={score.score}
+      valueLabel={
+        <>
+          <span className="sr-only">{t("card.score")} </span>
+          {score.score}%
+          {score.deterministic_only ? (
+            <span className="ml-1 text-muted-foreground">
+              {t("card.aiOffShort")}
+            </span>
+          ) : null}
+        </>
+      }
     />
   );
 }
 
-function ModeGlyph({ card }: { card: BoardCard }) {
+/** "Berlin · Remote": the posting's first location and workplace type. */
+export function useLocationLine(posting: BoardCard["posting"]): string {
   const { t } = useTranslation();
-  const icons: Record<string, ReactNode> = {
-    assisted: <Hand aria-hidden="true" />,
-    approval: <ShieldCheck aria-hidden="true" />,
-    auto: <Zap aria-hidden="true" />,
-  };
-  const icon = icons[card.mode];
-  if (!icon) {
-    return null;
-  }
-  return (
-    <Badge title={modeLabel(t, card.mode)} variant="outline">
-      {icon}
-      <span>{modeLabel(t, card.mode)}</span>
-    </Badge>
-  );
+  const workplace =
+    posting.workplace_type && posting.workplace_type !== "unknown"
+      ? t(`workplace.${posting.workplace_type}`)
+      : null;
+  return [posting.location, workplace].filter(Boolean).join(" · ");
 }
 
-function SubmissionBadge({ card }: { card: BoardCard }) {
-  const { t } = useTranslation();
-  switch (card.submission_status) {
-    case "in_progress":
-      return (
-        <Badge variant="outline">{t("card.submission.in_progress")}</Badge>
-      );
-    case "submitted_verified":
-      return (
-        <Badge className="text-ink-sec" variant="secondary">
-          <Check aria-hidden="true" className="text-success" />
-          {t("card.submission.submitted_verified")}
-        </Badge>
-      );
-    case "submitted_unverified":
-      return (
-        <Badge className="text-ink-sec" variant="secondary">
-          <StatusDot tone="link" />
-          {t("card.submission.submitted_unverified")}
-        </Badge>
-      );
-    case "failed":
-      return (
-        <Badge className="text-ink-sec" variant="secondary">
-          <StatusDot tone="destructive" />
-          {t("card.submission.failed")}
-        </Badge>
-      );
-    case "outcome_unknown":
-      return (
-        <Badge className="text-ink-sec" variant="secondary">
-          <StatusDot tone="destructive" />
-          {t("card.submission.outcome_unknown")}
-        </Badge>
-      );
-    default:
-      return null;
-  }
-}
-
-function LiveTaskBadge({ card }: { card: BoardCard }) {
-  const { t } = useTranslation();
-  const task = card.live_task;
-  if (!task) {
-    return null;
-  }
-  const device = task.device_name ?? t("card.anyDevice");
-  let text: string;
-  if (task.state === "running" || task.state === "claimed") {
-    text = task.progress_stage
-      ? t("card.liveRunningStage", {
-          device,
-          stage: t(`progressStages.${task.progress_stage}`),
-        })
-      : t("card.liveRunning", { device });
-  } else if (task.state === "paused") {
-    text = t("card.livePaused");
-  } else if (task.state === "awaiting_approval") {
-    text = t("card.liveAwaitingApproval");
-  } else {
-    text = taskStateLabel(t, task.state);
-  }
-  const active = task.state === "running" || task.state === "claimed";
-  let dot: "destructive" | "link" | "neutral" = "neutral";
-  if (task.state === "paused") {
-    dot = "destructive";
-  } else if (task.state === "awaiting_approval") {
-    dot = "link";
-  }
-  return (
-    <Badge className="text-ink-sec" variant="secondary">
-      <StatusDot pulse={active} tone={dot} />
-      {text}
-    </Badge>
-  );
-}
-
-function CardBadges({ card }: { card: BoardCard }) {
-  const { t } = useTranslation();
+function CardChips({ card }: { card: BoardCard }) {
+  const { locale, t } = useTranslation();
   const { posting } = card;
   return (
     <div className="flex flex-wrap items-center gap-1">
-      <ScoreBadge card={card} />
       <Badge title={sourceLabel(t, posting.source_kind)} variant="outline">
         {sourceBadge(t, posting.source_kind)}
       </Badge>
-      <ModeGlyph card={card} />
-      {card.cv_variant_id ? (
-        <Badge variant="outline">
-          <FileCheck2 aria-hidden="true" />
-          {t("card.cvReady")}
+      {card.next_interview_at === null ? null : (
+        <Badge variant="secondary">
+          <CalendarClock aria-hidden="true" />
+          {t("card.interview", {
+            when: formatDate(card.next_interview_at, locale),
+          })}
         </Badge>
+      )}
+      {card.latest_offer_status === "open" ? (
+        <Badge variant="secondary">{t("card.offerOpen")}</Badge>
       ) : null}
-      <SubmissionBadge card={card} />
-      <LiveTaskBadge card={card} />
       {posting.status === "closed" ? (
         <Badge variant="ghost">{t("card.postingClosed")}</Badge>
       ) : null}
       {card.archived ? (
         <Badge variant="ghost">{t("card.archived")}</Badge>
       ) : null}
-      {card.latest_offer_status === "open" ? (
-        <Badge variant="secondary">{t("card.offerOpen")}</Badge>
-      ) : null}
     </div>
   );
 }
 
-/** Follow-up due and the next interview (06 §1.3), in the user's timezone. */
-function CardMarkers({ card, nowMs }: { card: BoardCard; nowMs: number }) {
+function CardFooter({
+  card,
+  nowMs,
+  pending,
+}: {
+  card: BoardCard;
+  nowMs: number;
+  pending: boolean;
+}) {
   const { locale, t } = useTranslation();
   const followUpAt = isFollowUpDue(card, nowMs) ? card.follow_up_at : null;
-  if (followUpAt === null && card.next_interview_at === null) {
-    return null;
-  }
   return (
-    <div className="type-micro flex flex-col gap-0.5">
+    <div className="type-micro flex items-center gap-3 border-hairline border-t pt-2.5 text-muted-foreground">
+      <span
+        className="inline-flex items-center gap-1 tabular-nums"
+        title={t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
+      >
+        <Clock aria-hidden="true" className="size-3" />
+        {pending ? (
+          t("card.saving")
+        ) : (
+          <>
+            <span className="sr-only">
+              {t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
+            </span>
+            <span aria-hidden="true">{compactAge(card.updated_at, nowMs)}</span>
+          </>
+        )}
+      </span>
       {followUpAt === null ? null : (
-        <span className="inline-flex items-center gap-1 text-foreground">
-          <Clock aria-hidden="true" className="size-3" />
-          {t("card.followUpDue", {
-            when: relativeTime(followUpAt, nowMs, locale),
-          })}
+        <span className="inline-flex min-w-0 items-center gap-1 text-foreground">
+          <CalendarClock aria-hidden="true" className="size-3 text-link" />
+          <span className="truncate">
+            {t("card.followUpDue", {
+              when: relativeTime(followUpAt, nowMs, locale),
+            })}
+          </span>
         </span>
       )}
-      {card.next_interview_at === null ? null : (
-        <span className="inline-flex items-center gap-1 text-muted-foreground">
-          <CalendarClock aria-hidden="true" className="size-3" />
-          {t("card.interview", {
-            when: formatDateTime(card.next_interview_at, locale),
-          })}
+      {card.cv_variant_id ? (
+        <span
+          className="ml-auto inline-flex items-center gap-1"
+          title={t("board.cvAttached")}
+        >
+          <FileText aria-hidden="true" className="size-3" />
+          {t("card.cvReady")}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -254,66 +166,68 @@ export function CardView({
   nowMs,
   pending = false,
   selected = false,
+  wideAction = false,
   className,
 }: {
   card: BoardCard;
   nowMs: number;
   pending?: boolean;
   selected?: boolean;
+  /** A labelled button (not the ⋯ icon) sits in the top-right corner. */
+  wideAction?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
   const posting = card.posting;
-  const workplace =
-    posting.workplace_type && posting.workplace_type !== "unknown"
-      ? t(`workplace.${posting.workplace_type}`)
-      : null;
-  const location = [posting.location, workplace].filter(Boolean).join(" · ");
+  const location = useLocationLine(posting);
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3.5 text-left transition-colors hover:bg-pane",
-        selected && "bg-pane-2 hover:bg-pane-2",
-        card.priority === -1 && "opacity-75",
-        card.archived && "border-border border-dashed",
-        pending && "opacity-70",
-        className
-      )}
+    <KanbanCard
+      className={className}
+      dashed={card.archived}
+      muted={card.priority === -1}
+      pending={pending}
+      selected={selected}
     >
-      <div className="flex items-start justify-between gap-2">
-        <span className="type-caption truncate text-muted-foreground">
+      <div
+        className={cn(
+          "flex min-w-0 items-center gap-2",
+          wideAction ? "pr-20" : "pr-6"
+        )}
+      >
+        <EntityAvatar name={posting.company_name} size="xs" />
+        <span className="type-caption min-w-0 flex-1 truncate text-ink-sec">
           {posting.company_name}
         </span>
-        <span className="flex shrink-0 items-center gap-1">
-          {card.priority === 1 ? (
-            <span className="type-micro inline-flex items-center gap-0.5 text-foreground">
-              <ArrowUp aria-hidden="true" className="size-3" />
-              {t("card.highPriority")}
-            </span>
-          ) : null}
-          {selected ? (
-            <Check
-              aria-label={t("card.selected")}
-              className="size-3.5 text-foreground"
-            />
-          ) : null}
-        </span>
+        {card.priority === 1 ? (
+          <span
+            className="inline-flex shrink-0 items-center text-link"
+            title={t("card.highPriority")}
+          >
+            <ArrowUp aria-hidden="true" className="size-3.5" />
+            <span className="sr-only">{t("card.highPriority")}</span>
+          </span>
+        ) : null}
+        {selected ? (
+          <Check
+            aria-label={t("card.selected")}
+            className="size-3.5 shrink-0 text-foreground"
+          />
+        ) : null}
       </div>
-      <span className="type-body line-clamp-2 text-foreground">
-        {posting.title}
-      </span>
-      {location ? (
-        <span className="type-caption truncate text-muted-foreground">
-          {location}
+      <div className="flex flex-col gap-1">
+        <span className="type-body weight-semibold line-clamp-2 text-foreground">
+          {posting.title}
         </span>
-      ) : null}
-      <CardBadges card={card} />
-      <CardMarkers card={card} nowMs={nowMs} />
-      <span className="type-micro text-muted-foreground">
-        {pending
-          ? t("card.saving")
-          : t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
-      </span>
-    </div>
+        {location ? (
+          <span className="type-caption inline-flex min-w-0 items-center gap-1 text-muted-foreground">
+            <MapPin aria-hidden="true" className="size-3 shrink-0" />
+            <span className="truncate">{location}</span>
+          </span>
+        ) : null}
+      </div>
+      <ScoreMeter score={card.score} />
+      <CardChips card={card} />
+      <CardFooter card={card} nowMs={nowMs} pending={pending} />
+    </KanbanCard>
   );
 }

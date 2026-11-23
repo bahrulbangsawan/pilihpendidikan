@@ -7,6 +7,7 @@
 // content, V10). All text is the user's own CV or model output: plain text.
 
 import { CV_SECTION_IDS } from "@pilihpendidikan/jobs-contracts/cv-tailoring";
+import { Button } from "@rulisme/ui/ui/button";
 import { cn } from "@rulisme/ui/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@rulisme/ui/ui/alert";
 import { Badge } from "@rulisme/ui/ui/badge";
@@ -86,11 +87,11 @@ function BulletRow({
       <div className="order-1 flex items-start gap-2 md:order-2">
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
+            <Button
               aria-pressed={marked}
               className={cn(
-                "type-body flex-1 rounded-sm px-1.5 py-0.5 text-left outline-none focus-visible:outline-2 focus-visible:outline-ring",
-                bullet.rewritten && "bg-highlight"
+                "w-auto flex-1 px-1.5! py-0.5",
+                bullet.rewritten && "bg-highlight hover:bg-highlight"
               )}
               data-bullet-key={bullet.key}
               onBlur={() => onMark(null)}
@@ -98,7 +99,7 @@ function BulletRow({
               onFocus={() => onMark(bullet.key)}
               onMouseEnter={() => onMark(bullet.key)}
               onMouseLeave={() => onMark(null)}
-              type="button"
+              variant="row"
             >
               {bullet.text}
               <span className="sr-only">
@@ -108,7 +109,7 @@ function BulletRow({
                     .join(" / "),
                 })}`}
               </span>
-            </button>
+            </Button>
           </TooltipTrigger>
           <TooltipContent className="max-w-sm" side="top">
             <span className="flex flex-col gap-1">

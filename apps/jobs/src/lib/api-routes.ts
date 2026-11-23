@@ -2,11 +2,12 @@
 // shared contracts (D-20, `API_ROUTE_SCHEMAS`). Every request and response the
 // app sends or reads is a `z.input` / `z.output` of a contract schema.
 //
-// Left out on purpose (src/lib/api-routes.test.ts keeps the list exhaustive):
+// Left out on purpose (src/lib/bff.test.ts keeps the list exhaustive):
 // device-bound CLI routes (claims, leases, heartbeats, late evidence), the AI
 // proxy (lease-bound), discovery writes (`discovery:write`, the CLI's job),
 // device registration, anonymous telemetry, and the two non-JSON routes
-// (`.ics`, file content), which the `/download/*` server route streams.
+// (`.ics`, file content), which the `/download/*` server route streams, and
+// the automation routes whose screens were removed (round 3).
 
 import type { ApiRouteKey } from "@pilihpendidikan/jobs-contracts/api";
 import { API_ROUTE_SCHEMAS } from "@pilihpendidikan/jobs-contracts/api";
@@ -15,17 +16,6 @@ import type { z } from "zod";
 export const WEB_ROUTE_KEYS = [
   "GET /api/v1/meta",
   "GET /api/v1/me",
-  "GET /api/v1/devices",
-  "PATCH /api/v1/devices/{dev_id}",
-  "POST /api/v1/devices/{dev_id}/revoke",
-  "GET /api/v1/sources",
-  "POST /api/v1/sources",
-  "PATCH /api/v1/sources/{src_id}",
-  "DELETE /api/v1/sources/{src_id}",
-  "GET /api/v1/sources/adapters",
-  "GET /api/v1/discovery/runs",
-  "GET /api/v1/inbox",
-  "POST /api/v1/inbox:bulk",
   "POST /api/v1/user-jobs",
   "GET /api/v1/user-jobs/{ujb_id}",
   "GET /api/v1/board",
@@ -49,7 +39,6 @@ export const WEB_ROUTE_KEYS = [
   "DELETE /api/v1/applications/{app_id}/offers/{ofr_id}",
   "DELETE /api/v1/applications/{app_id}",
   "POST /api/v1/scores:request",
-  "GET /api/v1/scores/{posting_id}",
   "GET /api/v1/cvs",
   "POST /api/v1/applications/{app_id}/cv-variants",
   "GET /api/v1/cv-variants/{cvv_id}",
@@ -58,19 +47,7 @@ export const WEB_ROUTE_KEYS = [
   "POST /api/v1/cv-variants/{cvv_id}/reject",
   "GET /api/v1/files/{fil_id}",
   "DELETE /api/v1/files/{fil_id}",
-  "GET /api/v1/rules",
-  "POST /api/v1/rules",
-  "GET /api/v1/rules/{rul_id}",
-  "PATCH /api/v1/rules/{rul_id}",
-  "DELETE /api/v1/rules/{rul_id}",
-  "POST /api/v1/tasks",
-  "GET /api/v1/tasks",
-  "GET /api/v1/tasks/{tsk_id}",
   "POST /api/v1/tasks/{tsk_id}/cancel",
-  "POST /api/v1/tasks/{tsk_id}/retry",
-  "POST /api/v1/tasks/{tsk_id}/resume",
-  "GET /api/v1/approvals",
-  "POST /api/v1/approvals/{apr_id}/decide",
   "GET /api/v1/profile/facts",
   "PUT /api/v1/profile/facts",
   "POST /api/v1/profile/facts:import-cv",
@@ -92,21 +69,12 @@ export const WEB_ROUTE_KEYS = [
   "POST /api/v1/emails/{eml_id}/approve",
   "POST /api/v1/emails/{eml_id}/handed-off",
   "GET /api/v1/emails/{eml_id}",
-  // Cloud discovery (05 §15). Operator-only routes are web routes too: the
-  // api answers 403 operator_required to anyone outside ADMIN_EMAILS.
-  "GET /api/v1/cloud-sources",
-  "POST /api/v1/cloud-sources",
-  "GET /api/v1/cloud-sources/{csr_id}",
-  "PATCH /api/v1/cloud-sources/{csr_id}",
-  "PUT /api/v1/cloud-sources/{csr_id}/follow",
-  "DELETE /api/v1/cloud-sources/{csr_id}/follow",
-  "GET /api/v1/cloud-sources/{csr_id}/runs",
-  "POST /api/v1/cloud-sources/{csr_id}/runs",
-  "GET /api/v1/cloud-discovery/runs",
-  "POST /api/v1/cloud-discovery/refresh",
 ] as const satisfies readonly ApiRouteKey[];
 
 export type WebRouteKey = (typeof WEB_ROUTE_KEYS)[number];
+
+const AUTOMATION_REMOVED =
+  "automation surface, removed from the dashboard (round 3)";
 
 /**
  * Contract routes the web never calls, each with the reason. Together with
@@ -147,6 +115,44 @@ export const NON_WEB_ROUTE_KEYS: Readonly<
   "POST /api/v1/ai/verify-submission": "lease-bound AI proxy",
   "POST /api/v1/telemetry": "anonymous CLI telemetry",
   "POST /api/v1/telemetry/crash": "anonymous CLI telemetry",
+  // The automation surfaces (devices, sources and the cloud catalog, the
+  // inbox, rules, tasks, approvals) left the dashboard in round 3. The api,
+  // the CLI and the mock api still serve these routes; the web never calls
+  // them, so the BFF refuses them like any other non-web route.
+  "GET /api/v1/devices": AUTOMATION_REMOVED,
+  "PATCH /api/v1/devices/{dev_id}": AUTOMATION_REMOVED,
+  "POST /api/v1/devices/{dev_id}/revoke": AUTOMATION_REMOVED,
+  "GET /api/v1/sources": AUTOMATION_REMOVED,
+  "POST /api/v1/sources": AUTOMATION_REMOVED,
+  "PATCH /api/v1/sources/{src_id}": AUTOMATION_REMOVED,
+  "DELETE /api/v1/sources/{src_id}": AUTOMATION_REMOVED,
+  "GET /api/v1/sources/adapters": AUTOMATION_REMOVED,
+  "GET /api/v1/discovery/runs": AUTOMATION_REMOVED,
+  "GET /api/v1/inbox": AUTOMATION_REMOVED,
+  "POST /api/v1/inbox:bulk": AUTOMATION_REMOVED,
+  "GET /api/v1/scores/{posting_id}": AUTOMATION_REMOVED,
+  "GET /api/v1/rules": AUTOMATION_REMOVED,
+  "POST /api/v1/rules": AUTOMATION_REMOVED,
+  "GET /api/v1/rules/{rul_id}": AUTOMATION_REMOVED,
+  "PATCH /api/v1/rules/{rul_id}": AUTOMATION_REMOVED,
+  "DELETE /api/v1/rules/{rul_id}": AUTOMATION_REMOVED,
+  "POST /api/v1/tasks": AUTOMATION_REMOVED,
+  "GET /api/v1/tasks": AUTOMATION_REMOVED,
+  "GET /api/v1/tasks/{tsk_id}": AUTOMATION_REMOVED,
+  "POST /api/v1/tasks/{tsk_id}/retry": AUTOMATION_REMOVED,
+  "POST /api/v1/tasks/{tsk_id}/resume": AUTOMATION_REMOVED,
+  "GET /api/v1/approvals": AUTOMATION_REMOVED,
+  "POST /api/v1/approvals/{apr_id}/decide": AUTOMATION_REMOVED,
+  "GET /api/v1/cloud-sources": AUTOMATION_REMOVED,
+  "POST /api/v1/cloud-sources": AUTOMATION_REMOVED,
+  "GET /api/v1/cloud-sources/{csr_id}": AUTOMATION_REMOVED,
+  "PATCH /api/v1/cloud-sources/{csr_id}": AUTOMATION_REMOVED,
+  "PUT /api/v1/cloud-sources/{csr_id}/follow": AUTOMATION_REMOVED,
+  "DELETE /api/v1/cloud-sources/{csr_id}/follow": AUTOMATION_REMOVED,
+  "GET /api/v1/cloud-sources/{csr_id}/runs": AUTOMATION_REMOVED,
+  "POST /api/v1/cloud-sources/{csr_id}/runs": AUTOMATION_REMOVED,
+  "GET /api/v1/cloud-discovery/runs": AUTOMATION_REMOVED,
+  "POST /api/v1/cloud-discovery/refresh": AUTOMATION_REMOVED,
 };
 
 /** Binary / calendar routes the `/download/*` server route may stream. */

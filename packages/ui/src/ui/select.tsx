@@ -42,7 +42,7 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "type-body field-touch flex h-9 w-fit min-w-0 select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-lg border border-border bg-background pr-2.5 pl-3 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard placeholder:text-muted-foreground hover:border-input focus-visible:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:bg-pane disabled:text-muted-foreground aria-invalid:border-destructive aria-invalid:outline-destructive data-[size=sm]:h-8 data-placeholder:text-muted-foreground *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:truncate [&>[data-slot=select-value]>svg]:mr-1.5 [&>[data-slot=select-value]>svg]:inline-block [&>[data-slot=select-value]>svg]:align-[-2px] [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "type-body field-touch flex h-9 w-fit min-w-0 select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-lg border border-border bg-background pr-2.5 pl-3 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard placeholder:text-muted-foreground hover:border-input focus-visible:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:bg-pane disabled:text-muted-foreground aria-invalid:border-destructive aria-invalid:outline-destructive data-[size=sm]:h-8 data-placeholder:text-muted-foreground *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:truncate [&>[data-slot=select-value]>[data-slot=status-dot]]:mr-2 [&>[data-slot=select-value]>[data-slot=status-dot]]:align-[1px] [&>[data-slot=select-value]>svg]:mr-1.5 [&>[data-slot=select-value]>svg]:inline-block [&>[data-slot=select-value]>svg]:align-[-2px] [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-size={size}
@@ -116,15 +116,21 @@ function SelectLabel({
 
 // A cursor.com menu row (the model picker): 32px, 4px radius, body role at
 // weight 400, a `pane` highlight; the chosen option shows a check at the end.
+// Put a 16px lucide icon (or a `StatusDot`, a flag) before the label as the
+// first child: it shows in the row and, through `ItemText`, in the trigger.
+// `description` is a trailing caption-role hint that stays out of the trigger.
 function SelectItem({
   className,
   children,
+  description,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+  description?: React.ReactNode;
+}) {
   return (
     <SelectPrimitive.Item
       className={cn(
-        "type-body relative flex min-h-8 w-full cursor-default select-none items-center gap-2 rounded-sm py-1 pr-8 pl-2 text-foreground outline-none data-disabled:pointer-events-none data-highlighted:bg-pane data-inset:pl-7 data-highlighted:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "type-body relative flex min-h-8 w-full cursor-default select-none items-center gap-2 rounded-sm py-1 pr-8 pl-2 text-foreground outline-none data-disabled:pointer-events-none data-highlighted:bg-pane data-inset:pl-7 data-highlighted:text-foreground data-disabled:opacity-50 [&>span:nth-child(2)]:flex [&>span:nth-child(2)]:min-w-0 [&>span:nth-child(2)]:items-center [&>span:nth-child(2)]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-ink-sec [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="select-item"
@@ -132,10 +138,18 @@ function SelectItem({
     >
       <span className="pointer-events-none absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="pointer-events-none" />
+          <CheckIcon className="pointer-events-none size-3.5 text-foreground" />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      {description ? (
+        <span
+          className="type-caption ml-auto pl-3 text-muted-foreground"
+          data-slot="select-item-description"
+        >
+          {description}
+        </span>
+      ) : null}
     </SelectPrimitive.Item>
   );
 }

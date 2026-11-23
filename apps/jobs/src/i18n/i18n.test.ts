@@ -3,15 +3,11 @@ import { join } from "node:path";
 import {
   ACTOR_KINDS,
   ANSWER_KINDS,
-  APPLICATION_MODES,
   AUTO_USE,
   CHANGE_SOURCES,
   CV_TEMPLATES,
   CV_VARIANT_STATUSES,
   EVENT_TYPES,
-  EVIDENCE_KINDS,
-  EVIDENCE_SCREENSHOT_MODES,
-  EVIDENCE_VERDICTS,
   FACT_SOURCES,
   INTERVIEW_KINDS,
   INTERVIEW_OUTCOMES,
@@ -24,39 +20,12 @@ import {
   STAGES,
   SUBMISSION_METHODS,
   SUBMISSION_STATUSES,
-  TASK_STATES,
   WORKPLACE_TYPES,
 } from "@pilihpendidikan/jobs-contracts/enums";
-import {
-  CLOUD_ERROR_CLASSES,
-  CLOUD_RUN_KINDS,
-  CLOUD_RUN_STATUSES,
-  CLOUD_RUN_TRIGGERS,
-  CLOUD_SOURCE_CATEGORIES,
-  CLOUD_SOURCE_ORIGINS,
-  CLOUD_SOURCE_STATUSES,
-  CLOUD_STRATEGIES,
-} from "@pilihpendidikan/jobs-contracts/enums";
-import {
-  APPROVAL_KINDS,
-  APPROVAL_STATES,
-  DISCOVERY_ERROR_CLASSES,
-  DISCOVERY_RUN_STATUSES,
-  GRANT_REVOKED_REASONS,
-  INBOX_BULK_ACTIONS,
-  INBOX_STATES,
-  TASK_ERROR_CLASSES,
-  TASK_KINDS,
-} from "@pilihpendidikan/jobs-contracts/enums";
 import { CV_SECTION_IDS } from "@pilihpendidikan/jobs-contracts/cv-tailoring";
-import {
-  FEATURE_NAMES,
-  GATE_PREDICATES,
-  WORK_AUTH_STATUSES,
-} from "@pilihpendidikan/jobs-contracts/scoring";
+import { WORK_AUTH_STATUSES } from "@pilihpendidikan/jobs-contracts/scoring";
 import { describe, expect, it } from "vitest";
 import { NAV_GROUPS, NAV_ITEMS } from "@/components/shell/nav-items";
-import { INTERVAL_OPTIONS, STATUS_GROUPS } from "@/lib/cloud-sources-model";
 import { FACT_GROUPS } from "@/lib/facts-form";
 import { FOLLOW_UP_PRESETS } from "@/lib/follow-up";
 import { SHORTCUTS } from "@/lib/shortcuts";
@@ -108,16 +77,10 @@ function dynamicKeys(): string[] {
     values.map((value) => `${prefix}.${value}`);
   return [
     ...each("stages", STAGES),
-    ...each("modes", APPLICATION_MODES),
     ...each("sourceKinds", SOURCE_KINDS),
     ...each("sourceBadges", SOURCE_KINDS),
     ...each("workplace", WORKPLACE_TYPES),
     ...each("submission", SUBMISSION_STATUSES),
-    ...each(
-      "card.submission",
-      SUBMISSION_STATUSES.filter((status) => status !== "not_started")
-    ),
-    ...each("taskStates", TASK_STATES),
     ...each("progressStages", PROGRESS_STAGES),
     ...each("pauseReasons", PAUSE_REASONS),
     ...each("actors", ACTOR_KINDS),
@@ -127,8 +90,6 @@ function dynamicKeys(): string[] {
     ...each("offerStatuses", OFFER_STATUSES),
     ...each("methods", SUBMISSION_METHODS),
     ...each("salaryPeriods", SALARY_PERIODS),
-    ...each("evidenceKinds", EVIDENCE_KINDS),
-    ...each("evidenceVerdicts", EVIDENCE_VERDICTS),
     ...each("cv.templates", CV_TEMPLATES),
     ...each("cv.statuses", CV_VARIANT_STATUSES),
     ...each("answers.kinds", ANSWER_KINDS),
@@ -137,7 +98,6 @@ function dynamicKeys(): string[] {
     ...each("answers.autoUses", AUTO_USE),
     ...each("profile.sources", FACT_SOURCES),
     ...each("profile.workAuthStatuses", WORK_AUTH_STATUSES),
-    ...each("settings.screenshotModes", EVIDENCE_SCREENSHOT_MODES),
     ...each(
       "nav",
       NAV_ITEMS.map((item) => item.key)
@@ -166,13 +126,11 @@ function dynamicKeys(): string[] {
     ...each("detail.tabs", [
       "overview",
       "cv",
-      "apply",
       "timeline",
       "interviews",
       "offers",
       "checklists",
     ]),
-    ...each("apply.methods", ["browser", "email", "manual"]),
     ...each("bulk.status", ["ok", "skipped", "conflict", "failed"]),
     ...each("checklists.status", ["saving", "saved", "error"]),
     ...each("checklists.limit", ["items", "bytes"]),
@@ -185,24 +143,6 @@ function dynamicKeys(): string[] {
       "profile.facts",
       FACT_GROUPS.flatMap((group) => group.fields.map((field) => field.key))
     ),
-    ...each("nextStep.actions", [
-      "review_outcome",
-      "confirm_submission",
-      "approve_submission",
-      "review_cv",
-      "generate_cv",
-      "start_apply",
-      "add_interview",
-    ]),
-    ...each("nextStep.why", [
-      "review_outcome",
-      "confirm_submission",
-      "approve_submission",
-      "review_cv",
-      "generate_cv",
-      "start_apply",
-      "add_interview",
-    ]),
     ...each("signIn.errors", [
       "expired",
       "unavailable",
@@ -229,28 +169,9 @@ function dynamicKeys(): string[] {
           ].includes(type)
       )
     ),
-    "nav.devicesOne",
-    "nav.devicesMany",
-    ...each("approvalKinds", APPROVAL_KINDS),
-    ...each("approvalStates", APPROVAL_STATES),
-    ...each("taskKinds", TASK_KINDS),
-    ...each("runStatuses", DISCOVERY_RUN_STATUSES),
-    ...each("discoveryErrors", DISCOVERY_ERROR_CLASSES),
-    ...each("inboxStates", INBOX_STATES),
-    ...each("taskErrors", TASK_ERROR_CLASSES),
-    ...each("pages", [
-      "inbox",
-      "job",
-      "automation",
-      "approvals",
-      "rules",
-      "runs",
-      "monitor",
-      "cli",
-      "sources",
-      "stats",
-      "render",
-    ]),
+    ...each("pages", ["stats", "render"]),
+    ...each("profile.groupHelp", ["contact", "links", "preferences"]),
+    ...each("settings.sections", ["account", "language", "ai", "data"]),
     ...each("cv.sections", CV_SECTION_IDS),
     ...each("cv.diff.operations", ["keep", "reorder", "rephrase", "merge"]),
     ...each("render.errors", [
@@ -269,68 +190,12 @@ function dynamicKeys(): string[] {
       "failed",
       "handed_off",
     ]),
-    ...each("apply.modeHelp", APPLICATION_MODES),
-    ...each("score.explanation.gate", GATE_PREDICATES),
-    ...each("inbox.bulk.done", INBOX_BULK_ACTIONS),
-    ...each("inbox.score.components", [...FEATURE_NAMES, "ai"]),
-    ...each("devices.signedOutReasons", GRANT_REVOKED_REASONS),
     ...each("stats.range.presets", ["30d", "90d", "year", "all", "custom"]),
     ...each("stats.timing.metrics", [
       "time_to_first_response",
       "time_to_interview",
       "time_to_offer",
       "prep_time",
-    ]),
-    ...each("monitor.pauseTitles", PAUSE_REASONS),
-    ...each("cloudSources.statuses", CLOUD_SOURCE_STATUSES),
-    ...each("cloudSources.categories", CLOUD_SOURCE_CATEGORIES),
-    ...each("cloudSources.strategies", CLOUD_STRATEGIES),
-    ...each("cloudSources.strategyHelp", CLOUD_STRATEGIES),
-    ...each("cloudSources.origins", CLOUD_SOURCE_ORIGINS),
-    ...each("cloudSources.runStatuses", CLOUD_RUN_STATUSES),
-    ...each("cloudSources.errors", CLOUD_ERROR_CLASSES),
-    ...each("cloudSources.diagnostics", [
-      "challenge",
-      "denied",
-      "auth",
-      "robots",
-      "rate_limited",
-      "layout",
-      "engine",
-      "config",
-      "transient",
-      "gone",
-      "policy",
-      "other",
-    ]),
-    ...each(
-      "cloudSources.intervals",
-      INTERVAL_OPTIONS.map((minutes) => `m${minutes}`)
-    ),
-    ...each("cloudSources.next.paused", [
-      "pipeline_off",
-      "disabled",
-      "breaker",
-      "needs_retry",
-      "unsupported",
-      "no_strategy",
-    ]),
-    ...each("cloudSources.filters.groups", STATUS_GROUPS),
-    ...each("cloudSources.add.urlProblems", [
-      "empty",
-      "invalid",
-      "scheme",
-      "credentials",
-      "local",
-    ]),
-    ...each("cloudSources.runs.levels", ["info", "warn", "error"]),
-    ...each("cloudSources.runs.triggers", CLOUD_RUN_TRIGGERS),
-    ...each("cloudSources.runs.kinds", CLOUD_RUN_KINDS),
-    ...each("cloudSources.editor.rate", [
-      "minDelayMs",
-      "maxPages",
-      "maxItems",
-      "maxDetails",
     ]),
   ];
 }
@@ -391,7 +256,7 @@ describe("TW-I18N catalogues (en / id)", () => {
       "Ditarik",
     ]);
     expect(t("nav.board")).toBe("Papan");
-    expect(t("nav.inbox")).toBe("Kotak masuk");
+    expect(t("nav.stats")).toBe("Statistik");
     expect(t("submission.outcome_unknown")).toBe("Perlu ditinjau");
     expect(t("submission.submitted_unverified")).toBe("Belum terkonfirmasi");
   });

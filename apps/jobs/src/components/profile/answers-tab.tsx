@@ -48,7 +48,21 @@ import {
 } from "@rulisme/ui/ui/table";
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Ban,
+  Calendar,
+  Eye,
+  Hash,
+  ListChecks,
+  Plus,
+  ShieldAlert,
+  ToggleLeft,
+  Type,
+  UserCheck,
+  UserRound,
+  Zap,
+} from "lucide-react";
 import type { FormEvent } from "react";
 import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -57,6 +71,7 @@ import {
   RowCheckbox,
   SelectAllCheckbox,
 } from "@/components/bulk/bulk-toolbar";
+import { SettingsCard } from "@rulisme/ui/blocks/settings";
 import { useConflictWrite } from "@/hooks/use-conflict-write";
 import { useAnswers } from "@/hooks/use-profile";
 import { useSelection } from "@/hooks/use-selection";
@@ -66,6 +81,30 @@ import { isProtectedQuestion } from "@/lib/facts-form";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { queryKeys } from "@/lib/query";
 import { AnswersBulkBar } from "./answers-bulk";
+
+const KIND_ICONS: Record<AnswerKind, LucideIcon> = {
+  text: Type,
+  choice: ListChecks,
+  number: Hash,
+  boolean: ToggleLeft,
+  date: Calendar,
+};
+
+const SENSITIVITY_ICONS: Record<Sensitivity, LucideIcon> = {
+  none: Eye,
+  personal: UserRound,
+  protected: ShieldAlert,
+};
+
+const AUTO_USE_ICONS: Record<AutoUse, LucideIcon> = {
+  never: Ban,
+  approval: UserCheck,
+  always: Zap,
+};
+
+function OptionIcon({ icon: Icon }: { icon: LucideIcon }) {
+  return <Icon aria-hidden="true" />;
+}
 
 interface Draft {
   answer: string;
@@ -206,87 +245,98 @@ export function AnswersTab() {
   const selection = useSelection(ids);
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="type-body max-w-2xl text-pretty">{t("answers.intro")}</p>
-        <Button onClick={() => open("new")} size="sm" variant="outline">
-          <Plus aria-hidden="true" data-icon="inline-start" />
-          {t("answers.add")}
-        </Button>
-      </div>
-      {answers.isPending ? <Skeleton className="h-32 w-full" /> : null}
-      {answers.isSuccess && rows.length === 0 ? (
-        <p className="type-body text-muted-foreground">{t("answers.empty")}</p>
-      ) : null}
       {rows.length > 0 ? (
         <AnswersBulkBar answers={rows} selection={selection} />
       ) : null}
-      {rows.length > 0 ? (
-        <div className="overflow-x-auto rounded-sm border border-line">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-8">
-                  <SelectAllCheckbox selection={selection} />
-                </TableHead>
-                <TableHead>{t("answers.question")}</TableHead>
-                <TableHead>{t("answers.answer")}</TableHead>
-                <TableHead>{t("answers.sensitivity")}</TableHead>
-                <TableHead>{t("answers.autoUse")}</TableHead>
-                <TableHead>
-                  <span className="sr-only">{t("common.actions")}</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((answer) => (
-                <TableRow
-                  data-state={
-                    selection.isSelected(answer.id) ? "selected" : undefined
-                  }
-                  key={answer.id}
-                >
-                  <TableCell>
-                    <RowCheckbox
-                      id={answer.id}
-                      label={answer.question_key}
-                      selection={selection}
-                    />
-                  </TableCell>
-                  <TableCell className="text-foreground">
-                    {answer.question_key}
-                  </TableCell>
-                  <TableCell className="max-w-64 truncate">
-                    {answer.answer}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        answer.sensitivity === "protected"
-                          ? "destructive"
-                          : "outline"
-                      }
-                    >
-                      {t(`answers.sensitivities.${answer.sensitivity}`)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {t(`answers.autoUses.${answer.auto_use}`)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      onClick={() => open(answer)}
-                      size="xs"
-                      variant="ghost"
-                    >
-                      {t("common.edit")}
-                    </Button>
-                  </TableCell>
+      <SettingsCard
+        action={
+          <Button onClick={() => open("new")} size="sm" variant="outline">
+            <Plus aria-hidden="true" data-icon="inline-start" />
+            {t("answers.add")}
+          </Button>
+        }
+        description={t("answers.intro")}
+        id={`${id}-answers`}
+        title={t("profile.tabs.answers")}
+      >
+        {answers.isPending ? (
+          <div className="p-4">
+            <Skeleton className="h-32 w-full" />
+          </div>
+        ) : null}
+        {answers.isSuccess && rows.length === 0 ? (
+          <p className="type-body px-4 py-6 text-muted-foreground">
+            {t("answers.empty")}
+          </p>
+        ) : null}
+        {rows.length > 0 ? (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-8">
+                    <SelectAllCheckbox selection={selection} />
+                  </TableHead>
+                  <TableHead>{t("answers.question")}</TableHead>
+                  <TableHead>{t("answers.answer")}</TableHead>
+                  <TableHead>{t("answers.sensitivity")}</TableHead>
+                  <TableHead>{t("answers.autoUse")}</TableHead>
+                  <TableHead>
+                    <span className="sr-only">{t("common.actions")}</span>
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : null}
+              </TableHeader>
+              <TableBody>
+                {rows.map((answer) => (
+                  <TableRow
+                    data-state={
+                      selection.isSelected(answer.id) ? "selected" : undefined
+                    }
+                    key={answer.id}
+                  >
+                    <TableCell>
+                      <RowCheckbox
+                        id={answer.id}
+                        label={answer.question_key}
+                        selection={selection}
+                      />
+                    </TableCell>
+                    <TableCell className="text-foreground">
+                      {answer.question_key}
+                    </TableCell>
+                    <TableCell className="max-w-64 truncate">
+                      {answer.answer}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          answer.sensitivity === "protected"
+                            ? "destructive"
+                            : "outline"
+                        }
+                      >
+                        {t(`answers.sensitivities.${answer.sensitivity}`)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {t(`answers.autoUses.${answer.auto_use}`)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        onClick={() => open(answer)}
+                        size="xs"
+                        variant="ghost"
+                      >
+                        {t("common.edit")}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        ) : null}
+      </SettingsCard>
       <Sheet
         onOpenChange={(value) => !value && setEditing(null)}
         open={editing !== null}
@@ -363,6 +413,7 @@ export function AnswersTab() {
                   <SelectContent>
                     {ANSWER_KINDS.map((kind) => (
                       <SelectItem key={kind} value={kind}>
+                        <OptionIcon icon={KIND_ICONS[kind]} />
                         {t(`answers.kinds.${kind}`)}
                       </SelectItem>
                     ))}
@@ -385,6 +436,7 @@ export function AnswersTab() {
                   <SelectContent>
                     {SENSITIVITIES.map((sensitivity) => (
                       <SelectItem key={sensitivity} value={sensitivity}>
+                        <OptionIcon icon={SENSITIVITY_ICONS[sensitivity]} />
                         {t(`answers.sensitivities.${sensitivity}`)}
                       </SelectItem>
                     ))}
@@ -415,6 +467,7 @@ export function AnswersTab() {
                         key={autoUse}
                         value={autoUse}
                       >
+                        <OptionIcon icon={AUTO_USE_ICONS[autoUse]} />
                         {t(`answers.autoUses.${autoUse}`)}
                       </SelectItem>
                     ))}

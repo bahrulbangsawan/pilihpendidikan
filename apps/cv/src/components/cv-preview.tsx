@@ -1,5 +1,5 @@
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
-import { GhostPage } from "@/components/editor-chrome";
 import { BasicPreview } from "@/components/templates/basic-preview";
 import { HarvardPreview } from "@/components/templates/harvard-preview";
 import { SimplePreview } from "@/components/templates/simple-preview";

@@ -25,8 +25,9 @@ import {
 } from "@rulisme/ui/ui/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, FileDown } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
+import { SettingsCard } from "@rulisme/ui/blocks/settings";
 import { cvBuilderOrigin, useBaseCvs } from "@/hooks/use-cvs";
 import { useTranslation } from "@/i18n";
 import { api } from "@/lib/api-client";
@@ -45,6 +46,7 @@ function show(value: unknown): string {
 export function CvsTab() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const id = useId();
   const cvs = useBaseCvs();
   const [proposals, setProposals] = useState<Proposal[] | null>(null);
   const [chosen, setChosen] = useState<ReadonlySet<string>>(new Set());
@@ -106,11 +108,26 @@ export function CvsTab() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <p className="type-body max-w-2xl text-pretty">{t("cvs.intro")}</p>
-      {cvs.isPending ? <Skeleton className="h-32 w-full" /> : null}
+    <SettingsCard
+      action={
+        <Button asChild size="sm" variant="outline">
+          <a href={cvBuilderOrigin()} rel="noopener noreferrer" target="_blank">
+            <ExternalLink aria-hidden="true" data-icon="inline-start" />
+            {t("cv.openBuilder")}
+          </a>
+        </Button>
+      }
+      description={t("cvs.intro")}
+      id={`${id}-cvs`}
+      title={t("profile.tabs.cvs")}
+    >
+      {cvs.isPending ? (
+        <div className="p-4">
+          <Skeleton className="h-32 w-full" />
+        </div>
+      ) : null}
       {cvs.isSuccess && bases.length === 0 ? (
-        <p className="type-body text-muted-foreground">
+        <p className="type-body px-4 py-6 text-muted-foreground">
           {t("cvs.empty")}{" "}
           <a
             className="text-link hover:underline"
@@ -123,7 +140,7 @@ export function CvsTab() {
         </p>
       ) : null}
       {bases.length > 0 ? (
-        <div className="rounded-sm border border-line">
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -236,6 +253,6 @@ export function CvsTab() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </SettingsCard>
   );
 }

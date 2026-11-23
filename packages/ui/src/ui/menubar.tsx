@@ -91,7 +91,7 @@ function MenubarContent({
 }
 
 const menuRow =
-  "type-body relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-foreground min-h-8 outline-none data-disabled:pointer-events-none data-highlighted:bg-pane data-highlighted:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0";
+  "type-body relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-foreground min-h-8 outline-none data-disabled:pointer-events-none data-highlighted:bg-pane data-highlighted:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-ink-sec [&_svg]:pointer-events-none [&_svg]:shrink-0";
 
 function MenubarItem({
   className,
@@ -136,7 +136,7 @@ function MenubarCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <CheckIcon className="text-foreground" />
+          <CheckIcon className="size-3.5 text-foreground" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -241,7 +241,7 @@ function MenubarSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto" />
+      <ChevronRightIcon className="ml-auto size-3.5" />
     </MenubarPrimitive.SubTrigger>
   );
 }

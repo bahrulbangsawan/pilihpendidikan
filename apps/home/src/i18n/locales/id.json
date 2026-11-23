@@ -64,7 +64,7 @@
     },
     "jobs": {
       "name": "Pelacak lamaran",
-      "description": "Lacak lamaran di papan, temukan lowongan, dan lamar dari komputer Anda dengan CLI."
+      "description": "Lacak lamaran Anda di papan, sebagai daftar atau tabel, lengkap dengan statistiknya."
     },
     "mcp": {
       "heading": "Asisten AI",
@@ -156,7 +156,7 @@
     "button": "Lihat pembuat dokumen"
   },
   "exports": {
-    "heading": "Yang Anda unduh",
+    "heading": "Yang Anda dapatkan",
     "cv": {
       "label": "CV",
       "title": "PDF, atau data Anda sebagai Markdown atau JSON"
@@ -171,7 +171,7 @@
     },
     "jobs": {
       "label": "Pelacak lamaran",
-      "title": "Alat baris perintah pilih-jobs"
+      "title": "Lamaran Anda sebagai papan, daftar, atau tabel"
     }
   }
 }

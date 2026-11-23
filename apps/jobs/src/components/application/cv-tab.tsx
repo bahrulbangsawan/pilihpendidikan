@@ -28,7 +28,7 @@ import {
   TableRow,
 } from "@rulisme/ui/ui/table";
 import { useQueryClient } from "@tanstack/react-query";
-import { Sparkles } from "lucide-react";
+import { FileText, LayoutTemplate, Sparkles } from "lucide-react";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { cvBuilderOrigin, useBaseCvs } from "@/hooks/use-cvs";
@@ -145,6 +145,7 @@ export function CvTab({
               <SelectContent>
                 {bases.map((cv) => (
                   <SelectItem key={cv.id} value={cv.id}>
+                    <FileText aria-hidden="true" />
                     {cv.full_name || cv.id} · {cv.job_title}
                   </SelectItem>
                 ))}
@@ -178,6 +179,7 @@ export function CvTab({
               <SelectContent>
                 {CV_TEMPLATES.map((value) => (
                   <SelectItem key={value} value={value}>
+                    <LayoutTemplate aria-hidden="true" />
                     {t(`cv.templates.${value}`)}
                   </SelectItem>
                 ))}

@@ -33,6 +33,7 @@ import {
   FieldSet,
   FieldTitle,
 } from "@rulisme/ui/ui/field";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
@@ -79,10 +80,12 @@ import {
   Link2,
   Mail,
   Search,
+  Upload,
 } from "lucide-react";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { Block, BlockGrid, Example, Section } from "../layout";
+import { PickerBlocks } from "./pickers";
 import { previewState, StateMatrix } from "../state-matrix";
 
 const FIELD_STATES = ["default", "hover", "focus", "disabled", "invalid"];
@@ -327,10 +330,13 @@ function FieldBlock() {
             <Button variant="outline">Import from LinkedIn</Button>
             <FieldSeparator>or</FieldSeparator>
             <Field>
-              <FieldLabel htmlFor="field-upload">
-                Start from an existing CV
-              </FieldLabel>
-              <Input accept=".pdf,.json" id="field-upload" type="file" />
+              <FieldLabel>Start from an existing CV</FieldLabel>
+              <FileTrigger accept=".pdf,.json" onFilesSelect={() => undefined}>
+                <Button className="self-start" variant="outline">
+                  <Upload aria-hidden="true" data-icon="inline-start" />
+                  Choose a file
+                </Button>
+              </FileTrigger>
               <FieldDescription>
                 A PDF or JSON exported from pilihpendidikan, up to 2 MB.
               </FieldDescription>
@@ -1441,6 +1447,7 @@ export function InputsSection() {
         <CalendarBlock />
         <FormPiecesBlock />
         <PhoneInputBlock />
+        <PickerBlocks />
       </BlockGrid>
     </Section>
   );

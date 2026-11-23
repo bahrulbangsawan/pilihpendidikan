@@ -1,34 +1,42 @@
-// The sidebar of 12 §2.1, drawn like cursor.com/docs' nav: the page colour
-// with a 1px rule on the right, three groups under 12px grey labels, 32px
-// rows (4px radius, a warm fill on hover), the current page in orange with
-// no fill, counters as plain tabular numbers and the single-key hint shown
-// on hover / focus. The footer carries the CLI status and the signed-in
-// account. Desktop shows it as a column; phones open it in a Sheet.
+// The sidebar (reui app-shell): on the card colour with a right rule. A brand
+// row (20px mark, "Pilih Jobs", the collapse toggle), a search field that
+// opens the ⌘K palette, the work group under a grey label (Board, Stats),
+// then at the bottom the account group (Profile, Settings) and the user
+// footer that opens the profile dropdown. 32px rows at 4px radius fill with
+// `pane` on hover; the current page sits on `pane-2` in the foreground.
+// Collapsed, it is a 56px rail of icons. Phones open it in a Sheet.
 
-import type { BoardResponse } from "@pilihpendidikan/jobs-contracts/api";
 import { cn } from "@rulisme/ui/lib/utils";
+import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@rulisme/ui/ui/tooltip";
 import { useRouterState } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { PanelLeft, Search } from "lucide-react";
 import { AppLink } from "@/components/app-link";
-import { useDevices } from "@/hooks/use-devices";
-import { useSession } from "@/hooks/use-session";
 import { useTranslation } from "@/i18n";
+import { BrandMark } from "./brand-mark";
 import type { NavItem } from "./nav-items";
 import { isCurrent, NAV_GROUPS } from "./nav-items";
+import { UserMenu } from "./user-menu";
 
-type BoardCounts = BoardResponse["counts"];
+/** Sidebar widths: open and collapsed to a rail. */
+export const SIDEBAR_WIDTH_CLASS = "w-60";
+export const SIDEBAR_RAIL_CLASS = "w-14";
 
 const ROW =
-  "group/row flex h-8 items-center gap-2.5 rounded-sm px-2 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0";
+  "group/row flex h-8 items-center gap-2.5 rounded-md px-2 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0";
 
 function NavRow({
   item,
-  counts,
+  collapsed,
   onNavigate,
 }: {
   item: NavItem;
-  counts: BoardCounts | null;
+  collapsed: boolean;
   onNavigate?: () => void;
 }) {
   const { t } = useTranslation();
@@ -36,155 +44,220 @@ function NavRow({
     select: (state) => state.location.pathname,
   });
   const current = isCurrent(pathname, item);
-  const count = item.count && counts ? counts[item.count] : 0;
   const Icon = item.icon;
+  const label = t(`nav.${item.key}`);
+  const link = (
+    <AppLink
+      aria-current={current ? "page" : undefined}
+      aria-keyshortcuts={item.shortcut}
+      aria-label={collapsed ? label : undefined}
+      className={cn(
+        ROW,
+        "type-body",
+        collapsed && "justify-center px-0",
+        current
+          ? "bg-pane-2 text-foreground"
+          : "text-ink-sec hover:bg-pane hover:text-foreground"
+      )}
+      href={item.href}
+      onClick={onNavigate}
+    >
+      <Icon
+        aria-hidden="true"
+        className={cn(
+          "size-4 shrink-0",
+          current ? "text-foreground" : "text-muted-foreground"
+        )}
+      />
+      {collapsed ? null : (
+        <>
+          <span className="min-w-0 flex-1 truncate">{label}</span>
+          {item.shortcut ? (
+            <Kbd
+              aria-hidden="true"
+              className="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-visible/row:opacity-100"
+            >
+              {item.shortcut}
+            </Kbd>
+          ) : null}
+        </>
+      )}
+    </AppLink>
+  );
   return (
     <li>
-      <AppLink
-        aria-current={current ? "page" : undefined}
-        aria-keyshortcuts={item.shortcut}
-        className={cn(
-          ROW,
-          "type-body",
-          current ? "text-link" : "text-foreground hover:bg-pane/70"
-        )}
-        href={item.href}
-        onClick={onNavigate}
-      >
-        <Icon
-          aria-hidden="true"
-          className={cn(
-            "size-4 shrink-0",
-            current ? "text-link" : "text-ink-sec"
-          )}
-        />
-        <span className="min-w-0 flex-1 truncate">{t(`nav.${item.key}`)}</span>
-        {count > 0 ? (
-          <span className="type-caption text-muted-foreground tabular-nums">
-            <span className="sr-only">{t("nav.countLabel", { count })}</span>
-            <span aria-hidden="true">{count}</span>
-          </span>
-        ) : null}
-        {item.shortcut && count === 0 ? (
-          <Kbd
-            aria-hidden="true"
-            className="opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-visible/row:opacity-100"
-          >
-            {item.shortcut}
-          </Kbd>
-        ) : null}
-      </AppLink>
+      {collapsed ? (
+        <Tooltip>
+          <TooltipTrigger asChild>{link}</TooltipTrigger>
+          <TooltipContent side="right">{label}</TooltipContent>
+        </Tooltip>
+      ) : (
+        link
+      )}
     </li>
   );
 }
 
-function DeviceStatus({ onNavigate }: { onNavigate?: () => void }) {
+function NavGroupList({
+  groupKey,
+  collapsed,
+  onNavigate,
+  showLabel,
+}: {
+  groupKey: string;
+  collapsed: boolean;
+  onNavigate?: () => void;
+  showLabel: boolean;
+}) {
   const { t } = useTranslation();
-  const { online, isSuccess } = useDevices();
-  let label = t("nav.cli");
-  if (isSuccess && online === 0) {
-    label = t("nav.devicesNone");
-  } else if (isSuccess) {
-    label = t(online === 1 ? "nav.devicesOne" : "nav.devicesMany", {
-      count: online,
-    });
+  const group = NAV_GROUPS.find((entry) => entry.key === groupKey);
+  if (!group) {
+    return null;
   }
+  const labelId = `nav-group-${group.key}`;
   return (
-    <AppLink
-      className={cn(
-        ROW,
-        "type-caption text-muted-foreground hover:bg-pane/70 hover:text-foreground"
-      )}
-      href="/cli"
-      onClick={onNavigate}
+    <section
+      aria-label={showLabel ? undefined : t(`nav.group.${group.key}`)}
+      aria-labelledby={showLabel ? labelId : undefined}
+      className="flex flex-col"
     >
-      <span className="flex size-4 shrink-0 items-center justify-center">
-        <span
-          aria-hidden="true"
-          className={
-            online > 0
-              ? "pulse-dot size-2 rounded-full bg-foreground"
-              : "size-2 rounded-full border border-muted-foreground"
-          }
-        />
-      </span>
-      <span className="min-w-0 flex-1 truncate">{label}</span>
-    </AppLink>
+      {showLabel && !collapsed ? (
+        <h2
+          className="type-caption px-2 pb-1.5 text-muted-foreground"
+          id={labelId}
+        >
+          {t(`nav.group.${group.key}`)}
+        </h2>
+      ) : null}
+      <ul className="flex flex-col gap-0.5">
+        {group.items.map((item) => (
+          <NavRow
+            collapsed={collapsed}
+            item={item}
+            key={item.key}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </ul>
+    </section>
   );
 }
 
-function AccountRow({ onNavigate }: { onNavigate?: () => void }) {
+function SearchField({
+  collapsed,
+  onPalette,
+}: {
+  collapsed: boolean;
+  onPalette: () => void;
+}) {
   const { t } = useTranslation();
-  const { email } = useSession();
-  if (!email) {
-    return null;
+  if (collapsed) {
+    return (
+      <Button
+        aria-keyshortcuts="Meta+K Control+K"
+        aria-label={t("nav.search")}
+        className="self-center"
+        onClick={onPalette}
+        size="icon-sm"
+        variant="ghost"
+      >
+        <Search aria-hidden="true" />
+      </Button>
+    );
   }
   return (
-    <AppLink
-      aria-label={t("nav.account", { email })}
-      className={cn(ROW, "h-10 hover:bg-pane/70")}
-      href="/settings"
-      onClick={onNavigate}
+    <Button
+      aria-keyshortcuts="Meta+K Control+K"
+      className="h-8 w-full justify-start gap-2 rounded-md border-border bg-background px-2.5 text-muted-foreground hover:border-input hover:bg-background hover:text-foreground has-[>[data-slot=kbd]]:pr-1.5"
+      onClick={onPalette}
+      variant="outline"
     >
-      <span
-        aria-hidden="true"
-        className="type-caption flex size-6 shrink-0 items-center justify-center rounded-full bg-pane-2 text-foreground"
-      >
-        {email.charAt(0).toUpperCase()}
-      </span>
-      <span className="type-caption min-w-0 flex-1 truncate text-foreground">
-        {email}
-      </span>
-      <ChevronRight
-        aria-hidden="true"
-        className="size-3.5 shrink-0 text-muted-foreground"
-      />
-    </AppLink>
+      <Search aria-hidden="true" className="size-4 shrink-0" />
+      <span className="flex-1 truncate text-left">{t("nav.searchField")}</span>
+      <Kbd aria-hidden="true">⌘K</Kbd>
+    </Button>
   );
 }
 
 export function SidebarNav({
-  counts,
+  collapsed = false,
+  onToggleCollapsed,
   onNavigate,
+  onPalette,
 }: {
-  counts: BoardCounts | null;
+  collapsed?: boolean;
+  /** Shows the collapse toggle (desktop only). */
+  onToggleCollapsed?: () => void;
   onNavigate?: () => void;
+  onPalette: () => void;
 }) {
   const { t } = useTranslation();
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div className="flex h-full min-h-0 flex-col gap-3 py-3">
+      <div
+        className={cn(
+          "flex h-8 items-center gap-1",
+          collapsed ? "flex-col justify-center px-2" : "px-3"
+        )}
+      >
+        {collapsed ? null : (
+          <AppLink
+            aria-label={t("nav.home")}
+            className="min-w-0 flex-1 rounded-sm px-1 py-1 outline-none focus-visible:outline-2 focus-visible:outline-ring"
+            href="/board"
+            onClick={onNavigate}
+          >
+            <BrandMark label={t("app.name")} />
+          </AppLink>
+        )}
+        {onToggleCollapsed ? (
+          <Button
+            aria-expanded={!collapsed}
+            aria-label={t(collapsed ? "nav.expand" : "nav.collapse")}
+            onClick={onToggleCollapsed}
+            size="icon-sm"
+            variant="ghost"
+          >
+            <PanelLeft aria-hidden="true" className="text-muted-foreground" />
+          </Button>
+        ) : null}
+      </div>
+      <div className={cn("flex flex-col", collapsed ? "px-2" : "px-3")}>
+        <SearchField
+          collapsed={collapsed}
+          onPalette={() => {
+            onNavigate?.();
+            onPalette();
+          }}
+        />
+      </div>
       <nav
         aria-label={t("nav.sidebar")}
-        className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-4 py-6"
+        className={cn(
+          "flex min-h-0 flex-1 flex-col justify-between gap-6 overflow-y-auto pt-2",
+          collapsed ? "px-2" : "px-3"
+        )}
       >
-        {NAV_GROUPS.map((group) => (
-          <section
-            aria-labelledby={`nav-group-${group.key}`}
-            className="flex flex-col"
-            key={group.key}
-          >
-            <h2
-              className="type-caption px-2 pb-1.5 text-muted-foreground"
-              id={`nav-group-${group.key}`}
-            >
-              {t(`nav.group.${group.key}`)}
-            </h2>
-            <ul className="flex flex-col">
-              {group.items.map((item) => (
-                <NavRow
-                  counts={counts}
-                  item={item}
-                  key={item.key}
-                  onNavigate={onNavigate}
-                />
-              ))}
-            </ul>
-          </section>
-        ))}
+        <NavGroupList
+          collapsed={collapsed}
+          groupKey="track"
+          onNavigate={onNavigate}
+          showLabel
+        />
+        <NavGroupList
+          collapsed={collapsed}
+          groupKey="account"
+          onNavigate={onNavigate}
+          showLabel={false}
+        />
       </nav>
-      <div className="flex flex-col gap-1 border-border border-t px-4 py-3">
-        <DeviceStatus onNavigate={onNavigate} />
-        <AccountRow onNavigate={onNavigate} />
+      <div
+        className={cn(
+          "border-border border-t pt-2",
+          collapsed ? "mx-2" : "mx-3"
+        )}
+      >
+        <UserMenu collapsed={collapsed} onNavigate={onNavigate} />
       </div>
     </div>
   );

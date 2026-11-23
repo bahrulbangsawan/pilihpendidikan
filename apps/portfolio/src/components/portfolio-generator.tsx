@@ -1,5 +1,8 @@
+import { AppBrand } from "@rulisme/ui/blocks/app-brand";
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
@@ -43,11 +46,14 @@ import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form";
 import { PortfolioPreview } from "@/components/portfolio-preview";
 import type { Portfolio } from "@/components/portfolio-data-model";
 import sampleData from "@/data/sample-portfolio.json";
-import { AppBrand, GhostPage } from "@/components/editor-chrome";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
 import { useCloudSave } from "@/lib/use-cloud-save";
+
+// The app mark ships in public/ as the favicon set; the 192px cut stays
+// sharp at 20px on any display density.
+const APP_MARK_SRC = "/favicon-active/android-chrome-192x192.png";
 
 // In dev, target the local api Worker (`wrangler dev` on :8788, apps/api) so
 // end-to-end portfolio load/save is exercised without hitting production. In
@@ -149,7 +155,6 @@ export function PortfolioGenerator({
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingImport, setPendingImport] = useState<Portfolio | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEmpty = !(
     data.owner.fullName.trim() || data.projects.some((p) => p.title.trim())
   );
@@ -240,8 +245,8 @@ export function PortfolioGenerator({
       });
   }, [portfolioId, markSaved]);
 
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImportJSON = (files: File[]) => {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -266,7 +271,6 @@ export function PortfolioGenerator({
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
   };
 
   const confirmImport = () => {
@@ -366,7 +370,7 @@ export function PortfolioGenerator({
         <h1 className="sr-only">{t("meta.title")}</h1>
         <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1 border-border border-b bg-background px-4 sm:px-6">
-            <AppBrand name={t("meta.siteName")} />
+            <AppBrand name={t("meta.siteName")} src={APP_MARK_SRC} />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
@@ -374,26 +378,19 @@ export function PortfolioGenerator({
             />
             <div className="ml-auto flex items-center gap-1">
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.importJson")}
-                    onClick={() => fileInputRef.current?.click()}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Upload />
-                  </Button>
-                </TooltipTrigger>
+                <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      aria-label={t("toolbar.importJson")}
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <Upload />
+                    </Button>
+                  </TooltipTrigger>
+                </FileTrigger>
                 <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
               </Tooltip>
-              <input
-                accept=".json"
-                aria-label={t("a11y.importPortfolio")}
-                className="hidden"
-                onChange={handleImportJSON}
-                ref={fileInputRef}
-                type="file"
-              />
               <Dialog
                 onOpenChange={(open) => {
                   if (!open) {
@@ -692,7 +689,7 @@ function DownloadMenuItems({
           {DOWNLOAD_SHORTCUT}
         </DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onJson}>
+      <DropdownMenuItem description=".json" onClick={onJson}>
         <FileJson />
         {t("toolbar.downloadJson")}
       </DropdownMenuItem>

@@ -42,8 +42,10 @@ def main() -> None:
     downloads.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=headless)
+        # 1600 px: the board's Saved…Applied lanes fit beside the 240 px
+        # sidebar, so S-03's drags never aim outside the viewport.
         context = browser.new_context(
-            accept_downloads=True, viewport={"width": 1280, "height": 900}
+            accept_downloads=True, viewport={"width": 1600, "height": 900}
         )
         page = context.new_page()
         console: list[str] = []
@@ -195,6 +197,8 @@ def drag(
     """
     src = page.locator(source).first
     dst = page.locator(target).first
+    # The board's lanes scroll sideways: bring the target lane in, then the card.
+    dst.scroll_into_view_if_needed(timeout=timeout)
     src.scroll_into_view_if_needed(timeout=timeout)
     a = src.bounding_box(timeout=timeout)
     b = dst.bounding_box(timeout=timeout)

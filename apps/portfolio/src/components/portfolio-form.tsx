@@ -1,8 +1,9 @@
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
-import { Badge } from "@rulisme/ui/ui/badge";
+import { BadgeButton } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileDropZone } from "@rulisme/ui/ui/file-upload";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
@@ -18,7 +19,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { Plus, Trash2, Upload, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  Briefcase,
+  Code,
+  Compass,
+  GraduationCap,
+  Lightbulb,
+  Palette,
+  Plus,
+  School,
+  Trash2,
+  User,
+  UserRound,
+  Users,
+  X,
+} from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { useTranslation } from "@/i18n";
 import type {
@@ -42,35 +59,67 @@ import { preprocessImage } from "@/lib/preprocess-image";
 
 // Owner-side affiliation/track/collaboration option lists. Concrete values
 // only (no empty option) — every list maps onto a required discriminant.
-const TRACK_OPTIONS: { value: Track; labelKey: string }[] = [
-  { value: "tech", labelKey: "options.track.tech" },
-  { value: "design", labelKey: "options.track.design" },
-  { value: "domain", labelKey: "options.track.domain" },
+// Each option leads with an icon, shown in the list and in the trigger.
+interface Option<T> {
+  value: T;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const TRACK_OPTIONS: Option<Track>[] = [
+  { value: "tech", labelKey: "options.track.tech", icon: Code },
+  { value: "design", labelKey: "options.track.design", icon: Palette },
+  { value: "domain", labelKey: "options.track.domain", icon: Compass },
 ];
 
-const AFFILIATION_OPTIONS: { value: Affiliation["kind"]; labelKey: string }[] =
-  [
-    { value: "student", labelKey: "options.affiliation.student" },
-    { value: "alumni", labelKey: "options.affiliation.alumni" },
-    { value: "professional", labelKey: "options.affiliation.professional" },
-    { value: "independent", labelKey: "options.affiliation.independent" },
-  ];
+const AFFILIATION_OPTIONS: Option<Affiliation["kind"]>[] = [
+  {
+    value: "student",
+    labelKey: "options.affiliation.student",
+    icon: School,
+  },
+  {
+    value: "alumni",
+    labelKey: "options.affiliation.alumni",
+    icon: GraduationCap,
+  },
+  {
+    value: "professional",
+    labelKey: "options.affiliation.professional",
+    icon: Briefcase,
+  },
+  {
+    value: "independent",
+    labelKey: "options.affiliation.independent",
+    icon: UserRound,
+  },
+];
 
-const PROJECT_TYPE_OPTIONS: { value: ProjectType; labelKey: string }[] = [
-  { value: "self-initiated", labelKey: "options.projectType.selfInitiated" },
+const PROJECT_TYPE_OPTIONS: Option<ProjectType>[] = [
+  {
+    value: "self-initiated",
+    labelKey: "options.projectType.selfInitiated",
+    icon: Lightbulb,
+  },
   {
     value: "class-assignment",
     labelKey: "options.projectType.classAssignment",
+    icon: BookOpen,
   },
-  { value: "work-assignment", labelKey: "options.projectType.workAssignment" },
+  {
+    value: "work-assignment",
+    labelKey: "options.projectType.workAssignment",
+    icon: Briefcase,
+  },
 ];
 
-const COLLABORATION_OPTIONS: {
-  value: Collaboration["kind"];
-  labelKey: string;
-}[] = [
-  { value: "individual", labelKey: "options.collaboration.individual" },
-  { value: "group", labelKey: "options.collaboration.group" },
+const COLLABORATION_OPTIONS: Option<Collaboration["kind"]>[] = [
+  {
+    value: "individual",
+    labelKey: "options.collaboration.individual",
+    icon: User,
+  },
+  { value: "group", labelKey: "options.collaboration.group", icon: Users },
 ];
 
 // Reject oversized uploads before decoding. 1920×1080 PNG/JPEG comfortably
@@ -218,21 +267,13 @@ function ChipField({
       {items.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {items.map((item) => (
-            <Badge
-              asChild
-              className="cursor-pointer hover:bg-pane-3"
+            <BadgeButton
               key={item}
-              variant="secondary"
+              onClick={() => remove(item)}
+              removeLabel={t("a11y.removeItem", { item })}
             >
-              <button
-                aria-label={t("a11y.removeItem", { item })}
-                onClick={() => remove(item)}
-                type="button"
-              >
-                {item}
-                <X aria-hidden="true" data-icon="inline-end" />
-              </button>
-            </Badge>
+              {item}
+            </BadgeButton>
           ))}
         </div>
       )}
@@ -604,6 +645,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {PROJECT_TYPE_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -623,6 +665,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {TRACK_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -644,6 +687,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {COLLABORATION_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -872,21 +916,11 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </div>
           ) : (
-            <label className="type-body flex cursor-pointer items-center gap-2 rounded-sm border border-input border-dashed bg-card px-3 py-3 text-muted-foreground transition-[background-color,border-color,color] duration-150 ease-standard hover:bg-pane hover:text-foreground has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2">
-              <Upload aria-hidden="true" className="size-3.5" />
-              {t("form.uploadImage")}
-              <input
-                accept="image/jpeg,image/png,image/webp"
-                aria-label={t("form.uploadImage")}
-                className="sr-only"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  e.target.value = "";
-                  await handleImageUpload(project, file);
-                }}
-                type="file"
-              />
-            </label>
+            <FileDropZone
+              accept="image/jpeg,image/png,image/webp"
+              onFilesSelect={(files) => handleImageUpload(project, files[0])}
+              title={t("form.uploadImage")}
+            />
           )}
           <p className="type-caption text-muted-foreground">
             {t("form.imageHint", {
@@ -943,6 +977,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {TRACK_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -962,6 +997,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {AFFILIATION_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}

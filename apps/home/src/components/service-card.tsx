@@ -1,3 +1,4 @@
+import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
 import { cn } from "@rulisme/ui/lib/utils";
 import { Badge } from "@rulisme/ui/ui/badge";
 import type { ReactNode } from "react";
@@ -119,17 +120,10 @@ export function ServiceCard({
         )}
       </FeatureCopy>
       <FeatureMedia flip={flip} stage={stage}>
-        <figure className="absolute top-8 left-8 w-[1000px] overflow-hidden rounded-lg border border-border bg-card shadow-lg lg:top-10">
-          <figcaption className="grid h-7 grid-cols-[1fr_auto_1fr] items-center gap-3 border-border border-b px-3">
-            <span aria-hidden="true" className="flex gap-1.5">
-              <span className="size-2.5 rounded-full bg-pane-3" />
-              <span className="size-2.5 rounded-full bg-pane-3" />
-              <span className="size-2.5 rounded-full bg-pane-3" />
-            </span>
-            <span className="type-caption truncate text-ink-sec">
-              {t("features.windowTitle").replace("{{name}}", name)}
-            </span>
-          </figcaption>
+        <WindowFrame
+          className="absolute top-8 left-8 w-[1000px] lg:top-10"
+          title={t("features.windowTitle").replace("{{name}}", name)}
+        >
           <img
             alt={t("features.shotAlt").replace("{{name}}", name)}
             className="block h-auto w-full"
@@ -139,7 +133,7 @@ export function ServiceCard({
             src={`/shots/${id}.webp`}
             width={1000}
           />
-        </figure>
+        </WindowFrame>
       </FeatureMedia>
     </div>
   );
@@ -190,7 +184,7 @@ export function McpCard({ api }: { api: Service }) {
       </FeatureCopy>
       <FeatureMedia flip={false}>
         {live && (
-          <figure className="absolute top-8 right-8 left-8 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:top-10 lg:right-auto lg:w-[620px]">
+          <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[560px] lg:-translate-x-1/2">
             <figcaption className="type-caption border-border border-b px-3 py-2 text-center text-muted-foreground">
               {t("mcpSection.configLabel")}
             </figcaption>

@@ -1,9 +1,15 @@
-// The Board (12 §3, 06): toolbar, overview strip, bulk bar and the columns —
-// drag and drop with pointer, touch and keyboard (board-dnd.tsx), card
-// shortcuts (use-card-handlers.ts), the `M` stage picker and follow-ups — or
-// the stage switcher on phones. Data: `GET /api/v1/board` every 15 s (ETag).
+// The Board (12 §3, 06, reui's kanban board): the page header (title with
+// the count, Filters, the Board / List / Table switch, New application),
+// the search row, the bulk bar, then the view — lanes with drag and drop
+// (pointer, touch and keyboard, board-dnd.tsx), the grouped list or the
+// sortable table. A card, row or table row opens the details sheet, kept in
+// the URL (`?app=`). Phones get the stage switcher or the list. Data:
+// `GET /api/v1/board` every 15 s (ETag).
 
-import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
+import type {
+  ApplicationDetail,
+  BoardCard,
+} from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
 import {
   Alert,
@@ -21,22 +27,25 @@ import {
 } from "@rulisme/ui/ui/empty";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
-import { CircleAlert, Inbox, Plus } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { CircleAlert, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AppLink } from "@/components/app-link";
+import {
+  ApplicationSheet,
+  sheetStepTab,
+} from "@/components/application/application-sheet";
+import { moveSubjectOf } from "@/components/application/move-subject";
+import type { FollowUpTarget } from "@/components/follow-up-dialog";
 import { FollowUpDialog } from "@/components/follow-up-dialog";
+import { PageHeader } from "@rulisme/ui/blocks/page";
 import { useShellActions } from "@/components/shell/shell-context";
 import { useAnnouncer } from "@/hooks/use-announcer";
 import { useBoard } from "@/hooks/use-board";
+import { useApplicationPatch } from "@/hooks/use-conflict-write";
 import { PHONE_QUERY, useMediaQuery } from "@/hooks/use-media-query";
-import { PageHeader } from "@/components/shell/page";
 import { useTranslation } from "@/i18n";
-import type {
-  BoardColumns,
-  BoardFilters,
-  ClosedStage,
-} from "@/lib/board-model";
+import type { BoardColumns, BoardFilters } from "@/lib/board-model";
 import {
   allCards,
   BOARD_STAGES,
@@ -45,26 +54,36 @@ import {
   filterColumns,
   isFiltered,
   presentSources,
-  upcomingInterviews,
 } from "@/lib/board-model";
 import { otherOffers as countOtherOffers } from "@/lib/board-move";
+import type { NextStep } from "@/lib/next-step";
 import { DesktopBoard } from "./board-dnd";
-import type { BoardSearch } from "./board-search";
+import { BoardList } from "./board-list";
+import type { BoardSearch, BoardView } from "./board-search";
 import {
   filtersFromSearch,
   moveSubject,
   searchFromFilters,
+  viewState,
 } from "./board-search";
-import { BoardToolbar } from "./board-toolbar";
+import { BoardTable } from "./board-table";
+import {
+  activeFilterCount,
+  BoardFiltersMenu,
+  BoardSearchRow,
+  ViewSwitcher,
+} from "./board-toolbar";
 import type { BulkReport } from "./bulk-bar";
 import { BulkBar, BulkResultsDialog } from "./bulk-bar";
-import { OverviewStrip } from "./overview-strip";
 import { PhoneBoard } from "./phone-board";
 import { StagePickerDialog } from "./stage-picker-dialog";
 import { useCardHandlers } from "./use-card-handlers";
 import { useMoveCard } from "./use-move-card";
 
 const MINUTE_MS = 60_000;
+const ALL_STAGES: readonly Stage[] = [...BOARD_STAGES, ...CLOSED_STAGES];
+const DESKTOP_VIEWS: readonly BoardView[] = ["board", "list", "table"];
+const PHONE_VIEWS: readonly BoardView[] = ["board", "list"];
 
 function useNow() {
   const [now, setNow] = useState(() => Date.now());
@@ -75,17 +94,32 @@ function useNow() {
   return now;
 }
 
-function BoardSkeleton() {
+function BoardSkeleton({ view }: { view: BoardView }) {
+  if (view !== "board") {
+    return (
+      <div
+        aria-hidden="true"
+        className="flex flex-col gap-2 px-4 pb-4 sm:px-6 lg:px-8"
+      >
+        {BOARD_STAGES.slice(0, 6).map((stage) => (
+          <Skeleton className="h-14 w-full rounded-lg" key={stage} />
+        ))}
+      </div>
+    );
+  }
   return (
     <div
       aria-hidden="true"
-      className="flex min-h-0 flex-1 gap-3 overflow-hidden px-4 sm:px-6"
+      className="flex min-h-0 flex-1 gap-3 overflow-hidden px-4 pb-4 sm:px-6 lg:px-8"
     >
       {BOARD_STAGES.slice(0, 5).map((stage) => (
-        <div className="flex w-64 shrink-0 flex-col gap-2" key={stage}>
-          <Skeleton className="h-6 w-24" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
+        <div
+          className="flex w-72 shrink-0 flex-col gap-2 rounded-lg border border-hairline bg-card/50 p-2"
+          key={stage}
+        >
+          <Skeleton className="m-1 h-5 w-24" />
+          <Skeleton className="h-32 w-full rounded-lg" />
+          <Skeleton className="h-32 w-full rounded-lg" />
         </div>
       ))}
     </div>
@@ -95,7 +129,7 @@ function BoardSkeleton() {
 function BoardError({ onRetry }: { onRetry: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="p-4 sm:p-5">
+    <div className="px-4 pb-4 sm:px-6 lg:px-8">
       <Alert role="alert" variant="destructive">
         <CircleAlert aria-hidden="true" />
         <AlertTitle>{t("board.errorTitle")}</AlertTitle>
@@ -110,53 +144,54 @@ function BoardError({ onRetry }: { onRetry: () => void }) {
   );
 }
 
-/** "Track a job from your inbox or add one by URL" (12 §3 empty state). */
+/** The empty board (12 §3): add the first application by URL. */
 function EmptyBoard() {
   const { t } = useTranslation();
   const shell = useShellActions();
   return (
-    <Empty className="rounded-sm border border-dashed py-8">
+    <Empty className="rounded-lg border border-border border-dashed py-8">
       <EmptyHeader>
         <EmptyTitle>{t("board.emptyTitle")}</EmptyTitle>
-        <EmptyDescription>{t("board.empty")}</EmptyDescription>
+        <EmptyDescription>{t("board.emptyManual")}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent className="flex-row flex-wrap justify-center">
-        <Button asChild size="sm" variant="outline">
-          <AppLink aria-keyshortcuts="I" href="/inbox">
-            <Inbox aria-hidden="true" data-icon="inline-start" />
-            {t("nav.inbox")}
-            <Kbd aria-hidden="true">I</Kbd>
-          </AppLink>
-        </Button>
-        <Button
-          aria-keyshortcuts="N"
-          onClick={shell.openNewJob}
-          size="sm"
-          variant="outline"
-        >
+        <Button onClick={shell.openNewJob} size="sm" variant="outline">
           <Plus aria-hidden="true" data-icon="inline-start" />
-          {t("nav.new")}
-          <Kbd aria-hidden="true">N</Kbd>
+          {t("board.newApplication")}
         </Button>
       </EmptyContent>
     </Empty>
   );
 }
 
-/** Visible cards in reading order: the open columns, then the closed lane. */
+/** The view shown: phones have no table, so it falls back to the list. */
+function effectiveView(
+  requested: BoardSearch["view"],
+  isPhone: boolean
+): BoardView {
+  if (isPhone && requested === "table") {
+    return "list";
+  }
+  return requested ?? "board";
+}
+
+function sumTotals(totals: Record<Stage, number> | null): number | undefined {
+  return totals
+    ? ALL_STAGES.reduce((sum, stage) => sum + totals[stage], 0)
+    : undefined;
+}
+
+/** Visible cards in reading order: the lanes that are open, left to right. */
 function readingOrder(
   visible: BoardColumns | null,
-  closedExpanded: boolean,
-  closedFilter: ClosedStage | "both"
+  collapsed: ReadonlySet<Stage>
 ): BoardCard[] {
   if (!visible) {
     return [];
   }
-  const stages: Stage[] = [...BOARD_STAGES];
-  if (closedExpanded) {
-    stages.push(...(closedFilter === "both" ? CLOSED_STAGES : [closedFilter]));
-  }
-  return stages.flatMap((stage) => visible[stage]);
+  return ALL_STAGES.filter((stage) => !collapsed.has(stage)).flatMap(
+    (stage) => visible[stage]
+  );
 }
 
 export function BoardPage({
@@ -167,18 +202,26 @@ export function BoardPage({
   onSearchChange: (search: BoardSearch) => void;
 }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const shell = useShellActions();
   const isPhone = useMediaQuery(PHONE_QUERY);
   const now = useNow();
   const { message, announce } = useAnnouncer();
+  const patch = useApplicationPatch();
   const filters = useMemo(() => filtersFromSearch(search), [search]);
   const includeArchived = search.archived === 1;
   const board = useBoard({ includeArchived });
   const [report, setReport] = useState<BulkReport | null>(null);
-  const [closedExpanded, setClosedExpanded] = useState(false);
-  const [closedFilter, setClosedFilter] = useState<ClosedStage | "both">(
-    "both"
+  const [collapsed, setCollapsed] = useState<ReadonlySet<Stage>>(
+    () => new Set<Stage>(CLOSED_STAGES)
   );
   const [dragging, setDragging] = useState(false);
+  const [sheetFollowUp, setSheetFollowUp] = useState<FollowUpTarget | null>(
+    null
+  );
+
+  const view = effectiveView(search.view, isPhone);
+  const sheetOpen = search.app !== undefined;
 
   const columns = board.columns;
   const visible = useMemo(
@@ -190,8 +233,11 @@ export function BoardPage({
     [board.data]
   );
   const order = useMemo(
-    () => readingOrder(visible, closedExpanded, closedFilter),
-    [visible, closedExpanded, closedFilter]
+    () =>
+      view === "table"
+        ? readingOrder(visible, new Set())
+        : readingOrder(visible, collapsed),
+    [visible, collapsed, view]
   );
   const otherOffers = useCallback(
     (cardId: string) =>
@@ -199,13 +245,66 @@ export function BoardPage({
     [columns]
   );
   const { requestMove, dialogs } = useMoveCard({ announce, otherOffers });
+
+  const setSearch = useCallback(
+    (patchSearch: Partial<BoardSearch>) => {
+      const merged: BoardSearch = { ...search, ...patchSearch };
+      onSearchChange(
+        Object.fromEntries(
+          Object.entries(merged).filter(([, value]) => value !== undefined)
+        ) as BoardSearch
+      );
+    },
+    [onSearchChange, search]
+  );
+  const openCard = useCallback(
+    (card: BoardCard) => setSearch({ app: card.id }),
+    [setSearch]
+  );
   const cards = useCardHandlers({
     announce,
     columns,
     order,
     requestMove,
-    keysEnabled: !(isPhone || dragging),
+    onOpen: openCard,
+    keysEnabled: !(isPhone || dragging || sheetOpen),
   });
+
+  const setLaneCollapsed = useCallback((stage: Stage, value: boolean) => {
+    setCollapsed((current) => {
+      const next = new Set(current);
+      if (value) {
+        next.add(stage);
+      } else {
+        next.delete(stage);
+      }
+      return next;
+    });
+  }, []);
+
+  const changeFilters = (patchFilters: Partial<BoardFilters>) =>
+    onSearchChange({
+      ...searchFromFilters({ ...filters, ...patchFilters }, includeArchived),
+      ...viewState(search),
+    });
+  const clearFilters = () =>
+    onSearchChange({
+      ...(includeArchived ? { archived: 1 } : {}),
+      ...viewState(search),
+    });
+
+  const runSheetStep = (detail: ApplicationDetail, step: NextStep) => {
+    const tab = sheetStepTab(step);
+    if (tab) {
+      navigate({
+        to: "/applications/$appId",
+        params: { appId: detail.application.id },
+        search: { tab },
+      });
+      return;
+    }
+    requestMove({ card: moveSubjectOf(detail), target: "applied" });
+  };
 
   const filtered = isFiltered(filters);
   const empty =
@@ -216,12 +315,40 @@ export function BoardPage({
     ? allCards(columns).filter((card) => cards.selectedIds.has(card.id))
     : [];
   const staleSince = board.stale && board.data ? board.data.fetchedAt : null;
+  const totalCount = sumTotals(totals);
 
   let body: ReactNode;
   if (board.isPending) {
-    body = <BoardSkeleton />;
+    body = <BoardSkeleton view={view} />;
   } else if (!(visible && totals)) {
     body = <BoardError onRetry={() => board.refetch()} />;
+  } else if (view === "list") {
+    body = (
+      <BoardList
+        collapsed={collapsed}
+        empty={empty}
+        filtered={filtered}
+        handlers={cards.handlers}
+        nowMs={now}
+        onCollapsedChange={setLaneCollapsed}
+        pendingIds={board.pendingIds}
+        selectedIds={cards.selectedIds}
+        totals={totals}
+        visible={visible}
+      />
+    );
+  } else if (view === "table") {
+    body = (
+      <BoardTable
+        cards={order}
+        empty={empty}
+        handlers={cards.handlers}
+        nowMs={now}
+        onSelect={cards.setSelected}
+        pendingIds={board.pendingIds}
+        selectedIds={cards.selectedIds}
+      />
+    );
   } else if (isPhone) {
     body = (
       <PhoneBoard
@@ -229,6 +356,7 @@ export function BoardPage({
         empty={empty}
         nowMs={now}
         onMove={cards.setPickerCard}
+        onOpen={openCard}
         pendingIds={board.pendingIds}
         totals={totals}
       />
@@ -237,15 +365,19 @@ export function BoardPage({
     body = (
       <DesktopBoard
         announce={announce}
-        closedExpanded={closedExpanded}
-        closedFilter={closedFilter}
+        collapsed={collapsed}
         empty={empty}
         filtered={filtered}
         handlers={cards.handlers}
         nowMs={now}
-        onClosedExpandedChange={setClosedExpanded}
-        onClosedFilterChange={setClosedFilter}
+        onCollapsedChange={setLaneCollapsed}
         onDraggingChange={setDragging}
+        onSelectAll={(stage) =>
+          cards.setSelected(
+            visible[stage].map((card) => card.id),
+            true
+          )
+        }
         pendingIds={board.pendingIds}
         requestMove={requestMove}
         selectedIds={cards.selectedIds}
@@ -258,45 +390,54 @@ export function BoardPage({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <PageHeader
+        actions={
+          <>
+            <BoardFiltersMenu
+              filters={filters}
+              includeArchived={includeArchived}
+              onFiltersChange={changeFilters}
+              onIncludeArchivedChange={(value) =>
+                onSearchChange({
+                  ...searchFromFilters(filters, value),
+                  ...viewState(search),
+                })
+              }
+              sources={columns ? presentSources(columns) : []}
+            />
+            <ViewSwitcher
+              onChange={(next) =>
+                setSearch({ view: next === "board" ? undefined : next })
+              }
+              value={view}
+              views={isPhone ? PHONE_VIEWS : DESKTOP_VIEWS}
+            />
+            <Button aria-keyshortcuts="N" onClick={shell.openNewJob} size="sm">
+              <Plus aria-hidden="true" data-icon="inline-start" />
+              {t("board.newApplication")}
+              <Kbd aria-hidden="true">N</Kbd>
+            </Button>
+          </>
+        }
+        className="pb-4"
+        count={totalCount}
         description={t("board.intro")}
         title={t("board.title")}
         wide
-      />
-      <BoardToolbar
-        filters={filters}
-        includeArchived={includeArchived}
-        onFiltersChange={(patch: Partial<BoardFilters>) =>
-          onSearchChange(
-            searchFromFilters({ ...filters, ...patch }, includeArchived)
-          )
-        }
-        onIncludeArchivedChange={(value) =>
-          onSearchChange(searchFromFilters(filters, value))
-        }
-        sources={columns ? presentSources(columns) : []}
-        staleSince={staleSince}
-      />
-      <OverviewStrip
-        followUpsDue={board.data?.board.counts.follow_ups_due ?? null}
-        interviewsUpcoming={columns ? upcomingInterviews(columns, now) : null}
-        nowMs={now}
-      />
-      {filtered && visible && order.length === 0 ? (
-        <div className="flex items-center gap-3 px-4 pb-4 sm:px-6">
-          <p className="type-caption text-muted-foreground">
-            {t("board.noMatches")}
-          </p>
-          <Button
-            onClick={() =>
-              onSearchChange(includeArchived ? { archived: 1 } : {})
-            }
-            size="xs"
-            variant="ghost"
-          >
-            {t("board.clearFilters")}
-          </Button>
-        </div>
-      ) : null}
+      >
+        <BoardSearchRow
+          activeFilters={activeFilterCount(filters, includeArchived)}
+          onClearFilters={clearFilters}
+          onQueryChange={(q) => changeFilters({ q })}
+          query={filters.q}
+          staleSince={staleSince}
+        >
+          {filtered && visible && order.length === 0 && view !== "list" ? (
+            <p className="type-caption text-muted-foreground">
+              {t("board.noMatches")}
+            </p>
+          ) : null}
+        </BoardSearchRow>
+      </PageHeader>
       <BulkBar
         onClear={cards.clearSelection}
         onReport={setReport}
@@ -306,6 +447,25 @@ export function BoardPage({
       <div aria-atomic="true" aria-live="assertive" className="sr-only">
         {message}
       </div>
+      <ApplicationSheet
+        appId={search.app ?? null}
+        nowMs={now}
+        onAcceptFollowUp={(detail, changes) =>
+          patch(detail.application, changes, t("followUp.what"))
+        }
+        onClose={() => setSearch({ app: undefined })}
+        onFollowUp={(detail) =>
+          setSheetFollowUp({
+            company: detail.posting.company_name,
+            title: detail.posting.title,
+            record: detail.application,
+          })
+        }
+        onMove={(detail, target) =>
+          requestMove({ card: moveSubjectOf(detail), target })
+        }
+        onRunStep={runSheetStep}
+      />
       <StagePickerDialog
         card={cards.pickerCard}
         columns={columns}
@@ -325,8 +485,11 @@ export function BoardPage({
         }}
       />
       <FollowUpDialog
-        onClose={cards.closeFollowUp}
-        target={cards.followUpTarget}
+        onClose={() => {
+          cards.closeFollowUp();
+          setSheetFollowUp(null);
+        }}
+        target={cards.followUpTarget ?? sheetFollowUp}
       />
       <BulkResultsDialog onClose={() => setReport(null)} report={report} />
       {dialogs}

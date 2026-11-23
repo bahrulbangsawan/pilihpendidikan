@@ -6,7 +6,7 @@ import { cva } from "class-variance-authority";
 // ghost, `ghost` a borderless toolbar control, `link` the orange text link
 // with a trailing →. Sizes: `lg` 43px at 16px (Cursor's hero button),
 // `default` 36px at 14px, `sm` 28px at 14px (Cursor's header buttons), `xs`
-// 24px at 12px. Disabled buttons turn into a flat card-03 pill like Cursor's.
+// 24px at 12px. `row` is the borderless full-width row target. Disabled buttons turn into a flat card-03 pill like Cursor's.
 // Every variant sets its own border colour (there is no base
 // `border-transparent`), so the classes never conflict when
 // `buttonVariants()` styles an <a> without going through `cn()`.
@@ -25,6 +25,10 @@ export const buttonVariants = cva(
           "border-transparent text-foreground hover:bg-pane aria-expanded:bg-pane aria-[current=page]:bg-pane-2",
         destructive:
           "border-transparent bg-destructive/10 text-destructive hover:bg-destructive/15 focus-visible:outline-destructive",
+        // A full-width click target (list rows, a collapsed lane, a sort
+        // header): square-ish 4px corners, left-aligned, wrapping, `pane` on
+        // hover and `pane-2` when current or pressed. Size only sets the gap.
+        row: "h-auto! min-h-8 w-full justify-start whitespace-normal rounded-sm border-transparent px-2! py-1.5 text-left text-foreground hover:bg-pane aria-expanded:bg-pane aria-pressed:bg-pane-2 aria-selected:bg-pane-2 aria-[current=page]:bg-pane-2",
         link: "h-auto! rounded-none border-transparent px-0! text-link not-has-[svg]:after:ml-1 not-has-[svg]:after:content-['→'] hover:text-link/75",
       },
       size: {

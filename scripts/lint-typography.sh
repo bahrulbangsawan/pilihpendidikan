@@ -174,6 +174,18 @@ run_check \
   "drop textTransform / letterSpacing (PDF) and text-transform / letter-spacing (print CSS)" \
   rg -n -P -i '(textTransform:\s*"uppercase"|letterSpacing:|text-transform:\s*uppercase|letter-spacing:)' apps packages/ui/src/print packages/cv-engine/src/pdf --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
 
+# 19) No raw controls in app code: buttons, fields, selects and file pickers
+#     come from @rulisme/ui (TYPOGRAPHY.md § Raw controls). An element styled
+#     by an `asChild` design-system host and <input type="hidden"> are allowed.
+APP_SRC=()
+for dir in apps/*/src; do
+  [[ -d "$dir" ]] && APP_SRC+=("$dir")
+done
+run_check \
+  "No raw <button> / <input> / <select> / <textarea> / <option> in app code" \
+  "use Button, Input, Textarea, Select, NativeSelect, Combobox, DatePicker, FileTrigger / FileDropZone, SegmentedControl, SwatchPicker, FieldButton, BadgeButton, DragHandle or EditableTitle from @rulisme/ui" \
+  bun scripts/check-raw-controls.ts "${APP_SRC[@]}"
+
 printf '\n'
 if [[ $fail -ne 0 ]]; then
   printf '\033[31mZedative style lint FAILED.\033[0m See TYPOGRAPHY.md.\n'

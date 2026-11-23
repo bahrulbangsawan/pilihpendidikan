@@ -15,6 +15,7 @@ import { InputsSection } from "./showcase/sections/inputs";
 import { NavigationSection } from "./showcase/sections/navigation";
 import { OverlaysSection } from "./showcase/sections/overlays";
 import { OverviewSection } from "./showcase/sections/overview";
+import { PatternsSection } from "./showcase/sections/patterns";
 import { RecipesSection } from "./showcase/sections/recipes";
 
 function SkipLink() {
@@ -47,6 +48,7 @@ export function App() {
               <FeedbackSection />
               <OverlaysSection />
               <ConversationSection />
+              <PatternsSection />
               <DosAndDontsSection />
               <RecipesSection />
               <ExampleScreenSection />

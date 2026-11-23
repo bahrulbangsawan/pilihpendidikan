@@ -4,21 +4,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buttonByText,
   cleanup,
-  FakeFailure,
   fakeApi,
   itemByText,
   pointerDown,
   renderWithProviders,
   typeInto,
   waitFor,
-} from "@/components/cli/test-harness";
-import {
-  fixtureId,
-  makeApplication,
-  makeCard,
-  makeDetail,
-  NOW,
-} from "@/test/fixtures";
+} from "@/test/dom-harness";
+import { fixtureId, makeApplication, makeCard, NOW } from "@/test/fixtures";
 import type { BulkReport } from "./bulk-bar";
 import { BulkBar, BulkResultsDialog } from "./bulk-bar";
 
@@ -183,56 +176,6 @@ describe("T6-08 board bulk bar (06 §9)", () => {
         archived: true,
         base_revision: open.revision,
       });
-    },
-    DOM_TEST_TIMEOUT
-  );
-
-  it(
-    "T6-08 Mode auto is set only where an auto rule matched; the rest are skipped with the reason",
-    async () => {
-      const matched = makeCard({ stage: "saved", company: "Rule", title: "A" });
-      const unmatched = makeCard(
-        { stage: "saved", company: "NoRule", title: "B" },
-        1
-      );
-      const alreadyAuto = makeCard(
-        { stage: "saved", company: "Auto", title: "C", mode: "auto" },
-        2
-      );
-      const ruleId = fixtureId("rul");
-      const api = fakeApi({
-        "GET /api/v1/applications/{app_id}": (request) => {
-          const id = String(request.params?.app_id);
-          return makeDetail({
-            application: makeApplication({
-              id,
-              revision: 9,
-              automation_rule_id: id === matched.id ? ruleId : null,
-            }),
-          });
-        },
-        "PATCH /api/v1/applications/{app_id}": (request) => ({
-          application: makeApplication({
-            id: String(request.params?.app_id),
-            mode: "auto",
-          }),
-        }),
-        "DELETE /api/v1/applications/{app_id}": () =>
-          new FakeFailure(500, "internal"),
-      });
-      const { onReport } = renderBar([matched, unmatched, alreadyAuto]);
-      await pointerDown(buttonByText("More") ?? null);
-      await waitFor(() => expect(itemByText("Mode: Auto")).toBeTruthy());
-      itemByText("Mode: Auto")?.click();
-      const report = await lastReport(onReport);
-      expect(statuses(report)).toEqual([
-        ["ok", undefined],
-        ["skipped", "no_auto_rule"],
-        ["skipped", "unchanged"],
-      ]);
-      const patches = api.calls("PATCH /api/v1/applications/{app_id}");
-      expect(patches.map((call) => call.params?.app_id)).toEqual([matched.id]);
-      expect(patches[0]?.body).toEqual({ mode: "auto", base_revision: 9 });
     },
     DOM_TEST_TIMEOUT
   );

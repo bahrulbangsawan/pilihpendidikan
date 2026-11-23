@@ -15,3 +15,17 @@ Every shot is one screen at a fixed viewport, rendered by `cook/harness/stills.s
 | S07 | R02 pricing light | design page `/` (4006) | 1440 | buttons (dark pill, secondary #e6e5e0, ghost 20% border), segmented control, cards, badges (orange 10% pill) | every component |
 | S08 | R04 docs dark | jobs dashboard dark | 1440 dark | dark app chrome | |
 | S09 | R02 pricing | invoice + portfolio builders | 1440 | builder chrome consistent with S06 | |
+
+## Job Tracker (round 3+, user request 2026-11-24: reui.io blocks as the reference)
+
+| Shot | Ref | Ours | Viewport | Take from it |
+|---|---|---|---|---|
+| S05a | `refs/reui/kanban-board-2.png`, `solution-crm-2.png` | `/board` (kanban) | 1440×900 | lanes, column headers with status dot + count, dense cards with avatar, progress, footer |
+| S05b | `refs/reui/settings-2.png`, `profile-1.png` | `/settings` | 1440×900 | sub-nav + toggle rows card |
+| S10 | `refs/reui/list-1.png` | `/board?view=list` | 1440×900 | grouped rows |
+| S11 | `refs/reui/solution-crm-1.png`, `data-grid-base-1.png` | `/board?view=table` | 1440×900 | sortable table, selection |
+| S12 | `refs/reui/sheet-1.png` | details sheet (agent screenshots) | 1440×900 | header, property chips, sections, footer |
+| S13 | `refs/reui/profile-1.png` | `/profile` | 1440×900 | account-settings rows |
+| S14 | `refs/reui/stats-1.png`, `solution-crm-1.png` | `/stats` | 1440×900 | 4 stat cards, chart cards |
+| S15 | `refs/reui/app-shell-2.png` | `/board` | 390×844 | mobile shell |
+| — | `refs/reui/app-shell-1-menu.png` | profile dropdown (agent screenshots) | 1440×900 | header, items, sign out |

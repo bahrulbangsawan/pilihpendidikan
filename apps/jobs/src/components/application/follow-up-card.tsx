@@ -34,10 +34,10 @@ export function FollowUpCard({
     return (
       <section
         aria-labelledby="follow-up-heading"
-        className="flex flex-col gap-2 border-line border-b p-4"
+        className="flex flex-col gap-2"
       >
         <h2
-          className="type-caption text-muted-foreground"
+          className="type-body weight-semibold text-foreground"
           id="follow-up-heading"
         >
           {t("followUp.heading")}
@@ -67,10 +67,10 @@ export function FollowUpCard({
     return (
       <section
         aria-labelledby="follow-up-heading"
-        className="flex flex-col gap-2 border-line border-b p-4"
+        className="flex flex-col gap-2"
       >
         <h2
-          className="type-caption text-muted-foreground"
+          className="type-body weight-semibold text-foreground"
           id="follow-up-heading"
         >
           {t("followUp.heading")}
@@ -89,10 +89,13 @@ export function FollowUpCard({
   return (
     <section
       aria-labelledby="follow-up-heading"
-      className="flex flex-col gap-2 border-line border-b p-4"
+      className="flex flex-col gap-2"
       data-testid="follow-up-suggestion"
     >
-      <h2 className="type-caption text-muted-foreground" id="follow-up-heading">
+      <h2
+        className="type-body weight-semibold text-foreground"
+        id="follow-up-heading"
+      >
         {t("followUp.suggested")}
       </h2>
       <p className="type-body text-foreground">

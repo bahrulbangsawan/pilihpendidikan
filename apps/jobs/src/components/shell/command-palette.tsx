@@ -1,5 +1,5 @@
 // The ⌘K / Ctrl K palette (12 §2.1): jump to an application by company or
-// title, run actions, go anywhere, switch the theme.
+// title, run actions, go anywhere.
 
 import {
   Command,
@@ -13,15 +13,7 @@ import {
   CommandShortcut,
 } from "@rulisme/ui/ui/command";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  Briefcase,
-  CircleCheck,
-  Inbox,
-  Keyboard,
-  LogOut,
-  Plus,
-  Radar,
-} from "lucide-react";
+import { Briefcase, Keyboard, LogOut, Plus } from "lucide-react";
 import { useMemo } from "react";
 import { useAppNavigate } from "@/components/app-link";
 import type { BoardData } from "@/hooks/use-board";
@@ -82,27 +74,6 @@ export function CommandPalette({
               <Plus aria-hidden="true" />
               {t("palette.newJob")}
               <CommandShortcut>N</CommandShortcut>
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/automation"))}
-              value="approve next approval"
-            >
-              <CircleCheck aria-hidden="true" />
-              {t("palette.approveNext")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/inbox"))}
-              value="open inbox discovery"
-            >
-              <Inbox aria-hidden="true" />
-              {t("palette.openInbox")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/sources"))}
-              value="start discovery device"
-            >
-              <Radar aria-hidden="true" />
-              {t("palette.startDiscovery")}
             </CommandItem>
             <CommandItem
               onSelect={() => run(onShortcuts)}

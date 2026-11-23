@@ -64,7 +64,7 @@
     },
     "jobs": {
       "name": "Job tracker",
-      "description": "Track applications on a board, discover jobs and apply from your computer with the CLI."
+      "description": "Track your applications on a board, as a list or a table, with stats on how they are going."
     },
     "mcp": {
       "heading": "AI assistants",
@@ -156,7 +156,7 @@
     "button": "See the builders"
   },
   "exports": {
-    "heading": "What you download",
+    "heading": "What you get",
     "cv": {
       "label": "CV",
       "title": "A PDF, or your data as Markdown or JSON"
@@ -171,7 +171,7 @@
     },
     "jobs": {
       "label": "Job tracker",
-      "title": "The pilih-jobs command-line tool"
+      "title": "Your applications as a board, a list or a table"
     }
   }
 }

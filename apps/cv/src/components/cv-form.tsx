@@ -35,9 +35,12 @@ import { MonthPicker } from "@rulisme/ui/form/month-picker";
 import { SectionList } from "@rulisme/ui/form/section-list";
 import { cn } from "@rulisme/ui/lib/utils";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
-import { Badge } from "@rulisme/ui/ui/badge";
+import { BadgeButton } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
+import { EditableTitle } from "@rulisme/ui/ui/editable-title";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { Checkbox } from "@rulisme/ui/ui/checkbox";
+import { DragHandle } from "@rulisme/ui/ui/drag-handle";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
@@ -62,7 +65,26 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@rulisme/ui/ui/tooltip";
-import { GripVertical, Info, Trash2, Upload, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Award,
+  Briefcase,
+  Building2,
+  CircleDashed,
+  Clock,
+  Globe,
+  GraduationCap,
+  Info,
+  Landmark,
+  Languages,
+  Library,
+  MonitorPlay,
+  School,
+  Shuffle,
+  Trash2,
+  Upload,
+  Wrench,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { useId, useMemo, useState } from "react";
 import { useTranslation } from "@/i18n";
@@ -79,50 +101,84 @@ type Translate = (
   params?: Record<string, string | number>
 ) => string;
 
-const WORK_TYPE_OPTIONS: { value: WorkType; labelKey: string }[] = [
-  { value: "", labelKey: "options.notSpecified" },
-  { value: "full-time", labelKey: "options.workType.fullTime" },
-  { value: "part-time", labelKey: "options.workType.partTime" },
-  { value: "internship", labelKey: "options.workType.internship" },
+// Each option leads with an icon, shown in the list and in the trigger.
+interface Option<T> {
+  value: T;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const WORK_TYPE_OPTIONS: Option<WorkType>[] = [
+  { value: "", labelKey: "options.notSpecified", icon: CircleDashed },
+  {
+    value: "full-time",
+    labelKey: "options.workType.fullTime",
+    icon: Briefcase,
+  },
+  { value: "part-time", labelKey: "options.workType.partTime", icon: Clock },
+  {
+    value: "internship",
+    labelKey: "options.workType.internship",
+    icon: GraduationCap,
+  },
 ];
 
-const LOCATION_POLICY_OPTIONS: {
-  value: LocationPolicy;
-  labelKey: string;
-}[] = [
-  { value: "", labelKey: "options.notSpecified" },
+const LOCATION_POLICY_OPTIONS: Option<LocationPolicy>[] = [
+  { value: "", labelKey: "options.notSpecified", icon: CircleDashed },
   {
     value: "work-from-office",
     labelKey: "options.locationPolicy.workFromOffice",
+    icon: Building2,
   },
   {
     value: "work-from-anywhere",
     labelKey: "options.locationPolicy.workFromAnywhere",
+    icon: Globe,
   },
-  { value: "hybrid", labelKey: "options.locationPolicy.hybrid" },
+  { value: "hybrid", labelKey: "options.locationPolicy.hybrid", icon: Shuffle },
 ];
 
-const EDUCATION_CATEGORY_OPTIONS: {
-  value: EducationCategory;
-  labelKey: string;
-}[] = [
-  { value: "", labelKey: "options.notSpecified" },
-  { value: "university", labelKey: "options.educationCategory.university" },
-  { value: "college", labelKey: "options.educationCategory.college" },
-  { value: "school", labelKey: "options.educationCategory.school" },
-  { value: "polytechnic", labelKey: "options.educationCategory.polytechnic" },
-  { value: "academy", labelKey: "options.educationCategory.academy" },
+const EDUCATION_CATEGORY_OPTIONS: Option<EducationCategory>[] = [
+  { value: "", labelKey: "options.notSpecified", icon: CircleDashed },
+  {
+    value: "university",
+    labelKey: "options.educationCategory.university",
+    icon: Landmark,
+  },
+  {
+    value: "college",
+    labelKey: "options.educationCategory.college",
+    icon: Library,
+  },
+  {
+    value: "school",
+    labelKey: "options.educationCategory.school",
+    icon: School,
+  },
+  {
+    value: "polytechnic",
+    labelKey: "options.educationCategory.polytechnic",
+    icon: Wrench,
+  },
+  {
+    value: "academy",
+    labelKey: "options.educationCategory.academy",
+    icon: GraduationCap,
+  },
   {
     value: "language-center",
     labelKey: "options.educationCategory.languageCenter",
+    icon: Languages,
   },
   {
     value: "online-platform",
     labelKey: "options.educationCategory.onlinePlatform",
+    icon: MonitorPlay,
   },
   {
     value: "professional-association",
     labelKey: "options.educationCategory.professionalAssociation",
+    icon: Award,
   },
 ];
 
@@ -160,12 +216,6 @@ const currentMonth = (() => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 })();
-
-// Section headings and the editable section titles share one role: the
-// compact title at the regular weight (cursor.com headings are never bold).
-// The editable title reads as a heading until hovered, then as a field.
-const SECTION_TITLE_INPUT_CLASS =
-  "type-title-compact field-touch -ml-2 h-8 min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 text-foreground outline-none transition-[background-color,border-color] duration-150 ease-standard placeholder:text-muted-foreground hover:border-border focus-visible:border-input focus-visible:bg-background focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-0";
 
 // Meta beside a section title or an entry summary (durations, counts).
 const META_CLASS =
@@ -678,9 +728,9 @@ export function CVForm({ data, onChange }: CVFormProps) {
         return (
           <section className="flex flex-col gap-3">
             <div className="flex items-center">
-              <input
+              <EditableTitle
                 aria-label={t("a11y2.summarySectionTitle")}
-                className={SECTION_TITLE_INPUT_CLASS}
+                className="type-title-compact"
                 onChange={(e) =>
                   onChange({ ...data, summaryTitle: e.target.value })
                 }
@@ -923,26 +973,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     </Button>
                   </>
                 ) : (
-                  <label className="type-body flex h-9 cursor-pointer items-center gap-2 rounded-full border border-input bg-transparent px-3.5 text-foreground transition-[background-color,border-color] duration-150 ease-standard hover:bg-pane has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2">
-                    <Upload
-                      aria-hidden="true"
-                      className="size-3.5 text-muted-foreground"
-                    />
-                    {t("form.uploadPhoto")}
-                    <input
-                      accept="image/jpeg,image/png,image/webp"
+                  <FileTrigger
+                    accept="image/jpeg,image/png,image/webp"
+                    onFilesSelect={(files) => handlePhotoFile(files[0])}
+                  >
+                    <Button
                       aria-label={t("a11y2.uploadProfilePhoto")}
-                      className="sr-only"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        e.target.value = "";
-                        if (file) {
-                          await handlePhotoFile(file);
-                        }
-                      }}
-                      type="file"
-                    />
-                  </label>
+                      variant="outline"
+                    >
+                      <Upload aria-hidden="true" data-icon="inline-start" />
+                      {t("form.uploadPhoto")}
+                    </Button>
+                  </FileTrigger>
                 )}
                 {errors.photo && (
                   <p className="type-caption text-destructive">
@@ -1088,6 +1130,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                           key={opt.value || "__empty__"}
                           value={opt.value || "__empty__"}
                         >
+                          <opt.icon aria-hidden="true" />
                           {t(opt.labelKey)}
                         </SelectItem>
                       ))}
@@ -1122,6 +1165,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                           key={opt.value || "__empty__"}
                           value={opt.value || "__empty__"}
                         >
+                          <opt.icon aria-hidden="true" />
                           {t(opt.labelKey)}
                         </SelectItem>
                       ))}
@@ -1273,6 +1317,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                         key={opt.value || "__empty__"}
                         value={opt.value || "__empty__"}
                       >
+                        <opt.icon aria-hidden="true" />
                         {t(opt.labelKey)}
                       </SelectItem>
                     ))}
@@ -1464,27 +1509,19 @@ export function CVForm({ data, onChange }: CVFormProps) {
             {category.items.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {category.items.map((skill) => (
-                  <Badge
-                    asChild
-                    className="cursor-pointer hover:bg-pane-3"
+                  <BadgeButton
                     key={skill}
-                    variant="secondary"
+                    onClick={() => {
+                      removeSkillFromCategory(category.id, skill);
+                      // The chip unmounts; keep keyboard focus in the field.
+                      document
+                        .getElementById(`skill-entry-${category.id}`)
+                        ?.focus();
+                    }}
+                    removeLabel={t("a11y.removeItem", { item: skill })}
                   >
-                    <button
-                      aria-label={t("a11y.removeItem", { item: skill })}
-                      onClick={() => {
-                        removeSkillFromCategory(category.id, skill);
-                        // The chip unmounts; keep keyboard focus in the field.
-                        document
-                          .getElementById(`skill-entry-${category.id}`)
-                          ?.focus();
-                      }}
-                      type="button"
-                    >
-                      {skill}
-                      <X aria-hidden="true" data-icon="inline-end" />
-                    </button>
-                  </Badge>
+                    {skill}
+                  </BadgeButton>
                 ))}
               </div>
             )}
@@ -2010,16 +2047,13 @@ function SortableSection({
         containIntrinsicSize: "auto 200px",
       }}
     >
-      <button
-        aria-label={t("form.dragToReorder")}
-        className="absolute top-6 left-0 flex h-8 w-4 cursor-grab items-center justify-center rounded-sm pointer-fine:text-transparent text-muted-foreground outline-none transition-[color] duration-150 ease-standard hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
-        title={t("form.dragToReorder")}
-        type="button"
+      <DragHandle
+        className="absolute top-6 left-0 pointer-fine:text-transparent focus-visible:text-foreground pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
+        label={t("form.dragToReorder")}
+        variant="gutter"
         {...attributes}
         {...listeners}
-      >
-        <GripVertical aria-hidden="true" className="size-3.5" />
-      </button>
+      />
       {children}
     </div>
   );

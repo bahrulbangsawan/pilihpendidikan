@@ -1,16 +1,17 @@
-import {
-  APPLICATION_MODES,
-  SOURCE_KINDS,
-} from "@pilihpendidikan/jobs-contracts/enums";
+import { SOURCE_KINDS } from "@pilihpendidikan/jobs-contracts/enums";
 import { createFileRoute } from "@tanstack/react-router";
 import type { BoardSearch } from "@/components/board/board-search";
+import { BOARD_VIEWS } from "@/components/board/board-search";
 import { BoardPage } from "@/components/board/board-page";
 import { pageTitle, requireSignedIn } from "./-guards";
+
+const APP_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
 
 const flag = (value: unknown): 1 | undefined =>
   value === 1 || value === "1" ? 1 : undefined;
 
-/** Board filters live in the URL so a filtered board can be linked (10 §8). */
+/** Board filters, the view mode and the open application live in the URL so
+ * any of them can be linked (10 §8). */
 export function validateBoardSearch(
   search: Record<string, unknown>
 ): BoardSearch {
@@ -19,8 +20,14 @@ export function validateBoardSearch(
   if (typeof search.q === "string" && search.q.length <= 200) {
     result.q = search.q;
   }
-  if ((APPLICATION_MODES as readonly unknown[]).includes(search.mode)) {
-    result.mode = search.mode as BoardSearch["mode"];
+  if (
+    search.view !== "board" &&
+    (BOARD_VIEWS as readonly unknown[]).includes(search.view)
+  ) {
+    result.view = search.view as BoardSearch["view"];
+  }
+  if (typeof search.app === "string" && APP_ID_RE.test(search.app)) {
+    result.app = search.app;
   }
   if ((SOURCE_KINDS as readonly unknown[]).includes(search.source)) {
     result.source = search.source as BoardSearch["source"];

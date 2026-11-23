@@ -24,10 +24,14 @@ Best so far: round 1 (in progress)
 
 - 00:56 Jobs removal scope: the dashboard (`apps/jobs`) only. The `/api/v1` automation routes, the `pilih-jobs` CLI and the scraper stay, because deleting backend features is far riskier and harder to undo than hiding them, and the request names the jobs UI. Mock-api fixtures stay too.
 
+- 01:10 Shared controls stay in packages/ui (pills, 8px fields) and take reui.io's structure and affordances (icons, dots, presets, search, clear); apps may not render raw <button>/<input>/<select>/<textarea>/<option>; a lint check enforces it.
+
 ## User feedback inbox
 
 - 2026-11-24 00:12 "btw dark mode only, without lightmode." | round 1 | done (all apps dark only, toggles removed; proof: cook/compare/r01/*).
 - 2026-11-24 00:55 "Pada jobs: Hapus fitur inbox, approvals, runs, sources, CLI and devises (semua automation). Fokus hanya pada board, stats, profile. Full re-design everything about jobs, the layout, the components style, etc. Please use reui.io blocks as references for re-create the layout of kanban with the multiple view mode, details board, profile, settings, profile dropdown, etc. Please make sure that." | round 3 | open
+- 2026-11-24 01:10 "Please make sure no raw components like dropdown, button, date picker, input field, etc. Make sure all of that are reusable components that designed by the current design system. Use reui.io as reference all of that reusable components. And also please add icon, or something for dropdown, like status, filter, etc. That make the UX are better instead of only text." | round 3 | open (UI-kit agent: new DatePicker/DateRangePicker/FileTrigger/SegmentedControl/StatusDot + icon slots; raw-control lint; jobs agents told)
+- 2026-11-24 01:40 "and please write all the reusable components, and all the components on design system" | round 3 | open (UI-kit agent: promote generic app-local components into packages/ui, render every component on apps/design, inventory table in packages/ui/CLAUDE.md; jobs switch-over after the cleanup agent finishes)
 
 ---
 

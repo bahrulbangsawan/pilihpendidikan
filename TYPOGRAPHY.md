@@ -104,6 +104,43 @@ app roots.
 
 Editor mocks are files named `*editor-mock*.tsx` and `apps/design/src`.
 
+## Raw controls
+
+App code never renders a raw `<button>`, `<input>`, `<select>`,
+`<textarea>` or `<option>`: every control comes from `@rulisme/ui`, styled
+once by the design system (reui.io is the reference for structure and
+affordances, `cook/refs/reui/`). Rule 19 of `scripts/lint-typography.sh`
+(`scripts/check-raw-controls.ts`) walks the JSX of every `apps/*/src`
+(tests, generated routes and print documents left out) and fails on any.
+`packages/ui` itself is where the raw elements live.
+
+| Need | Use |
+| ---- | --- |
+| An action, an icon action, a full-width row target | `Button` (`variant="row"` for list rows, sort headers, collapsed lanes) |
+| Typed text | `Input`, `InputGroup`, `Textarea`, `PhoneInput` |
+| A choice from a list | `Select` (16px leading icon or `StatusDot` per option, optional `description`), `NativeSelect`, `Combobox` (search inside) |
+| A date, a date and time, a range | `DatePicker` (`withTime`), `DateRangePicker` (`@rulisme/ui/ui/date-picker`; ISO strings, presets, clear) |
+| A file | `FileTrigger` around a `Button`, or `FileDropZone` (`@rulisme/ui/ui/file-upload`) |
+| One of a few views or languages | `SegmentedControl` (icons allowed); independent toggles: `ToggleGroup` |
+| A document colour | `SwatchPicker` |
+| A trigger that looks like a field (search palette, picker) | `FieldButton` |
+| A removable chip | `BadgeButton` |
+| A sortable grip | `DragHandle` (`variant="icon"` or `"gutter"`) |
+| An inline-editable heading | `EditableTitle` |
+| A status | `StatusDot` (tones `neutral`, `link`, `warning` = `link`, `success`, `destructive`, `ink`) |
+
+Menus and selects lead each row with a 16px lucide icon (or a status dot, a
+flag) where it helps recognition: `SelectItem`, `DropdownMenuItem`,
+`CommandItem` and `ComboboxItem` size it and colour it `ink-sec`.
+
+Allowed by the check, because the element only supplies semantics while a
+design-system component styles it:
+
+| Pattern | Where | Why |
+| ------- | ----- | --- |
+| A raw `<button>` / `<a>` as the direct child of a component with `asChild` (`Item`, `BubbleContent`, `SidebarMenuSubButton`, `Badge`) | `apps/design/src/showcase/sections/{overlays,conversation,navigation}.tsx` | Radix Slot merges the component's classes onto the element; the component owns the look. A `*Trigger` with `asChild` does not count: it styles nothing |
+| `<input type="hidden">` | any form | renders nothing |
+
 ## Exceptions
 
 New exceptions need a change that updates this section, naming the file, the
@@ -116,6 +153,7 @@ reason no token works and the alternative considered.
 | Print / PDF colours (`*-pdf.tsx`, `.cv-page`, `.invoice-page`, `.pf-*`) | Literal print values on white paper (`#000000` headings, `#393d45` ink, `#5a6170` muted, `#cbcfd4` rules, `#1348dc` links); the user's own invoice accent | A print artifact is white paper inside the dark chrome, so the paper re-scopes the token variables to these literals | None — print must look the same in every scheme |
 | Hub painted backdrop (`apps/home/src/components/painted-backdrop.tsx`) | Literal paint colours and SVG gradients inside an SVG | It is an illustration (the hero's landscape), not chrome; no lint rule matches SVG attributes | A flat `bg-card` frame — rejected: cursor.com's hero frames its window on a painting |
 | Flag SVGs, social-platform logos | Brand / `#fff` colours | Third-party marks, not chrome | None — recognition requires accurate colour |
+| `SwatchPicker` colours (`packages/ui/src/ui/swatch-picker.tsx`, the invoice accent presets) | Inline `backgroundColor` from a hex value | The swatches show document colours the user picks for their own invoice, not chrome | A token per preset — rejected: the presets are content and the custom colour is arbitrary |
 
 The portfolio deck (`portfolio-preview.tsx`) styles its pages through the
 scoped `.pf-*` CSS in `apps/portfolio/src/styles.css`, so the component itself

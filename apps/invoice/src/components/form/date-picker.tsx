@@ -1,35 +1,33 @@
-import { cn } from "@rulisme/ui/lib/utils";
-import { Button } from "@rulisme/ui/ui/button";
-import { Calendar } from "@rulisme/ui/ui/calendar";
+import { addDaysIso, isoToday } from "@rulisme/ui/lib/iso-date";
+import type { DatePreset } from "@rulisme/ui/ui/date-picker";
+import { DatePicker as SharedDatePicker } from "@rulisme/ui/ui/date-picker";
 import { Label } from "@rulisme/ui/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@rulisme/ui/ui/popover";
 import { format, parse } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { useState } from "react";
+import { useId } from "react";
 import { formatInvoiceDate } from "@/components/invoice-form-utils";
+import { useTranslation } from "@/i18n";
 
-const DATE_FORMATS = ["dd MMM yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "MM/dd/yyyy"];
+// The invoice's date fields on the shared DatePicker (`@rulisme/ui`). Values
+// are stored as ISO `yyyy-MM-dd`; older drafts may hold "dd MMM yyyy" and
+// friends, so the value is normalised before it reaches the picker.
 
-function parseDate(str: string): Date | undefined {
-  if (!str) {
-    return undefined;
+const DATE_FORMATS = ["yyyy-MM-dd", "dd MMM yyyy", "dd-MM-yyyy", "MM/dd/yyyy"];
+
+function toIso(value: string): string {
+  if (!value) {
+    return "";
   }
   for (const fmt of DATE_FORMATS) {
-    try {
-      const d = parse(str, fmt, new Date());
-      if (!Number.isNaN(d.getTime())) {
-        return d;
-      }
-    } catch {
-      /* continue */
+    const parsed = parse(value, fmt, new Date());
+    if (!Number.isNaN(parsed.getTime())) {
+      return format(parsed, "yyyy-MM-dd");
     }
   }
-  return undefined;
+  return "";
 }
+
+/** Which shortcuts the field offers: an issue date or a due date. */
+export type DatePresetKind = "issue" | "due";
 
 interface DatePickerProps {
   label: string;
@@ -37,6 +35,7 @@ interface DatePickerProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  presetKind?: DatePresetKind;
 }
 
 export function DatePicker({
@@ -44,63 +43,47 @@ export function DatePicker({
   value,
   onChange,
   disabled,
-  placeholder = "Select date...",
+  placeholder,
+  presetKind = "issue",
 }: DatePickerProps) {
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(() => parseDate(value));
-
-  function handleOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      setDate(parseDate(value));
-    }
-    setOpen(isOpen);
-  }
-
-  function handleSelect(selected: Date | undefined) {
-    if (!selected) {
-      return;
-    }
-    setDate(selected);
-    // Persist canonical ISO (yyyy-MM-dd); the display below renders it friendly.
-    // Keeps app-written dates compatible with the mcp isoDateField tools. [defect-1]
-    onChange(format(selected, "yyyy-MM-dd"));
-    setOpen(false);
-  }
+  const { t } = useTranslation();
+  const id = useId();
+  const today = isoToday();
+  const presets: DatePreset[] =
+    presetKind === "due"
+      ? [
+          { label: t("form.datePresets.inAWeek"), value: addDaysIso(today, 7) },
+          {
+            label: t("form.datePresets.in14Days"),
+            value: addDaysIso(today, 14),
+          },
+          {
+            label: t("form.datePresets.in30Days"),
+            value: addDaysIso(today, 30),
+          },
+        ]
+      : [
+          { label: t("form.datePresets.today"), value: today },
+          {
+            label: t("form.datePresets.tomorrow"),
+            value: addDaysIso(today, 1),
+          },
+        ];
 
   return (
     <div className="space-y-1.5">
-      <Label>{label}</Label>
-      <Popover onOpenChange={handleOpenChange} open={open}>
-        <PopoverTrigger asChild>
-          <Button
-            className={cn(
-              // A field, not a pill: the 36px, 8px-radius input shape.
-              "h-9 w-full justify-start rounded-lg border-border bg-background px-3 hover:border-input hover:bg-background",
-              !value && "text-muted-foreground"
-            )}
-            disabled={disabled}
-            variant="outline"
-          >
-            <CalendarIcon
-              aria-hidden="true"
-              className="text-muted-foreground"
-              data-icon="inline-start"
-            />
-            <span className="truncate">
-              {value ? formatInvoiceDate(value) : placeholder}
-            </span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent align="start" className="w-auto p-0">
-          <Calendar
-            defaultMonth={date}
-            mode="single"
-            onSelect={handleSelect}
-            selected={date}
-            showOutsideDays
-          />
-        </PopoverContent>
-      </Popover>
+      <Label htmlFor={id}>{label}</Label>
+      <SharedDatePicker
+        clearLabel={t("form.datePresets.clearDate")}
+        disabled={disabled}
+        formatValue={formatInvoiceDate}
+        id={id}
+        onValueChange={onChange}
+        placeholder={placeholder ?? t("placeholders.selectDate")}
+        presets={presets}
+        presetsLabel={t("form.datePresets.label")}
+        value={toIso(value)}
+      />
     </div>
   );
 }

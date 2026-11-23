@@ -1,6 +1,9 @@
+import { AppBrand } from "@rulisme/ui/blocks/app-brand";
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
@@ -45,11 +48,14 @@ import type { InvoiceData } from "@/components/invoice-form";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import sampleData from "@/data/sample-invoice.json";
-import { AppBrand, GhostPage } from "@/components/editor-chrome";
 import { translateNow, useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
 import { useCloudSave } from "@/lib/use-cloud-save";
+
+// The app mark ships in public/ as the favicon set; the 192px cut stays
+// sharp at 20px on any display density.
+const APP_MARK_SRC = "/favicon-active/android-chrome-192x192.png";
 
 // Canonical ISO `yyyy-MM-dd` seed for a new invoice's issue date, matching what
 // the mcp tools and createEmptyInvoice() persist (was "dd MMM yyyy"). [defect-1]
@@ -326,7 +332,7 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
           {DOWNLOAD_SHORTCUT}
         </DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onJson}>
+      <DropdownMenuItem description=".json" onClick={onJson}>
         <FileJson aria-hidden="true" />
         {t("toolbar.downloadJson")}
       </DropdownMenuItem>
@@ -437,7 +443,6 @@ export function InvoiceGenerator() {
     []
   );
   const [generating, setGenerating] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEmpty = !data.from.companyName.trim() && data.items.length === 0;
   const canDownload = !(isEmpty || generating);
   const showCloudStatus = Boolean(invoiceId) && cloud.hasToken;
@@ -449,8 +454,8 @@ export function InvoiceGenerator() {
     setConfirmOpen(false);
   };
 
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImportJSON = (files: File[]) => {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -466,7 +471,6 @@ export function InvoiceGenerator() {
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
   };
 
   const handleDownloadPDF = async () => {
@@ -555,7 +559,7 @@ export function InvoiceGenerator() {
         {/* Form pane: a 48px toolbar over the form's ruled sections. */}
         <div className="invoice-no-print no-scrollbar w-full border-border border-b bg-background md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
-            <AppBrand name={t("meta.siteName")} />
+            <AppBrand name={t("meta.siteName")} src={APP_MARK_SRC} />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
@@ -563,26 +567,19 @@ export function InvoiceGenerator() {
             />
             <div className="ml-auto flex items-center gap-1">
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.importJson")}
-                    onClick={() => fileInputRef.current?.click()}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Upload aria-hidden="true" />
-                  </Button>
-                </TooltipTrigger>
+                <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      aria-label={t("toolbar.importJson")}
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <Upload aria-hidden="true" />
+                    </Button>
+                  </TooltipTrigger>
+                </FileTrigger>
                 <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
               </Tooltip>
-              <input
-                accept=".json"
-                aria-label={t("toolbar.importJson")}
-                className="hidden"
-                onChange={handleImportJSON}
-                ref={fileInputRef}
-                type="file"
-              />
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
