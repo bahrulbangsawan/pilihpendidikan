@@ -1,8 +1,9 @@
 // The nav band of 12 §2.1, drawn like cursor.com/docs' header: 49px on the
 // page colour with one bottom rule, the wordmark in a cell as wide as the
-// sidebar below it, the ⌘K search box centred (36px, 8px radius, the ⌘K
-// chip) and the one primary pill of the nav, New with `N`. The sections
-// live in the sidebar only.
+// sidebar below it, the ⌘K search box centred on the viewport (36px, 8px
+// radius, the ⌘K chip), then an outline `sm` pill to the CLI page and the
+// one primary pill of the nav, New with `N`. The sections live in the
+// sidebar only.
 
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
@@ -31,7 +32,7 @@ export function NavBand({
     <header
       className={`sticky top-0 z-30 border-border border-b bg-background ${NAV_HEIGHT_CLASS}`}
     >
-      <div className="flex h-12 items-center">
+      <div className="relative flex h-12 items-center">
         <div
           className={`flex shrink-0 items-center gap-1 px-3 md:px-6 ${SIDEBAR_WIDTH_CLASS} max-md:w-auto`}
         >
@@ -52,32 +53,38 @@ export function NavBand({
             <BrandMark label={t("app.name")} />
           </AppLink>
         </div>
+        <div className="pointer-events-none absolute inset-y-0 left-1/2 flex w-80 -translate-x-1/2 items-center max-lg:hidden">
+          <button
+            aria-keyshortcuts="Meta+K Control+K"
+            className="type-body pointer-events-auto flex h-9 w-full items-center gap-2 rounded-lg border border-border bg-background px-3 text-muted-foreground outline-none transition-colors hover:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0"
+            onClick={onPalette}
+            type="button"
+          >
+            <Search aria-hidden="true" className="size-4 shrink-0" />
+            <span className="flex-1 truncate text-left">{t("nav.search")}</span>
+            <Kbd aria-hidden="true">⌘K</Kbd>
+          </button>
+        </div>
         <div className="flex min-w-0 flex-1 items-center gap-2 px-4 sm:px-6">
-          <div className="flex min-w-0 flex-1 justify-center max-sm:hidden">
-            <button
-              aria-keyshortcuts="Meta+K Control+K"
-              className="type-body flex h-9 w-full max-w-80 items-center gap-2 rounded-lg border border-border bg-background px-3 text-muted-foreground outline-none transition-colors hover:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0"
-              onClick={onPalette}
-              type="button"
-            >
-              <Search aria-hidden="true" className="size-4 shrink-0" />
-              <span className="flex-1 truncate text-left">
-                {t("nav.search")}
-              </span>
-              <Kbd aria-hidden="true">⌘K</Kbd>
-            </button>
-          </div>
           <div className="ml-auto flex items-center gap-2">
             <Button
               aria-label={t("nav.search")}
-              className="sm:hidden"
+              className="lg:hidden"
               onClick={onPalette}
               size="icon-sm"
               variant="ghost"
             >
               <Search aria-hidden="true" />
             </Button>
-            <Button aria-keyshortcuts="N" onClick={onNew}>
+            <Button
+              asChild
+              className="max-sm:hidden"
+              size="sm"
+              variant="outline"
+            >
+              <AppLink href="/cli">{t("nav.getCli")}</AppLink>
+            </Button>
+            <Button aria-keyshortcuts="N" onClick={onNew} size="sm">
               <Plus aria-hidden="true" data-icon="inline-start" />
               {t("nav.new")}
               <Kbd aria-hidden="true">N</Kbd>

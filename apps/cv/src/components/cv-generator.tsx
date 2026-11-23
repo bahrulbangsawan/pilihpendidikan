@@ -46,6 +46,7 @@ import { toast } from "sonner";
 import { CVForm } from "@/components/cv-form";
 import { CVPreview } from "@/components/cv-preview";
 import sampleData from "@/data/sample-cv.json";
+import { AppBrand } from "@/components/editor-chrome";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import { createBlankCv } from "@/lib/blank-cv";
@@ -443,6 +444,7 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
         <h1 className="sr-only">{t("meta.title")}</h1>
         <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand name={t("meta.siteName")} />
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline">

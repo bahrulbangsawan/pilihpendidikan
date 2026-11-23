@@ -33,6 +33,8 @@ const STRIP_ITEMS = [
   { key: "indonesian", Icon: Languages },
 ] as const;
 
+const EXPORT_ITEMS = ["cv", "invoice", "portfolio", "jobs"] as const;
+
 const WHY_ITEMS = [
   "preview",
   "pdf",
@@ -112,6 +114,35 @@ function Strip() {
   );
 }
 
+/** A 22px heading over four small text cards (cursor.com's highlights row). */
+function Exports() {
+  const { t } = useTranslation();
+  return (
+    <section aria-labelledby="exports-heading" className={SECTION_CLASS}>
+      <div className={CONTAINER_CLASS}>
+        <h2 className="type-title" id="exports-heading">
+          {t("exports.heading")}
+        </h2>
+        <ul className="mt-[22px] grid gap-[10px] sm:grid-cols-2 lg:grid-cols-4">
+          {EXPORT_ITEMS.map((key) => (
+            <li
+              className="flex flex-col rounded-sm border border-hairline bg-card px-[15px] pt-[13.4px] pb-[15px]"
+              key={key}
+            >
+              <p className="type-subtitle text-ink-mid">
+                {t(`exports.${key}.label`)}
+              </p>
+              <p className="type-subtitle text-pretty">
+                {t(`exports.${key}.title`)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 /** A centred 36px headline over six cards, like cursor.com's quotes. */
 function Why() {
   const { t } = useTranslation();
@@ -127,7 +158,7 @@ function Why() {
         <ul className="mt-14 grid gap-[10px] md:grid-cols-3">
           {WHY_ITEMS.map((key) => (
             <li
-              className="flex min-h-[180px] flex-col rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px]"
+              className="flex flex-col rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px] md:min-h-[180px]"
               key={key}
             >
               <h3 className="type-subtitle">{t(`why.${key}.title`)}</h3>
@@ -175,6 +206,7 @@ export function HubPage({ services }: { services: Services }) {
                   flip={index % 2 === 1}
                   id={id}
                   service={services[id]}
+                  stage={index}
                 />
               </li>
             ))}
@@ -197,6 +229,8 @@ export function HubPage({ services }: { services: Services }) {
             </div>
           </div>
         </section>
+
+        <Exports />
 
         <section
           aria-labelledby="cta-heading"

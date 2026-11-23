@@ -82,6 +82,8 @@
   --color-pane-2: var(--pane-2); /* card-03: secondary buttons, selected */
   --color-pane-3: var(--pane-3); /* card-04: secondary hover */
   --color-shot: var(--shot); /* dark screenshot placeholders */
+  --color-stage-warm: var(--stage-warm); /* media panel behind a window */
+  --color-stage-stone: var(--stage-stone); /* media panel, the cooler step */
   --color-link: var(--link); /* the orange: text links only */
   --color-success: var(--success);
   --color-tooltip: var(--tooltip);
@@ -181,6 +183,8 @@
   --pane-2: #26241e;
   --pane-3: #2b2923;
   --shot: #0b0a06;
+  --stage-warm: #474138; /* cursor.com's feature media panels, measured */
+  --stage-stone: #3b3834;
   --link: #f54e00;
   --success: #4cc79b;
   --tooltip: #edecec;

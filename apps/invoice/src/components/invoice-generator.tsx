@@ -45,6 +45,7 @@ import type { InvoiceData } from "@/components/invoice-form";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import sampleData from "@/data/sample-invoice.json";
+import { AppBrand, GhostPage } from "@/components/editor-chrome";
 import { translateNow, useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
@@ -337,14 +338,13 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
 // frames it on screen, and it prints bare at full width (the print CSS in
 // styles.css prints `.invoice-page` alone). The empty state stays unframed.
 function PreviewSheet({ data }: { data: InvoiceData }) {
+  const { t } = useTranslation();
   const hasDocument = Boolean(data.from.companyName) || data.items.length > 0;
+  if (!hasDocument) {
+    return <GhostPage description={t("preview.emptyState")} />;
+  }
   return (
-    <div
-      className={cn(
-        "mx-auto w-full max-w-2xl print:max-w-none",
-        hasDocument && "border border-border print:border-0"
-      )}
-    >
+    <div className="mx-auto w-full max-w-2xl border border-border print:max-w-none print:border-0">
       <InvoicePreview data={data} />
     </div>
   );
@@ -555,6 +555,7 @@ export function InvoiceGenerator() {
         {/* Form pane: a 48px toolbar over the form's ruled sections. */}
         <div className="invoice-no-print no-scrollbar w-full border-border border-b bg-background md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand name={t("meta.siteName")} />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}

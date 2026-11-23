@@ -3,18 +3,18 @@
 // displacement (the brush edge) and finished with a canvas grain. Muted
 // lavender-grey and ochre, like an impressionist study. Decorative only.
 
-const SKY_TOP = "#aca7ad";
-const SKY_HORIZON = "#c8bea8";
-const RANGE_FAR = "#a39a97";
-const RANGE_NEAR = "#8f837b";
-const HILL_LEFT_LIGHT = "#b3a57c";
-const HILL_LEFT_DARK = "#5e5a3e";
-const HILL_RIGHT = "#9b857d";
-const SHORE = "#5d5444";
-const WATER_TOP = "#9b9bab";
-const WATER_BOTTOM = "#7e8193";
-const CLOUD = "#cfc8bb";
-const GLINT = "#c2c1c8";
+const SKY_TOP = "#b4ad9f";
+const SKY_HORIZON = "#cbbf9f";
+const RANGE_FAR = "#a0a08c";
+const RANGE_NEAR = "#7f806a";
+const HILL_LEFT_LIGHT = "#b09d68";
+const HILL_LEFT_DARK = "#4f563c";
+const HILL_RIGHT = "#8d8470";
+const SHORE = "#4d4a38";
+const WATER_TOP = "#8f97a0";
+const WATER_BOTTOM = "#6c7684";
+const CLOUD = "#d3c9b0";
+const GLINT = "#b9c0c4";
 
 const CLOUDS = [
   { cx: 260, cy: 90, rx: 210, ry: 34 },
@@ -52,7 +52,7 @@ export function PaintedBackdrop() {
         </linearGradient>
         <filter height="140%" id="pb-brush" width="140%" x="-20%" y="-20%">
           <feTurbulence
-            baseFrequency="0.011 0.045"
+            baseFrequency="0.016 0.026"
             numOctaves="4"
             result="noise"
             seed="7"
@@ -85,7 +85,7 @@ export function PaintedBackdrop() {
         </filter>
         <filter id="pb-strokes">
           <feTurbulence
-            baseFrequency="0.004 0.09"
+            baseFrequency="0.02 0.045"
             numOctaves="3"
             seed="11"
             type="fractalNoise"

@@ -1,12 +1,5 @@
 import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@rulisme/ui/ui/empty";
-import { FileText } from "lucide-react";
+import { GhostPage } from "@/components/editor-chrome";
 import { BasicPreview } from "@/components/templates/basic-preview";
 import { HarvardPreview } from "@/components/templates/harvard-preview";
 import { SimplePreview } from "@/components/templates/simple-preview";
@@ -47,15 +40,10 @@ export function CVPreview({ data, style }: CVPreviewProps) {
 
   if (!hasContent) {
     return (
-      <Empty className="py-20">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FileText aria-hidden="true" />
-          </EmptyMedia>
-          <EmptyTitle>{t("preview.emptyTitle")}</EmptyTitle>
-          <EmptyDescription>{t("preview.emptyDescription")}</EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <GhostPage
+        description={t("preview.emptyDescription")}
+        title={t("preview.emptyTitle")}
+      />
     );
   }
 

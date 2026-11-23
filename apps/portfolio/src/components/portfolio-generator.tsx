@@ -43,6 +43,7 @@ import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form";
 import { PortfolioPreview } from "@/components/portfolio-preview";
 import type { Portfolio } from "@/components/portfolio-data-model";
 import sampleData from "@/data/sample-portfolio.json";
+import { AppBrand, GhostPage } from "@/components/editor-chrome";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
@@ -125,6 +126,17 @@ function flushSave() {
 interface PortfolioGeneratorProps {
   portfolioId?: string;
   print?: boolean;
+}
+
+// Mirrors the preview's own test (portfolio-preview.tsx): until a name or a
+// project has text, the pane shows a ghost page instead of the deck.
+function hasPreviewContent(data: Portfolio): boolean {
+  return (
+    Boolean(data.owner.fullName.trim()) ||
+    data.projects.some(
+      (p) => p.title.trim() || p.summary.trim() || p.description.trim()
+    )
+  );
 }
 
 export function PortfolioGenerator({
@@ -354,6 +366,7 @@ export function PortfolioGenerator({
         <h1 className="sr-only">{t("meta.title")}</h1>
         <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand name={t("meta.siteName")} />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
@@ -512,7 +525,14 @@ export function PortfolioGenerator({
             </ButtonGroup>
           </div>
           <div className="pf-preview-scroll p-4 sm:p-6">
-            <PortfolioPreview data={data} />
+            {hasPreviewContent(data) ? (
+              <PortfolioPreview data={data} />
+            ) : (
+              <GhostPage
+                description={t("preview.empty")}
+                orientation="landscape"
+              />
+            )}
           </div>
         </div>
         {/* Floating download button, mobile only */}

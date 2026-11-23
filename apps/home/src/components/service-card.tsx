@@ -44,17 +44,22 @@ function FeatureCopy({
 }
 
 /** Media panel of a large card: 16 of 24 columns, 680px tall on desktop. */
+const STAGES = ["bg-stage-warm", "bg-stage-stone", "bg-pane-2"] as const;
+
 function FeatureMedia({
   children,
   flip,
+  stage = 2,
 }: {
   children: ReactNode;
   flip: boolean;
+  stage?: number;
 }) {
   return (
     <div
       className={cn(
-        "relative h-[360px] overflow-hidden rounded-xs bg-pane lg:col-span-16 lg:row-start-1 lg:h-[680px]",
+        "relative h-[360px] overflow-hidden rounded-xs lg:col-span-16 lg:row-start-1 lg:h-[680px]",
+        STAGES[stage % STAGES.length],
         flip ? "lg:col-start-1" : "lg:col-start-9"
       )}
     >
@@ -72,10 +77,12 @@ export function ServiceCard({
   id,
   service,
   flip,
+  stage,
 }: {
   id: ToolId;
   service: Service;
   flip: boolean;
+  stage: number;
 }) {
   const { locale, t } = useTranslation();
   const live = isLive(service);
@@ -111,16 +118,28 @@ export function ServiceCard({
           </Badge>
         )}
       </FeatureCopy>
-      <FeatureMedia flip={flip}>
-        <img
-          alt={t("features.shotAlt").replace("{{name}}", name)}
-          className="absolute top-8 left-8 w-[1180px] max-w-none rounded-lg border border-border shadow-lg lg:top-10"
-          decoding="async"
-          height={737}
-          loading="lazy"
-          src={`/shots/${id}.webp`}
-          width={1180}
-        />
+      <FeatureMedia flip={flip} stage={stage}>
+        <figure className="absolute top-8 left-8 w-[1000px] overflow-hidden rounded-lg border border-border bg-card shadow-lg lg:top-10">
+          <figcaption className="grid h-7 grid-cols-[1fr_auto_1fr] items-center gap-3 border-border border-b px-3">
+            <span aria-hidden="true" className="flex gap-1.5">
+              <span className="size-2.5 rounded-full bg-pane-3" />
+              <span className="size-2.5 rounded-full bg-pane-3" />
+              <span className="size-2.5 rounded-full bg-pane-3" />
+            </span>
+            <span className="type-caption truncate text-ink-sec">
+              {t("features.windowTitle").replace("{{name}}", name)}
+            </span>
+          </figcaption>
+          <img
+            alt={t("features.shotAlt").replace("{{name}}", name)}
+            className="block h-auto w-full"
+            decoding="async"
+            height={620}
+            loading="lazy"
+            src={`/shots/${id}.webp`}
+            width={1000}
+          />
+        </figure>
       </FeatureMedia>
     </div>
   );

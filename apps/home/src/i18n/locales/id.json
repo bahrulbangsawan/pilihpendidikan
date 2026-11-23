@@ -118,7 +118,8 @@
     "jobs": {
       "cta": "Buka pelacak lamaran"
     },
-    "shotAlt": "Tangkapan layar {{name}}"
+    "shotAlt": "Tangkapan layar {{name}}",
+    "windowTitle": "{{name}} — pilihpendidikan"
   },
   "why": {
     "heading": "Tulis, lihat, unduh.",
@@ -153,5 +154,24 @@
   "cta": {
     "title": "Mulai CV Anda sekarang.",
     "button": "Lihat pembuat dokumen"
+  },
+  "exports": {
+    "heading": "Yang Anda unduh",
+    "cv": {
+      "label": "CV",
+      "title": "PDF, atau data Anda sebagai Markdown atau JSON"
+    },
+    "invoice": {
+      "label": "Invoice",
+      "title": "PDF dengan alamat Indonesia"
+    },
+    "portfolio": {
+      "label": "Portofolio",
+      "title": "PDF A4 lanskap untuk Apple Developer Academy"
+    },
+    "jobs": {
+      "label": "Pelacak lamaran",
+      "title": "Alat baris perintah pilih-jobs"
+    }
   }
 }

@@ -1,4 +1,5 @@
-// The inbox score cell (12 §4): the number with a 40px primary bar, ◌ while
+// The inbox score cell (12 §4): a neutral chip with the number and a 40px
+// grey bar (orange text only for a high score), ◌ while
 // queued, — when there is no score (AI off, failed or not requested). The
 // tooltip holds the explanation and, once opened, the component breakdown;
 // the row's expanded details repeat it for touch screens.
@@ -63,8 +64,8 @@ export function ScoreCellView({
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1 rounded-sm border border-border px-1.5 tabular-nums",
-          cell.band === "high" ? "text-foreground" : "text-muted-foreground"
+          "inline-flex items-center gap-1 rounded-full bg-pane-2 px-2 tabular-nums",
+          cell.band === "high" ? "text-link" : "text-ink-sec"
         )}
         data-score={cell.band}
       >
@@ -82,16 +83,16 @@ export function ScoreCellView({
         <button
           aria-label={t("inbox.score.label", { score: cell.value })}
           className={cn(
-            "inline-flex items-center gap-2 rounded-sm tabular-nums outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-            cell.band === "high" ? "text-foreground" : "text-muted-foreground"
+            "inline-flex h-5 items-center gap-2 rounded-full bg-pane-2 px-2 tabular-nums outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+            cell.band === "high" ? "text-link" : "text-ink-sec"
           )}
           data-score={cell.band}
           type="button"
         >
           <span className="min-w-5 text-right">{cell.value}</span>
-          <span aria-hidden="true" className="relative h-1.5 w-10 bg-pane">
+          <span aria-hidden="true" className="relative h-1 w-10 bg-pane-3">
             <span
-              className="absolute inset-y-0 left-0 bg-primary"
+              className="absolute inset-y-0 left-0 bg-offgray"
               style={{ width: `${Math.max(4, cell.value)}%` }}
             />
           </span>

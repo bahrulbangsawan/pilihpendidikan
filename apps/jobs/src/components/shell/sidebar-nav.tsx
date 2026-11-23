@@ -55,7 +55,7 @@ function NavRow({
           aria-hidden="true"
           className={cn(
             "size-4 shrink-0",
-            current ? "text-link" : "text-muted-foreground"
+            current ? "text-link" : "text-ink-sec"
           )}
         />
         <span className="min-w-0 flex-1 truncate">{t(`nav.${item.key}`)}</span>

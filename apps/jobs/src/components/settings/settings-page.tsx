@@ -284,8 +284,10 @@ export function SettingsPage() {
     await queryClient.invalidateQueries({ queryKey: queryKeys.settings });
   }
 
+  // A docs-page measure: the column (gutters included) holds the content to
+  // 760px so line lengths match cursor.com/docs.
   return (
-    <div className="flex flex-col">
+    <div className="flex max-w-202 flex-col">
       <PageHeader
         description={t("settings.intro")}
         title={t("settings.title")}
@@ -298,7 +300,7 @@ export function SettingsPage() {
             </span>
             <span className="type-body text-foreground">{session.email}</span>
           </div>
-          <Button onClick={() => signOut()} variant="outline">
+          <Button onClick={() => signOut()} size="sm" variant="outline">
             <LogOut aria-hidden="true" data-icon="inline-start" />
             {t("settings.signOut")}
           </Button>

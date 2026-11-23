@@ -49,6 +49,15 @@ export function HubHeader() {
           </a>
           <a
             className={cn(
+              buttonVariants({ size: "sm", variant: "outline" }),
+              "hidden h-[27px] lg:inline-flex"
+            )}
+            href={`${localePath(locale)}#mcp`}
+          >
+            {t("nav.assistants")}
+          </a>
+          <a
+            className={cn(
               buttonVariants({ size: "sm" }),
               "hidden h-[27px] sm:inline-flex"
             )}

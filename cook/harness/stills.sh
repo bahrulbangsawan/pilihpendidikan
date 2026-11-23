@@ -9,6 +9,7 @@ shot() { # name media w h url [full]
   # load lazy images: walk the page, then return to the top
   agent-browser eval "(async()=>{for(let y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(r=>setTimeout(r,60))}scrollTo(0,0);return 1})()" >/dev/null
   agent-browser wait 800 >/dev/null
+  agent-browser eval "document.querySelectorAll('agentation-toolbar').forEach(e=>e.remove()); 1" >/dev/null 2>&1
   if [[ "${6:-}" == full ]]; then agent-browser screenshot --full "$OUT/$1.png" >/dev/null; else agent-browser screenshot "$OUT/$1.png" >/dev/null; fi
   echo "$1 done"
 }

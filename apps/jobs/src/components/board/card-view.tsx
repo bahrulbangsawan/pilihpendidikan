@@ -44,30 +44,52 @@ function ScoreBadge({ card }: { card: BoardCard }) {
       </Badge>
     );
   }
-  let tone = "border-border text-muted-foreground";
+  let tone = "text-ink-sec";
   if (score.score >= HIGH_SCORE) {
-    tone = "border-link/40 text-link";
+    tone = "text-link";
   } else if (score.score >= MID_SCORE) {
-    tone = "border-border text-foreground";
+    tone = "text-foreground";
   }
   return (
     <Badge
       className={cn("tabular-nums", tone)}
       title={score.deterministic_only ? t("card.aiOff") : undefined}
-      variant="outline"
+      variant="secondary"
     >
       <span className="sr-only">{t("card.score")} </span>
       {score.score}
-      <span aria-hidden="true" className="relative h-1 w-3 bg-pane">
+      <span aria-hidden="true" className="relative h-1 w-3 bg-pane-3">
         <span
-          className="absolute inset-y-0 left-0 bg-current"
+          className="absolute inset-y-0 left-0 bg-offgray"
           style={{ width: `${Math.max(8, score.score)}%` }}
         />
       </span>
       {score.deterministic_only ? (
-        <span className="text-muted-foreground">{t("card.aiOffShort")}</span>
+        <span className="text-ink-sec">{t("card.aiOffShort")}</span>
       ) : null}
     </Badge>
+  );
+}
+
+/** A status dot inside a neutral chip: the only colour a status carries. */
+function StatusDot({
+  tone,
+  pulse = false,
+}: {
+  tone: "destructive" | "link" | "neutral";
+  pulse?: boolean;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "size-1.5 shrink-0 rounded-full",
+        tone === "destructive" && "bg-destructive",
+        tone === "link" && "bg-link",
+        tone === "neutral" && "bg-offgray",
+        pulse && "pulse-dot"
+      )}
+    />
   );
 }
 
@@ -99,22 +121,29 @@ function SubmissionBadge({ card }: { card: BoardCard }) {
       );
     case "submitted_verified":
       return (
-        <Badge variant="secondary">
-          <Check aria-hidden="true" />
+        <Badge className="text-ink-sec" variant="secondary">
+          <Check aria-hidden="true" className="text-success" />
           {t("card.submission.submitted_verified")}
         </Badge>
       );
     case "submitted_unverified":
       return (
-        <Badge variant="default">
+        <Badge className="text-ink-sec" variant="secondary">
+          <StatusDot tone="link" />
           {t("card.submission.submitted_unverified")}
         </Badge>
       );
     case "failed":
-      return <Badge variant="destructive">{t("card.submission.failed")}</Badge>;
+      return (
+        <Badge className="text-ink-sec" variant="secondary">
+          <StatusDot tone="destructive" />
+          {t("card.submission.failed")}
+        </Badge>
+      );
     case "outcome_unknown":
       return (
-        <Badge className="text-destructive" variant="outline">
+        <Badge className="text-ink-sec" variant="secondary">
+          <StatusDot tone="destructive" />
           {t("card.submission.outcome_unknown")}
         </Badge>
       );
@@ -146,18 +175,15 @@ function LiveTaskBadge({ card }: { card: BoardCard }) {
     text = taskStateLabel(t, task.state);
   }
   const active = task.state === "running" || task.state === "claimed";
+  let dot: "destructive" | "link" | "neutral" = "neutral";
+  if (task.state === "paused") {
+    dot = "destructive";
+  } else if (task.state === "awaiting_approval") {
+    dot = "link";
+  }
   return (
-    <Badge
-      className={task.state === "paused" ? "text-destructive" : undefined}
-      variant="outline"
-    >
-      <span
-        aria-hidden="true"
-        className={cn(
-          "size-1.5 rounded-full bg-current",
-          active ? "pulse-dot" : "opacity-60"
-        )}
-      />
+    <Badge className="text-ink-sec" variant="secondary">
+      <StatusDot pulse={active} tone={dot} />
       {text}
     </Badge>
   );

@@ -1993,11 +1993,13 @@ function SortableSection({
     opacity: isDragging ? 0.5 : 1,
   };
   // One band of the form, ruled off by a full-width hairline. The grip sits
-  // in the left gutter, level with the section title's 32px row.
+  // inside the left gutter, level with the section title's 32px row. With a
+  // mouse it shows only while the band is hovered or holds focus (it stays a
+  // tab stop, so the keyboard always reaches it); touch screens always show it.
   return (
     <div
       className={cn(
-        "relative border-line border-b bg-background px-4 py-6 sm:px-6",
+        "group/section relative border-line border-b bg-background px-4 py-6 sm:px-6",
         // Above the neighbouring bands, under the sticky toolbar (z-10).
         isDragging && "z-5"
       )}
@@ -2010,7 +2012,7 @@ function SortableSection({
     >
       <button
         aria-label={t("form.dragToReorder")}
-        className="absolute top-6 left-0 flex h-8 w-4 cursor-grab items-center justify-center rounded-sm text-muted-foreground outline-none transition-[color] duration-150 ease-standard hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing sm:left-1"
+        className="absolute top-6 left-0 flex h-8 w-4 cursor-grab items-center justify-center rounded-sm pointer-fine:text-transparent text-muted-foreground outline-none transition-[color] duration-150 ease-standard hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
         title={t("form.dragToReorder")}
         type="button"
         {...attributes}

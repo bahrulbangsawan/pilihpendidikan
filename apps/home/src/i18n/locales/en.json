@@ -118,7 +118,8 @@
     "jobs": {
       "cta": "Open the job tracker"
     },
-    "shotAlt": "Screenshot of the {{name}}"
+    "shotAlt": "Screenshot of the {{name}}",
+    "windowTitle": "{{name}} — pilihpendidikan"
   },
   "why": {
     "heading": "Write it, see it, download it.",
@@ -153,5 +154,24 @@
   "cta": {
     "title": "Start your CV now.",
     "button": "See the builders"
+  },
+  "exports": {
+    "heading": "What you download",
+    "cv": {
+      "label": "CV",
+      "title": "A PDF, or your data as Markdown or JSON"
+    },
+    "invoice": {
+      "label": "Invoice",
+      "title": "A PDF with Indonesian addresses"
+    },
+    "portfolio": {
+      "label": "Portfolio",
+      "title": "An A4-landscape PDF for the Apple Developer Academy"
+    },
+    "jobs": {
+      "label": "Job tracker",
+      "title": "The pilih-jobs command-line tool"
+    }
   }
 }
