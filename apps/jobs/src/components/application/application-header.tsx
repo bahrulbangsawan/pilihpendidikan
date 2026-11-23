@@ -94,7 +94,7 @@ export function ApplicationHeader({
         <ApplicationIdentity
           detail={detail}
           title={
-            <h1 className="type-title text-pretty text-foreground">
+            <h1 className="type-title weight-semibold text-pretty text-foreground">
               {posting.title}
             </h1>
           }

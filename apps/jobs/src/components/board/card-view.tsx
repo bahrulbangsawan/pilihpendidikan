@@ -167,6 +167,7 @@ export function CardView({
   pending = false,
   selected = false,
   wideAction = false,
+  compact = false,
   className,
 }: {
   card: BoardCard;
@@ -175,6 +176,8 @@ export function CardView({
   selected?: boolean;
   /** A labelled button (not the ⋯ icon) sits in the top-right corner. */
   wideAction?: boolean;
+  /** Phones: the match meter and the chips share one row. */
+  compact?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
@@ -225,8 +228,17 @@ export function CardView({
           </span>
         ) : null}
       </div>
-      <ScoreMeter score={card.score} />
-      <CardChips card={card} />
+      {compact ? (
+        <div className="flex items-center gap-3">
+          <ScoreMeter className="min-w-0 flex-1" score={card.score} />
+          <CardChips card={card} />
+        </div>
+      ) : (
+        <>
+          <ScoreMeter score={card.score} />
+          <CardChips card={card} />
+        </>
+      )}
       <CardFooter card={card} nowMs={nowMs} pending={pending} />
     </KanbanCard>
   );

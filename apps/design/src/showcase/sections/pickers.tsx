@@ -228,7 +228,7 @@ function SegmentedBlock() {
 
 const STATUSES = [
   { value: "draft", label: "Draft", tone: "neutral", hint: "Not sent" },
-  { value: "sent", label: "Sent", tone: "link", hint: "Awaiting payment" },
+  { value: "sent", label: "Sent", tone: "blue", hint: "Awaiting payment" },
   { value: "overdue", label: "Overdue", tone: "destructive", hint: "7 days" },
   { value: "paid", label: "Paid", tone: "success", hint: "Settled" },
 ] as const;

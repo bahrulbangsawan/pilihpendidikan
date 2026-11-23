@@ -667,7 +667,7 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="cv-preview-scroll p-4 sm:p-6">
+          <div className="cv-preview-scroll p-6">
             <CVPreview data={data} style={style} />
           </div>
         </div>

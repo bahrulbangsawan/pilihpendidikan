@@ -167,7 +167,13 @@ function PickerField({
   const { className, size = "default", align: _align, ...rest } = triggerProps;
   const showClear = clearable && !empty && !rest.disabled;
   return (
-    <div className={cn("relative w-full", className)} data-slot="date-picker">
+    // With a mouse the clear × shows only while the field is hovered or holds
+    // focus (it stays a tab stop, so the keyboard still reaches it); touch
+    // screens always show it.
+    <div
+      className={cn("group/date-picker relative w-full", className)}
+      data-slot="date-picker"
+    >
       <PopoverTrigger asChild>
         <FieldButton
           className={cn(showClear && "pr-9")}
@@ -187,7 +193,7 @@ function PickerField({
       {showClear ? (
         <Button
           aria-label={clearLabel}
-          className="absolute top-1/2 right-1.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          className="absolute top-1/2 right-1.5 -translate-y-1/2 text-muted-foreground pointer-fine:opacity-0 hover:text-foreground pointer-fine:group-focus-within/date-picker:opacity-100 pointer-fine:group-hover/date-picker:opacity-100"
           data-slot="date-picker-clear"
           onClick={onClear}
           size="icon-xs"

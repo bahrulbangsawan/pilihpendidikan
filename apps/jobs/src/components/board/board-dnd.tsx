@@ -29,6 +29,7 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import type { PointerEvent, ReactNode } from "react";
 import { useMemo, useRef, useState } from "react";
+import { cn } from "@rulisme/ui/lib/utils";
 import { toast } from "sonner";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
@@ -305,6 +306,33 @@ export function DesktopBoard(props: DesktopBoardProps) {
     selectedIds: props.selectedIds,
   };
 
+  const closedRails = CLOSED_STAGES.every((stage) =>
+    props.collapsed.has(stage)
+  );
+  const renderLane = (stage: Stage) =>
+    props.collapsed.has(stage) ? (
+      <CollapsedLane
+        count={props.filtered ? shown[stage].length : totals[stage]}
+        key={stage}
+        onExpand={() => props.onCollapsedChange(stage, false)}
+        stage={stage}
+        state={stateFor(stage)}
+      />
+    ) : (
+      <BoardColumn
+        {...common}
+        cards={shown[stage]}
+        empty={stage === "saved" ? props.empty : undefined}
+        filtered={props.filtered}
+        key={stage}
+        onCollapse={() => props.onCollapsedChange(stage, true)}
+        onSelectAll={() => props.onSelectAll(stage)}
+        stage={stage}
+        state={stateFor(stage)}
+        total={totals[stage]}
+      />
+    );
+
   return (
     <DndContext
       accessibility={{
@@ -319,33 +347,23 @@ export function DesktopBoard(props: DesktopBoardProps) {
       sensors={sensors}
     >
       <div
-        className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:px-6 lg:px-8"
+        className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto pb-3 pl-4 [scrollbar-color:var(--color-offgray)_transparent] [scrollbar-width:thin] sm:pl-6 lg:pl-8"
         data-testid="board-columns"
       >
-        {[...BOARD_STAGES, ...CLOSED_STAGES].map((stage) =>
-          props.collapsed.has(stage) ? (
-            <CollapsedLane
-              count={props.filtered ? shown[stage].length : totals[stage]}
-              key={stage}
-              onExpand={() => props.onCollapsedChange(stage, false)}
-              stage={stage}
-              state={stateFor(stage)}
-            />
-          ) : (
-            <BoardColumn
-              {...common}
-              cards={shown[stage]}
-              empty={stage === "saved" ? props.empty : undefined}
-              filtered={props.filtered}
-              key={stage}
-              onCollapse={() => props.onCollapsedChange(stage, true)}
-              onSelectAll={() => props.onSelectAll(stage)}
-              stage={stage}
-              state={stateFor(stage)}
-              total={totals[stage]}
-            />
-          )
-        )}
+        {BOARD_STAGES.map(renderLane)}
+        {/* The closed lanes close the row. While both are collapsed rails
+            they stick to the right edge (16px gutter), so Rejected and
+            Withdrawn stay in view and take drops however far the row
+            scrolls; the page shows through nowhere behind them. */}
+        <div
+          className={cn(
+            "flex shrink-0 items-stretch gap-3 pr-4",
+            closedRails && "sticky right-0 z-10 bg-background pl-3"
+          )}
+          data-testid="board-closed-lanes"
+        >
+          {CLOSED_STAGES.map(renderLane)}
+        </div>
       </div>
       <DragOverlay dropAnimation={null}>
         {activeCard ? (

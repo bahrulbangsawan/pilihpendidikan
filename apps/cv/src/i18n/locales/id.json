@@ -152,7 +152,17 @@
     "months": "{n} Bulan",
     "day": "{n} Hari",
     "days": "{n} Hari",
-    "zeroDays": "0 Hari"
+    "zeroDays": "0 Hari",
+    "empty": {
+      "experience": "Belum ada pengalaman. Tambahkan pekerjaan dan magang, yang terbaru dulu.",
+      "education": "Belum ada pendidikan. Tambahkan gelar, sekolah atau kursus.",
+      "skills": "Belum ada keahlian. Kelompokkan per kategori, misalnya Bahasa atau Tools.",
+      "awards": "Belum ada penghargaan. Tambahkan prestasi, hadiah atau beasiswa.",
+      "certificates": "Belum ada sertifikat. Tambahkan lisensi dan sertifikat kursus.",
+      "languages": "Belum ada bahasa. Tambahkan masing-masing dengan tingkatnya.",
+      "projects": "Belum ada proyek. Tambahkan karya yang bisa ditautkan.",
+      "volunteer": "Belum ada kegiatan relawan. Tambahkan peran di komunitas, acara atau kegiatan sosial."
+    }
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",

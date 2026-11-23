@@ -1,6 +1,7 @@
 // The List view (`?view=list`, reui's grouped lists): one collapsible group
 // per stage under a plain label + count + hairline header, one row per
-// application — a 32px square company tile, role and company, location,
+// application on a proportional grid (reui's list-1) — a 32px company tile
+// with 8px corners, role and company, location,
 // source, the score meter, the stage chip and the age. Rows answer the
 // same clicks and keys as board cards (use-card-handlers.ts).
 
@@ -47,7 +48,9 @@ function ListRow({
           stage: stageLabel(t, card.stage),
         })}
         className={cn(
-          "grid grid-cols-[auto_minmax(0,1fr)_auto] items-center justify-stretch gap-3 rounded-none py-3 pr-12! pl-3! focus-visible:outline-offset-[-2px] md:grid-cols-[auto_minmax(0,1fr)_7rem_8rem_3rem] xl:grid-cols-[auto_minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,0.8fr)_7rem_8rem_3rem] xl:gap-5",
+          // reui's list: title block 2fr, location 1fr, source 1fr, match
+          // 120px, stage 110px, age 56px; the 32px menu sits in the pr-12.
+          "grid h-auto! grid-cols-[2rem_minmax(0,1fr)_auto] items-center justify-stretch gap-3 rounded-none py-3 pr-12! pl-3! focus-visible:outline-offset-[-2px] md:grid-cols-[2rem_minmax(0,1fr)_120px_110px_56px] md:gap-4 xl:grid-cols-[2rem_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_120px_110px_56px]",
           selected && "bg-pane-2 hover:bg-pane-2",
           pending && "opacity-70"
         )}
@@ -58,7 +61,11 @@ function ListRow({
         onKeyDown={(event) => handlers.onCardKeyDown(card, event)}
         variant="row"
       >
-        <EntityAvatar name={card.posting.company_name} shape="square" />
+        <EntityAvatar
+          name={card.posting.company_name}
+          shape="square"
+          size="default"
+        />
         <span className="flex min-w-0 flex-col">
           <span className="type-body weight-semibold truncate text-foreground">
             {card.posting.title}
@@ -74,14 +81,14 @@ function ListRow({
             </span>
           </span>
         </span>
-        <span className="type-caption hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
+        <span className="type-body-compact hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
           <MapPin
             aria-hidden="true"
             className="size-3.5 shrink-0 text-muted-foreground"
           />
           <span className="truncate">{location || "—"}</span>
         </span>
-        <span className="type-caption hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
+        <span className="type-body-compact hidden min-w-0 items-center gap-1.5 text-ink-sec xl:flex">
           <Globe
             aria-hidden="true"
             className="size-3.5 shrink-0 text-muted-foreground"
@@ -209,7 +216,7 @@ export function BoardList({
             ) : (
               <ul
                 aria-label={stageLabel(t, stage)}
-                className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card"
+                className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card"
               >
                 {cards.map((card) => (
                   <ListRow

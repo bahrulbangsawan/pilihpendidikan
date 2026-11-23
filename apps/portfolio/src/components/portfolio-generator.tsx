@@ -521,7 +521,7 @@ export function PortfolioGenerator({
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="pf-preview-scroll p-4 sm:p-6">
+          <div className="pf-preview-scroll p-6">
             {hasPreviewContent(data) ? (
               <PortfolioPreview data={data} />
             ) : (

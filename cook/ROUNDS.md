@@ -29,6 +29,8 @@ Best so far: round 1 (in progress)
 - 02:20 In-app buttons stay pills (cursor.com system is canonical; reui's 6px buttons rejected) — one rule everywhere, logged after critic B raised it.
 - 02:20 Hub nav: centre = Features, What you get, Crawler; right = language, outline "AI assistants", primary "Builders" (no duplicates; each live service still linked once).
 
+- 02:55 reui alignment for app surfaces (round-4 critics, 3 of 3): `rounded-xl` = 12px allowed for app containers (lanes, sheets, outer frames; lint now stops at 2xl); weight 500 (`weight-semibold`) for titles and labels inside app blocks (card titles, setting-row labels, sheet title, menu header); stage tints `tone-blue` / `tone-violet` / `tone-amber` from cursor.com's own chart-series colours (blue and violet lifted for AA on 12% tints). Orange stays links only.
+
 ## User feedback inbox
 
 - 2026-11-24 00:12 "btw dark mode only, without lightmode." | round 1 | done (all apps dark only, toggles removed; proof: cook/compare/r01/*).
@@ -126,3 +128,32 @@ Top gaps (both critics agree):
 4. Colour discipline: orange/green match bars and orange charts → neutral meters and an ink ramp; tinted stage badges (10%) instead of dot-only pills; tinted delta chips with arrows; StatCard `…` menu.
 5. Consistency: one Kbd style, SegmentedControl height = pill height, profile dropdown side=right with separators and kbd hints, phone duplicate H1, tab-strip fade.
 6. Hub: feature windows cropped mid-field → fully framed with inset; MCP stage too empty; why-cards dead space; footer too thin; phone hero one CTA; nav duplicates between centre and right cluster.
+
+## Round 04
+
+Time: 02:20 to 02:55 | total elapsed 3.4h | commit 890db5b
+Focus: round-3 consensus gaps (density, sheet, board header, colour discipline, consistency, hub gaps, builders polish).
+Stills: `cook/stills/r04/` | Side by side: `cook/compare/r04/`
+Scores, eyeballed, raw, median of 3 critics (A same model, B Sonnet, C same model, blind brief):
+
+| Shot | Layout | Colour | Typography | Components | Detail |
+|---|---|---|---|---|---|
+| S01 | 96 | 95 | 95 | 93 | 91 |
+| S02 | 88 | 93 | 92 | 88 | 87 |
+| S04 | 86 | 93 | 90 | 85 | 84 |
+| S05a | 86 | 92 | 86 | 85 | 84 |
+| S05b | 82 | 92 | 84 | 80 | 78 |
+| S06 | 87 | 92 | 89 | 86 | 85 |
+| S07 | 84 | 91 | 87 | 86 | 82 |
+| S09a | 88 | 88 | 89 | 86 | 85 |
+| S09b | 88 | 87 | 89 | 86 | 85 |
+| S10 | 82 | 88 | 86 | 80 | 80 |
+| S11 | 87 | 90 | 87 | 85 | 84 |
+| S12 | 84 | 90 | 84 | 84 | 82 |
+| S13 | 90 | 92 | 87 | 87 | 86 |
+| S14 | 88 | 90 | 88 | 85 | 84 |
+| S15 | 82 | 90 | 88 | 84 | 82 |
+| S16 | 88 | 92 | 88 | 86 | 85 |
+
+vs round 3: every shot up 3–10 points; weakest now S05b settings, S10 list.
+Top gaps (3/3 agree): reui's nested card frame (outer 4px padding + inner panel) on settings/profile/stats; radius 8–12px on lanes/cards/sheet; medium weight on titles/labels inside app blocks; tinted stage badges per stage; list row proportional grid + 32px bordered tile; table unboxed, 14px cells; sheet title 22–24px + 32px chips with chevrons + footer hairline; S07 design-page sidebar stops at y≈650 (bug); phone search icon in the top bar; hub: MCP window scale, why-card icon inline, footer links 14px, mock syntax desaturation.

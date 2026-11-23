@@ -87,7 +87,7 @@ One family, Geist Variable (Geist Mono Variable for code), every role at weight 
 | `type-caption` | 12 / 1.5 / 0.01em | 11 / 1.5 / 0.0044em | meta, group labels, tooltips |
 | `type-micro` | 11 / 1.45 | 10 / 1.4 | counters and tiny badges |
 
-A feature heading continues in grey at the same size: the title in `foreground`, the sentence after it in `ink-sec`. `weight-semibold` (500) and `weight-bold` (600) exist for the rare label that needs them (a selected tab inside dense data, a table total); headings never use them.
+A feature heading continues in grey at the same size: the title in `foreground`, the sentence after it in `ink-sec`. Marketing and docs headings stay at 400. Inside app surfaces (reui's blocks: card and section titles, setting-row labels, the sheet title, list and table primary cells, menu header names, builder section headings) titles and labels use `weight-semibold` (500); `weight-bold` (600) is for the rare figure that must stand out.
 
 ## Layout
 
@@ -100,7 +100,7 @@ A feature heading continues in grey at the same size: the title in `foreground`,
 
 ## Elevation & Depth
 
-Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, popovers and selects use Cursor's flyout: two whisper shadows (`shadow-md`) over a 10% border. Windows (dialogs, the hero's product windows) add one soft drop (`shadow-lg`). Scrims are `shot` at 60% with no blur.
+Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, popovers and selects use Cursor's flyout: two whisper shadows (`shadow-md`) over a 10% border. Windows (dialogs, the hero's product windows) add one soft drop (`shadow-lg`). Scrims are `shot` at 75% with no blur.
 
 ## Shapes
 
@@ -108,7 +108,8 @@ Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, po
 |---|---|
 | 2px (`rounded-xs`) | media panels inside cards |
 | 4px (`rounded-sm`, `rounded-md`) | cards, tiles, menu rows, code chips, tooltips |
-| 8px (`rounded-lg`) | fields (inputs, selects, textareas), menus, popovers, dialogs, windows |
+| 8px (`rounded-lg`) | fields (inputs, selects, textareas), menus, popovers, dialogs, windows; in apps: kanban cards, the inner panel of a nested frame, property chips, square avatar tiles (32px+) |
+| 12px (`rounded-xl`) | app containers only (reui): kanban lanes, the floating sheet, the outer frame of `SettingsCard` / `SectionCard` / `StatCard` / chart cards |
 | pill (`rounded-full`) | every button, badges, toggles, tabs, switches, avatars |
 
 ## Components
@@ -121,15 +122,17 @@ Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, po
 - **Menus**: 8px windows, 32px rows with 4px corners, highlight `pane`, a trailing check for checked rows.
 - **Kbd**: cursor.com's ⌘K chip: no border, ink-grey at 10%, caption role.
 - **Sidebar**: card colour, 12px grey group labels, 30px rows, hover `pane/70`, active `pane-2` (apps) or orange text (docs-style nav).
-- **Tables**: no header fill, caption-role grey headers, `border` rows, hover `pane/60`.
+- **Tables**: unboxed (no outer card), a 36px header of 13px grey labels over its underline, `border` row hairlines, hover `pane/60`; app tables put 14px primary cells over a 12px muted subline and use 28px ghost icon buttons for row actions.
 - **Pickers** (reui's date selector, file upload, toggle group): `DatePicker` / `DateRangePicker` are fields led by a calendar icon with a round clear button, opening presets (row buttons) beside the Calendar; `FileTrigger` turns a Button into a file picker and `FileDropZone` is a dashed 8px drop field; `SegmentedControl` is the tabs track for one of a few choices.
-- **Menu rows with icons**: options and menu items lead with a 16px lucide icon in `ink-sec` (or a `StatusDot`, a flag) and may end in a caption-role description; statuses use the 8px `StatusDot` (orange stands in for warning).
-- **Patterns** (`packages/ui/src/blocks`): `PageHeader` / `PageContent` frame an app screen; `SubNavLayout`, `SettingsCard` and `SettingsRow` build settings; `Kanban` lanes are 288px columns on card at 50% with a 44px header and dashed empty slots; `StatCard`s show a display-role value with a delta chip; `UserMenu`, `AppBrand`, `GhostPage` and `WindowFrame` are app chrome. The design page's Patterns section renders each.
+- **Menu rows with icons**: options and menu items lead with a 16px lucide icon in `ink-sec` (or a `StatusDot`, a flag) and may end in a caption-role description; statuses use the 8px `StatusDot` (amber for warning).
+- **Stage tones** (data only, never actions or links): `tone-blue`, `tone-violet`, `tone-amber`, plus `success`, `destructive` and the neutral `offgray`. `Badge tone` is a 4px chip on a 12% tint with a matching dot and the tone's text colour (AA on its tint); `StatusDot tone` the 8px dot. The Job Tracker maps stages so neighbouring lanes differ: saved neutral, preparing violet, ready blue, applied amber, interviewing / offer / accepted success, rejected destructive, withdrawn neutral (lane icons, dots and stage chips in board, list, table and sheet).
+- **Sheet** (`floating`): 12px off the viewport with 12px corners and a full border; in the Job Tracker a 22px 500-weight title, the company 14px muted under it, a 40px avatar, 32px property chips (8px corners, no `Kbd` inside: shortcut hints live in menus), and a footer under a hairline with 16px padding.
+- **Patterns** (`packages/ui/src/blocks`): `PageHeader` / `PageContent` frame an app screen (title `type-title-compact` at 500 with a `CountBadge`, an 18px bordered square); `SubNavLayout`, `SettingsCard` and `SettingsRow` build settings; **nested frames** (reui): `SettingsCard`, framed `SectionCard`, `StatCard` and the Job Tracker's chart cards are an outer 12px frame (`card`, 10% border, 4px padding) carrying the header (500-weight title, muted description) and footer, around an inner 8px panel one step darker (`background`, 10% border) holding the rows or content — the radii nest exactly (12 − 4 = 8); `Kanban` lanes are 288px borderless `card` columns with 12px corners, a 44px header (stage icon, 500-weight title, `CountBadge`) and cards on `pane` with their own border and 8px corners; `StatCard`s show a 13px label, a 22px value, a delta chip (tint + border + arrow, neutral bordered at zero) and a 12px footer; `UserMenu`, `AppBrand`, `GhostPage` and `WindowFrame` are app chrome. The design page's Patterns section renders each.
 - **Footer**: the card colour, five 252px columns 10px apart, grey 14px headings, 14px links, then the copyright line and a language pill.
 
 ## Do's and Don'ts
 
-- Do keep every heading at weight 400; let size and the grey continuation carry hierarchy.
+- Do keep every marketing and docs heading at weight 400; let size and the grey continuation carry hierarchy. Inside app blocks, titles and labels take `weight-semibold` (500).
 - Do spend the orange only on text links, the active docs-nav item and the orange badge.
 - Do separate sections with space; draw rules only inside app chrome (header bottom, sidebar edge, table rows).
 - Do use the light pill once per view as the main action.

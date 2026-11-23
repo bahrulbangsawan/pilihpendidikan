@@ -141,28 +141,28 @@ function PreviewWindow() {
       title={t("editor.previewTitle")}
     >
       <div className="bg-pane px-10 pt-6">
-        <div className="h-[300px] bg-white px-7 pt-6 font-print text-neutral-900">
+        <div className="h-[300px] bg-foreground px-7 pt-6 font-print text-background">
           <p className="type-subtitle weight-bold">{t("editor.name")}</p>
-          <p className="type-caption text-neutral-500">{t("editor.role")}</p>
-          <p className="type-caption weight-bold mt-4 border-neutral-300 border-b pb-1">
+          <p className="type-caption text-background/60">{t("editor.role")}</p>
+          <p className="type-caption weight-bold mt-4 border-background/20 border-b pb-1">
             {t("editor.experience")}
           </p>
           <p className="type-caption mt-2 flex justify-between">
             <span className="weight-semibold">
               iOS Engineering Intern, Gojek
             </span>
-            <span className="text-neutral-500">{t("editor.period")}</span>
+            <span className="text-background/60">{t("editor.period")}</span>
           </p>
-          <p className="type-caption text-neutral-600">
+          <p className="type-caption text-background/75">
             {t("editor.description")}
           </p>
-          <p className="type-caption weight-bold mt-4 border-neutral-300 border-b pb-1">
+          <p className="type-caption weight-bold mt-4 border-background/20 border-b pb-1">
             {t("editor.education")}
           </p>
           <p className="type-caption weight-semibold mt-2">
             Universitas Brawijaya
           </p>
-          <p className="type-caption text-neutral-600">S1 Informatika</p>
+          <p className="type-caption text-background/75">S1 Informatika</p>
         </div>
       </div>
     </WindowFrame>

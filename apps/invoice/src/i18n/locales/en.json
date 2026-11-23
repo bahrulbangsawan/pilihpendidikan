@@ -107,7 +107,8 @@
       "clearDate": "Clear date",
       "clearPeriod": "Clear period"
     },
-    "modePercent": "Percentage"
+    "modePercent": "Percentage",
+    "itemsEmpty": "No items yet. Add each service or product you are billing for."
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",

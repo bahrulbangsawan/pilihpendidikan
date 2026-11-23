@@ -3,17 +3,21 @@ import { cn } from "../lib/utils";
 
 // A status dot (reui's status badges and select options): an 8px circle in a
 // tone, placed before a label in a select option, menu row, badge or table
-// cell. Zedative has no amber, so `warning` uses the orange `link` tone.
+// cell. `blue`, `violet` and `amber` are the category tints (stages,
+// kinds: data only, never actions); `warning` uses amber.
 // `pulse` adds the slow status pulse (motion.css) for something live.
 // Decorative: the label beside it carries the meaning.
 
 const TONE_CLASS = {
   neutral: "bg-offgray",
   link: "bg-link",
-  warning: "bg-link",
+  warning: "bg-tone-amber",
   success: "bg-success",
   destructive: "bg-destructive",
   ink: "bg-foreground",
+  blue: "bg-tone-blue",
+  violet: "bg-tone-violet",
+  amber: "bg-tone-amber",
 } as const;
 
 type StatusTone = keyof typeof TONE_CLASS;

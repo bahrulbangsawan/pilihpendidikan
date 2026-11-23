@@ -16,7 +16,7 @@ import {
   AlertTitle,
 } from "@rulisme/ui/ui/alert";
 import { Button } from "@rulisme/ui/ui/button";
-import { Card, CardContent } from "@rulisme/ui/ui/card";
+import { SectionCard } from "@rulisme/ui/blocks/settings";
 import { Field, FieldLabel } from "@rulisme/ui/ui/field";
 import {
   Select,
@@ -75,7 +75,7 @@ import {
 } from "@/lib/stats-model";
 import type { SeriesMetric } from "@/lib/stats-range";
 import { BREAKDOWN_ORDER, SERIES_METRICS } from "@/lib/stats-range";
-import { ChartFrame, DataTable, FrameHeader } from "./chart-frame";
+import { ChartFrame, DataTable } from "./chart-frame";
 import {
   FunnelChart,
   RejectionChart,
@@ -128,8 +128,8 @@ function StatCellMenu({ label, value }: { label: string; value: string }) {
       <DropdownMenuTrigger asChild>
         <Button
           aria-label={t("stats.cells.menu", { label })}
-          className="text-muted-foreground"
-          size="icon-sm"
+          className="text-foreground"
+          size="icon-xs"
           variant="ghost"
         >
           <MoreHorizontal aria-hidden="true" />
@@ -423,13 +423,9 @@ export function BreakdownSection({
       );
   }
   return (
-    <section aria-labelledby={headingId} className="min-w-0">
-      <Card className="rounded-lg border-border" size="sm">
-        <FrameHeader
-          description={t("stats.breakdown.description")}
-          headingId={headingId}
-          title={t("stats.breakdown.title")}
-        >
+    <div className="min-w-0">
+      <SectionCard
+        action={
           <Field className="w-auto" orientation="horizontal">
             <FieldLabel htmlFor={`${id}-by`}>
               {t("stats.breakdown.by")}
@@ -454,11 +450,15 @@ export function BreakdownSection({
               </SelectContent>
             </Select>
           </Field>
-        </FrameHeader>
-        <CardContent aria-busy={loading} className="min-w-0">
+        }
+        description={t("stats.breakdown.description")}
+        id={headingId}
+        title={t("stats.breakdown.title")}
+      >
+        <div aria-busy={loading} className="min-w-0">
           {body}
-        </CardContent>
-      </Card>
-    </section>
+        </div>
+      </SectionCard>
+    </div>
   );
 }

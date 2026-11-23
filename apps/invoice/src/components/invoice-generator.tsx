@@ -340,8 +340,8 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
   );
 }
 
-// The white document sheet resting on the dark preview pane: a 1px hairline
-// frames it on screen, and it prints bare at full width (the print CSS in
+// The white document sheet resting on the card-coloured preview well, 24px
+// in from the pane's edges with a 2px corner on screen; it prints bare at full width (the print CSS in
 // styles.css prints `.invoice-page` alone). The empty state stays unframed.
 function PreviewSheet({ data }: { data: InvoiceData }) {
   const { t } = useTranslation();
@@ -350,7 +350,7 @@ function PreviewSheet({ data }: { data: InvoiceData }) {
     return <GhostPage description={t("preview.emptyState")} />;
   }
   return (
-    <div className="mx-auto w-full max-w-2xl border border-border print:max-w-none print:border-0">
+    <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-xs print:max-w-none print:overflow-visible print:rounded-none">
       <InvoicePreview data={data} />
     </div>
   );
@@ -694,7 +694,7 @@ export function InvoiceGenerator() {
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="invoice-preview-scroll p-4 sm:p-6">
+          <div className="invoice-preview-scroll p-6">
             <PreviewSheet data={data} />
           </div>
         </div>

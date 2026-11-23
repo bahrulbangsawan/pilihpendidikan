@@ -67,10 +67,10 @@ import {
   viewState,
 } from "./board-search";
 import { BoardTable } from "./board-table";
+import { DesktopSearch, PhoneSearch } from "./phone-search";
 import {
   activeFilterCount,
   BoardFiltersMenu,
-  BoardSearchField,
   BoardStatusRow,
   ViewSwitcher,
 } from "./board-toolbar";
@@ -393,9 +393,9 @@ export function BoardPage({
       <PageHeader
         actions={
           <>
-            <BoardSearchField
-              className={isPhone ? "order-last" : undefined}
+            <DesktopSearch
               onQueryChange={(q) => changeFilters({ q })}
+              phone={isPhone}
               query={filters.q}
             />
             <BoardFiltersMenu
@@ -417,7 +417,12 @@ export function BoardPage({
               value={view}
               views={isPhone ? PHONE_VIEWS : DESKTOP_VIEWS}
             />
-            <Button aria-keyshortcuts="N" onClick={shell.openNewJob} size="sm">
+            <Button
+              aria-keyshortcuts="N"
+              className="max-sm:h-8"
+              onClick={shell.openNewJob}
+              size="sm"
+            >
               <Plus aria-hidden="true" data-icon="inline-start" />
               {t("board.newApplication")}
               <Kbd aria-hidden="true">N</Kbd>
@@ -429,6 +434,11 @@ export function BoardPage({
         title={t("board.title")}
         wide
       >
+        <PhoneSearch
+          onQueryChange={(q) => changeFilters({ q })}
+          phone={isPhone}
+          query={filters.q}
+        />
         <BoardStatusRow
           activeFilters={activeFilterCount(filters, includeArchived)}
           onClearFilters={clearFilters}

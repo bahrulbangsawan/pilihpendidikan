@@ -164,7 +164,7 @@ text links. Every value was measured from cursor.com (`cook/refs/`).
 the enforced rules; `apps/design` renders the whole system.
 
 - Eight type roles, each baking size, line height and tracking at weight 400: `type-hero` (72), `type-headline` (36), `type-display` (26, the hero h1), `type-title` (22), `type-subtitle` (16), `type-body` (14, the default), `type-caption` (12), `type-micro` (11), each with a `-compact` step. `typeClass(role, variant)` from `@rulisme/ui/lib/type-scale` returns the same classes.
-- Weights: everything 400; `weight-semibold` (500) and `weight-bold` (600) only for rare labels, never headings. No uppercase, no `tracking-*`, no `font-<weight>` utilities.
+- Weights: marketing and docs at 400; inside app surfaces, titles and labels (card/section titles, setting-row labels, sheet titles, list/table primary cells) use `weight-semibold` (500); `weight-bold` (600) only for a rare figure. No uppercase, no `tracking-*`, no `font-<weight>` utilities.
 - Colour: `foreground`/`ink` text, `ink-sec` for large grey copy, `muted-foreground` for small grey text, `text-link` orange for text links only; the primary action is the light pill (`bg-primary`). Syntax colours (`syn-1..4`) live only in editor mocks.
 - Shape and depth: cards 4px (`rounded-sm`), fields, menus and windows 8px (`rounded-lg`), buttons and badges pills; flat cards with a `hairline`, menus with Cursor's whisper shadow (`shadow-md`), windows `shadow-lg`. Container 1300px (`max-w-rail`), sections 67.2px apart.
 - Motion: 140ms on `cubic-bezier(0.4, 0, 0.2, 1)`, colours only, no press offset. Nothing enters, overlays open instantly, no route transitions.

@@ -91,7 +91,7 @@ export function BoardFiltersMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="sm" variant="outline">
+        <Button className="max-sm:h-8" size="sm" variant="outline">
           <ListFilter aria-hidden="true" data-icon="inline-start" />
           {t("board.filterButton")}
           {active > 0 ? (
@@ -235,6 +235,7 @@ export function ViewSwitcher({
   return (
     <SegmentedControl
       aria-label={t("board.view.label")}
+      className="max-sm:h-8"
       onValueChange={(next) => onChange(next as BoardView)}
       size="sm"
       value={value}
@@ -254,10 +255,13 @@ export function BoardSearchField({
   query,
   onQueryChange,
   className,
+  autoFocus = false,
 }: {
   query: string;
   onQueryChange: (q: string) => void;
   className?: string;
+  /** Focus on mount (the phone's search button opens it). */
+  autoFocus?: boolean;
 }) {
   const { t } = useTranslation();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -270,6 +274,7 @@ export function BoardSearchField({
       <InputGroupInput
         aria-keyshortcuts="/"
         aria-label={t("board.search")}
+        autoFocus={autoFocus}
         className="field-touch"
         onChange={(event) => onQueryChange(event.target.value)}
         placeholder={t("board.searchPlaceholder")}

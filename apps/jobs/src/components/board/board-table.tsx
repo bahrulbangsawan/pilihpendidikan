@@ -1,4 +1,7 @@
-// The Table view (`?view=table`, reui's deals table / data grid): sortable
+// The Table view (`?view=table`, reui's deals table / data grid), unboxed:
+// a 36px header of 13px muted labels over its underline, rows split by
+// hairlines, 14px cells with a 12px muted subline where a date has a
+// relative time, 28px ghost row actions. Sortable
 // columns (company and role, stage, score, location, source, in stage since,
 // updated), row actions, and checkbox selection shared with the board's
 // selection and bulk bar. A row opens the details sheet.
@@ -124,7 +127,7 @@ function SortHead({
     <TableHead aria-sort={ariaSort} className={className}>
       <Button
         className={cn(
-          "-ml-2 gap-1 px-2 text-muted-foreground hover:text-foreground",
+          "type-body-compact -ml-2 gap-1 px-2 text-muted-foreground hover:text-foreground",
           active && "text-foreground"
         )}
         size="xs"
@@ -177,7 +180,11 @@ function Row({
       </TableCell>
       <TableCell className="max-w-80">
         <div className="flex min-w-0 items-center gap-3">
-          <EntityAvatar name={card.posting.company_name} shape="square" />
+          <EntityAvatar
+            name={card.posting.company_name}
+            shape="square"
+            size="default"
+          />
           <Button
             aria-keyshortcuts="Enter M X F E R W"
             aria-label={t("card.label", {
@@ -211,16 +218,23 @@ function Row({
       <TableCell className="w-32">
         <ScoreMeter label={false} score={card.score} />
       </TableCell>
-      <TableCell className="type-caption max-w-48 truncate text-ink-sec">
+      <TableCell className="max-w-48 truncate text-ink-sec">
         {location || "—"}
       </TableCell>
-      <TableCell className="type-caption text-ink-sec">
+      <TableCell className="text-ink-sec">
         {sourceLabel(t, card.posting.source_kind)}
       </TableCell>
-      <TableCell className="type-caption text-ink-sec tabular-nums">
-        {formatDate(card.stage_changed_at, locale)}
+      <TableCell className="tabular-nums">
+        <span className="flex flex-col">
+          <span className="text-foreground">
+            {formatDate(card.stage_changed_at, locale)}
+          </span>
+          <span className="type-caption text-muted-foreground">
+            {relativeTime(card.stage_changed_at, nowMs, locale)}
+          </span>
+        </span>
       </TableCell>
-      <TableCell className="type-caption text-ink-sec tabular-nums">
+      <TableCell className="text-ink-sec tabular-nums">
         {relativeTime(card.updated_at, nowMs, locale)}
       </TableCell>
       <TableCell
@@ -229,6 +243,7 @@ function Row({
       >
         <CardMenu
           card={card}
+          className="size-7"
           onAction={(action) => handlers.onMenuAction(card, action)}
         />
       </TableCell>
@@ -267,7 +282,7 @@ export function BoardTable({
   return (
     <div className="px-4 pb-8 sm:px-6 lg:px-8">
       {empty}
-      <div className="overflow-x-auto rounded-lg border border-border bg-card [scrollbar-width:thin]">
+      <div className="overflow-x-auto [scrollbar-width:thin]">
         <Table aria-label={t("board.view.table")}>
           <TableHeader>
             <TableRow className="hover:bg-transparent">

@@ -7,15 +7,27 @@ import { cn } from "../lib/utils";
 import { badgeVariants } from "./badge-variants";
 
 // A status chip (reui's status badges): `tone` turns the pill into a 4px
-// chip on a 10% tint of the tone with a matching 6px dot before the label,
-// which stays in foreground ink (the dot and tint carry the colour, the word
-// carries the meaning).
+// chip on a 12% tint of the tone with a matching 6px dot before the label,
+// in the tone's own text colour (every tone is AA on its tint). `neutral`
+// and `ink` keep foreground text; `link` stays for links only.
 const BADGE_TONE = {
-  neutral: { chip: "bg-offgray/10", dot: "bg-offgray" },
-  ink: { chip: "bg-foreground/10", dot: "bg-foreground" },
-  link: { chip: "bg-link/10", dot: "bg-link" },
-  success: { chip: "bg-success/10", dot: "bg-success" },
-  destructive: { chip: "bg-destructive/10", dot: "bg-destructive" },
+  neutral: {
+    chip: "bg-offgray/12 text-ink-sec",
+    dot: "bg-offgray",
+  },
+  ink: { chip: "bg-foreground/10 text-foreground", dot: "bg-foreground" },
+  link: { chip: "bg-link/12 text-foreground", dot: "bg-link" },
+  success: { chip: "bg-success/12 text-success", dot: "bg-success" },
+  destructive: {
+    chip: "bg-destructive/12 text-destructive",
+    dot: "bg-destructive",
+  },
+  blue: { chip: "bg-tone-blue/12 text-tone-blue", dot: "bg-tone-blue" },
+  violet: {
+    chip: "bg-tone-violet/12 text-tone-violet",
+    dot: "bg-tone-violet",
+  },
+  amber: { chip: "bg-tone-amber/12 text-tone-amber", dot: "bg-tone-amber" },
 } as const;
 
 type BadgeTone = keyof typeof BADGE_TONE;
@@ -40,7 +52,7 @@ function Badge({
       <span
         className={cn(
           badgeVariants({ variant: "secondary" }),
-          "rounded-sm border-transparent text-foreground",
+          "rounded-sm border-transparent",
           BADGE_TONE[tone].chip,
           className
         )}

@@ -23,10 +23,23 @@ the user footer that opens the profile dropdown (Profile, Settings, Language
 submenu, Keyboard shortcuts, Sign out). Rows are 32px `rounded-md`, hover
 `bg-pane`, current `bg-pane-2 text-foreground`. The content column has a
 48px top bar (breadcrumb left, page-actions slot right; on phones a menu
-button opens the sidebar in a Sheet). Headings are weight 400. Cards are
-`rounded-lg border border-border bg-card`; settings-style cards are one
-bordered card of hairline-divided rows in a 640px column
-(`@rulisme/ui/blocks/settings`). Every control is an
+button opens the sidebar in a Sheet; on the board a search icon button
+there opens the board search inline). Page titles are `type-title-compact`
+at `weight-semibold` (PageHeader); titles and labels inside app blocks
+(card, sheet and section titles, setting-row labels, list / table primary
+cells, the menu header name) are `weight-semibold` too. Settings cards,
+framed section cards, stat cards and chart cards are reui's **nested
+frame**: a 12px outer frame (`bg-card`, 4px padding) with the header and
+footer, around an 8px inner panel on `bg-background` holding the rows
+(`@rulisme/ui/blocks/settings`, `ui/stat-card`), in a 640px column on
+account pages. Kanban lanes are borderless 12px `bg-card` columns; the
+closed lanes (Rejected, Withdrawn) stick to the row's right end as rails
+while collapsed. Stage tones (`components/board/stage-meta.tsx`, used by
+lane icons, dots and `StageBadge` everywhere): saved neutral, preparing
+violet, ready blue, applied amber, interviewing / offer / accepted success,
+rejected destructive, withdrawn neutral. The list is a proportional grid
+(title 2fr, location 1fr, source 1fr, match 120px, stage 110px, age 56px);
+the table is unboxed. Every control is an
 `@rulisme/ui` component (no raw `<button>` / `<input>` / `<select>`), and
 select / menu options carry a lucide icon.
 
@@ -98,7 +111,7 @@ await api("POST /api/v1/applications/{app_id}/move", {
 - Link screens by path with `AppLink` / `useAppNavigate` (`/board`, `/applications/$appId`, `/stats`, `/profile`, `/settings`, `/render/cv/$cvvId`). `/` and `/render/*` render without the shell (`isBarePath` in `-root-components.tsx`).
 - Page frame (`components/shell/page.tsx`, API documented at the top): `PageHeader({ title, description?, count?, actions?, children?, wide? })`, `PageContent`, `PageGutter`, `PageSection`; gutter `px-4 sm:px-6 lg:px-8`, reading pages held to `max-w-5xl`, dense screens `wide`.
 - Top bar (`components/shell/top-bar.tsx`): `useBreadcrumbs([{ label, href? }, …])` replaces the URL-derived breadcrumb while a screen is mounted; `<TopBarActions>` portals buttons into its right slot.
-- Account-style pages: `SubNavLayout` (title, description, left sub-nav / phone tab row) + `SettingsCard` (one border, header, rows divided by hairlines, optional Cancel / Save footer, `tone="destructive"`, 640px column) + `SettingsRow` (icon tile, label + badge + description; `control="fill"` full-width field or `"end"` switch/button at the right), all from `@rulisme/ui/blocks/settings`.
+- Account-style pages: `SubNavLayout` (title, description, left sub-nav / phone tab row) + `SettingsCard` (nested frame: header and Cancel / Save footer on the outer frame, rows divided by hairlines in the inner panel, `tone="destructive"`, 640px column) + `SettingsRow` (icon tile, label + badge + description; `control="fill"` full-width field or `"end"` switch/button at the right), all from `@rulisme/ui/blocks/settings`.
 - Shortcuts: global ⌘K, `B` (board), `N` (new job by URL), `?` (sheet), Esc. One primary button per page; every primary action has a `<Kbd>` hint and a `useShortcut` (TW-SHORTCUTS scans for hints without handlers). Add new shortcuts to `SHORTCUTS` (`src/lib/shortcuts.ts`) so the `?` sheet lists them.
 - Open shell dialogs with `useShellActions()` (`openNewJob`, `openPalette`, `openShortcuts`). Change the UI language with `useChangeLocale()` (Settings and the profile dropdown use it).
 - CV tab (`application/cv-tab.tsx` → `cv-variant-panel.tsx` → `cv-diff-view.tsx`): pick a variant, read the side-by-side diff (`buildDiffModel`; sources marked on hover / focus / tap, rewritten lines highlighted, excluded entries struck through, `notes_for_user` as warnings), Approve `Y` (AlertDialog) / Reject (reason) / Regenerate / Download / Open in CV builder. While the tab shows an approvable draft it owns `Y` (`NextStepRail shortcutEnabled`). A `generating` variant with a `tailored_cv_id` and no file is rendered in this tab (`useInBrowserRender` → `renderCvVariantOnce`, 08 §6.2). The PDF preview is an **unsandboxed** same-origin iframe of `/download/files/{id}/content?inline=1`: Chromium refuses any PDF in a sandboxed frame, so containment is on the response (inline only for `application/pdf`, `nosniff`, `default-src 'none'`, `frame-ancestors 'self'` + `X-Frame-Options: SAMEORIGIN` via the `x-jobs-frameable` marker the edge strips).

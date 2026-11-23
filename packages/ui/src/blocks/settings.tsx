@@ -7,17 +7,20 @@ import { PAGE_GUTTER } from "./page";
 // Settings building blocks (reui's profile and settings blocks):
 // - `SubNavLayout`: a page title + description, a left sub-nav (a row of
 //   tabs on phones) and the content column.
-// - `SettingsCard`: one 8px card (a single border) with a title /
-//   description header, rows split by hairlines and an optional footer
-//   (Cancel / Save) under a rule; `tone="destructive"` for a danger zone.
-//   The content column holds to 640px so rows never stretch thin.
+// - `SettingsCard`: reui's nested frame. An outer 12px frame (`card`, a 10%
+//   border, 4px padding) carries the title / description header and the
+//   footer (Cancel left, Save right); the rows sit in an inner 8px panel
+//   (12 − 4, so the corners nest) one step darker on `background`, split by
+//   hairlines. `tone="destructive"` for a danger zone. The content column
+//   holds to 640px so rows never stretch thin.
 // - `SettingsRow`: label + a one-line description, then the control; stacked
 //   on phones. A field (`control="fill"`) sits on a 2 / 3 grid at full
 //   width; a switch or a button (`control="end"`) keeps its size at the
 //   right and the label takes the rest. Optional icon tile and badge.
-// - `SectionCard`: a lighter titled card (a label row, then free content);
-//   `flat` drops the box for a section inside a sheet or a panel, where
-//   hairlines and 24px of space separate sections instead of borders.
+// - `SectionCard`: the same nested frame for free content (the title row on
+//   the frame, the content padded in the inner panel); `flat` drops both
+//   boxes for a section inside a sheet or a panel, where hairlines and 24px
+//   of space separate sections instead of borders.
 
 interface SubNavItem<T extends string> {
   icon: LucideIcon;
@@ -49,7 +52,9 @@ function SubNavLayout<T extends string>({
       data-slot="sub-nav-layout"
     >
       <div className="flex flex-col gap-1">
-        <h1 className="type-title text-foreground">{title}</h1>
+        <h1 className="type-title-compact weight-semibold text-foreground">
+          {title}
+        </h1>
         {description ? (
           <p className="type-body max-w-2xl text-pretty text-muted-foreground">
             {description}
@@ -100,6 +105,45 @@ function SubNavLayout<T extends string>({
   );
 }
 
+/** The outer frame: 12px corners, a 10% border, 4px around the panel. */
+const FRAME_CLASS =
+  "flex min-w-0 flex-col rounded-xl border border-border bg-card p-1";
+
+/** The inner panel: 8px corners (12 − 4), one step darker than the frame. */
+const PANEL_CLASS =
+  "flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-background";
+
+function FrameHeader({
+  id,
+  children,
+  description,
+  action,
+}: {
+  id: string;
+  children: React.ReactNode;
+  description?: React.ReactNode;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div
+      className="flex flex-wrap items-center justify-between gap-3 px-3 pt-2.5 pb-3"
+      data-slot="frame-header"
+    >
+      <div className="flex min-w-0 flex-1 basis-56 flex-col gap-0.5">
+        <h2 className="type-body weight-semibold text-foreground" id={id}>
+          {children}
+        </h2>
+        {description ? (
+          <p className="type-body text-pretty text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
+      </div>
+      {action ? <div className="shrink-0">{action}</div> : null}
+    </div>
+  );
+}
+
 function SettingsCard({
   id,
   title,
@@ -126,37 +170,24 @@ function SettingsCard({
     <section
       aria-labelledby={id}
       className={cn(
-        "flex flex-col overflow-hidden rounded-lg border bg-card",
-        tone === "destructive" ? "border-destructive/25" : "border-border"
+        FRAME_CLASS,
+        tone === "destructive" && "border-destructive/25"
       )}
       data-slot="settings-card"
       data-tone={tone}
     >
-      <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-4 pb-4">
-        <div className="flex min-w-0 flex-1 basis-56 flex-col gap-0.5">
-          <h2 className="type-subtitle text-foreground" id={id}>
-            {title}
-          </h2>
-          {description ? (
-            <p className="type-caption text-pretty text-muted-foreground">
-              {description}
-            </p>
-          ) : null}
-        </div>
-        {action ? <div className="shrink-0">{action}</div> : null}
-      </div>
+      <FrameHeader action={action} description={description} id={id}>
+        {title}
+      </FrameHeader>
       <div
-        className={cn(
-          "flex flex-col border-border border-t",
-          inset ? "divide-y divide-border" : "p-5"
-        )}
+        className={cn(PANEL_CLASS, inset ? "divide-y divide-border" : "p-4")}
         data-slot="settings-card-body"
       >
         {children}
       </div>
       {footer ? (
         <div
-          className="flex items-center justify-end gap-2 border-border border-t bg-pane/40 px-5 py-3"
+          className="flex items-center justify-end gap-2 px-3 pt-3 pb-2 [&>:first-child:not(:only-child)]:mr-auto"
           data-slot="settings-card-footer"
         >
           {footer}
@@ -194,7 +225,7 @@ function SettingsRow({
   return (
     <div
       className={cn(
-        "gap-3 px-5 py-4 sm:gap-6",
+        "gap-3 px-4 py-3.5 sm:gap-6",
         control === "fill"
           ? "grid grid-cols-1 sm:grid-cols-5"
           : "flex flex-col sm:flex-row sm:justify-between",
@@ -212,7 +243,7 @@ function SettingsRow({
         {Icon ? (
           <span
             aria-hidden="true"
-            className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-pane text-muted-foreground"
+            className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-ink-sec"
           >
             <Icon className="size-4" />
           </span>
@@ -220,7 +251,7 @@ function SettingsRow({
         <div className="flex min-w-0 flex-col gap-0.5">
           <div className="flex flex-wrap items-center gap-2">
             <Label
-              className="type-body text-foreground"
+              className="type-body weight-semibold text-foreground"
               {...(htmlFor ? { htmlFor } : {})}
             >
               {label}
@@ -252,38 +283,58 @@ function SettingsRow({
 function SectionCard({
   id,
   title,
+  description,
   action,
   children,
   className,
+  frameClassName,
   flat = false,
 }: {
   id: string;
   title: React.ReactNode;
+  /** A muted line under the title (framed cards only). */
+  description?: React.ReactNode;
   /** A control at the end of the title row. */
   action?: React.ReactNode;
   children: React.ReactNode;
+  /** Classes of the content: the inner panel, or the section when `flat`. */
   className?: string;
+  /** Classes of the outer frame (e.g. `h-full` in a grid). */
+  frameClassName?: string;
   /** No border or fill: a section of a sheet, split from the next by a rule. */
   flat?: boolean;
 }) {
+  if (flat) {
+    return (
+      <section
+        aria-labelledby={id}
+        className={cn("flex flex-col gap-3", className)}
+        data-flat={flat}
+        data-slot="section-card"
+      >
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="type-body weight-semibold text-foreground" id={id}>
+            {title}
+          </h2>
+          {action}
+        </div>
+        {children}
+      </section>
+    );
+  }
   return (
     <section
       aria-labelledby={id}
-      className={cn(
-        "flex flex-col gap-3",
-        !flat && "rounded-lg border border-border bg-card p-4",
-        className
-      )}
+      className={cn(FRAME_CLASS, frameClassName)}
       data-flat={flat}
       data-slot="section-card"
     >
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="type-body weight-semibold text-foreground" id={id}>
-          {title}
-        </h2>
-        {action}
+      <FrameHeader action={action} description={description} id={id}>
+        {title}
+      </FrameHeader>
+      <div className={cn(PANEL_CLASS, "flex-1 gap-3 p-4", className)}>
+        {children}
       </div>
-      {children}
     </section>
   );
 }

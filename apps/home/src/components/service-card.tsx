@@ -190,11 +190,11 @@ export function McpCard({ api }: { api: Service }) {
       </FeatureCopy>
       <FeatureMedia compact flip={false}>
         {live && (
-          <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[560px] lg:-translate-x-1/2">
+          <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[640px] lg:-translate-x-1/2">
             <figcaption className="type-caption border-border border-b px-3 py-2 text-center text-muted-foreground">
               {t("mcpSection.configLabel")}
             </figcaption>
-            <pre className="type-body overflow-x-auto p-4 text-foreground">
+            <pre className="type-subtitle overflow-x-auto p-5 text-foreground">
               {`{
   "mcpServers": {
     "pilihpendidikan": {

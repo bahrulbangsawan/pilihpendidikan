@@ -29,7 +29,7 @@ Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/ho
 
 - Named exports, PascalCase components, function components, React 19 ref-as-prop. `data-slot` on every part (shadcn pattern). Relative imports inside the package (`../lib/utils`, `./button-variants`); never `@/` or `@rulisme/ui/` from inside it.
 - Add a component under the right `src/` subdir; the glob entry picks it up automatically — no barrel/index file. Add it to `apps/design` (`bun run parity:showcase` fails otherwise).
-- Style follows `DESIGN.md` and `TYPOGRAPHY.md`: type roles only, tokens only, pill buttons (36px, `sm` 28px, `lg` 43px), 36px fields with 8px corners, 4px cards with a hairline, 8px menus and windows, colour-only transitions at 140ms, no enter/exit animation, no `dark:` overrides. The root style lint covers `src/`.
+- Style follows `DESIGN.md` and `TYPOGRAPHY.md`: type roles only, tokens only, pill buttons (36px, `sm` 28px, `lg` 43px), 36px fields with 8px corners, 4px cards with a hairline, 8px menus and windows, 12px only for app containers (lanes, the floating sheet, nested-frame outers), colour-only transitions at 140ms, no enter/exit animation, no `dark:` overrides. The root style lint covers `src/`.
 - Restyle a shared primitive here, once — never fork it in an app.
 - Apps render no raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<option>` (lint rule 19, `scripts/check-raw-controls.ts`, TYPOGRAPHY.md § Raw controls): the raw elements live only in this package. A generic piece an app builds twice belongs here (in `blocks/` if it is a screen pattern).
 - Menu rows (`SelectItem`, `DropdownMenuItem`, `CommandItem`, `ComboboxItem`, context and menubar items) size a leading lucide icon to 16px in `ink-sec`; `SelectItem` and `DropdownMenuItem` take a trailing `description`.
@@ -51,7 +51,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | AspectRatio | `ui/aspect-ratio` | Ratio box | `ratio` |
 | Attachment (+Group, Media, Content, Title, Description, Actions, Action, Trigger) | `ui/attachment` | File chip / card | composition |
 | Avatar (+Image, Fallback, Group, GroupCount, Badge) | `ui/avatar` | Round avatar | `size` xs / sm / default / lg |
-| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`, `tone` (neutral / ink / link / success / destructive: 4px chip on a 10% tint with a dot); BadgeButton `removeLabel`, `onClick` |
+| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`, `tone` (neutral / ink / link / success / destructive / blue / violet / amber: 4px chip on a 12% tint with a dot and tone text); BadgeButton `removeLabel`, `onClick` |
 | Breadcrumb (+parts) | `ui/breadcrumb` | Path trail | composition |
 | Bubble (+Group, Content, Reactions) | `ui/bubble` | Chat bubble | `align`, `variant` |
 | Button, buttonVariants | `ui/button`, `ui/button-variants` | Pill button | `variant` default / outline / secondary / ghost / destructive / link / row, `size` xs / sm / default / lg / icon* , `asChild` |
@@ -65,7 +65,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | Combobox (+Input, Content, List, Item, Group, Label, Collection, Empty, Separator, Chips, Chip, ChipsInput, Trigger, Value) | `ui/combobox` | Searchable select, multi-select chips | Base UI `items`, `value`, `onValueChange` |
 | Command (+Dialog, Input, List, Empty, Group, Item, Shortcut, Separator) | `ui/command` | ⌘K palette | cmdk |
 | ContextMenu (+parts) | `ui/context-menu` | Right-click menu | Radix |
-| DatePicker, DateRangePicker | `ui/date-picker` | Field-shaped date / date-time / range picker with presets and clear | `value` ISO, `onValueChange`, `min`, `max`, `presets`, `withTime`, `id`, `size`, `clearable`, `align` |
+| DatePicker, DateRangePicker | `ui/date-picker` | Field-shaped date / date-time / range picker with presets and clear (the clear × shows on hover / focus with a mouse, always on touch) | `value` ISO, `onValueChange`, `min`, `max`, `presets`, `withTime`, `id`, `size`, `clearable`, `align` |
 | Dialog (+parts) | `ui/dialog` | Window | Radix |
 | DirectionProvider | `ui/direction` | RTL context | `dir` |
 | DragHandle | `ui/drag-handle` | Sortable grip button | `label`, `variant` icon / gutter, dnd-kit attributes |
@@ -73,7 +73,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | DropdownMenu (+parts) | `ui/dropdown-menu` | Action menu | Item `variant`, `description`, `inset` |
 | EditableTitle | `ui/editable-title` | Inline-editable heading | input props |
 | Empty (+Header, Title, Description, Content, Media) | `ui/empty` | Empty state | composition |
-| EntityAvatar | `ui/entity-avatar` | Letter avatar for a company or person | `name`, `fallback`, `src`, `size`, `shape` circle / square |
+| EntityAvatar | `ui/entity-avatar` | Letter avatar for a company or person | `name`, `fallback`, `src`, `size`, `shape` circle / square (8px corners at 32px+, 4px below) |
 | FieldButton | `ui/field-button` | Button drawn as a field (search / picker trigger) | `size`, `empty` |
 | Field (+Label, Description, Error, Group, Legend, Separator, Set, Content, Title) | `ui/field` | Form field layout | `orientation` |
 | FileTrigger, FileDropZone | `ui/file-upload` | File pickers (hidden input inside) | `accept`, `multiple`, `onFilesSelect(files)`; drop zone `title`, `description`, `icon` |
@@ -95,7 +95,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | Pagination (+parts) | `ui/pagination` | Pager | composition |
 | Popover (+Anchor, Content, Header, Title, Description) | `ui/popover` | Flyout panel | Radix |
 | Progress | `ui/progress` | Loading bar | `value` |
-| PropertyChip | `ui/property-chip` | 28px fact chip with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
+| PropertyChip | `ui/property-chip` | 32px fact chip (8px corners) with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
 | Questionnaire (+parts) | `ui/questionnaire` | Step-by-step form | composition |
 | RadioGroup (+Item) | `ui/radio-group` | Radios | Radix |
 | Band, Rail, Diamond | `ui/rails` | Layout container (Diamond renders nothing) | — |
@@ -104,17 +104,17 @@ upstream props; the table names what Zedative adds or what to pass.
 | SegmentedControl (+Item) | `ui/segmented-control` | Single-choice pill track | `value`, `onValueChange`, `size`; items `value`, icon child |
 | Select (+parts) | `ui/select` | Fixed-list select | Item `description`; icon / StatusDot first child |
 | Separator | `ui/separator` | Rule | `orientation` |
-| Sheet (+parts) | `ui/sheet` | Side panel | `side`, `floating` (12px inset, rounded, window shadow), `closeLabel` |
+| Sheet (+parts) | `ui/sheet` | Side panel over a 75% scrim | `side`, `floating` (12px inset, 12px corners, window shadow), `closeLabel` |
 | Sidebar (+parts, useSidebar) | `ui/sidebar` | App sidebar | `collapsible`, `variant` |
 | Skeleton | `ui/skeleton` | Placeholder | — |
 | Slider | `ui/slider` | Range slider | Radix |
 | Toaster | `ui/sonner` | Toasts | sonner |
 | Spinner | `ui/spinner` | Blocks spinner | size via `--spinner-size` |
-| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card, its grid, the delta chip | `label`, `value`, `delta {direction, label}` (tinted with an arrow, neutral at zero), `footer`, `action` (e.g. a `…` menu) |
-| StatusDot | `ui/status-dot` | 8px status dot | `tone` neutral / link / warning / success / destructive / ink, `pulse` |
+| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card (nested frame: 12px outer, 8px inner panel), its grid, the delta chip | `label` (13px), `value` (22px), `delta {direction, label}` (tint + border + arrow, neutral bordered at zero), `footer` (12px, under a hairline), `action` (e.g. a `…` menu, in foreground) |
+| StatusDot | `ui/status-dot` | 8px status dot | `tone` neutral / link / warning (amber) / success / destructive / ink / blue / violet / amber, `pulse` |
 | SwatchPicker | `ui/swatch-picker` | Colour swatches (document colours) | `colors`, `value`, `onValueChange`, `allowCustom` |
 | Switch | `ui/switch` | Toggle switch | `size` |
-| Table (+parts) | `ui/table` | Data table | composition |
+| Table (+parts) | `ui/table` | Data table (36px header, 13px muted labels) | composition |
 | Tabs (+List, Trigger, Content), tab variants | `ui/tabs`, `ui/tabs-variants` | Tabs | List `variant` default / line |
 | Textarea | `ui/textarea` | Multi-line field | textarea props |
 | Toggle, ToggleGroup (+Item) | `ui/toggle`, `ui/toggle-group` | Pressed buttons | `variant`, `size`, `spacing` |
@@ -124,10 +124,10 @@ upstream props; the table names what Zedative adds or what to pass.
 
 | Component | File | What it is | Main props |
 | --- | --- | --- | --- |
-| PageHeader, PageContent, PageSection, PageGutter, PAGE_GUTTER, PAGE_COLUMN | `blocks/page` | App screen frame | `title`, `description`, `count`, `actions`, `wide` |
-| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav, cards of label / control rows, titled cards | `items`, `value`, `onChange`; card `title`, `description`, `action`, `footer`, `tone`, `inset`; row `label`, `description`, `htmlFor`, `icon`, `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `flat`. Content column capped at 640px |
-| Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop) | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
-| UserMenu | `blocks/user-menu` | Sidebar account row + menu | `name`, `email`, `label`, `collapsed`, children = menu items |
+| PageHeader, PageContent, PageSection, PageGutter, CountBadge, PAGE_GUTTER, PAGE_COLUMN | `blocks/page` | App screen frame (title 18px at 500); `CountBadge` is the 18px bordered count square (page titles, lanes) | `title`, `description`, `count`, `actions`, `wide`; CountBadge `count`, `label` |
+| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav; reui's nested frame (12px outer frame with 4px padding carrying the header and footer, 8px inner panel one step darker holding the content) for cards of label / control rows and titled cards | `items`, `value`, `onChange`; card `title`, `description`, `action`, `footer` (first of two children sits left), `tone`, `inset`; row `label` (500), `description`, `htmlFor`, `icon`, `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `description`, `action`, `className` (inner panel), `frameClassName`, `flat` (no boxes). Content column capped at 640px |
+| Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop): borderless 12px `card` lanes, 8px bordered cards, the count in a CountBadge | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
+| UserMenu | `blocks/user-menu` | Sidebar account row + menu (32px square avatar, 500-weight name, uniform 28px rows) | `name`, `email`, `label`, `collapsed`, children = menu items (shortcut hints only for keys that exist) |
 | AppBrand | `blocks/app-brand` | Mark + name in a toolbar | `name`, `src` |
 | GhostPage | `blocks/ghost-page` | Empty A4 sheet | `title`, `description`, `orientation` |
 | WindowFrame | `blocks/window-frame` | Desktop window for product shots | `title`, children |
@@ -138,7 +138,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | --- | --- | --- | --- |
 | FormField, FormFieldCustom | `form/form-field` | Labelled field with error and counter | `label`, `value`, `onChange`, `multiline`, `error` |
 | MonthPicker | `form/month-picker` | Month + year selects | `value`, `onChange` |
-| SectionList | `form/section-list` | Sortable accordion list of entries with an editable title | `items`, `render`, `summary`, `onTitleChange`, `addVariant` (default `secondary`), `collapsible` / `defaultOpen` / `collapseLabel` |
+| SectionList | `form/section-list` | Sortable accordion list of entries with an editable title | `items`, `render`, `summary`, `onTitleChange`, `titleClassName`, `emptyHint` (shown with no items), `addVariant` (default `secondary`), `collapsible` / `defaultOpen` / `collapseLabel` |
 | PhoneInput | `reui/phone-input` | Country + number field | `value`, `onChange`, `defaultCountry`, `variant` |
 
 <!-- intent-skills:start -->

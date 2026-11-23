@@ -1,11 +1,11 @@
 import type * as React from "react";
 import { cn } from "../lib/utils";
-import { Badge } from "../ui/badge";
 
 // The page frame of an app screen (reui's application blocks, cursor.com's
 // docs column): a title block and content blocks that share one gutter and
 // hold to a 1024px reading column unless `wide`.
-// - `PageHeader`: title (+ a count badge), a one-line description, actions
+// - `PageHeader`: title (18px, weight 500 like reui's app titles; + a
+//   `CountBadge`, an 18px bordered square), a one-line description, actions
 //   on the right, and an optional row under it (tabs, a toolbar).
 // - `PageContent`: a block of content in the column.
 // - `PageSection`: a label column + content column section, ruled on top.
@@ -16,6 +16,31 @@ const PAGE_GUTTER = "px-4 sm:px-6 lg:px-8";
 
 /** The reading column's width. */
 const PAGE_COLUMN = "max-w-5xl";
+
+/** An 18px bordered square holding a count (page titles, kanban lanes). */
+function CountBadge({
+  count,
+  label,
+  className,
+}: {
+  count: number;
+  /** Screen-reader text, e.g. "4 applications"; the digits are hidden then. */
+  label?: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "type-micro inline-flex h-4.5 min-w-4.5 shrink-0 items-center justify-center rounded-sm border border-border px-1 text-ink-sec tabular-nums",
+        className
+      )}
+      data-slot="count-badge"
+    >
+      {label ? <span className="sr-only">{label}</span> : null}
+      <span aria-hidden={label ? true : undefined}>{count}</span>
+    </span>
+  );
+}
 
 function PageHeader({
   title,
@@ -50,12 +75,10 @@ function PageHeader({
         <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex items-center gap-2">
-              <h1 className="type-title text-foreground">{title}</h1>
-              {count === undefined ? null : (
-                <Badge className="tabular-nums" variant="secondary">
-                  {count}
-                </Badge>
-              )}
+              <h1 className="type-title-compact weight-semibold text-foreground">
+                {title}
+              </h1>
+              {count === undefined ? null : <CountBadge count={count} />}
             </div>
             {description ? (
               <p className="type-body max-w-2xl text-pretty text-muted-foreground">
@@ -150,6 +173,7 @@ function PageGutter({
 }
 
 export {
+  CountBadge,
   PAGE_COLUMN,
   PAGE_GUTTER,
   PageContent,

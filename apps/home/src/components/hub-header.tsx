@@ -1,6 +1,24 @@
 import { cn } from "@rulisme/ui/lib/utils";
 import { buttonVariants } from "@rulisme/ui/ui/button-variants";
+import { Button } from "@rulisme/ui/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@rulisme/ui/ui/sheet";
+import { Menu } from "lucide-react";
 import { localePath, otherLocale, useTranslation } from "@/i18n";
+
+const MENU_LINKS = [
+  { key: "nav.builders", hash: "#tools" },
+  { key: "nav.features", hash: "#why" },
+  { key: "nav.exports", hash: "#exports" },
+  { key: "nav.assistants", hash: "#mcp" },
+  { key: "nav.crawler", hash: "" },
+] as const;
 import { BrandMark } from "./brand-mark";
 
 // cursor.com's header nav links: 14px, 5.6px × 15px padding, no fill; the
@@ -68,6 +86,38 @@ export function HubHeader() {
           >
             {t("nav.builders")}
           </a>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                aria-label={t("nav.menu")}
+                className="md:hidden"
+                size="icon-sm"
+                variant="ghost"
+              >
+                <Menu aria-hidden="true" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent closeLabel={t("nav.menu")} floating side="right">
+              <SheetHeader>
+                <SheetTitle>{t("nav.menuTitle")}</SheetTitle>
+              </SheetHeader>
+              <nav
+                aria-label={t("nav.sections")}
+                className="flex flex-col px-4 pb-4"
+              >
+                {MENU_LINKS.map(({ hash, key }) => (
+                  <SheetClose asChild key={key}>
+                    <a
+                      className="type-subtitle rounded-md px-2 py-2 text-foreground transition-colors duration-140 ease-standard hover:bg-pane"
+                      href={hash ? `${localePath(locale)}${hash}` : "/bot"}
+                    >
+                      {t(key)}
+                    </a>
+                  </SheetClose>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

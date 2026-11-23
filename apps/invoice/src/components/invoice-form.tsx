@@ -75,10 +75,15 @@ const ACCENT_PRESETS = [
   "#7c3aed",
 ] as const;
 
-// Each form section is a band of the form pane, ruled by a 1px `line`
-// hairline (DESIGN.md § Layout). The form is a size container, so its grids
-// follow the pane's width rather than the viewport's.
-const SECTION_CLASS = "border-line border-b px-4 py-8 last:border-b-0 sm:px-6";
+// Each form section is a band of the form pane: 32px above and below, and a
+// 1px `line` hairline above every band after the first. The form is a size
+// container, so its grids follow the pane's width rather than the viewport's.
+const SECTION_CLASS = "border-line border-t px-4 py-8 first:border-t-0 sm:px-6";
+
+// The accent swatches: 20px dots ringed by a 1px `border` hairline; the
+// chosen one gets a 2px ink ring 2px off the dot (SwatchPicker's own ring).
+const SWATCH_SIZE_CLASS =
+  "[&_[data-slot^=swatch-picker-]]:size-5 [&_[data-slot^=swatch-picker-]]:border-border";
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -95,8 +100,8 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// Every section heading: a muted 16px icon and the compact title at the
-// regular weight on a 32px row, with a chevron at the right. The whole row
+// Every section heading: a muted 16px icon and the 16px subtitle role at
+// the semibold weight on a 32px row, with a chevron at the right. The whole row
 // toggles the section; the chevron flips instantly (nothing animates layout).
 function SectionToggle({
   icon,
@@ -107,7 +112,7 @@ function SectionToggle({
 }) {
   return (
     <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
-      <span className="type-title-compact flex items-center gap-2 text-foreground">
+      <span className="type-subtitle weight-semibold flex items-center gap-2 text-foreground">
         <span
           aria-hidden="true"
           className="inline-flex shrink-0 text-muted-foreground"
@@ -365,10 +370,10 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
           {t("form.invoiceDetails")}
         </SectionToggle>
         <CollapsibleContent>
-          {/* Number and currency share a row; the two dates get their own
-            two-column row, then the accent colour. */}
+          {/* Number and currency share a two-column row, the two dates
+            the next one, then the accent colour. */}
           <div className="mt-3 flex flex-col gap-3">
-            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
+            <div className="grid grid-cols-2 items-end gap-3">
               <FormField
                 label={t("form.invoiceNumber")}
                 onChange={(v) => updateField("invoiceNumber", v)}
@@ -381,7 +386,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   onValueChange={(v) => updateField("currency", v)}
                   value={data.currency}
                 >
-                  <SelectTrigger className="w-auto">
+                  <SelectTrigger className="w-full">
                     <SelectValue>
                       {(() => {
                         const c = CURRENCY_OPTIONS.find(
@@ -424,6 +429,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               </Label>
               <SwatchPicker
                 allowCustom
+                className={SWATCH_SIZE_CLASS}
                 aria-label={t("form.color")}
                 colors={ACCENT_PRESETS}
                 customLabel={t("a11y.setAccentColor", {
@@ -582,6 +588,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
           addLabel={t("form.addItem")}
           collapseLabel={t("a11y.toggleLineItems")}
           collapsible
+          emptyHint={t("form.itemsEmpty")}
           items={data.items}
           onAdd={addItem}
           onRemove={removeItem}
@@ -702,6 +709,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
             item.description || t("form.itemFallback", { n: i + 1 })
           }
           title={t("form.lineItems")}
+          titleClassName="weight-semibold"
           titleIcon={<ListOrdered className="size-4" />}
         />
       </div>

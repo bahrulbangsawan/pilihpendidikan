@@ -132,14 +132,23 @@ export function FollowUpSection({
   /** A flat section (the sheet) instead of a card. */
   flat?: boolean;
 }) {
+  const card = (
+    <FollowUpCard
+      detail={detail}
+      nowMs={nowMs}
+      onAccept={onAccept}
+      onEdit={onEdit}
+    />
+  );
+  if (flat) {
+    return card;
+  }
+  // The nested frame of the rail's other cards (12px frame, 8px panel).
   return (
-    <div className={flat ? "" : "rounded-lg border border-border bg-card p-4"}>
-      <FollowUpCard
-        detail={detail}
-        nowMs={nowMs}
-        onAccept={onAccept}
-        onEdit={onEdit}
-      />
+    <div className="rounded-xl border border-border bg-card p-1">
+      <div className="rounded-lg border border-border bg-background p-4">
+        {card}
+      </div>
     </div>
   );
 }

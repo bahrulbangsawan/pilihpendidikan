@@ -114,11 +114,11 @@ run_check \
   "pass className with a type-* role instead (recharts: tick={{ className: 'type-micro' }})" \
   bun scripts/check-inline-typography.ts "${SCOPE[@]}"
 
-# 10) Cards and sections are square; only chips, controls and windows round.
+# 10) The radius scale stops at 12px (rounded-xl, app containers per reui).
 run_check \
-  "No rounded-xl and up" \
-  "rounded-xs 2px · rounded-sm 4px (cards, rows) · rounded-lg 8px (fields, menus, windows) · rounded-full (buttons, pills)" \
-  rg -n -P '(?<![\w-])rounded(-[trblse]{1,2})?-(xl|[2-4]xl)(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
+  "No rounded-2xl and up" \
+  "rounded-xs 2px · rounded-sm 4px · rounded-lg 8px (fields, menus, cards in apps) · rounded-xl 12px (app containers: lanes, sheets, frames) · rounded-full (buttons, pills)" \
+  rg -n -P '(?<![\w-])rounded(-[trblse]{1,2})?-([2-4]xl)(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 11) No gradients, glows or glass.
 run_check \

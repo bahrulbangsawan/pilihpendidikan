@@ -1,5 +1,6 @@
 // The board below 640px (12 §3): a scrollable stage switcher with counts and
-// one vertical list. The switcher scrolls under a right-edge fade. No drag
+// one vertical list. The switcher scrolls under a right-edge fade with 16px
+// of scroll padding at both ends; cards put the match and source on one row. No drag
 // and drop; each card has a ghost Move icon button (`M`) and opens the
 // details sheet.
 
@@ -45,8 +46,8 @@ export function PhoneBoard({
   return (
     <div className="flex flex-col">
       <Tabs onValueChange={(value) => setTab(value as Tab)} value={tab}>
-        <div className="no-scrollbar mask-r-from-85% overflow-x-auto px-4 pb-2">
-          <TabsList aria-label={t("board.stages")}>
+        <div className="no-scrollbar mask-r-from-85% scroll-px-4 overflow-x-auto px-4 pb-2">
+          <TabsList aria-label={t("board.stages")} className="mr-4">
             {BOARD_STAGES.map((stage) => (
               <TabsTrigger key={stage} value={stage}>
                 {stageLabel(t, stage)}
@@ -82,6 +83,7 @@ export function PhoneBoard({
             >
               <CardView
                 card={card}
+                compact
                 nowMs={nowMs}
                 pending={pendingIds.has(card.id)}
               />

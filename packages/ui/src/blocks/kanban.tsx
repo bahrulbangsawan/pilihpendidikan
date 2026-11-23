@@ -1,16 +1,17 @@
 import type * as React from "react";
 import { cn } from "../lib/utils";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { CountBadge } from "./page";
 
 // Kanban primitives (reui's kanban, Linear's board): they only render, so
 // an app keeps its own drag and drop (dnd-kit refs, listeners and data go
 // on these elements through `ref` and props).
 // - `Kanban`: the horizontally scrolling row of columns.
-// - `KanbanColumn`: a 288px lane: a bounded `card` fill, a 10% border and
-//   8px corners; cards sit on it in the lighter `pane`.
-// - `KanbanColumnHeader`: a 44px header: status icon, title, count badge,
-//   actions at the end.
+// - `KanbanColumn`: a 288px lane (reui): 12px corners, the `card` fill one
+//   step above the page and no border; cards sit on it in the lighter `pane`
+//   with their own 10% border and 8px corners.
+// - `KanbanColumnHeader`: a 44px header: status icon, title, the count in
+//   an 18px bordered square, actions at the end.
 // - `KanbanColumnContent`: the droppable body; `state="over"` washes it,
 //   `state="blocked"` tints it red (a move that is not allowed).
 // - `KanbanColumnEmpty`: the dashed placeholder of an empty lane.
@@ -41,7 +42,7 @@ function KanbanColumn({
   return (
     <section
       className={cn(
-        "relative flex max-h-full w-72 shrink-0 flex-col rounded-lg border border-border bg-card",
+        "relative flex max-h-full w-72 shrink-0 flex-col rounded-xl bg-card",
         className
       )}
       data-slot="kanban-column"
@@ -86,10 +87,7 @@ function KanbanColumnHeader({
         {title}
       </h2>
       {count === undefined ? null : (
-        <Badge className="tabular-nums" variant="secondary">
-          {countLabel ? <span className="sr-only">{countLabel}</span> : null}
-          <span aria-hidden={countLabel ? true : undefined}>{count}</span>
-        </Badge>
+        <CountBadge count={count} label={countLabel} />
       )}
       {actions ? <span className="ml-auto">{actions}</span> : null}
     </header>
@@ -104,7 +102,7 @@ function KanbanColumnContent({
   return (
     <div
       className={cn(
-        "flex min-h-24 flex-1 flex-col gap-2 overflow-y-auto rounded-b-lg px-2 pb-2 transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
+        "flex min-h-24 flex-1 flex-col gap-2 overflow-y-auto rounded-b-xl px-2 pb-2 transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
         className
       )}
       data-slot="kanban-column-content"
@@ -182,7 +180,7 @@ function KanbanCollapsedColumn({
   return (
     <section
       className={cn(
-        "relative flex w-11 shrink-0 flex-col rounded-lg border border-border bg-card transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
+        "relative flex w-11 shrink-0 flex-col rounded-xl bg-card transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
         className
       )}
       data-slot="kanban-collapsed-column"
@@ -192,7 +190,7 @@ function KanbanCollapsedColumn({
       <Button
         aria-expanded={false}
         aria-label={expandLabel}
-        className="h-full! flex-col items-center justify-start gap-3 rounded-lg px-0! py-3"
+        className="h-full! flex-col items-center justify-start gap-3 rounded-xl px-0! py-3"
         onClick={onExpand}
         variant="row"
       >
@@ -200,9 +198,7 @@ function KanbanCollapsedColumn({
         <span className="type-body weight-semibold text-foreground [writing-mode:vertical-rl]">
           {title}
         </span>
-        <span className="type-caption text-muted-foreground tabular-nums">
-          {count}
-        </span>
+        <CountBadge count={count} />
       </Button>
       {children}
     </section>

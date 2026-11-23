@@ -53,10 +53,11 @@ label that needs them:
 | `weight-semibold` | 500 | a selected item in dense data, `<b>` / `<strong>` |
 | `weight-bold` | 600 | a total or a figure that must stand out |
 
-Headings never take a heavier weight: a feature heading continues in
-`text-ink-sec` at the same size instead. `weight-*` always wins over the role
-on the same element (Tailwind sorts font-weight utilities after font-size
-ones).
+Marketing and docs headings stay at 400 (a feature heading continues in
+`text-ink-sec` at the same size). Inside app surfaces, titles and labels —
+card and section titles, setting-row labels, sheet titles, list and table
+primary cells, menu header names, builder section headings — use
+`weight-semibold` (500), as reui's blocks do.
 
 ### Fields
 
@@ -95,7 +96,7 @@ app roots.
 | `font-thin` … `font-black`, `font-normal`, `font-medium`, `font-semibold`, `font-bold` | One weight (400) with two rare steps | `weight-normal` / `weight-semibold` / `weight-bold` |
 | `font-[…]` arbitrary family | One family | `font-sans`, `font-mono` for code, `font-print` on print artifacts |
 | Inline `style={{ fontSize / fontFamily / fontWeight }}` | Bypasses the system | a role class |
-| `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-4xl` (and side variants) | cursor.com stops at 8px (pills aside) | `rounded-xs` 2px / `-sm` 4px / `-lg` 8px / `-full` (see DESIGN.md § Shapes) |
+| `rounded-2xl`, `rounded-3xl`, `rounded-4xl` (and side variants) | The scale stops at 12px (pills aside) | `rounded-xs` 2px / `-sm` 4px / `-lg` 8px / `-xl` 12px for app containers only (lanes, the floating sheet, outer frames) / `-full` (see DESIGN.md § Shapes) |
 | `bg-gradient-*`, `bg-linear-*`, `bg-radial-*`, `bg-conic-*` | No gradients | flat token fills |
 | `backdrop-blur*` | No glass | an opaque surface |
 | `-[#…]` hex in a class | Raw colour | a token |

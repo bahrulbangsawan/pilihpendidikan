@@ -1,8 +1,8 @@
 // The details sheet (reui's sheet): opened from a board card, list row or
 // table row and kept in the URL (`/board?app=<id>`) so it can be linked. A
 // floating window 12px off the viewport (reui's sheet-1): a header (company
-// avatar, role, company), one row of property chips (the stage select with
-// its `M` hint inside, then labelled facts), then flat sections (Next step,
+// avatar, 22px role, company), one row of 32px property chips (the stage
+// select, then labelled facts), then flat sections (Next step,
 // Notes, Interviews, Follow-up) split by hairlines and 24px of space; the
 // footer stacks the next step's primary action (`Y`) over a full-width
 // secondary "Open full page".
@@ -205,7 +205,7 @@ function SheetBody({
         <ApplicationIdentity
           detail={detail}
           title={
-            <SheetTitle className="type-subtitle text-pretty">
+            <SheetTitle className="weight-semibold text-pretty">
               {detail.posting.title}
             </SheetTitle>
           }

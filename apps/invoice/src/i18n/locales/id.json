@@ -107,7 +107,8 @@
       "clearDate": "Hapus tanggal",
       "clearPeriod": "Hapus periode"
     },
-    "modePercent": "Persentase"
+    "modePercent": "Persentase",
+    "itemsEmpty": "Belum ada item. Tambahkan setiap jasa atau produk yang ditagihkan."
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",

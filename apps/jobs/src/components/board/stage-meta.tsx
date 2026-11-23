@@ -22,25 +22,48 @@ import {
   CircleX,
 } from "lucide-react";
 
-interface StageMeta {
-  icon: LucideIcon;
-  tone: string;
-}
-
-const META: Record<Stage, StageMeta> = {
-  saved: { icon: CircleDashed, tone: "text-ink-sec" },
-  preparing: {
-    icon: CircleDotDashed,
-    tone: "text-ink-sec",
-  },
-  ready: { icon: Circle, tone: "text-foreground" },
-  applied: { icon: CircleArrowRight, tone: "text-foreground" },
-  interviewing: { icon: CircleDot, tone: "text-success" },
-  offer: { icon: CircleDollarSign, tone: "text-success" },
-  accepted: { icon: CircleCheck, tone: "text-success" },
-  rejected: { icon: CircleX, tone: "text-destructive" },
-  withdrawn: { icon: CircleSlash, tone: "text-offgray" },
+// One tone per stage, chosen so neighbouring lanes differ: the pipeline
+// before applying runs grey → violet → blue, applied is amber, the good
+// outcomes green, a rejection red and a withdrawal grey again.
+const TONE: Record<Stage, BadgeTone> = {
+  saved: "neutral",
+  preparing: "violet",
+  ready: "blue",
+  applied: "amber",
+  interviewing: "success",
+  offer: "success",
+  accepted: "success",
+  rejected: "destructive",
+  withdrawn: "neutral",
 };
+
+const ICON: Record<Stage, LucideIcon> = {
+  saved: CircleDashed,
+  preparing: CircleDotDashed,
+  ready: Circle,
+  applied: CircleArrowRight,
+  interviewing: CircleDot,
+  offer: CircleDollarSign,
+  accepted: CircleCheck,
+  rejected: CircleX,
+  withdrawn: CircleSlash,
+};
+
+const TONE_TEXT: Record<BadgeTone, string> = {
+  neutral: "text-offgray",
+  ink: "text-foreground",
+  link: "text-link",
+  success: "text-success",
+  destructive: "text-destructive",
+  blue: "text-tone-blue",
+  violet: "text-tone-violet",
+  amber: "text-tone-amber",
+};
+
+/** The stage's tone, for anything else that colours by stage. */
+export function stageTone(stage: Stage): BadgeTone {
+  return TONE[stage];
+}
 
 export function StageIcon({
   stage,
@@ -49,26 +72,14 @@ export function StageIcon({
   stage: Stage;
   className?: string;
 }) {
-  const { icon: Icon, tone } = META[stage];
+  const Icon = ICON[stage];
   return (
     <Icon
       aria-hidden="true"
-      className={cn("size-4 shrink-0", tone, className)}
+      className={cn("size-4 shrink-0", TONE_TEXT[TONE[stage]], className)}
     />
   );
 }
-
-const DOT_TONE: Record<Stage, BadgeTone> = {
-  saved: "neutral",
-  preparing: "neutral",
-  ready: "ink",
-  applied: "ink",
-  interviewing: "success",
-  offer: "success",
-  accepted: "success",
-  rejected: "destructive",
-  withdrawn: "neutral",
-};
 
 export function StageDot({
   stage,
@@ -77,10 +88,10 @@ export function StageDot({
   stage: Stage;
   className?: string;
 }) {
-  return <StatusDot className={className} tone={DOT_TONE[stage]} />;
+  return <StatusDot className={className} tone={TONE[stage]} />;
 }
 
-/** The stage as a 4px chip on a 10% tint of its colour, with the dot. */
+/** The stage as a 4px chip on a 12% tint of its tone, with the dot. */
 export function StageBadge({
   stage,
   className,
@@ -90,7 +101,7 @@ export function StageBadge({
 }) {
   const { t } = useTranslation();
   return (
-    <Badge className={className} tone={DOT_TONE[stage]}>
+    <Badge className={className} tone={TONE[stage]}>
       {stageLabel(t, stage)}
     </Badge>
   );

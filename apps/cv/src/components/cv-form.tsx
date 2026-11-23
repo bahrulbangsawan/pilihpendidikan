@@ -730,7 +730,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
             <div className="flex items-center">
               <EditableTitle
                 aria-label={t("a11y2.summarySectionTitle")}
-                className="type-title-compact"
+                className="weight-semibold"
                 onChange={(e) =>
                   onChange({ ...data, summaryTitle: e.target.value })
                 }
@@ -806,8 +806,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
   return (
     <div>
       {/* ── Personal Info ── */}
-      <section className="flex flex-col gap-3 border-line border-b px-4 py-8 sm:px-6">
-        <h2 className="type-title-compact flex h-8 items-center text-foreground">
+      <section className="flex flex-col gap-3 px-4 py-8 sm:px-6">
+        <h2 className="type-subtitle weight-semibold flex h-8 items-center text-foreground">
           {t("form.personalInformation")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -1021,6 +1021,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<ExperienceEntry>
         addLabel={t("form.addExperience")}
+        emptyHint={t("form.empty.experience")}
+        titleClassName="weight-semibold"
         hasError={(entry) =>
           !!(
             errors[`exp-${entry.id}-company`] || errors[`exp-${entry.id}-title`]
@@ -1274,6 +1276,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<EducationEntry>
         addLabel={t("form.addEducation")}
+        emptyHint={t("form.empty.education")}
+        titleClassName="weight-semibold"
         hasError={(entry) =>
           !!(
             errors[`edu-${entry.id}-institution`] ||
@@ -1473,6 +1477,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<SkillCategory>
         addLabel={t("form.addCategory")}
+        emptyHint={t("form.empty.skills")}
+        titleClassName="weight-semibold"
         items={data.skills}
         onAdd={addSkillCategory}
         onRemove={removeSkillCategory}
@@ -1551,6 +1557,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<AwardEntry>
         addLabel={t("form.addAward")}
+        emptyHint={t("form.empty.awards")}
+        titleClassName="weight-semibold"
         items={data.awards}
         onAdd={addAward}
         onRemove={removeAward}
@@ -1645,6 +1653,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<CertificateEntry>
         addLabel={t("form.addCertificate")}
+        emptyHint={t("form.empty.certificates")}
+        titleClassName="weight-semibold"
         items={data.certificates}
         onAdd={addCertificate}
         onRemove={removeCertificate}
@@ -1773,6 +1783,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<LanguageEntry>
         addLabel={t("form.addLanguage")}
+        emptyHint={t("form.empty.languages")}
+        titleClassName="weight-semibold"
         items={data.languages}
         onAdd={addLanguage}
         onRemove={removeLanguage}
@@ -1829,6 +1841,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<ProjectEntry>
         addLabel={t("form.addProject")}
+        emptyHint={t("form.empty.projects")}
+        titleClassName="weight-semibold"
         items={data.projects}
         onAdd={addProject}
         onRemove={removeProject}
@@ -1886,6 +1900,8 @@ export function CVForm({ data, onChange }: CVFormProps) {
     return (
       <SectionList<VolunteerEntry>
         addLabel={t("form.addVolunteer")}
+        emptyHint={t("form.empty.volunteer")}
+        titleClassName="weight-semibold"
         items={data.volunteer}
         onAdd={addVolunteer}
         onRemove={removeVolunteer}
@@ -2029,14 +2045,15 @@ function SortableSection({
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
-  // One band of the form, ruled off by a full-width hairline. The grip sits
+  // One band of the form, ruled off from the band above by a full-width
+  // hairline. The grip sits
   // inside the left gutter, level with the section title's 32px row. With a
   // mouse it shows only while the band is hovered or holds focus (it stays a
   // tab stop, so the keyboard always reaches it); touch screens always show it.
   return (
     <div
       className={cn(
-        "group/section relative border-line border-b bg-background px-4 py-8 sm:px-6",
+        "group/section relative border-line border-t bg-background px-4 py-8 sm:px-6",
         // Above the neighbouring bands, under the sticky toolbar (z-10).
         isDragging && "z-5"
       )}

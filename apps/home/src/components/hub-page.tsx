@@ -191,15 +191,17 @@ function Why() {
         <ul className="mt-14 grid gap-[10px] md:grid-cols-3">
           {WHY_ITEMS.map((key) => (
             <li
-              className="flex flex-col gap-3 rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px]"
+              className="flex flex-col gap-1 rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px]"
               key={key}
             >
-              <WhyIcon
-                aria-hidden="true"
-                className="size-4 text-ink-sec"
-                item={key}
-              />
-              <h3 className="type-subtitle">{t(`why.${key}.title`)}</h3>
+              <h3 className="type-subtitle flex items-center gap-2">
+                <WhyIcon
+                  aria-hidden="true"
+                  className="size-4 shrink-0 text-ink-sec"
+                  item={key}
+                />
+                {t(`why.${key}.title`)}
+              </h3>
               <p className="type-subtitle text-pretty text-ink-sec">
                 {t(`why.${key}.body`)}
               </p>

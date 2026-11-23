@@ -73,11 +73,14 @@ function DetailSkeleton() {
   );
 }
 
-/** A tab's body in one card (the overview and notes bring their own). */
+/** A tab's body in the nested frame (the overview and notes bring their own
+ * SectionCards): a 12px frame around an 8px panel one step darker. */
 function TabCard({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4 sm:p-5">
-      {children}
+    <div className="rounded-xl border border-border bg-card p-1">
+      <div className="rounded-lg border border-border bg-background p-4 sm:p-5">
+        {children}
+      </div>
     </div>
   );
 }

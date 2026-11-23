@@ -57,6 +57,10 @@ interface SectionListProps<T extends { id: string }> {
   defaultOpen?: boolean;
   /** With `collapsible`: the chevron's accessible name. */
   collapseLabel?: string;
+  /** Shown under the title row (before the add pill) while there are no items. */
+  emptyHint?: ReactNode;
+  /** Merged into the editable title's classes (e.g. `weight-semibold`). */
+  titleClassName?: string;
 }
 
 // Drag-to-reorder is direct feedback, so it keeps moving (DESIGN.md §
@@ -134,6 +138,8 @@ export function SectionList<T extends { id: string }>({
   collapsible = false,
   defaultOpen = true,
   collapseLabel = "Show or hide",
+  emptyHint,
+  titleClassName,
 }: SectionListProps<T>) {
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [sectionOpen, setSectionOpen] = useState(defaultOpen);
@@ -158,6 +164,9 @@ export function SectionList<T extends { id: string }>({
 
   const body = (
     <>
+      {items.length === 0 && emptyHint ? (
+        <p className="type-body text-muted-foreground">{emptyHint}</p>
+      ) : null}
       {items.length > 0 && (
         <DndContext
           collisionDetection={closestCenter}
@@ -254,6 +263,7 @@ export function SectionList<T extends { id: string }>({
         )}
         <EditableTitle
           aria-label={placeholder}
+          className={titleClassName}
           onChange={(e) => onTitleChange?.(e.target.value)}
           placeholder={placeholder}
           readOnly={!onTitleChange}
@@ -265,7 +275,9 @@ export function SectionList<T extends { id: string }>({
         <CollapsibleTrigger asChild>
           <Button
             aria-label={collapseLabel}
-            className="text-muted-foreground hover:bg-pane aria-expanded:bg-transparent"
+            // -mr-1.5: the 16px chevron's right edge meets the header's edge,
+            // like the bare chevrons of other collapsible section headers.
+            className="-mr-1.5 text-muted-foreground hover:bg-pane aria-expanded:bg-transparent"
             size="icon-sm"
             variant="ghost"
           >

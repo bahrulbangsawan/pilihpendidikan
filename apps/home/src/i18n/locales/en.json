@@ -14,7 +14,9 @@
     "home": "Pilih Pendidikan home",
     "features": "Features",
     "exports": "What you get",
-    "crawler": "Crawler"
+    "crawler": "Crawler",
+    "menu": "Menu",
+    "menuTitle": "Pilih Pendidikan"
   },
   "news": {
     "label": "News:",

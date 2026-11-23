@@ -47,14 +47,14 @@ export function CVPreview({ data, style }: CVPreviewProps) {
     );
   }
 
-  // The white sheet rests on the dark preview pane inside a 1px hairline
-  // frame. On screen the frame keeps an A4 proportion (1:1.414) as its
+  // The white sheet rests on the card-coloured preview well (24px around it,
+  // from the pane) with a 2px corner. On screen the frame keeps an A4 proportion (1:1.414) as its
   // minimum height and stretches the sheet to fill it, so a short CV still
   // reads as a whole page; a longer one grows past it. The frame is
   // screen-only: print releases it so `.cv-page` flows across bare paper
   // (styles.css @media print).
   return (
-    <div className="mx-auto flex aspect-[1/1.414] w-full max-w-2xl flex-col border border-border *:w-full *:flex-1 print:block print:aspect-auto print:max-w-none print:border-0">
+    <div className="mx-auto flex aspect-[1/1.414] w-full max-w-2xl flex-col overflow-hidden rounded-xs *:w-full *:flex-1 print:block print:aspect-auto print:max-w-none print:overflow-visible print:rounded-none">
       <TemplatePreview data={data} style={style} />
     </div>
   );

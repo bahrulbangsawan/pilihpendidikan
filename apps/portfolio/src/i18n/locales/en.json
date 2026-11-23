@@ -116,7 +116,8 @@
     "addProject": "Add Project",
     "maxProjects": "Maximum {max} projects reached",
     "projectFallback": "Project {index}",
-    "chipFull": "Maximum items reached"
+    "chipFull": "Maximum items reached",
+    "projectsEmpty": "No projects yet. Add up to five, your strongest first."
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",

@@ -116,7 +116,8 @@
     "addProject": "Tambah Proyek",
     "maxProjects": "Maksimal {max} proyek tercapai",
     "projectFallback": "Proyek {index}",
-    "chipFull": "Jumlah maksimum tercapai"
+    "chipFull": "Jumlah maksimum tercapai",
+    "projectsEmpty": "Belum ada proyek. Tambahkan hingga lima, yang terkuat dulu."
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",

@@ -212,7 +212,7 @@ function KanbanBlock() {
 function StatsBlock() {
   return (
     <Block
-      description="StatCard: a muted label (an optional … menu in the corner), the value in the display role, a tinted delta chip with an arrow (green up, red down, neutral flat) and a footer line under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm."
+      description="StatCard: reui's nested frame (a 12px outer frame, 4px of padding, an 8px inner panel one step darker), a 13px muted label with the … menu in its corner, the 22px value, a tinted delta chip with an arrow and a matching border (green up, red down, a neutral bordered chip at zero) and a 12px footer under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm."
       title="Stat card and meter"
       wide
     >
@@ -273,7 +273,7 @@ function StatsBlock() {
 function IdentityBlock() {
   return (
     <Block
-      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 28px outlined fact chip with an icon and a muted label; propertyChipClassName gives a select trigger the same pill. Badge tone: a 4px status chip on a 10% tint with a dot. SectionCard: a titled card with an action, or flat inside a sheet."
+      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 32px outlined fact chip (8px corners) with an icon and a muted label; propertyChipClassName gives a select trigger the same chip. Badge tone: a 4px status chip on a 12% tint with a dot and tone text (stages: neutral, violet, blue, amber, success, destructive). SectionCard: the nested frame (title on a 12px frame, content in an 8px inner panel), or flat inside a sheet."
       title="Avatar, property chips, section card"
       wide
     >
@@ -308,9 +308,10 @@ function IdentityBlock() {
           </div>
           <div className="flex flex-wrap gap-1.5">
             <Badge tone="neutral">Saved</Badge>
-            <Badge tone="ink">Ready</Badge>
-            <Badge tone="link">Interviewing</Badge>
-            <Badge tone="success">Offer</Badge>
+            <Badge tone="violet">Preparing</Badge>
+            <Badge tone="blue">Ready</Badge>
+            <Badge tone="amber">Applied</Badge>
+            <Badge tone="success">Interviewing</Badge>
             <Badge tone="destructive">Rejected</Badge>
           </div>
         </Example>
@@ -358,7 +359,7 @@ function SettingsBlock() {
     useState<(typeof SETTINGS_NAV)[number]["value"]>("account");
   return (
     <Block
-      description="SubNavLayout: a page title, a left sub-nav (a fading tab row on phones) and a content column held to 640px. SettingsCard: one bordered card — a header, SettingsRows split by hairlines (a 2 / 3 grid: label and a one-line description, then the control, full width or control end for a switch or button; stacked on phones; optional icon tile and badge) and a Cancel / Save footer under a rule; tone destructive for a danger zone."
+      description="SubNavLayout: a page title, a left sub-nav (a fading tab row on phones) and a content column held to 640px. SettingsCard: reui's nested frame — the title (weight 500) and description on a 12px outer frame, SettingsRows split by hairlines in an 8px inner panel one step darker (a 2 / 3 grid: a weight-500 label and a one-line description, then the control, full width or control end for a switch or button; stacked on phones; optional icon tile and badge), and Cancel (left) / Save (right) on the frame below the panel; tone destructive for a danger zone."
       title="Settings"
       wide
     >

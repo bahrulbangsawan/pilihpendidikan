@@ -24,7 +24,6 @@ const ROLE_PAIRS = [
     foreground: "ink",
   },
   { name: "Card", background: "card", foreground: "card-foreground" },
-  { name: "Popover", background: "popover", foreground: "popover-foreground" },
   {
     name: "Primary pill",
     background: "primary",
@@ -67,6 +66,22 @@ const ROLE_PAIRS = [
     foreground: "success",
   },
   { name: "Tooltip", background: "tooltip", foreground: "tooltip-foreground" },
+  // Stage / category tints (data only); on their 12% chips they hold AA too.
+  {
+    name: "Tone blue (Ready)",
+    background: "background",
+    foreground: "tone-blue",
+  },
+  {
+    name: "Tone violet (Preparing)",
+    background: "background",
+    foreground: "tone-violet",
+  },
+  {
+    name: "Tone amber (Applied)",
+    background: "background",
+    foreground: "tone-amber",
+  },
 ] as const;
 
 const PALETTE = [
@@ -110,6 +125,15 @@ const PALETTE = [
       { name: "highlight 15%", token: "highlight" },
       { name: "destructive", token: "destructive" },
       { name: "success", token: "success" },
+    ],
+  },
+  {
+    group: "Stage tones (data only)",
+    swatches: [
+      { name: "tone-blue", token: "tone-blue" },
+      { name: "tone-violet", token: "tone-violet" },
+      { name: "tone-amber", token: "tone-amber" },
+      { name: "offgray (neutral)", token: "offgray" },
     ],
   },
   {

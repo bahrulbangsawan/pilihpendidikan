@@ -1,7 +1,7 @@
 // The application's identity and property chips, shared by the details
 // sheet and the full page (reui's sheet: title, then a row of property
 // chips). One chip component throughout: the first is the stage select
-// (its `M` hint inside the chip), the others are labelled facts: match
+// (`M` opens it; the hint lives in the card menu and the `?` sheet), the others are labelled facts: match
 // score, location, source, applied date, posting status.
 
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
@@ -9,7 +9,6 @@ import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
 import { STAGES } from "@pilihpendidikan/jobs-contracts/enums";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { cn } from "@rulisme/ui/lib/utils";
-import { Kbd } from "@rulisme/ui/ui/kbd";
 import {
   Select,
   SelectContent,
@@ -54,7 +53,7 @@ export function ApplicationIdentity({
       <EntityAvatar name={detail.posting.company_name} size="lg" />
       <div className="flex min-w-0 flex-col gap-0.5">
         {title}
-        <span className="type-caption truncate text-muted-foreground">
+        <span className="type-body truncate text-muted-foreground">
           {detail.posting.company_name}
         </span>
       </div>
@@ -81,7 +80,7 @@ function StageSelect({
         aria-keyshortcuts={shortcut ? "M" : undefined}
         aria-label={t("detail.stage")}
         className={propertyChipClassName(
-          "w-auto cursor-pointer gap-1.5 bg-transparent pr-1.5 text-foreground hover:bg-pane"
+          "w-auto cursor-pointer gap-1.5 bg-transparent pr-2 text-foreground hover:bg-pane"
         )}
         ref={trigger}
       >
@@ -89,7 +88,6 @@ function StageSelect({
           {t("application.props.stage")}
         </span>
         <SelectValue />
-        {shortcut ? <Kbd aria-hidden="true">M</Kbd> : null}
       </SelectTrigger>
       <SelectContent>
         {STAGES.map((entry) => (

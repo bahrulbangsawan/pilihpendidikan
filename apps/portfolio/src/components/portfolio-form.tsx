@@ -1,5 +1,6 @@
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
+import { cn } from "@rulisme/ui/lib/utils";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
 import { BadgeButton } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
@@ -124,6 +125,18 @@ const COLLABORATION_OPTIONS: Option<Collaboration["kind"]>[] = [
 
 // Reject oversized uploads before decoding. 1920×1080 PNG/JPEG comfortably
 // fits under this; the ratio guard (16:9) is the real gate.
+// Form sections: 32px above and below, a hairline above every section after
+// the first, a 16px semibold heading.
+const SECTION_CLASS = "space-y-3 border-border border-t px-4 py-8 sm:px-6";
+const SECTION_TITLE_CLASS =
+  "type-subtitle weight-semibold flex h-8 items-center text-foreground";
+
+// Field rows sit on a two-column grid; a third column joins only for a short
+// number, at a fixed width that fits its label (Semester 96px).
+const SEMESTER_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_96px]";
+const YEAR_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_128px]";
+const EXPERIENCE_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_152px]";
+
 const MAX_IMAGE_MB = 5;
 const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 // Project media fills a 16:9 slot up to ~half an A4-landscape page, so 1200px on
@@ -467,7 +480,12 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   function renderAffiliationFields() {
     if (affiliation.kind === "student" || affiliation.kind === "alumni") {
       return (
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div
+          className={cn(
+            "grid gap-3",
+            affiliation.kind === "student" ? SEMESTER_ROW_CLASS : YEAR_ROW_CLASS
+          )}
+        >
           <FormField
             label={t("form.institution")}
             onChange={(v) =>
@@ -531,7 +549,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
 
     if (affiliation.kind === "professional") {
       return (
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className={cn("grid gap-3", EXPERIENCE_ROW_CLASS)}>
           <FormField
             label={t("form.organization")}
             onChange={(v) =>
@@ -938,15 +956,14 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     );
   }
 
-  // Each form section spans the form pane, ruled off by a 10% hairline, as
-  // in the CV and invoice builders.
+  // Each form section spans the form pane: 32px above and below, ruled off
+  // from the section above by a 10% hairline, as in the CV and invoice
+  // builders.
   return (
     <div>
       {/* ── Profile ── */}
-      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
-        <h2 className="type-title-compact text-foreground">
-          {t("form.profile")}
-        </h2>
+      <section className="space-y-3 px-4 py-8 sm:px-6">
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.profile")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField
             label={t("form.fullName")}
@@ -967,22 +984,27 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormFieldCustom label={t("form.track")}>
-            <Select
-              onValueChange={(v) => updateOwner({ track: v as Track })}
-              value={owner.track}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {TRACK_OPTIONS.map((o) => (
-                  <SelectItem key={o.value} value={o.value}>
-                    <o.icon aria-hidden="true" />
-                    {t(o.labelKey)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col gap-2">
+              <Select
+                onValueChange={(v) => updateOwner({ track: v as Track })}
+                value={owner.track}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TRACK_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      <o.icon aria-hidden="true" />
+                      {t(o.labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="type-caption text-muted-foreground">
+                {t("form.trackHint")}
+              </p>
+            </div>
           </FormFieldCustom>
           <FormFieldCustom label={t("form.affiliation")}>
             <Select
@@ -1009,11 +1031,9 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Contact ── */}
-      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
-        <h2 className="type-title-compact text-foreground">
-          {t("form.contact")}
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-3">
+      <section className={SECTION_CLASS}>
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.contact")}</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
           <FormField
             label={t("form.email")}
             onChange={(v) =>
@@ -1061,7 +1081,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
           <Label>{t("form.socials")}</Label>
           {socials.map((social, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
-            <div className="flex items-end gap-2" key={index}>
+            <div className="flex items-center gap-2" key={index}>
               <div className="w-28 shrink-0">
                 <Input
                   aria-label={t("form.socialLabel")}
@@ -1088,6 +1108,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
               <Button
                 aria-label={t("form.remove")}
+                className="size-8 shrink-0 text-muted-foreground hover:text-foreground"
                 onClick={() => removeSocial(index)}
                 size="icon"
                 variant="ghost"
@@ -1104,10 +1125,8 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Submission ── */}
-      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
-        <h2 className="type-title-compact text-foreground">
-          {t("form.submission")}
-        </h2>
+      <section className={SECTION_CLASS}>
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.submission")}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField
             label={t("form.submissionTarget")}
@@ -1128,19 +1147,17 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             value={data.cohortYear ? String(data.cohortYear) : ""}
           />
         </div>
-        <p className="type-caption text-muted-foreground">
-          {t("form.trackHint")}
-        </p>
       </section>
 
       {/* ── Projects (max 5) ── */}
-      <div className="px-4 py-8 sm:px-6">
+      <div className="border-border border-t px-4 py-8 sm:px-6">
         <SectionList<Project>
           addLabel={
             data.projects.length >= MAX_PROJECTS
               ? t("form.maxProjects", { max: MAX_PROJECTS })
               : t("form.addProject")
           }
+          emptyHint={t("form.projectsEmpty")}
           hasError={(p) => Boolean(imageErrors[p.id])}
           items={data.projects}
           onAdd={addProject}
@@ -1154,6 +1171,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             project.title || t("form.projectFallback", { index: index + 1 })
           }
           title={t("form.projects")}
+          titleClassName="weight-semibold"
           titleExtra={
             <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
               {t("form.projectCount", {
