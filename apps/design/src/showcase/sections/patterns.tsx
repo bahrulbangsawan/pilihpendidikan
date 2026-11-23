@@ -212,13 +212,23 @@ function KanbanBlock() {
 function StatsBlock() {
   return (
     <Block
-      description="StatCard: a muted label, the value in the display role, a delta chip (green up, red down, grey flat) and a footer line under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar whose tone follows the value."
+      description="StatCard: a muted label (an optional … menu in the corner), the value in the display role, a tinted delta chip with an arrow (green up, red down, neutral flat) and a footer line under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm."
       title="Stat card and meter"
       wide
     >
       <Example label="Four stats with deltas" stack>
         <StatGrid aria-label="This month">
           <StatCard
+            action={
+              <Button
+                aria-label="More for Applications"
+                className="text-muted-foreground"
+                size="icon-sm"
+                variant="ghost"
+              >
+                <Ellipsis aria-hidden="true" />
+              </Button>
+            }
             delta={{ direction: "up", label: "+12%" }}
             footer="vs. 25 last month"
             label="Applications"
@@ -243,7 +253,7 @@ function StatsBlock() {
           />
         </StatGrid>
       </Example>
-      <Example label="Meters: high, mid, low, fixed tone" stack>
+      <Example label="Meters: neutral at any value, one fixed tone" stack>
         <div className="grid gap-4 sm:grid-cols-4">
           <Meter label="Match" value={86} />
           <Meter label="Match" value={58} />
@@ -263,7 +273,7 @@ function StatsBlock() {
 function IdentityBlock() {
   return (
     <Block
-      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 28px outlined fact chip with an icon. SectionCard: a titled card with an action."
+      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 28px outlined fact chip with an icon and a muted label; propertyChipClassName gives a select trigger the same pill. Badge tone: a 4px status chip on a 10% tint with a dot. SectionCard: a titled card with an action, or flat inside a sheet."
       title="Avatar, property chips, section card"
       wide
     >
@@ -280,18 +290,28 @@ function IdentityBlock() {
         </Example>
         <Example label="Properties under a record's title" stack>
           <div className="flex flex-wrap gap-1.5">
-            <PropertyChip icon={<Sparkles aria-hidden="true" />}>
-              82% match
+            <PropertyChip icon={<Sparkles aria-hidden="true" />} label="Match">
+              82%
             </PropertyChip>
-            <PropertyChip icon={<MapPin aria-hidden="true" />}>
+            <PropertyChip icon={<MapPin aria-hidden="true" />} label="Location">
               Jakarta · Hybrid
             </PropertyChip>
-            <PropertyChip icon={<Globe aria-hidden="true" />}>
+            <PropertyChip icon={<Globe aria-hidden="true" />} label="Source">
               Greenhouse
             </PropertyChip>
-            <PropertyChip icon={<CalendarCheck aria-hidden="true" />}>
-              Applied 12 Nov
+            <PropertyChip
+              icon={<CalendarCheck aria-hidden="true" />}
+              label="Applied"
+            >
+              12 Nov
             </PropertyChip>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            <Badge tone="neutral">Saved</Badge>
+            <Badge tone="ink">Ready</Badge>
+            <Badge tone="link">Interviewing</Badge>
+            <Badge tone="success">Offer</Badge>
+            <Badge tone="destructive">Rejected</Badge>
           </div>
         </Example>
         <Example label="Section card" stack>
@@ -309,6 +329,18 @@ function IdentityBlock() {
               Recruiter asked for a portfolio link before Friday.
             </p>
           </SectionCard>
+          <div className="flex flex-col divide-y divide-border *:py-4">
+            <SectionCard flat id="pattern-flat-next" title="Next step">
+              <p className="type-body text-pretty">
+                Flat: no box, split from the next section by a hairline.
+              </p>
+            </SectionCard>
+            <SectionCard flat id="pattern-flat-notes" title="Interviews">
+              <p className="type-caption text-muted-foreground">
+                No interviews yet.
+              </p>
+            </SectionCard>
+          </div>
         </Example>
       </div>
     </Block>
@@ -326,7 +358,7 @@ function SettingsBlock() {
     useState<(typeof SETTINGS_NAV)[number]["value"]>("account");
   return (
     <Block
-      description="SubNavLayout: a page title, a left sub-nav (tabs on phones) and the content column. SettingsCard: a header, an inset box of SettingsRows (label and description left, control right, optional icon tile and badge) and a Cancel / Save footer; tone destructive for a danger zone."
+      description="SubNavLayout: a page title, a left sub-nav (a fading tab row on phones) and a content column held to 640px. SettingsCard: one bordered card — a header, SettingsRows split by hairlines (a 2 / 3 grid: label and a one-line description, then the control, full width or control end for a switch or button; stacked on phones; optional icon tile and badge) and a Cancel / Save footer under a rule; tone destructive for a danger zone."
       title="Settings"
       wide
     >
@@ -343,7 +375,7 @@ function SettingsBlock() {
             description="Shown on your CV and in emails to recruiters."
             footer={
               <>
-                <Button size="sm" variant="ghost">
+                <Button size="sm" variant="outline">
                   Cancel
                 </Button>
                 <Button size="sm">Save</Button>
@@ -360,7 +392,19 @@ function SettingsBlock() {
               <Input defaultValue="Rina Kartika" id="pattern-name" />
             </SettingsRow>
             <SettingsRow
+              description="Where recruiters reply."
+              htmlFor="pattern-email"
+              label="Email"
+            >
+              <Input
+                id="pattern-email"
+                placeholder="you@example.com"
+                type="email"
+              />
+            </SettingsRow>
+            <SettingsRow
               badge={<Badge variant="secondary">Beta</Badge>}
+              control="end"
               description="A daily digest of new matches."
               icon={Bell}
               label="Email digest"
@@ -375,11 +419,9 @@ function SettingsBlock() {
             title="Delete account"
             tone="destructive"
           >
-            <div className="px-4 pb-3">
-              <Button size="sm" variant="destructive">
-                Delete account
-              </Button>
-            </div>
+            <Button className="self-start" size="sm" variant="destructive">
+              Delete account
+            </Button>
           </SettingsCard>
         </SubNavLayout>
       </Example>
@@ -459,6 +501,9 @@ function ChromeBlock() {
                     <Settings aria-hidden="true" />
                     Settings
                   </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <Keyboard aria-hidden="true" />
                     Keyboard shortcuts

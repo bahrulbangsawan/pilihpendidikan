@@ -542,6 +542,57 @@ export function InvoiceGenerator() {
     return <InvoicePrintView data={data} loading={loading} />;
   }
 
+  // The document actions (import, sample, clear, language) sit at the far
+  // right of the window like cursor.com's top bar: in the preview toolbar
+  // beside Download PDF from `md` up, in the form toolbar when the panes
+  // stack. The clear-all window is rendered once, below.
+  const toolbarActions = (
+    <>
+      <Tooltip>
+        <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+          <TooltipTrigger asChild>
+            <Button
+              aria-label={t("toolbar.importJson")}
+              size="icon-sm"
+              variant="ghost"
+            >
+              <Upload aria-hidden="true" />
+            </Button>
+          </TooltipTrigger>
+        </FileTrigger>
+        <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label={t("toolbar.loadSample")}
+            onClick={() => setData(sampleData as InvoiceData)}
+            size="icon-sm"
+            variant="ghost"
+          >
+            <Sparkles aria-hidden="true" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{t("toolbar.loadSample")}</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-label={t("toolbar.clearAll")}
+            disabled={isEmpty}
+            onClick={() => setConfirmOpen(true)}
+            size="icon-sm"
+            variant="ghost"
+          >
+            <Trash2 aria-hidden="true" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
+      </Tooltip>
+      <LanguageSwitcher />
+    </>
+  );
+
   return (
     <>
       <a
@@ -565,73 +616,28 @@ export function InvoiceGenerator() {
               hasToken={cloud.hasToken}
               onTokenChange={cloud.setToken}
             />
-            <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      aria-label={t("toolbar.importJson")}
-                      size="icon-sm"
-                      variant="ghost"
-                    >
-                      <Upload aria-hidden="true" />
-                    </Button>
-                  </TooltipTrigger>
-                </FileTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.loadSample")}
-                    onClick={() => setData(sampleData as InvoiceData)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles aria-hidden="true" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.loadSample")}</TooltipContent>
-              </Tooltip>
-              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
-                      <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
-                        size="icon-sm"
-                        variant="ghost"
-                      >
-                        <Trash2 aria-hidden="true" />
-                      </Button>
-                    </DialogTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
-                </Tooltip>
-                <DialogContent className="sm:max-w-sm">
-                  <DialogHeader>
-                    <DialogTitle>{t("confirm.title")}</DialogTitle>
-                    <DialogDescription>
-                      {t("confirm.description")}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button
-                      onClick={() => setConfirmOpen(false)}
-                      variant="outline"
-                    >
-                      {t("confirm.cancel")}
-                    </Button>
-                    <Button onClick={handleClearAll} variant="destructive">
-                      {t("confirm.confirm")}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <LanguageSwitcher />
+            <div className="ml-auto flex items-center gap-1 md:hidden">
+              {toolbarActions}
             </div>
           </div>
+          <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogHeader>
+                <DialogTitle>{t("confirm.title")}</DialogTitle>
+                <DialogDescription>
+                  {t("confirm.description")}
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button onClick={() => setConfirmOpen(false)} variant="outline">
+                  {t("confirm.cancel")}
+                </Button>
+                <Button onClick={handleClearAll} variant="destructive">
+                  {t("confirm.confirm")}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <InvoiceForm data={data} onChange={setData} />
         </div>
         {/* Preview pane: the same toolbar, then the white sheet on the card pane. */}
@@ -645,9 +651,12 @@ export function InvoiceGenerator() {
             {showCloudStatus ? (
               <CloudSaveStatus error={cloud.error} status={cloud.status} />
             ) : null}
+            <div className="ml-auto hidden items-center gap-1 md:flex">
+              {toolbarActions}
+            </div>
             <ButtonGroup
               aria-label={t("toolbar.download")}
-              className="ml-auto hidden md:flex"
+              className="hidden md:flex"
             >
               <Button
                 aria-keyshortcuts={DOWNLOAD_SHORTCUT}

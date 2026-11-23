@@ -160,6 +160,7 @@
     "pageOf": "Halaman {page} dari {total}"
   },
   "a11y": {
+    "toggleLineItems": "Tampilkan atau sembunyikan item",
     "apiKeySettings": "Pengaturan Kunci API",
     "setupAiAssistant": "Atur Asisten AI",
     "setAccentColor": "Atur warna aksen ke {color}",

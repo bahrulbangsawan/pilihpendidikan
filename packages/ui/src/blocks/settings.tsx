@@ -7,12 +7,17 @@ import { PAGE_GUTTER } from "./page";
 // Settings building blocks (reui's profile and settings blocks):
 // - `SubNavLayout`: a page title + description, a left sub-nav (a row of
 //   tabs on phones) and the content column.
-// - `SettingsCard`: an 8px card with a title / description header, an inset
-//   box of rows and an optional footer (Cancel / Save); `tone="destructive"`
-//   for a danger zone.
-// - `SettingsRow`: label + description on the left, the control on the
-//   right (stacked on phones), an optional icon tile and badge.
-// - `SectionCard`: a lighter titled card (a label row, then free content).
+// - `SettingsCard`: one 8px card (a single border) with a title /
+//   description header, rows split by hairlines and an optional footer
+//   (Cancel / Save) under a rule; `tone="destructive"` for a danger zone.
+//   The content column holds to 640px so rows never stretch thin.
+// - `SettingsRow`: label + a one-line description, then the control; stacked
+//   on phones. A field (`control="fill"`) sits on a 2 / 3 grid at full
+//   width; a switch or a button (`control="end"`) keeps its size at the
+//   right and the label takes the rest. Optional icon tile and badge.
+// - `SectionCard`: a lighter titled card (a label row, then free content);
+//   `flat` drops the box for a section inside a sheet or a panel, where
+//   hairlines and 24px of space separate sections instead of borders.
 
 interface SubNavItem<T extends string> {
   icon: LucideIcon;
@@ -54,7 +59,7 @@ function SubNavLayout<T extends string>({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
         <nav
           aria-label={label}
-          className="no-scrollbar -mx-1 overflow-x-auto px-1 lg:sticky lg:top-16 lg:mx-0 lg:w-48 lg:shrink-0 lg:overflow-visible lg:px-0"
+          className="no-scrollbar max-lg:mask-r-from-85% -mx-1 overflow-x-auto px-1 lg:sticky lg:top-16 lg:mx-0 lg:w-48 lg:shrink-0 lg:overflow-visible lg:px-0"
         >
           <ul className="flex gap-1 lg:flex-col">
             {items.map((item) => {
@@ -87,7 +92,9 @@ function SubNavLayout<T extends string>({
             })}
           </ul>
         </nav>
-        <div className="flex min-w-0 flex-1 flex-col gap-6">{children}</div>
+        <div className="flex w-full min-w-0 max-w-160 flex-1 flex-col gap-6">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -112,20 +119,20 @@ function SettingsCard({
   footer?: React.ReactNode;
   children: React.ReactNode;
   tone?: "default" | "destructive";
-  /** Rows sit in an inset box; false for free content (tables, forms). */
+  /** Rows split by hairlines (true); false pads free content (tables, forms). */
   inset?: boolean;
 }) {
   return (
     <section
       aria-labelledby={id}
       className={cn(
-        "flex flex-col rounded-lg border bg-card p-1",
+        "flex flex-col overflow-hidden rounded-lg border bg-card",
         tone === "destructive" ? "border-destructive/25" : "border-border"
       )}
       data-slot="settings-card"
       data-tone={tone}
     >
-      <div className="flex flex-wrap items-start justify-between gap-3 px-4 pt-3 pb-3">
+      <div className="flex flex-wrap items-start justify-between gap-3 px-5 pt-4 pb-4">
         <div className="flex min-w-0 flex-1 basis-56 flex-col gap-0.5">
           <h2 className="type-subtitle text-foreground" id={id}>
             {title}
@@ -140,15 +147,18 @@ function SettingsCard({
       </div>
       <div
         className={cn(
-          "flex flex-col",
-          inset &&
-            "divide-y divide-border rounded-md border border-border bg-background"
+          "flex flex-col border-border border-t",
+          inset ? "divide-y divide-border" : "p-5"
         )}
+        data-slot="settings-card-body"
       >
         {children}
       </div>
       {footer ? (
-        <div className="flex items-center justify-between gap-2 px-3 pt-3 pb-2">
+        <div
+          className="flex items-center justify-end gap-2 border-border border-t bg-pane/40 px-5 py-3"
+          data-slot="settings-card-footer"
+        >
           {footer}
         </div>
       ) : null}
@@ -164,6 +174,7 @@ function SettingsRow({
   badge,
   children,
   align = "center",
+  control = "fill",
 }: {
   label: React.ReactNode;
   description?: React.ReactNode;
@@ -175,21 +186,33 @@ function SettingsRow({
   children?: React.ReactNode;
   /** `start` for tall controls (lists, text areas). */
   align?: "center" | "start";
+  /** `fill` stretches the control across its column (fields, selects);
+   * `end` keeps it at its own size at the right (a switch, a button). */
+  control?: "fill" | "end";
 }) {
   const Label = htmlFor ? "label" : "span";
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 px-4 py-4 sm:flex-row sm:justify-between sm:gap-6",
+        "gap-3 px-5 py-4 sm:gap-6",
+        control === "fill"
+          ? "grid grid-cols-1 sm:grid-cols-5"
+          : "flex flex-col sm:flex-row sm:justify-between",
         align === "center" ? "sm:items-center" : "sm:items-start"
       )}
+      data-control={control}
       data-slot="settings-row"
     >
-      <div className="flex min-w-0 items-start gap-3 sm:max-w-[55%] sm:flex-1">
+      <div
+        className={cn(
+          "flex min-w-0 items-start gap-3",
+          control === "fill" ? "sm:col-span-2" : "sm:flex-1"
+        )}
+      >
         {Icon ? (
           <span
             aria-hidden="true"
-            className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-card text-muted-foreground"
+            className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-pane text-muted-foreground"
           >
             <Icon className="size-4" />
           </span>
@@ -212,7 +235,13 @@ function SettingsRow({
         </div>
       </div>
       {children ? (
-        <div className="flex min-w-0 shrink-0 items-center gap-2 sm:w-[45%] sm:max-w-80 sm:justify-end">
+        <div
+          className={cn(
+            "flex min-w-0 items-center gap-2",
+            control === "end" ? "shrink-0" : "*:w-full sm:col-span-3"
+          )}
+          data-slot="settings-row-control"
+        >
           {children}
         </div>
       ) : null}
@@ -226,6 +255,7 @@ function SectionCard({
   action,
   children,
   className,
+  flat = false,
 }: {
   id: string;
   title: React.ReactNode;
@@ -233,14 +263,18 @@ function SectionCard({
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  /** No border or fill: a section of a sheet, split from the next by a rule. */
+  flat?: boolean;
 }) {
   return (
     <section
       aria-labelledby={id}
       className={cn(
-        "flex flex-col gap-3 rounded-lg border border-border bg-card p-4",
+        "flex flex-col gap-3",
+        !flat && "rounded-lg border border-border bg-card p-4",
         className
       )}
+      data-flat={flat}
       data-slot="section-card"
     >
       <div className="flex items-center justify-between gap-2">

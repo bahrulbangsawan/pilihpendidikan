@@ -70,7 +70,8 @@ import { BoardTable } from "./board-table";
 import {
   activeFilterCount,
   BoardFiltersMenu,
-  BoardSearchRow,
+  BoardSearchField,
+  BoardStatusRow,
   ViewSwitcher,
 } from "./board-toolbar";
 import type { BulkReport } from "./bulk-bar";
@@ -392,6 +393,11 @@ export function BoardPage({
       <PageHeader
         actions={
           <>
+            <BoardSearchField
+              className={isPhone ? "order-last" : undefined}
+              onQueryChange={(q) => changeFilters({ q })}
+              query={filters.q}
+            />
             <BoardFiltersMenu
               filters={filters}
               includeArchived={includeArchived}
@@ -420,14 +426,12 @@ export function BoardPage({
         }
         className="pb-4"
         count={totalCount}
-        description={t("board.intro")}
         title={t("board.title")}
         wide
       >
-        <BoardSearchRow
+        <BoardStatusRow
           activeFilters={activeFilterCount(filters, includeArchived)}
           onClearFilters={clearFilters}
-          onQueryChange={(q) => changeFilters({ q })}
           query={filters.q}
           staleSince={staleSince}
         >
@@ -436,7 +440,7 @@ export function BoardPage({
               {t("board.noMatches")}
             </p>
           ) : null}
-        </BoardSearchRow>
+        </BoardStatusRow>
       </PageHeader>
       <BulkBar
         onClear={cards.clearSelection}

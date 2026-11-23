@@ -70,7 +70,7 @@ A calm, warm, near-black page. Everything is set at weight 400; hierarchy comes 
 | Selected tint | `wash` | ink at 5% |
 | Marked text, selection | `highlight` | orange at 15% |
 | Syntax (editor mocks only) | `syn-1` … `syn-4` | `#7fb3df` `#4cc79b` `#e0607f` `#c39cf0` |
-| Charts | `chart-1` … `chart-5` | orange, ink, green, ink 40%, ink 20% |
+| Charts | `chart-1` … `chart-5` | a neutral ink ramp: ink 90%, 70%, 55%, 40%, 25% (orange stays for links) |
 
 ## Typography
 
@@ -175,7 +175,7 @@ Every focusable element gets cursor.com's focus: a 2px solid `ring` (ink) outlin
 
 ### Charts
 
-`chart-1` (orange) for the series that matters, `chart-2` (ink) for its comparison, `chart-3` (green) for a positive series, `chart-4`/`chart-5` greys for context. Labels sit on the marks; more than three series pair with a numbers table.
+`chart-1` (ink 90%) for the series that matters, `chart-2` … `chart-5` the lighter steps of the same ink ramp for comparisons and context. Orange is never a data colour. Labels sit on the marks; more than three series pair with a numbers table.
 
 ### Print artifacts
 

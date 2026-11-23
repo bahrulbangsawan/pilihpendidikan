@@ -287,6 +287,46 @@ function ButtonBlock() {
       />
 
       <div className="grid gap-4 md:grid-cols-2">
+        <Example label="toolbar icons · a disabled ghost or outline stays transparent, muted">
+          <Button aria-label="Undo" size="icon-sm" variant="ghost">
+            <Undo2 aria-hidden="true" />
+          </Button>
+          <Button aria-label="Redo" size="icon-sm" variant="ghost">
+            <Redo2 aria-hidden="true" />
+          </Button>
+          <Button
+            aria-label="Clear all"
+            disabled
+            size="icon-sm"
+            variant="ghost"
+          >
+            <Trash2 aria-hidden="true" />
+          </Button>
+          <Button disabled size="sm" variant="outline">
+            Export
+          </Button>
+          <Button disabled size="sm" variant="secondary">
+            Saved
+          </Button>
+        </Example>
+        <Example label="a bare disclosure chevron · no fill while open">
+          <Button
+            aria-expanded
+            aria-label="Hide line items"
+            className="text-muted-foreground hover:bg-pane aria-expanded:bg-transparent"
+            size="icon-sm"
+            variant="ghost"
+          >
+            <ChevronDown aria-hidden="true" className="rotate-180" />
+          </Button>
+          <Button aria-expanded size="sm" variant="ghost">
+            Menu trigger, open
+            <ChevronDown aria-hidden="true" data-icon="inline-end" />
+          </Button>
+        </Example>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
         <Example label="buttonVariants on a link, and asChild">
           <a
             className={buttonVariants({ variant: "outline" })}

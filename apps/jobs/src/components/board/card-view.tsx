@@ -121,7 +121,7 @@ function CardFooter({
   const { locale, t } = useTranslation();
   const followUpAt = isFollowUpDue(card, nowMs) ? card.follow_up_at : null;
   return (
-    <div className="type-micro flex items-center gap-3 border-hairline border-t pt-2.5 text-muted-foreground">
+    <div className="type-micro flex items-center gap-3 border-border border-t pt-3 text-muted-foreground">
       <span
         className="inline-flex items-center gap-1 tabular-nums"
         title={t("card.updated", { age: compactAge(card.updated_at, nowMs) })}

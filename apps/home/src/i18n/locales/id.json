@@ -11,7 +11,10 @@
     "sections": "Bagian di halaman ini",
     "builders": "Pembuat dokumen",
     "assistants": "Asisten AI",
-    "home": "Beranda Pilih Pendidikan"
+    "home": "Beranda Pilih Pendidikan",
+    "features": "Fitur",
+    "exports": "Yang Anda dapatkan",
+    "crawler": "Crawler"
   },
   "news": {
     "label": "Kabar:",
@@ -87,7 +90,11 @@
     "agents": "Untuk agen AI",
     "copyright": "© 2026 Pilih Pendidikan",
     "builders": "Pembuat dokumen",
-    "assistants": "Asisten AI"
+    "assistants": "Asisten AI",
+    "resources": "Sumber",
+    "mcp": "Endpoint MCP",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",

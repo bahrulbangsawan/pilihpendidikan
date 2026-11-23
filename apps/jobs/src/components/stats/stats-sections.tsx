@@ -25,6 +25,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@rulisme/ui/ui/dropdown-menu";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -34,14 +40,17 @@ import {
   CircleAlert,
   CircleHelp,
   CircleX,
+  Copy,
   FileText,
   Gauge,
   Globe,
+  LayoutGrid,
   MapPin,
+  MoreHorizontal,
   Send,
 } from "lucide-react";
 import { useId, useMemo } from "react";
-import { AppLink } from "@/components/app-link";
+import { AppLink, useAppNavigate } from "@/components/app-link";
 import { useTranslation } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { breakdownLabel, metricLabel } from "@/lib/labels";
@@ -110,6 +119,42 @@ export function BlockError({ onRetry }: { onRetry: () => void }) {
 
 /** The four stat cards (reui stats): label, value + delta chip, then the
  * previous period's value or the cell's note under a rule. */
+/** A stat card's `…` menu: open the board, or copy the figure. */
+function StatCellMenu({ label, value }: { label: string; value: string }) {
+  const { t } = useTranslation();
+  const navigate = useAppNavigate();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          aria-label={t("stats.cells.menu", { label })}
+          className="text-muted-foreground"
+          size="icon-sm"
+          variant="ghost"
+        >
+          <MoreHorizontal aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onSelect={() => navigate("/board")}>
+          <LayoutGrid aria-hidden="true" />
+          {t("stats.cells.openBoard")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => {
+            navigator.clipboard
+              ?.writeText(`${label}: ${value}`)
+              .catch(() => undefined);
+          }}
+        >
+          <Copy aria-hidden="true" />
+          {t("stats.cells.copy")}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 export function StatCells({
   summary,
   previous,
@@ -127,6 +172,7 @@ export function StatCells({
         const delta = deltas[cell.key];
         return (
           <StatCard
+            action={<StatCellMenu label={cell.label} value={cell.value} />}
             data-stat={cell.key}
             delta={
               delta

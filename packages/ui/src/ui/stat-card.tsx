@@ -2,7 +2,8 @@ import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// Stat cards (reui's stats blocks): an 8px card with a muted label, the
+// Stat cards (reui's stats blocks): an 8px card with a muted label (and an
+// optional `…` menu in its corner), the
 // value in the display role with an optional delta chip, and a footer line
 // under a hairline (the previous period, or a note). `StatGrid` is the
 // <dl> that lays them out two, then four, across. Every StatCard renders a
@@ -16,7 +17,8 @@ const DELTA_ICON = {
   flat: MinusIcon,
 } as const;
 
-/** A small rising / falling / flat chip: green up, red down, grey flat. */
+/** A small rising / falling / flat chip: a 10% tint (green up, red down,
+ * neutral flat) with an arrow, no border. */
 function DeltaChip({
   className,
   direction,
@@ -27,11 +29,10 @@ function DeltaChip({
   return (
     <span
       className={cn(
-        "type-caption inline-flex h-5 items-center gap-0.5 rounded-xs border px-1.5 tabular-nums",
-        direction === "up" && "border-success/25 bg-success/10 text-success",
-        direction === "down" &&
-          "border-destructive/25 bg-destructive/10 text-destructive",
-        direction === "flat" && "border-border bg-pane text-muted-foreground",
+        "type-caption inline-flex h-5 items-center gap-0.5 rounded-sm px-1.5 tabular-nums",
+        direction === "up" && "bg-success/10 text-success",
+        direction === "down" && "bg-destructive/10 text-destructive",
+        direction === "flat" && "bg-offgray/10 text-muted-foreground",
         className
       )}
       data-direction={direction}
@@ -63,8 +64,11 @@ function StatCard({
   value,
   delta,
   footer,
+  action,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
+  /** A control in the label row's corner: the card's `…` menu. */
+  action?: React.ReactNode;
   label: React.ReactNode;
   value: React.ReactNode;
   /** A DeltaChip's direction and text, e.g. `{ direction: "up", label: "+12%" }`. */
@@ -75,14 +79,29 @@ function StatCard({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-col rounded-lg border border-border bg-card p-1",
+        "relative flex min-w-0 flex-col rounded-lg border border-border bg-card p-1",
         className
       )}
       data-slot="stat-card"
       {...props}
     >
+      {action ? (
+        <div
+          className="absolute top-2.5 right-2.5"
+          data-slot="stat-card-action"
+        >
+          {action}
+        </div>
+      ) : null}
       <div className="flex flex-col gap-3 px-3 pt-3 pb-3 sm:px-4">
-        <dt className="type-body truncate text-muted-foreground">{label}</dt>
+        <dt
+          className={cn(
+            "type-body truncate text-muted-foreground",
+            action && "pr-8"
+          )}
+        >
+          {label}
+        </dt>
         <dd className="flex flex-wrap items-center gap-2.5">
           <span className="type-display text-foreground tabular-nums">
             {value}

@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "./dialog";
 import { InputGroup, InputGroupAddon } from "./input-group";
+import { Kbd } from "./kbd";
 
 // cursor.com command palette: an 8px flyout (10% border, two whisper
 // shadows) whose 40px search row is ruled off by a 10% border, 32px menu
@@ -168,13 +169,11 @@ function CommandItem({
   );
 }
 
-function CommandShortcut({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+function CommandShortcut({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
-    <span
-      className={cn("type-caption ml-auto text-muted-foreground", className)}
+    <Kbd
+      aria-hidden="true"
+      className={cn("ml-auto", className)}
       data-slot="command-shortcut"
       {...props}
     />

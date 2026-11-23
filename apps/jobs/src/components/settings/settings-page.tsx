@@ -94,6 +94,7 @@ function AccountSection() {
       title={t("settings.account")}
     >
       <SettingsRow
+        control="end"
         description={t("settings.emailHelp")}
         icon={Mail}
         label={t("settings.email")}
@@ -105,6 +106,7 @@ function AccountSection() {
       <SettingsRow
         description={t("settings.signOutHelp")}
         icon={LogOut}
+        control="end"
         label={t("settings.signOut")}
       >
         <Button onClick={() => signOut()} size="sm" variant="outline">
@@ -208,6 +210,7 @@ function LanguageSection({
           disabled={!record}
           id={`${id}-tz`}
           onChange={(event) => setTimezone(event.target.value)}
+          placeholder={t("settings.timezonePlaceholder")}
           value={timezone}
         />
       </SettingsRow>
@@ -234,6 +237,7 @@ function AiSection({
         description={t("settings.aiConsentHelp")}
         htmlFor={`${id}-ai`}
         icon={Sparkles}
+        control="end"
         label={t("settings.aiConsent")}
       >
         <Switch
@@ -246,6 +250,7 @@ function AiSection({
         description={t("settings.aiSensitiveHelp")}
         htmlFor={`${id}-sensitive`}
         icon={ShieldCheck}
+        control="end"
         label={t("settings.aiSensitive")}
       >
         <Switch
@@ -299,6 +304,7 @@ function DataSection() {
       <SettingsRow
         description={t("settings.exportBody")}
         icon={Download}
+        control="end"
         label={t("settings.exportTitle")}
       >
         <Button onClick={exportData} size="sm" variant="outline">
@@ -309,6 +315,7 @@ function DataSection() {
       <SettingsRow
         description={t("settings.deleteBody")}
         icon={Trash2}
+        control="end"
         label={t("settings.deleteTitle")}
       >
         <AlertDialog onOpenChange={() => setConfirmText("")}>

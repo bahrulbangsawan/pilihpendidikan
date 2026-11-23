@@ -23,12 +23,15 @@ export function NotesList({
   actorName,
   nowMs,
   limit,
+  flat = false,
 }: {
   appId: string;
   events: readonly ApplicationEventRecord[];
   actorName: (event: ApplicationEventRecord) => string;
   nowMs: number;
   limit?: number;
+  /** Notes as hairline-split entries (the sheet) instead of cards. */
+  flat?: boolean;
 }) {
   const { t } = useTranslation();
   const notes = visibleNotes(events, limit);
@@ -45,6 +48,7 @@ export function NotesList({
             actor={actorName(event)}
             appId={appId}
             event={event}
+            flat={flat}
             key={event.id}
             nowMs={nowMs}
           />

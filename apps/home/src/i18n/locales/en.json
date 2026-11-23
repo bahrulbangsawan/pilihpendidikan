@@ -11,7 +11,10 @@
     "sections": "Sections on this page",
     "builders": "Builders",
     "assistants": "AI assistants",
-    "home": "Pilih Pendidikan home"
+    "home": "Pilih Pendidikan home",
+    "features": "Features",
+    "exports": "What you get",
+    "crawler": "Crawler"
   },
   "news": {
     "label": "News:",
@@ -87,7 +90,11 @@
     "agents": "For AI agents",
     "copyright": "© 2026 Pilih Pendidikan",
     "builders": "Builders",
-    "assistants": "AI assistants"
+    "assistants": "AI assistants",
+    "resources": "Resources",
+    "mcp": "MCP endpoint",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia"
   },
   "notFound": {
     "title": "Page not found",

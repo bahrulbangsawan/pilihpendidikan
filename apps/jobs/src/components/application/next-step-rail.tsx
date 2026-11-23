@@ -81,17 +81,24 @@ export function NextStepCard({
   onRun,
   shortcutEnabled,
   withButton = true,
+  flat = false,
 }: {
   detail: ApplicationDetail;
   onRun: (step: NextStep) => void;
   shortcutEnabled: boolean;
   /** The sheet puts the button in its footer instead. */
   withButton?: boolean;
+  /** A flat section (the sheet) instead of a card. */
+  flat?: boolean;
 }) {
   const { t } = useTranslation();
   const step = computeNextStep(detail);
   return (
-    <SectionCard id="next-step-heading" title={t("nextStep.heading")}>
+    <SectionCard
+      flat={flat}
+      id="next-step-heading"
+      title={t("nextStep.heading")}
+    >
       {step ? (
         <>
           <p className="type-body text-pretty">{nextStepCopy(t, step).why}</p>
@@ -116,14 +123,17 @@ export function FollowUpSection({
   nowMs,
   onAccept,
   onEdit,
+  flat = false,
 }: {
   detail: ApplicationDetail;
   nowMs: number;
   onAccept: (changes: ApplicationPatch) => Promise<unknown>;
   onEdit: () => void;
+  /** A flat section (the sheet) instead of a card. */
+  flat?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className={flat ? "" : "rounded-lg border border-border bg-card p-4"}>
       <FollowUpCard
         detail={detail}
         nowMs={nowMs}

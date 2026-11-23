@@ -1001,12 +1001,14 @@ function SectionListBlock() {
     );
   return (
     <Block
-      description="The editor's entry list (@rulisme/ui/form/section-list): an inline-editable title, hairline rows with a drag grip, an error dot and a remove ×, then an outline add button."
+      description="The editor's entry list (@rulisme/ui/form/section-list): an inline-editable title (here `collapsible`: a bare chevron folds the list), 36px hairline rows with a drag grip, an error dot and one action cluster (+/− and the remove ×), then a secondary add pill."
       title="Section list"
     >
       <Example stack>
         <SectionList<Experience>
           addLabel="Add experience"
+          collapseLabel="Show or hide work experience"
+          collapsible
           hasError={(entry) => entry.company.trim() === ""}
           items={items}
           onAdd={() =>

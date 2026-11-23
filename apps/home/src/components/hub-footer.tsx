@@ -1,5 +1,6 @@
 import { Globe } from "lucide-react";
 import type { ReactNode } from "react";
+import { TOOL_IDS } from "@/config/services";
 import { localePath, otherLocale, useTranslation } from "@/i18n";
 
 // cursor.com's footer links: 14px ink, 4.67px above and below, dimming on
@@ -35,10 +36,24 @@ export function HubFooter() {
   return (
     <footer className="bg-card px-5 pt-[67.2px] pb-[30px]">
       <div className="mx-auto grid max-w-rail grid-cols-2 gap-x-[10px] gap-y-10 md:grid-cols-5">
+        <FooterColumn heading={t("footer.builders")}>
+          {TOOL_IDS.map((id) => (
+            <li key={id}>
+              <a className={LINK_CLASS} href={`${localePath(locale)}#tools`}>
+                {t(`services.${id}.name`)}
+              </a>
+            </li>
+          ))}
+        </FooterColumn>
         <FooterColumn heading={t("footer.onThisPage")}>
           <li>
-            <a className={LINK_CLASS} href={`${localePath(locale)}#tools`}>
-              {t("footer.builders")}
+            <a className={LINK_CLASS} href={`${localePath(locale)}#why`}>
+              {t("nav.features")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href={`${localePath(locale)}#exports`}>
+              {t("nav.exports")}
             </a>
           </li>
           <li>
@@ -47,21 +62,32 @@ export function HubFooter() {
             </a>
           </li>
         </FooterColumn>
-        <FooterColumn heading={t("footer.language")}>
-          <li>
-            <a
-              className={LINK_CLASS}
-              href={localePath(switchTo)}
-              lang={switchTo}
-            >
-              {t("nav.switchLanguage")}
-            </a>
-          </li>
-        </FooterColumn>
-        <FooterColumn heading={t("footer.agents")}>
+        <FooterColumn heading={t("footer.resources")}>
           <li>
             <a className={LINK_CLASS} href="/llms.txt">
               llms.txt
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href="/bot">
+              {t("nav.crawler")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href={`${localePath(locale)}#mcp`}>
+              {t("footer.mcp")}
+            </a>
+          </li>
+        </FooterColumn>
+        <FooterColumn heading={t("footer.language")}>
+          <li>
+            <a className={LINK_CLASS} href="/" lang="en">
+              {t("footer.english")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href="/id" lang="id">
+              {t("footer.indonesian")}
             </a>
           </li>
         </FooterColumn>

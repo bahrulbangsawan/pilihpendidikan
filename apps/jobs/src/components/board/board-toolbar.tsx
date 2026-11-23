@@ -1,10 +1,12 @@
 // The board's controls (12 §3, reui's page header actions): the Filters
 // menu (follow-up due, needs attention, priority, no response, source, show
-// archived), the Board / List / Table view switcher, and the toolbar row
-// under the title with the `/` search and the stale-data caption.
+// archived), the Board / List / Table view switcher, the compact `/` search
+// of the header row, and the status line under it (clear filters, the
+// stale-data caption).
 
 import type { SourceKind } from "@pilihpendidikan/jobs-contracts/enums";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
+import { cn } from "@rulisme/ui/lib/utils";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import {
@@ -20,7 +22,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
-import { Input } from "@rulisme/ui/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@rulisme/ui/ui/input-group";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import {
   SegmentedControl,
@@ -243,17 +249,50 @@ export function ViewSwitcher({
   );
 }
 
-/** The row under the title: search, active filter summary, stale caption. */
-export function BoardSearchRow({
+/** The compact `/` search field of the header's action row. */
+export function BoardSearchField({
   query,
   onQueryChange,
+  className,
+}: {
+  query: string;
+  onQueryChange: (q: string) => void;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const searchRef = useRef<HTMLInputElement>(null);
+  useShortcut("/", () => searchRef.current?.focus());
+  return (
+    <InputGroup className={cn("h-7 w-full sm:w-64", className)}>
+      <InputGroupAddon>
+        <Search aria-hidden="true" />
+      </InputGroupAddon>
+      <InputGroupInput
+        aria-keyshortcuts="/"
+        aria-label={t("board.search")}
+        className="field-touch"
+        onChange={(event) => onQueryChange(event.target.value)}
+        placeholder={t("board.searchPlaceholder")}
+        ref={searchRef}
+        type="search"
+        value={query}
+      />
+      <InputGroupAddon align="inline-end">
+        <Kbd aria-hidden="true">/</Kbd>
+      </InputGroupAddon>
+    </InputGroup>
+  );
+}
+
+/** The status line under the header: clear filters, stale caption, notes. */
+export function BoardStatusRow({
+  query,
   activeFilters,
   onClearFilters,
   staleSince,
   children,
 }: {
   query: string;
-  onQueryChange: (q: string) => void;
   activeFilters: number;
   onClearFilters: () => void;
   /** Set when polling failed 3 times: the time of the data shown. */
@@ -261,33 +300,13 @@ export function BoardSearchRow({
   children?: ReactNode;
 }) {
   const { locale, t } = useTranslation();
-  const searchRef = useRef<HTMLInputElement>(null);
-  useShortcut("/", () => searchRef.current?.focus());
+  const filtering = activeFilters > 0 || query !== "";
+  if (!(filtering || staleSince !== null || children)) {
+    return null;
+  }
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <div className="relative w-full sm:w-72">
-        <Search
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground"
-        />
-        <Input
-          aria-keyshortcuts="/"
-          aria-label={t("board.search")}
-          className="field-touch h-8 pr-8 pl-8"
-          onChange={(event) => onQueryChange(event.target.value)}
-          placeholder={t("board.searchPlaceholder")}
-          ref={searchRef}
-          type="search"
-          value={query}
-        />
-        <Kbd
-          aria-hidden="true"
-          className="absolute top-1/2 right-2 -translate-y-1/2"
-        >
-          /
-        </Kbd>
-      </div>
-      {activeFilters > 0 || query ? (
+      {filtering ? (
         <Button onClick={onClearFilters} size="sm" variant="ghost">
           <X aria-hidden="true" data-icon="inline-start" />
           {t("board.clearFilters")}

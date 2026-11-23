@@ -62,6 +62,7 @@
     "pdfFailed": "Gagal membuat PDF. Periksa konsol peramban untuk detail."
   },
   "form": {
+    "projectCount": "{count} dari {max}",
     "profile": "Profil",
     "fullName": "Nama Lengkap",
     "headline": "Tagline",

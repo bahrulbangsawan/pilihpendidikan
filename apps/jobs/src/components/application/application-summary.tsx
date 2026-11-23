@@ -1,14 +1,14 @@
 // The application's identity and property chips, shared by the details
 // sheet and the full page (reui's sheet: title, then a row of property
-// chips). The first chip is the stage select (`M`); the others are facts:
-// match score, location, source, applied date, posting status.
+// chips). One chip component throughout: the first is the stage select
+// (its `M` hint inside the chip), the others are labelled facts: match
+// score, location, source, applied date, posting status.
 
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
 import { STAGES } from "@pilihpendidikan/jobs-contracts/enums";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { cn } from "@rulisme/ui/lib/utils";
-import { Badge } from "@rulisme/ui/ui/badge";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import {
   Select,
@@ -17,11 +17,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { CalendarCheck, Globe, MapPin, Sparkles } from "lucide-react";
+import {
+  Archive,
+  CalendarCheck,
+  CircleOff,
+  Globe,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { EntityAvatar } from "@rulisme/ui/ui/entity-avatar";
-import { PropertyChip } from "@rulisme/ui/ui/property-chip";
+import {
+  PropertyChip,
+  propertyChipClassName,
+} from "@rulisme/ui/ui/property-chip";
 import { StageIcon } from "@/components/board/stage-meta";
 import { useTranslation } from "@/i18n";
 import { canMoveTo } from "@/lib/board-move";
@@ -66,31 +76,34 @@ function StageSelect({
   const trigger = useRef<HTMLButtonElement>(null);
   useShortcut("m", () => trigger.current?.click(), shortcut);
   return (
-    <span className="inline-flex items-center gap-1">
-      <Select onValueChange={(value) => onMove(value as Stage)} value={stage}>
-        <SelectTrigger
-          aria-keyshortcuts="M"
-          aria-label={t("detail.stage")}
-          className="h-7 w-auto gap-1.5 rounded-full pr-2 pl-2.5"
-          ref={trigger}
-        >
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {STAGES.map((entry) => (
-            <SelectItem
-              disabled={!canMoveTo(stage, entry)}
-              key={entry}
-              value={entry}
-            >
-              <StageIcon className="size-3.5" stage={entry} />
-              {stageLabel(t, entry)}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      {shortcut ? <Kbd aria-hidden="true">M</Kbd> : null}
-    </span>
+    <Select onValueChange={(value) => onMove(value as Stage)} value={stage}>
+      <SelectTrigger
+        aria-keyshortcuts={shortcut ? "M" : undefined}
+        aria-label={t("detail.stage")}
+        className={propertyChipClassName(
+          "w-auto cursor-pointer gap-1.5 bg-transparent pr-1.5 text-foreground hover:bg-pane"
+        )}
+        ref={trigger}
+      >
+        <span className="text-muted-foreground">
+          {t("application.props.stage")}
+        </span>
+        <SelectValue />
+        {shortcut ? <Kbd aria-hidden="true">M</Kbd> : null}
+      </SelectTrigger>
+      <SelectContent>
+        {STAGES.map((entry) => (
+          <SelectItem
+            disabled={!canMoveTo(stage, entry)}
+            key={entry}
+            value={entry}
+          >
+            <StageIcon className="size-3.5" stage={entry} />
+            {stageLabel(t, entry)}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
@@ -117,34 +130,47 @@ export function ApplicationProperties({
         stage={application.stage}
       />
       {score && score.status === "ready" ? (
-        <PropertyChip icon={<Sparkles aria-hidden="true" />}>
-          {t("application.matchScore", { score: score.score })}
+        <PropertyChip
+          icon={<Sparkles aria-hidden="true" />}
+          label={t("application.props.match")}
+        >
+          <span className="tabular-nums">{score.score}%</span>
         </PropertyChip>
       ) : null}
       {location ? (
-        <PropertyChip icon={<MapPin aria-hidden="true" />}>
+        <PropertyChip
+          icon={<MapPin aria-hidden="true" />}
+          label={t("application.props.location")}
+        >
           <span className="max-w-48 truncate">{location}</span>
         </PropertyChip>
       ) : null}
-      <PropertyChip icon={<Globe aria-hidden="true" />}>
+      <PropertyChip
+        icon={<Globe aria-hidden="true" />}
+        label={t("application.props.source")}
+      >
         {sourceLabel(t, posting.source_kind)}
       </PropertyChip>
       {application.submitted_at === null ? null : (
-        <PropertyChip icon={<CalendarCheck aria-hidden="true" />}>
-          {t("application.appliedOn", {
-            date: formatDate(application.submitted_at, locale),
-          })}
+        <PropertyChip
+          icon={<CalendarCheck aria-hidden="true" />}
+          label={t("application.props.applied")}
+        >
+          {formatDate(application.submitted_at, locale)}
         </PropertyChip>
       )}
       {posting.status === "closed" ? (
-        <Badge className="h-7 px-2.5" variant="ghost">
-          {t("detail.postingClosed")}
-        </Badge>
+        <PropertyChip
+          icon={<CircleOff aria-hidden="true" />}
+          label={t("application.props.posting")}
+        >
+          {t("detail.postingClosedShort")}
+        </PropertyChip>
       ) : null}
       {application.archived ? (
-        <Badge className="h-7 px-2.5" variant="ghost">
+        <PropertyChip icon={<Archive aria-hidden="true" />}>
           {t("card.archived")}
-        </Badge>
+        </PropertyChip>
       ) : null}
     </div>
   );

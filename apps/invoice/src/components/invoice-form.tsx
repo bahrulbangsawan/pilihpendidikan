@@ -78,7 +78,7 @@ const ACCENT_PRESETS = [
 // Each form section is a band of the form pane, ruled by a 1px `line`
 // hairline (DESIGN.md § Layout). The form is a size container, so its grids
 // follow the pane's width rather than the viewport's.
-const SECTION_CLASS = "border-line border-b px-4 py-6 last:border-b-0 sm:px-6";
+const SECTION_CLASS = "border-line border-b px-4 py-8 last:border-b-0 sm:px-6";
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -95,30 +95,9 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// A section heading: the compact title at the regular weight with a muted 16px
-// icon, on the same 32px row as the line-items title beside it.
-function SectionHeading({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-}) {
-  return (
-    <h2 className="type-title-compact flex h-8 items-center gap-2 text-foreground">
-      <span
-        aria-hidden="true"
-        className="inline-flex shrink-0 text-muted-foreground"
-      >
-        {icon}
-      </span>
-      {children}
-    </h2>
-  );
-}
-
-// The whole heading row toggles a collapsible section; the chevron flips
-// instantly (nothing animates layout).
+// Every section heading: a muted 16px icon and the compact title at the
+// regular weight on a 32px row, with a chevron at the right. The whole row
+// toggles the section; the chevron flips instantly (nothing animates layout).
 function SectionToggle({
   icon,
   children,
@@ -381,79 +360,83 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   return (
     <div className="@container/form flex flex-col">
       {/* ── Invoice Details ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<FileText className="size-4" />}>
+      <Collapsible className={SECTION_CLASS} defaultOpen>
+        <SectionToggle icon={<FileText className="size-4" />}>
           {t("form.invoiceDetails")}
-        </SectionHeading>
-        <div className="mt-3 grid @xl/form:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_minmax(0,1fr)] grid-cols-1 items-end gap-3">
-          <div className="grid @xl/form:contents grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
-            <FormField
-              label={t("form.invoiceNumber")}
-              onChange={(v) => updateField("invoiceNumber", v)}
-              placeholder={t("placeholders.invoiceNumber")}
-              value={data.invoiceNumber}
-            />
+        </SectionToggle>
+        <CollapsibleContent>
+          {/* Number and currency share a row; the two dates get their own
+            two-column row, then the accent colour. */}
+          <div className="mt-3 flex flex-col gap-3">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
+              <FormField
+                label={t("form.invoiceNumber")}
+                onChange={(v) => updateField("invoiceNumber", v)}
+                placeholder={t("placeholders.invoiceNumber")}
+                value={data.invoiceNumber}
+              />
+              <div className="space-y-1.5">
+                <Label>{t("form.currency")}</Label>
+                <Select
+                  onValueChange={(v) => updateField("currency", v)}
+                  value={data.currency}
+                >
+                  <SelectTrigger className="w-auto">
+                    <SelectValue>
+                      {(() => {
+                        const c = CURRENCY_OPTIONS.find(
+                          (o) => o.value === data.currency
+                        );
+                        return c ? `${c.flag} ${c.value}` : data.currency;
+                      })()}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CURRENCY_OPTIONS.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>
+                        {c.flag} {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 items-end gap-3">
+              <DatePicker
+                label={t("form.dateOfIssue")}
+                onChange={(v) => updateField("dateOfIssue", v)}
+                value={data.dateOfIssue}
+              />
+              <DatePicker
+                label={t("form.dateDue")}
+                onChange={(v) => updateField("dateDue", v)}
+                presetKind="due"
+                value={data.dateDue}
+              />
+            </div>
             <div className="space-y-1.5">
-              <Label>{t("form.currency")}</Label>
-              <Select
-                onValueChange={(v) => updateField("currency", v)}
-                value={data.currency}
-              >
-                <SelectTrigger className="w-auto">
-                  <SelectValue>
-                    {(() => {
-                      const c = CURRENCY_OPTIONS.find(
-                        (o) => o.value === data.currency
-                      );
-                      return c ? `${c.flag} ${c.value}` : data.currency;
-                    })()}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {CURRENCY_OPTIONS.map((c) => (
-                    <SelectItem key={c.value} value={c.value}>
-                      {c.flag} {c.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label className="gap-1.5">
+                <Palette
+                  aria-hidden="true"
+                  className="size-3.5 text-muted-foreground"
+                />
+                {t("form.color")}
+              </Label>
+              <SwatchPicker
+                allowCustom
+                aria-label={t("form.color")}
+                colors={ACCENT_PRESETS}
+                customLabel={t("a11y.setAccentColor", {
+                  color: data.accentColor,
+                })}
+                getColorLabel={(color) => t("a11y.setAccentColor", { color })}
+                onValueChange={(color) => updateField("accentColor", color)}
+                value={data.accentColor}
+              />
             </div>
           </div>
-          <div className="grid @xl/form:contents grid-cols-2 items-end gap-3">
-            <DatePicker
-              label={t("form.dateOfIssue")}
-              onChange={(v) => updateField("dateOfIssue", v)}
-              value={data.dateOfIssue}
-            />
-            <DatePicker
-              label={t("form.dateDue")}
-              onChange={(v) => updateField("dateDue", v)}
-              presetKind="due"
-              value={data.dateDue}
-            />
-          </div>
-          <div className="@xl/form:col-span-full space-y-1.5">
-            <Label className="gap-1.5">
-              <Palette
-                aria-hidden="true"
-                className="size-3.5 text-muted-foreground"
-              />
-              {t("form.color")}
-            </Label>
-            <SwatchPicker
-              allowCustom
-              aria-label={t("form.color")}
-              colors={ACCENT_PRESETS}
-              customLabel={t("a11y.setAccentColor", {
-                color: data.accentColor,
-              })}
-              getColorLabel={(color) => t("a11y.setAccentColor", { color })}
-              onValueChange={(color) => updateField("accentColor", color)}
-              value={data.accentColor}
-            />
-          </div>
-        </div>
-      </section>
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* ── From (Sender) ── */}
       <Collapsible className={SECTION_CLASS} defaultOpen>
@@ -515,7 +498,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   />
                 )}
                 <FileTrigger accept="image/*" onFilesSelect={handleLogoUpload}>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="secondary">
                     <Upload aria-hidden="true" data-icon="inline-start" />
                     {data.from.logoUrl ? t("form.change") : t("form.upload")}
                   </Button>
@@ -597,6 +580,8 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       <div className={SECTION_CLASS}>
         <SectionList
           addLabel={t("form.addItem")}
+          collapseLabel={t("a11y.toggleLineItems")}
+          collapsible
           items={data.items}
           onAdd={addItem}
           onRemove={removeItem}
@@ -706,7 +691,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               <Button
                 onClick={() => addSubItem(item.id)}
                 size="sm"
-                variant="outline"
+                variant="secondary"
               >
                 <Plus aria-hidden="true" data-icon="inline-start" />
                 {t("form.addSubItem")}
@@ -722,157 +707,163 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </div>
 
       {/* ── Adjustments ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<SlidersHorizontal className="size-4" />}>
+      <Collapsible className={SECTION_CLASS} defaultOpen>
+        <SectionToggle icon={<SlidersHorizontal className="size-4" />}>
           {t("form.adjustments")}
-        </SectionHeading>
-        <p className="type-caption text-muted-foreground">
-          {t("form.adjustmentsDesc")}
-        </p>
-        <div className="mt-3 flex flex-col gap-3">
-          {data.adjustments.map((adj) => (
-            <div
-              className="grid @xl/form:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] grid-cols-1 items-end gap-2"
-              key={adj.id}
-            >
-              <FormField
-                label={t("form.label")}
-                onChange={(v) => updateAdjustment(adj.id, "label", v)}
-                placeholder={t("placeholders.adjustmentLabel")}
-                value={adj.label}
-              />
-              <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums">
-                <div className="space-y-1.5">
-                  <Label>{t("form.type")}</Label>
-                  <Select
-                    onValueChange={(v) => updateAdjustment(adj.id, "type", v)}
-                    value={adj.type}
+        </SectionToggle>
+        <CollapsibleContent>
+          <p className="type-caption text-muted-foreground">
+            {t("form.adjustmentsDesc")}
+          </p>
+          <div className="mt-3 flex flex-col gap-3">
+            {data.adjustments.map((adj) => (
+              <div
+                className="grid @xl/form:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] grid-cols-1 items-end gap-2"
+                key={adj.id}
+              >
+                <FormField
+                  label={t("form.label")}
+                  onChange={(v) => updateAdjustment(adj.id, "label", v)}
+                  placeholder={t("placeholders.adjustmentLabel")}
+                  value={adj.label}
+                />
+                <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums">
+                  <div className="space-y-1.5">
+                    <Label>{t("form.type")}</Label>
+                    <Select
+                      onValueChange={(v) => updateAdjustment(adj.id, "type", v)}
+                      value={adj.type}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="add">
+                          <CirclePlus aria-hidden="true" />
+                          {t("form.typeAdd")}
+                        </SelectItem>
+                        <SelectItem value="deduct">
+                          <CircleMinus aria-hidden="true" />
+                          {t("form.typeDeduct")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>{t("form.mode")}</Label>
+                    <Select
+                      onValueChange={(v) => updateAdjustment(adj.id, "mode", v)}
+                      value={adj.mode}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fixed">
+                          <Banknote aria-hidden="true" />
+                          {t("form.modeFixed")}
+                        </SelectItem>
+                        <SelectItem value="percentage">
+                          <Percent aria-hidden="true" />
+                          {t("form.modePercent")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <FormField
+                    label={
+                      adj.mode === "percentage"
+                        ? t("form.modePercentage")
+                        : t("form.amount")
+                    }
+                    min={0}
+                    onChange={(v) =>
+                      updateAdjustment(adj.id, "value", Number(v))
+                    }
+                    step={adj.mode === "percentage" ? "0.1" : "0.01"}
+                    type="number"
+                    value={String(adj.value)}
+                  />
+                  <Button
+                    aria-label={t("a11y.removeAdjustment")}
+                    onClick={() => removeAdjustment(adj.id)}
+                    size="icon"
+                    variant="ghost"
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="add">
-                        <CirclePlus aria-hidden="true" />
-                        {t("form.typeAdd")}
-                      </SelectItem>
-                      <SelectItem value="deduct">
-                        <CircleMinus aria-hidden="true" />
-                        {t("form.typeDeduct")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <Trash2 aria-hidden="true" className="text-destructive" />
+                  </Button>
                 </div>
-                <div className="space-y-1.5">
-                  <Label>{t("form.mode")}</Label>
-                  <Select
-                    onValueChange={(v) => updateAdjustment(adj.id, "mode", v)}
-                    value={adj.mode}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fixed">
-                        <Banknote aria-hidden="true" />
-                        {t("form.modeFixed")}
-                      </SelectItem>
-                      <SelectItem value="percentage">
-                        <Percent aria-hidden="true" />
-                        {t("form.modePercent")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+              </div>
+            ))}
+            <Button
+              className="self-start"
+              onClick={addAdjustment}
+              size="sm"
+              variant="secondary"
+            >
+              <Plus aria-hidden="true" data-icon="inline-start" />
+              {t("form.addAdjustment")}
+            </Button>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+
+      {/* ── Notes & Settings ── */}
+      <Collapsible className={SECTION_CLASS} defaultOpen>
+        <SectionToggle icon={<StickyNote className="size-4" />}>
+          {t("form.notesSettings")}
+        </SectionToggle>
+        <CollapsibleContent>
+          <div className="mt-3 flex flex-col gap-3">
+            {data.customFields.map((cf) => (
+              <div
+                className="grid @md/form:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] grid-cols-[minmax(0,1fr)_auto] items-end gap-2"
+                key={cf.id}
+              >
+                <div className="@md/form:col-span-1 col-span-full">
+                  <FormField
+                    label={t("form.label")}
+                    onChange={(v) => updateCustomField(cf.id, "label", v)}
+                    placeholder={t("placeholders.customFieldLabel")}
+                    value={cf.label}
+                  />
                 </div>
                 <FormField
-                  label={
-                    adj.mode === "percentage"
-                      ? t("form.modePercentage")
-                      : t("form.amount")
-                  }
-                  min={0}
-                  onChange={(v) => updateAdjustment(adj.id, "value", Number(v))}
-                  step={adj.mode === "percentage" ? "0.1" : "0.01"}
-                  type="number"
-                  value={String(adj.value)}
+                  label={t("form.value")}
+                  onChange={(v) => updateCustomField(cf.id, "value", v)}
+                  placeholder={t("placeholders.customFieldValue")}
+                  value={cf.value}
                 />
                 <Button
-                  aria-label={t("a11y.removeAdjustment")}
-                  onClick={() => removeAdjustment(adj.id)}
+                  aria-label={t("a11y.removeField")}
+                  onClick={() => removeCustomField(cf.id)}
                   size="icon"
                   variant="ghost"
                 >
-                  <Trash2 aria-hidden="true" className="text-destructive" />
+                  <Trash2 aria-hidden="true" />
                 </Button>
               </div>
-            </div>
-          ))}
-          <Button
-            className="self-start"
-            onClick={addAdjustment}
-            size="sm"
-            variant="outline"
-          >
-            <Plus aria-hidden="true" data-icon="inline-start" />
-            {t("form.addAdjustment")}
-          </Button>
-        </div>
-      </section>
-
-      {/* ── Notes & Settings ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<StickyNote className="size-4" />}>
-          {t("form.notesSettings")}
-        </SectionHeading>
-        <div className="mt-3 flex flex-col gap-3">
-          {data.customFields.map((cf) => (
-            <div
-              className="grid @md/form:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] grid-cols-[minmax(0,1fr)_auto] items-end gap-2"
-              key={cf.id}
+            ))}
+            <Button
+              className="self-start"
+              onClick={addCustomField}
+              size="sm"
+              variant="secondary"
             >
-              <div className="@md/form:col-span-1 col-span-full">
-                <FormField
-                  label={t("form.label")}
-                  onChange={(v) => updateCustomField(cf.id, "label", v)}
-                  placeholder={t("placeholders.customFieldLabel")}
-                  value={cf.label}
-                />
-              </div>
-              <FormField
-                label={t("form.value")}
-                onChange={(v) => updateCustomField(cf.id, "value", v)}
-                placeholder={t("placeholders.customFieldValue")}
-                value={cf.value}
-              />
-              <Button
-                aria-label={t("a11y.removeField")}
-                onClick={() => removeCustomField(cf.id)}
-                size="icon"
-                variant="ghost"
-              >
-                <Trash2 aria-hidden="true" />
-              </Button>
-            </div>
-          ))}
-          <Button
-            className="self-start"
-            onClick={addCustomField}
-            size="sm"
-            variant="outline"
-          >
-            <Plus aria-hidden="true" data-icon="inline-start" />
-            {t("form.addField")}
-          </Button>
-          <FormField
-            label={t("form.notes")}
-            multiline
-            onChange={(v) => updateField("notes", v)}
-            placeholder={t("placeholders.notes")}
-            rows={3}
-            value={data.notes}
-          />
-        </div>
-      </section>
+              <Plus aria-hidden="true" data-icon="inline-start" />
+              {t("form.addField")}
+            </Button>
+            <FormField
+              label={t("form.notes")}
+              multiline
+              onChange={(v) => updateField("notes", v)}
+              placeholder={t("placeholders.notes")}
+              rows={3}
+              value={data.notes}
+            />
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

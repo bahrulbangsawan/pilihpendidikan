@@ -265,7 +265,7 @@ export function AnswersTab() {
           </div>
         ) : null}
         {answers.isSuccess && rows.length === 0 ? (
-          <p className="type-body px-4 py-6 text-muted-foreground">
+          <p className="type-body px-5 py-6 text-muted-foreground">
             {t("answers.empty")}
           </p>
         ) : null}

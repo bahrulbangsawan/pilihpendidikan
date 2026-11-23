@@ -62,6 +62,7 @@
     "pdfFailed": "Failed to generate PDF. Check the browser console for details."
   },
   "form": {
+    "projectCount": "{count} of {max}",
     "profile": "Profile",
     "fullName": "Full Name",
     "headline": "Headline",

@@ -90,7 +90,7 @@ export function FactsTab() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
+  function reset() {
     const next: Record<string, string> = {};
     for (const group of FACT_GROUPS) {
       for (const field of group.fields) {
@@ -107,7 +107,10 @@ export function FactsTab() {
           status: (fact.value as { status?: string } | null)?.status ?? "none",
         }))
     );
-  }, [byKey]);
+    setErrors({});
+  }
+
+  useEffect(reset, [byKey]);
 
   function edits(): FactEdit[] {
     const list: FactEdit[] = [];
@@ -211,16 +214,13 @@ export function FactsTab() {
 
   const footer = (
     <>
-      <span className="type-caption text-muted-foreground max-sm:hidden">
+      <span className="type-caption mr-auto text-muted-foreground max-sm:hidden">
         {t("profile.saveHint")}
       </span>
-      <Button
-        aria-keyshortcuts="S"
-        className="ml-auto"
-        disabled={busy}
-        size="sm"
-        type="submit"
-      >
+      <Button onClick={reset} size="sm" type="button" variant="outline">
+        {t("common.cancel")}
+      </Button>
+      <Button aria-keyshortcuts="S" disabled={busy} size="sm" type="submit">
         <Save aria-hidden="true" data-icon="inline-start" />
         {t("profile.save")}
         <Kbd aria-hidden="true">S</Kbd>
@@ -233,6 +233,7 @@ export function FactsTab() {
       {FACT_GROUPS.map((group) => (
         <SettingsCard
           description={t(`profile.groupHelp.${group.id}`)}
+          footer={footer}
           id={`${id}-group-${group.id}`}
           key={group.id}
           title={t(`profile.groups.${group.id}`)}
@@ -244,6 +245,8 @@ export function FactsTab() {
               return (
                 <SettingsRow
                   badge={<SourceChip fact={fact} />}
+                  control="end"
+                  description={t(`profile.factHelp.${field.key}`)}
                   htmlFor={fieldId}
                   key={field.key}
                   label={t(`profile.facts.${field.key}`)}
@@ -264,9 +267,7 @@ export function FactsTab() {
             return (
               <SettingsRow
                 badge={<SourceChip fact={fact} />}
-                description={
-                  field.input === "list" ? t("profile.listHelp") : undefined
-                }
+                description={t(`profile.factHelp.${field.key}`)}
                 htmlFor={fieldId}
                 key={field.key}
                 label={t(`profile.facts.${field.key}`)}
@@ -282,6 +283,7 @@ export function FactsTab() {
                         [field.key]: event.target.value,
                       }))
                     }
+                    placeholder={t(`profile.factPlaceholder.${field.key}`)}
                     type={field.input === "list" ? "text" : field.input}
                     value={texts[field.key] ?? ""}
                   />
@@ -317,12 +319,12 @@ export function FactsTab() {
         title={t("profile.groups.workAuth")}
       >
         {workAuth.length === 0 ? (
-          <p className="type-body px-4 py-4 text-muted-foreground">
+          <p className="type-body px-5 py-4 text-muted-foreground">
             {t("profile.workAuthEmpty")}
           </p>
         ) : null}
         {workAuth.map((row) => (
-          <div className="flex items-end gap-2 px-4 py-3" key={row.rowId}>
+          <div className="flex items-end gap-2 px-5 py-4" key={row.rowId}>
             <Field className="w-24">
               <FieldLabel htmlFor={`${id}-${row.rowId}-country`}>
                 {t("profile.country")}

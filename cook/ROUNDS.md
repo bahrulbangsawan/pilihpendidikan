@@ -26,12 +26,15 @@ Best so far: round 1 (in progress)
 
 - 01:10 Shared controls stay in packages/ui (pills, 8px fields) and take reui.io's structure and affordances (icons, dots, presets, search, clear); apps may not render raw <button>/<input>/<select>/<textarea>/<option>; a lint check enforces it.
 
+- 02:20 In-app buttons stay pills (cursor.com system is canonical; reui's 6px buttons rejected) — one rule everywhere, logged after critic B raised it.
+- 02:20 Hub nav: centre = Features, What you get, Crawler; right = language, outline "AI assistants", primary "Builders" (no duplicates; each live service still linked once).
+
 ## User feedback inbox
 
 - 2026-11-24 00:12 "btw dark mode only, without lightmode." | round 1 | done (all apps dark only, toggles removed; proof: cook/compare/r01/*).
-- 2026-11-24 00:55 "Pada jobs: Hapus fitur inbox, approvals, runs, sources, CLI and devises (semua automation). Fokus hanya pada board, stats, profile. Full re-design everything about jobs, the layout, the components style, etc. Please use reui.io blocks as references for re-create the layout of kanban with the multiple view mode, details board, profile, settings, profile dropdown, etc. Please make sure that." | round 3 | open
-- 2026-11-24 01:10 "Please make sure no raw components like dropdown, button, date picker, input field, etc. Make sure all of that are reusable components that designed by the current design system. Use reui.io as reference all of that reusable components. And also please add icon, or something for dropdown, like status, filter, etc. That make the UX are better instead of only text." | round 3 | open (UI-kit agent: new DatePicker/DateRangePicker/FileTrigger/SegmentedControl/StatusDot + icon slots; raw-control lint; jobs agents told)
-- 2026-11-24 01:40 "and please write all the reusable components, and all the components on design system" | round 3 | open (UI-kit agent: promote generic app-local components into packages/ui, render every component on apps/design, inventory table in packages/ui/CLAUDE.md; jobs switch-over after the cleanup agent finishes)
+- 2026-11-24 00:55 "Pada jobs: Hapus fitur inbox, approvals, runs, sources, CLI and devises (semua automation). Fokus hanya pada board, stats, profile. Full re-design everything about jobs, the layout, the components style, etc. Please use reui.io blocks as references for re-create the layout of kanban with the multiple view mode, details board, profile, settings, profile dropdown, etc. Please make sure that." | round 3 | done (proof: cook/compare/r03/S05a,S10–S16)
+- 2026-11-24 01:10 "Please make sure no raw components like dropdown, button, date picker, input field, etc. Make sure all of that are reusable components that designed by the current design system. Use reui.io as reference all of that reusable components. And also please add icon, or something for dropdown, like status, filter, etc. That make the UX are better instead of only text." | round 3 | done (raw-control lint passes repo-wide; icons in every menu: cook/stills/wip/uikit/) (UI-kit agent: new DatePicker/DateRangePicker/FileTrigger/SegmentedControl/StatusDot + icon slots; raw-control lint; jobs agents told)
+- 2026-11-24 01:40 "and please write all the reusable components, and all the components on design system" | round 3 | done (packages/ui/src/blocks, parity:showcase 90/90, table in packages/ui/CLAUDE.md) (UI-kit agent: promote generic app-local components into packages/ui, render every component on apps/design, inventory table in packages/ui/CLAUDE.md; jobs switch-over after the cleanup agent finishes)
 
 ---
 
@@ -80,3 +83,46 @@ Top gaps from critics:
 5. Hub feels short: Cursor has a 4-up changelog/highlights row before the CTA.
 
 Next focus: round 2 = critic gaps 1–5, hub first.
+
+## Round 02
+
+Time: 00:55 to 01:00 | Focus: critic gaps from round 1 (hub media frames, warm backdrop, header pill, neutral app chips, switch, ghost pages). Commit 8f9b2a2. Not separately scored (round 3 started on new user feedback).
+
+## Round 03
+
+Time: 01:00 to 02:20 | total elapsed 2.8h
+Focus: user feedback (jobs rework on reui blocks, no raw controls, icons in dropdowns, all reusable components in the design system).
+Changes: see commit 39a5bfc (jobs automation removed, new shell/board views/sheet/profile/settings/stats; 16 new ui primitives, blocks/ composites, raw-control lint, design page covers every component).
+Stills: `cook/stills/r03/` | Side by side: `cook/compare/r03/` (jobs shots vs `refs/reui/`)
+
+Scores, eyeballed, raw (2 critics: same model A, Sonnet B; spread >10 on most shots, add a third critic next round). Median of two:
+
+| Shot | Layout | Colour | Typography | Components | Detail |
+|---|---|---|---|---|---|
+| S01 | 92 | 93 | 90.5 | 89.5 | 86.5 |
+| S02 | 80 | 87 | 86.5 | 77.5 | 75 |
+| S04 | 75 | 87.5 | 82 | 76 | 71.5 |
+| S05a | 80 | 88.5 | 87 | 79.5 | 78 |
+| S05b | 78 | 89 | 87.5 | 76 | 75.5 |
+| S06 | 84 | 91 | 88.5 | 85 | 82.5 |
+| S07 | 83 | 91.5 | 88 | 85 | 81 |
+| S09a | 85 | 91 | 88.5 | 85.5 | 83.5 |
+| S09b | 86.5 | 91 | 89 | 85.5 | 83.5 |
+| S10 | 82.5 | 89 | 86 | 79 | 78.5 |
+| S11 | 85.5 | 88 | 87.5 | 81.5 | 80 |
+| S12 | 76.5 | 88 | 85.5 | 78 | 77 |
+| S13 | 81 | 90.5 | 87.5 | 82 | 80 |
+| S14 | 83 | 87 | 88 | 83 | 80 |
+| S15 | 73.5 | 88 | 84 | 78 | 75.5 |
+| S16 | 83.5 | 91 | 88.5 | 83.5 | 80.5 |
+
+Measured: full `bun run check` passes except the pre-existing 27-advisory audit; jobs pages and sheet load with zero page errors (agent-browser errors per route); raw-control lint flags nothing.
+Not checked: e2e suite not executed (port 8788 taken; ~30 min).
+
+Top gaps (both critics agree):
+1. In-app density: settings/profile cards stretch ~770px with controls pinned far right, labels without descriptions, empty inputs without placeholders, nested double borders → cap 640px, 2-col row grid, descriptions, placeholders, one border.
+2. Details sheet: cards in a card → flat sections with hairlines, inset floating frame, bare close icon, labelled chips.
+3. Board: header stack too tall (breadcrumb + H1 + description + search row) → one header row; lanes barely visible → card fill + 10% border; cards 8px radius.
+4. Colour discipline: orange/green match bars and orange charts → neutral meters and an ink ramp; tinted stage badges (10%) instead of dot-only pills; tinted delta chips with arrows; StatCard `…` menu.
+5. Consistency: one Kbd style, SegmentedControl height = pill height, profile dropdown side=right with separators and kbd hints, phone duplicate H1, tab-strip fade.
+6. Hub: feature windows cropped mid-field → fully framed with inset; MCP stage too empty; why-cards dead space; footer too thin; phone hero one CTA; nav duplicates between centre and right cluster.

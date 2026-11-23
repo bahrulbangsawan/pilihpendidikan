@@ -10,7 +10,8 @@
     "loading": "Loading…",
     "retry": "Retry",
     "save": "Save",
-    "undo": "Undo"
+    "undo": "Undo",
+    "close": "Close"
   },
   "nav": {
     "board": "Board",
@@ -321,8 +322,6 @@
     }
   },
   "application": {
-    "matchScore": "{score}% match",
-    "appliedOn": "Applied {date}",
     "emailHeading": "Email the employer",
     "noNotes": "No notes yet.",
     "tabs": {
@@ -344,6 +343,14 @@
       "unscheduled": "Not scheduled yet",
       "missing": "Application not found",
       "missingBody": "It may have been deleted, or the link is wrong."
+    },
+    "props": {
+      "stage": "Stage",
+      "match": "Match",
+      "location": "Location",
+      "source": "Source",
+      "applied": "Applied",
+      "posting": "Posting"
     }
   },
   "card": {
@@ -546,7 +553,8 @@
     "rail": "Next step and status",
     "stale": "Offline — showing the last data we received.",
     "errorTitle": "This application didn't load",
-    "error": "We couldn't reach the server."
+    "error": "We couldn't reach the server.",
+    "postingClosedShort": "Closed"
   },
   "nextStep": {
     "heading": "Next step",
@@ -864,13 +872,63 @@
       "none": "No right to work"
     },
     "addCountry": "Add a country",
-    "listHelp": "Separate with commas.",
     "save": "Save facts",
     "saved": "Facts saved.",
     "saveFailed": "Couldn't save the facts.",
     "noChanges": "Nothing changed.",
     "invalid": "Fix the highlighted values first.",
-    "conflict": "Changed elsewhere meanwhile: {keys}. Those weren't saved."
+    "conflict": "Changed elsewhere meanwhile: {keys}. Those weren't saved.",
+    "factHelp": {
+      "contact": {
+        "full_name": "As it appears on your CV.",
+        "first_name": "For forms that split your name.",
+        "last_name": "Your family name, if you have one.",
+        "email": "Where employers reply.",
+        "phone": "With the country code.",
+        "location": "The city you live in.",
+        "country": "The country you live in."
+      },
+      "links": {
+        "linkedin": "Your public profile URL.",
+        "github": "For engineering roles.",
+        "portfolio": "Your work samples.",
+        "website": "A personal site or blog."
+      },
+      "prefs": {
+        "target_titles": "Separate with commas.",
+        "timezone": "Where you prefer to work from."
+      },
+      "skills": {
+        "extra": "Separate with commas."
+      },
+      "eligibility": {
+        "age_18_plus": "Some forms ask for it."
+      }
+    },
+    "factPlaceholder": {
+      "contact": {
+        "full_name": "Ayu Pratama",
+        "first_name": "Ayu",
+        "last_name": "Pratama",
+        "email": "you@example.com",
+        "phone": "+62 812 0000 0000",
+        "location": "Bandung",
+        "country": "Indonesia"
+      },
+      "links": {
+        "linkedin": "https://linkedin.com/in/you",
+        "github": "https://github.com/you",
+        "portfolio": "https://you.dev/work",
+        "website": "https://you.dev"
+      },
+      "prefs": {
+        "target_titles": "Frontend Engineer, Web Developer",
+        "timezone": "Asia/Jakarta"
+      },
+      "skills": {
+        "extra": "Figma, SQL, Public speaking"
+      }
+    }
   },
   "answers": {
     "intro": "Answers to screening questions. Protected questions are never answered without your approval.",
@@ -992,7 +1050,8 @@
     "deleteWord": "delete",
     "deleteAction": "Send confirmation",
     "deleteRequested": "Check your email to confirm the deletion.",
-    "deleteFailed": "Couldn't start the deletion."
+    "deleteFailed": "Couldn't start the deletion.",
+    "timezonePlaceholder": "Asia/Jakarta"
   },
   "notFound": {
     "title": "Page not found",
@@ -1118,7 +1177,10 @@
       "offerRate": "Offer rate {rate}",
       "points": "{value} pts",
       "vsPrevious": "Vs previous period:",
-      "noPrevious": "All time: no previous period"
+      "noPrevious": "All time: no previous period",
+      "menu": "More for {label}",
+      "openBoard": "Open the board",
+      "copy": "Copy the figure"
     },
     "unconfirmed": {
       "one": "1 submission is unconfirmed",

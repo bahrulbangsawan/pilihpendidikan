@@ -1,6 +1,6 @@
 // The Stats charts (10 §8), drawn with the shared chart wrapper of
-// @rulisme/ui: series colours are the `--chart-N` tokens only, the grid is a
-// hairline, nothing animates in (DESIGN.md § Motion). Each chart is a
+// @rulisme/ui: series are a neutral ramp of the `ink` token (90% down to
+// 40%; orange stays for links), the grid is a hairline, nothing animates in (DESIGN.md § Motion). Each chart is a
 // picture of its view model; ChartFrame pairs it with the same numbers as a
 // table. Recharts' own keyboard layer is off: the chart sits inside
 // role="img" and the data table is the keyboard path (T10-10).
@@ -29,13 +29,13 @@ import type { BarRow, SeriesPoint, TimingPoint } from "@/lib/stats-model";
 /** Recharts measures its box; tests and the first paint use this size. */
 const INITIAL_DIMENSION = { width: 640, height: 240 } as const;
 const CATEGORY_AXIS_WIDTH = 132;
-const FUNNEL_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-] as const;
+/** The ink ramp: `ink` at 90%, 75%, 60%, 50% and 40%. */
+const inkAt = (percent: number) =>
+  `color-mix(in oklab, var(--ink) ${percent}%, transparent)`;
+const INK_STRONG = inkAt(90);
+const INK_MID = inkAt(60);
+const INK_SOFT = inkAt(40);
+const FUNNEL_COLORS = [90, 75, 60, 50, 40].map(inkAt);
 
 function HorizontalBars({
   rows,
@@ -105,7 +105,7 @@ export function FunnelChart({ rows }: { rows: readonly BarRow[] }) {
     <HorizontalBars
       colors={FUNNEL_COLORS}
       config={{
-        value: { label: t("stats.funnel.count"), color: "var(--chart-1)" },
+        value: { label: t("stats.funnel.count"), color: INK_STRONG },
       }}
       rows={rows}
     />
@@ -118,7 +118,7 @@ export function RejectionChart({ rows }: { rows: readonly BarRow[] }) {
   return (
     <HorizontalBars
       config={{
-        value: { label: t("stats.rejection.count"), color: "var(--chart-2)" },
+        value: { label: t("stats.rejection.count"), color: INK_MID },
       }}
       rows={rows}
     />
@@ -136,7 +136,7 @@ export function SeriesChart({
   return (
     <ChartContainer
       className="aspect-auto h-60 w-full"
-      config={{ value: { label: metricName, color: "var(--chart-1)" } }}
+      config={{ value: { label: metricName, color: INK_STRONG } }}
       initialDimension={INITIAL_DIMENSION}
     >
       <LineChart
@@ -181,8 +181,8 @@ export function TimingChart({ points }: { points: readonly TimingPoint[] }) {
     <ChartContainer
       className="aspect-auto h-60 w-full"
       config={{
-        median: { label: t("stats.timing.median"), color: "var(--chart-1)" },
-        p75: { label: t("stats.timing.p75"), color: "var(--chart-3)" },
+        median: { label: t("stats.timing.median"), color: INK_STRONG },
+        p75: { label: t("stats.timing.p75"), color: INK_SOFT },
       }}
       initialDimension={INITIAL_DIMENSION}
     >

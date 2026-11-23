@@ -536,7 +536,15 @@ const OUTLINE = [
   "Skills",
 ] as const;
 
-function OutlineSheet({ side, label }: { side: Side; label: string }) {
+function OutlineSheet({
+  side,
+  label,
+  floating = false,
+}: {
+  side: Side;
+  label: string;
+  floating?: boolean;
+}) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -544,7 +552,7 @@ function OutlineSheet({ side, label }: { side: Side; label: string }) {
           {label}
         </Button>
       </SheetTrigger>
-      <SheetContent side={side}>
+      <SheetContent floating={floating} side={side}>
         <SheetHeader>
           <SheetTitle>CV outline</SheetTitle>
           <SheetDescription>Jump to a section of the editor.</SheetDescription>
@@ -1188,7 +1196,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="A side panel for settings and details: square against the viewport, the popover fill with the soft drop and a 10% border on its inner edge. It appears in place, without sliding."
+          description="A side panel for settings and details: square against the viewport, the popover fill with the soft drop and a 10% border on its inner edge; `floating` lifts it 12px off the edges as an 8px window with a full border (a record's details). The close × is a bare ghost icon. It appears in place, without sliding."
           title="Sheet"
         >
           <Example label="Settings panel">
@@ -1198,6 +1206,10 @@ export function OverlaysSection() {
             {SIDES.map(({ side, label }) => (
               <OutlineSheet key={side} label={label} side={side} />
             ))}
+          </Example>
+          <Example label="Floating">
+            <OutlineSheet floating label="Floating right" side="right" />
+            <OutlineSheet floating label="Floating left" side="left" />
           </Example>
         </Block>
 

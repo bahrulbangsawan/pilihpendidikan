@@ -887,7 +887,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 <Button
                   onClick={() => removeMedia(project)}
                   size="sm"
-                  variant="outline"
+                  variant="secondary"
                 >
                   <Trash2 data-icon="inline-start" />
                   {t("form.remove")}
@@ -943,7 +943,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   return (
     <div>
       {/* ── Profile ── */}
-      <section className="space-y-3 border-border border-b px-4 py-6 sm:px-6">
+      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
         <h2 className="type-title-compact text-foreground">
           {t("form.profile")}
         </h2>
@@ -1009,7 +1009,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Contact ── */}
-      <section className="space-y-3 border-border border-b px-4 py-6 sm:px-6">
+      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
         <h2 className="type-title-compact text-foreground">
           {t("form.contact")}
         </h2>
@@ -1058,12 +1058,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
           </div>
         </div>
         <div className="space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <Label>{t("form.socials")}</Label>
-            <span className="type-micro text-muted-foreground tabular-nums">
-              {socials.length}
-            </span>
-          </div>
+          <Label>{t("form.socials")}</Label>
           {socials.map((social, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
             <div className="flex items-end gap-2" key={index}>
@@ -1101,7 +1096,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               </Button>
             </div>
           ))}
-          <Button onClick={addSocial} size="sm" variant="outline">
+          <Button onClick={addSocial} size="sm" variant="secondary">
             <Plus data-icon="inline-start" />
             {t("form.addSocial")}
           </Button>
@@ -1109,7 +1104,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Submission ── */}
-      <section className="space-y-3 border-border border-b px-4 py-6 sm:px-6">
+      <section className="space-y-3 border-border border-b px-4 py-8 sm:px-6">
         <h2 className="type-title-compact text-foreground">
           {t("form.submission")}
         </h2>
@@ -1139,7 +1134,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
       </section>
 
       {/* ── Projects (max 5) ── */}
-      <div className="px-4 py-6 sm:px-6">
+      <div className="px-4 py-8 sm:px-6">
         <SectionList<Project>
           addLabel={
             data.projects.length >= MAX_PROJECTS
@@ -1161,7 +1156,10 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
           title={t("form.projects")}
           titleExtra={
             <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
-              {data.projects.length}/{MAX_PROJECTS}
+              {t("form.projectCount", {
+                count: data.projects.length,
+                max: MAX_PROJECTS,
+              })}
             </span>
           }
         />

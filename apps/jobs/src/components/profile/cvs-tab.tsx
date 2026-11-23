@@ -127,7 +127,7 @@ export function CvsTab() {
         </div>
       ) : null}
       {cvs.isSuccess && bases.length === 0 ? (
-        <p className="type-body px-4 py-6 text-muted-foreground">
+        <p className="type-body px-5 py-6 text-muted-foreground">
           {t("cvs.empty")}{" "}
           <a
             className="text-link hover:underline"

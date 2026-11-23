@@ -3,16 +3,17 @@ import { cn } from "../lib/utils";
 
 // A meter (reui's progress with a label row): a 4px `pane-2` track with a
 // filled bar in a tone, and an optional caption row (label left, value
-// right). For a score or a quota, not for loading (that is Progress). The
-// tone follows the value by default: success from `high`, orange from
-// `mid`, grey below.
+// right). For a score or a quota, not for loading (that is Progress). Data
+// stays neutral by default: an `ink-sec` bar, the number carries the value
+// (orange is for links). `tone="auto"` colours by value (success from
+// `high`, orange from `mid`) for the rare meter that must alarm.
 
 type MeterTone = "auto" | "success" | "link" | "neutral" | "destructive";
 
 const FILL = {
   success: "bg-success",
   link: "bg-link",
-  neutral: "bg-offgray",
+  neutral: "bg-ink-sec",
   destructive: "bg-destructive",
 } as const;
 
@@ -22,7 +23,7 @@ function Meter({
   className,
   value,
   max = 100,
-  tone = "auto",
+  tone = "neutral",
   high = 75,
   mid = 50,
   label,

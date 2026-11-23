@@ -51,7 +51,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | AspectRatio | `ui/aspect-ratio` | Ratio box | `ratio` |
 | Attachment (+Group, Media, Content, Title, Description, Actions, Action, Trigger) | `ui/attachment` | File chip / card | composition |
 | Avatar (+Image, Fallback, Group, GroupCount, Badge) | `ui/avatar` | Round avatar | `size` xs / sm / default / lg |
-| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`; BadgeButton `removeLabel`, `onClick` |
+| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`, `tone` (neutral / ink / link / success / destructive: 4px chip on a 10% tint with a dot); BadgeButton `removeLabel`, `onClick` |
 | Breadcrumb (+parts) | `ui/breadcrumb` | Path trail | composition |
 | Bubble (+Group, Content, Reactions) | `ui/bubble` | Chat bubble | `align`, `variant` |
 | Button, buttonVariants | `ui/button`, `ui/button-variants` | Pill button | `variant` default / outline / secondary / ghost / destructive / link / row, `size` xs / sm / default / lg / icon* , `asChild` |
@@ -88,14 +88,14 @@ upstream props; the table names what Zedative adds or what to pass.
 | Marker (+Icon, Content) | `ui/marker` | Timeline marker | `variant` |
 | Menubar (+parts) | `ui/menubar` | App menu bar | Radix |
 | Message (+Group, Avatar, Content, Header, Footer), MessageScroller (+parts) | `ui/message`, `ui/message-scroller` | Chat thread | composition |
-| Meter | `ui/meter` | Labelled 4px score bar | `value`, `max`, `tone` auto / success / link / neutral / destructive, `high`, `mid`, `label`, `valueLabel` |
+| Meter | `ui/meter` | Labelled 4px score bar | `value`, `max`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
 | NativeSelect (+Option, OptGroup) | `ui/native-select` | Native select | `size` |
 | NavigationMenu (+parts) | `ui/navigation-menu` | Site nav | Radix |
 | NotFound | `ui/not-found` | 404 page | copy props |
 | Pagination (+parts) | `ui/pagination` | Pager | composition |
 | Popover (+Anchor, Content, Header, Title, Description) | `ui/popover` | Flyout panel | Radix |
 | Progress | `ui/progress` | Loading bar | `value` |
-| PropertyChip | `ui/property-chip` | 28px fact chip with icon | `icon`, children |
+| PropertyChip | `ui/property-chip` | 28px fact chip with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
 | Questionnaire (+parts) | `ui/questionnaire` | Step-by-step form | composition |
 | RadioGroup (+Item) | `ui/radio-group` | Radios | Radix |
 | Band, Rail, Diamond | `ui/rails` | Layout container (Diamond renders nothing) | — |
@@ -104,13 +104,13 @@ upstream props; the table names what Zedative adds or what to pass.
 | SegmentedControl (+Item) | `ui/segmented-control` | Single-choice pill track | `value`, `onValueChange`, `size`; items `value`, icon child |
 | Select (+parts) | `ui/select` | Fixed-list select | Item `description`; icon / StatusDot first child |
 | Separator | `ui/separator` | Rule | `orientation` |
-| Sheet (+parts) | `ui/sheet` | Side panel | `side` |
+| Sheet (+parts) | `ui/sheet` | Side panel | `side`, `floating` (12px inset, rounded, window shadow), `closeLabel` |
 | Sidebar (+parts, useSidebar) | `ui/sidebar` | App sidebar | `collapsible`, `variant` |
 | Skeleton | `ui/skeleton` | Placeholder | — |
 | Slider | `ui/slider` | Range slider | Radix |
 | Toaster | `ui/sonner` | Toasts | sonner |
 | Spinner | `ui/spinner` | Blocks spinner | size via `--spinner-size` |
-| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card, its grid, the delta chip | `label`, `value`, `delta {direction, label}`, `footer` |
+| StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card, its grid, the delta chip | `label`, `value`, `delta {direction, label}` (tinted with an arrow, neutral at zero), `footer`, `action` (e.g. a `…` menu) |
 | StatusDot | `ui/status-dot` | 8px status dot | `tone` neutral / link / warning / success / destructive / ink, `pulse` |
 | SwatchPicker | `ui/swatch-picker` | Colour swatches (document colours) | `colors`, `value`, `onValueChange`, `allowCustom` |
 | Switch | `ui/switch` | Toggle switch | `size` |
@@ -125,7 +125,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | Component | File | What it is | Main props |
 | --- | --- | --- | --- |
 | PageHeader, PageContent, PageSection, PageGutter, PAGE_GUTTER, PAGE_COLUMN | `blocks/page` | App screen frame | `title`, `description`, `count`, `actions`, `wide` |
-| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav, cards of label / control rows, titled cards | `items`, `value`, `onChange`; card `title`, `description`, `action`, `footer`, `tone`, `inset`; row `label`, `description`, `htmlFor`, `icon`, `badge`, `align` |
+| SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav, cards of label / control rows, titled cards | `items`, `value`, `onChange`; card `title`, `description`, `action`, `footer`, `tone`, `inset`; row `label`, `description`, `htmlFor`, `icon`, `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `flat`. Content column capped at 640px |
 | Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop) | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
 | UserMenu | `blocks/user-menu` | Sidebar account row + menu | `name`, `email`, `label`, `collapsed`, children = menu items |
 | AppBrand | `blocks/app-brand` | Mark + name in a toolbar | `name`, `src` |
@@ -138,7 +138,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | --- | --- | --- | --- |
 | FormField, FormFieldCustom | `form/form-field` | Labelled field with error and counter | `label`, `value`, `onChange`, `multiline`, `error` |
 | MonthPicker | `form/month-picker` | Month + year selects | `value`, `onChange` |
-| SectionList | `form/section-list` | Sortable accordion list of entries with an editable title | `items`, `render`, `summary`, `onTitleChange` |
+| SectionList | `form/section-list` | Sortable accordion list of entries with an editable title | `items`, `render`, `summary`, `onTitleChange`, `addVariant` (default `secondary`), `collapsible` / `defaultOpen` / `collapseLabel` |
 | PhoneInput | `reui/phone-input` | Country + number field | `value`, `onChange`, `defaultCountry`, `variant` |
 
 <!-- intent-skills:start -->

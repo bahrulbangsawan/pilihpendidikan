@@ -10,7 +10,8 @@
     "loading": "Memuat…",
     "retry": "Coba lagi",
     "save": "Simpan",
-    "undo": "Urungkan"
+    "undo": "Urungkan",
+    "close": "Tutup"
   },
   "nav": {
     "board": "Papan",
@@ -321,8 +322,6 @@
     }
   },
   "application": {
-    "matchScore": "Kecocokan {score}%",
-    "appliedOn": "Dilamar {date}",
     "emailHeading": "Kirim email ke perusahaan",
     "noNotes": "Belum ada catatan.",
     "tabs": {
@@ -344,6 +343,14 @@
       "unscheduled": "Belum dijadwalkan",
       "missing": "Lamaran tidak ditemukan",
       "missingBody": "Mungkin sudah dihapus, atau tautannya salah."
+    },
+    "props": {
+      "stage": "Tahap",
+      "match": "Kecocokan",
+      "location": "Lokasi",
+      "source": "Sumber",
+      "applied": "Dilamar",
+      "posting": "Lowongan"
     }
   },
   "card": {
@@ -546,7 +553,8 @@
     "rail": "Langkah berikutnya dan status",
     "stale": "Offline — menampilkan data terakhir yang kami terima.",
     "errorTitle": "Lamaran ini gagal dimuat",
-    "error": "Server tidak dapat dihubungi."
+    "error": "Server tidak dapat dihubungi.",
+    "postingClosedShort": "Ditutup"
   },
   "nextStep": {
     "heading": "Langkah berikutnya",
@@ -864,13 +872,63 @@
       "none": "Tidak punya izin kerja"
     },
     "addCountry": "Tambah negara",
-    "listHelp": "Pisahkan dengan koma.",
     "save": "Simpan fakta",
     "saved": "Fakta disimpan.",
     "saveFailed": "Tidak dapat menyimpan fakta.",
     "noChanges": "Tidak ada perubahan.",
     "invalid": "Perbaiki isian yang ditandai terlebih dahulu.",
-    "conflict": "Berubah di tempat lain sementara itu: {keys}. Bagian itu tidak disimpan."
+    "conflict": "Berubah di tempat lain sementara itu: {keys}. Bagian itu tidak disimpan.",
+    "factHelp": {
+      "contact": {
+        "full_name": "Sesuai yang tertulis di CV Anda.",
+        "first_name": "Untuk formulir yang memisahkan nama.",
+        "last_name": "Nama keluarga, jika ada.",
+        "email": "Alamat balasan dari perekrut.",
+        "phone": "Lengkap dengan kode negara.",
+        "location": "Kota tempat Anda tinggal.",
+        "country": "Negara tempat Anda tinggal."
+      },
+      "links": {
+        "linkedin": "URL profil publik Anda.",
+        "github": "Untuk posisi engineering.",
+        "portfolio": "Contoh karya Anda.",
+        "website": "Situs pribadi atau blog."
+      },
+      "prefs": {
+        "target_titles": "Pisahkan dengan koma.",
+        "timezone": "Zona waktu kerja pilihan Anda."
+      },
+      "skills": {
+        "extra": "Pisahkan dengan koma."
+      },
+      "eligibility": {
+        "age_18_plus": "Beberapa formulir menanyakannya."
+      }
+    },
+    "factPlaceholder": {
+      "contact": {
+        "full_name": "Ayu Pratama",
+        "first_name": "Ayu",
+        "last_name": "Pratama",
+        "email": "anda@contoh.com",
+        "phone": "+62 812 0000 0000",
+        "location": "Bandung",
+        "country": "Indonesia"
+      },
+      "links": {
+        "linkedin": "https://linkedin.com/in/anda",
+        "github": "https://github.com/anda",
+        "portfolio": "https://anda.dev/karya",
+        "website": "https://anda.dev"
+      },
+      "prefs": {
+        "target_titles": "Frontend Engineer, Web Developer",
+        "timezone": "Asia/Jakarta"
+      },
+      "skills": {
+        "extra": "Figma, SQL, Public speaking"
+      }
+    }
   },
   "answers": {
     "intro": "Jawaban untuk pertanyaan seleksi. Pertanyaan terlindungi tidak pernah dijawab tanpa persetujuan Anda.",
@@ -992,7 +1050,8 @@
     "deleteWord": "hapus",
     "deleteAction": "Kirim konfirmasi",
     "deleteRequested": "Periksa email Anda untuk mengonfirmasi penghapusan.",
-    "deleteFailed": "Tidak dapat memulai penghapusan."
+    "deleteFailed": "Tidak dapat memulai penghapusan.",
+    "timezonePlaceholder": "Asia/Jakarta"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",
@@ -1118,7 +1177,10 @@
       "offerRate": "Tingkat tawaran {rate}",
       "points": "{value} poin",
       "vsPrevious": "Vs periode sebelumnya:",
-      "noPrevious": "Sepanjang waktu: tanpa periode sebelumnya"
+      "noPrevious": "Sepanjang waktu: tanpa periode sebelumnya",
+      "menu": "Lainnya untuk {label}",
+      "openBoard": "Buka papan",
+      "copy": "Salin angka"
     },
     "unconfirmed": {
       "one": "1 pengiriman belum terkonfirmasi",

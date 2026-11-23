@@ -11,9 +11,11 @@ import {
 import { EntityAvatar } from "../ui/entity-avatar";
 
 // The account menu at the foot of a sidebar (reui's app-shell user menu):
-// a 48px row with a square letter avatar, the name and email and an
-// up-down chevron (only the avatar when `collapsed`), opening a menu headed
-// by the same identity. The menu items are the app's: pass
+// a 48px row with a round letter avatar, the name and email and an
+// up-down chevron (only the avatar when `collapsed`), opening a menu to the
+// right of the sidebar (bottom-aligned, 8px off) headed by the same
+// identity. Group the items with separators (account pages / preferences /
+// sign out) and put a `DropdownMenuShortcut` on rows that have a key. The menu items are the app's: pass
 // DropdownMenuItem / DropdownMenuSub children (Profile, Settings, Language,
 // Sign out). Presentational: no session, routing or copy inside.
 
@@ -26,12 +28,7 @@ function UserIdentity({
 }) {
   return (
     <>
-      <EntityAvatar
-        fallback={email}
-        name={name}
-        shape="square"
-        size="default"
-      />
+      <EntityAvatar fallback={email} name={name} size="default" />
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="type-body-compact truncate text-foreground">
           {name || email}
@@ -75,12 +72,7 @@ function UserMenu({
         data-slot="user-menu-trigger"
       >
         {collapsed ? (
-          <EntityAvatar
-            fallback={email}
-            name={name}
-            shape="square"
-            size="default"
-          />
+          <EntityAvatar fallback={email} name={name} size="default" />
         ) : (
           <>
             <UserIdentity email={email} name={name} />
@@ -92,10 +84,10 @@ function UserMenu({
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="start"
+        align="end"
         className={cn("w-60", contentClassName)}
-        side={collapsed ? "right" : "top"}
-        sideOffset={8}
+        side="right"
+        sideOffset={16}
       >
         <DropdownMenuLabel className="flex items-center gap-2.5 px-2 py-1.5">
           <UserIdentity email={email} name={name} />

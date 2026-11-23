@@ -157,11 +157,12 @@
   --input: color-mix(in oklab, #edecec 20%, transparent);
   --ring: #edecec;
 
-  --chart-1: #f54e00;
-  --chart-2: #edecec;
-  --chart-3: #4cc79b;
-  --chart-4: color-mix(in oklab, #edecec 40%, #14120b);
-  --chart-5: color-mix(in oklab, #edecec 20%, #14120b);
+  /* Charts: a neutral ink ramp (orange stays for links). */
+  --chart-1: color-mix(in oklab, #edecec 90%, transparent);
+  --chart-2: color-mix(in oklab, #edecec 70%, transparent);
+  --chart-3: color-mix(in oklab, #edecec 55%, transparent);
+  --chart-4: color-mix(in oklab, #edecec 40%, transparent);
+  --chart-5: color-mix(in oklab, #edecec 25%, transparent);
 
   --sidebar: #1b1913; /* cursor.com/docs: the nav sits on the card colour */
   --sidebar-foreground: #edecec;

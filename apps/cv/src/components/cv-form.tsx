@@ -806,7 +806,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
   return (
     <div>
       {/* ── Personal Info ── */}
-      <section className="flex flex-col gap-3 border-line border-b px-4 py-6 sm:px-6">
+      <section className="flex flex-col gap-3 border-line border-b px-4 py-8 sm:px-6">
         <h2 className="type-title-compact flex h-8 items-center text-foreground">
           {t("form.personalInformation")}
         </h2>
@@ -966,7 +966,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                         })
                       }
                       size="sm"
-                      variant="outline"
+                      variant="secondary"
                     >
                       <Trash2 data-icon="inline-start" />
                       {t("form.remove")}
@@ -979,7 +979,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                   >
                     <Button
                       aria-label={t("a11y2.uploadProfilePhoto")}
-                      variant="outline"
+                      variant="secondary"
                     >
                       <Upload aria-hidden="true" data-icon="inline-start" />
                       {t("form.uploadPhoto")}
@@ -2036,7 +2036,7 @@ function SortableSection({
   return (
     <div
       className={cn(
-        "group/section relative border-line border-b bg-background px-4 py-6 sm:px-6",
+        "group/section relative border-line border-b bg-background px-4 py-8 sm:px-6",
         // Above the neighbouring bands, under the sticky toolbar (z-10).
         isDragging && "z-5"
       )}
@@ -2048,7 +2048,7 @@ function SortableSection({
       }}
     >
       <DragHandle
-        className="absolute top-6 left-0 pointer-fine:text-transparent focus-visible:text-foreground pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
+        className="absolute top-8 left-0 pointer-fine:text-transparent focus-visible:text-foreground pointer-fine:group-focus-within/section:text-muted-foreground pointer-fine:group-hover/section:text-muted-foreground sm:left-1"
         label={t("form.dragToReorder")}
         variant="gutter"
         {...attributes}

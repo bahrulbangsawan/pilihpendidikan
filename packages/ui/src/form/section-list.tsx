@@ -15,13 +15,18 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { MinusIcon, Plus, PlusIcon, X } from "lucide-react";
+import { ChevronDown, MinusIcon, Plus, PlusIcon, X } from "lucide-react";
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
 import { Button } from "../ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
 import { DragHandle } from "../ui/drag-handle";
 import { EditableTitle } from "../ui/editable-title";
 
@@ -44,6 +49,14 @@ interface SectionListProps<T extends { id: string }> {
   /** Accessible name and hover hint for each row's drag grip. */
   reorderLabel?: string;
   triggerExtra?: (entry: T, index: number) => ReactNode;
+  /** The add pill's look: the warm-grey filled `secondary` (default) or `outline`. */
+  addVariant?: "secondary" | "outline";
+  /** A chevron at the end of the title row folds the list and the add pill. */
+  collapsible?: boolean;
+  /** With `collapsible`: open at first (default true). */
+  defaultOpen?: boolean;
+  /** With `collapsible`: the chevron's accessible name. */
+  collapseLabel?: string;
 }
 
 // Drag-to-reorder is direct feedback, so it keeps moving (DESIGN.md §
@@ -95,8 +108,10 @@ function SortableItem({
 /**
  * An editor list of entries: an inline-editable section title, then a
  * cursor.com card (`bg-card`, 4px radius, hairline) of accordion rows split
- * by 10% rules, each with a drag grip, the entry summary, an error dot and a
- * remove ×, then an outline "add" pill.
+ * by 10% rules, each a 36px header with a drag grip, the entry summary, an
+ * error dot and one action cluster at the right (+/− and the remove ×, 8px
+ * apart), then a secondary "add" pill. `collapsible` adds a chevron to the
+ * title row that folds the list and the pill.
  */
 export function SectionList<T extends { id: string }>({
   title,
@@ -115,8 +130,13 @@ export function SectionList<T extends { id: string }>({
   triggerExtra,
   removeLabel = "Remove",
   reorderLabel = "Drag to reorder",
+  addVariant = "secondary",
+  collapsible = false,
+  defaultOpen = true,
+  collapseLabel = "Show or hide",
 }: SectionListProps<T>) {
   const [openItems, setOpenItems] = useState<string[]>([]);
+  const [sectionOpen, setSectionOpen] = useState(defaultOpen);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -136,25 +156,8 @@ export function SectionList<T extends { id: string }>({
     onReorder(arrayMove(items, oldIndex, newIndex));
   }
 
-  return (
-    <section className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <div className="flex min-w-0 flex-1 items-center gap-1.5">
-          {titleIcon && (
-            <span className="inline-flex shrink-0 items-center text-muted-foreground">
-              {titleIcon}
-            </span>
-          )}
-          <EditableTitle
-            aria-label={placeholder}
-            onChange={(e) => onTitleChange?.(e.target.value)}
-            placeholder={placeholder}
-            readOnly={!onTitleChange}
-            value={title}
-          />
-        </div>
-        {titleExtra}
-      </div>
+  const body = (
+    <>
       {items.length > 0 && (
         <DndContext
           collisionDetection={closestCenter}
@@ -179,14 +182,14 @@ export function SectionList<T extends { id: string }>({
                           grip, the trigger (summary, extra, error dot, +/−)
                           and the remove ×. None is nested in another, so
                           each keeps its own name and focus stop. */}
-                      <AccordionPrimitive.Header className="flex items-center gap-1 pr-2 pl-1">
+                      <AccordionPrimitive.Header className="flex h-9 items-center gap-2 pr-1 pl-1">
                         <DragHandle
                           label={reorderLabel}
                           {...attributes}
                           {...listeners}
                         />
                         <AccordionPrimitive.Trigger
-                          className="group/accordion-trigger type-body flex min-w-0 flex-1 items-center gap-2 py-2.5 text-left text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+                          className="group/accordion-trigger type-body flex min-w-0 flex-1 items-center gap-2 self-stretch text-left text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
                           data-slot="accordion-trigger"
                         >
                           <span className="min-w-0 flex-1 truncate">
@@ -233,11 +236,69 @@ export function SectionList<T extends { id: string }>({
         className="self-start"
         onClick={onAdd}
         size="sm"
-        variant="outline"
+        variant={addVariant}
       >
         <Plus data-icon="inline-start" />
         {addLabel}
       </Button>
+    </>
+  );
+
+  const titleRow = (
+    <div className="flex items-center gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-1.5">
+        {titleIcon && (
+          <span className="inline-flex shrink-0 items-center text-muted-foreground">
+            {titleIcon}
+          </span>
+        )}
+        <EditableTitle
+          aria-label={placeholder}
+          onChange={(e) => onTitleChange?.(e.target.value)}
+          placeholder={placeholder}
+          readOnly={!onTitleChange}
+          value={title}
+        />
+      </div>
+      {titleExtra}
+      {collapsible ? (
+        <CollapsibleTrigger asChild>
+          <Button
+            aria-label={collapseLabel}
+            className="text-muted-foreground hover:bg-pane aria-expanded:bg-transparent"
+            size="icon-sm"
+            variant="ghost"
+          >
+            <ChevronDown
+              aria-hidden="true"
+              className="size-4 group-data-[state=open]/section-list:rotate-180"
+            />
+          </Button>
+        </CollapsibleTrigger>
+      ) : null}
+    </div>
+  );
+
+  if (collapsible) {
+    return (
+      <Collapsible asChild onOpenChange={setSectionOpen} open={sectionOpen}>
+        <section
+          className="group/section-list flex flex-col gap-3"
+          data-slot="section-list"
+        >
+          {titleRow}
+          <CollapsibleContent className="flex flex-col gap-3">
+            {body}
+          </CollapsibleContent>
+        </section>
+      </Collapsible>
+    );
+  }
+
+  return (
+    <section className="flex flex-col gap-3" data-slot="section-list">
+      {titleRow}
+      {body}
     </section>
   );
 }

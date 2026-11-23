@@ -7,13 +7,15 @@ import { Button } from "../ui/button";
 // an app keeps its own drag and drop (dnd-kit refs, listeners and data go
 // on these elements through `ref` and props).
 // - `Kanban`: the horizontally scrolling row of columns.
-// - `KanbanColumn`: a 288px lane on `card` at 50% with a hairline.
+// - `KanbanColumn`: a 288px lane: a bounded `card` fill, a 10% border and
+//   8px corners; cards sit on it in the lighter `pane`.
 // - `KanbanColumnHeader`: a 44px header: status icon, title, count badge,
 //   actions at the end.
 // - `KanbanColumnContent`: the droppable body; `state="over"` washes it,
 //   `state="blocked"` tints it red (a move that is not allowed).
 // - `KanbanColumnEmpty`: the dashed placeholder of an empty lane.
-// - `KanbanCard`: the card surface; `selected`, `pending`, `muted`, `dashed`.
+// - `KanbanCard`: the card surface (8px, its own border, 12px padding and
+//   12px between blocks); `selected`, `pending`, `muted`, `dashed`.
 // - `KanbanCollapsedColumn`: a 44px strip with the title set vertically, a
 //   row button that expands it, still a drop target.
 
@@ -39,7 +41,7 @@ function KanbanColumn({
   return (
     <section
       className={cn(
-        "relative flex max-h-full w-72 shrink-0 flex-col rounded-lg border border-hairline bg-card/50",
+        "relative flex max-h-full w-72 shrink-0 flex-col rounded-lg border border-border bg-card",
         className
       )}
       data-slot="kanban-column"
@@ -116,7 +118,7 @@ function KanbanColumnEmpty({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
       className={cn(
-        "type-caption rounded-lg border border-hairline border-dashed px-3 py-6 text-center text-muted-foreground",
+        "type-caption rounded-lg border border-border border-dashed px-3 py-6 text-center text-muted-foreground",
         className
       )}
       data-slot="kanban-column-empty"
@@ -144,7 +146,7 @@ function KanbanCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-2.5 rounded-lg border border-border bg-card p-3 text-left transition-colors duration-140 ease-standard hover:bg-pane data-selected:border-line data-selected:bg-pane-2 data-selected:hover:bg-pane-2",
+        "flex flex-col gap-3 rounded-lg border border-border bg-pane p-3 text-left transition-colors duration-140 ease-standard hover:bg-pane-2 data-selected:border-line data-selected:bg-pane-3 data-selected:hover:bg-pane-3",
         muted && "opacity-75",
         dashed && "border-dashed",
         pending && "opacity-70",
@@ -180,7 +182,7 @@ function KanbanCollapsedColumn({
   return (
     <section
       className={cn(
-        "relative flex w-11 shrink-0 flex-col rounded-lg border border-hairline bg-card/50 transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
+        "relative flex w-11 shrink-0 flex-col rounded-lg border border-border bg-card transition-colors duration-140 ease-standard data-[state=blocked]:cursor-not-allowed data-[state=blocked]:bg-destructive/5 data-[state=over]:bg-wash",
         className
       )}
       data-slot="kanban-collapsed-column"

@@ -2,6 +2,7 @@ import { CheckIcon, ChevronRightIcon } from "lucide-react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import type * as React from "react";
 import { cn } from "../lib/utils";
+import { Kbd } from "./kbd";
 
 // cursor.com menu (the model picker): an 8px flyout with a 10% border and
 // two whisper shadows, 32px rows at 4px radius in the body role (weight 400)
@@ -213,10 +214,11 @@ function DropdownMenuSeparator({
 function DropdownMenuShortcut({
   className,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<"kbd">) {
   return (
-    <span
-      className={cn("type-caption ml-auto text-muted-foreground", className)}
+    <Kbd
+      aria-hidden="true"
+      className={cn("ml-auto", className)}
       data-slot="dropdown-menu-shortcut"
       {...props}
     />

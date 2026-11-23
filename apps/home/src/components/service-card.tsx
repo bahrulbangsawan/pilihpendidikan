@@ -51,15 +51,21 @@ function FeatureMedia({
   children,
   flip,
   stage = 2,
+  compact = false,
 }: {
   children: ReactNode;
   flip: boolean;
   stage?: number;
+  /** A short stage (440px) for media that is small, like a config file. */
+  compact?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "relative h-[360px] overflow-hidden rounded-xs lg:col-span-16 lg:row-start-1 lg:h-[680px]",
+        "relative overflow-hidden rounded-xs lg:col-span-16 lg:row-start-1",
+        compact
+          ? "h-[280px] lg:h-[440px]"
+          : "h-[240px] sm:h-[420px] lg:h-[680px]",
         STAGES[stage % STAGES.length],
         flip ? "lg:col-start-1" : "lg:col-start-9"
       )}
@@ -121,7 +127,7 @@ export function ServiceCard({
       </FeatureCopy>
       <FeatureMedia flip={flip} stage={stage}>
         <WindowFrame
-          className="absolute top-8 left-8 w-[1000px] lg:top-10"
+          className="absolute inset-x-6 top-6 lg:inset-x-10 lg:top-10"
           title={t("features.windowTitle").replace("{{name}}", name)}
         >
           <img
@@ -182,7 +188,7 @@ export function McpCard({ api }: { api: Service }) {
           </Badge>
         )}
       </FeatureCopy>
-      <FeatureMedia flip={false}>
+      <FeatureMedia compact flip={false}>
         {live && (
           <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[560px] lg:-translate-x-1/2">
             <figcaption className="type-caption border-border border-b px-3 py-2 text-center text-muted-foreground">

@@ -1,9 +1,9 @@
 import { cva } from "class-variance-authority";
 
 // Tabs, cursor.com's pricing toggle (Individual / Teams). `default` is a pill
-// segmented control: a `pane` track with 4px of padding whose selected
-// segment is a `card` pill with a hairline ring (cursor.com's dark toggle:
-// #1b1913 on a #1f1d16 track). `line` sets the
+// segmented control: a 36px `pane` track with 2px of padding whose
+// selected segment is the lighter `pane-3` pill with a 10% ring (it reads
+// raised, like SegmentedControl). `line` sets the
 // triggers on a 10% rule and marks the selected one with a 2px `foreground`
 // underline. Weight stays 400 and nothing animates. Horizontal geometry is
 // the default, so the variants also style plain links (`aria-current="page"`)
@@ -14,7 +14,7 @@ export const tabsListVariants = cva(
     variants: {
       variant: {
         default:
-          "h-10 gap-0.5 rounded-full bg-pane p-1 group-data-vertical/tabs:rounded-lg",
+          "h-9 gap-0.5 rounded-full bg-pane p-0.5 group-data-vertical/tabs:rounded-lg",
         line: "h-9 gap-1 border-line border-b group-data-vertical/tabs:border-r group-data-vertical/tabs:border-b-0",
       },
     },
@@ -30,7 +30,7 @@ export const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-full aria-[current=page]:bg-card aria-[current=page]:shadow-[0_0_0_1px_var(--hairline)] data-active:bg-card data-active:shadow-[0_0_0_1px_var(--hairline)] group-data-vertical/tabs:rounded-sm",
+          "rounded-full aria-[current=page]:bg-pane-3 aria-[current=page]:shadow-[0_0_0_1px_var(--border)] data-active:bg-pane-3 data-active:shadow-[0_0_0_1px_var(--border)] group-data-vertical/tabs:rounded-sm",
         // The underline overlaps the list's 1px rule.
         line: "px-3 after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 aria-[current=page]:after:bg-foreground data-active:after:bg-foreground group-data-vertical/tabs:after:inset-x-auto group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-px group-data-vertical/tabs:after:h-auto group-data-vertical/tabs:after:w-0.5",
       },

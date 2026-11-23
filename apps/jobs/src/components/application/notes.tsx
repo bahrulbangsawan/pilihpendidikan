@@ -123,11 +123,14 @@ export function NoteItem({
   appId,
   actor,
   nowMs,
+  flat = false,
 }: {
   event: ApplicationEventRecord;
   appId: string;
   actor: string;
   nowMs: number;
+  /** In a sheet: a hairline above instead of a boxed card. */
+  flat?: boolean;
 }) {
   const { locale, t } = useTranslation();
   const queryClient = useQueryClient();
@@ -149,7 +152,13 @@ export function NoteItem({
     }
   }
   return (
-    <article className="flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3">
+    <article
+      className={
+        flat
+          ? "flex flex-col gap-1.5 border-border border-t pt-3"
+          : "flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3"
+      }
+    >
       <header className="type-caption flex items-center justify-between gap-2 text-muted-foreground">
         <span>
           {actor} ·{" "}

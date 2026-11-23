@@ -1,6 +1,7 @@
 // The board below 640px (12 §3): a scrollable stage switcher with counts and
-// one vertical list. No drag and drop; each card has a Move button (`M`) and
-// opens the details sheet.
+// one vertical list. The switcher scrolls under a right-edge fade. No drag
+// and drop; each card has a ghost Move icon button (`M`) and opens the
+// details sheet.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
@@ -44,7 +45,7 @@ export function PhoneBoard({
   return (
     <div className="flex flex-col">
       <Tabs onValueChange={(value) => setTab(value as Tab)} value={tab}>
-        <div className="no-scrollbar overflow-x-auto px-4 pb-2">
+        <div className="no-scrollbar mask-r-from-85% overflow-x-auto px-4 pb-2">
           <TabsList aria-label={t("board.stages")}>
             {BOARD_STAGES.map((stage) => (
               <TabsTrigger key={stage} value={stage}>
@@ -81,7 +82,6 @@ export function PhoneBoard({
             >
               <CardView
                 card={card}
-                wideAction
                 nowMs={nowMs}
                 pending={pendingIds.has(card.id)}
               />
@@ -91,13 +91,13 @@ export function PhoneBoard({
               aria-label={t("card.moveLabel", {
                 company: card.posting.company_name,
               })}
-              className="absolute top-2.5 right-2.5"
+              className="absolute top-1.5 right-1.5 text-muted-foreground"
               onClick={() => onMove(card)}
-              size="xs"
-              variant="outline"
+              size="icon-sm"
+              title={t("card.actions.moveShort")}
+              variant="ghost"
             >
-              <ArrowRightLeft aria-hidden="true" data-icon="inline-start" />
-              {t("card.actions.moveShort")}
+              <ArrowRightLeft aria-hidden="true" />
             </Button>
           </li>
         ))}

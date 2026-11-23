@@ -1,8 +1,11 @@
 // The details sheet (reui's sheet): opened from a board card, list row or
 // table row and kept in the URL (`/board?app=<id>`) so it can be linked. A
-// header (company avatar, role, company), the property chips with the stage
-// select, then Next step, Notes, Interviews and Follow-up in cards; the
-// footer holds "Open full page" and the next step's primary action (`Y`).
+// floating window 12px off the viewport (reui's sheet-1): a header (company
+// avatar, role, company), one row of property chips (the stage select with
+// its `M` hint inside, then labelled facts), then flat sections (Next step,
+// Notes, Interviews, Follow-up) split by hairlines and 24px of space; the
+// footer stacks the next step's primary action (`Y`) over a full-width
+// secondary "Open full page".
 
 import { SectionCard } from "@rulisme/ui/blocks/settings";
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
@@ -26,7 +29,7 @@ import {
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Link } from "@tanstack/react-router";
 import { CalendarClock, CircleAlert, Maximize2 } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useApplication, useApplicationEvents } from "@/hooks/use-application";
 import type { ApplicationPatch } from "@/hooks/use-conflict-write";
 import { useTranslation } from "@/i18n";
@@ -73,6 +76,7 @@ function InterviewsSummary({
           </Link>
         </Button>
       }
+      flat
       id="sheet-interviews-heading"
       title={t("detail.tabs.interviews")}
     >
@@ -148,7 +152,7 @@ function SheetBody({
       query.isError && isApiError(query.error) && query.error.status === 404;
     return (
       <>
-        <SheetHeader className="p-5">
+        <SheetHeader className="p-6">
           <SheetTitle>
             {missing ? t("application.sheet.missing") : t("detail.pageTitle")}
           </SheetTitle>
@@ -157,13 +161,13 @@ function SheetBody({
           </SheetDescription>
         </SheetHeader>
         {query.isPending ? (
-          <div aria-hidden="true" className="flex flex-col gap-3 px-5">
+          <div aria-hidden="true" className="flex flex-col gap-3 px-6">
             <Skeleton className="h-7 w-72" />
             <Skeleton className="h-24 w-full" />
             <Skeleton className="h-24 w-full" />
           </div>
         ) : (
-          <div className="px-5">
+          <div className="px-6">
             <Alert role="alert" variant="destructive">
               <CircleAlert aria-hidden="true" />
               <AlertTitle>
@@ -197,7 +201,7 @@ function SheetBody({
   const step = computeNextStep(detail);
   return (
     <>
-      <SheetHeader className="gap-4 border-border border-b p-5 pr-12">
+      <SheetHeader className="gap-4 border-border border-b p-6 pr-14">
         <ApplicationIdentity
           detail={detail}
           title={
@@ -214,18 +218,20 @@ function SheetBody({
           onMove={(target) => onMove(detail, target)}
         />
       </SheetHeader>
-      <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-5">
+      <div className="flex flex-1 flex-col divide-y divide-border overflow-y-auto px-6 *:py-6">
         <NextStepCard
           detail={detail}
+          flat
           onRun={(next) => onRunStep(detail, next)}
           shortcutEnabled={false}
           withButton={false}
         />
-        <SectionCard id="sheet-notes-heading" title={t("notes.heading")}>
+        <SectionCard flat id="sheet-notes-heading" title={t("notes.heading")}>
           <NotesList
             actorName={actorName}
             appId={appId}
             events={events.events}
+            flat
             limit={SHEET_NOTES}
             nowMs={nowMs}
           />
@@ -233,24 +239,26 @@ function SheetBody({
         <InterviewsSummary appId={appId} detail={detail} />
         <FollowUpSection
           detail={detail}
+          flat
           nowMs={nowMs}
           onAccept={(changes) => onAcceptFollowUp(detail, changes)}
           onEdit={() => onFollowUp(detail)}
         />
       </div>
-      <SheetFooter className="flex-row items-center justify-between gap-2 border-border border-t p-4">
-        <Button asChild variant="outline">
+      <SheetFooter className="gap-2 border-border border-t p-4">
+        {step ? (
+          <NextStepButton
+            className="w-full"
+            onRun={(next) => onRunStep(detail, next)}
+            step={step}
+          />
+        ) : null}
+        <Button asChild className="w-full" variant="secondary">
           <Link params={{ appId }} to="/applications/$appId">
             <Maximize2 aria-hidden="true" data-icon="inline-start" />
             {t("board.openFullPage")}
           </Link>
         </Button>
-        {step ? (
-          <NextStepButton
-            onRun={(next) => onRunStep(detail, next)}
-            step={step}
-          />
-        ) : null}
       </SheetFooter>
     </>
   );
@@ -285,10 +293,21 @@ export function ApplicationSheet({
   onRunStep: (detail: ApplicationDetail, step: NextStep) => void;
   nowMs: number;
 }) {
+  const { t } = useTranslation();
+  const panel = useRef<HTMLDivElement>(null);
   return (
     <Sheet onOpenChange={(open) => !open && onClose()} open={appId !== null}>
       <SheetContent
-        className="gap-0 overflow-hidden p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-lg"
+        className="gap-0 overflow-hidden p-0 data-[side=right]:left-3 data-[side=right]:w-auto data-[side=right]:sm:left-auto data-[side=right]:sm:w-full data-[side=right]:sm:max-w-lg"
+        closeLabel={t("common.close")}
+        floating
+        onOpenAutoFocus={(event) => {
+          // Focus the panel itself, not the corner ×: the first Tab reaches
+          // the stage chip, and no focus ring greets a pointer user.
+          event.preventDefault();
+          panel.current?.focus();
+        }}
+        ref={panel}
         side="right"
       >
         {appId ? <SheetBody appId={appId} key={appId} {...body} /> : null}

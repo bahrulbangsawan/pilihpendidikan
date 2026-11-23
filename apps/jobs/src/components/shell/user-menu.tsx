@@ -1,6 +1,8 @@
 // The sidebar's user footer and its profile dropdown, on the shared
-// UserMenu block (`@rulisme/ui/blocks/user-menu`): a header with the avatar, name and email, Profile, Settings, a Language
-// submenu, Keyboard shortcuts and Sign out. Dark only: no theme item.
+// UserMenu block (`@rulisme/ui/blocks/user-menu`): a header with the
+// avatar, name and email, then three groups split by separators — Profile,
+// Settings / Language, Keyboard shortcuts (`?`) / Sign out. It opens to the
+// right of the sidebar. Dark only: no theme item.
 
 import type { Locale } from "@pilihpendidikan/jobs-contracts/enums";
 import { UserMenu as UserMenuBlock } from "@rulisme/ui/blocks/user-menu";
@@ -100,6 +102,9 @@ export function UserMenu({
           <Settings aria-hidden="true" />
           {t("nav.settings")}
         </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Languages aria-hidden="true" />

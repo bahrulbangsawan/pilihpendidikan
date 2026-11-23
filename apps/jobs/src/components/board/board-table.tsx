@@ -26,7 +26,7 @@ import { formatDate, relativeTime } from "@/lib/format";
 import { sourceLabel, stageLabel } from "@/lib/labels";
 import type { CardHandlers } from "./board-columns";
 import { CardMenu } from "./board-columns";
-import { StageBadge } from "./board-list";
+import { StageBadge } from "./stage-meta";
 import { ScoreMeter, useLocationLine } from "./card-view";
 import { EntityAvatar } from "@rulisme/ui/ui/entity-avatar";
 
@@ -177,7 +177,7 @@ function Row({
       </TableCell>
       <TableCell className="max-w-80">
         <div className="flex min-w-0 items-center gap-3">
-          <EntityAvatar name={card.posting.company_name} />
+          <EntityAvatar name={card.posting.company_name} shape="square" />
           <Button
             aria-keyshortcuts="Enter M X F E R W"
             aria-label={t("card.label", {

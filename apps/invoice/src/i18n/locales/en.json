@@ -160,6 +160,7 @@
     "pageOf": "Page {page} of {total}"
   },
   "a11y": {
+    "toggleLineItems": "Show or hide line items",
     "apiKeySettings": "API Key Settings",
     "setupAiAssistant": "Set up AI Assistant",
     "setAccentColor": "Set accent color to {color}",

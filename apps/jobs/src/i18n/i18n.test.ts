@@ -99,6 +99,18 @@ function dynamicKeys(): string[] {
     ...each("profile.sources", FACT_SOURCES),
     ...each("profile.workAuthStatuses", WORK_AUTH_STATUSES),
     ...each(
+      "profile.factHelp",
+      FACT_GROUPS.flatMap((group) => group.fields.map((field) => field.key))
+    ),
+    ...each(
+      "profile.factPlaceholder",
+      FACT_GROUPS.flatMap((group) =>
+        group.fields
+          .filter((field) => field.input !== "boolean")
+          .map((field) => field.key)
+      )
+    ),
+    ...each(
       "nav",
       NAV_ITEMS.map((item) => item.key)
     ),

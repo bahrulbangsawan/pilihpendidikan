@@ -1,11 +1,14 @@
 import { Button } from "@rulisme/ui/ui/button";
+import type { ComponentProps } from "react";
 import {
   BriefcaseBusiness,
   Eye,
   FileDown,
   FileText,
+  Globe,
   Languages,
   LayoutTemplate,
+  MapPin,
   ReceiptText,
 } from "lucide-react";
 import type { Services } from "@/config/services";
@@ -34,6 +37,23 @@ const STRIP_ITEMS = [
 ] as const;
 
 const EXPORT_ITEMS = ["cv", "invoice", "portfolio", "jobs"] as const;
+
+const WHY_ICONS = {
+  preview: Eye,
+  pdf: FileDown,
+  languages: Languages,
+  templates: LayoutTemplate,
+  regions: MapPin,
+  browser: Globe,
+} as const;
+
+function WhyIcon({
+  item,
+  ...props
+}: { item: keyof typeof WHY_ICONS } & ComponentProps<"svg">) {
+  const Icon = WHY_ICONS[item];
+  return <Icon {...props} />;
+}
 
 const WHY_ITEMS = [
   "preview",
@@ -67,7 +87,12 @@ function Hero({ anySoon }: { anySoon: boolean }) {
               <span aria-hidden="true">↓</span>
             </a>
           </Button>
-          <Button asChild size="lg" variant="secondary">
+          <Button
+            asChild
+            className="hidden sm:inline-flex"
+            size="lg"
+            variant="secondary"
+          >
             <a href="#mcp">
               {t("hero.secondary")}
               <span aria-hidden="true">→</span>
@@ -98,10 +123,10 @@ function Strip() {
         <h2 className="type-body text-center" id="strip-heading">
           {t("strip.heading")}
         </h2>
-        <ul className="mt-[22px] grid grid-cols-2 gap-[10px] sm:grid-cols-4 lg:grid-cols-8">
+        <ul className="mt-[22px] grid grid-cols-3 gap-[10px] sm:grid-cols-4 lg:grid-cols-8">
           {STRIP_ITEMS.map(({ key, Icon }) => (
             <li
-              className="type-title-compact flex h-[100px] items-center justify-center gap-2 rounded-sm border border-hairline bg-card text-foreground"
+              className="type-caption sm:type-title-compact flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-sm border border-hairline bg-card text-center text-foreground sm:h-[100px] sm:flex-row sm:gap-2"
               key={key}
             >
               <Icon aria-hidden="true" className="size-5 shrink-0" />
@@ -118,7 +143,11 @@ function Strip() {
 function Exports() {
   const { t } = useTranslation();
   return (
-    <section aria-labelledby="exports-heading" className={SECTION_CLASS}>
+    <section
+      aria-labelledby="exports-heading"
+      className={`${SECTION_CLASS} scroll-mt-[52px]`}
+      id="exports"
+    >
       <div className={CONTAINER_CLASS}>
         <h2 className="type-title" id="exports-heading">
           {t("exports.heading")}
@@ -147,7 +176,11 @@ function Exports() {
 function Why() {
   const { t } = useTranslation();
   return (
-    <section aria-labelledby="why-heading" className={SECTION_CLASS}>
+    <section
+      aria-labelledby="why-heading"
+      className={`${SECTION_CLASS} scroll-mt-[52px]`}
+      id="why"
+    >
       <div className={CONTAINER_CLASS}>
         <h2
           className="type-headline-compact md:type-headline mx-auto max-w-[810px] text-balance text-center"
@@ -158,9 +191,14 @@ function Why() {
         <ul className="mt-14 grid gap-[10px] md:grid-cols-3">
           {WHY_ITEMS.map((key) => (
             <li
-              className="flex flex-col rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px] md:min-h-[180px]"
+              className="flex flex-col gap-3 rounded-sm border border-hairline bg-card px-[17.5px] pt-[15.9px] pb-[17.5px]"
               key={key}
             >
+              <WhyIcon
+                aria-hidden="true"
+                className="size-4 text-ink-sec"
+                item={key}
+              />
               <h3 className="type-subtitle">{t(`why.${key}.title`)}</h3>
               <p className="type-subtitle text-pretty text-ink-sec">
                 {t(`why.${key}.body`)}

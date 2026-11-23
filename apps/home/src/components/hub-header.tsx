@@ -32,11 +32,14 @@ export function HubHeader() {
           aria-label={t("nav.sections")}
           className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex"
         >
-          <a className={NAV_LINK_CLASS} href={`${localePath(locale)}#tools`}>
-            {t("nav.builders")}
+          <a className={NAV_LINK_CLASS} href={`${localePath(locale)}#why`}>
+            {t("nav.features")}
           </a>
-          <a className={NAV_LINK_CLASS} href={`${localePath(locale)}#mcp`}>
-            {t("nav.assistants")}
+          <a className={NAV_LINK_CLASS} href={`${localePath(locale)}#exports`}>
+            {t("nav.exports")}
+          </a>
+          <a className={NAV_LINK_CLASS} href="/bot">
+            {t("nav.crawler")}
           </a>
         </nav>
         <div className="flex items-center gap-2">

@@ -1,5 +1,7 @@
 // The 48px bar over the content column (reui app-shell): the phone menu
 // button, a breadcrumb on the left and a slot for page actions on the right.
+// On phones a top-level page shows the brand instead of its one crumb, which
+// would only repeat the page's H1.
 //
 // Screens shape it while they are mounted:
 // - `useBreadcrumbs([{ label, href? }, …])` replaces the breadcrumb derived
@@ -26,7 +28,9 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { cn } from "@rulisme/ui/lib/utils";
 import { AppLink } from "@/components/app-link";
+import { BrandMark } from "./brand-mark";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 
@@ -136,6 +140,8 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
   const crumbs =
     state?.crumbs ??
     crumbsForLocation(t, location.pathname, location.search ?? {});
+  // A top-level page's one crumb repeats its H1: phones show the brand.
+  const topLevel = crumbs.length === 1;
   return (
     <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center gap-2 border-border border-b bg-background px-3 sm:px-4 lg:px-6">
       <Button
@@ -147,7 +153,12 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
       >
         <Menu aria-hidden="true" />
       </Button>
-      <Breadcrumb className="min-w-0 flex-1">
+      {topLevel ? (
+        <span className="min-w-0 flex-1 sm:hidden">
+          <BrandMark label={t("app.name")} />
+        </span>
+      ) : null}
+      <Breadcrumb className={cn("min-w-0 flex-1", topLevel && "max-sm:hidden")}>
         <BreadcrumbList className="flex-nowrap">
           {crumbs.map((crumb, index) => {
             const last = index === crumbs.length - 1;
