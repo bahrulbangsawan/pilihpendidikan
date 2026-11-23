@@ -73,21 +73,21 @@ The chrome follows the root `DESIGN.md` (rules mapped to code in its
 the shared theme (`bun run parity:typography`) and adds the deck's `.pf-*`
 print CSS. What is specific to this app:
 
-- **Editor frame.** A split view: each pane is headed by a 56px toolbar band
-  (`h-14`, `border-line` rule, `size="sm"` / `icon-sm` buttons), the panes are
-  divided by a `line` rule, a `Diamond` marks where the toolbar rule crosses the
-  divider, and the deck rests on `graph-paper`. Form sections are full-bleed
-  `Band`s. Below `md` the panes stack and a floating button downloads.
-- **Theme.** Light is canonical: next-themes runs with `defaultTheme="light"`
-  and `enableSystem={false}` (the inline script in `__root.tsx` matches it);
-  the toolbar toggle switches to Night Desk (`.dark`).
+- **Editor frame.** A split view in cursor.com's dark app chrome: each pane is
+  headed by a 48px toolbar (`h-12`, `border-border` rule, `size="sm"` /
+  `icon-sm` pill buttons), the panes are divided by a `border-border` rule,
+  and the deck rests on the card colour. Form sections are separated by
+  hairlines. Below `md` the panes stack and a floating button downloads.
+- **Theme.** Dark only (Zedative has one scheme): `<html>` carries
+  `className="dark"` from the server and next-themes is pinned with
+  `forcedTheme="dark"`; there is no toggle.
 - **Shortcut.** The primary action is downloading the PDF: the toolbar button
   carries `<Kbd>D</Kbd>` and `aria-keyshortcuts="D"`, and `useShortcut("D")`
   performs the same download (never while typing, never behind an open
   window). Keep the hint and the shortcut together.
 - **Print document (the deck).** The deck is ink on paper and mirrors its
   `@react-pdf` twin (`TYPOGRAPHY.md` § Exceptions): literal colours, never
-  re-themed by Night Desk, its own base type (it does not inherit the chrome's
+  re-themed by the dark chrome, its own base type (it does not inherit the chrome's
   body role) in Inter at weights 400 / 600 / 700, copy in sentence case with
   no letter-spacing. The PDF's type comes from the shared print module
   (`@rulisme/ui/print/pdf-fonts`, registered by `src/lib/pdf-fonts.ts`): the

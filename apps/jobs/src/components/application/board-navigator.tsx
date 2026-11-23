@@ -18,9 +18,9 @@ export function BoardNavigator({ currentId }: { currentId: string }) {
       aria-label={t("detail.boardNav")}
       className="flex h-full flex-col overflow-y-auto bg-card"
     >
-      <div className="band px-4 py-2">
+      <div className="px-4 py-2">
         <Link
-          className="type-body-compact weight-semibold text-foreground hover:underline"
+          className="type-body-compact text-foreground hover:underline"
           to="/board"
         >
           {t("board.title")}
@@ -34,7 +34,7 @@ export function BoardNavigator({ currentId }: { currentId: string }) {
         return (
           <section
             aria-labelledby={`nav-${stage}`}
-            className="band py-1.5"
+            className="py-1.5"
             key={stage}
           >
             <h2

@@ -34,10 +34,10 @@ function thumbLabel(
   return `${label}, ${index + 1} of ${count}`;
 }
 
-// Zedative slider: a thin `pane-2` track with a cobalt range and a small
-// square chip for each thumb (2px radius, cobalt edge on `bg-2` paper). The
-// thumb follows the pointer directly; only its fill and focus outline
-// transition. `aria-label` / `aria-labelledby` name the thumbs.
+// Slider, cursor.com style: a thin round `pane-2` track with an ink
+// (`primary`) range and a round 14px thumb on the page colour with an ink
+// edge. The thumb follows the pointer directly; only its fill transitions.
+// `aria-label` / `aria-labelledby` name the thumbs.
 function Slider({
   className,
   defaultValue,
@@ -67,7 +67,7 @@ function Slider({
       {...props}
     >
       <SliderPrimitive.Track
-        className="relative grow overflow-hidden rounded-none bg-pane-2 data-horizontal:h-1 data-vertical:h-full data-horizontal:w-full data-vertical:w-1"
+        className="relative grow overflow-hidden rounded-full bg-pane-2 data-horizontal:h-1 data-vertical:h-full data-horizontal:w-full data-vertical:w-1"
         data-slot="slider-track"
       >
         <SliderPrimitive.Range
@@ -77,7 +77,7 @@ function Slider({
       </SliderPrimitive.Track>
       {Array.from({ length: values.length }, (_, index) => (
         <SliderPrimitive.Thumb
-          className="relative block size-3.5 shrink-0 cursor-grab select-none rounded-sm border border-primary bg-card outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard after:absolute after:-inset-2 hover:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing data-disabled:pointer-events-none"
+          className="relative block size-3.5 shrink-0 cursor-grab select-none rounded-full border border-primary bg-background outline-none transition-[background-color,border-color] duration-140 ease-standard after:absolute after:-inset-2 hover:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing data-disabled:pointer-events-none"
           aria-label={thumbLabel(ariaLabel, index, values.length)}
           aria-labelledby={ariaLabelledBy}
           data-slot="slider-thumb"

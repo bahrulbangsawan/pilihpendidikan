@@ -114,10 +114,7 @@ export function FrameHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 px-(--card-spacing)">
       <div className="flex min-w-0 flex-1 basis-56 flex-col gap-1">
-        <h2
-          className="type-subtitle weight-semibold text-card-foreground"
-          id={headingId}
-        >
+        <h2 className="type-subtitle text-card-foreground" id={headingId}>
           {title}
         </h2>
         {description ? (

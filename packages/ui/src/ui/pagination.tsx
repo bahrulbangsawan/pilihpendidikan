@@ -8,9 +8,10 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 
-// Zedative pagination: page links are ghost buttons; the current page takes
-// the outline look and the heading weight. Numbers are tabular so the row
-// keeps its width. A link with `aria-disabled` dims and stops taking clicks.
+// cursor.com pagination: page links are round ghost buttons (pills for
+// Previous / Next); the current page takes the 20%-outlined look. Numbers
+// are tabular so the row keeps its width. A link with `aria-disabled` dims
+// and stops taking clicks.
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
@@ -54,7 +55,7 @@ function PaginationLink({
     <Button
       asChild
       className={cn(
-        "data-active:weight-semibold tabular-nums aria-disabled:pointer-events-none aria-disabled:opacity-50",
+        "tabular-nums aria-disabled:pointer-events-none aria-disabled:opacity-50",
         className
       )}
       size={size}

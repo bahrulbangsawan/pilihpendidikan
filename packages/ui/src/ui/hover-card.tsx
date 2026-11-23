@@ -2,9 +2,9 @@ import { HoverCard as HoverCardPrimitive } from "radix-ui";
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// Zedative window for previews on hover (a profile, a recruiter): 6px
-// corners, a hairline, `bg-2` paper and the float shadow. It appears in
-// place, without animation.
+// cursor.com flyout for previews on hover (a profile, a recruiter): 8px
+// corners, a 10% border on the popover fill and two whisper shadows. It
+// appears in place, without animation.
 
 function HoverCard({
   ...props
@@ -31,7 +31,7 @@ function HoverCardContent({
       <HoverCardPrimitive.Content
         align={align}
         className={cn(
-          "type-body z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-lg border border-border bg-popover p-4 text-ink shadow-float outline-none",
+          "type-body z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-lg border border-border bg-popover p-4 text-ink shadow-md outline-none",
           className
         )}
         data-slot="hover-card-content"

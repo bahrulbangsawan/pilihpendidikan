@@ -227,7 +227,7 @@ export function ApplicationPage({ appId }: { appId: string }) {
       />
       {query.stale ? (
         <p
-          className="type-caption band px-4 py-1.5 text-muted-foreground sm:px-6"
+          className="type-caption px-4 py-1.5 text-muted-foreground sm:px-6"
           role="status"
         >
           {t("detail.stale")}
@@ -239,7 +239,7 @@ export function ApplicationPage({ appId }: { appId: string }) {
           onValueChange={(value) => setTab(value as DetailTab)}
           value={tab}
         >
-          <div className="band no-scrollbar overflow-x-auto px-4 sm:px-6">
+          <div className="no-scrollbar overflow-x-auto px-4 sm:px-6">
             <TabsList
               aria-label={t("detail.tabsLabel")}
               className="border-b-0"

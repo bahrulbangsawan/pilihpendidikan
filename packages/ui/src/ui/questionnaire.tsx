@@ -9,12 +9,13 @@ import type { Button } from "./button";
 import { buttonVariants } from "./button-variants";
 import { Kbd } from "./kbd";
 
-// A short multiple-choice prompt inside a Zedative thread. The question takes
-// the subtitle role in the semibold weight; each choice is an outlined
-// pressable (paper at 60%, a lip that leaves on hover, the press offset) with
-// a 2px check or a round radio that fills cobalt when chosen, and a <Kbd>
-// cap for its letter shortcut. Progress is a muted caption with tabular
-// figures. Nothing animates between questions.
+// A short multiple-choice prompt inside a thread, like Cursor's agent
+// questions. The question takes the subtitle role at weight 400; each choice
+// is an 8px card (`bg-card`, 10% border, `pane` hover, `pane-2` once chosen)
+// with a 4px check or a round radio that fills with the ink pill colour
+// (`primary`) when chosen, and a <Kbd> chip for its letter shortcut.
+// Progress is a muted caption with tabular figures. Nothing animates between
+// questions.
 
 function Questionnaire({
   className,
@@ -68,7 +69,7 @@ function QuestionnaireTitle({
   return (
     <QuestionnairePrimitive.Title
       className={cn(
-        "type-subtitle weight-semibold text-pretty text-foreground [&:not(:has(~[data-slot=questionnaire-description]))]:mb-3",
+        "type-subtitle text-pretty text-foreground [&:not(:has(~[data-slot=questionnaire-description]))]:mb-3",
         className
       )}
       data-slot="questionnaire-title"
@@ -117,7 +118,7 @@ function QuestionnaireChoice({
   return (
     <QuestionnairePrimitive.Choice
       className={cn(
-        "group/questionnaire-choice type-body press relative inset-shadow-lip flex min-h-11 cursor-pointer select-none items-start gap-2.5 rounded-md border border-border/60 bg-card/60 px-3 py-2 text-start text-foreground transition-[background-color,border-color,box-shadow] duration-150 ease-standard hover:inset-shadow-none has-[>input:focus-visible]:outline-2 has-[>input:focus-visible]:outline-ring has-[>input:focus-visible]:outline-solid has-[>input:focus-visible]:outline-offset-2 data-checked:inset-shadow-none data-checked:border-border data-invalid:border-destructive data-checked:bg-pane-2 data-[unchecked]:hover:bg-pane/70",
+        "group/questionnaire-choice type-body relative flex min-h-11 cursor-pointer select-none items-start gap-2.5 rounded-lg border border-border bg-card px-3 py-2 text-start text-foreground transition-[background-color,border-color] duration-140 ease-standard has-[>input:focus-visible]:outline-2 has-[>input:focus-visible]:outline-ring has-[>input:focus-visible]:outline-solid has-[>input:focus-visible]:outline-offset-0 data-checked:border-input data-invalid:border-destructive data-checked:bg-pane-2 data-[unchecked]:hover:bg-pane",
         "data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className
       )}
@@ -130,7 +131,7 @@ function QuestionnaireChoice({
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none relative mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-sm border border-input bg-card text-primary-foreground group-data-[type=radio]/questionnaire-choice:rounded-full group-data-checked/questionnaire-choice:border-primary group-data-checked/questionnaire-choice:bg-primary"
+        className="pointer-events-none relative mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-sm border border-input bg-background text-primary-foreground group-data-[type=radio]/questionnaire-choice:rounded-full group-data-checked/questionnaire-choice:border-primary group-data-checked/questionnaire-choice:bg-primary"
         data-slot="questionnaire-choice-indicator"
       >
         <span
@@ -143,7 +144,7 @@ function QuestionnaireChoice({
         />
       </span>
       <QuestionnairePrimitive.ChoiceLabel
-        className="group-data-checked/questionnaire-choice:weight-semibold flex min-w-0 flex-1 flex-col"
+        className="flex min-w-0 flex-1 flex-col"
         data-slot="questionnaire-choice-label"
       >
         {children}
@@ -184,7 +185,7 @@ function QuestionnaireInput({
     >
       <QuestionnairePrimitive.Input
         className={cn(
-          "type-body field-touch h-9 min-h-11 w-full min-w-0 rounded-md border border-input bg-card/60 px-2.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard selection:bg-highlight placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:bg-pane/50 disabled:opacity-60 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/15 sm:min-h-0",
+          "type-body field-touch h-9 min-h-11 w-full min-w-0 rounded-lg border border-border bg-background px-3 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard selection:bg-highlight placeholder:text-muted-foreground hover:border-input focus-visible:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:bg-pane disabled:text-muted-foreground aria-invalid:border-destructive aria-invalid:outline-destructive sm:min-h-0",
           className
         )}
         data-slot="questionnaire-input"

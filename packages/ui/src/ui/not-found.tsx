@@ -42,9 +42,9 @@ const DEFAULT_DESCRIPTION =
  * Router-agnostic 404 screen shared by the hub and the cv / invoice /
  * portfolio apps. Each app passes its own `logo` node and a `homeAction`
  * link; everything else is fixed here so every app renders the same page:
- * a Zedative band on graph paper ruled by hairlines, the ruled column with
- * its diamond nodes, a display-size numeral, a title-role heading, one cobalt
- * action and an outlined way back. Nothing animates in.
+ * cursor.com's closing-CTA look on the plain page colour: a hero-size
+ * numeral at weight 400, a title-role heading, one muted line, the dark pill
+ * home action and a 20%-outlined way back. Nothing animates in.
  */
 export function NotFound({
   logo,
@@ -67,7 +67,7 @@ export function NotFound({
       )}
       data-slot="not-found"
     >
-      <div className="band graph-paper border-line border-t">
+      <div className="band">
         <Rail className="flex flex-col items-center gap-6 px-6 py-16 text-center sm:py-24">
           <span
             className="flex h-10 items-center justify-center"
@@ -76,7 +76,9 @@ export function NotFound({
             {logo}
           </span>
           <div className="flex flex-col items-center gap-2">
-            <p className="type-display text-foreground tabular-nums">{code}</p>
+            <p className="type-hero-compact sm:type-hero text-foreground tabular-nums">
+              {code}
+            </p>
             <h1 className="type-title text-foreground">{title}</h1>
             <p className="type-body max-w-sm text-balance text-muted-foreground">
               {description}

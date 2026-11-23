@@ -61,7 +61,7 @@ function ExternalAnchor({
   }
   return (
     <a
-      className="inline-flex items-center gap-1 text-primary underline-offset-4 hover:underline"
+      className="inline-flex items-center gap-1 text-link underline-offset-4 hover:underline"
       href={safe}
       rel="noopener noreferrer"
       target="_blank"
@@ -273,7 +273,7 @@ function FollowRow({ source }: { source: CloudSourceView }) {
   const [busy, setBusy] = useState(false);
   const id = useId();
   return (
-    <div className="flex items-start gap-3 border border-line p-3">
+    <div className="flex items-start gap-3 rounded-sm border border-line p-3">
       <Switch
         aria-describedby={`${id}-help`}
         checked={source.following}
@@ -384,7 +384,7 @@ export function CloudSourceSheet({
                 className="flex flex-col gap-2"
               >
                 <h3
-                  className="type-body weight-semibold text-foreground"
+                  className="type-body text-foreground"
                   id={`${source.id}-runs`}
                 >
                   {t("cloudSources.runs.title")}

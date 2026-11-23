@@ -27,7 +27,12 @@ export function StateMatrix<Row extends string>({
   className?: string;
 }) {
   return (
-    <div className={cn("w-full overflow-x-auto border border-line", className)}>
+    <div
+      className={cn(
+        "w-full overflow-x-auto rounded-sm border border-hairline bg-card",
+        className
+      )}
+    >
       <table className="w-full border-separate border-spacing-x-3 border-spacing-y-3">
         <thead>
           <tr>

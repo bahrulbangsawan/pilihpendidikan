@@ -91,9 +91,10 @@ function SortableItem({
 }
 
 /**
- * An editor list of entries (Zedative): an inline-editable section title,
- * then hairline accordion rows on `bg-2` with a drag grip, the entry
- * summary, an error dot and a remove ×, then an outline "add" button.
+ * An editor list of entries: an inline-editable section title, then a
+ * cursor.com card (`bg-card`, 4px radius, hairline) of accordion rows split
+ * by 10% rules, each with a drag grip, the entry summary, an error dot and a
+ * remove ×, then an outline "add" pill.
  */
 export function SectionList<T extends { id: string }>({
   title,
@@ -144,7 +145,7 @@ export function SectionList<T extends { id: string }>({
           )}
           <input
             aria-label={placeholder}
-            className="type-subtitle weight-semibold field-touch -ml-1.5 h-8 min-w-0 flex-1 rounded-md border border-transparent bg-transparent px-1.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard placeholder:text-muted-foreground hover:border-input read-only:hover:border-transparent focus-visible:border-ring focus-visible:bg-card/60 focus-visible:ring-3 focus-visible:ring-ring/20"
+            className="type-subtitle field-touch -ml-2 h-8 min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard placeholder:text-muted-foreground hover:border-border read-only:hover:border-transparent focus-visible:border-input focus-visible:bg-background focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0"
             onChange={(e) => onTitleChange?.(e.target.value)}
             placeholder={placeholder}
             readOnly={!onTitleChange}
@@ -164,7 +165,7 @@ export function SectionList<T extends { id: string }>({
             strategy={verticalListSortingStrategy}
           >
             <Accordion
-              className="border border-line bg-card"
+              className="rounded-sm border border-hairline bg-card"
               onValueChange={setOpenItems}
               type="multiple"
               value={openItems}
@@ -180,7 +181,7 @@ export function SectionList<T extends { id: string }>({
                       <AccordionPrimitive.Header className="flex items-center gap-1 pr-2 pl-1">
                         <button
                           aria-label={reorderLabel}
-                          className="inline-flex size-7 shrink-0 cursor-grab items-center justify-center rounded-sm text-muted-foreground outline-none transition-[background-color,color] duration-150 ease-standard hover:bg-pane/70 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing"
+                          className="inline-flex size-7 shrink-0 cursor-grab items-center justify-center rounded-full text-muted-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:bg-pane hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing"
                           title={reorderLabel}
                           type="button"
                           {...attributes}
@@ -192,7 +193,7 @@ export function SectionList<T extends { id: string }>({
                           />
                         </button>
                         <AccordionPrimitive.Trigger
-                          className="group/accordion-trigger type-body weight-semibold flex min-w-0 flex-1 items-center gap-2 py-2.5 text-left text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+                          className="group/accordion-trigger type-body flex min-w-0 flex-1 items-center gap-2 py-2.5 text-left text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
                           data-slot="accordion-trigger"
                         >
                           <span className="min-w-0 flex-1 truncate">
@@ -216,7 +217,7 @@ export function SectionList<T extends { id: string }>({
                         </AccordionPrimitive.Trigger>
                         <button
                           aria-label={removeLabel}
-                          className="inline-flex size-7 shrink-0 items-center justify-center rounded-sm text-muted-foreground outline-none transition-[background-color,color] duration-150 ease-standard hover:bg-destructive/10 hover:text-destructive focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+                          className="inline-flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:bg-destructive/10 hover:text-destructive focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
                           onClick={() => onRemove(entry.id)}
                           title={removeLabel}
                           type="button"

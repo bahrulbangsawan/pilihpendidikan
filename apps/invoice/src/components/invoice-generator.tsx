@@ -21,7 +21,6 @@ import {
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -45,7 +44,6 @@ import { toast } from "sonner";
 import type { InvoiceData } from "@/components/invoice-form";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
-import { ThemeToggle } from "@/components/theme-toggle";
 import sampleData from "@/data/sample-invoice.json";
 import { translateNow, useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
@@ -230,7 +228,7 @@ interface McpDialogProps extends CloudAuthStatusProps {
   onTokenChange: (token: string) => void;
 }
 
-// The MCP guide: three numbered steps, the cobalt link to mint a token, and
+// The MCP guide: three numbered steps, the primary link to mint a token, and
 // the optional personal-token field that turns on cloud save.
 function McpDialog({ auth, hasToken, onTokenChange }: McpDialogProps) {
   const { t } = useTranslation();
@@ -335,7 +333,7 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
   );
 }
 
-// The document sheet resting on the editor's graph paper: a 1px hairline
+// The white document sheet resting on the dark preview pane: a 1px hairline
 // frames it on screen, and it prints bare at full width (the print CSS in
 // styles.css prints `.invoice-page` alone). The empty state stays unframed.
 function PreviewSheet({ data }: { data: InvoiceData }) {
@@ -543,7 +541,7 @@ export function InvoiceGenerator() {
   return (
     <>
       <a
-        className="sr-only rounded-md border border-border bg-popover px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         href="#main-content"
       >
         {t("a11y.skipToContent")}
@@ -554,9 +552,9 @@ export function InvoiceGenerator() {
         tabIndex={-1}
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        {/* Form pane: a 56px toolbar band over the form's ruled sections. */}
-        <div className="invoice-no-print no-scrollbar w-full border-line border-b md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1.5 border-line border-b bg-background px-4 sm:px-6">
+        {/* Form pane: a 48px toolbar over the form's ruled sections. */}
+        <div className="invoice-no-print no-scrollbar w-full border-border border-b bg-background md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
@@ -633,17 +631,16 @@ export function InvoiceGenerator() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <ThemeToggle />
               <LanguageSwitcher />
             </div>
           </div>
           <InvoiceForm data={data} onChange={setData} />
         </div>
-        {/* Preview pane: the same band, then the sheet on graph paper. */}
-        <div className="invoice-preview-pane no-scrollbar graph-paper w-full md:h-svh md:w-1/2 md:overflow-y-auto">
+        {/* Preview pane: the same toolbar, then the white sheet on the card pane. */}
+        <div className="invoice-preview-pane no-scrollbar w-full bg-card md:h-svh md:w-1/2 md:overflow-y-auto">
           <div
             className={cn(
-              "invoice-no-print h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6 md:sticky md:top-0 md:z-10",
+              "invoice-no-print h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6 md:sticky md:top-0 md:z-10",
               showCloudStatus ? "flex" : "hidden md:flex"
             )}
           >
@@ -694,8 +691,6 @@ export function InvoiceGenerator() {
             <PreviewSheet data={data} />
           </div>
         </div>
-        {/* The node where the toolbar rule crosses the pane divider. */}
-        <Diamond className="invoice-no-print top-[calc(3.5rem-var(--node)/2-0.5px)] left-[calc(50%-var(--node)/2-0.5px)] z-20 hidden md:block" />
         {/* Floating download button — mobile only */}
         <div className="invoice-no-print fixed bottom-4 left-4 z-50 md:hidden">
           <DropdownMenu>

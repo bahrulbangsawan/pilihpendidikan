@@ -158,7 +158,7 @@ export function DuplicateListings({
             ) : null}
             {url ? (
               <a
-                className="min-w-0 truncate text-primary underline-offset-4 hover:underline"
+                className="min-w-0 truncate text-link underline-offset-4 hover:underline"
                 href={url}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -194,7 +194,7 @@ export function InboxRowDetails({
     <div className="grid gap-5 whitespace-normal px-1 py-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
       <div className="flex min-w-0 flex-col gap-4">
         <section className="flex flex-col gap-1.5">
-          <h3 className="type-caption weight-semibold text-foreground">
+          <h3 className="type-caption text-foreground">
             {t("detail.description")}
           </h3>
           {posting.description_text ? (
@@ -210,9 +210,7 @@ export function InboxRowDetails({
         </section>
         {item.score && item.score.status !== "failed" ? (
           <section className="type-caption flex max-w-md flex-col gap-1.5">
-            <h3 className="weight-semibold text-foreground">
-              {t("inbox.score.heading")}
-            </h3>
+            <h3 className="text-foreground">{t("inbox.score.heading")}</h3>
             {item.score.status === "queued" ? (
               <p className="text-muted-foreground">{t("card.scoring")}</p>
             ) : (
@@ -238,7 +236,7 @@ export function InboxRowDetails({
       </div>
       <div className="flex min-w-0 flex-col gap-4">
         <section className="flex flex-col gap-2">
-          <h3 className="type-caption weight-semibold text-foreground">
+          <h3 className="type-caption text-foreground">
             {t("inbox.details.provenance")}
           </h3>
           <ProvenanceFacts
@@ -248,7 +246,7 @@ export function InboxRowDetails({
           />
         </section>
         <section className="flex flex-col gap-1.5">
-          <h3 className="type-caption weight-semibold text-foreground">
+          <h3 className="type-caption text-foreground">
             {t("inbox.details.duplicates")}
           </h3>
           <DuplicateListings duplicates={item.duplicates} posting={posting} />

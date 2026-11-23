@@ -98,7 +98,7 @@ function AdapterPicker({
       <FieldLegend variant="label">{t("sources.sheet.adapter")}</FieldLegend>
       <RadioGroup
         aria-label={t("sources.sheet.adapter")}
-        className="gap-0 border border-line"
+        className="gap-0 rounded-sm border border-line"
         onValueChange={onChange}
         value={value}
       >
@@ -189,10 +189,7 @@ function TestSection({ source }: { source: JobSourceRecord | null }) {
       aria-labelledby={`${id}-test`}
       className="flex flex-col gap-1.5 border-line border-t pt-4"
     >
-      <h3
-        className="type-body weight-semibold text-foreground"
-        id={`${id}-test`}
-      >
+      <h3 className="type-body text-foreground" id={`${id}-test`}>
         {t("sources.test.title")}
       </h3>
       {source ? (

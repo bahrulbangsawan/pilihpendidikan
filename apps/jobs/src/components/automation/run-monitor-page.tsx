@@ -375,7 +375,7 @@ function Header({
       : t("monitor.deviceOffline", { device: data.deviceName });
   }
   return (
-    <div className="band flex flex-col gap-1 px-4 py-3 sm:px-6">
+    <div className="flex flex-col gap-1 px-4 py-3 sm:px-6">
       <div className="flex flex-wrap items-center gap-2">
         <h1 className="type-title-compact">{heading}</h1>
         <TaskStateBadge state={task.state} />
@@ -536,7 +536,7 @@ function Outcome({
   return (
     <section
       aria-labelledby="outcome-heading"
-      className="flex flex-col gap-3 border border-line p-4"
+      className="flex flex-col gap-3 rounded-sm border border-line p-4"
     >
       <div id="outcome-heading">
         <OutcomeHeading state={task.state} />
@@ -556,7 +556,7 @@ function Outcome({
       ) : null}
       {detail.evidence.length > 0 ? (
         <div className="flex flex-col gap-2">
-          <h3 className="type-caption weight-semibold text-foreground">
+          <h3 className="type-caption text-foreground">
             {t("monitor.evidence")}
           </h3>
           {detail.evidence.map((evidence) => (
@@ -678,7 +678,7 @@ function Monitor({
       <Header data={data} task={task} />
       {stale ? (
         <p
-          className="type-caption band inline-flex items-center gap-1 px-4 py-1.5 text-muted-foreground sm:px-6"
+          className="type-caption inline-flex items-center gap-1 px-4 py-1.5 text-muted-foreground sm:px-6"
           role="status"
         >
           <CloudOff aria-hidden="true" className="size-3.5" />

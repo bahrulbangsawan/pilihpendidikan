@@ -347,7 +347,7 @@ function PrivacyDialog() {
         <div className="-mx-4 flex max-h-[50dvh] flex-col gap-5 overflow-y-auto border-line border-t px-4 pt-4">
           {PRIVACY_SECTIONS.map((section) => (
             <section className="flex flex-col gap-1" key={section.title}>
-              <h3 className="type-subtitle weight-semibold">{section.title}</h3>
+              <h3 className="type-subtitle">{section.title}</h3>
               <p className="type-body">{section.body}</p>
               {section.title === "Personal tokens" ? (
                 <ul className="type-body mt-1 flex list-disc flex-col gap-1 pl-5">
@@ -714,7 +714,7 @@ function RecruiterHoverCard() {
       <HoverCard closeDelay={100} openDelay={150}>
         <HoverCardTrigger asChild>
           <a
-            className="text-primary underline underline-offset-4"
+            className="text-link transition-[color] duration-140 ease-standard hover:text-link/75"
             href="#overlays"
           >
             Sari Pratiwi
@@ -726,9 +726,7 @@ function RecruiterHoverCard() {
               <AvatarFallback>SP</AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col gap-0.5">
-              <p className="type-subtitle weight-semibold text-foreground">
-                Sari Pratiwi
-              </p>
+              <p className="type-subtitle text-foreground">Sari Pratiwi</p>
               <p className="type-caption text-muted-foreground">
                 Talent acquisition · Tokopedia, Jakarta
               </p>
@@ -922,7 +920,7 @@ function EntryContextMenu() {
           Right-click the entry, or press and hold on a touch screen.
         </span>
         <span className="flex flex-col gap-0.5">
-          <span className="type-subtitle weight-semibold text-foreground">
+          <span className="type-subtitle text-foreground">
             Software Engineering Intern
           </span>
           <span className="type-caption text-muted-foreground">
@@ -1139,9 +1137,9 @@ function PreviewMark() {
   return (
     <span
       aria-hidden="true"
-      className="grid size-10 place-items-center rounded-md bg-primary"
+      className="type-subtitle grid size-10 place-items-center rounded-sm bg-primary text-primary-foreground"
     >
-      <span className="size-3.5 rotate-45 border border-primary-foreground" />
+      Z
     </span>
   );
 }
@@ -1161,12 +1159,12 @@ export function OverlaysSection() {
   return (
     <Section
       id="overlays"
-      lead="Windows: 6px corners, a hairline, the one soft drop shadow. They open without animation."
+      lead="Windows and flyouts: 8px corners and a 10% border on the popover fill. Menus get Cursor's two whisper shadows, windows the one soft drop over a flat scrim with no blur. Nothing animates open."
       title="Overlays"
     >
       <BlockGrid>
         <Block
-          description="A focused task that needs input. The window sits over a flat 40% shot backdrop; its footer rides on a ruled pane band."
+          description="A focused task that needs input: an 8px window with the soft drop over a flat 60% shot scrim, a title-role heading at weight 400, muted body text and right-aligned pills."
           title="Dialog"
         >
           <Example label="Form with a copy field · press S">
@@ -1190,7 +1188,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="A side panel for settings and details. Square like a band, with the hairline on its inner edge."
+          description="A side panel for settings and details: square against the viewport, the popover fill with the soft drop and a 10% border on its inner edge. It appears in place, without sliding."
           title="Sheet"
         >
           <Example label="Settings panel">
@@ -1204,7 +1202,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="A mobile-first bottom panel: 6px top corners, a small grab handle, and vaul's own drag."
+          description="A mobile-first bottom panel: 8px corners on the edge that faces the page, a small pill grab handle, and vaul's own drag."
           title="Drawer"
         >
           <Example label="Bottom drawer">
@@ -1213,7 +1211,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Small contextual content on click: a date picker or a one-field form."
+          description="Small contextual content on click, in Cursor's flyout (8px, 10% border, two whisper shadows): a date picker or a one-field form."
           title="Popover"
         >
           <Example label="Date picker">
@@ -1225,7 +1223,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Quick information on hover, such as a recruiter's profile behind a name. Framed 2px initials, a semibold name, a caption-role role."
+          description="Quick information on hover, such as a recruiter's profile behind an orange link: a round avatar, the name in the subtitle role at weight 400, a muted caption-role role."
           title="Hover card"
         >
           <Example>
@@ -1234,7 +1232,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="A caption-role label on the dark tooltip fill for icon-only controls; a shortcut sits in a translucent kbd."
+          description="A 4px chip on the inverted light tooltip fill, caption role, no arrow, for icon-only controls; a shortcut sits in a translucent kbd."
           title="Tooltip"
         >
           <Example label="Icon-only toolbar">
@@ -1273,7 +1271,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Actions on click. Rows fill with pane when highlighted; checks for options, a diamond for the chosen one."
+          description="Actions on click, like Cursor's model picker: 32px rows at 4px radius that fill with pane when highlighted; a trailing check for options, a small dot for the chosen one."
           title="Dropdown menu"
         >
           <Example label="Download menu">
@@ -1291,7 +1289,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="A searchable list of sections and actions: a window with its search row ruled off, inline or behind ⌘K."
+          description="A searchable list of sections and actions: an 8px flyout with its 40px search row ruled off at 10%, inline or behind ⌘K."
           title="Command"
           wide
         >
@@ -1311,7 +1309,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Not an overlay: the 404 page every app renders for unknown URLs. A ruled band on graph paper, one cobalt action, an outlined way back."
+          description="Not an overlay: the 404 page every app renders for unknown URLs. cursor.com's closing-CTA look on the plain page: a hero-size numeral at weight 400, the light pill home action and an outlined way back."
           title="Not found page"
           wide
         >

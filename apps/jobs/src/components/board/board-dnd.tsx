@@ -314,7 +314,7 @@ export function DesktopBoard(props: DesktopBoardProps) {
       sensors={sensors}
     >
       <div
-        className="flex min-h-0 flex-1 overflow-x-auto"
+        className="flex min-h-0 flex-1 gap-3 overflow-x-auto px-4 pb-6 sm:px-6"
         data-testid="board-columns"
       >
         {BOARD_STAGES.map((stage) => (
@@ -346,7 +346,7 @@ export function DesktopBoard(props: DesktopBoardProps) {
         {activeCard ? (
           <CardView
             card={activeCard}
-            className="w-56 shadow-float"
+            className="w-64 shadow-lg"
             nowMs={props.nowMs}
           />
         ) : null}

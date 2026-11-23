@@ -20,7 +20,6 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { CircleAlert, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -52,7 +51,7 @@ function NoSources({ onAdd }: { onAdd: () => void }) {
   const { t } = useTranslation();
   const discover = cliStep("next")?.commands.linux;
   return (
-    <Empty className="graph-paper border border-dashed py-8">
+    <Empty className="rounded-sm border border-dashed py-8">
       <EmptyHeader>
         <EmptyTitle>{t("sources.emptyTitle")}</EmptyTitle>
         <EmptyDescription>{t("sources.empty")}</EmptyDescription>
@@ -114,16 +113,14 @@ export function SourcesPage() {
         description={t("sources.intro")}
         title={t("sources.title")}
       />
-      <Band id="cloud">
+      <div id="cloud">
         <PageGutter className="py-6">
           <CloudSourcesSection nowMs={nowMs} />
         </PageGutter>
-      </Band>
-      <Band>
+      </div>
+      <div>
         <PageGutter className="flex flex-col gap-3 py-6">
-          <h2 className="type-subtitle weight-semibold">
-            {t("sources.listTitle")}
-          </h2>
+          <h2 className="type-subtitle">{t("sources.listTitle")}</h2>
           {sources.isPending ? <ListSkeleton /> : null}
           {sources.isError ? (
             <Alert role="alert" variant="destructive">
@@ -155,12 +152,10 @@ export function SourcesPage() {
             />
           ) : null}
         </PageGutter>
-      </Band>
-      <Band id="runs">
+      </div>
+      <div id="runs">
         <PageGutter className="flex flex-col gap-3 py-6">
-          <h2 className="type-subtitle weight-semibold">
-            {t("sources.runs.title")}
-          </h2>
+          <h2 className="type-subtitle">{t("sources.runs.title")}</h2>
           {runs.isPending ? <ListSkeleton /> : null}
           {runs.isError ? (
             <p className="type-caption text-destructive" role="alert">
@@ -171,7 +166,7 @@ export function SourcesPage() {
             <RunsTable byId={byId} nowMs={nowMs} runs={runs.data} />
           ) : null}
         </PageGutter>
-      </Band>
+      </div>
       <SourceSheet
         excluded={registry.excluded}
         loading={adapters.isPending}

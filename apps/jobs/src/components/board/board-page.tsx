@@ -77,12 +77,12 @@ function useNow() {
 
 function BoardSkeleton() {
   return (
-    <div aria-hidden="true" className="flex min-h-0 flex-1 overflow-hidden">
+    <div
+      aria-hidden="true"
+      className="flex min-h-0 flex-1 gap-3 overflow-hidden px-4 sm:px-6"
+    >
       {BOARD_STAGES.slice(0, 5).map((stage) => (
-        <div
-          className="flex w-60 shrink-0 flex-col gap-2 border-line border-r p-2"
-          key={stage}
-        >
+        <div className="flex w-64 shrink-0 flex-col gap-2" key={stage}>
           <Skeleton className="h-6 w-24" />
           <Skeleton className="h-24 w-full" />
           <Skeleton className="h-24 w-full" />
@@ -115,7 +115,7 @@ function EmptyBoard() {
   const { t } = useTranslation();
   const shell = useShellActions();
   return (
-    <Empty className="graph-paper border border-dashed py-8">
+    <Empty className="rounded-sm border border-dashed py-8">
       <EmptyHeader>
         <EmptyTitle>{t("board.emptyTitle")}</EmptyTitle>
         <EmptyDescription>{t("board.empty")}</EmptyDescription>
@@ -282,7 +282,7 @@ export function BoardPage({
         nowMs={now}
       />
       {filtered && visible && order.length === 0 ? (
-        <div className="band flex items-center gap-3 px-4 py-2 sm:px-6">
+        <div className="flex items-center gap-3 px-4 pb-4 sm:px-6">
           <p className="type-caption text-muted-foreground">
             {t("board.noMatches")}
           </p>

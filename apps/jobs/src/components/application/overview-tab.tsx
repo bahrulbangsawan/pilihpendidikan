@@ -55,7 +55,7 @@ export function OverviewTab({
         aria-labelledby="description-heading"
         className="flex flex-col gap-2"
       >
-        <h2 className="type-subtitle weight-semibold" id="description-heading">
+        <h2 className="type-subtitle" id="description-heading">
           {t("detail.description")}
         </h2>
         {posting.description_text ? (
@@ -79,10 +79,7 @@ export function OverviewTab({
           aria-labelledby="requirements-heading"
           className="flex flex-col gap-2"
         >
-          <h2
-            className="type-subtitle weight-semibold"
-            id="requirements-heading"
-          >
+          <h2 className="type-subtitle" id="requirements-heading">
             {t("detail.requirements")}
           </h2>
           <ul className="type-body flex max-w-[72ch] list-disc flex-col gap-1 pl-5">
@@ -97,7 +94,7 @@ export function OverviewTab({
           aria-labelledby="salary-heading"
           className="flex flex-col gap-1"
         >
-          <h2 className="type-subtitle weight-semibold" id="salary-heading">
+          <h2 className="type-subtitle" id="salary-heading">
             {t("detail.salary")}
           </h2>
           <p className="type-body">{salary}</p>
@@ -107,7 +104,7 @@ export function OverviewTab({
         aria-labelledby="notes-heading"
         className="flex max-w-2xl flex-col gap-3"
       >
-        <h2 className="type-subtitle weight-semibold" id="notes-heading">
+        <h2 className="type-subtitle" id="notes-heading">
           {t("notes.heading")}
         </h2>
         <NoteComposer appId={detail.application.id} />

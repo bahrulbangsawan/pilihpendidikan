@@ -19,7 +19,7 @@ import type {
 
 export type BadgeVariant = "secondary" | "destructive" | "outline" | "ghost";
 
-/** Badge per status: cobalt is never spent here (DESIGN.md § Colour). */
+/** Badge per status: the link orange is never spent here (DESIGN.md § Colour). */
 export function statusBadgeVariant(status: CloudSourceStatus): BadgeVariant {
   switch (status) {
     case "ACTIVE":

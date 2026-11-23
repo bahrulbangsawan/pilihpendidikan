@@ -172,7 +172,7 @@ function DraftCard({
   }
 
   return (
-    <li className="flex flex-col gap-3 border border-line p-4">
+    <li className="flex flex-col gap-3 rounded-sm border border-line p-4">
       <div className="flex flex-wrap items-center gap-2">
         <Badge variant={email.status === "failed" ? "destructive" : "outline"}>
           {t(`email.statuses.${email.status}`)}
@@ -284,10 +284,8 @@ function DraftCard({
               {t("email.approveBody")}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex flex-col gap-2 border border-line p-3">
-            <p className="type-body-compact weight-semibold text-foreground">
-              {email.subject}
-            </p>
+          <div className="flex flex-col gap-2 rounded-sm border border-line p-3">
+            <p className="type-body-compact text-foreground">{email.subject}</p>
             <PlainText className="type-body-compact" text={email.body_text} />
             <p className="type-caption text-muted-foreground">
               {t("email.attachmentCount", {
@@ -336,7 +334,7 @@ export function EmailDrafts({ detail }: { detail: ApplicationDetail }) {
       aria-labelledby="email-drafts-heading"
       className="flex flex-col gap-3"
     >
-      <h3 className="type-subtitle weight-semibold" id="email-drafts-heading">
+      <h3 className="type-subtitle" id="email-drafts-heading">
         {t("email.draftsHeading")}
       </h3>
       <ul className="flex flex-col gap-3">

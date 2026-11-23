@@ -38,7 +38,7 @@
   background: #ffffff;
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-sans);
+  font-family: var(--font-print);
   font-variation-settings: "opsz" 14;
   /* The sheet's own leading: text without a size class of its own does not
      take the editor's 20px body line. */

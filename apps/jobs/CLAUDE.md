@@ -2,8 +2,19 @@
 
 The web UI of the Job Tracker (`job-tracker-spec/12`, `06`). TanStack Start
 (SSR) on Cloudflare Workers, Worker `jobs-pilihpendidikan`, dev port **4007**.
-Zedative only (`DESIGN.md`, `TYPOGRAPHY.md`), `@rulisme/ui` only, typed against
-`@pilihpendidikan/jobs-contracts` (D-20).
+`@rulisme/ui` only (tokens in `packages/ui/src/styles/theme.css`, rules in
+`TYPOGRAPHY.md`), typed against `@pilihpendidikan/jobs-contracts` (D-20).
+
+The look is cursor.com's docs and app, **dark only**: next-themes pins `.dark`
+(`forcedTheme="dark"` in `-root-components.tsx`); there is no theme switch in
+Settings or the ⌘K palette. A 49px header with one bottom rule (wordmark, the
+centred 36px ⌘K search box, the New pill), a 256px sidebar on the page colour
+with a right rule, 12px grey group labels, 32px rows and the current page in
+orange (`text-link`, no fill). Headings are weight 400. Cards, board cards,
+stat tiles and bordered boxes are `rounded-sm border border-hairline bg-card`;
+links are `text-link`; dividers `border-border`. No graph paper, no
+`Band` / `Rail` / `Diamond`, no rails between sections (space separates
+them), no inset lips or offset shadows.
 
 ## Commands (run here)
 
@@ -71,7 +82,7 @@ await api("POST /api/v1/applications/{app_id}/move", {
 ## Shell API for new screens
 
 - Link screens by path with `AppLink` / `useAppNavigate` (`/inbox`, `/jobs/$ujbId`, `/automation`, `/automation/rules`, `/automation/runs`, `/automation/runs/$tskId`, `/cli`, `/sources`, `/stats`, `/render/cv/$cvvId`). Sidebar entries, counters (`BoardResponse.counts`) and B / I / A / R shortcuts point there. `/render/*` renders without the shell (`isBarePath` in `-root-components.tsx`).
-- Page layout: reading pages use `Band` + `Rail nodes={false}` with `px-4 sm:px-8`; dense screens use `band` toolbars with compact roles. One primary (blue) button per page besides the nav's New; every primary action has a `<Kbd>` hint and a `useShortcut` (TW-SHORTCUTS scans for hints without handlers). Add new shortcuts to `SHORTCUTS` (`src/lib/shortcuts.ts`) so the `?` sheet lists them.
+- Page layout: `PageHeader` / `PageContent` / `PageSection` / `PageGutter` (`components/shell/page.tsx`): the shared gutter `px-4 sm:px-6`, reading content held to `max-w-5xl`, dense screens (board, inbox, automation) full width with plain toolbars. One primary (dark ink) button per page besides the nav's New; every primary action has a `<Kbd>` hint and a `useShortcut` (TW-SHORTCUTS scans for hints without handlers). Add new shortcuts to `SHORTCUTS` (`src/lib/shortcuts.ts`) so the `?` sheet lists them.
 - Open shell dialogs with `useShellActions()` (`openNewJob`, `openPalette`, `openShortcuts`).
 - Pending approvals prefix the tab title `(n)` from `counts.approvals_pending` (shell).
 - CV tab (`application/cv-tab.tsx` → `cv-variant-panel.tsx` → `cv-diff-view.tsx`): pick a variant, read the side-by-side diff (`buildDiffModel`; sources marked on hover / focus / tap, rewritten lines highlighted, excluded entries struck through, `notes_for_user` as warnings), Approve `Y` (AlertDialog) / Reject (reason) / Regenerate / Download / Open in CV builder. While the tab shows an approvable draft it owns `Y` (`NextStepRail shortcutEnabled`). A `generating` variant with a `tailored_cv_id` and no file is rendered in this tab (`useInBrowserRender` → `renderCvVariantOnce`, 08 §6.2). The PDF preview is an **unsandboxed** same-origin iframe of `/download/files/{id}/content?inline=1`: Chromium refuses any PDF in a sandboxed frame, so containment is on the response (inline only for `application/pdf`, `nosniff`, `default-src 'none'`, `frame-ancestors 'self'` + `X-Frame-Options: SAMEORIGIN` via the `x-jobs-frameable` marker the edge strips).
@@ -103,5 +114,5 @@ await api("POST /api/v1/applications/{app_id}/move", {
 - Strings: add keys to both `en.json` and `id.json` (TW-I18N checks parity, placeholders and every static `t("…")`; add template-built key families to its `dynamicKeys`). Enum labels go through `src/lib/labels.ts`. Indonesian follows the 12 §13 glossary. Score explanations mirror the api's templates under `score.explanation.*` (`score-explain.ts`, parity-tested against apps/api).
 - Route files with `$param` need `// biome-ignore-all lint/style/useFilenamingConvention` at the top.
 - Tests: name spec tests with their id (`T6-05 …`, `TW-POLL …`) and avoid the characters `×`, `✗` in titles (the gate parser reads them as failures).
-- Screenshots for reviews go in `verification/` (375 px and 1280 px, light and Night Desk) via `agent-browser`. With `bun run dev` + `bun run dev:mock-api`, `agent-browser errors` must stay empty.
+- Screenshots for reviews go in `verification/` (375 px and 1280 px; the app is dark only) via `agent-browser`. With `bun run dev` + `bun run dev:mock-api`, `agent-browser errors` must stay empty.
 - DOM tests that render an `<iframe>` add `// @vitest-environment-options {"settings": {"disableIframePageLoading": true}}`; components that import server functions are mocked (`vi.mock`) so tests never load the Worker glue.

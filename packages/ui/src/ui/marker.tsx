@@ -4,12 +4,13 @@ import { Slot } from "radix-ui";
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// Zedative thread markers in the caption role and muted ink: tool lines
-// (`○ Read cv.json`), system notes and day dividers ruled by `line`
-// hairlines. Links in a marker are cobalt.
+// Thread markers, like the tool lines in Cursor's agent pane: caption role
+// in muted ink for tool lines (`○ Read cv.json`), system notes and day
+// dividers ruled by 10% `line` hairlines. Links in a marker are the orange
+// text link.
 
 const markerVariants = cva(
-  "group/marker type-caption relative flex min-h-4 w-full items-center gap-2 text-start text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5 [a]:text-primary [a]:underline [a]:underline-offset-4",
+  "group/marker type-caption relative flex min-h-4 w-full items-center gap-2 text-start text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5 [a]:text-link [a]:hover:text-link/75",
   {
     variants: {
       variant: {
@@ -61,7 +62,7 @@ function MarkerContent({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "wrap-break-word min-w-0 group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:text-primary *:[a]:underline *:[a]:underline-offset-4",
+        "wrap-break-word min-w-0 group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:text-link *:[a]:hover:text-link/75",
         className
       )}
       data-slot="marker-content"

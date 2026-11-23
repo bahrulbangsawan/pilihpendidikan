@@ -59,7 +59,7 @@ export function BoardToolbar({
   ].filter(Boolean).length;
 
   return (
-    <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
+    <div className="flex flex-wrap items-center gap-2 px-4 pb-4 sm:px-6">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm" variant="ghost">

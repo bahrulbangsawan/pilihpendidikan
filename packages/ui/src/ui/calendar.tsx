@@ -11,10 +11,11 @@ import { cn } from "../lib/utils";
 import { Button } from "./button";
 import { buttonVariants } from "./button-variants";
 
-// Zedative calendar: 32px days drawn as 2px chips in the body role. The
-// selected day (and both ends of a range) fill cobalt and go semibold, the
-// days between sit on `pane`, today sits on `pane-2`. Month titles are
-// semibold body; weekdays are muted captions. Nothing animates.
+// Calendar, cursor.com style: 32px days drawn as 4px chips in the body role,
+// weight 400 throughout. The selected day (and both ends of a range) fill
+// with the ink pill colour (`primary`), the days between sit on `pane`,
+// today on `pane-2`. Month titles are body text; weekdays muted captions;
+// the arrows are round ghost buttons. Nothing animates.
 function Calendar({
   className,
   classNames,
@@ -65,11 +66,11 @@ function Calendar({
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
-          "type-body weight-semibold flex h-(--cell-size) w-full items-center justify-center gap-1.5 text-foreground",
+          "type-body flex h-(--cell-size) w-full items-center justify-center gap-1.5 text-foreground",
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "relative rounded-md border border-input bg-card/60 transition-[border-color,box-shadow] duration-150 ease-standard has-[select:focus-visible]:border-ring has-[select:focus-visible]:ring-3 has-[select:focus-visible]:ring-ring/20",
+          "relative rounded-lg border border-border bg-background transition-[border-color] duration-140 ease-standard hover:border-input has-[select:focus-visible]:border-input has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-ring has-[select:focus-visible]:outline-solid has-[select:focus-visible]:outline-offset-0",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn(
@@ -77,10 +78,10 @@ function Calendar({
           defaultClassNames.dropdown
         ),
         caption_label: cn(
-          "type-body weight-semibold select-none text-foreground",
+          "type-body select-none text-foreground",
           captionLayout === "label"
             ? ""
-            : "flex h-7 items-center gap-1 rounded-md pr-1.5 pl-2 [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
+            : "flex h-7 items-center gap-1 rounded-lg pr-1.5 pl-2.5 [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
           defaultClassNames.caption_label
         ),
         month_grid: cn("w-full border-collapse", defaultClassNames.month_grid),
@@ -210,7 +211,7 @@ function CalendarDayButton({
   return (
     <Button
       className={cn(
-        "data-[range-end=true]:weight-semibold data-[range-start=true]:weight-semibold data-[selected-single=true]:weight-semibold [&>span]:type-micro relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 rounded-(--cell-radius) border-0 text-inherit tabular-nums focus-visible:outline-solid data-[range-end=true]:rounded-(--cell-radius) data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-end=true]:bg-primary data-[range-middle=true]:bg-pane data-[range-start=true]:bg-primary data-[selected-single=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-middle=true]:text-foreground data-[range-start=true]:text-primary-foreground data-[selected-single=true]:text-primary-foreground group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-20 [&>span]:opacity-70",
+        "[&>span]:type-micro relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 rounded-(--cell-radius) border-0 text-inherit tabular-nums focus-visible:outline-solid data-[range-end=true]:rounded-(--cell-radius) data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-end=true]:bg-primary data-[range-middle=true]:bg-pane data-[range-start=true]:bg-primary data-[selected-single=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-middle=true]:text-foreground data-[range-start=true]:text-primary-foreground data-[selected-single=true]:text-primary-foreground group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-20 [&>span]:opacity-70",
         defaultClassNames.day,
         className
       )}

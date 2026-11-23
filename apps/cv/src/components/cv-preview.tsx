@@ -59,7 +59,7 @@ export function CVPreview({ data, style }: CVPreviewProps) {
     );
   }
 
-  // The sheet rests on the preview's graph paper inside a 1px hairline
+  // The white sheet rests on the dark preview pane inside a 1px hairline
   // frame. The frame is screen-only: print releases it so `.cv-page` flows
   // across bare paper (styles.css @media print).
   return (

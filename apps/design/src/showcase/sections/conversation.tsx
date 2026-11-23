@@ -232,13 +232,13 @@ function AssistantThread() {
   }
 
   return (
-    <div className="flex h-[34rem] flex-col overflow-hidden rounded-lg border border-border bg-pane">
-      <div className="flex h-10 shrink-0 items-center gap-2 border-line border-b bg-pane-2 px-3">
+    <div className="flex h-[34rem] flex-col overflow-hidden rounded-lg border border-border bg-card">
+      <div className="flex h-10 shrink-0 items-center gap-2 border-border border-b px-3">
         <Sparkles
           aria-hidden="true"
           className="size-3.5 text-muted-foreground"
         />
-        <span className="type-caption weight-semibold shrink-0 text-foreground">
+        <span className="type-caption shrink-0 text-foreground">
           CV assistant
         </span>
         <span className="type-caption truncate text-muted-foreground">
@@ -247,7 +247,7 @@ function AssistantThread() {
         <span className="type-caption ml-auto flex shrink-0 items-center gap-1.5 text-muted-foreground">
           <span
             aria-hidden="true"
-            className="pulse-dot size-1.5 rounded-full bg-primary"
+            className="pulse-dot size-1.5 rounded-full bg-success"
           />
           Connected
         </span>
@@ -520,11 +520,7 @@ function AssistantThread() {
 function MessageExamples() {
   return (
     <>
-      <Example
-        className="bg-pane"
-        label="The assistant: avatar, header, footer"
-        stack
-      >
+      <Example label="The assistant: avatar, header, footer" stack>
         <Message>
           <AssistantAvatar />
           <MessageContent>
@@ -539,11 +535,7 @@ function MessageExamples() {
           </MessageContent>
         </Message>
       </Example>
-      <Example
-        className="bg-pane"
-        label="You, grouped: consecutive rows share one footer"
-        stack
-      >
+      <Example label="You, grouped: consecutive rows share one footer" stack>
         <MessageGroup>
           <Message align="end">
             <MessageContent>
@@ -564,11 +556,7 @@ function MessageExamples() {
           </Message>
         </MessageGroup>
       </Example>
-      <Example
-        className="bg-pane"
-        label="Long text and unbroken links wrap"
-        stack
-      >
+      <Example label="Long text and unbroken links wrap" stack>
         <Message align="end">
           <MessageContent>
             <Bubble align="end">
@@ -590,27 +578,27 @@ const BUBBLE_VARIANTS = [
   {
     variant: "default",
     sample: "Can you tighten my summary?",
-    when: "What you sent: the bordered prompt on paper.",
+    when: "What you sent: the bordered prompt on the card colour.",
   },
   {
     variant: "secondary",
     sample: "Draft saved to Summary.",
-    when: "A neutral fill that still reads on the pane thread.",
+    when: "The warm-grey pane-2 fill, a neutral note in the thread.",
   },
   {
     variant: "muted",
     sample: "Sari Pratiwi opened your CV.",
-    when: "The pane fill, for bubbles that sit on paper.",
+    when: "The pane fill, for bubbles that sit on the page.",
   },
   {
     variant: "tinted",
     sample: "Informatics student who ships interfaces end to end.",
-    when: "The 7% wash: a suggestion you can apply.",
+    when: "The 5% wash: a suggestion you can apply.",
   },
   {
     variant: "outline",
     sample: "“We are looking for a UI/UX intern…”",
-    when: "A hairline only, for quoted or forwarded text.",
+    when: "A 10% border only, for quoted or forwarded text.",
   },
   {
     variant: "ghost",
@@ -633,7 +621,7 @@ const SUGGESTIONS = [
 function BubbleExamples() {
   return (
     <>
-      <Example label="Variants, in order of use, on paper" stack>
+      <Example label="Variants, in order of use" stack>
         {BUBBLE_VARIANTS.map((item) => (
           <div className="flex flex-col gap-1" key={item.variant}>
             <Bubble variant={item.variant}>
@@ -645,7 +633,7 @@ function BubbleExamples() {
           </div>
         ))}
       </Example>
-      <Example className="bg-pane" label="Suggested replies are buttons" stack>
+      <Example label="Suggested replies are buttons" stack>
         <BubbleGroup className="items-end">
           {SUGGESTIONS.map((suggestion) => (
             <Bubble align="end" key={suggestion} variant="tinted">
@@ -656,7 +644,7 @@ function BubbleExamples() {
           ))}
         </BubbleGroup>
       </Example>
-      <Example className="bg-pane pb-8" label="Reactions sit on the edge" stack>
+      <Example className="pb-8" label="Reactions sit on the edge" stack>
         <Bubble variant="ghost">
           <BubbleContent>
             Three websites for small businesses in Malang belong in Projects,
@@ -826,7 +814,7 @@ function AttachmentExamples() {
 
 function MarkerExamples() {
   return (
-    <Example className="bg-pane" stack>
+    <Example stack>
       <ToolLine>Read cv-rina-wulandari.json</ToolLine>
       <Marker>
         <MarkerIcon>
@@ -1031,12 +1019,12 @@ export function ConversationSection() {
   return (
     <Section
       id="conversation"
-      lead="The agent thread on pane, the prompt on paper, subtitle-role bubbles."
+      lead="Cursor's agent pane: the thread on the card colour, the prompt as a bordered 8px tile, the answer as running text."
       title="Conversation"
     >
       <BlockGrid>
         <Block
-          description="The CV builder's assistant: one scrolling thread on pane that follows new replies, holds the turn you asked, and jumps back to the latest. Nothing animates in. Press ⌘↵ to send."
+          description="The CV builder's assistant: one scrolling thread on the card colour that follows new replies, holds the turn you asked, and jumps back to the latest. Nothing animates in. Press ⌘↵ to send."
           title="Message scroller"
           wide
         >
@@ -1044,28 +1032,28 @@ export function ConversationSection() {
         </Block>
 
         <Block
-          description="One row: an optional framed avatar, a semibold sender, the bubbles, a muted footer. align=end is you."
+          description="One row: an optional round avatar, the sender in foreground at weight 400, the bubbles, a muted footer. align=end is you."
           title="Message"
         >
           <MessageExamples />
         </Block>
 
         <Block
-          description="The message surface, in the subtitle role with 2px corners, never a pill. The default is the bordered prompt on paper."
+          description="The message surface: an 8px tile in the body role, never a pill. The default is the bordered prompt on the card colour; tinted is a 5% wash, ghost the agent's answer as plain text."
           title="Bubble"
         >
           <BubbleExamples />
         </Block>
 
         <Block
-          description="A 2px file tile that carries its upload state. An idle slot is framed dashed; only the Blocks spinner moves."
+          description="An 8px card file tile with a 10% border that carries its upload state. An idle slot is framed dashed; only the Blocks spinner moves."
           title="Attachment"
         >
           <AttachmentExamples />
         </Block>
 
         <Block
-          description="Tool lines, system notes and day dividers in the caption role, ruled by line hairlines."
+          description="Tool lines, system notes and day dividers in the muted caption role, ruled by 10% lines; links are orange."
           title="Marker"
         >
           <MarkerExamples />
@@ -1084,7 +1072,7 @@ export function ConversationSection() {
           description="Right-to-left threads mirror inside DirectionProvider; set dir=rtl on the wrapper too."
           title="Direction"
         >
-          <Example className="bg-pane" label="Arabic, right to left" stack>
+          <Example label="Arabic, right to left" stack>
             <RightToLeftThread />
           </Example>
         </Block>

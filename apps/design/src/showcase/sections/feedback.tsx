@@ -29,14 +29,13 @@ import {
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { Block, BlockGrid, Example, Section } from "../layout";
-import { useScheme } from "../theme";
 
 /* ── Alert ─────────────────────────────────────────────────────────────── */
 
 function AlertBlock() {
   return (
     <Block
-      description="Callouts that stay in the page: square, bordered, on bg-2. Destructive tints the border, text and icon; the surface stays paper."
+      description="Callouts that stay in the page: a card (one step lighter, 4px radius, 2.5% hairline) with a body-role title at weight 400 and orange links. Destructive is a 10% destructive tint with destructive text."
       title="Alert"
     >
       <Example label="default · with an action" stack>
@@ -85,7 +84,6 @@ function AlertBlock() {
 const CLOUD_SAVE_MS = 2000;
 
 function ToastBlock() {
-  const { scheme } = useScheme();
   const timers = useRef<number[]>([]);
   useEffect(
     () => () => {
@@ -110,7 +108,7 @@ function ToastBlock() {
 
   return (
     <Block
-      description="Short-lived confirmation in a window at the corner of the screen: a semibold title and one caption. Sonner's own stacking and swipe are the only motion; loading uses the Blocks spinner."
+      description="Short-lived confirmation in a window at the corner of the screen (8px, 10% border, the soft drop): a body-role title at weight 400 and one muted caption. Sonner's own stacking and swipe are the only motion; loading uses the Blocks spinner."
       title="Toast"
     >
       <Example label="each button fires a toast (bottom right)">
@@ -153,7 +151,7 @@ function ToastBlock() {
           Delete entry
         </Button>
       </Example>
-      <Toaster theme={scheme} />
+      <Toaster theme="dark" />
     </Block>
   );
 }
@@ -174,7 +172,7 @@ const UPLOADS = [
 function ProgressBlock() {
   return (
     <Block
-      description="A 4px pane-2 track with a cobalt fill, for work whose end is known. The fill jumps to each value."
+      description="A 4px pill track on pane-2 with a light ink fill, for work whose end is known. The fill jumps to each value."
       title="Progress"
     >
       <Example stack>
@@ -282,11 +280,11 @@ function SkeletonBlock() {
 function EmptyBlock() {
   return (
     <Block
-      description="When there is nothing yet: a framed icon tile, a title, one line of help and the next action. A dashed frame and graph paper mark a place to start."
+      description="When there is nothing yet: the icon in a 4px card tile, a title-role heading at weight 400, one muted line with orange links, and the next action. A dashed 10% frame marks a drop zone."
       title="Empty"
     >
       <Example stack>
-        <Empty className="graph-paper border">
+        <Empty className="border">
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <FileText aria-hidden="true" />
@@ -336,7 +334,7 @@ export function FeedbackSection() {
   return (
     <Section
       id="feedback"
-      lead="Status in words and hairlines. Nothing animates in except the loading spinner."
+      lead="Status in words, cards and 10% rules. Nothing animates in except the loading spinner."
       title="Feedback"
     >
       <BlockGrid>

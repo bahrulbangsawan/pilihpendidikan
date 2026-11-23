@@ -5,23 +5,16 @@ import appCss from "../styles.css?url";
 
 const BASE_URL = "https://invoice.pilihpendidikan.com";
 
-// Runs in the document head before paint, matching next-themes in
-// `-root-shell.tsx`: light by default (Zedative's canonical scheme), Night
-// Desk only when the visitor chose it with the toggle. The system theme is
-// not followed.
-const themeScript = `(function(){try{var d=document.documentElement,k=localStorage.getItem("theme")==="dark";d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
-
 export const Route = createRootRoute({
   head: () => ({
     scripts: [
-      { children: themeScript, suppressHydrationWarning: true },
       { type: "application/ld+json", children: JSON.stringify(jsonLd) },
     ],
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#f4f4f2" },
-      { name: "color-scheme", content: "light dark" },
+      { name: "theme-color", content: "#14120b" },
+      { name: "color-scheme", content: "dark" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

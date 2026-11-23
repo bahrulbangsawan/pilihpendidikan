@@ -15,7 +15,6 @@ import {
   CollapsibleTrigger,
 } from "@rulisme/ui/ui/collapsible";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rulisme/ui/ui/tabs";
 import { Check, ChevronDown, Copy, ExternalLink } from "lucide-react";
@@ -52,7 +51,7 @@ function StepNumber({ n }: { n: number }) {
   return (
     <span
       aria-hidden="true"
-      className="type-caption weight-semibold flex size-6 shrink-0 items-center justify-center rounded-sm border border-line bg-card text-foreground tabular-nums"
+      className="type-caption flex size-6 shrink-0 items-center justify-center rounded-sm border border-line bg-card text-foreground tabular-nums"
     >
       {n}
     </span>
@@ -74,7 +73,7 @@ function Step({
     <li className="flex gap-3">
       <StepNumber n={n} />
       <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <h3 className="type-body weight-semibold text-foreground">{title}</h3>
+        <h3 className="type-body text-foreground">{title}</h3>
         {children}
         {note ? (
           <p className="type-caption text-muted-foreground">{note}</p>
@@ -195,7 +194,7 @@ function InstallStep({
               />
               {uvDocs ? (
                 <a
-                  className="type-caption inline-flex items-center gap-1 self-start text-primary underline-offset-4 hover:underline"
+                  className="type-caption inline-flex items-center gap-1 self-start text-link underline-offset-4 hover:underline"
                   href={uvDocs}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -254,7 +253,7 @@ function VerifyStatus({
         className="type-body inline-flex items-center gap-2 text-foreground"
         role="status"
       >
-        <Check aria-hidden="true" className="size-4 text-primary" />
+        <Check aria-hidden="true" className="size-4 text-success" />
         {t("cliPage.verify.connected", { name: connected.name })}
       </p>
     );
@@ -363,7 +362,7 @@ function Troubleshooting() {
         {t("cliPage.troubleshooting.wsl")}
       </p>
       <div className="flex flex-col gap-2">
-        <h4 className="type-caption weight-semibold text-foreground">
+        <h4 className="type-caption text-foreground">
           {t("cliPage.stepUp.title")}
         </h4>
         <ul className="flex flex-col gap-2">
@@ -501,7 +500,7 @@ export function ConnectBand({
               title={stepText(t, step, "title")}
             >
               <AppLink
-                className="type-caption self-start text-primary underline-offset-4 hover:underline"
+                className="type-caption self-start text-link underline-offset-4 hover:underline"
                 href="/sources"
               >
                 {t("cliPage.next.addSources")}
@@ -525,14 +524,14 @@ export function ConnectBand({
   );
 
   return (
-    <Band>
+    <div>
       <PageGutter className="flex flex-col gap-5 py-6">
         <Collapsible onOpenChange={setOpen} open={open}>
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <Heading
                 className={cn(
-                  hero ? "type-title" : "type-subtitle weight-semibold",
+                  hero ? "type-title" : "type-subtitle",
                   "text-foreground"
                 )}
               >
@@ -562,7 +561,7 @@ export function ConnectBand({
               className="flex flex-col gap-3 border-line border-t pt-5"
             >
               <h3
-                className="type-body weight-semibold text-foreground"
+                className="type-body text-foreground"
                 id="cli-troubleshooting"
               >
                 {t("cliPage.troubleshooting.title")}
@@ -572,6 +571,6 @@ export function ConnectBand({
           </CollapsibleContent>
         </Collapsible>
       </PageGutter>
-    </Band>
+    </div>
   );
 }

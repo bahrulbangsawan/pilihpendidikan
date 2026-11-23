@@ -121,7 +121,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         />
         <div className="flex min-h-0 flex-1">
           <aside
-            className={`sticky top-14 hidden h-[calc(100dvh-3.5rem)] shrink-0 border-line border-r bg-background md:block ${SIDEBAR_WIDTH_CLASS}`}
+            className={`sticky top-[49px] hidden h-[calc(100dvh-49px)] shrink-0 border-border border-r bg-sidebar md:block ${SIDEBAR_WIDTH_CLASS}`}
           >
             <SidebarNav counts={counts} />
           </aside>
@@ -134,7 +134,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </main>
         </div>
         <Sheet onOpenChange={setMenuOpen} open={menuOpen}>
-          <SheetContent className="w-64 bg-background p-0" side="left">
+          <SheetContent className="w-64 bg-sidebar p-0" side="left">
             <SheetHeader className="sr-only">
               <SheetTitle>{t("nav.menuTitle")}</SheetTitle>
               <SheetDescription>{t("nav.menuDescription")}</SheetDescription>

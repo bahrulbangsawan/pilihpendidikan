@@ -8,7 +8,10 @@
   },
   "nav": {
     "switchLanguage": "English",
-    "sections": "Bagian di halaman ini"
+    "sections": "Bagian di halaman ini",
+    "builders": "Pembuat dokumen",
+    "assistants": "Asisten AI",
+    "home": "Beranda Pilih Pendidikan"
   },
   "news": {
     "label": "Kabar:",
@@ -18,7 +21,10 @@
   "hero": {
     "title": "Pilih Pendidikan",
     "intro": "Pilih Pendidikan adalah kumpulan pembuat dokumen untuk pelajar dan pencari kerja, dalam bahasa Inggris dan Bahasa Indonesia. Semuanya berjalan di browser, menampilkan pratinjau langsung, dan menghasilkan PDF siap cetak.",
-    "rollout": "Alat-alat ini diluncurkan satu per satu. Tautannya muncul di sini begitu alatnya aktif."
+    "rollout": "Alat-alat ini diluncurkan satu per satu. Tautannya muncul di sini begitu alatnya aktif.",
+    "headline": "Pilih Pendidikan membuat CV, invoice, dan portofolio Anda langsung di browser.",
+    "primary": "Lihat pembuat dokumen",
+    "secondary": "Pakai dari asisten AI"
   },
   "editor": {
     "label": "Ilustrasi: di sebuah editor kode, asisten AI menambahkan magang di Gojek ke cv.json.",
@@ -27,7 +33,18 @@
     "read": "Baca",
     "edit": "Ubah",
     "answer": "Magang sudah ditambahkan di Pengalaman. Masih ada satu salah ketik di Pendidikan.",
-    "description": "Membangun layar struk dengan SwiftUI"
+    "description": "Membangun layar struk dengan SwiftUI",
+    "previewTitle": "cv.pdf — Pratinjau",
+    "name": "Rina Putri",
+    "role": "Pengembang iOS · Makassar",
+    "experience": "Pengalaman",
+    "education": "Pendidikan",
+    "period": "Jul – Des 2025",
+    "thought": "Berpikir",
+    "seconds": "4 dtk",
+    "composer": "Minta ubah CV Anda…",
+    "mode": "Agen",
+    "threadTitle": "Tambah magang Gojek"
   },
   "tools": {
     "heading": "Pembuat dokumen"
@@ -67,11 +84,74 @@
     "blurb": "Pembuat CV, invoice, dan portofolio yang berjalan di browser dan menghasilkan PDF siap cetak.",
     "onThisPage": "Di halaman ini",
     "language": "Bahasa",
-    "agents": "Untuk agen AI"
+    "agents": "Untuk agen AI",
+    "copyright": "© 2026 Pilih Pendidikan",
+    "builders": "Pembuat dokumen",
+    "assistants": "Asisten AI"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",
     "description": "Halaman yang Anda cari tidak ada atau mungkin sudah dipindahkan.",
     "home": "Kembali ke beranda"
+  },
+  "strip": {
+    "heading": "Gratis untuk pelajar dan pencari kerja, dalam bahasa Inggris dan bahasa Indonesia",
+    "cv": "CV",
+    "invoice": "Invoice",
+    "portfolio": "Portofolio",
+    "jobs": "Pelacak lamaran",
+    "pdf": "Ekspor PDF",
+    "preview": "Pratinjau langsung",
+    "english": "English",
+    "indonesian": "Indonesia"
+  },
+  "features": {
+    "cv": {
+      "cta": "Buka pembuat CV"
+    },
+    "invoice": {
+      "cta": "Buka pembuat invoice"
+    },
+    "portfolio": {
+      "cta": "Buka pembuat portofolio"
+    },
+    "jobs": {
+      "cta": "Buka pelacak lamaran"
+    },
+    "shotAlt": "Tangkapan layar {{name}}"
+  },
+  "why": {
+    "heading": "Tulis, lihat, unduh.",
+    "preview": {
+      "title": "Pratinjau langsung",
+      "body": "Setiap perubahan langsung tampil di halaman saat Anda mengetik, dengan tata letak yang sama seperti PDF."
+    },
+    "pdf": {
+      "title": "PDF siap cetak",
+      "body": "Unduh PDF yang tercetak persis seperti tampilannya di layar."
+    },
+    "languages": {
+      "title": "Dua bahasa",
+      "body": "Setiap pembuat dokumen tersedia dalam bahasa Inggris dan bahasa Indonesia."
+    },
+    "templates": {
+      "title": "Empat templat CV",
+      "body": "Pilih Basic, Harvard, Simple, atau Standard dan ganti kapan saja."
+    },
+    "regions": {
+      "title": "Alamat Indonesia",
+      "body": "Alamat invoice memakai data provinsi, kota, dan kecamatan di Indonesia."
+    },
+    "browser": {
+      "title": "Berjalan di browser",
+      "body": "Tanpa instalasi: buka pembuat dokumen dan mulai menulis."
+    }
+  },
+  "mcpSection": {
+    "configLabel": "Konfigurasi klien MCP"
+  },
+  "cta": {
+    "title": "Mulai CV Anda sekarang.",
+    "button": "Lihat pembuat dokumen"
   }
 }

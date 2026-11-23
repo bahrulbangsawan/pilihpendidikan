@@ -21,7 +21,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { BarChart3, CircleAlert } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -73,7 +72,7 @@ function EmptyStats({
 }) {
   const { t } = useTranslation();
   return (
-    <Empty className="border">
+    <Empty className="rounded-sm border">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <BarChart3 aria-hidden="true" />
@@ -197,14 +196,14 @@ export function StatsPage({
         title={t("pages.stats")}
       />
       {summary.data && !isEmptySummary(summary.data) ? (
-        <Band>
+        <PageGutter className="pt-2">
           <StatCells summary={summary.data} />
-        </Band>
+        </PageGutter>
       ) : null}
       {summary.isPending ? (
-        <Band>
+        <PageGutter className="pt-2">
           <StatCellsSkeleton />
-        </Band>
+        </PageGutter>
       ) : null}
       <PageGutter
         aria-busy={summary.isPending}

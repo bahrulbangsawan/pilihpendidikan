@@ -4,24 +4,23 @@ import { Toggle as TogglePrimitive } from "radix-ui";
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// Zedative toggle: a 4px pressable in the body role. `default` is ghost (a
-// pane fill on hover); `outline` is the segmented pressable — paper at 60%,
-// a 60% border and the grey lip, which drops on hover. On, either variant
-// fills `pane-2` and its label goes semibold (opsz keeps the width).
+// Toggle, cursor.com style: a pill in the body role, weight 400 throughout.
+// `default` is ghost (a `pane` fill on hover); `outline` adds the 20% border
+// of the outline button. On, either variant fills `pane-2` and its text
+// turns `foreground`.
 const toggleVariants = cva(
-  "group/toggle press type-body data-[state=on]:weight-semibold inline-flex shrink-0 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-md text-foreground outline-none transition-[background-color,border-color,box-shadow,color] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive data-[state=on]:bg-pane-2 data-[state=off]:hover:bg-pane/70 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "group/toggle type-body inline-flex shrink-0 select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-full text-muted-foreground outline-none transition-[background-color,border-color,color] duration-140 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive data-[state=on]:bg-pane-2 data-[state=on]:text-foreground data-[state=off]:hover:bg-pane data-[state=off]:hover:text-foreground [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "bg-transparent",
-        outline:
-          "inset-shadow-lip border border-border/60 bg-card/60 hover:inset-shadow-none data-[state=on]:inset-shadow-none",
+        outline: "border border-input bg-transparent",
       },
       size: {
         default:
-          "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        sm: "h-8 min-w-8 px-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
-        lg: "h-10 min-w-10 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 [&_svg:not([class*='size-'])]:size-4",
+          "h-9 min-w-9 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+        sm: "h-7 min-w-7 px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
+        lg: "type-subtitle h-[43px] min-w-[43px] px-4 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {

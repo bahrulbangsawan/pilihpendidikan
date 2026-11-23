@@ -22,5 +22,5 @@
 @custom-variant active (&:active, &[data-preview~="active"]);
 
 html {
-  scroll-padding-top: 72px;
+  scroll-padding-top: 49px;
 }

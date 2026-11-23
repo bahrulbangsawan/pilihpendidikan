@@ -1,5 +1,6 @@
 /**
- * The Zedative type scale (DESIGN.md § Typography): one family, six roles,
+ * The Zedative type scale (DESIGN.md § Typography), cursor.com's scale: one
+ * family, eight roles,
  * each at a default and a compact step. Compact is for dense regions
  * (toolbars, filter bars, sidebars). The utilities live in
  * `@rulisme/ui/styles/theme.css`; every class is spelled out here so
@@ -7,6 +8,8 @@
  */
 
 export const TYPE_ROLES = [
+  "hero",
+  "headline",
   "display",
   "title",
   "subtitle",
@@ -19,6 +22,8 @@ export type TypeRole = (typeof TYPE_ROLES)[number];
 export type TypeVariant = "default" | "compact";
 
 const TYPE_CLASS: Record<TypeRole, Record<TypeVariant, string>> = {
+  hero: { default: "type-hero", compact: "type-hero-compact" },
+  headline: { default: "type-headline", compact: "type-headline-compact" },
   display: { default: "type-display", compact: "type-display-compact" },
   title: { default: "type-title", compact: "type-title-compact" },
   subtitle: { default: "type-subtitle", compact: "type-subtitle-compact" },
@@ -33,7 +38,7 @@ export const TYPE_UTILITIES = TYPE_ROLES.flatMap((role) => [
   `${role}-compact`,
 ]);
 
-/** The three weights, each paired with an optical size. */
+/** The three weights: 400, 500, 600. */
 export const TYPE_WEIGHTS = ["normal", "semibold", "bold"] as const;
 
 /** The utility class for a role, e.g. `typeClass("body", "compact")`. */

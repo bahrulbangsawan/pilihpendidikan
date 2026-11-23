@@ -46,7 +46,7 @@ function ScoreBadge({ card }: { card: BoardCard }) {
   }
   let tone = "border-border text-muted-foreground";
   if (score.score >= HIGH_SCORE) {
-    tone = "border-primary/60 text-primary";
+    tone = "border-link/40 text-link";
   } else if (score.score >= MID_SCORE) {
     tone = "border-border text-foreground";
   }
@@ -246,10 +246,10 @@ export function CardView({
   return (
     <div
       className={cn(
-        "flex flex-col gap-1.5 border border-border bg-card p-2.5 text-left",
-        selected && "bg-pane-2",
+        "flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3.5 text-left transition-colors hover:bg-pane",
+        selected && "bg-pane-2 hover:bg-pane-2",
         card.priority === -1 && "opacity-75",
-        card.archived && "border-dashed",
+        card.archived && "border-border border-dashed",
         pending && "opacity-70",
         className
       )}
@@ -273,7 +273,7 @@ export function CardView({
           ) : null}
         </span>
       </div>
-      <span className="type-body weight-semibold line-clamp-2 text-foreground">
+      <span className="type-body line-clamp-2 text-foreground">
         {posting.title}
       </span>
       {location ? (

@@ -26,10 +26,6 @@
     "saveFailed": "Gagal menyimpan ({code}). Perubahan Anda dibatalkan.",
     "saveOffline": "Gagal menyimpan — periksa koneksi Anda. Perubahan Anda dibatalkan."
   },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
-  },
   "confirm": {
     "title": "Hapus semua data?",
     "description": "Ini menghapus seluruh portofolio yang ada di formulir. Tindakan ini tidak dapat dibatalkan.",

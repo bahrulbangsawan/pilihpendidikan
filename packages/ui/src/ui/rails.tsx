@@ -3,13 +3,14 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// The Zedative drafting frame (DESIGN.md § Layout / Elevation): every section
-// is a full-bleed band ruled by a 1px bottom hairline, holding a centred
-// 1120px column with its own side rules and a 7px diamond node wherever
-// those rules cross the rule above. The geometry lives in the `band`,
-// `rail`, `rail-nodes` and `diamond` utilities of `styles/theme.css`.
+// Page layout, cursor.com style: a `Band` is a plain full-bleed section
+// (sections are separated by space, not rules) and a `Rail` is Cursor's
+// centred 1300px container, 20px clear of the viewport edge. `Diamond` is a
+// retired ornament kept so older markup compiles; it renders nothing
+// visible. The geometry lives in the `band` / `rail` utilities of
+// `styles/theme.css`.
 
-/** A full-bleed band with a 1px bottom rule. Use `asChild` for landmarks. */
+/** A full-bleed section with no border. Use `asChild` for landmarks. */
 function Band({
   className,
   asChild = false,
@@ -20,8 +21,7 @@ function Band({
 }
 
 /**
- * The ruled column. `nodes` (default) pins a diamond at each top corner,
- * where its side rules meet the band rule above.
+ * The 1300px container. `nodes` is kept for compatibility and draws nothing.
  */
 function Rail({
   className,
@@ -39,7 +39,7 @@ function Rail({
   );
 }
 
-/** One diamond node. Position it with inset utilities. */
+/** Retired ornament: hidden (`display: none`), kept for compatibility. */
 function Diamond({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span

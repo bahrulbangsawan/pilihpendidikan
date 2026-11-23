@@ -1,3 +1,4 @@
+import { toggleVariants } from "@rulisme/ui/ui/toggle";
 import { cn } from "@rulisme/ui/lib/utils";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import type { Locale } from "@/i18n";
@@ -79,13 +80,13 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
-  // A 32px segmented control (the Zedative outlined pressable): the two
-  // locales share one hairline, only the outer corners round, and the
-  // current one sits on `pane-2` in the semibold weight.
+  // A pill segmented control (cursor.com's pricing toggle): the locales sit
+  // in a `card` track and the current one on `pane-2`, both drawn by the
+  // shared toggle (`toggleVariants`). `aria-current` names the current one.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="flex h-8 min-w-0 items-center"
+      className="m-0 flex h-8 min-w-0 items-center gap-0.5 rounded-full border border-border bg-card p-0.5"
     >
       {SUPPORTED_LOCALES.map((lang) => {
         const Flag = FLAG_COMPONENTS[lang.code];
@@ -95,18 +96,17 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              "press type-body flex h-full items-center gap-1.5 border border-border/60 not-first:border-l-0 px-2 outline-none transition-[background-color,border-color,box-shadow,color] duration-150 ease-standard first:rounded-l-md last:rounded-r-md focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2",
-              isActive
-                ? "weight-semibold bg-pane-2 text-foreground"
-                : "inset-shadow-lip bg-card/60 text-muted-foreground hover:inset-shadow-none hover:bg-pane/70 hover:text-foreground"
+              toggleVariants({ variant: "default", size: "sm" }),
+              "h-6.5 px-2.5"
             )}
+            data-state={isActive ? "on" : "off"}
             key={lang.code}
             onClick={() => handleSwitch(lang.code)}
             onFocus={() => preload(lang.code)}
             onPointerEnter={() => preload(lang.code)}
             type="button"
           >
-            <Flag className="h-3 w-5 shrink-0 rounded-sm" />
+            <Flag className="h-3 w-5 shrink-0 rounded-xs" />
             <span>{lang.code.toUpperCase()}</span>
           </button>
         );

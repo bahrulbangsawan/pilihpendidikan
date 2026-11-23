@@ -1,3 +1,4 @@
+import { toggleVariants } from "@rulisme/ui/ui/toggle";
 import { cn } from "@rulisme/ui/lib/utils";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import type { Locale } from "@/i18n";
@@ -79,15 +80,15 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
-  // A Zedative segmented control: paper at 60% with a grey lip, 32px like the
-  // toolbar's small buttons; the current language sits on `pane-2` at the
-  // heading weight.
+  // A pill segmented control (cursor.com's pricing toggle): the locales sit
+  // in a `card` track and the current one on `pane-2`, both drawn by the
+  // shared toggle (`toggleVariants`). `aria-current` names the current one.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="inset-shadow-lip flex h-8 items-stretch overflow-hidden rounded-md border border-border/60 bg-card/60"
+      className="m-0 flex h-8 min-w-0 items-center gap-0.5 rounded-full border border-border bg-card p-0.5"
     >
-      {SUPPORTED_LOCALES.map((lang, i) => {
+      {SUPPORTED_LOCALES.map((lang) => {
         const Flag = FLAG_COMPONENTS[lang.code];
         const isActive = locale === lang.code;
         return (
@@ -95,12 +96,10 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              "press flex items-center gap-1.5 px-2 outline-none transition-[background-color,color] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:-outline-offset-2",
-              i > 0 && "border-border/60 border-l",
-              isActive
-                ? "weight-semibold bg-pane-2 text-foreground"
-                : "text-muted-foreground hover:bg-pane/70 hover:text-foreground"
+              toggleVariants({ variant: "default", size: "sm" }),
+              "h-6.5 px-2.5"
             )}
+            data-state={isActive ? "on" : "off"}
             key={lang.code}
             onClick={() => handleSwitch(lang.code)}
             onFocus={() => preload(lang.code)}

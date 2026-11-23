@@ -10,7 +10,6 @@ import type {
 } from "@pilihpendidikan/jobs-contracts/records";
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
-import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -100,7 +99,7 @@ function ExecutionLog({
     );
   }
   return (
-    <div className="border border-line">
+    <div className="rounded-sm border border-line">
       <Table className="type-body-compact">
         <TableHeader>
           <TableRow>
@@ -116,7 +115,7 @@ function ExecutionLog({
             <TableRow key={task.id}>
               <TableCell>
                 <AppLink
-                  className="text-primary underline-offset-4 hover:underline"
+                  className="text-link underline-offset-4 hover:underline"
                   href={`/automation/runs/${task.id}`}
                 >
                   {taskKindLabel(t, task.kind)}
@@ -298,7 +297,7 @@ function FailedOperations({
     );
   }
   return (
-    <ul className="flex flex-col border border-line">
+    <ul className="flex flex-col rounded-sm border border-line">
       {failedTasks.map((task) => (
         <li
           className="flex flex-wrap items-center gap-x-4 gap-y-2 border-line border-b px-3 py-2 last:border-b-0"
@@ -306,7 +305,7 @@ function FailedOperations({
         >
           <div className="type-body-compact flex min-w-0 flex-1 flex-col">
             <AppLink
-              className="text-primary underline-offset-4 hover:underline"
+              className="text-link underline-offset-4 hover:underline"
               href={`/automation/runs/${task.id}`}
             >
               {taskKindLabel(t, task.kind)}
@@ -412,25 +411,17 @@ export function ActivityBand({
 }: ActivityBandProps) {
   const { t } = useTranslation();
   return (
-    <Band>
+    <div>
       <PageGutter className="flex flex-col gap-6 py-6">
-        <h2 className="type-subtitle weight-semibold">
-          {t("cliPage.activity.title")}
-        </h2>
+        <h2 className="type-subtitle">{t("cliPage.activity.title")}</h2>
         <section aria-labelledby="cli-log" className="flex flex-col gap-2">
-          <h3
-            className="type-body weight-semibold text-foreground"
-            id="cli-log"
-          >
+          <h3 className="type-body text-foreground" id="cli-log">
             {t("cliPage.activity.log")}
           </h3>
           <ExecutionLog byId={byId} nowMs={nowMs} tasks={tasks} />
         </section>
         <section aria-labelledby="cli-failed" className="flex flex-col gap-2">
-          <h3
-            className="type-body weight-semibold text-foreground"
-            id="cli-failed"
-          >
+          <h3 className="type-body text-foreground" id="cli-failed">
             {t("cliPage.activity.failed")}
           </h3>
           <FailedOperations
@@ -442,15 +433,12 @@ export function ActivityBand({
           />
         </section>
         <section aria-labelledby="cli-outbox" className="flex flex-col gap-2">
-          <h3
-            className="type-body weight-semibold text-foreground"
-            id="cli-outbox"
-          >
+          <h3 className="type-body text-foreground" id="cli-outbox">
             {t("cliPage.activity.outbox")}
           </h3>
           <OutboxWarnings devices={devices} nowMs={nowMs} />
         </section>
       </PageGutter>
-    </Band>
+    </div>
   );
 }

@@ -20,7 +20,6 @@ import {
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -40,7 +39,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form";
 import { PortfolioPreview } from "@/components/portfolio-preview";
 import type { Portfolio } from "@/components/portfolio-data-model";
@@ -342,20 +340,20 @@ export function PortfolioGenerator({
   return (
     <>
       <a
-        className="sr-only rounded-md border border-border bg-popover px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         href="#portfolio-main"
       >
         {t("a11y.skipToContent")}
       </a>
-      {/* The editor is a split view: two panes ruled by `line` hairlines, each
-          headed by a 56px toolbar band (DESIGN.md § Implementation › Rails). */}
+      {/* The editor is a split view: two panes divided by a 10% hairline,
+          each headed by a 48px toolbar (cursor.com's docs header). */}
       <div
         className="pf-app-shell relative flex min-h-svh flex-col md:flex-row"
         id="portfolio-main"
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-line border-b md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1 border-line border-b bg-background px-4 sm:px-6">
+        <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1 border-border border-b bg-background px-4 sm:px-6">
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
@@ -460,21 +458,13 @@ export function PortfolioGenerator({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <ThemeToggle />
               <LanguageSwitcher />
             </div>
           </div>
           <PortfolioForm data={data} onChange={applyChange} />
         </div>
-        {/* The node where the toolbars' bottom rule crosses the pane divider. */}
-        <span
-          aria-hidden="true"
-          className="pf-no-print pointer-events-none absolute top-14 left-1/2 z-20 hidden md:block"
-        >
-          <Diamond className="-top-1 -left-1" />
-        </span>
-        <div className="pf-preview-pane no-scrollbar graph-paper h-svh w-full overflow-y-auto md:w-1/2">
-          <div className="pf-no-print sticky top-0 z-10 flex h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6">
+        <div className="pf-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
+          <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
             <span className="type-caption min-w-0 truncate text-muted-foreground">
               {t("preview.documentLabel")}
             </span>
@@ -738,7 +728,7 @@ function PortfolioPrintView({
   }
 
   return (
-    <div className="pf-print-root graph-paper">
+    <div className="pf-print-root">
       <PortfolioPreview data={data} fit={false} />
     </div>
   );

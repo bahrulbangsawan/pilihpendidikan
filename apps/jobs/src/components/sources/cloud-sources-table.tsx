@@ -235,7 +235,7 @@ function NameCell({
     <div className="flex min-w-0 flex-col gap-0.5">
       <button
         aria-label={t("cloudSources.openDetails", { name: source.name })}
-        className="type-body weight-semibold self-start rounded-sm text-left text-foreground underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+        className="type-body self-start rounded-sm text-left text-foreground underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
         onClick={onOpen}
         type="button"
       >
@@ -306,7 +306,7 @@ export function CloudSourcesTable({
     return (
       <ul
         aria-label={t("cloudSources.listLabel")}
-        className="flex flex-col border border-line"
+        className="flex flex-col rounded-sm border border-line"
       >
         {sources.map((source) => (
           <li
@@ -365,7 +365,7 @@ export function CloudSourcesTable({
   }
 
   return (
-    <div className="border border-line">
+    <div className="rounded-sm border border-line">
       <Table
         aria-label={t("cloudSources.listLabel")}
         className="type-body-compact"

@@ -1,19 +1,21 @@
-// The nav band of 12 §2.1 (56px). On desktop the wordmark cell is exactly as
-// wide as the sidebar below it and shares its right rule, with a diamond
-// node where that rule crosses the band's bottom rule. Then the ⌘K search
-// and the one blue button of the nav, New with `N`. The sections live in the
-// sidebar only.
+// The nav band of 12 §2.1, drawn like cursor.com/docs' header: 49px on the
+// page colour with one bottom rule, the wordmark in a cell as wide as the
+// sidebar below it, the ⌘K search box centred (36px, 8px radius, the ⌘K
+// chip) and the one primary pill of the nav, New with `N`. The sections
+// live in the sidebar only.
 
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Button } from "@rulisme/ui/ui/button";
-import { Kbd, KbdGroup } from "@rulisme/ui/ui/kbd";
+import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Menu, Plus, Search } from "lucide-react";
 import { AppLink } from "@/components/app-link";
 import { useTranslation } from "@/i18n";
 import { BrandMark } from "./brand-mark";
 
 /** Sidebar width; the nav band's wordmark cell matches it. */
-export const SIDEBAR_WIDTH_CLASS = "w-60";
+export const SIDEBAR_WIDTH_CLASS = "w-64";
+
+/** Height of the nav band, its bottom rule included (cursor.com: 49px). */
+export const NAV_HEIGHT_CLASS = "h-[49px]";
 
 export function NavBand({
   onMenu,
@@ -26,10 +28,12 @@ export function NavBand({
 }) {
   const { t } = useTranslation();
   return (
-    <header className="band sticky top-0 z-30 bg-background">
-      <div className="flex h-14 items-stretch">
+    <header
+      className={`sticky top-0 z-30 border-border border-b bg-background ${NAV_HEIGHT_CLASS}`}
+    >
+      <div className="flex h-12 items-center">
         <div
-          className={`relative flex shrink-0 items-center gap-1 px-3 md:border-line md:border-r md:px-5 ${SIDEBAR_WIDTH_CLASS} max-md:w-auto`}
+          className={`flex shrink-0 items-center gap-1 px-3 md:px-6 ${SIDEBAR_WIDTH_CLASS} max-md:w-auto`}
         >
           <Button
             aria-label={t("nav.openMenu")}
@@ -42,28 +46,27 @@ export function NavBand({
           </Button>
           <AppLink
             aria-label={t("nav.home")}
-            className="rounded-md px-1 py-1"
+            className="rounded-sm py-1"
             href="/board"
           >
             <BrandMark label={t("app.name")} />
           </AppLink>
-          <Diamond className="-right-[calc(var(--node)/2+0.5px)] -bottom-[calc(var(--node)/2+0.5px)] max-md:hidden" />
         </div>
         <div className="flex min-w-0 flex-1 items-center gap-2 px-4 sm:px-6">
-          <Button
-            aria-keyshortcuts="Meta+K Control+K"
-            className="w-full max-w-72 justify-start text-muted-foreground max-sm:hidden"
-            onClick={onPalette}
-            size="sm"
-            variant="outline"
-          >
-            <Search aria-hidden="true" data-icon="inline-start" />
-            <span className="flex-1 text-left">{t("nav.search")}</span>
-            <KbdGroup aria-hidden="true">
-              <Kbd>⌘</Kbd>
-              <Kbd>K</Kbd>
-            </KbdGroup>
-          </Button>
+          <div className="flex min-w-0 flex-1 justify-center max-sm:hidden">
+            <button
+              aria-keyshortcuts="Meta+K Control+K"
+              className="type-body flex h-9 w-full max-w-80 items-center gap-2 rounded-lg border border-border bg-background px-3 text-muted-foreground outline-none transition-colors hover:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0"
+              onClick={onPalette}
+              type="button"
+            >
+              <Search aria-hidden="true" className="size-4 shrink-0" />
+              <span className="flex-1 truncate text-left">
+                {t("nav.search")}
+              </span>
+              <Kbd aria-hidden="true">⌘K</Kbd>
+            </button>
+          </div>
           <div className="ml-auto flex items-center gap-2">
             <Button
               aria-label={t("nav.search")}
@@ -74,7 +77,7 @@ export function NavBand({
             >
               <Search aria-hidden="true" />
             </Button>
-            <Button aria-keyshortcuts="N" onClick={onNew} size="sm">
+            <Button aria-keyshortcuts="N" onClick={onNew}>
               <Plus aria-hidden="true" data-icon="inline-start" />
               {t("nav.new")}
               <Kbd aria-hidden="true">N</Kbd>

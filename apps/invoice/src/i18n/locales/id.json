@@ -18,10 +18,6 @@
     "clearAll": "Hapus Semua",
     "mcp": "MCP"
   },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
-  },
   "confirm": {
     "title": "Hapus semua data?",
     "description": "Ini menghapus seluruh isi formulir saat ini. Tindakan ini tidak dapat dibatalkan.",

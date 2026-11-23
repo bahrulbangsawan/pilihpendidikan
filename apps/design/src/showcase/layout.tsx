@@ -1,42 +1,44 @@
 import { cn } from "@rulisme/ui/lib/utils";
-import { Rail } from "@rulisme/ui/ui/rails";
 import type { ReactNode } from "react";
+import { groupOf } from "./nav";
 
 /**
- * One page section: a full-bleed band ruled by a bottom hairline, holding the
- * 1120px ruled column with diamond nodes (DESIGN.md § Layout). `paper` lays
- * graph paper across the band.
+ * One page section, set like a cursor.com/docs page: the nav group as a
+ * muted label, the title in the display role, a 16px lead, then the blocks.
+ * Sections are separated by space, not rules.
  */
 export function Section({
   id,
   title,
   lead,
-  paper = false,
   className,
   children,
 }: {
   id: string;
   title: string;
   lead?: ReactNode;
-  paper?: boolean;
   className?: string;
   children: ReactNode;
 }) {
+  const group = groupOf(id);
   return (
     <section
       aria-labelledby={`${id}-title`}
-      className={cn("band", paper && "graph-paper", className)}
+      className={cn("band", className)}
       id={id}
     >
-      <Rail className="flex flex-col gap-10 px-5 py-12 sm:px-10">
-        <header className="flex max-w-2xl flex-col gap-2">
-          <h2 className="type-title" id={`${id}-title`}>
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-5 py-16 sm:px-10 xl:px-16">
+        <header className="flex max-w-2xl flex-col gap-3">
+          {group ? (
+            <p className="type-body text-muted-foreground">{group.label}</p>
+          ) : null}
+          <h2 className="type-display text-foreground" id={`${id}-title`}>
             {title}
           </h2>
-          {lead ? <p className="type-subtitle">{lead}</p> : null}
+          {lead ? <p className="type-subtitle text-ink">{lead}</p> : null}
         </header>
         {children}
-      </Rail>
+      </div>
     </section>
   );
 }
@@ -57,8 +59,9 @@ export function BlockGrid({
 }
 
 /**
- * One component: its name, one line on when to use it, then examples. `wide`
- * spans both grid columns (tables, menubars, sidebars, charts, threads).
+ * One component: its name in the compact title role, one line on when to
+ * use it, then examples. `wide` spans both grid columns (tables, menubars,
+ * sidebars, charts, threads).
  */
 export function Block({
   title,
@@ -83,9 +86,9 @@ export function Block({
       data-slot="showcase-block"
     >
       <div className="flex flex-col gap-1">
-        <h3 className="type-subtitle weight-semibold">{title}</h3>
+        <h3 className="type-title-compact text-foreground">{title}</h3>
         {description ? (
-          <p className="type-caption max-w-prose text-muted-foreground">
+          <p className="type-body max-w-prose text-muted-foreground">
             {description}
           </p>
         ) : null}
@@ -96,27 +99,26 @@ export function Block({
 }
 
 /**
- * A hairline cell holding live components, with an optional caption row.
- * `paper` puts graph paper behind the specimens; `stack` lays them out in a
- * column instead of a wrapping row.
+ * A specimen frame: a 4px box with a 10% border whose caption strip sits on
+ * the card colour and whose stage is the page colour, so components (cards
+ * included) show on the surface they are built for. `stack` lays the
+ * specimens out in a column instead of a wrapping row.
  */
 export function Example({
   label,
-  paper = false,
   stack = false,
   className,
   children,
 }: {
   label?: ReactNode;
-  paper?: boolean;
   stack?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <figure className="flex min-w-0 flex-col border border-line bg-background">
+    <figure className="flex min-w-0 flex-col rounded-sm border border-border bg-background">
       {label ? (
-        <figcaption className="type-caption border-line border-b px-3 py-1.5 text-muted-foreground">
+        <figcaption className="type-caption rounded-t-sm border-border border-b bg-card px-4 py-2 text-muted-foreground">
           {label}
         </figcaption>
       ) : null}
@@ -124,7 +126,6 @@ export function Example({
         className={cn(
           "flex min-w-0 gap-3 p-5",
           stack ? "flex-col" : "flex-wrap items-center",
-          paper && "graph-paper",
           className
         )}
       >

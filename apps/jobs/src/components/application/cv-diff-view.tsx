@@ -112,7 +112,7 @@ function BulletRow({
           </TooltipTrigger>
           <TooltipContent className="max-w-sm" side="top">
             <span className="flex flex-col gap-1">
-              <span className="type-caption weight-semibold">
+              <span className="type-caption">
                 {t("cv.diff.sourceTitle", { count: bullet.sources.length })}
               </span>
               {bullet.sources.map((source) => (
@@ -160,7 +160,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-summary"
           className="flex flex-col gap-2"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-summary">
+          <h3 className="type-body" id="cv-diff-summary">
             {t("cv.diff.summary")}
           </h3>
           <div className="grid gap-2 md:grid-cols-2 md:gap-4">
@@ -194,7 +194,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-order"
           className="flex flex-col gap-1"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-order">
+          <h3 className="type-body" id="cv-diff-order">
             {t("cv.diff.sectionOrder")}
           </h3>
           <p className="type-caption flex flex-wrap items-center gap-1 text-muted-foreground">
@@ -225,9 +225,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           className="flex flex-col"
           key={entry.entryId}
         >
-          <h3 className="type-body weight-semibold pb-1 text-foreground">
-            {entry.label}
-          </h3>
+          <h3 className="type-body pb-1 text-foreground">{entry.label}</h3>
           <ul className="flex flex-col">
             {entry.bullets.map((bullet) => (
               <BulletRow
@@ -246,7 +244,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-excluded"
           className="flex flex-col gap-1"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-excluded">
+          <h3 className="type-body" id="cv-diff-excluded">
             {t("cv.diff.excluded")}
           </h3>
           <ul className="flex flex-col gap-1">

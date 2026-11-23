@@ -1,5 +1,6 @@
-// The desktop board (12 §3): one ruled band of columns with a diamond where
-// each column rule meets the band rule, sortable cards (@dnd-kit) and the
+// The desktop board (12 §3): a row of unruled columns holding cursor.com
+// cards (one step darker than the page, 4px radius, a hairline), sortable
+// cards (@dnd-kit) and the
 // Closed lane, collapsed by default, that still offers Rejected and Withdrawn
 // as separate drop targets (06 §1.1).
 
@@ -22,7 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { cn } from "@rulisme/ui/lib/utils";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { ToggleGroup, ToggleGroupItem } from "@rulisme/ui/ui/toggle-group";
 import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
@@ -177,7 +177,7 @@ export function SortableCard({
           stage: stageLabel(t, card.stage),
         })}
         className={cn(
-          "cursor-grab rounded-none outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing",
+          "cursor-grab rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:cursor-grabbing",
           sortable.isDragging && "opacity-40"
         )}
         data-card-id={card.id}
@@ -246,7 +246,7 @@ function ColumnBody({
   return (
     <div
       className={cn(
-        "flex min-h-32 flex-1 flex-col gap-2 p-2",
+        "flex min-h-32 flex-1 flex-col gap-2 rounded-sm",
         state.over && !state.illegalFrom && "bg-wash",
         state.illegalFrom && "cursor-not-allowed bg-destructive/5",
         className
@@ -303,14 +303,13 @@ export function BoardColumn(props: ColumnProps) {
   return (
     <section
       aria-labelledby={`column-${stage}`}
-      className="relative flex w-60 shrink-0 flex-col border-line border-r"
+      className="relative flex w-64 shrink-0 flex-col"
     >
-      <Diamond className="-top-1 -right-1" />
-      <header className="band flex h-10 items-center justify-between gap-2 px-3">
-        <h2 className="type-subtitle weight-semibold" id={`column-${stage}`}>
+      <header className="flex h-10 items-center justify-between gap-2 px-1">
+        <h2 className="type-body text-foreground" id={`column-${stage}`}>
           {stageLabel(t, stage)}
         </h2>
-        <span className="type-micro text-muted-foreground tabular-nums">
+        <span className="type-caption text-muted-foreground tabular-nums">
           <span className="sr-only">
             {t("board.countLabel", { count: total })}
           </span>
@@ -356,10 +355,9 @@ export function ClosedLane({
     return (
       <section
         aria-label={t("board.closed")}
-        className="relative flex w-28 shrink-0 flex-col border-line border-r"
+        className="relative flex w-28 shrink-0 flex-col gap-2"
       >
-        <Diamond className="-top-1 -right-1" />
-        <header className="band flex h-10 items-center px-1">
+        <header className="flex h-10 items-center">
           <Button
             aria-expanded={false}
             className="w-full justify-between px-2"
@@ -367,7 +365,7 @@ export function ClosedLane({
             size="sm"
             variant="ghost"
           >
-            <span className="weight-semibold">{t("board.closed")}</span>
+            <span>{t("board.closed")}</span>
             <ChevronRight aria-hidden="true" />
           </Button>
         </header>
@@ -385,10 +383,9 @@ export function ClosedLane({
   return (
     <section
       aria-label={t("board.closed")}
-      className="relative flex w-60 shrink-0 flex-col border-line border-r"
+      className="relative flex w-64 shrink-0 flex-col gap-2"
     >
-      <Diamond className="-top-1 -right-1" />
-      <header className="band flex h-10 items-center justify-between gap-1 px-1">
+      <header className="flex h-10 items-center justify-between gap-1">
         <Button
           aria-expanded
           className="px-2"
@@ -397,7 +394,7 @@ export function ClosedLane({
           variant="ghost"
         >
           <ChevronLeft aria-hidden="true" />
-          <span className="weight-semibold">{t("board.closed")}</span>
+          <span>{t("board.closed")}</span>
         </Button>
         <ToggleGroup
           aria-label={t("board.closedFilter")}
@@ -420,13 +417,10 @@ export function ClosedLane({
         </ToggleGroup>
       </header>
       {stages.map((stage) => (
-        <div
-          className="flex flex-col border-line border-b last:border-b-0"
-          key={stage}
-        >
-          <h3 className="type-caption flex items-center justify-between px-3 pt-2 text-muted-foreground">
+        <div className="flex flex-col gap-1.5" key={stage}>
+          <h3 className="type-caption flex items-center justify-between px-1 text-muted-foreground">
             {stageLabel(t, stage)}
-            <span className="type-micro tabular-nums">{totals[stage]}</span>
+            <span className="tabular-nums">{totals[stage]}</span>
           </h3>
           <ColumnBody
             cards={columns[stage]}
@@ -439,7 +433,7 @@ export function ClosedLane({
             state={states[stage]}
           />
           {totals[stage] > columns[stage].length ? (
-            <p className="type-micro px-3 pb-2 text-muted-foreground">
+            <p className="type-caption px-1 pb-2 text-muted-foreground">
               {t("board.capped", {
                 shown: columns[stage].length,
                 total: totals[stage],
@@ -469,7 +463,7 @@ function CollapsedTarget({
   return (
     <div
       className={cn(
-        "flex flex-1 flex-col gap-1 border-line border-b p-2 last:border-b-0",
+        "flex flex-1 flex-col gap-1 rounded-sm border border-hairline bg-card p-3 transition-colors",
         state.over && !state.illegalFrom && "bg-wash",
         state.illegalFrom && "cursor-not-allowed bg-destructive/5"
       )}

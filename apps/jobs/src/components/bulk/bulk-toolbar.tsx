@@ -44,12 +44,12 @@ export function BulkToolbar({
   return (
     <div
       aria-label={t("bulk.toolbar")}
-      className="band flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
+      className="flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
       role="toolbar"
     >
       <span
         aria-live="polite"
-        className="type-body-compact weight-semibold mr-2 tabular-nums"
+        className="type-body-compact mr-2 tabular-nums"
         role="status"
       >
         {t("bulk.selected", { count })}

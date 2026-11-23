@@ -42,7 +42,7 @@ export function PhoneBoard({
   return (
     <div className="flex flex-col">
       <Tabs onValueChange={(value) => setTab(value as Tab)} value={tab}>
-        <div className="band no-scrollbar overflow-x-auto px-4 py-2">
+        <div className="no-scrollbar overflow-x-auto px-4 py-2">
           <TabsList aria-label={t("board.stages")}>
             {BOARD_STAGES.map((stage) => (
               <TabsTrigger key={stage} value={stage}>

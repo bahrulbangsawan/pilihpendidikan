@@ -20,7 +20,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Switch } from "@rulisme/ui/ui/switch";
 import {
@@ -167,7 +166,7 @@ function ActiveWork({
       {tasks.map((task) => (
         <li key={task.id}>
           <AppLink
-            className="text-primary underline-offset-4 hover:underline"
+            className="text-link underline-offset-4 hover:underline"
             href={`/automation/runs/${task.id}`}
           >
             {t("devices.work.task", {
@@ -180,7 +179,7 @@ function ActiveWork({
       {runs.map((run) => (
         <li key={run.id}>
           <AppLink
-            className="text-primary underline-offset-4 hover:underline"
+            className="text-link underline-offset-4 hover:underline"
             href="/sources"
           >
             {run.sources.length === 1
@@ -330,10 +329,10 @@ export function DevicesBand({
     update(row.device, { accepts_tasks: value });
 
   return (
-    <Band>
+    <div>
       <PageGutter className="flex flex-col gap-3 py-6">
         <div className="flex items-baseline gap-2">
-          <h2 className="type-subtitle weight-semibold" id="cli-devices">
+          <h2 className="type-subtitle" id="cli-devices">
             {t("devices.title")}
           </h2>
           <span className="type-micro text-muted-foreground tabular-nums">
@@ -364,7 +363,7 @@ export function DevicesBand({
         {!loading && phone ? (
           <ul
             aria-labelledby="cli-devices"
-            className="flex flex-col border border-line"
+            className="flex flex-col rounded-sm border border-line"
           >
             {rows.map((row) => (
               <li
@@ -380,7 +379,7 @@ export function DevicesBand({
                     />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="type-body weight-semibold truncate text-foreground">
+                    <span className="type-body truncate text-foreground">
                       {row.device.name}
                     </span>
                     <span className="type-caption text-muted-foreground">
@@ -427,7 +426,7 @@ export function DevicesBand({
           </ul>
         ) : null}
         {!(loading || phone) ? (
-          <div className="border border-line">
+          <div className="rounded-sm border border-line">
             <Table aria-labelledby="cli-devices" className="type-body-compact">
               <TableHeader>
                 <TableRow>
@@ -465,7 +464,7 @@ export function DevicesBand({
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="weight-semibold text-foreground">
+                        <span className="text-foreground">
                           {row.device.name}
                         </span>
                         <span className="type-caption text-muted-foreground">
@@ -534,6 +533,6 @@ export function DevicesBand({
         onCancel={() => setRevoking(null)}
         onConfirm={revoke}
       />
-    </Band>
+    </div>
   );
 }

@@ -9,11 +9,12 @@ import { Legend, ResponsiveContainer, Tooltip } from "recharts";
 
 import { cn } from "../lib/utils";
 
-// Zedative charts: series colours come from `--chart-1` … `--chart-5`
-// (cobalt for the series that matters, muted ramps for context). Grid and
-// cursor are `line` hairlines and a `pane` band, axis text is muted caption
-// with tabular figures, the tooltip is a window (6px, border, `shadow-float`)
-// and legends are caption-role labels beside square keys.
+// cursor.com charts: series colours come from `--chart-1` … `--chart-5`
+// (the orange for the series that matters, ink, green, then two grey
+// ramps). Grid and cursor are 10% `border` rules and a `pane` band, axis
+// text is muted caption with tabular figures, the tooltip is a flyout (8px,
+// 10% border, two whisper shadows) at weight 400, and legends are
+// caption-role labels beside small square keys.
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -71,7 +72,7 @@ function ChartContainer({
     <ChartContext value={contextValue}>
       <div
         className={cn(
-          "type-caption flex aspect-video justify-center tabular-nums [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-line [&_.recharts-curve.recharts-tooltip-cursor]:stroke-line [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-line [&_.recharts-radial-bar-background-sector]:fill-pane [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-pane [&_.recharts-reference-line_[stroke='#ccc']]:stroke-line [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          "type-caption flex aspect-video justify-center tabular-nums [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-pane [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-pane [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
           className
         )}
         data-chart={chartId}
@@ -195,7 +196,7 @@ function ChartTooltipContent({
 
     if (labelFormatter) {
       return (
-        <div className={cn("weight-semibold text-foreground", labelClassName)}>
+        <div className={cn("text-foreground", labelClassName)}>
           {labelFormatter(value, payload)}
         </div>
       );
@@ -205,11 +206,7 @@ function ChartTooltipContent({
       return null;
     }
 
-    return (
-      <div className={cn("weight-semibold text-foreground", labelClassName)}>
-        {value}
-      </div>
-    );
+    return <div className={cn("text-foreground", labelClassName)}>{value}</div>;
   }, [
     label,
     labelFormatter,
@@ -229,7 +226,7 @@ function ChartTooltipContent({
   return (
     <div
       className={cn(
-        "type-caption grid min-w-36 items-start gap-1.5 rounded-lg border border-border bg-popover px-2.5 py-2 text-popover-foreground tabular-nums shadow-float",
+        "type-caption grid min-w-36 items-start gap-1.5 rounded-lg border border-border bg-popover px-2.5 py-2 text-popover-foreground tabular-nums shadow-md",
         className
       )}
     >
@@ -278,7 +275,7 @@ function ChartTooltipContent({
                         </span>
                       </div>
                       {item.value != null && (
-                        <span className="weight-semibold text-foreground tabular-nums">
+                        <span className="text-foreground tabular-nums">
                           {formatTooltipValue(item.value)}
                         </span>
                       )}

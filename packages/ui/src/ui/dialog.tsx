@@ -4,11 +4,11 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 
-// Zedative window (DESIGN.md § Shapes / Elevation): 6px corners, a 1px
-// border on `bg-2` paper and the one soft drop shadow, over a flat 40% `shot`
-// backdrop. It opens and closes instantly. The title takes the title role,
-// the description the caption role, and a footer sits on a `line` rule over
-// a faint pane band that bleeds to the window edges.
+// cursor.com window: 8px corners, a 10% border on the popover fill (the page
+// colour in light, one step up in dark) and the one soft drop, over a flat
+// 60% `shot` scrim with no blur. It opens and closes instantly. The title
+// takes the title role at weight 400, the description muted body text with
+// orange links, and the footer right-aligns its pills.
 
 function Dialog({
   ...props
@@ -40,7 +40,7 @@ function DialogOverlay({
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
-      className={cn("fixed inset-0 z-50 bg-shot/40", className)}
+      className={cn("fixed inset-0 z-50 bg-shot/60", className)}
       data-slot="dialog-overlay"
       {...props}
     />
@@ -60,7 +60,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "type-body fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-lg border border-border bg-popover p-4 text-ink shadow-float outline-none sm:max-w-sm",
+          "type-body fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-lg border border-border bg-popover p-5 text-ink shadow-lg outline-none sm:max-w-sm",
           className
         )}
         data-slot="dialog-content"
@@ -70,7 +70,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close asChild data-slot="dialog-close">
             <Button
-              className="absolute top-3 right-3"
+              className="absolute top-4 right-4"
               size="icon-sm"
               variant="ghost"
             >
@@ -89,7 +89,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         // Clear the corner close button when the window shows one.
-        "flex flex-col gap-1 text-left has-[~[data-slot=dialog-close]]:pr-8",
+        "flex flex-col gap-1 text-left has-[~[data-slot=dialog-close]]:pr-10",
         className
       )}
       data-slot="dialog-header"
@@ -109,7 +109,7 @@ function DialogFooter({
   return (
     <div
       className={cn(
-        "-mx-4 -mb-4 flex flex-col-reverse gap-2 border-line border-t bg-pane/40 p-4 sm:flex-row sm:justify-end",
+        "mt-1 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
         className
       )}
       data-slot="dialog-footer"
@@ -145,7 +145,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       className={cn(
-        "type-caption text-muted-foreground *:[a]:text-primary *:[a]:underline *:[a]:underline-offset-4",
+        "type-body text-muted-foreground *:[a]:text-link *:[a]:hover:text-link/75",
         className
       )}
       data-slot="dialog-description"

@@ -300,9 +300,7 @@ export function InterviewsTab({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="type-subtitle weight-semibold">
-          {t("interviews.heading")}
-        </h2>
+        <h2 className="type-subtitle">{t("interviews.heading")}</h2>
         <Button onClick={() => open("new")} size="sm" variant="outline">
           <Plus aria-hidden="true" data-icon="inline-start" />
           {t("interviews.add")}
@@ -323,7 +321,7 @@ export function InterviewsTab({
           {t("interviews.empty")}
         </p>
       ) : (
-        <div className="overflow-x-auto border border-line">
+        <div className="overflow-x-auto rounded-sm border border-line">
           <Table>
             <TableHeader>
               <TableRow>
@@ -380,7 +378,7 @@ export function InterviewsTab({
                     <TableCell className="max-w-48 truncate">
                       {href ? (
                         <a
-                          className="text-primary hover:underline"
+                          className="text-link hover:underline"
                           href={href}
                           rel="noopener noreferrer"
                           target="_blank"

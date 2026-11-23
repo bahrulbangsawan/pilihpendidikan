@@ -324,8 +324,6 @@
     "approveNext": "Setujui berikutnya",
     "openInbox": "Buka kotak masuk",
     "startDiscovery": "Mulai pencarian di perangkat…",
-    "themeDark": "Ganti ke Night Desk",
-    "themeLight": "Ganti ke tema terang",
     "shortcuts": "Pintasan keyboard"
   },
   "newJob": {
@@ -1068,12 +1066,9 @@
     "account": "Akun",
     "email": "Masuk sebagai",
     "signOut": "Keluar",
-    "display": "Bahasa dan tema",
+    "display": "Bahasa",
     "displayHelp": "Bahasa disimpan ke akun Anda.",
     "locale": "Bahasa",
-    "theme": "Tema",
-    "themeLight": "Terang",
-    "themeDark": "Night Desk",
     "timezone": "Zona waktu",
     "automation": "Otomasi",
     "automationHelp": "Cara lamaran baru dimulai, dan sakelar untuk menghentikan semuanya.",

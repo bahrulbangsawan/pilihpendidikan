@@ -646,7 +646,7 @@ export function RuleEditor({
               </FieldDescription>
             ) : null}
             {preview ? (
-              <p className="type-caption border border-line bg-pane/50 p-3 text-foreground">
+              <p className="type-caption rounded-sm border border-line bg-pane/50 p-3 text-foreground">
                 {preview}
               </p>
             ) : null}

@@ -33,12 +33,12 @@ function Stat({
   hint?: string;
 }) {
   return (
-    <div className="flex min-w-0 flex-col gap-0.5 border-line border-r border-b px-4 py-2 even:border-r-0 sm:border-b-0 sm:px-6 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0">
+    <div className="flex min-w-0 flex-col gap-1 rounded-sm border border-hairline bg-card px-4 py-3.5">
       <dt className="type-caption truncate text-muted-foreground">{label}</dt>
-      <dd className="type-title-compact text-foreground tabular-nums">
+      <dd className="type-title text-foreground tabular-nums">
         {value}
         {hint ? (
-          <span className="type-micro ml-1.5 text-muted-foreground">
+          <span className="type-caption ml-1.5 text-muted-foreground">
             {hint}
           </span>
         ) : null}
@@ -65,7 +65,7 @@ export function OverviewStrip({
   return (
     <dl
       aria-label={t("board.overview.label")}
-      className="band grid grid-cols-2 sm:grid-cols-4"
+      className="grid grid-cols-2 gap-3 px-4 pb-6 sm:grid-cols-4 sm:px-6"
     >
       <Stat
         label={t("board.overview.appliedThisWeek")}

@@ -82,7 +82,7 @@ const THUMB_HEIGHT = 150;
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="type-caption weight-semibold text-foreground">{title}</h3>
+      <h3 className="type-caption text-foreground">{title}</h3>
       {children}
     </section>
   );
@@ -95,7 +95,7 @@ function ExternalUrl({ url }: { url: string }) {
   }
   return (
     <a
-      className="break-all text-primary underline-offset-4 hover:underline"
+      className="break-all text-link underline-offset-4 hover:underline"
       href={href}
       rel="noopener noreferrer"
       target="_blank"
@@ -148,7 +148,7 @@ function Screenshot({ fileId }: { fileId: string }) {
     <>
       <button
         aria-label={t("approvals.zoomScreenshot")}
-        className="w-fit border border-line bg-card outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+        className="w-fit rounded-sm border border-hairline bg-card outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
         onClick={() => setOpen(true)}
         type="button"
       >
@@ -247,7 +247,7 @@ export function SubmitBody({
             {revealed ? t("approvals.hideValues") : t("approvals.showValues")}
           </Button>
         ) : null}
-        <div className="border border-line">
+        <div className="rounded-sm border border-line">
           <Table className="type-body-compact">
             <TableHeader>
               <TableRow>
@@ -339,7 +339,7 @@ export function EmailBody({ payload }: { payload: Payload<"email_submit"> }) {
       </div>
       <Section title={t("approvals.emailBody")}>
         <PlainText
-          className="type-body max-w-[72ch] border border-line bg-card p-3"
+          className="type-body max-w-[72ch] rounded-sm border border-hairline bg-card p-3"
           text={payload.body_text}
         />
       </Section>
@@ -409,8 +409,8 @@ function AnswerQuestionField({
     });
   };
   return (
-    <FieldSet className="gap-3 border border-line bg-card p-3">
-      <FieldLegend className="type-body weight-semibold text-foreground">
+    <FieldSet className="gap-3 rounded-sm border border-hairline bg-card p-3">
+      <FieldLegend className="type-body text-foreground">
         <span className="sr-only">{t("approvals.questionFromPage")} </span>
         <q>{question.question}</q>
         {question.required ? (
@@ -610,7 +610,7 @@ export function CvBody({
       />
       {applicationHref ? (
         <AppLink
-          className="type-body-compact w-fit text-primary underline-offset-4 hover:underline"
+          className="type-body-compact w-fit text-link underline-offset-4 hover:underline"
           href={applicationHref}
         >
           {t("approvals.reviewCv")}

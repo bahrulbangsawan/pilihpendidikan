@@ -113,7 +113,7 @@ export function CvsTab() {
         <p className="type-body text-muted-foreground">
           {t("cvs.empty")}{" "}
           <a
-            className="text-primary hover:underline"
+            className="text-link hover:underline"
             href={cvBuilderOrigin()}
             rel="noopener noreferrer"
             target="_blank"
@@ -123,7 +123,7 @@ export function CvsTab() {
         </p>
       ) : null}
       {bases.length > 0 ? (
-        <div className="border border-line">
+        <div className="rounded-sm border border-line">
           <Table>
             <TableHeader>
               <TableRow>

@@ -6,15 +6,15 @@ import { cn } from "../lib/utils";
 
 import { Button } from "./button";
 
-// Zedative file tile: a 2px tile on `bg-2` paper with a hairline. An idle
-// slot is framed with a dashed outline (like the screenshot frames); an
-// error turns the frame and the media tile destructive. While a file is
-// uploading or processing its title drops to muted ink: put the Blocks
-// `Spinner` in the media tile for motion, nothing else animates. A tile with
-// an `AttachmentTrigger` becomes a pressable: lip, pane hover, press.
+// File tile, a small cursor.com card: `bg-card`, 8px radius, a 10% border.
+// An idle slot is framed with a dashed outline; an error turns the frame and
+// the media tile destructive. While a file is uploading or processing its
+// title drops to muted ink: put the Blocks `Spinner` in the media tile for
+// motion, nothing else animates. A tile with an `AttachmentTrigger` gets a
+// `pane` hover and the 2px ink focus outline.
 
 const attachmentVariants = cva(
-  "group/attachment has-[>[data-slot=attachment-trigger]]:press relative flex w-fit min-w-0 max-w-full shrink-0 flex-wrap rounded-sm border border-border bg-card text-card-foreground transition-[background-color,border-color,box-shadow] duration-150 ease-standard has-[>[data-slot=attachment-trigger]]:inset-shadow-lip has-[>[data-slot=attachment-trigger]:focus-visible]:outline-2 has-[>[data-slot=attachment-trigger]:focus-visible]:outline-ring has-[>[data-slot=attachment-trigger]:focus-visible]:outline-solid has-[>[data-slot=attachment-trigger]:focus-visible]:outline-offset-2 has-[>[data-slot=attachment-trigger]]:hover:inset-shadow-none has-[>[data-slot=attachment-trigger]]:hover:bg-pane/70 data-[state=error]:border-destructive/40 data-[state=idle]:border-line data-[state=idle]:border-dashed",
+  "group/attachment relative flex w-fit min-w-0 max-w-full shrink-0 flex-wrap rounded-lg border border-border bg-card text-card-foreground transition-[background-color,border-color] duration-140 ease-standard has-[>[data-slot=attachment-trigger]:focus-visible]:outline-2 has-[>[data-slot=attachment-trigger]:focus-visible]:outline-ring has-[>[data-slot=attachment-trigger]:focus-visible]:outline-solid has-[>[data-slot=attachment-trigger]:focus-visible]:outline-offset-2 has-[>[data-slot=attachment-trigger]]:hover:bg-pane data-[state=error]:border-destructive/40 data-[state=idle]:border-input data-[state=idle]:border-dashed",
   {
     variants: {
       size: {
@@ -54,7 +54,7 @@ function Attachment({
 }
 
 const attachmentMediaVariants = cva(
-  "relative flex aspect-square w-10 shrink-0 items-center justify-center overflow-hidden rounded-xs bg-pane text-foreground group-data-[orientation=vertical]/attachment:w-full group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:[--spinner-size:20px] [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-5 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none",
+  "relative flex aspect-square w-10 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-pane text-foreground group-data-[orientation=vertical]/attachment:w-full group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:[--spinner-size:20px] [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-5 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none",
   {
     variants: {
       variant: {

@@ -38,10 +38,6 @@
     "emptyTitle": "Your CV is empty",
     "emptyDescription": "Start filling in the form to see your CV preview."
   },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
-  },
   "confirm": {
     "title": "Clear all data?",
     "description": "This removes everything currently in the form. This action cannot be undone.",

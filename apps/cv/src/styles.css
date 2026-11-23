@@ -30,7 +30,7 @@
   background: #ffffff;
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-sans);
+  font-family: var(--font-print);
   /* The static PDF cuts are Inter's text optical size; pin it so bold
      headings keep the same letterforms on screen. */
   font-variation-settings: "opsz" 14;

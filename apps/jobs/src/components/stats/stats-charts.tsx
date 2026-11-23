@@ -1,4 +1,4 @@
-// The Stats charts (10 §8), drawn with the Zedative chart wrapper of
+// The Stats charts (10 §8), drawn with the shared chart wrapper of
 // @rulisme/ui: series colours are the `--chart-N` tokens only, the grid is a
 // hairline, nothing animates in (DESIGN.md § Motion). Each chart is a
 // picture of its view model; ChartFrame pairs it with the same numbers as a

@@ -149,7 +149,7 @@ export function NoteItem({
     }
   }
   return (
-    <article className="flex flex-col gap-1.5 border border-border bg-card p-3">
+    <article className="flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3">
       <header className="type-caption flex items-center justify-between gap-2 text-muted-foreground">
         <span>
           {actor} ·{" "}

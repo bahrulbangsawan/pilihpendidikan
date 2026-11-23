@@ -324,8 +324,6 @@
     "approveNext": "Approve next",
     "openInbox": "Open inbox",
     "startDiscovery": "Start discovery on a device…",
-    "themeDark": "Switch to Night Desk",
-    "themeLight": "Switch to the light theme",
     "shortcuts": "Keyboard shortcuts"
   },
   "newJob": {
@@ -1068,12 +1066,9 @@
     "account": "Account",
     "email": "Signed in as",
     "signOut": "Sign out",
-    "display": "Language and theme",
+    "display": "Language",
     "displayHelp": "The language is saved to your account.",
     "locale": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Night Desk",
     "timezone": "Timezone",
     "automation": "Automation",
     "automationHelp": "How new applications start, and a switch to stop everything.",

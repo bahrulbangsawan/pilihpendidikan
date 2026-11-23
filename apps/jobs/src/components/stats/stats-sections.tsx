@@ -78,11 +78,11 @@ export function StatCells({ summary }: { summary: Summary }) {
   return (
     <dl
       aria-label={t("stats.cells.label")}
-      className="grid grid-cols-2 sm:grid-cols-4"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
     >
       {cells.map((cell) => (
         <div
-          className="flex min-w-0 flex-col gap-1 border-line border-r border-b px-4 py-4 even:border-r-0 sm:border-b-0 sm:px-6 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0"
+          className="flex min-w-0 flex-col gap-1 rounded-sm border border-hairline bg-card px-4 py-3.5"
           data-stat={cell.key}
           key={cell.key}
         >
@@ -103,9 +103,12 @@ export function StatCells({ summary }: { summary: Summary }) {
 
 export function StatCellsSkeleton() {
   return (
-    <div aria-hidden="true" className="grid grid-cols-2 sm:grid-cols-4">
+    <div aria-hidden="true" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {["a", "b", "c", "d"].map((key) => (
-        <div className="flex flex-col gap-2 px-4 py-4 sm:px-6" key={key}>
+        <div
+          className="flex flex-col gap-2 rounded-sm border border-hairline bg-card px-4 py-3.5"
+          key={key}
+        >
           <Skeleton className="h-3 w-24" />
           <Skeleton className="h-7 w-16" />
         </div>
@@ -388,7 +391,7 @@ export function AutomationCard({ summary }: { summary: Summary }) {
                   <dt className="type-caption text-muted-foreground">
                     {entry.label}
                   </dt>
-                  <dd className="type-body weight-semibold text-foreground tabular-nums">
+                  <dd className="type-body text-foreground tabular-nums">
                     {entry.value}
                   </dd>
                 </div>
@@ -396,7 +399,7 @@ export function AutomationCard({ summary }: { summary: Summary }) {
             </dl>
             {model.failures.length > 0 ? (
               <div className="flex flex-col gap-1.5 border-line border-t pt-3">
-                <h3 className="type-caption weight-semibold text-foreground">
+                <h3 className="type-caption text-foreground">
                   {t("stats.automation.failures")}
                 </h3>
                 <ul className="flex flex-col">
@@ -415,7 +418,7 @@ export function AutomationCard({ summary }: { summary: Summary }) {
               </div>
             ) : null}
             <AppLink
-              className="type-body-compact self-start text-primary underline-offset-4 hover:underline"
+              className="type-body-compact self-start text-link underline-offset-4 hover:underline"
               href="/automation/runs"
             >
               {t("stats.automation.seeRuns")}

@@ -12,9 +12,9 @@ import {
 } from "./dialog";
 import { InputGroup, InputGroupAddon } from "./input-group";
 
-// Zedative command palette: a 6px window (hairline, float shadow) whose
-// search row is ruled off by a `line` hairline, menu-style 2px rows that
-// fill with `pane`, caption-role group headings and micro-role shortcuts.
+// cursor.com command palette: an 8px flyout (10% border, two whisper
+// shadows) whose 40px search row is ruled off by a 10% border, 32px menu
+// rows that fill with `pane`, caption-role group headings and shortcuts.
 // Inside a dialog or popover the outer window draws the frame instead.
 function Command({
   className,
@@ -23,7 +23,7 @@ function Command({
   return (
     <CommandPrimitive
       className={cn(
-        "type-body flex size-full flex-col overflow-hidden in-data-[slot=dialog-content]:rounded-none in-data-[slot=popover-content]:rounded-none rounded-lg border border-border in-data-[slot=dialog-content]:border-0 in-data-[slot=popover-content]:border-0 bg-popover text-popover-foreground in-data-[slot=dialog-content]:shadow-none in-data-[slot=popover-content]:shadow-none shadow-float",
+        "type-body flex size-full flex-col overflow-hidden in-data-[slot=dialog-content]:rounded-none in-data-[slot=popover-content]:rounded-none rounded-lg border border-border in-data-[slot=dialog-content]:border-0 in-data-[slot=popover-content]:border-0 bg-popover text-popover-foreground in-data-[slot=dialog-content]:shadow-none in-data-[slot=popover-content]:shadow-none shadow-md",
         className
       )}
       data-slot="command"
@@ -69,8 +69,8 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div className="border-line border-b" data-slot="command-input-wrapper">
-      <InputGroup className="h-9 rounded-none border-0 bg-transparent shadow-none ring-0">
+    <div className="border-border border-b" data-slot="command-input-wrapper">
+      <InputGroup className="h-10 rounded-none border-0 bg-transparent shadow-none ring-0">
         <CommandPrimitive.Input
           className={cn(
             "type-body field-touch h-full w-full min-w-0 bg-transparent pr-2.5 text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
@@ -141,7 +141,7 @@ function CommandSeparator({
 }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
   return (
     <CommandPrimitive.Separator
-      className={cn("-mx-1 h-px bg-line", className)}
+      className={cn("-mx-1 h-px bg-border", className)}
       data-slot="command-separator"
       {...props}
     />
@@ -156,7 +156,7 @@ function CommandItem({
   return (
     <CommandPrimitive.Item
       className={cn(
-        "group/command-item type-body data-[checked=true]:weight-semibold relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-foreground outline-none data-disabled:pointer-events-none data-selected:bg-accent data-selected:text-accent-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "group/command-item type-body relative flex min-h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-foreground outline-none data-disabled:pointer-events-none data-selected:bg-pane data-selected:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="command-item"
@@ -174,7 +174,7 @@ function CommandShortcut({
 }: React.ComponentProps<"span">) {
   return (
     <span
-      className={cn("type-micro ml-auto text-muted-foreground", className)}
+      className={cn("type-caption ml-auto text-muted-foreground", className)}
       data-slot="command-shortcut"
       {...props}
     />

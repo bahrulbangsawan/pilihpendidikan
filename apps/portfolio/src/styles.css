@@ -60,7 +60,7 @@
      every deck element that sets no size or line height of its own (it
      clipped the cover subtitle). Inter at its text optical size throughout,
      the optical size of the static cuts embedded in the PDF. */
-  font-family: var(--font-sans);
+  font-family: var(--font-print);
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
@@ -507,10 +507,8 @@
 }
 
 /* Standalone print/PDF view (portfolio.pilihpendidikan.com/?portfolio=<slug>&print=1).
-   Centers the natural-size deck on the editor's graph paper (the `graph-paper`
-   utility on the element sets the grid, so only the colour is set here) for
-   on-screen viewing; the @media print rules below strip it to bare
-   A4-landscape pages. */
+   Centers the natural-size deck on the page colour for on-screen viewing;
+   the @media print rules below strip it to bare A4-landscape pages. */
 .pf-print-root {
   display: flex;
   justify-content: center;

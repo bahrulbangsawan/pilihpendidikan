@@ -274,7 +274,7 @@ export function OffersTab({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="type-subtitle weight-semibold">{t("offers.heading")}</h2>
+        <h2 className="type-subtitle">{t("offers.heading")}</h2>
         <Button onClick={() => open("new")} size="sm" variant="outline">
           <Plus aria-hidden="true" data-icon="inline-start" />
           {t("offers.add")}
@@ -284,7 +284,7 @@ export function OffersTab({
       {sorted.length === 0 ? (
         <p className="type-body text-muted-foreground">{t("offers.empty")}</p>
       ) : (
-        <div className="overflow-x-auto border border-line">
+        <div className="overflow-x-auto rounded-sm border border-line">
           <Table>
             <TableHeader>
               <TableRow>

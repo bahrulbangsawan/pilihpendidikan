@@ -68,7 +68,7 @@ function RecipientHint({ check }: { check: RecipientCheck }) {
   if (check.kind === "employer") {
     return (
       <FieldDescription className="flex items-center gap-1">
-        <CircleCheck aria-hidden="true" className="size-3.5 text-primary" />
+        <CircleCheck aria-hidden="true" className="size-3.5 text-success" />
         {t("email.recipient.employer", { domain: check.domain })}
       </FieldDescription>
     );
@@ -208,7 +208,7 @@ export function EmailApply({ detail }: { detail: ApplicationDetail }) {
         onSubmit={submit}
       >
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h3 className="type-subtitle weight-semibold" id={`${id}-heading`}>
+          <h3 className="type-subtitle" id={`${id}-heading`}>
             {t("email.composeHeading")}
           </h3>
           <div className="flex items-end gap-2">

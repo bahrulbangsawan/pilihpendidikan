@@ -3,7 +3,7 @@ import type { TypeRole } from "@rulisme/ui/lib/type-scale";
 import { TYPE_ROLES, typeClass } from "@rulisme/ui/lib/type-scale";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Diamond } from "@rulisme/ui/ui/rails";
+import { Band, Rail } from "@rulisme/ui/ui/rails";
 import {
   ArrowUpRight,
   Check,
@@ -17,79 +17,108 @@ import { ColorPair, Swatch } from "../color-pair";
 import { Block, BlockGrid, Example, Section } from "../layout";
 
 const ROLE_PAIRS = [
-  { name: "Paper", background: "background", foreground: "foreground" },
-  { name: "Body copy on paper", background: "background", foreground: "ink" },
-  { name: "Card (bg-2)", background: "card", foreground: "card-foreground" },
-  { name: "Popover", background: "popover", foreground: "popover-foreground" },
-  { name: "Primary", background: "primary", foreground: "primary-foreground" },
+  { name: "Page", background: "background", foreground: "foreground" },
   {
-    name: "Secondary",
+    name: "Body copy on the page",
+    background: "background",
+    foreground: "ink",
+  },
+  { name: "Card", background: "card", foreground: "card-foreground" },
+  { name: "Popover", background: "popover", foreground: "popover-foreground" },
+  {
+    name: "Primary pill",
+    background: "primary",
+    foreground: "primary-foreground",
+  },
+  {
+    name: "Secondary pill",
     background: "secondary",
     foreground: "secondary-foreground",
   },
-  { name: "Muted (pane)", background: "muted", foreground: "muted-foreground" },
   {
-    name: "Accent (hover wash)",
-    background: "accent",
-    foreground: "accent-foreground",
-  },
-  {
-    name: "Active row (pane-2)",
-    background: "pane-2",
+    name: "Small grey text (60%)",
+    background: "background",
     foreground: "muted-foreground",
   },
   {
-    name: "Destructive on paper",
+    name: "Large grey text (ink-sec)",
+    background: "background",
+    foreground: "ink-sec",
+  },
+  {
+    name: "Meta at 16px+ (ink-mid)",
+    background: "background",
+    foreground: "ink-mid",
+  },
+  {
+    name: "Selected row (pane-2)",
+    background: "pane-2",
+    foreground: "foreground",
+  },
+  { name: "Text link", background: "background", foreground: "link" },
+  {
+    name: "Destructive on the page",
     background: "background",
     foreground: "destructive",
   },
-  { name: "Link on paper", background: "background", foreground: "primary" },
+  {
+    name: "Success on the page",
+    background: "background",
+    foreground: "success",
+  },
   { name: "Tooltip", background: "tooltip", foreground: "tooltip-foreground" },
 ] as const;
 
 const PALETTE = [
   {
-    group: "Paper",
+    group: "Surfaces",
     swatches: [
-      { name: "bg", token: "background" },
-      { name: "bg-2", token: "card" },
-      { name: "pane", token: "pane" },
-      { name: "pane-2", token: "pane-2" },
-      { name: "shot", token: "shot" },
+      { name: "page", token: "background" },
+      { name: "card", token: "card" },
+      { name: "pane (hover, chips)", token: "pane" },
+      { name: "pane-2 (secondary, selected)", token: "pane-2" },
+      { name: "pane-3 (secondary hover)", token: "pane-3" },
+      { name: "popover", token: "popover" },
+      { name: "shot (screenshot slot)", token: "shot" },
+      { name: "wash 5%", token: "wash" },
     ],
   },
   {
     group: "Ink",
     swatches: [
-      { name: "fg", token: "foreground" },
-      { name: "ink", token: "ink" },
-      { name: "fg-muted", token: "muted-foreground" },
-      { name: "offgray (decor)", token: "offgray" },
+      { name: "foreground", token: "foreground" },
+      { name: "ink (running text)", token: "ink" },
+      { name: "ink-sec 60% (≥18px)", token: "ink-sec" },
+      { name: "muted 60% (small)", token: "muted-foreground" },
+      { name: "ink-mid 50% (meta)", token: "ink-mid" },
+      { name: "offgray 40% (decor)", token: "offgray" },
     ],
   },
   {
-    group: "Accent",
+    group: "Pills",
     swatches: [
-      { name: "accent", token: "primary" },
-      { name: "accent-deep", token: "primary-deep" },
-      { name: "wash 7%", token: "wash" },
+      { name: "primary", token: "primary" },
+      { name: "primary hover", token: "primary-deep" },
+      { name: "on primary", token: "primary-foreground" },
+      { name: "secondary", token: "secondary" },
+    ],
+  },
+  {
+    group: "Link and status",
+    swatches: [
+      { name: "link (orange)", token: "link" },
       { name: "highlight 15%", token: "highlight" },
+      { name: "destructive", token: "destructive" },
+      { name: "success", token: "success" },
     ],
   },
   {
     group: "Lines and focus",
     swatches: [
-      { name: "border", token: "border" },
-      { name: "line", token: "line" },
-      { name: "input", token: "input" },
+      { name: "border / line 10%", token: "border" },
+      { name: "hairline 2.5% (cards)", token: "hairline" },
+      { name: "input 20%", token: "input" },
       { name: "ring", token: "ring" },
-    ],
-  },
-  {
-    group: "Status",
-    swatches: [
-      { name: "destructive", token: "destructive" },
-      { name: "on destructive", token: "destructive-foreground" },
     ],
   },
   {
@@ -102,7 +131,7 @@ const PALETTE = [
   {
     group: "Sidebar",
     swatches: [
-      { name: "sidebar", token: "sidebar" },
+      { name: "sidebar (card colour)", token: "sidebar" },
       { name: "sidebar-accent", token: "sidebar-accent" },
       { name: "sidebar-border", token: "sidebar-border" },
       { name: "sidebar-primary", token: "sidebar-primary" },
@@ -123,115 +152,133 @@ const TYPE_SPECS: Record<
   TypeRole,
   { spec: string; compact: string; use: string; sample: string }
 > = {
+  hero: {
+    spec: "72/79 · 400 · −0.03em",
+    compact: "52/60",
+    use: "The closing call to action on a landing page",
+    sample: "Start your CV now.",
+  },
+  headline: {
+    spec: "36/43 · 400 · −0.02em",
+    compact: "26/33",
+    use: "A centred section headline on a landing page",
+    sample: "Write it, see it, download it.",
+  },
   display: {
-    spec: "28/34 · 700 · opsz 25",
-    compact: "24/30",
-    use: "The page title (hero h1) only",
-    sample: "Drafting paper for documents that open doors",
+    spec: "26/33 · 400 · −0.0125em",
+    compact: "22/29",
+    use: "The hero h1, page titles",
+    sample: "Pilih Pendidikan builds your CV in your browser.",
   },
   title: {
-    spec: "16/22 · 550 · opsz 18",
-    compact: "15/20",
-    use: "Section headings, dialog and sheet titles",
+    spec: "22/29 · 400 · −0.005em",
+    compact: "18/25",
+    use: "Section and feature headings, dialog titles",
     sample: "Work experience",
   },
   subtitle: {
-    spec: "14/20 · 400 · opsz 14",
-    compact: "13/18",
-    use: "Card titles, leads, quotes, chat bubbles",
+    spec: "16/24 · 400 · 0.005em",
+    compact: "14/21",
+    use: "Card titles, marketing body copy, leads",
     sample: "A CV that reads at a glance, on paper and on screen",
   },
   body: {
-    spec: "13/20 · 400 · opsz 14",
-    compact: "12/18",
-    use: "Body copy, control labels, menu rows",
+    spec: "14/21 · 400 · 0.01em",
+    compact: "13/19.5",
+    use: "App body copy, control labels, nav and menu rows",
     sample: "Add the roles you held, newest first, with one line on impact.",
   },
   caption: {
-    spec: "12/16 · 400 · opsz 14",
-    compact: "11/14",
+    spec: "12/18 · 400 · 0.01em",
+    compact: "11/16.5",
     use: "Descriptions, meta, errors, group labels, tooltips",
     sample: "Saved to the cloud 2 minutes ago",
   },
   micro: {
-    spec: "11/14 · 400 · opsz 14",
-    compact: "10/12",
-    use: "Kbd caps, counters, tiny badges; single line",
+    spec: "11/16 · 400",
+    compact: "10/14",
+    use: "Counters and tiny badges; single line",
     sample: "3 of 5 projects",
   },
 };
 
 const WEIGHTS = [
-  { utility: "weight-normal", value: "400 · opsz 14", use: "Text" },
+  { utility: "weight-normal", value: "400", use: "Everything: headings too" },
   {
     utility: "weight-semibold",
-    value: "550 · opsz 18",
-    use: "Headings, names, selected items",
+    value: "500",
+    use: "A selected item or a tiny label that needs it",
   },
   {
     utility: "weight-bold",
-    value: "700 · opsz 25",
-    use: "The display role only",
+    value: "600",
+    use: "Rarely; never for headings",
   },
 ] as const;
 
 const SPACING = [
   { px: 4, className: "w-1", use: "Icon to label" },
-  { px: 8, className: "w-2", use: "Inside a component" },
+  { px: 8, className: "w-2", use: "Inside a component, card gaps" },
   { px: 12, className: "w-3", use: "Between related controls" },
-  { px: 16, className: "w-4", use: "Field rows" },
+  { px: 16, className: "w-4", use: "Field rows, small card padding" },
   { px: 24, className: "w-6", use: "Between groups" },
   { px: 32, className: "w-8", use: "Between cards" },
-  { px: 48, className: "w-12", use: "Section padding" },
+  { px: 48, className: "w-12", use: "Between blocks" },
   { px: 96, className: "w-24", use: "Section rhythm, hero" },
 ] as const;
 
 const RADII = [
   {
-    className: "rounded-none",
-    label: "none · 0",
-    use: "Cards, sections, bands, tables, sheets",
+    className: "rounded-xs",
+    label: "xs · 2px",
+    use: "Tiny chips",
   },
   {
     className: "rounded-sm",
-    label: "sm · 2px",
-    use: "Kbd, badges, chips, tiles, avatars",
-  },
-  {
-    className: "rounded-md",
-    label: "md · 4px",
-    use: "Buttons, nav links, fields",
+    label: "sm · 4px",
+    use: "Cards, rows, menu items, kbd, tooltips",
   },
   {
     className: "rounded-lg",
-    label: "lg · 6px",
-    use: "Windows: dialogs, menus, popovers",
+    label: "lg · 8px",
+    use: "Fields, menus, popovers, dialogs",
   },
   {
     className: "rounded-full",
     label: "full",
-    use: "Status dots, radios, traffic lights",
+    use: "Buttons, badges, tabs, switches, avatars",
   },
 ] as const;
 
-const KNOBS = [
-  { token: "--grid", value: "16px", use: "Graph-paper pitch (6–40px)" },
+const ELEVATION = [
   {
-    token: "--grid-ink",
-    value: "6%",
-    use: "Graph-paper strength (0–20% of offgray)",
+    name: "Page",
+    className: "bg-background border border-border",
+    use: "#14120b, flat",
   },
-  { token: "--node", value: "7px", use: "Diamond size (0 hides them)" },
-  { token: "--rail", value: "112px", use: "Offset of the outer faint rules" },
-  { token: "--grain", value: "0.06", use: "Paper-noise opacity" },
+  {
+    name: "Card",
+    className: "rounded-sm border border-hairline bg-card",
+    use: "One step up, 2.5% hairline, no shadow",
+  },
+  {
+    name: "Flyout",
+    className: "rounded-lg border border-border bg-popover shadow-md",
+    use: "Menus, popovers, selects: two whisper shadows",
+  },
+  {
+    name: "Window",
+    className: "rounded-lg border border-border bg-popover shadow-lg",
+    use: "Dialogs, sheets, toasts: the one soft drop",
+  },
 ] as const;
 
 function SpecimenTable() {
   return (
-    <div className="overflow-x-auto border border-line">
+    <div className="overflow-x-auto rounded-sm border border-hairline bg-card">
       <table className="w-full min-w-[640px] border-collapse text-left">
         <thead>
-          <tr className="border-line border-b bg-pane/50">
+          <tr className="border-border border-b">
             {["Role", "Default", "Compact", "Use", "Specimen"].map(
               (heading) => (
                 <th
@@ -249,7 +296,7 @@ function SpecimenTable() {
           {TYPE_ROLES.map((role) => {
             const spec = TYPE_SPECS[role];
             return (
-              <tr className="border-line border-b last:border-b-0" key={role}>
+              <tr className="border-border border-b last:border-b-0" key={role}>
                 <th
                   className="type-caption whitespace-nowrap px-3 py-3 align-top text-foreground"
                   scope="row"
@@ -267,11 +314,7 @@ function SpecimenTable() {
                 </td>
                 <td className="max-w-80 px-3 py-3 align-top">
                   <p
-                    className={cn(
-                      "truncate text-foreground",
-                      typeClass(role),
-                      role === "display" && "text-primary italic"
-                    )}
+                    className={cn("truncate text-foreground", typeClass(role))}
                   >
                     {spec.sample}
                   </p>
@@ -296,55 +339,37 @@ function SpecimenTable() {
 function Elevation() {
   return (
     <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-      <div className="flex flex-col gap-2">
-        <div className="type-caption grid h-24 place-items-center border border-border bg-card text-muted-foreground">
-          Flat
+      {ELEVATION.map((level) => (
+        <div className="flex flex-col gap-2" key={level.name}>
+          <div
+            className={cn(
+              "type-caption grid h-24 place-items-center text-muted-foreground",
+              level.className
+            )}
+          >
+            {level.name}
+          </div>
+          <p className="type-caption text-muted-foreground">{level.use}</p>
         </div>
-        <p className="type-caption text-muted-foreground">
-          Page, bands, cards, tables
-        </p>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="type-caption inset-shadow-lip grid h-24 place-items-center rounded-sm border border-border/60 bg-card/60 text-muted-foreground">
-          Lip
-        </div>
-        <p className="type-caption text-muted-foreground">
-          Buttons, tiles; gone on hover
-        </p>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="graph-paper type-caption grid h-24 place-items-center border border-border bg-card text-muted-foreground shadow-offset">
-          Offset
-        </div>
-        <p className="type-caption text-muted-foreground">Highlighted cards</p>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="type-caption grid h-24 place-items-center rounded-lg border border-border bg-popover text-muted-foreground shadow-float">
-          Float
-        </div>
-        <p className="type-caption text-muted-foreground">
-          Dialogs, menus, the editor window
-        </p>
-      </div>
+      ))}
     </div>
   );
 }
 
-function RailDiagram() {
+/** Band and Rail drawn to scale: the full-bleed section and the container. */
+function LayoutDiagram() {
   return (
-    <div className="graph-paper overflow-hidden border border-line">
-      <div className="band h-6" />
-      <div className="band">
-        <div className="rail rail-nodes type-caption flex h-20 items-center justify-center bg-background text-muted-foreground">
-          Ruled 1120px column
-        </div>
-      </div>
-      <div className="band">
-        <div className="rail rail-nodes type-caption flex h-12 items-center justify-center bg-background text-muted-foreground">
-          Next band
-        </div>
-      </div>
-      <div className="h-6" />
+    <div className="flex flex-col gap-2 overflow-hidden rounded-sm border border-hairline bg-background py-4">
+      <Band className="bg-pane/50">
+        <Rail className="type-caption flex h-16 items-center justify-center rounded-sm border border-border border-dashed text-muted-foreground">
+          Rail · the 1300px container, 20px clear of the edge
+        </Rail>
+      </Band>
+      <Band className="bg-pane/50">
+        <Rail className="type-caption flex h-10 items-center justify-center rounded-sm border border-border border-dashed text-muted-foreground">
+          Next band · sections are separated by space, not rules
+        </Rail>
+      </Band>
     </div>
   );
 }
@@ -353,12 +378,12 @@ export function FoundationsSection() {
   return (
     <Section
       id="foundations"
-      lead="Colour as roles with measured contrast, then the palette, one family in six roles, the 4px spacing scale, radius, elevation, motion and the drafting frame."
+      lead="Colour as roles with measured contrast, the palette from theme.css, Geist in eight roles at weight 400, the 4px spacing scale, radius, elevation, motion and layout."
       title="Foundations"
     >
       <BlockGrid>
         <Block
-          description="Each surface with its foreground and the contrast measured in the current scheme. Toggle Night Desk (T) to re-measure."
+          description="Each surface with its foreground and the contrast measured live. There is one scheme: cursor.com's dark theme."
           title="Colour roles"
           wide
         >
@@ -375,7 +400,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Grouped as the DESIGN.md groups them. The blue is the only saturated colour outside code; syntax colours stay in the editor mock."
+          description="Every token in theme.css, resolved over the page. The page is warm near-black, cards one step lighter; grey text is ink at 50–60%. Orange is the one saturated colour outside code, and it only marks text links."
           title="Palette"
           wide
         >
@@ -385,7 +410,7 @@ export function FoundationsSection() {
                 <h4 className="type-caption text-muted-foreground">
                   {group.group}
                 </h4>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                   {group.swatches.map((swatch) => (
                     <Swatch
                       key={swatch.token}
@@ -400,7 +425,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Inter Variable 4.0 for everything. Six roles at a default and a compact step; pick by purpose, not by pixel size."
+          description="Geist Variable for everything on screen (Geist Mono for code), on cursor.com's scale: eight roles at a default and a compact step, all weight 400. Pick by purpose, not by pixel size. Print artifacts keep Inter to match their PDFs."
           title="Type roles"
           wide
         >
@@ -408,7 +433,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Each weight is paired with an optical size so a label keeps its width when it gets heavier."
+          description="Headings are not bold: hierarchy comes from size. 500 marks a selected item; 600 is the rare exception."
           title="Weights"
         >
           <Example stack>
@@ -425,8 +450,8 @@ export function FoundationsSection() {
                 >
                   Selected item
                 </span>
-                <span className="type-caption text-muted-foreground tabular-nums">
-                  {weight.utility} · {weight.value}
+                <span className="type-caption text-right text-muted-foreground tabular-nums">
+                  {weight.utility} · {weight.value} · {weight.use}
                 </span>
               </div>
             ))}
@@ -434,7 +459,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Running text inherits ink; headings and controls are black. Links are cobalt; commands sit in a kbd."
+          description="Running text inherits ink; headings and controls are foreground. Links are orange with no underline; commands sit in a kbd."
           title="Running text"
         >
           <Example stack>
@@ -443,7 +468,7 @@ export function FoundationsSection() {
               Every saved CV gets a public link you can send to a recruiter.
               Open the{" "}
               <a
-                className="text-primary underline underline-offset-4"
+                className="text-link transition-[color] duration-140 ease-standard hover:text-link/75"
                 href="#overlays"
               >
                 share dialog
@@ -451,14 +476,20 @@ export function FoundationsSection() {
               from the toolbar, or press <Kbd>S</Kbd> anywhere outside a field.
               The link always shows your latest saved version, never a draft.
             </p>
+            <a
+              className="type-body text-link transition-[color] duration-140 ease-standard hover:text-link/75"
+              href="#overlays"
+            >
+              Learn more →
+            </a>
             <p className="type-caption text-muted-foreground">
-              Descriptions, meta and helper text drop to caption in muted ink.
+              Descriptions, meta and helper text drop to caption in 60% ink.
             </p>
           </Example>
         </Block>
 
         <Block
-          description="A 4px base unit. The scale steps 4 / 8 / 12 / 16 / 24 / 32 / 48 / 96."
+          description="A 4px base unit. The scale steps 4 / 8 / 12 / 16 / 24 / 32 / 48 / 96; cards pad 17.5px (15px when small)."
           title="Spacing"
         >
           <Example stack>
@@ -470,9 +501,11 @@ export function FoundationsSection() {
                 <span className="type-caption text-muted-foreground tabular-nums">
                   {step.px}px
                 </span>
-                {/* Measurements are drafting marks, so offgray: the blue
-                    stays for actions (at most two cobalt places in view). */}
-                <span className={cn("h-3 bg-offgray", step.className)} />
+                {/* Measurements are decoration, so offgray: orange stays
+                    for links. */}
+                <span
+                  className={cn("h-3 rounded-xs bg-offgray", step.className)}
+                />
                 <span className="type-caption text-muted-foreground">
                   {step.use}
                 </span>
@@ -482,7 +515,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Only buttons and small chips round their corners; windows take 6px; cards and sections are square."
+          description="Cards and rows take 4px, fields and windows 8px, and everything you press is a pill."
           title="Radius"
         >
           <Example>
@@ -490,7 +523,7 @@ export function FoundationsSection() {
               <div className="flex w-28 flex-col gap-2" key={radius.label}>
                 <div
                   className={cn(
-                    "size-14 border border-offgray/50 bg-card",
+                    "size-14 border border-input bg-pane",
                     radius.className
                   )}
                 />
@@ -506,7 +539,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Flat drafting paper. An inset lip on pressables, a flat cobalt offset on highlighted cards, one soft drop under floating windows. Never a shadow on an ordinary card."
+          description="Flat. Cards are one step lighter on a 2.5% hairline; flyouts get Cursor's two whisper shadows, windows one soft drop. Never a shadow on a card, never a glow."
           title="Elevation"
           wide
         >
@@ -514,24 +547,25 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="150ms on cubic-bezier(0.4, 0, 0.2, 1). Backgrounds, lips, hover fills, underline colour and link opacity move; layout, sections and overlays never do."
+          description="140ms on cubic-bezier(0.4, 0, 0.2, 1), and only colours move: fills, borders and text. Nothing presses down, nothing slides in, overlays open instantly."
           title="Motion"
         >
           <Example>
             <Button>
               <Download aria-hidden="true" data-icon="inline-start" />
-              Press and hold
+              Hover me
             </Button>
+            <Button variant="secondary">Secondary</Button>
             <span className="type-caption flex items-center gap-2 text-muted-foreground">
               <span
                 aria-hidden="true"
-                className="pulse-dot size-2 rounded-full bg-primary"
+                className="pulse-dot size-2 rounded-full bg-success"
               />
               Live status pulse
             </span>
             <p className="type-caption w-full text-muted-foreground">
-              The press offsets 1px down and scales to 0.99, instantly. The
-              pulse runs only without reduced motion.
+              The pill's fill changes colour on hover; on click it stays put.
+              The pulse runs only without reduced motion.
             </p>
           </Example>
         </Block>
@@ -574,40 +608,11 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Every section is a band with a 1px bottom rule; the ruled column carries a diamond where its rules meet the one above. Graph paper and grain stay barely visible."
-          title="Rails, nodes and paper"
+          description="A Band is a full-bleed section with no border; a Rail is Cursor's 1300px container with 20px gutters. App pages add a 49px header and a docs nav on the card colour, like this one."
+          title="Layout"
+          wide
         >
-          <RailDiagram />
-          <div className="relative h-10 border-line border-t">
-            <Diamond className="-top-1 left-1/2" />
-            <span className="type-caption absolute top-3 left-0 text-muted-foreground">
-              A loose Diamond where any two rules cross.
-            </span>
-          </div>
-        </Block>
-
-        <Block
-          description="Five knobs on :root. Every scheme can set them."
-          title="Tweaks"
-        >
-          <div className="border border-line">
-            {KNOBS.map((knob) => (
-              <div
-                className="grid grid-cols-[6rem_4rem_1fr] gap-3 border-line border-b px-3 py-2 last:border-b-0"
-                key={knob.token}
-              >
-                <code className="type-caption text-foreground">
-                  {knob.token}
-                </code>
-                <span className="type-caption text-muted-foreground tabular-nums">
-                  {knob.value}
-                </span>
-                <span className="type-caption text-muted-foreground">
-                  {knob.use}
-                </span>
-              </div>
-            ))}
-          </div>
+          <LayoutDiagram />
         </Block>
       </BlockGrid>
     </Section>

@@ -15,7 +15,6 @@ import {
 import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, CircleAlert, ExternalLink, X } from "lucide-react";
@@ -108,7 +107,7 @@ export function TrackedJobView({
 
   return (
     <div className="flex flex-col">
-      <Band>
+      <div>
         <PageGutter className="flex flex-col gap-3 py-6">
           <a
             className="type-caption inline-flex w-fit items-center gap-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
@@ -177,17 +176,14 @@ export function TrackedJobView({
             </p>
           ) : null}
         </PageGutter>
-      </Band>
+      </div>
       <PageGutter className="grid gap-8 py-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="flex min-w-0 flex-col gap-8">
           <section
             aria-labelledby="job-description-heading"
             className="flex flex-col gap-2"
           >
-            <h2
-              className="type-subtitle weight-semibold"
-              id="job-description-heading"
-            >
+            <h2 className="type-subtitle" id="job-description-heading">
               {t("detail.description")}
             </h2>
             {posting.description_text ? (
@@ -211,10 +207,7 @@ export function TrackedJobView({
               aria-labelledby="job-requirements-heading"
               className="flex flex-col gap-2"
             >
-              <h2
-                className="type-subtitle weight-semibold"
-                id="job-requirements-heading"
-              >
+              <h2 className="type-subtitle" id="job-requirements-heading">
                 {t("detail.requirements")}
               </h2>
               <ul className="type-body flex max-w-[72ch] list-disc flex-col gap-1 pl-5">
@@ -229,10 +222,7 @@ export function TrackedJobView({
               aria-labelledby="job-salary-heading"
               className="flex flex-col gap-1"
             >
-              <h2
-                className="type-subtitle weight-semibold"
-                id="job-salary-heading"
-              >
+              <h2 className="type-subtitle" id="job-salary-heading">
                 {t("detail.salary")}
               </h2>
               <p className="type-body tabular-nums">{salary}</p>
@@ -245,7 +235,7 @@ export function TrackedJobView({
             className="type-caption flex flex-col gap-2"
           >
             <h2
-              className="type-subtitle weight-semibold text-foreground"
+              className="type-subtitle text-foreground"
               id="job-score-heading"
             >
               {t("inbox.score.heading")}
@@ -264,10 +254,7 @@ export function TrackedJobView({
             aria-labelledby="job-provenance-heading"
             className="flex flex-col gap-2"
           >
-            <h2
-              className="type-subtitle weight-semibold"
-              id="job-provenance-heading"
-            >
+            <h2 className="type-subtitle" id="job-provenance-heading">
               {t("inbox.details.provenance")}
             </h2>
             <ProvenanceFacts
@@ -280,10 +267,7 @@ export function TrackedJobView({
             aria-labelledby="job-duplicates-heading"
             className="flex flex-col gap-2"
           >
-            <h2
-              className="type-subtitle weight-semibold"
-              id="job-duplicates-heading"
-            >
+            <h2 className="type-subtitle" id="job-duplicates-heading">
               {t("inbox.details.duplicates")}
             </h2>
             <DuplicateListings duplicates={0} posting={posting} />

@@ -128,7 +128,7 @@ function SectionHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div className="flex min-w-0 flex-col gap-0.5">
-        <h2 className="type-subtitle weight-semibold" id="cloud-sources-title">
+        <h2 className="type-subtitle" id="cloud-sources-title">
           {t("cloudSources.title")}
         </h2>
         <p className="type-caption max-w-prose text-muted-foreground">
@@ -281,7 +281,7 @@ export function CloudSourcesSection({ nowMs }: { nowMs: number }) {
               sources={shown}
             />
           ) : (
-            <p className="type-body-compact border border-line border-dashed p-4 text-muted-foreground">
+            <p className="type-body-compact rounded-sm border border-line border-dashed p-4 text-muted-foreground">
               {emptyText}
             </p>
           )}

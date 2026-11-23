@@ -64,8 +64,8 @@ describe("portfolio deck palette", () => {
 });
 
 describe("portfolio deck type", () => {
-  it("sets one family, Inter, through the theme's sans stack", () => {
-    expect(captures(styles, FAMILY)).toEqual(["var(--font-sans)"]);
+  it("sets one family, Inter, through the theme's print stack", () => {
+    expect(captures(styles, FAMILY)).toEqual(["var(--font-print)"]);
   });
 
   it("uses only the weights of the PDF's cuts", () => {

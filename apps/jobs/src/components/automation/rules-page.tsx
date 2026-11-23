@@ -482,7 +482,7 @@ export function RulesPage() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
         <p className="type-caption max-w-2xl text-muted-foreground">
           {t("rules.intro")}
         </p>
@@ -521,7 +521,7 @@ export function RulesPage() {
           </div>
         ) : null}
         {rules.isSuccess && list.length === 0 ? (
-          <Empty className="border border-line">
+          <Empty className="rounded-sm border border-line">
             <EmptyHeader>
               <EmptyTitle>{t("rules.empty")}</EmptyTitle>
               <EmptyDescription>{t("rules.emptyHelp")}</EmptyDescription>
@@ -535,7 +535,7 @@ export function RulesPage() {
           </Empty>
         ) : null}
         {list.length > 0 ? (
-          <div className="border border-line">
+          <div className="rounded-sm border border-line">
             <Table className="type-body-compact">
               <TableHeader>
                 <TableRow>
@@ -571,7 +571,7 @@ export function RulesPage() {
                           selection={selection}
                         />
                       </TableCell>
-                      <TableCell className="weight-semibold text-foreground">
+                      <TableCell className="text-foreground">
                         <button
                           className="text-left hover:underline"
                           onClick={() => setEditing(rule)}

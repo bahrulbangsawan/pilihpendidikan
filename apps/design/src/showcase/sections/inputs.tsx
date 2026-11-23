@@ -84,7 +84,6 @@ import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { Block, BlockGrid, Example, Section } from "../layout";
 import { previewState, StateMatrix } from "../state-matrix";
-import { useScheme } from "../theme";
 
 const FIELD_STATES = ["default", "hover", "focus", "disabled", "invalid"];
 
@@ -181,7 +180,6 @@ function invalid(state: string): true | undefined {
 }
 
 function FieldBlock() {
-  const { scheme, setScheme } = useScheme();
   return (
     <Block
       description="A label, a control, a description and an error, stacked 8px apart. FieldGroup spaces fields; FieldSet and FieldLegend group related ones. An invalid Field turns its label destructive while the control carries aria-invalid."
@@ -189,7 +187,7 @@ function FieldBlock() {
       wide
     >
       <div className="grid gap-4 md:grid-cols-2">
-        <Example label="Typical: personal details, one required" paper stack>
+        <Example label="Typical: personal details, one required" stack>
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="field-name">
@@ -309,21 +307,15 @@ function FieldBlock() {
               </Field>
               <FieldSeparator />
               <Field orientation="horizontal">
-                <FieldTitle id="field-theme-label">Theme</FieldTitle>
-                {/* Drives the page scheme, so it never contradicts it. */}
+                <FieldTitle id="field-size-label">Page size</FieldTitle>
                 <ToggleGroup
-                  aria-labelledby="field-theme-label"
-                  onValueChange={(value) => {
-                    if (value === "light" || value === "dark") {
-                      setScheme(value);
-                    }
-                  }}
+                  aria-labelledby="field-size-label"
+                  defaultValue="a4"
                   size="sm"
                   type="single"
-                  value={scheme}
                 >
-                  <ToggleGroupItem value="light">Light</ToggleGroupItem>
-                  <ToggleGroupItem value="dark">Night Desk</ToggleGroupItem>
+                  <ToggleGroupItem value="a4">A4</ToggleGroupItem>
+                  <ToggleGroupItem value="letter">Letter</ToggleGroupItem>
                 </ToggleGroup>
               </Field>
             </FieldGroup>
@@ -376,7 +368,7 @@ function LabelBlock() {
       description="Names a control in the body role and the foreground colour of the control itself. It dims with a disabled peer."
       title="Label"
     >
-      <Example label="Typical, beside a checkbox, disabled" paper stack>
+      <Example label="Typical, beside a checkbox, disabled" stack>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="label-university">University</Label>
           <Input defaultValue="Universitas Brawijaya" id="label-university" />
@@ -400,7 +392,7 @@ function InputGroupBlock() {
       description="Addons inside the field shell: icons, prefixes and units, kbd hints and small buttons. Focus and errors light the whole shell."
       title="InputGroup"
     >
-      <Example label="Icons, text and kbd" paper stack>
+      <Example label="Icons, text and kbd" stack>
         <InputGroup>
           <InputGroupAddon>
             <Search aria-hidden="true" />
@@ -508,12 +500,12 @@ function InputGroupBlock() {
 function InputBlock() {
   return (
     <Block
-      description="A single-line field: 36px like the buttons beside it, a line outline on half-transparent paper, the body role (16px on touch screens). Focus turns the outline cobalt with a soft halo; there is no hover change."
+      description="A single-line field, cursor.com's docs search box: 36px like the buttons beside it, 8px radius, a 10% border on the page colour, the body role (16px on touch screens). Hover and focus deepen the border to 20%; focus adds the 2px ink outline."
       title="Input"
       wide
     >
       <div className="grid gap-4 md:grid-cols-2">
-        <Example label="Typical" paper stack>
+        <Example label="Typical" stack>
           <Field>
             <FieldLabel htmlFor="input-email">Email</FieldLabel>
             <Input
@@ -577,7 +569,7 @@ function TextareaBlock() {
       title="Textarea"
       wide
     >
-      <Example label="Typical: a professional summary" paper stack>
+      <Example label="Typical: a professional summary" stack>
         <Field>
           <FieldLabel htmlFor="textarea-summary">
             Professional summary
@@ -635,12 +627,12 @@ function DegreeOptions() {
 function SelectBlock() {
   return (
     <Block
-      description="A short fixed list behind the field shell. The menu opens in a window (6px, hairline border, float shadow) with 2px rows; the chosen row goes semibold with a check. It opens and closes instantly."
+      description="A short fixed list behind the field shell. The menu opens in Cursor's flyout (8px, 10% border, two whisper shadows) with 32px rows at 4px radius; the chosen row shows a check. It opens and closes instantly."
       title="Select"
       wide
     >
       <div className="grid gap-4 md:grid-cols-3">
-        <Example label="Typical: degree, grouped" paper stack>
+        <Example label="Typical: degree, grouped" stack>
           <Field>
             <FieldLabel htmlFor="select-degree">Degree</FieldLabel>
             <Select defaultValue="s1">
@@ -744,7 +736,7 @@ function NativeSelectBlock() {
       wide
     >
       <div className="grid gap-4 md:grid-cols-2">
-        <Example label="Typical, small, with option groups" paper>
+        <Example label="Typical, small, with option groups">
           <Field className="w-auto">
             <FieldLabel htmlFor="native-year">Graduation year</FieldLabel>
             <NativeSelect defaultValue="2026" id="native-year">
@@ -888,11 +880,7 @@ function ComboboxBlock() {
       description="A searchable select for long lists: provinces, universities, countries. Type to filter; an empty search says so in the list."
       title="Combobox"
     >
-      <Example
-        label="Typical: province (type “Atlantis” for no matches)"
-        paper
-        stack
-      >
+      <Example label="Typical: province (type “Atlantis” for no matches)" stack>
         <Field>
           <FieldLabel htmlFor="combobox-province">Province</FieldLabel>
           <ProvinceCombobox id="combobox-province" />
@@ -950,10 +938,10 @@ function ComboboxBlock() {
 function CheckboxBlock() {
   return (
     <Block
-      description="A 16px square with a 2px radius. Checked or mixed, it fills cobalt with a white tick or dash."
+      description="A 16px square with a 4px radius and a 20% border on the page colour. Checked or mixed, it fills with the light pill colour and a dark tick or dash."
       title="Checkbox"
     >
-      <Example label="Typical: sections to include" paper stack>
+      <Example label="Typical: sections to include" stack>
         <FieldSet>
           <FieldLegend variant="label">Sections to include</FieldLegend>
           <FieldGroup className="gap-3" data-slot="checkbox-group">
@@ -998,10 +986,10 @@ function CheckboxBlock() {
 function RadioGroupBlock() {
   return (
     <Block
-      description="Pick one of a few. The one round control: a 16px ring that turns cobalt around a cobalt dot. Wrap a whole Field in a FieldLabel for a choice card."
+      description="Pick one of a few: a 16px circle with a 20% border. Checked, it fills with the light pill colour around a small dark dot. Wrap a whole Field in a FieldLabel for a choice card."
       title="RadioGroup"
     >
-      <Example label="Typical: inside a FieldSet" paper stack>
+      <Example label="Typical: inside a FieldSet" stack>
         <FieldSet>
           <FieldLegend variant="label">Paper size</FieldLegend>
           <RadioGroup defaultValue="a4">
@@ -1068,10 +1056,10 @@ function RadioGroupBlock() {
 function SwitchBlock() {
   return (
     <Block
-      description="An instant on/off setting. Boxy, not a pill: a 2px track with a 2px square thumb; on, the track fills cobalt. The thumb jumps, it does not slide."
+      description="An instant on/off setting: a pill track on pane-2 with a round muted thumb. On, the track fills with the light pill colour and the thumb turns dark. The thumb jumps; only colours transition."
       title="Switch"
     >
-      <Example label="Typical: sharing settings" paper stack>
+      <Example label="Typical: sharing settings" stack>
         <FieldGroup>
           <Field orientation="horizontal">
             <FieldContent>
@@ -1118,10 +1106,10 @@ function SliderBlock() {
   const [salary, setSalary] = useState([5_000_000, 12_000_000]);
   return (
     <Block
-      description="A value on a scale: a thin pane-2 track, a cobalt range and a small square chip for each thumb."
+      description="A value on a scale: a thin round pane-2 track, a light ink range and a round 14px thumb on the page colour for each end."
       title="Slider"
     >
-      <Example label="Typical: photo size" paper stack>
+      <Example label="Typical: photo size" stack>
         <div className="flex items-center justify-between gap-4">
           <span className="type-body text-foreground" id="slider-photo-label">
             Photo size
@@ -1189,10 +1177,10 @@ function InputOTPBlock() {
   const [expired, setExpired] = useState("913027");
   return (
     <Block
-      description="A short code in 36px slots joined by hairlines. The active slot lifts with the field focus and a caret."
+      description="A short code in 36px slots sharing one 10% border, 8px at the outer ends. The active slot lifts with the field focus (20% border, 2px ink outline) and a caret."
       title="InputOTP"
     >
-      <Example label="Typical: email sign-in" paper stack>
+      <Example label="Typical: email sign-in" stack>
         <Field>
           <FieldLabel htmlFor="otp-signin">Verification code</FieldLabel>
           <InputOTP
@@ -1263,7 +1251,7 @@ function CalendarBlock() {
   const [birth, setBirth] = useState<Date | undefined>(new Date(2003, 2, 17));
   return (
     <Block
-      description="Days are 32px, 2px chips. The selected day and both ends of a range fill cobalt and go semibold, the days between sit on pane, today sits on pane-2."
+      description="Days are 32px, 4px chips at weight 400. The selected day and both ends of a range fill with the light pill colour, the days between sit on pane, today on pane-2. The arrows are round ghost buttons."
       title="Calendar"
       wide
     >
@@ -1325,7 +1313,7 @@ function FormPiecesBlock() {
       description="The builders' composed fields (@rulisme/ui/form): a label, one control and an error line, 6px apart. MonthPicker pairs two native selects."
       title="FormField, FormFieldCustom, MonthPicker"
     >
-      <Example label="FormField: text, error, multiline, numeric" paper stack>
+      <Example label="FormField: text, error, multiline, numeric" stack>
         <FormField label="Full name" onChange={setName} value={name} />
         <FormField
           error="Enter a full address, like rina@ub.ac.id."
@@ -1383,7 +1371,7 @@ function PhoneInputBlock() {
       description="An international number with a searchable country list. The flag button and the number share one field shell."
       title="PhoneInput"
     >
-      <Example label="Typical: Indonesia first" paper stack>
+      <Example label="Typical: Indonesia first" stack>
         <Field>
           <FieldLabel htmlFor="phone-main">Phone</FieldLabel>
           <PhoneInput
@@ -1433,7 +1421,7 @@ export function InputsSection() {
   return (
     <Section
       id="inputs"
-      lead="Fields sit at the same 36px as the buttons beside them, outlined in line and focused in cobalt."
+      lead="Fields sit at the same 36px as the pills beside them: 8px corners, a 10% border on the page colour, 20% and a 2px ink outline on focus."
       title="Inputs"
     >
       <BlockGrid>

@@ -4,9 +4,9 @@ import { cn } from "../lib/utils";
 
 import { Button } from "./button";
 
-// Zedative confirmation window: the dialog recipe (6px corners, hairline,
-// float shadow over a flat 40% `shot` backdrop), a title-role question, a
-// caption-role consequence, and the actions on a `line`-ruled pane band. It
+// cursor.com confirmation window: the dialog recipe (8px corners, 10%
+// border, the soft drop over a flat 60% `shot` scrim), a title-role
+// question, the consequence in muted body text, and right-aligned pills. It
 // opens and closes instantly.
 
 function AlertDialog({
@@ -37,7 +37,7 @@ function AlertDialogOverlay({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Overlay>) {
   return (
     <AlertDialogPrimitive.Overlay
-      className={cn("fixed inset-0 z-50 bg-shot/40", className)}
+      className={cn("fixed inset-0 z-50 bg-shot/60", className)}
       data-slot="alert-dialog-overlay"
       {...props}
     />
@@ -56,7 +56,7 @@ function AlertDialogContent({
       <AlertDialogOverlay />
       <AlertDialogPrimitive.Content
         className={cn(
-          "group/alert-dialog-content type-body fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-full -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-lg border border-border bg-popover p-4 text-ink shadow-float outline-none data-[size=default]:max-w-[calc(100%-2rem)] data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm",
+          "group/alert-dialog-content type-body fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-full -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-lg border border-border bg-popover p-5 text-ink shadow-lg outline-none data-[size=default]:max-w-[calc(100%-2rem)] data-[size=sm]:max-w-xs data-[size=default]:sm:max-w-sm",
           className
         )}
         data-size={size}
@@ -90,7 +90,7 @@ function AlertDialogFooter({
   return (
     <div
       className={cn(
-        "-mx-4 -mb-4 flex flex-col-reverse gap-2 border-line border-t bg-pane/40 p-4 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
+        "mt-1 flex flex-col-reverse gap-2 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
         className
       )}
       data-slot="alert-dialog-footer"
@@ -138,7 +138,7 @@ function AlertDialogDescription({
   return (
     <AlertDialogPrimitive.Description
       className={cn(
-        "type-caption text-balance text-muted-foreground md:text-pretty *:[a]:text-primary *:[a]:underline *:[a]:underline-offset-4",
+        "type-body text-balance text-muted-foreground md:text-pretty *:[a]:text-link *:[a]:hover:text-link/75",
         className
       )}
       data-slot="alert-dialog-description"

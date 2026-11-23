@@ -425,7 +425,7 @@ export function RunsPage({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="band flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-2 sm:px-6">
         <label
           className="type-body-compact text-muted-foreground"
           htmlFor={`${id}-state`}
@@ -491,7 +491,7 @@ export function RunsPage({
           </div>
         ) : null}
         {tasks.isSuccess && list.length === 0 ? (
-          <Empty className="border border-line">
+          <Empty className="rounded-sm border border-line">
             <EmptyHeader>
               <EmptyTitle>
                 {search.state ? t("runs.emptyFiltered") : t("runs.empty")}
@@ -501,7 +501,7 @@ export function RunsPage({
           </Empty>
         ) : null}
         {list.length > 0 ? (
-          <div className="border border-line">
+          <div className="rounded-sm border border-line">
             <Table className="type-body-compact">
               <TableHeader>
                 <TableRow>

@@ -1,8 +1,9 @@
-// The sidebar of 12 §2.1, drawn as a Zedative ruled column: paper, a 1px
-// rule on the right, three caption-labelled groups of compact rows, the
-// active row on pane-2, counters as micro tabular chips and the single-key
-// hint shown on hover / focus. The footer carries the CLI status and the
-// signed-in account. Desktop shows it as a column; phones open it in a Sheet.
+// The sidebar of 12 §2.1, drawn like cursor.com/docs' nav: the page colour
+// with a 1px rule on the right, three groups under 12px grey labels, 32px
+// rows (4px radius, a warm fill on hover), the current page in orange with
+// no fill, counters as plain tabular numbers and the single-key hint shown
+// on hover / focus. The footer carries the CLI status and the signed-in
+// account. Desktop shows it as a column; phones open it in a Sheet.
 
 import type { BoardResponse } from "@pilihpendidikan/jobs-contracts/api";
 import { cn } from "@rulisme/ui/lib/utils";
@@ -19,7 +20,7 @@ import { isCurrent, NAV_GROUPS } from "./nav-items";
 type BoardCounts = BoardResponse["counts"];
 
 const ROW =
-  "group/row flex h-8 items-center gap-2.5 rounded-md px-2 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring";
+  "group/row flex h-8 items-center gap-2.5 rounded-sm px-2 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0";
 
 function NavRow({
   item,
@@ -44,10 +45,8 @@ function NavRow({
         aria-keyshortcuts={item.shortcut}
         className={cn(
           ROW,
-          "type-body-compact",
-          current
-            ? "weight-semibold bg-pane-2 text-foreground"
-            : "text-ink hover:bg-pane/70 hover:text-foreground"
+          "type-body",
+          current ? "text-link" : "text-foreground hover:bg-pane/70"
         )}
         href={item.href}
         onClick={onNavigate}
@@ -56,19 +55,12 @@ function NavRow({
           aria-hidden="true"
           className={cn(
             "size-4 shrink-0",
-            current ? "text-foreground" : "text-muted-foreground"
+            current ? "text-link" : "text-muted-foreground"
           )}
         />
         <span className="min-w-0 flex-1 truncate">{t(`nav.${item.key}`)}</span>
         {count > 0 ? (
-          <span
-            className={cn(
-              "type-micro rounded-xs border px-1.5 tabular-nums",
-              current
-                ? "border-line bg-card text-foreground"
-                : "border-line text-muted-foreground"
-            )}
-          >
+          <span className="type-caption text-muted-foreground tabular-nums">
             <span className="sr-only">{t("nav.countLabel", { count })}</span>
             <span aria-hidden="true">{count}</span>
           </span>
@@ -136,7 +128,7 @@ function AccountRow({ onNavigate }: { onNavigate?: () => void }) {
     >
       <span
         aria-hidden="true"
-        className="type-micro weight-semibold flex size-6 shrink-0 items-center justify-center rounded-xs border border-line bg-card text-foreground"
+        className="type-caption flex size-6 shrink-0 items-center justify-center rounded-full bg-pane-2 text-foreground"
       >
         {email.charAt(0).toUpperCase()}
       </span>
@@ -163,21 +155,21 @@ export function SidebarNav({
     <div className="flex h-full min-h-0 flex-col">
       <nav
         aria-label={t("nav.sidebar")}
-        className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-3 py-4"
+        className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-4 py-6"
       >
         {NAV_GROUPS.map((group) => (
           <section
             aria-labelledby={`nav-group-${group.key}`}
-            className="flex flex-col gap-1"
+            className="flex flex-col"
             key={group.key}
           >
             <h2
-              className="type-caption px-2 pb-1 text-muted-foreground"
+              className="type-caption px-2 pb-1.5 text-muted-foreground"
               id={`nav-group-${group.key}`}
             >
               {t(`nav.group.${group.key}`)}
             </h2>
-            <ul className="flex flex-col gap-px">
+            <ul className="flex flex-col">
               {group.items.map((item) => (
                 <NavRow
                   counts={counts}
@@ -190,7 +182,7 @@ export function SidebarNav({
           </section>
         ))}
       </nav>
-      <div className="flex flex-col gap-1 border-line border-t px-3 py-3">
+      <div className="flex flex-col gap-1 border-border border-t px-4 py-3">
         <DeviceStatus onNavigate={onNavigate} />
         <AccountRow onNavigate={onNavigate} />
       </div>

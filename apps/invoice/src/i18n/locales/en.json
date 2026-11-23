@@ -18,10 +18,6 @@
     "clearAll": "Clear All",
     "mcp": "MCP"
   },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
-  },
   "confirm": {
     "title": "Clear all data?",
     "description": "This removes everything currently in the form. This action cannot be undone.",

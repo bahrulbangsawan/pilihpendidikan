@@ -181,10 +181,7 @@ export function CloudSourceEditor({ source }: { source: CloudSourceView }) {
       onSubmit={save}
     >
       <div className="flex flex-col gap-0.5">
-        <h3
-          className="type-body weight-semibold text-foreground"
-          id={`${id}-title`}
-        >
+        <h3 className="type-body text-foreground" id={`${id}-title`}>
           {t("cloudSources.editor.title")}
         </h3>
         <p className="type-caption text-muted-foreground">
@@ -360,7 +357,7 @@ export function CloudSourceEditor({ source }: { source: CloudSourceView }) {
       </Field>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="type-body weight-semibold mb-1 text-foreground">
+        <legend className="type-body mb-1 text-foreground">
           {t("cloudSources.editor.rateTitle")}
         </legend>
         <div className="grid grid-cols-2 items-end gap-3">

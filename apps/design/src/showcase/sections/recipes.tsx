@@ -7,10 +7,10 @@ import {
 } from "@rulisme/ui/ui/accordion";
 import { AspectRatio } from "@rulisme/ui/ui/aspect-ratio";
 import { Avatar, AvatarFallback } from "@rulisme/ui/ui/avatar";
+import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@rulisme/ui/ui/card";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Switch } from "@rulisme/ui/ui/switch";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -31,46 +31,35 @@ import { Block, BlockGrid, Section } from "../layout";
 /* ── Editor window ─────────────────────────────────────────────────────── */
 
 /**
- * A band inside the column: the editor window rests on its bottom rule, the
- * "Watch demo" tab hangs from its top rule, and a diamond marks each place
- * the band's rules cross the column's side rules. The band clips the
- * window's shadow at its bottom rule; the diamonds sit outside the clip.
- * The negative margins undo the Section column's padding (px-5, sm:px-10 in
- * layout.tsx) so the band meets the side rules. Node offsets follow `--node`.
+ * The product stage, like the app shots on cursor.com: the editor window on
+ * a card one step up from the page, with a secondary pill above it.
  */
 function EditorStage() {
-  const across = "-left-[calc(var(--node)/2_+_0.5px)]";
-  const acrossEnd = "-right-[calc(var(--node)/2_+_0.5px)]";
-  const top = "-top-[calc(var(--node)/2_-_0.5px)]";
-  const bottom = "-bottom-[calc(var(--node)/2_-_0.5px)]";
   return (
-    <div className="relative -mx-5 sm:-mx-10">
-      <Diamond className={cn(top, across)} />
-      <Diamond className={cn(top, acrossEnd)} />
-      <Diamond className={cn(bottom, across)} />
-      <Diamond className={cn(bottom, acrossEnd)} />
-      <div className="relative overflow-hidden border-line border-y bg-wash px-5 pt-5 sm:px-10">
-        <a
-          className="type-caption absolute top-0 left-1/2 z-10 flex h-7 -translate-x-1/2 items-center gap-1.5 rounded-b-md border border-border border-t-0 bg-card px-3 text-foreground shadow-float transition-[background-color] hover:bg-pane"
-          href="#example-screen"
-        >
-          <Play aria-hidden="true" className="size-3 fill-current" />
+    <div className="flex flex-col items-center gap-5 rounded-sm border border-hairline bg-card px-4 pt-6 pb-4 sm:px-10 sm:pb-10">
+      <Button asChild size="sm" variant="secondary">
+        <a href="#example-screen">
+          <Play
+            aria-hidden="true"
+            className="fill-current"
+            data-icon="inline-start"
+          />
           Watch demo
         </a>
-        <EditorMock />
-      </div>
+      </Button>
+      <EditorMock className="w-full" />
     </div>
   );
 }
 
 /* ── Feature cells ─────────────────────────────────────────────────────── */
 
-/** A dark 16:9 screenshot placeholder in a 1px dashed frame 6px outside. */
+/** A 16:9 screenshot slot on the near-black shot colour, 4px corners. */
 function ShotFrame({ icon: Icon, url }: { icon: LucideIcon; url: string }) {
   return (
-    <div className="outline-dashed outline-1 outline-line outline-offset-6">
+    <div className="overflow-hidden rounded-sm border border-hairline">
       <AspectRatio className="bg-shot" ratio={16 / 9}>
-        <div className="dark flex size-full flex-col items-center justify-center gap-1.5 p-3 text-center">
+        <div className="flex size-full flex-col items-center justify-center gap-1.5 p-3 text-center">
           <Icon aria-hidden="true" className="size-4 text-muted-foreground" />
           <span className="type-caption text-muted-foreground">{url}</span>
         </div>
@@ -132,24 +121,32 @@ const FEATURE_QUESTIONS = [
 
 function FeatureCells() {
   return (
-    <div className="border border-line bg-background">
-      <div className="grid md:grid-cols-3">
+    <div className="flex flex-col gap-10">
+      <div className="grid gap-4 md:grid-cols-3">
         {FEATURES.map((feature) => (
           <div
-            className="flex flex-col gap-5 border-line border-b p-6 md:border-r md:border-b-0 md:last:border-r-0"
+            className="flex flex-col gap-5 rounded-sm border border-hairline bg-card p-4.5"
             key={feature.id}
           >
             <ShotFrame icon={feature.icon} url={feature.url} />
             <div className="flex flex-col gap-1.5">
-              <h4 className="type-subtitle weight-semibold">{feature.title}</h4>
-              <p className="type-body">{feature.body}</p>
+              <h4 className="type-subtitle">{feature.title}</h4>
+              <p className="type-body text-muted-foreground">{feature.body}</p>
+              <a
+                className="type-body mt-1 text-link transition-[color] duration-140 ease-standard hover:text-link/75"
+                href={`https://${feature.url}`}
+                rel="noopener"
+                target="_blank"
+              >
+                Learn more →
+              </a>
             </div>
           </div>
         ))}
       </div>
-      <Accordion className="border-line border-t" collapsible type="single">
+      <Accordion className="border-border border-t" collapsible type="single">
         {FEATURE_QUESTIONS.map((item) => (
-          <AccordionItem className="px-6" key={item.id} value={item.id}>
+          <AccordionItem key={item.id} value={item.id}>
             <AccordionTrigger>{item.question}</AccordionTrigger>
             <AccordionContent>
               <p className="max-w-prose">{item.answer}</p>
@@ -195,19 +192,13 @@ const TESTIMONIALS = [
   },
 ] as const;
 
-const RAISED_TESTIMONIAL = "dimas";
-
 function Testimonials() {
   return (
-    <div className="grid items-start gap-8 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-3">
       {TESTIMONIALS.map((testimonial) => {
-        const raised = testimonial.id === RAISED_TESTIMONIAL;
         return (
           <figure
-            className={cn(
-              "flex flex-col gap-5 border border-border bg-card p-6",
-              raised ? "graph-paper shadow-offset" : "md:mt-8"
-            )}
+            className="flex h-full flex-col justify-between gap-6 rounded-sm border border-hairline bg-card p-6"
             key={testimonial.id}
           >
             <blockquote className="type-subtitle text-foreground">
@@ -222,7 +213,7 @@ function Testimonials() {
                 <AvatarFallback>{testimonial.initials}</AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-col">
-                <span className="type-body weight-semibold text-foreground">
+                <span className="type-body text-foreground">
                   {testimonial.name}
                 </span>
                 <span className="type-caption text-muted-foreground">
@@ -301,17 +292,17 @@ const count = new Intl.NumberFormat("en-US");
 
 function StatsBand() {
   return (
-    <div className="border border-line bg-background">
+    <div className="rounded-sm border border-hairline bg-card">
       <div className="flex flex-col items-center gap-2 px-6 py-10 text-center">
-        <h4 className="type-title text-primary">
+        <h4 className="type-headline-compact text-foreground">
           Made with students across Indonesia
         </h4>
-        <p className="type-body max-w-md">
+        <p className="type-subtitle max-w-md text-ink-sec">
           Templates, translations and fixes come from people who were writing
           their own CV at the time.
         </p>
       </div>
-      <div className="border-line border-y px-6 py-3">
+      <div className="border-border border-y px-6 py-3">
         <p className="sr-only">
           {CONTRIBUTORS.length} people have contributed.
         </p>
@@ -333,7 +324,7 @@ function StatsBand() {
       <dl className="grid grid-cols-2 md:grid-cols-4">
         {STATS.map((stat) => (
           <div
-            className="flex flex-col-reverse justify-end gap-1 border-line not-last:border-r p-4 max-md:nth-2:border-r-0 max-md:nth-[-n+2]:border-b sm:p-6"
+            className="flex flex-col-reverse justify-end gap-1 border-border not-last:border-r p-4 max-md:nth-2:border-r-0 max-md:nth-[-n+2]:border-b sm:p-6"
             key={stat.id}
           >
             <dt className="type-caption text-muted-foreground">{stat.label}</dt>
@@ -470,13 +461,13 @@ function TemplateTiles() {
           return (
             <li className={ROW_FADE[row]} inert={faded} key={template.id}>
               <a
-                className="inset-shadow-lip flex h-full flex-col gap-1.5 rounded-sm border border-border/60 bg-card/60 p-3 transition-[background-color,box-shadow] hover:inset-shadow-none hover:bg-pane/70"
+                className="flex h-full flex-col gap-1.5 rounded-sm border border-hairline bg-card p-4 transition-[background-color] duration-140 ease-standard hover:bg-pane"
                 href={BUILDER_URL[template.builder]}
                 rel="noopener"
                 target="_blank"
               >
                 <span className="flex items-baseline justify-between gap-2">
-                  <span className="type-body weight-semibold min-w-0 text-foreground">
+                  <span className="type-body min-w-0 text-foreground">
                     {template.name}
                   </span>
                   <span className="type-caption flex shrink-0 items-center gap-0.5 text-muted-foreground tabular-nums">
@@ -516,7 +507,7 @@ function PlanFeatures({ items }: { items: readonly string[] }) {
         <li className="type-body flex gap-2" key={item}>
           <Check
             aria-hidden="true"
-            className="mt-0.75 size-3.5 shrink-0 text-primary"
+            className="mt-0.75 size-3.5 shrink-0 text-muted-foreground"
           />
           {item}
         </li>
@@ -528,9 +519,7 @@ function PlanFeatures({ items }: { items: readonly string[] }) {
 function PlanPrice({ note }: { note: string }) {
   return (
     <p className="flex flex-wrap items-baseline gap-x-2">
-      <span className="type-display weight-semibold text-primary tabular-nums">
-        Rp 0
-      </span>
+      <span className="type-headline text-foreground tabular-nums">Rp 0</span>
       <span className="type-caption text-muted-foreground">{note}</span>
     </p>
   );
@@ -548,15 +537,11 @@ function PlanCard({
   action: ReactNode;
 }) {
   return (
-    <Card className={cn(highlighted && "graph-paper shadow-offset")}>
+    <Card className={cn(highlighted && "border-input")}>
       <CardHeader className="gap-2">
-        <p
-          className={cn(
-            "type-caption",
-            highlighted ? "text-primary" : "text-muted-foreground"
-          )}
-        >
+        <p className="type-subtitle flex items-center gap-2 text-foreground">
           {label}
+          {highlighted ? <Badge>Recommended</Badge> : null}
         </p>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-5">
@@ -644,11 +629,7 @@ function Plans() {
 
       <PlanCard
         action={
-          <Button
-            asChild
-            className="w-full bg-wash text-primary hover:bg-highlight"
-            variant="secondary"
-          >
+          <Button asChild className="w-full" variant="secondary">
             <a
               href="https://api.pilihpendidikan.com/connect"
               rel="noopener"
@@ -669,27 +650,25 @@ function Plans() {
 
 /* ── The letter ────────────────────────────────────────────────────────── */
 
-/** The wordmark diamond pressed into a round cobalt seal. */
+/** The lettermark pressed into a round seal in the light pill colour. */
 function Seal({ className }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
       className={cn(
-        "grid size-12 place-items-center rounded-full bg-primary shadow-primary",
+        "type-title grid size-12 place-items-center rounded-full bg-primary text-primary-foreground",
         className
       )}
     >
-      <span className="grid size-9 place-items-center rounded-full border border-primary-foreground/40">
-        <span className="size-3 rotate-45 border border-primary-foreground" />
-      </span>
+      Z
     </span>
   );
 }
 
 function Letter() {
   return (
-    <div className="graph-paper relative mx-auto w-full max-w-2xl border border-border bg-pane px-4 pt-16 pb-4 shadow-offset [--grid:12px] sm:px-10 sm:pb-10">
-      {/* The flap: two hairlines from the envelope's top corners to the seal. */}
+    <div className="relative mx-auto w-full max-w-2xl rounded-sm border border-hairline bg-card px-4 pt-16 pb-4 sm:px-10 sm:pb-10">
+      {/* The flap: two 10% lines from the envelope's top corners to the seal. */}
       <svg
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-12 w-full text-line"
@@ -705,10 +684,10 @@ function Letter() {
         />
       </svg>
       <Seal className="absolute top-6 left-1/2 z-10 -translate-x-1/2" />
-      <article className="relative border border-border bg-[radial-gradient(circle,transparent_3px,var(--gridline)_3px,var(--gridline)_4px,transparent_4px)] bg-card bg-size-[14px_14px] px-6 py-8 sm:px-10">
+      <article className="relative rounded-sm border border-border bg-background px-6 py-8 sm:px-10">
         <p className="type-caption text-muted-foreground">A letter</p>
         <h4 className="type-title mt-2">To everyone writing their first CV</h4>
-        <div className="type-body mt-4 flex flex-col gap-3">
+        <div className="type-subtitle mt-4 flex flex-col gap-3">
           <p>
             The blank page is the hardest part of applying, so we made the first
             draft quick. Start with what you have done, even if it feels small:
@@ -721,10 +700,8 @@ function Letter() {
             pick up feeling ready.
           </p>
         </div>
-        <hr className="my-6 border-line" />
-        <p className="type-subtitle text-foreground italic">
-          Tim pilihpendidikan
-        </p>
+        <hr className="my-6 border-border" />
+        <p className="type-subtitle text-foreground">Tim pilihpendidikan</p>
         <p className="type-caption text-muted-foreground">October 2026</p>
       </article>
     </div>
@@ -733,60 +710,60 @@ function Letter() {
 
 /* ── Section ───────────────────────────────────────────────────────────── */
 
-// Renders: the DESIGN.md recipes (editor window, feature cells, testimonials,
+// Renders: the recipes (editor window, feature cells, testimonials,
 // stats band, template tiles, plans, the letter).
 export function RecipesSection() {
   return (
     <Section
       id="recipes"
-      lead="The DESIGN.md's named pieces rebuilt from tokens and components, in the builders' own words."
+      lead="cursor.com's marketing pieces rebuilt from tokens and components, in the builders' own words."
       title="Recipes"
     >
       <BlockGrid>
         <Block
-          description="The product shown, not described: a light-theme window drawn in HTML. Documents grouped by builder, an agent thread and cv.json with a typo underlined. Below md only the code pane stays."
+          description="The product shown, not described: a dark editor window drawn in HTML on a card stage. Documents grouped by builder, an agent thread and cv.json with a typo underlined. Below md only the code pane stays."
           title="Editor window"
           wide
         >
           <EditorStage />
         </Block>
         <Block
-          description="Three butted cells, each with a dashed-frame screenshot, a semibold subtitle and body text; full-width rows ending in + below them."
+          description="Three cards 16px apart, each with a 16:9 shot, a 16px title at weight 400, muted body text and an orange Learn more →; full-width FAQ rows ending in + below them."
           title="Feature cells"
           wide
         >
           <FeatureCells />
         </Block>
         <Block
-          description="Quotes in black at the subtitle role, one phrase marked; the middle card is raised on graph paper with the flat cobalt offset."
+          description="Quotes in foreground at the subtitle role, one phrase marked in the 15% orange highlight; equal cards on the hairline, nothing raised."
           title="Testimonials"
           wide
         >
           <Testimonials />
         </Block>
         <Block
-          description="A cobalt title, a ribbon of 20px avatars between hairlines, then four stat cells with display-size tabular numbers."
+          description="A centred headline at weight 400, a ribbon of 20px avatars between 10% rules, then four stat cells with display-size tabular numbers."
           title="Stats band"
           wide
         >
           <StatsBand />
         </Block>
         <Block
-          description="2px tiles with the lip, a download count, one line of description and the author. The last rows fade to 55% and 22%."
+          description="4px card tiles that fill with pane on hover, a download count, one line of description and the author. The last rows fade to 55% and 22%; the orange link says there is more."
           title="Template tiles"
           wide
         >
           <TemplateTiles />
         </Block>
         <Block
-          description="Square cards 32px apart: a caption label, a display-size cobalt price, cobalt ticks and a full-width button pinned to the bottom. The middle card is on graph paper with the primary action."
+          description="cursor.com's pricing cards: a 16px plan name, a headline-size price at weight 400, muted ticks and a full-width pill pinned to the bottom. The recommended card takes the 20% border, the orange badge and the light primary pill."
           title="Plans"
           wide
         >
           <Plans />
         </Block>
         <Block
-          description="A bordered envelope with graph paper and the flat offset, holding a sheet with a ring pattern under a round seal."
+          description="A card envelope with a 10% flap, holding a sheet on the page colour under a round seal in the light pill colour."
           title="The letter"
           wide
         >

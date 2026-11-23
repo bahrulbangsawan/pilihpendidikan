@@ -183,7 +183,7 @@ export function InboxToolbar({
   const filters = activeFilterCount(search);
 
   return (
-    <div className="band flex flex-wrap items-center gap-x-2 gap-y-1.5 px-4 py-2 sm:px-6">
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 px-4 py-2 sm:px-6">
       <fieldset className="flex items-center gap-0.5">
         <legend className="sr-only">{t("inbox.tabsLabel")}</legend>
         {INBOX_TABS.map((value: InboxTab) => {

@@ -5,10 +5,10 @@ import { cn } from "../lib/utils";
 
 import { Button } from "./button";
 
-// Zedative side panel: square like a band, `bg-2` paper with the float
-// shadow and one hairline on its inner edge, over the flat 40% `shot`
-// backdrop. It appears in place, without sliding. The title takes the title
-// role; a footer sits on a `line` rule over a faint pane band.
+// cursor.com side panel: square edges against the viewport, the popover
+// fill with the soft drop and a 10% border on its inner edge, over the flat 60%
+// `shot` scrim. It appears in place, without sliding. The title takes the
+// title role at weight 400, the description muted body text.
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -38,7 +38,7 @@ function SheetOverlay({
 }: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
   return (
     <SheetPrimitive.Overlay
-      className={cn("fixed inset-0 z-50 bg-shot/40", className)}
+      className={cn("fixed inset-0 z-50 bg-shot/60", className)}
       data-slot="sheet-overlay"
       {...props}
     />
@@ -60,7 +60,7 @@ function SheetContent({
       <SheetOverlay />
       <SheetPrimitive.Content
         className={cn(
-          "type-body fixed z-50 flex flex-col overflow-y-auto rounded-none border-border bg-popover text-ink shadow-float outline-none data-[side=bottom]:inset-x-0 data-[side=top]:inset-x-0 data-[side=left]:inset-y-0 data-[side=right]:inset-y-0 data-[side=top]:top-0 data-[side=right]:right-0 data-[side=bottom]:bottom-0 data-[side=left]:left-0 data-[side=bottom]:h-auto data-[side=left]:h-full data-[side=right]:h-full data-[side=top]:h-auto data-[side=bottom]:max-h-[85dvh] data-[side=top]:max-h-[85dvh] data-[side=left]:w-3/4 data-[side=right]:w-3/4 data-[side=bottom]:border-t data-[side=left]:border-r data-[side=top]:border-b data-[side=right]:border-l data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm",
+          "type-body fixed z-50 flex flex-col overflow-y-auto rounded-none border-border bg-popover text-ink shadow-lg outline-none data-[side=bottom]:inset-x-0 data-[side=top]:inset-x-0 data-[side=left]:inset-y-0 data-[side=right]:inset-y-0 data-[side=top]:top-0 data-[side=right]:right-0 data-[side=bottom]:bottom-0 data-[side=left]:left-0 data-[side=bottom]:h-auto data-[side=left]:h-full data-[side=right]:h-full data-[side=top]:h-auto data-[side=bottom]:max-h-[85dvh] data-[side=top]:max-h-[85dvh] data-[side=left]:w-3/4 data-[side=right]:w-3/4 data-[side=bottom]:border-t data-[side=left]:border-r data-[side=top]:border-b data-[side=right]:border-l data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm",
           className
         )}
         data-side={side}
@@ -71,7 +71,7 @@ function SheetContent({
         {showCloseButton && (
           <SheetPrimitive.Close asChild data-slot="sheet-close">
             <Button
-              className="absolute top-3 right-3"
+              className="absolute top-4 right-4"
               size="icon-sm"
               variant="ghost"
             >
@@ -102,10 +102,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
 function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "mt-auto flex flex-col gap-2 border-line border-t bg-pane/40 p-4",
-        className
-      )}
+      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
       data-slot="sheet-footer"
       {...props}
     />
@@ -131,7 +128,7 @@ function SheetDescription({
 }: React.ComponentProps<typeof SheetPrimitive.Description>) {
   return (
     <SheetPrimitive.Description
-      className={cn("type-caption text-muted-foreground", className)}
+      className={cn("type-body text-muted-foreground", className)}
       data-slot="sheet-description"
       {...props}
     />

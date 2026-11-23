@@ -30,8 +30,8 @@ interface MonthPickerProps {
   "aria-labelledby"?: string;
 }
 
-// Zedative month picker: two native selects (month, year) side by side, each
-// the field shell with a muted chevron, sharing the row 6px apart.
+// Month picker: two native selects (month, year) side by side, each the
+// `Input` shell (36px, 8px radius) with a muted chevron, 6px apart.
 export function MonthPicker({
   value,
   onChange,

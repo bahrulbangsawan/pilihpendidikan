@@ -7,10 +7,10 @@ import { cn } from "../lib/utils";
 import { Label } from "./label";
 import { Separator } from "./separator";
 
-// Zedative fields (TYPOGRAPHY.md § Per-Component Guide): labels and controls
-// in the body role, descriptions and errors in the caption role, legends as
-// a semibold subtitle. An invalid `Field` turns its label destructive; the
-// control carries `aria-invalid` for its own red edge and halo.
+// Fields, cursor.com's forms: labels and controls in the body role,
+// descriptions and errors in the caption role (muted ink), legends in the
+// subtitle role, all weight 400. An invalid `Field` turns its label
+// destructive; the control carries `aria-invalid` for its own red edge.
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -33,7 +33,7 @@ function FieldLegend({
   return (
     <legend
       className={cn(
-        "data-[variant=label]:type-body data-[variant=legend]:type-subtitle data-[variant=legend]:weight-semibold mb-2.5 text-foreground",
+        "data-[variant=label]:type-body data-[variant=legend]:type-subtitle mb-2.5 text-foreground",
         className
       )}
       data-slot="field-legend"
@@ -104,8 +104,9 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-// A label, or — wrapping a whole `Field` — a choice card: a 2px tile with the
-// lip, a pane hover, a cobalt edge on keyboard focus and a wash once chosen.
+// A label, or — wrapping a whole `Field` — a choice card: a cursor.com card
+// (`bg-card`, 4px radius, hairline) with a `pane` hover, a 20% edge on
+// keyboard focus and a `pane-2` fill with a 20% edge once chosen.
 function FieldLabel({
   className,
   ...props
@@ -114,11 +115,11 @@ function FieldLabel({
     <Label
       className={cn(
         "group/field-label peer/field-label flex w-fit gap-2 group-data-[invalid=true]/field:text-destructive group-data-[disabled=true]/field:opacity-50",
-        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-sm has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-border/60 has-[>[data-slot=field]]:bg-card/60 *:data-[slot=field]:p-3",
-        "has-[>[data-slot=field]]:inset-shadow-lip has-[>[data-slot=field]]:transition-[background-color,border-color,box-shadow] has-[>[data-slot=field]]:duration-150 has-[>[data-slot=field]]:ease-standard has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled],[data-state=checked]]:hover:inset-shadow-none has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled],[data-state=checked]]:hover:bg-pane/70",
+        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-sm has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-border has-[>[data-slot=field]]:bg-card *:data-[slot=field]:p-3",
+        "has-[>[data-slot=field]]:transition-[background-color,border-color] has-[>[data-slot=field]]:duration-140 has-[>[data-slot=field]]:ease-standard has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled],[data-state=checked]]:hover:bg-pane",
         // Plain attribute selectors on purpose: shadcn's `data-checked:` variant
         // wraps its attribute in :where(), which the card fill above outranks.
-        "has-[>[data-slot=field]]:has-[[data-state=checked]]:inset-shadow-none has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[[data-state=checked]]:border-primary/40 has-[>[data-slot=field]]:has-[[data-state=checked]]:bg-wash",
+        "has-[>[data-slot=field]]:has-[:focus-visible]:border-input has-[>[data-slot=field]]:has-[[data-state=checked]]:border-input has-[>[data-slot=field]]:has-[[data-state=checked]]:bg-pane-2",
         className
       )}
       data-slot="field-label"
@@ -131,7 +132,7 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "type-body group-has-[[data-state=checked]]/field-label:weight-semibold flex w-fit items-center gap-2 text-foreground group-data-[disabled=true]/field:opacity-50",
+        "type-body flex w-fit items-center gap-2 text-foreground group-data-[disabled=true]/field:opacity-50",
         className
       )}
       data-slot="field-label"
@@ -146,7 +147,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
       className={cn(
         "type-caption text-left text-muted-foreground group-has-data-horizontal/field:text-balance [[data-variant=legend]+&]:-mt-1.5",
         "nth-last-2:-mt-1 last:mt-0",
-        "[&>a]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+        "[&>a]:text-link [&>a]:hover:text-link/75",
         className
       )}
       data-slot="field-description"

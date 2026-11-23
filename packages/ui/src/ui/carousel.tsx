@@ -14,9 +14,9 @@ import {
 import { cn } from "../lib/utils";
 import { Button } from "./button";
 
-// Zedative carousel: slides move only under Embla's own drag and snap (the
-// library's motion, kept as direct feedback); the controls are outline
-// icon buttons with the lip.
+// cursor.com carousel: slides move only under Embla's own drag and snap (the
+// library's motion, kept as direct feedback); the controls are round
+// 20%-outlined icon buttons.
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

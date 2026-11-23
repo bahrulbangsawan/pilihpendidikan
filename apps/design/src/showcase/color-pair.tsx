@@ -53,7 +53,7 @@ function wcagLevel(ratio: number): string {
 
 /**
  * One palette swatch: the token painted as a chip, its DESIGN.md name, the
- * CSS variable and the value it resolves to in the current scheme.
+ * CSS variable and the value it resolves to over the page.
  */
 export function Swatch({ name, token }: { name: string; token: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -78,14 +78,12 @@ export function Swatch({ name, token }: { name: string; token: string }) {
   return (
     <div className="flex min-w-0 flex-col gap-2">
       <div
-        className="h-12 border border-line"
+        className="h-12 rounded-sm border border-border"
         ref={ref}
         style={{ backgroundColor: `var(--${token})` }}
       />
       <div className="flex min-w-0 flex-col">
-        <span className="type-caption weight-semibold truncate text-foreground">
-          {name}
-        </span>
+        <span className="type-caption truncate text-foreground">{name}</span>
         <span className="type-micro truncate text-muted-foreground">
           --{token}
         </span>
@@ -100,7 +98,7 @@ export function Swatch({ name, token }: { name: string; token: string }) {
 /**
  * A colour role: the surface with "Aa" in its foreground, the token names, the
  * resolved surface value and the contrast ratio measured live. It re-measures
- * when the theme class on <html> changes.
+ * when <html> changes its attributes.
  */
 export function ColorPair({
   name,
@@ -140,7 +138,12 @@ export function ColorPair({
   }, []);
 
   return (
-    <div className={cn("flex min-w-0 flex-col border border-line", className)}>
+    <div
+      className={cn(
+        "flex min-w-0 flex-col overflow-hidden rounded-sm border border-border",
+        className
+      )}
+    >
       <div
         className="flex h-24 items-end justify-between p-4"
         ref={ref}
@@ -151,15 +154,13 @@ export function ColorPair({
       >
         <span className="type-title">Aa</span>
         {info ? (
-          <span className="type-micro rounded-sm border border-current/25 px-1.5 tabular-nums">
+          <span className="type-micro rounded-full border border-current/25 px-1.5 tabular-nums">
             {info.ratio.toFixed(2)} {wcagLevel(info.ratio)}
           </span>
         ) : null}
       </div>
-      <div className="flex flex-col gap-0.5 border-line border-t bg-card p-3">
-        <span className="type-body weight-semibold text-foreground">
-          {name}
-        </span>
+      <div className="flex flex-col gap-0.5 border-border border-t bg-card p-3">
+        <span className="type-body text-foreground">{name}</span>
         <span className="type-caption text-muted-foreground">
           --{background} / --{foreground}
         </span>

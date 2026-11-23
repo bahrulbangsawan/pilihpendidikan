@@ -162,9 +162,10 @@ const currentMonth = (() => {
 })();
 
 // Section headings and the editable section titles share one role: the
-// subtitle at the semibold weight (as in `SectionList`).
+// compact title at the regular weight (cursor.com headings are never bold).
+// The editable title reads as a heading until hovered, then as a field.
 const SECTION_TITLE_INPUT_CLASS =
-  "type-subtitle weight-semibold field-touch -ml-1.5 h-8 min-w-0 flex-1 rounded-md border border-transparent bg-transparent px-1.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard placeholder:text-muted-foreground hover:border-input focus-visible:border-ring focus-visible:bg-card/60 focus-visible:ring-3 focus-visible:ring-ring/20";
+  "type-title-compact field-touch -ml-2 h-8 min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-2 text-foreground outline-none transition-[background-color,border-color] duration-150 ease-standard placeholder:text-muted-foreground hover:border-border focus-visible:border-input focus-visible:bg-background focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-0";
 
 // Meta beside a section title or an entry summary (durations, counts).
 const META_CLASS =
@@ -756,7 +757,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
     <div>
       {/* ── Personal Info ── */}
       <section className="flex flex-col gap-3 border-line border-b px-4 py-6 sm:px-6">
-        <h2 className="type-subtitle weight-semibold flex h-8 items-center">
+        <h2 className="type-title-compact flex h-8 items-center text-foreground">
           {t("form.personalInformation")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -922,7 +923,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                     </Button>
                   </>
                 ) : (
-                  <label className="type-body flex cursor-pointer items-center gap-2 rounded-md border border-line border-dashed bg-card/60 px-3 py-2.5 text-foreground transition-[background-color,border-color,box-shadow] duration-150 ease-standard hover:bg-pane/70 has-focus-visible:border-ring has-focus-visible:ring-3 has-focus-visible:ring-ring/20">
+                  <label className="type-body flex h-9 cursor-pointer items-center gap-2 rounded-full border border-input bg-transparent px-3.5 text-foreground transition-[background-color,border-color] duration-150 ease-standard hover:bg-pane has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2">
                     <Upload
                       aria-hidden="true"
                       className="size-3.5 text-muted-foreground"
@@ -1465,7 +1466,7 @@ export function CVForm({ data, onChange }: CVFormProps) {
                 {category.items.map((skill) => (
                   <Badge
                     asChild
-                    className="press cursor-pointer hover:bg-pane-2"
+                    className="cursor-pointer hover:bg-pane-3"
                     key={skill}
                     variant="secondary"
                   >

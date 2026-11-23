@@ -60,7 +60,7 @@ export function InboxEmpty({
   }
   return (
     <Empty
-      className="graph-paper m-4 border border-dashed py-10 sm:m-5"
+      className="m-4 rounded-sm border border-dashed py-10 sm:m-5"
       data-empty={kind}
     >
       <EmptyHeader>
@@ -89,7 +89,7 @@ export function InboxEmpty({
           <p className="type-caption text-muted-foreground">
             {t("inbox.empty.noRunsHelp")}{" "}
             <a
-              className="text-primary underline-offset-4 hover:underline"
+              className="text-link underline-offset-4 hover:underline"
               href="/cli"
               onClick={(event) => onNavigate("/cli", event)}
             >

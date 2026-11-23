@@ -293,13 +293,10 @@ export function BulkBar({
   return (
     <div
       aria-label={t("bulk.toolbar")}
-      className="band flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
+      className="flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
       role="toolbar"
     >
-      <span
-        className="type-body-compact weight-semibold mr-2 tabular-nums"
-        role="status"
-      >
+      <span className="type-body-compact mr-2 tabular-nums" role="status">
         {t("bulk.selected", { count: selected.length })}
       </span>
       <DropdownMenu>

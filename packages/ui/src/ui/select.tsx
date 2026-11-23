@@ -28,8 +28,9 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
-// The trigger is the Zedative field shell (36px, 32px at `sm`) with a muted
-// chevron; it never animates and has no hover fill, like the inputs beside it.
+// The trigger is the cursor.com field (36px, 32px at `sm`, 8px radius, a 10%
+// border on the page colour that deepens to 20% on hover and focus) with a
+// muted chevron, so it lines up with the inputs beside it.
 function SelectTrigger({
   className,
   size = "default",
@@ -41,7 +42,7 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "type-body field-touch flex h-9 w-fit min-w-0 select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-md border border-input bg-card/60 pr-2 pl-2.5 text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:bg-pane/50 disabled:opacity-60 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/15 data-[size=sm]:h-8 data-placeholder:text-muted-foreground *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:truncate [&>[data-slot=select-value]>svg]:mr-1.5 [&>[data-slot=select-value]>svg]:inline-block [&>[data-slot=select-value]>svg]:align-[-2px] [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "type-body field-touch flex h-9 w-fit min-w-0 select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-lg border border-border bg-background pr-2.5 pl-3 text-foreground outline-none transition-[background-color,border-color] duration-140 ease-standard placeholder:text-muted-foreground hover:border-input focus-visible:border-input focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:bg-pane disabled:text-muted-foreground aria-invalid:border-destructive aria-invalid:outline-destructive data-[size=sm]:h-8 data-placeholder:text-muted-foreground *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:truncate [&>[data-slot=select-value]>svg]:mr-1.5 [&>[data-slot=select-value]>svg]:inline-block [&>[data-slot=select-value]>svg]:align-[-2px] [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-size={size}
@@ -56,8 +57,8 @@ function SelectTrigger({
   );
 }
 
-// A Zedative window: 6px radius, a hairline border, `bg-2` paper and the one
-// soft float shadow. It opens and closes instantly.
+// The list is a cursor.com flyout: 8px radius, a 10% border on the popover
+// fill and two whisper shadows. It opens and closes instantly.
 function SelectContent({
   className,
   children,
@@ -70,7 +71,7 @@ function SelectContent({
       <SelectPrimitive.Content
         align={align}
         className={cn(
-          "relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-float",
+          "relative z-50 max-h-(--radix-select-content-available-height) min-w-36 origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md",
           position === "popper" &&
             "data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1",
           className
@@ -113,8 +114,8 @@ function SelectLabel({
   );
 }
 
-// A Zedative menu row: 2px radius, body role, a pane highlight; the chosen
-// option goes semibold and shows a check at the end.
+// A cursor.com menu row (the model picker): 32px, 4px radius, body role at
+// weight 400, a `pane` highlight; the chosen option shows a check at the end.
 function SelectItem({
   className,
   children,
@@ -123,7 +124,7 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "type-body data-checked:weight-semibold relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-foreground outline-none data-disabled:pointer-events-none data-highlighted:bg-accent data-inset:pl-7 data-highlighted:text-accent-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "type-body relative flex min-h-8 w-full cursor-default select-none items-center gap-2 rounded-sm py-1 pr-8 pl-2 text-foreground outline-none data-disabled:pointer-events-none data-highlighted:bg-pane data-inset:pl-7 data-highlighted:text-foreground data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className
       )}
       data-slot="select-item"
@@ -145,7 +146,7 @@ function SelectSeparator({
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
-      className={cn("pointer-events-none -mx-1 my-1 h-px bg-line", className)}
+      className={cn("pointer-events-none -mx-1 my-1 h-px bg-border", className)}
       data-slot="select-separator"
       {...props}
     />

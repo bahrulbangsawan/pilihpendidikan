@@ -351,7 +351,7 @@ function LabelCell({ source }: { source: JobSourceRecord }) {
   const reason = disabledReason(source);
   return (
     <div className="flex flex-col gap-1">
-      <span className="weight-semibold text-foreground">{source.label}</span>
+      <span className="text-foreground">{source.label}</span>
       {reason ? (
         <Badge className="self-start" variant="destructive">
           {t("sources.disabledBecause", {
@@ -501,7 +501,7 @@ export function SourcesTable({
         {bulkBar}
         <ul
           aria-label={t("sources.listLabel")}
-          className="flex flex-col border border-line"
+          className="flex flex-col rounded-sm border border-line"
         >
           {sources.map((source) => (
             <li
@@ -574,7 +574,7 @@ export function SourcesTable({
   return (
     <>
       {bulkBar}
-      <div className="border border-line">
+      <div className="rounded-sm border border-line">
         <Table
           aria-label={t("sources.listLabel")}
           className="type-body-compact"

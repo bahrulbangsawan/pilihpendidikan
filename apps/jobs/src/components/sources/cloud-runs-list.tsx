@@ -153,7 +153,7 @@ function RunDetails({ run, id }: { id: string; run: CloudRunView }) {
       {run.log.length > 0 ? (
         <ol
           aria-label={t("cloudSources.runs.log")}
-          className="border border-line bg-pane/40"
+          className="rounded-sm border border-line bg-pane/40"
         >
           {keyed(run.log, (e) => `${e.at}:${e.event}:${e.message}`).map(
             ({ item: entry, key }) => (
@@ -314,7 +314,7 @@ export function CloudRunsList({
     <div className="flex flex-col gap-2">
       <ul
         aria-label={t("cloudSources.runs.title")}
-        className="flex flex-col border border-line"
+        className="flex flex-col rounded-sm border border-line"
       >
         {runs.map((run) => (
           <CloudRunItem key={run.id} nowMs={nowMs} run={run} />

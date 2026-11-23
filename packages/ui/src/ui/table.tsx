@@ -2,10 +2,11 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative table (DESIGN.md § Implementation › Radius / Elevation): square
-// and flat. The header row is caption-role muted text on a pale `pane`,
-// rows are `line` hairlines (no zebra), cells are body role, and every
-// number is tabular so columns line up. A selected row takes the cobalt wash.
+// cursor.com table (the pricing comparison): flat, no fill behind the
+// header, which is caption-role muted text; rows are 10% `border` rules (no
+// zebra) that take a faint `pane` on hover, cells are body role at
+// 10px × 12px, and numbers are tabular so columns line up. A selected row
+// sits on `pane-2`.
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
@@ -28,7 +29,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       className={cn(
-        "bg-pane/50 [&_tr]:border-line [&_tr]:border-b [&_tr]:hover:bg-transparent",
+        "[&_tr]:border-border [&_tr]:border-b [&_tr]:hover:bg-transparent",
         className
       )}
       data-slot="table-header"
@@ -51,7 +52,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
       className={cn(
-        "weight-semibold border-line border-t bg-pane/50 text-foreground [&>tr]:last:border-b-0 [&_tr]:hover:bg-transparent",
+        "border-border border-t text-foreground [&>tr]:last:border-b-0 [&_tr]:hover:bg-transparent",
         className
       )}
       data-slot="table-footer"
@@ -64,7 +65,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
       className={cn(
-        "border-line border-b transition-[background-color] duration-150 ease-standard not-data-[state=selected]:hover:bg-pane/40 has-aria-expanded:bg-pane/40 data-[state=selected]:bg-wash",
+        "border-border border-b transition-[background-color] duration-140 ease-standard not-data-[state=selected]:hover:bg-pane/60 has-aria-expanded:bg-pane/60 data-[state=selected]:bg-pane-2",
         className
       )}
       data-slot="table-row"

@@ -121,7 +121,8 @@ export function PeriodRangePicker({
         <PopoverTrigger asChild>
           <Button
             className={cn(
-              "w-full justify-start",
+              // A field, not a pill: the 36px, 8px-radius input shape.
+              "h-9 w-full justify-start rounded-lg border-border bg-background px-3 hover:border-input hover:bg-background",
               !value && "text-muted-foreground"
             )}
             disabled={disabled}

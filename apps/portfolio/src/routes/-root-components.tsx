@@ -32,7 +32,12 @@ function localeFromPath(pathname: string): Locale {
 
 export function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      className="dark"
+      lang="en"
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+    >
       <head>
         <HeadContent />
       </head>
@@ -62,14 +67,16 @@ export function RootComponent() {
 
   const i18nValue = useMemo(() => ({ locale, t: getT(locale) }), [locale]);
 
-  // Zedative is light-canonical; Night Desk (`.dark`) is the derived dark
-  // scheme the toolbar toggle switches to. The system preference is ignored.
+  // The builder is dark only (cursor.com's dark theme): `<html>` carries
+  // `.dark` from the server and next-themes is pinned to it. The deck keeps
+  // its own white-paper tokens.
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       disableTransitionOnChange
       enableSystem={false}
+      forcedTheme="dark"
     >
       <I18nProvider value={i18nValue}>
         <TooltipProvider>

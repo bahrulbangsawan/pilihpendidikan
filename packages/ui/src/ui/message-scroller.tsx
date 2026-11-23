@@ -10,11 +10,12 @@ import { cn } from "../lib/utils";
 
 import { Button } from "./button";
 
-// The scrolling Zedative thread. The primitive follows new messages, holds
+// The scrolling thread. The primitive follows new messages, holds
 // the turn you asked and restores position; the styling only frames it. New
 // messages do not animate in, the jump-to-latest button appears and leaves
 // without moving, and the jump itself is instant (pass `behavior="smooth"`
-// to opt back in).
+// to opt back in). The jump button is a round outline button on the card
+// colour, Cursor's floating icon button.
 
 function MessageScrollerProvider(
   props: React.ComponentProps<typeof MessageScrollerPrimitive.Provider>

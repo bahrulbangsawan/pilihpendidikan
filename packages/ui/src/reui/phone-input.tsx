@@ -95,9 +95,9 @@ function PhoneInput({
   );
 }
 
-// Zedative phone field: the country button and the number share one field
-// shell — the button keeps the shell's `line` edge and paper (no lip), the
-// number field closes the shape with the shared hairline.
+// Phone field: the country button and the number share one `Input` shell —
+// the button takes the field's 8px left corners, 10% border and page colour
+// (not the pill), the number field closes the shape with the shared border.
 function InputComponent({ className, ...props }: ComponentProps<typeof Input>) {
   const { variant } = use(PhoneInputContext);
 
@@ -158,7 +158,9 @@ function CountrySelect({
         render={
           <Button
             className={cn(
-              "inset-shadow-none flex gap-1 rounded-s-md rounded-e-none border-input border-e-0 bg-card/60 px-2.5 py-0 focus:z-10 focus-visible:outline-solid data-pressed:bg-pane/70",
+              "flex gap-1 rounded-s-lg rounded-e-none border-border border-e-0 bg-background px-3 py-0 hover:bg-pane focus:z-10 focus-visible:outline-solid focus-visible:outline-offset-0 data-pressed:bg-pane",
+              variant === "sm" && "h-8",
+              variant === "lg" && "h-10 px-3.5",
               disabled && "opacity-50"
             )}
             disabled={disabled}

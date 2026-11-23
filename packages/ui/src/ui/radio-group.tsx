@@ -15,9 +15,9 @@ function RadioGroup({
   );
 }
 
-// Zedative radio: the one round control (a documented deviation — round
-// reads as "pick one"). A 16px ring outlined in `line` on half-transparent
-// paper; checked, the ring turns cobalt around an 8px cobalt dot.
+// Radio, cursor.com style: a 16px circle with a 20% border on the page
+// colour. Checked, it fills with the ink pill colour (`primary`) around a
+// 6px `primary-foreground` dot.
 function RadioGroupItem({
   className,
   ...props
@@ -25,7 +25,7 @@ function RadioGroupItem({
   return (
     <RadioGroupPrimitive.Item
       className={cn(
-        "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input bg-card/60 outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard after:absolute after:-inset-x-3 after:-inset-y-2 hover:bg-pane/70 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group-has-disabled/field:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/15 data-checked:border-primary",
+        "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 items-center justify-center rounded-full border border-input bg-background outline-none transition-[background-color,border-color] duration-140 ease-standard after:absolute after:-inset-x-3 after:-inset-y-2 hover:border-foreground/40 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group-has-disabled/field:opacity-50 aria-invalid:border-destructive data-checked:border-primary data-checked:bg-primary",
         className
       )}
       data-slot="radio-group-item"
@@ -35,7 +35,7 @@ function RadioGroupItem({
         className="flex items-center justify-center"
         data-slot="radio-group-indicator"
       >
-        <span className="size-2 rounded-full bg-primary" />
+        <span className="size-1.5 rounded-full bg-primary-foreground" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

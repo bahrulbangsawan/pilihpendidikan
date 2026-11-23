@@ -80,13 +80,13 @@ export function LanguageSwitcher() {
     router.preloadRoute({ to: pathForLocale(code) }).catch(() => undefined);
   }
 
-  // A Zedative segmented control: the shared outlined toggle pressable
-  // (`toggleVariants`), joined edge to edge. The current locale reads as "on"
-  // (pane-2 fill, semibold); `aria-current` says so to assistive tech.
+  // A pill segmented control (cursor.com's pricing toggle): the locales sit
+  // in a `card` track and the current one on `pane-2`, both drawn by the
+  // shared toggle (`toggleVariants`). `aria-current` names the current one.
   return (
     <fieldset
       aria-label={t("a11y.switchLanguage")}
-      className="m-0 flex min-w-0 items-center p-0"
+      className="m-0 flex h-8 min-w-0 items-center gap-0.5 rounded-full border border-border bg-card p-0.5"
     >
       {SUPPORTED_LOCALES.map((lang) => {
         const Flag = FLAG_COMPONENTS[lang.code];
@@ -96,8 +96,8 @@ export function LanguageSwitcher() {
             aria-current={isActive ? "true" : undefined}
             aria-label={lang.nativeName}
             className={cn(
-              toggleVariants({ variant: "outline", size: "sm" }),
-              "not-last:rounded-r-none not-first:rounded-l-none not-first:border-l-0 focus-visible:z-10"
+              toggleVariants({ variant: "default", size: "sm" }),
+              "h-6.5 px-2.5"
             )}
             data-state={isActive ? "on" : "off"}
             key={lang.code}

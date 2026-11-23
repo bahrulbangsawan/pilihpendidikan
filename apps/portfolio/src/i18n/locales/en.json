@@ -26,10 +26,6 @@
     "saveFailed": "Save failed ({code}). Your change was reverted.",
     "saveOffline": "Save failed — check your connection. Your change was reverted."
   },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
-  },
   "confirm": {
     "title": "Clear all data?",
     "description": "This removes the entire portfolio currently in the form. This action cannot be undone.",

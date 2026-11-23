@@ -2,10 +2,10 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative card (DESIGN.md § Shapes / Elevation): square corners, a 1px
-// border on `bg-2` paper, no shadow. Running text inside inherits `ink`;
-// `CardTitle` sets its own `foreground`. Highlighted cards add
-// `shadow-offset` (and optionally `graph-paper`) at the call site.
+// Zedative card, cursor.com's `.card`: one step darker than the page
+// (#f2f1ed), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding
+// (15.9px on top). Running text inside inherits `ink`; `CardTitle` is the
+// 16px subtitle role in `foreground`, `CardDescription` the same size at 60%.
 function Card({
   className,
   size = "default",
@@ -14,7 +14,7 @@ function Card({
   return (
     <div
       className={cn(
-        "group/card type-body flex flex-col gap-(--card-spacing) overflow-hidden rounded-none border border-border bg-card py-(--card-spacing) text-ink [--card-spacing:--spacing(5)] has-[>img:first-child]:pt-0 has-data-[slot=card-footer]:pb-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 data-[size=sm]:[--card-spacing:--spacing(4)]",
+        "group/card type-body flex flex-col gap-(--card-spacing) overflow-hidden rounded-sm border border-hairline bg-card py-(--card-spacing) text-ink [--card-spacing:17.5px] has-[>img:first-child]:pt-0 has-data-[slot=card-footer]:pb-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 data-[size=sm]:[--card-spacing:15px]",
         className
       )}
       data-size={size}
@@ -41,7 +41,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "type-subtitle weight-semibold font-heading text-card-foreground",
+        "type-subtitle font-heading text-card-foreground",
         className
       )}
       data-slot="card-title"
@@ -53,7 +53,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("type-caption text-muted-foreground", className)}
+      className={cn("type-subtitle text-muted-foreground", className)}
       data-slot="card-description"
       {...props}
     />
@@ -87,7 +87,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "flex items-center border-line border-t p-(--card-spacing)",
+        "flex items-center border-line border-t px-(--card-spacing) py-3",
         className
       )}
       data-slot="card-footer"

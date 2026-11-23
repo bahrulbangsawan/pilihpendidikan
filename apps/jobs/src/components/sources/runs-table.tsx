@@ -134,7 +134,7 @@ export function RunsTable({ runs, byId, nowMs }: RunsTableProps) {
     return (
       <ul
         aria-label={t("sources.runs.title")}
-        className="flex flex-col border border-line"
+        className="flex flex-col rounded-sm border border-line"
       >
         {runs.map((run) => (
           <li
@@ -143,7 +143,7 @@ export function RunsTable({ runs, byId, nowMs }: RunsTableProps) {
             key={run.id}
           >
             <div className="flex items-center gap-2">
-              <span className="type-body-compact weight-semibold min-w-0 flex-1 truncate text-foreground">
+              <span className="type-body-compact min-w-0 flex-1 truncate text-foreground">
                 {sources(run)}
               </span>
               <StatusBadge run={run} />
@@ -170,7 +170,7 @@ export function RunsTable({ runs, byId, nowMs }: RunsTableProps) {
   }
 
   return (
-    <div className="border border-line">
+    <div className="rounded-sm border border-line">
       <Table aria-label={t("sources.runs.title")} className="type-body-compact">
         <TableHeader>
           <TableRow>

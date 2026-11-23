@@ -23,7 +23,6 @@ import {
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@rulisme/ui/ui/toggle-group";
 import {
@@ -49,7 +48,6 @@ import { CVPreview } from "@/components/cv-preview";
 import sampleData from "@/data/sample-cv.json";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { createBlankCv } from "@/lib/blank-cv";
 import { useCloudSave } from "@/lib/use-cloud-save";
 
@@ -433,7 +431,7 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
   return (
     <>
       <a
-        className="type-body sr-only rounded-md border border-border bg-card px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
         href="#cv-main"
       >
         {t("a11y.skipToContent")}
@@ -443,11 +441,8 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
         id="cv-main"
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        {/* The node where the toolbars' bottom rule crosses the pane divider:
-            56px down (minus half a node), on the divider's 1px rule. */}
-        <Diamond className="cv-no-print top-13 left-1/2 z-20 -ml-1 hidden md:block" />
-        <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-line border-b md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1.5 border-line border-b bg-background px-4 sm:px-6">
+        <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="sm" variant="outline">
@@ -571,14 +566,13 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <ThemeToggle />
               <LanguageSwitcher />
             </div>
           </div>
           <CVForm data={data} onChange={applyChange} />
         </div>
-        <div className="cv-preview-pane graph-paper no-scrollbar h-svh w-full overflow-y-auto md:w-1/2">
-          <div className="cv-no-print sticky top-0 z-10 flex h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6">
+        <div className="cv-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
+          <div className="cv-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
             <ToggleGroup
               aria-label={t("template.label")}
               onValueChange={(value) => {
@@ -588,13 +582,14 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
                   handleStyleChange(value);
                 }
               }}
+              className="gap-0.5 border border-border bg-card p-0.5"
               size="sm"
               type="single"
               value={style}
-              variant="outline"
+              variant="default"
             >
               {TEMPLATES.map((s) => (
-                <ToggleGroupItem key={s} value={s}>
+                <ToggleGroupItem className="h-6.5 px-3" key={s} value={s}>
                   {t(`template.${s}`)}
                 </ToggleGroupItem>
               ))}

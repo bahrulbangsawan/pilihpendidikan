@@ -1,5 +1,5 @@
 // The right rail (12 §5.1): "Next step" — exactly one recommended action, the
-// page's only blue button, behind `Y` — then the live task, the latest
+// page's only primary button, behind `Y` — then the live task, the latest
 // submission evidence and the follow-up.
 
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
@@ -181,7 +181,7 @@ function EvidenceCard({ detail }: { detail: ApplicationDetail }) {
               <dt>{t("detail.finalUrl")}</dt>
               <dd className="min-w-0 truncate">
                 <a
-                  className="text-primary hover:underline"
+                  className="text-link hover:underline"
                   href={href}
                   rel="noopener noreferrer"
                   target="_blank"

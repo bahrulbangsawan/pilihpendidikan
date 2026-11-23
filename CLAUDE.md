@@ -82,7 +82,7 @@ OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 - **Lint/format**: Biome 2.5 with the Ultracite rule set (`biome.jsonc`) for TypeScript; ruff for Python
 - **Tests**: Vitest per app; `bun test` for `apps/api`, `packages/jobs-contracts`, `packages/cv-engine` and `e2e/`; pytest for `apps/jobs-cli`
 - **Icons**: lucide-react
-- **Font**: Inter Variable 4.0 with its `opsz` axis (`@fontsource-variable/inter`), loaded once by `@rulisme/ui/styles/theme.css`; it is the only family (every `--font-*` token resolves to it)
+- **Font**: Geist Variable and Geist Mono Variable (`@fontsource-variable/geist`, `geist-mono`), loaded once by `@rulisme/ui/styles/theme.css`; Inter Variable (`--font-print`) only for the print artifacts and their PDFs
 
 ## Commands
 
@@ -100,7 +100,7 @@ OG images use the public `https://og.bahrul.me` endpoint (`src/lib/og-url.ts`).
 - `bun x ultracite fix` (or `bun run fix`) — format and autofix
 - `bun run check-types` — `tsc` for `scripts/` plus `turbo typecheck` (incl. pyright for the CLI)
 - `bun run e2e` — the full-stack scenarios (`bun test e2e --timeout 900000`, about 30 minutes; needs uv, `uv sync` in `apps/jobs-cli`, Chromium via `uv run --project apps/jobs-cli playwright install chromium`, and free ports 4003 / 4007 / 8788). Not part of `check`; CI runs it nightly (`e2e.yml`)
-- `bun run lint:typography` — Zedative style enforcement: type roles only, no `leading-*` / `tracking-*` / uppercase / `font-<weight>`, no big radii, gradients, glass, hex classes, enter animations, stray syntax colours or `dark:` overrides (see `TYPOGRAPHY.md`)
+- `bun run lint:typography` — Zedative style enforcement: type roles only, no `leading-*` / `tracking-*` / uppercase / `font-<weight>`, no radii above 8px (pills aside), gradients, glass, hex classes, enter animations, stray syntax colours or `dark:` overrides (see `TYPOGRAPHY.md`)
 - `bun run parity:typography` — every app's `src/styles.css` imports `@rulisme/ui/styles/theme.css` and defines no tokens of its own
 - `bun run parity:twmerge` — `cn()` (`packages/ui/src/lib/utils.ts`) registers every `type-*` and `weight-*` utility the theme defines
 - `bun run parity:showcase` — every component file in `packages/ui/src/ui` is rendered on the design page (`apps/design`)
@@ -154,20 +154,22 @@ CLI releases need the owner's go-ahead.
 
 ## Design system
 
-Every app uses **Zedative** (`DESIGN.md`): warm off-white graph paper ruled into
-hairline rails with diamond nodes, one family (Inter Variable) in six roles,
-one cobalt accent. `DESIGN.md` § Implementation maps every rule to code;
-`TYPOGRAPHY.md` holds the enforced rules; `apps/design` renders the whole
-system.
+Every app uses **Zedative** (`DESIGN.md`), rebuilt in November 2026 as
+cursor.com's design system in its **dark theme, dark only** (no light scheme,
+no theme switch): warm near-black paper (`#14120b`), cards one step lighter
+(`#1b1913`) with a 2.5% hairline and 4px corners, pill buttons, one family
+(Geist) at weight 400 on cursor.com's type scale, orange (`#f54e00`) only for
+text links. Every value was measured from cursor.com (`cook/refs/`).
+`DESIGN.md` § Implementation maps every rule to code; `TYPOGRAPHY.md` holds
+the enforced rules; `apps/design` renders the whole system.
 
-- Six type roles, each baking size, line height, weight and optical size: `type-display` (the hero h1 only), `type-title`, `type-subtitle`, `type-body` (the default), `type-caption`, `type-micro`, each with a `-compact` step. `typeClass(role, variant)` from `@rulisme/ui/lib/type-scale` returns the same classes.
-- Three weights: `weight-normal` (400), `weight-semibold` (550, headings and selected items), `weight-bold` (700, display only). No uppercase, no letter-spacing, no `font-<weight>` utilities.
-- Colour: running text inherits `ink`; headings, labels and controls are `foreground`; cobalt (`primary`) is scarce: the one primary action, checked controls, links, focus, then the footer slab. Syntax colours (`syn-1..4`) live only in editor mocks.
-- Shape and depth: cards and sections are square, controls 4px, chips 2px, windows 6px; pressables carry an inset lip that disappears on hover; floating windows get the one soft drop (`shadow-float`). Frame chrome in `Band` / `Rail` / `Diamond` (`@rulisme/ui/ui/rails`) and `graph-paper`.
-- Motion: 150ms on `cubic-bezier(0.4, 0, 0.2, 1)`, only colours and the lip; the `press` offset on `:active`. Nothing enters, overlays open instantly, no route transitions.
-- Light is canonical; `.dark` is the derived Night Desk scheme. next-themes toggles it in the builders and the Job Tracker dashboard (default light; the dashboard switches in Settings and the ⌘K palette); the hub and the design page are light by default.
+- Eight type roles, each baking size, line height and tracking at weight 400: `type-hero` (72), `type-headline` (36), `type-display` (26, the hero h1), `type-title` (22), `type-subtitle` (16), `type-body` (14, the default), `type-caption` (12), `type-micro` (11), each with a `-compact` step. `typeClass(role, variant)` from `@rulisme/ui/lib/type-scale` returns the same classes.
+- Weights: everything 400; `weight-semibold` (500) and `weight-bold` (600) only for rare labels, never headings. No uppercase, no `tracking-*`, no `font-<weight>` utilities.
+- Colour: `foreground`/`ink` text, `ink-sec` for large grey copy, `muted-foreground` for small grey text, `text-link` orange for text links only; the primary action is the light pill (`bg-primary`). Syntax colours (`syn-1..4`) live only in editor mocks.
+- Shape and depth: cards 4px (`rounded-sm`), fields, menus and windows 8px (`rounded-lg`), buttons and badges pills; flat cards with a `hairline`, menus with Cursor's whisper shadow (`shadow-md`), windows `shadow-lg`. Container 1300px (`max-w-rail`), sections 67.2px apart.
+- Motion: 140ms on `cubic-bezier(0.4, 0, 0.2, 1)`, colours only, no press offset. Nothing enters, overlays open instantly, no route transitions.
 - `<Kbd>` hints inside primary actions advertise real single-letter shortcuts: register them with `useShortcut` (`@rulisme/ui/hooks/use-shortcut`), never one without the other.
-- Print artifacts (the CV templates, the invoice page, the portfolio deck) follow Zedative too: Inter only, no uppercase or letter-spacing, Zedative ink colours that Night Desk never changes. They keep print sizes and the static weights 400 / 600 / 700, and each preview mirrors its `@react-pdf` output (see `TYPOGRAPHY.md` § Exceptions). The CV's PDF templates live in `packages/cv-engine/src/pdf/` and their HTML previews in `apps/cv/src/components/templates/`: change both together (`bun run parity:cv-templates`). The PDFs share one print module, `@rulisme/ui/print/*`: the merged Inter cuts (`pdf-fonts.ts`, rebuilt by `scripts/build-print-fonts.sh`), the line-break policy and the text normaliser (`pdf-text.ts`); each builder's `src/lib/pdf-fonts.ts` only registers them, and the CV's `registerCvPrint` (`apps/cv`, and `apps/jobs` for its render page) also hands cv-engine the normaliser through `registerCvPrintText` (DESIGN.md § Implementation › Print artifacts).
+- Print artifacts (the CV templates, the invoice page, the portfolio deck) stay white paper inside the dark chrome: Inter only (`--font-print` on screen), no uppercase or letter-spacing, literal print ink colours the chrome never changes. They keep print sizes and the static weights 400 / 600 / 700, and each preview mirrors its `@react-pdf` output (see `TYPOGRAPHY.md` § Exceptions). The CV's PDF templates live in `packages/cv-engine/src/pdf/` and their HTML previews in `apps/cv/src/components/templates/`: change both together (`bun run parity:cv-templates`). The PDFs share one print module, `@rulisme/ui/print/*`: the merged Inter cuts (`pdf-fonts.ts`, rebuilt by `scripts/build-print-fonts.sh`), the line-break policy and the text normaliser (`pdf-text.ts`); each builder's `src/lib/pdf-fonts.ts` only registers them, and the CV's `registerCvPrint` (`apps/cv`, and `apps/jobs` for its render page) also hands cv-engine the normaliser through `registerCvPrintText` (DESIGN.md § Implementation › Print artifacts).
 
 ## Browser testing
 

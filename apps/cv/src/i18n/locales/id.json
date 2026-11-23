@@ -38,10 +38,6 @@
     "emptyTitle": "CV Anda masih kosong",
     "emptyDescription": "Mulai isi formulir untuk melihat pratinjau CV Anda."
   },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
-  },
   "confirm": {
     "title": "Hapus semua data?",
     "description": "Ini menghapus seluruh isi formulir saat ini. Tindakan ini tidak dapat dibatalkan.",

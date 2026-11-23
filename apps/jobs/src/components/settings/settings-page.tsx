@@ -35,7 +35,6 @@ import {
   FieldLabel,
 } from "@rulisme/ui/ui/field";
 import { Input } from "@rulisme/ui/ui/input";
-import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -47,7 +46,6 @@ import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Switch } from "@rulisme/ui/ui/switch";
 import { useQueryClient } from "@tanstack/react-query";
 import { Download, LogOut, Trash2 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useId, useState } from "react";
 import { toast } from "sonner";
 import type { SessionState } from "@/functions/session.functions";
@@ -141,98 +139,92 @@ function DangerZone() {
   }
 
   return (
-    <Band asChild>
-      <section aria-labelledby="danger-heading">
-        <PageGutter className="py-6">
-          <div className="flex flex-col gap-4 border border-destructive/25 p-4">
-            <h2 className="type-subtitle weight-semibold" id="danger-heading">
-              {t("settings.dangerTitle")}
-            </h2>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-col gap-0.5">
-                <p className="type-body weight-semibold text-foreground">
-                  {t("settings.exportTitle")}
-                </p>
-                <p className="type-caption text-muted-foreground">
-                  {t("settings.exportBody")}
-                </p>
-              </div>
-              <Button
-                className="shrink-0"
-                onClick={exportData}
-                variant="outline"
-              >
-                <Download aria-hidden="true" data-icon="inline-start" />
-                {t("settings.export")}
-              </Button>
+    <section aria-labelledby="danger-heading">
+      <PageGutter className="py-6">
+        <div className="flex flex-col gap-4 rounded-sm border border-destructive/25 p-4">
+          <h2 className="type-subtitle" id="danger-heading">
+            {t("settings.dangerTitle")}
+          </h2>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-0.5">
+              <p className="type-body text-foreground">
+                {t("settings.exportTitle")}
+              </p>
+              <p className="type-caption text-muted-foreground">
+                {t("settings.exportBody")}
+              </p>
             </div>
-            <div className="flex flex-col gap-3 border-destructive/25 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-col gap-0.5">
-                <p className="type-body weight-semibold text-foreground">
-                  {t("settings.deleteTitle")}
-                </p>
-                <p className="type-caption text-muted-foreground">
-                  {t("settings.deleteBody")}
-                </p>
-              </div>
-              <AlertDialog onOpenChange={() => setConfirmText("")}>
-                <AlertDialogTrigger asChild>
-                  <Button className="shrink-0" variant="destructive">
-                    <Trash2 aria-hidden="true" data-icon="inline-start" />
-                    {t("settings.delete")}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      {t("settings.deleteConfirmTitle")}
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t("settings.deleteConfirmBody")}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <Field orientation="horizontal">
-                    <Checkbox
-                      checked={alsoCvs}
-                      id={`${id}-cvs`}
-                      onCheckedChange={(value) => setAlsoCvs(value === true)}
-                    />
-                    <FieldLabel htmlFor={`${id}-cvs`}>
-                      {t("settings.alsoCvs")}
-                    </FieldLabel>
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor={`${id}-confirm`}>
-                      {t("settings.deleteType", { word })}
-                    </FieldLabel>
-                    <Input
-                      autoComplete="off"
-                      className="field-touch"
-                      id={`${id}-confirm`}
-                      onChange={(event) => setConfirmText(event.target.value)}
-                      value={confirmText}
-                    />
-                  </Field>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-                    <AlertDialogAction
-                      disabled={
-                        confirmText.trim().toLocaleLowerCase() !==
-                        word.toLocaleLowerCase()
-                      }
-                      onClick={deleteAccount}
-                      variant="destructive"
-                    >
-                      {t("settings.deleteAction")}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+            <Button className="shrink-0" onClick={exportData} variant="outline">
+              <Download aria-hidden="true" data-icon="inline-start" />
+              {t("settings.export")}
+            </Button>
           </div>
-        </PageGutter>
-      </section>
-    </Band>
+          <div className="flex flex-col gap-3 border-destructive/25 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-0.5">
+              <p className="type-body text-foreground">
+                {t("settings.deleteTitle")}
+              </p>
+              <p className="type-caption text-muted-foreground">
+                {t("settings.deleteBody")}
+              </p>
+            </div>
+            <AlertDialog onOpenChange={() => setConfirmText("")}>
+              <AlertDialogTrigger asChild>
+                <Button className="shrink-0" variant="destructive">
+                  <Trash2 aria-hidden="true" data-icon="inline-start" />
+                  {t("settings.delete")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("settings.deleteConfirmTitle")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("settings.deleteConfirmBody")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <Field orientation="horizontal">
+                  <Checkbox
+                    checked={alsoCvs}
+                    id={`${id}-cvs`}
+                    onCheckedChange={(value) => setAlsoCvs(value === true)}
+                  />
+                  <FieldLabel htmlFor={`${id}-cvs`}>
+                    {t("settings.alsoCvs")}
+                  </FieldLabel>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor={`${id}-confirm`}>
+                    {t("settings.deleteType", { word })}
+                  </FieldLabel>
+                  <Input
+                    autoComplete="off"
+                    className="field-touch"
+                    id={`${id}-confirm`}
+                    onChange={(event) => setConfirmText(event.target.value)}
+                    value={confirmText}
+                  />
+                </Field>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    disabled={
+                      confirmText.trim().toLocaleLowerCase() !==
+                      word.toLocaleLowerCase()
+                    }
+                    onClick={deleteAccount}
+                    variant="destructive"
+                  >
+                    {t("settings.deleteAction")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+      </PageGutter>
+    </section>
   );
 }
 
@@ -244,7 +236,6 @@ export function SettingsPage() {
   const queryClient = useQueryClient();
   const settings = useSettings();
   const write = useConflictWrite();
-  const { resolvedTheme, setTheme } = useTheme();
   const [retention, setRetention] = useState("");
   const [timezone, setTimezone] = useState("");
   const record = settings.data;
@@ -333,25 +324,6 @@ export function SettingsPage() {
               <SelectContent>
                 <SelectItem value="en">English</SelectItem>
                 <SelectItem value="id">Bahasa Indonesia</SelectItem>
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={`${id}-theme`}>
-              {t("settings.theme")}
-            </FieldLabel>
-            <Select
-              onValueChange={setTheme}
-              value={resolvedTheme === "dark" ? "dark" : "light"}
-            >
-              <SelectTrigger className="w-full" id={`${id}-theme`}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">
-                  {t("settings.themeLight")}
-                </SelectItem>
-                <SelectItem value="dark">{t("settings.themeDark")}</SelectItem>
               </SelectContent>
             </Select>
           </Field>
@@ -516,7 +488,7 @@ export function SettingsPage() {
           </Section>
         </>
       ) : (
-        <Band>
+        <div>
           <PageGutter className="py-6">
             {settings.isError ? (
               <p className="type-body text-destructive">
@@ -526,7 +498,7 @@ export function SettingsPage() {
               <Skeleton className="h-40 w-full" />
             )}
           </PageGutter>
-        </Band>
+        </div>
       )}
       <DangerZone />
     </div>

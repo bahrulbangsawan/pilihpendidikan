@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { Wordmark } from "./site-header";
 
 const COLUMNS = [
   {
@@ -29,31 +30,32 @@ const COLUMNS = [
 ] as const;
 
 /**
- * The footer slab (DESIGN.md § Components › Footer): the blue floods the
- * band, column heads in the heading weight, underlined links with ↗ for
- * external ones, then a hatched band carrying the wordmark in outline.
+ * The cursor.com footer in dark: a 10% rule, the wordmark with one muted
+ * line, then columns of muted body-role links that turn `foreground` on
+ * hover, ↗ on external ones.
  */
 export function SiteFooter() {
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="rail grid gap-10 border-primary-foreground/25 px-5 py-12 sm:px-10 md:grid-cols-[2fr_1fr_1fr_1fr]">
-        <div className="flex max-w-xs flex-col gap-2">
-          <p className="type-title">Zedative</p>
-          <p className="type-body text-primary-foreground/80">
-            The pilihpendidikan design system. Graph paper, hairline rails, one
-            family and one blue.
+    <footer className="border-border border-t">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-14 sm:px-10 md:grid-cols-[2fr_1fr_1fr_1fr] xl:px-16">
+        <div className="flex max-w-xs flex-col gap-3">
+          <Wordmark />
+          <p className="type-body text-muted-foreground">
+            The pilihpendidikan design system, on cursor.com's dark theme: one
+            family at weight 400, flat cards, pill buttons and an orange kept
+            for links.
           </p>
         </div>
         {COLUMNS.map((column) => (
           <div className="flex flex-col gap-3" key={column.heading}>
-            <p className="type-body weight-semibold">{column.heading}</p>
+            <p className="type-body text-foreground">{column.heading}</p>
             <ul className="flex flex-col gap-2">
               {column.links.map((link) => {
                 const external = link.href.startsWith("http");
                 return (
                   <li key={link.label}>
                     <a
-                      className="type-body inline-flex items-center gap-1 underline decoration-primary-foreground/40 underline-offset-4 transition-[text-decoration-color] hover:decoration-primary-foreground"
+                      className="type-body inline-flex items-center gap-1 text-muted-foreground transition-[color] duration-140 ease-standard hover:text-foreground"
                       href={link.href}
                       rel={external ? "noopener" : undefined}
                       target={external ? "_blank" : undefined}
@@ -70,35 +72,10 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div
-        aria-hidden="true"
-        className="hatch overflow-hidden border-primary-foreground/25 border-t"
-      >
-        <svg
-          className="rail block h-24 w-full border-primary-foreground/25 sm:h-36"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 600 120"
-        >
-          {/* Inter Variable's glyphs overlap their own contours, which an
-              unfilled stroke shows at every join. Painting the stroke first
-              and filling with the slab's cobalt hides the inner half of the
-              (doubled) stroke and the overlaps, leaving a clean outline. */}
-          <text
-            className="fill-primary [paint-order:stroke]"
-            dominantBaseline="middle"
-            fontFamily="Inter Variable, sans-serif"
-            fontSize="112"
-            fontStyle="italic"
-            fontWeight="700"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            textAnchor="middle"
-            x="300"
-            y="62"
-          >
-            Zedative
-          </text>
-        </svg>
+      <div className="mx-auto w-full max-w-6xl px-5 pb-10 sm:px-10 xl:px-16">
+        <p className="type-caption text-muted-foreground">
+          © pilihpendidikan · Zedative renders @rulisme/ui from source.
+        </p>
       </div>
     </footer>
   );

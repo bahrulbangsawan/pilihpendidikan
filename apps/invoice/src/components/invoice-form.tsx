@@ -98,7 +98,7 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// A section heading: subtitle role at the heading weight with a muted 16px
+// A section heading: the compact title at the regular weight with a muted 16px
 // icon, on the same 32px row as the line-items title beside it.
 function SectionHeading({
   icon,
@@ -108,7 +108,7 @@ function SectionHeading({
   children: ReactNode;
 }) {
   return (
-    <h2 className="type-subtitle weight-semibold flex h-8 items-center gap-1.5 text-foreground">
+    <h2 className="type-title-compact flex h-8 items-center gap-2 text-foreground">
       <span
         aria-hidden="true"
         className="inline-flex shrink-0 text-muted-foreground"
@@ -131,7 +131,7 @@ function SectionToggle({
 }) {
   return (
     <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
-      <span className="type-subtitle weight-semibold flex items-center gap-1.5 text-foreground">
+      <span className="type-title-compact flex items-center gap-2 text-foreground">
         <span
           aria-hidden="true"
           className="inline-flex shrink-0 text-muted-foreground"
@@ -470,7 +470,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                   aria-label={t("a11y.setAccentColor", { color: c })}
                   className={cn(
                     SWATCH_CLASS,
-                    "press outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
+                    "outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
                   )}
                   key={c}
                   onClick={() => updateField("accentColor", c)}

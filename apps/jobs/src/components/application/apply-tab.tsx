@@ -142,7 +142,7 @@ function BrowserApply({ detail }: { detail: ApplicationDetail }) {
         {isSuccess && capable.length === 0 ? (
           <FieldDescription>
             {t("apply.noDevice")}{" "}
-            <AppLink className="text-primary hover:underline" href="/cli">
+            <AppLink className="text-link hover:underline" href="/cli">
               {t("apply.connectCli")}
             </AppLink>
           </FieldDescription>
@@ -160,7 +160,7 @@ function BrowserApply({ detail }: { detail: ApplicationDetail }) {
         </Button>
         {(started ?? live?.id) ? (
           <AppLink
-            className="type-body inline-flex items-center gap-1 text-primary hover:underline"
+            className="type-body inline-flex items-center gap-1 text-link hover:underline"
             href={`/automation/runs/${started ?? live?.id ?? ""}`}
           >
             {t("apply.watchRun")}

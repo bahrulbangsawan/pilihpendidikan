@@ -4,12 +4,11 @@ import { Slot } from "radix-ui";
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// Zedative message surface (DESIGN.md § Typography: "subtitle … chat
-// bubbles"): a 2px tile in the subtitle role, never a pill. The default is
-// the bordered prompt — what you sent, on `bg-2` paper with a hairline — so
-// it reads on the `pane` agent thread. The cobalt stays out of the thread;
-// `tinted` uses the 7% wash for a suggestion you can apply. Bubbles appear
-// without animation.
+// Message surface, like the prompt box in Cursor's agent pane: an 8px tile
+// in the body role. The default is the bordered prompt — what you sent, on
+// `bg-card` with a 10% border. `tinted` uses the 5% ink wash for a
+// suggestion you can apply; `ghost` is the agent's answer as running text.
+// Bubbles appear without animation.
 
 function BubbleGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -26,18 +25,18 @@ const bubbleVariants = cva(
   {
     variants: {
       variant: {
-        // The bordered prompt: paper with a hairline.
+        // The bordered prompt: a card with a 10% border.
         default:
           "*:data-[slot=bubble-content]:border-border *:data-[slot=bubble-content]:bg-card *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane/70",
-        // A neutral fill that still reads on the pane thread.
+        // A neutral fill one step above the card.
         secondary:
-          "*:data-[slot=bubble-content]:bg-pane-2 *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane-2/70",
-        // The pane fill, for bubbles that sit on paper.
+          "*:data-[slot=bubble-content]:bg-pane-2 *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane-3",
+        // The pane fill, for bubbles that sit on the page.
         muted:
           "*:data-[slot=bubble-content]:bg-pane *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane-2",
-        // The 7% cobalt wash: a suggestion you can apply.
+        // The 5% ink wash: a suggestion you can apply.
         tinted:
-          "*:data-[slot=bubble-content]:bg-wash *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-highlight",
+          "*:data-[slot=bubble-content]:bg-wash *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane",
         outline:
           "*:data-[slot=bubble-content]:border-border *:data-[slot=bubble-content]:text-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-pane/70",
         // No surface: the agent's answer as running text in ink.
@@ -85,7 +84,7 @@ function BubbleContent({
   return (
     <Comp
       className={cn(
-        "type-subtitle wrap-break-word w-fit min-w-0 max-w-full overflow-hidden rounded-sm border border-transparent px-3 py-2 group-data-[align=end]/bubble:self-end [button,a]:transition-[background-color,border-color,color] [button,a]:duration-150 [button,a]:ease-standard [button,a]:focus-visible:outline-2 [button,a]:focus-visible:outline-ring [button,a]:focus-visible:outline-solid [button,a]:focus-visible:outline-offset-2 [button]:cursor-pointer [button]:text-left",
+        "type-body wrap-break-word w-fit min-w-0 max-w-full overflow-hidden rounded-lg border border-transparent px-3 py-2 group-data-[align=end]/bubble:self-end [button,a]:transition-[background-color,border-color,color] [button,a]:duration-140 [button,a]:ease-standard [button,a]:focus-visible:outline-2 [button,a]:focus-visible:outline-ring [button,a]:focus-visible:outline-solid [button,a]:focus-visible:outline-offset-2 [button]:cursor-pointer [button]:text-left",
         className
       )}
       data-slot="bubble-content"
@@ -95,7 +94,7 @@ function BubbleContent({
 }
 
 const bubbleReactionsVariants = cva(
-  "type-micro absolute z-10 flex h-5 w-fit shrink-0 items-center justify-center gap-1 rounded-sm border border-border bg-card px-1.5 text-foreground has-[button]:p-0 [&_svg:not([class*='size-'])]:size-3 [&_svg]:shrink-0",
+  "type-caption absolute z-10 flex h-5 w-fit shrink-0 items-center justify-center gap-1 rounded-full border border-border bg-card px-1.5 text-foreground has-[button]:p-0 [&_svg:not([class*='size-'])]:size-3 [&_svg]:shrink-0",
   {
     variants: {
       side: {

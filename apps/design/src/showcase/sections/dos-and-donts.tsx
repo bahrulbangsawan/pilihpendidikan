@@ -14,14 +14,12 @@ import {
   Copy,
   Download,
   FileText,
-  Moon,
+  Layers,
   Share2,
-  Sun,
   X,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Block, BlockGrid, Example, Section } from "../layout";
-import { useScheme } from "../theme";
 
 /*
  * The DESIGN.md rules that are easiest to break, each as a rendered pair.
@@ -81,7 +79,7 @@ function Note({ children }: { children: ReactNode }) {
 
 /* ── The pairs ─────────────────────────────────────────────────────────── */
 
-function OneCobaltAction() {
+function OnePrimaryAction() {
   return (
     <Pair
       bad={
@@ -96,7 +94,7 @@ function OneCobaltAction() {
               Save draft
             </Button>
           </div>
-          <Note>Two cobalt buttons: neither one is the next step.</Note>
+          <Note>Two light primary pills: neither one is the next step.</Note>
         </>
       }
       good={
@@ -111,22 +109,24 @@ function OneCobaltAction() {
               Save draft
             </Button>
           </div>
-          <Note>The primary says what comes next; the rest sit on paper.</Note>
+          <Note>
+            The light pill says what comes next; the rest are outlined.
+          </Note>
         </>
       }
-      rule="One cobalt action per group. Everything beside it is outline, secondary or ghost."
+      rule="One light primary pill per group. Everything beside it is secondary, outline or ghost."
       title="One primary per group"
     />
   );
 }
 
-function ScarceBlue() {
+function OrangeForLinks() {
   return (
     <Pair
       bad={
-        <Card className="w-full max-w-sm border-primary" size="sm">
+        <Card className="w-full max-w-sm border-link" size="sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
+            <CardTitle className="flex items-center gap-2 text-link">
               <FileText aria-hidden="true" className="size-3.5" />
               Rina Wulandari, CV
             </CardTitle>
@@ -138,9 +138,6 @@ function ScarceBlue() {
             <Button size="sm">
               <Share2 aria-hidden="true" data-icon="inline-start" />
               Share link
-            </Button>
-            <Button size="sm" variant="link">
-              Preview
             </Button>
           </CardContent>
         </Card>
@@ -164,11 +161,14 @@ function ScarceBlue() {
               <Share2 aria-hidden="true" data-icon="inline-start" />
               Share link
             </Button>
+            <Button size="sm" variant="link">
+              Preview
+            </Button>
           </CardContent>
         </Card>
       }
-      rule="The blue is the one saturated colour: one cobalt moment in view. Badges, borders, icons and titles stay neutral."
-      title="Keep the blue scarce"
+      rule="Orange #f54e00 is for text links (and at most one highlighted badge). Titles, borders, icons and status chips stay in ink and grey."
+      title="Orange is for links"
     />
   );
 }
@@ -186,7 +186,7 @@ function RolesNotPixels() {
           >
             STEP 2 OF 4
           </p>
-          <h4 className="type-title">Work experience</h4>
+          <h4 className="type-title weight-bold">Work experience</h4>
           <p className="type-body">Newest first, one line of impact each.</p>
         </div>
       }
@@ -197,18 +197,18 @@ function RolesNotPixels() {
           <p className="type-body">Newest first, one line of impact each.</p>
         </div>
       }
-      rule="Pick a role by purpose. Hierarchy comes from size and weight: no all-caps, no letter-spacing, bold only for display."
+      rule="Pick a role by purpose. Hierarchy comes from size alone: everything is weight 400, no all-caps, no letter-spacing beyond what the role bakes in, no bold headings."
       title="Roles, not pixels"
     />
   );
 }
 
-function SquareCards() {
+function FlatCards() {
   return (
     <Pair
       bad={
         // A 16px radius has no token on purpose; shadow-float belongs to
-        // windows. Both are the rule being broken.
+        // windows and flyouts. Both are the rule being broken.
         <Card
           className="w-full max-w-sm shadow-float"
           style={{ borderRadius: 16 }}
@@ -233,51 +233,45 @@ function SquareCards() {
           </CardContent>
         </Card>
       }
-      rule="Cards are square and flat on a hairline. Only buttons (4px) and chips (2px) round; shadows belong to windows."
-      title="Square cards, hairlines"
+      rule="Cards are one step lighter than the page, on a 2.5% hairline with 4px corners and no shadow. Shadows belong to flyouts and windows."
+      title="Flat cards, 4px corners"
     />
   );
 }
 
-const PARAGRAPH =
-  "Rina built the attendance app her lab still uses, from paper forms to a working PWA in six weeks.";
-
-function InkBody() {
+function GreyThatReads() {
   return (
     <Pair
       bad={
         <>
-          <p className="type-body max-w-prose text-foreground">{PARAGRAPH}</p>
+          <p className="type-body text-foreground">Rina Wulandari, CV</p>
+          <p className="type-caption text-offgray">
+            Saved to the cloud 2 minutes ago · 2 pages · A4
+          </p>
           <Note>
-            <span className="inline-flex items-center gap-1.5 text-foreground">
-              <span aria-hidden="true" className="size-2.5 bg-current" />
-              foreground
-            </span>{" "}
-            · the heading colour, pure black in light
+            Offgray (40%) is for decoration: at 12px it falls under 4.5:1.
           </Note>
         </>
       }
       good={
         <>
-          <p className="type-body max-w-prose">{PARAGRAPH}</p>
+          <p className="type-body text-foreground">Rina Wulandari, CV</p>
+          <p className="type-caption text-muted-foreground">
+            Saved to the cloud 2 minutes ago · 2 pages · A4
+          </p>
           <Note>
-            <span className="inline-flex items-center gap-1.5 text-ink">
-              <span aria-hidden="true" className="size-2.5 bg-current" />
-              ink
-            </span>{" "}
-            · inherited from the page, about 10:1 on paper
+            Muted (60%) for small grey text; ink-sec for grey text at 18px and
+            up; ink-mid (50%) only for meta at 16px and up.
           </Note>
         </>
       }
-      rule="Running text inherits ink, a blue-grey. Foreground is for headings, labels and controls, never paragraphs."
-      title="Body copy in ink"
+      rule="Grey text is ink at a fixed strength chosen by size, never a lighter grey because it looks calmer."
+      title="Grey text that still reads"
     />
   );
 }
 
 function WorkingShortcuts() {
-  const { scheme, setScheme } = useScheme();
-  const dark = scheme === "dark";
   return (
     <Pair
       bad={
@@ -300,20 +294,17 @@ function WorkingShortcuts() {
       good={
         <>
           <div>
-            <Button
-              onClick={() => setScheme(dark ? "light" : "dark")}
-              variant="outline"
-            >
-              {dark ? (
-                <Sun aria-hidden="true" data-icon="inline-start" />
-              ) : (
-                <Moon aria-hidden="true" data-icon="inline-start" />
-              )}
-              {dark ? "Light" : "Night Desk"}
-              <Kbd>T</Kbd>
+            <Button asChild variant="outline">
+              <a href="#foundations">
+                <Layers aria-hidden="true" data-icon="inline-start" />
+                Foundations
+                <Kbd>F</Kbd>
+              </a>
             </Button>
           </div>
-          <Note>T switches the theme from anywhere on this page. Try it.</Note>
+          <Note>
+            F jumps to Foundations from anywhere on this page. Try it.
+          </Note>
         </>
       }
       rule="A Kbd hint only on an action whose key works. Render the hint and register the key together, never one without the other."
@@ -348,7 +339,7 @@ function SyntaxInTheEditor() {
       }
       good={
         <>
-          <pre className="type-body-compact w-full overflow-x-auto border border-border bg-card px-3 py-2 text-foreground">
+          <pre className="type-body-compact w-full overflow-x-auto rounded-sm border border-border bg-background px-3 py-2 text-foreground">
             <span className="text-syn-1">"status"</span>:{" "}
             <span className="text-syn-2">"ready"</span>,{"\n"}
             <span className="text-syn-1">"pages"</span>:{" "}
@@ -373,15 +364,15 @@ export function DosAndDontsSection() {
   return (
     <Section
       id="dos-and-donts"
-      lead="The DESIGN.md rules that are easiest to break, rendered side by side. Every Don't is real markup that breaks its rule."
+      lead="The rules that are easiest to break, rendered side by side. Every Don't is real markup that breaks its rule."
       title="Do and don't"
     >
       <BlockGrid>
-        <OneCobaltAction />
-        <ScarceBlue />
+        <OnePrimaryAction />
+        <OrangeForLinks />
         <RolesNotPixels />
-        <SquareCards />
-        <InkBody />
+        <FlatCards />
+        <GreyThatReads />
         <WorkingShortcuts />
         <SyntaxInTheEditor />
       </BlockGrid>

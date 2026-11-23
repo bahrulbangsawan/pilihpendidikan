@@ -3,9 +3,10 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative window: 6px corners, a hairline border on `bg-2` paper and the
-// soft float shadow. Small contextual panels (a date picker, a rename field)
-// open on click without animation.
+// cursor.com flyout: 8px corners, a 10% border on the popover fill and
+// Cursor's two whisper shadows. Small contextual panels (a date picker, a
+// rename field) open on click without animation; the title is 16px at
+// weight 400.
 
 function Popover({
   ...props
@@ -30,7 +31,7 @@ function PopoverContent({
       <PopoverPrimitive.Content
         align={align}
         className={cn(
-          "type-body z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-3 rounded-lg border border-border bg-popover p-4 text-ink shadow-float outline-none",
+          "type-body z-50 flex w-72 origin-(--radix-popover-content-transform-origin) flex-col gap-3 rounded-lg border border-border bg-popover p-4 text-ink shadow-md outline-none",
           className
         )}
         data-slot="popover-content"
@@ -60,7 +61,7 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
 function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
   return (
     <div
-      className={cn("type-subtitle weight-semibold text-foreground", className)}
+      className={cn("type-subtitle text-foreground", className)}
       data-slot="popover-title"
       {...props}
     />

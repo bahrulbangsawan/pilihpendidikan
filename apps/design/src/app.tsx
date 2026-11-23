@@ -1,8 +1,9 @@
 import { buttonVariants } from "@rulisme/ui/ui/button-variants";
 import { TooltipProvider } from "@rulisme/ui/ui/tooltip";
 import { SiteFooter } from "./showcase/site-footer";
+import { ActiveSectionProvider } from "./showcase/active-section";
 import { SiteHeader } from "./showcase/site-header";
-import { ThemeProvider } from "./showcase/theme";
+import { SiteNav } from "./showcase/site-nav";
 import { ActionsSection } from "./showcase/sections/actions";
 import { ConversationSection } from "./showcase/sections/conversation";
 import { DataDisplaySection } from "./showcase/sections/data-display";
@@ -29,26 +30,31 @@ function SkipLink() {
 
 export function App() {
   return (
-    <ThemeProvider>
+    <ActiveSectionProvider>
       <TooltipProvider>
         <SkipLink />
         <SiteHeader />
-        <main>
-          <OverviewSection />
-          <FoundationsSection />
-          <ActionsSection />
-          <InputsSection />
-          <NavigationSection />
-          <DataDisplaySection />
-          <FeedbackSection />
-          <OverlaysSection />
-          <ConversationSection />
-          <DosAndDontsSection />
-          <RecipesSection />
-          <ExampleScreenSection />
-        </main>
-        <SiteFooter />
+        <div className="flex">
+          <SiteNav />
+          <div className="min-w-0 flex-1">
+            <main>
+              <OverviewSection />
+              <FoundationsSection />
+              <ActionsSection />
+              <InputsSection />
+              <NavigationSection />
+              <DataDisplaySection />
+              <FeedbackSection />
+              <OverlaysSection />
+              <ConversationSection />
+              <DosAndDontsSection />
+              <RecipesSection />
+              <ExampleScreenSection />
+            </main>
+            <SiteFooter />
+          </div>
+        </div>
       </TooltipProvider>
-    </ThemeProvider>
+    </ActiveSectionProvider>
   );
 }

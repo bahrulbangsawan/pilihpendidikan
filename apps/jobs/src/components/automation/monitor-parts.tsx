@@ -182,14 +182,14 @@ export function PausePrompt({
               {t("monitor.flaggedExcerpt")}
             </figcaption>
             <PlainText
-              className="type-body-compact border border-line bg-card p-2 text-foreground"
+              className="type-body-compact rounded-sm border border-hairline bg-card p-2 text-foreground"
               text={excerpt}
             />
           </figure>
         ) : null}
         {keys.group === "answer" && answerApprovalId ? (
           <Link
-            className="w-fit text-primary underline-offset-4 hover:underline"
+            className="w-fit text-link underline-offset-4 hover:underline"
             search={{ approval: answerApprovalId }}
             to="/automation"
           >
@@ -299,13 +299,10 @@ export function StepLog({
   return (
     <section
       aria-labelledby="step-log-heading"
-      className="flex flex-col border border-line"
+      className="flex flex-col rounded-sm border border-line"
     >
       <header className="flex items-center gap-2 border-line border-b bg-pane/50 px-3 py-1.5">
-        <h2
-          className="type-caption weight-semibold text-foreground"
-          id="step-log-heading"
-        >
+        <h2 className="type-caption text-foreground" id="step-log-heading">
           {t("monitor.stepLog")}
         </h2>
         {heartbeat ? (
@@ -366,7 +363,7 @@ export function EvidenceCard({
   const href = evidence.final_url ? safeHref(evidence.final_url) : null;
   const { signals } = evidence;
   return (
-    <div className="flex flex-col gap-2 border border-line bg-card p-3">
+    <div className="flex flex-col gap-2 rounded-sm border border-hairline bg-card p-3">
       <div className="flex flex-wrap items-center gap-1">
         <Badge
           variant={evidence.verdict === "verified" ? "secondary" : "outline"}
@@ -410,7 +407,7 @@ export function EvidenceCard({
         <p className="type-caption break-all">
           {href ? (
             <a
-              className="text-primary underline-offset-4 hover:underline"
+              className="text-link underline-offset-4 hover:underline"
               href={href}
               rel="noopener noreferrer"
               target="_blank"
@@ -431,7 +428,7 @@ export function EvidenceCard({
       {evidence.screenshot_file_id ? (
         <img
           alt={t("monitor.screenshotAlt")}
-          className="h-auto w-full max-w-md border border-line object-contain"
+          className="h-auto w-full max-w-md rounded-sm border border-line object-contain"
           height={300}
           src={`/download/files/${encodeURIComponent(evidence.screenshot_file_id)}/content`}
           width={480}

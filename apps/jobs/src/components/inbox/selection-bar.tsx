@@ -35,7 +35,7 @@ export function SelectionBar({
     >
       <p
         aria-live="polite"
-        className="type-body-compact weight-semibold mr-2 text-foreground tabular-nums"
+        className="type-body-compact mr-2 text-foreground tabular-nums"
       >
         {t("inbox.selection.count", { count })}
       </p>

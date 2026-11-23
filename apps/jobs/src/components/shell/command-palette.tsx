@@ -19,12 +19,9 @@ import {
   Inbox,
   Keyboard,
   LogOut,
-  Moon,
   Plus,
   Radar,
-  Sun,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useMemo } from "react";
 import { useAppNavigate } from "@/components/app-link";
 import type { BoardData } from "@/hooks/use-board";
@@ -52,7 +49,6 @@ export function CommandPalette({
   const { t } = useTranslation();
   const navigate = useAppNavigate();
   const queryClient = useQueryClient();
-  const { resolvedTheme, setTheme } = useTheme();
   const signOut = useSignOut();
 
   const applications = useMemo(() => {
@@ -69,8 +65,6 @@ export function CommandPalette({
     onOpenChange(false);
     action();
   }
-
-  const dark = resolvedTheme === "dark";
 
   return (
     <CommandDialog
@@ -109,13 +103,6 @@ export function CommandPalette({
             >
               <Radar aria-hidden="true" />
               {t("palette.startDiscovery")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => setTheme(dark ? "light" : "dark"))}
-              value="switch theme night desk light dark"
-            >
-              {dark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-              {dark ? t("palette.themeLight") : t("palette.themeDark")}
             </CommandItem>
             <CommandItem
               onSelect={() => run(onShortcuts)}

@@ -221,7 +221,7 @@ export function AnswersTab() {
         <AnswersBulkBar answers={rows} selection={selection} />
       ) : null}
       {rows.length > 0 ? (
-        <div className="overflow-x-auto border border-line">
+        <div className="overflow-x-auto rounded-sm border border-line">
           <Table>
             <TableHeader>
               <TableRow>
