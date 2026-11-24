@@ -1,7 +1,7 @@
 // Account emails (11 §10): "your export is ready" and "confirm deleting your
 // account", in the user's locale (en / id), sent through the `EMAIL` binding
-// with the sign-in email's Zedative styling (src/email.ts): paper, a ruled
-// card with the wordmark band, one cobalt action with its lip.
+// with the sign-in email's Cursor styling (src/email.ts): the dark page, a
+// card with the wordmark over a 10% rule, one light pill as the action.
 
 import type { Locale } from "@pilihpendidikan/jobs-contracts/enums";
 import type { Env } from "../../../env";
@@ -66,15 +66,15 @@ function render(copy: EmailCopy, link: string, lang: Locale): AccountEmail {
   const href = escapeHtml(link);
   return {
     subject: copy.subject,
-    html: `<!doctype html><html lang="${lang}"><body style="margin:0;padding:24px 12px;background:#f4f4f2;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:20px;color:#393d45">
-<div style="max-width:480px;margin:0 auto;border:1px solid #cbcfd4;background:#fafafa">
-<p style="margin:0;padding:16px 24px;border-bottom:1px solid #cbcfd4;color:#000000;font-size:16px;line-height:22px;font-weight:600"><span style="display:inline-block;width:20px;height:20px;margin-right:8px;border-radius:2px;background:#1348dc;color:#ffffff;font-size:10px;line-height:20px;text-align:center;vertical-align:-4px">&#9671;</span>pilihpendidikan</p>
+    html: `<!doctype html><html lang="${lang}"><head><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head><body style="margin:0;padding:24px 12px;background:#14120b;font-family:Geist,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:14px;line-height:21px;color:#edecec">
+<div style="max-width:480px;margin:0 auto;border-radius:4px;background:#1b1913">
+<p style="margin:0;padding:14px 24px;border-bottom:1px solid #302e29;color:#edecec;font-size:16px;line-height:24px">pilihpendidikan</p>
 <div style="padding:24px">
-<p style="margin:0 0 16px;font-size:14px;line-height:20px">${escapeHtml(copy.lead)}</p>
-<p style="margin:0 0 24px"><a href="${href}" style="display:inline-block;padding:8px 12px 6px;border-bottom:2px solid #053794;border-radius:4px;background:#1348dc;color:#ffffff;text-decoration:none">${escapeHtml(copy.action)}</a></p>
-<p style="margin:0 0 8px;font-size:12px;line-height:16px;color:#5a6170">${escapeHtml(copy.fallback)}</p>
-<p style="margin:0 0 24px;font-size:12px;line-height:16px;word-break:break-all"><a href="${href}" style="color:#1348dc">${href}</a></p>
-<p style="margin:0;font-size:12px;line-height:16px;color:#5a6170">${escapeHtml(copy.footer)}</p>
+<p style="margin:0 0 20px;font-size:16px;line-height:24px">${escapeHtml(copy.lead)}</p>
+<p style="margin:0 0 24px"><a href="${href}" style="display:inline-block;padding:9px 16px;border-radius:9999px;background:#edecec;color:#14120b;font-size:14px;line-height:18px;text-decoration:none">${escapeHtml(copy.action)}</a></p>
+<p style="margin:0 0 8px;font-size:12px;line-height:18px;color:#999895">${escapeHtml(copy.fallback)}</p>
+<p style="margin:0 0 24px;font-size:12px;line-height:18px;word-break:break-all"><a href="${href}" style="color:#f54e00;text-decoration:none">${href}</a></p>
+<p style="margin:0;font-size:12px;line-height:18px;color:#999895">${escapeHtml(copy.footer)}</p>
 </div></div></body></html>`,
     text: `${copy.lead}\n\n${link}\n\n${copy.footer}`,
   };
