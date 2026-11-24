@@ -186,3 +186,47 @@ Scores, eyeballed, raw, median of 3 critics (A same model, B Sonnet, C same mode
 vs round 4: S05b +8, S12 +4, S13/S14/S16 +2–4; S04/S15 flat (phone). Critic B again reported stale facts (4px radii); weighted by median.
 Top gaps: hub page ~1,500px shorter than cursor.com (missing card bands) and phone landing; builders lack a docs-style page header and use hairlines where cursor uses whitespace; list grid alignment; profile values pulled from the CV render in placeholder grey (bug); chart line too bright; phone card "⇄" glyph.
 Next focus (round 6): hub bands (CV templates with real previews, about band), taller feature windows, mock details; jobs list/cards/settings stacking/profile bug/charts/sheet/phone; builders page header + 18px section titles + whitespace.
+
+## Rounds 06–07
+
+Not logged here at the time; the work is in commits 6e52135 (round 6: longer hub, docs-style builder headers, jobs refinements) and c0100ab (round 7: hierarchy, framing, app details). Compares in `cook/compare/r06/`, `r07/`.
+
+## Round 08
+
+Time: to about 08:20 | total elapsed about 9h (8h floor met) | commit e89f496
+Focus: decluttered builder toolbars (a "…" menu for import / sample / clear; template switcher and Download in the preview bar), copy cleanup, jobs breadcrumb "Workspace › Board", design page wording.
+Scores, eyeballed, raw. Conservative: the lower of critics A and C per cell (C was lower almost everywhere; for S02, C's lowest band). Critic B (Sonnet) scored 76–91 but claimed that the feature windows were cropped at the top, which `cook/stills/wip/r08-feat.png` shows is false, so it is left out.
+
+| Shot | Layout | Colour | Typography | Components | Detail |
+|---|---|---|---|---|---|
+| S01 | 95 | 92 | 96 | 94 | 90 |
+| S02 | 84 | 88 | 90 | 84 | 84 |
+| S04 | 84 | 90 | 88 | 84 | 82 |
+| S05a | 90 | 92 | 93 | 90 | 88 |
+| S05b | 92 | 91 | 93 | 91 | 88 |
+| S06 | 88 | 93 | 93 | 91 | 89 |
+| S07 | 88 | 88 | 90 | 88 | 86 |
+| S09a | 88 | 92 | 93 | 90 | 88 |
+| S09b | 88 | 88 | 93 | 90 | 87 |
+| S10 | 90 | 92 | 92 | 90 | 88 |
+| S11 | 92 | 93 | 94 | 92 | 90 |
+| S12 | 88 | 88 | 91 | 87 | 85 |
+| S13 | 94 | 93 | 92 | 92 | 90 |
+| S14 | 92 | 90 | 93 | 91 | 88 |
+| S15 | 78 | 88 | 88 | 84 | 82 |
+| S16 | 90 | 92 | 93 | 89 | 87 |
+
+Critic A alone scored 88–97 (S01 96/95/97/95/93; every shot 90+ except S02 detail 89 and S09b colour 88).
+Bar (99) not met in any shot; it is a stretch target.
+Top gaps (A and C agree):
+- the hub "AI assistants" band should be three equal cards on one stage tone;
+- the "Bahasa Indonesia" strip tile wraps onto two lines;
+- feature mats use different tones and uneven window insets;
+- the mobile board shell (S15): a white round "+" and clipped stage tabs with no fade;
+- the sheet footer's secondary action should be outline rather than ghost, and the sheet backdrop should blur;
+- the design page's white swatches pull focus;
+- the stats deltas all show 0% in the demo data;
+- the stats callout needs an amber tone;
+- the footer and CTA need more air.
+
+Next focus (round 9, if the user asks for it): S02-3 AI-assistants trio, one stage tone, the strip tile, S15 phone shell, sheet footer and backdrop, the footer spacing.
