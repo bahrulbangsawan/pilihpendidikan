@@ -168,7 +168,10 @@ function Row({
   return (
     <TableRow
       aria-busy={pending || undefined}
-      className={cn("h-14 cursor-pointer *:py-2!", pending && "opacity-70")}
+      className={cn(
+        "group/row h-14 cursor-pointer *:py-2!",
+        pending && "opacity-70"
+      )}
       data-state={selected ? "selected" : undefined}
       onClick={(event) => handlers.onCardClick(card, event)}
     >
@@ -217,7 +220,12 @@ function Row({
         <StageBadge stage={card.stage} />
       </TableCell>
       <TableCell className="w-32">
-        <ScoreMeter label={false} score={card.score} />
+        <ScoreMeter
+          className="**:data-[slot=meter-bar]:w-12"
+          inline
+          label={false}
+          score={card.score}
+        />
       </TableCell>
       <TableCell className="max-w-48 truncate text-ink-sec">
         {location || "—"}
@@ -236,6 +244,7 @@ function Row({
         onClick={(event) => event.stopPropagation()}
       >
         <CardMenu
+          bordered
           card={card}
           className="size-7"
           onAction={(action) => handlers.onMenuAction(card, action)}

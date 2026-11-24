@@ -106,7 +106,10 @@ export function HubFooter() {
         </FooterColumn>
       </div>
       <div className="mx-auto mt-[86px] flex max-w-rail flex-wrap items-center justify-between gap-4">
-        <p className="type-body text-ink-sec">{t("footer.copyright")}</p>
+        <p className="type-body flex flex-wrap gap-x-4 text-ink-sec">
+          <span>{t("footer.copyright")}</span>
+          <span>{t("footer.note")}</span>
+        </p>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="sm" variant="secondary">

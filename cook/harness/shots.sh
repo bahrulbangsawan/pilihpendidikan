@@ -3,7 +3,7 @@
 set -u
 export AGENT_BROWSER_SESSION=owner
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"; T="$ROOT/cook/stills/wip/shots"; mkdir -p "$T"
-agent-browser set media dark >/dev/null; agent-browser set viewport 1000 800 >/dev/null
+agent-browser set media dark >/dev/null; agent-browser set viewport 800 612 >/dev/null
 agent-browser open "http://localhost:4007/?code=mock-sign-in-code" >/dev/null; agent-browser wait 3000 >/dev/null
 for pair in cv:http://localhost:4003/ invoice:http://localhost:4004/ portfolio:http://localhost:4005/ jobs:http://localhost:4007/board stats:http://localhost:4007/stats; do
   id=${pair%%:*}; url=${pair#*:}

@@ -82,12 +82,12 @@ export function Swatch({ name, token }: { name: string; token: string }) {
         ref={ref}
         style={{ backgroundColor: `var(--${token})` }}
       />
-      <div className="flex min-w-0 flex-col">
+      <div className="flex min-w-0 flex-col gap-1">
         <span className="type-caption truncate text-foreground">{name}</span>
-        <span className="type-micro truncate text-muted-foreground">
+        <span className="type-caption truncate text-muted-foreground">
           --{token}
         </span>
-        <span className="type-micro text-muted-foreground tabular-nums">
+        <span className="type-caption text-muted-foreground tabular-nums">
           {hex ?? " "}
         </span>
       </div>
@@ -154,12 +154,12 @@ export function ColorPair({
       >
         <span className="type-title">Aa</span>
         {info ? (
-          <span className="type-micro rounded-full border border-current/25 px-1.5 tabular-nums">
+          <span className="type-caption rounded-full border border-current/25 px-2 tabular-nums">
             {info.ratio.toFixed(2)} {wcagLevel(info.ratio)}
           </span>
         ) : null}
       </div>
-      <div className="flex flex-col gap-0.5 border-border border-t bg-card p-3">
+      <div className="flex flex-col gap-1.5 border-border border-t bg-card p-3">
         <span className="type-body text-foreground">{name}</span>
         <span className="type-caption text-muted-foreground">
           --{background} / --{foreground}

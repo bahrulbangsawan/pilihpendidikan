@@ -126,7 +126,7 @@ function Strip() {
         <h2 className="type-body text-center" id="strip-heading">
           {t("strip.heading")}
         </h2>
-        <ul className="mt-[22px] grid grid-cols-3 gap-[10px] sm:grid-cols-4 lg:grid-cols-8">
+        <ul className="mt-[22px] grid grid-cols-4 gap-[10px] lg:grid-cols-8">
           {STRIP_ITEMS.map(({ key, Icon }) => (
             <li
               className="type-caption sm:type-title-compact flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-sm border border-hairline bg-card text-center text-foreground sm:h-[100px] sm:flex-row sm:gap-2"
@@ -248,17 +248,17 @@ function About() {
         </div>
         <div className="relative h-[280px] overflow-hidden rounded-xs bg-stage-warm lg:col-span-16 lg:h-[465px]">
           <WindowFrame
-            className="absolute inset-x-6 top-6 lg:inset-x-10 lg:top-10"
+            className="absolute inset-x-6 top-6 lg:inset-x-5 lg:top-10"
             title="Pilih Jobs — Stats"
           >
             <img
               alt={t("about.shotAlt")}
               className="block h-auto w-full"
               decoding="async"
-              height={800}
+              height={612}
               loading="lazy"
               src="/shots/stats.webp"
-              width={1000}
+              width={800}
             />
           </WindowFrame>
         </div>

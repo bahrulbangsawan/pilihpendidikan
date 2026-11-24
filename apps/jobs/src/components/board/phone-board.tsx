@@ -47,7 +47,7 @@ export function PhoneBoard({
   return (
     <div className="flex flex-col">
       <Tabs onValueChange={(value) => setTab(value as Tab)} value={tab}>
-        <div className="no-scrollbar mask-r-from-[calc(100%-24px)] scroll-px-4 overflow-x-auto px-4 pb-2">
+        <div className="no-scrollbar mask-r-from-[calc(100%-56px)] scroll-px-4 overflow-x-auto px-4 pb-2">
           <TabsList aria-label={t("board.stages")} className="mr-4">
             {BOARD_STAGES.map((stage) => (
               <TabsTrigger key={stage} value={stage}>
@@ -68,7 +68,7 @@ export function PhoneBoard({
       </Tabs>
       <ul
         aria-label={tab === "closed" ? t("board.closed") : stageLabel(t, tab)}
-        className="flex flex-col gap-3 p-4"
+        className="flex flex-col gap-2.5 px-4 pt-2 pb-4"
       >
         {cards.map((card) => (
           <li className="relative" key={card.id}>
@@ -84,13 +84,14 @@ export function PhoneBoard({
             >
               <CardView
                 card={card}
+                compact
                 nowMs={nowMs}
                 pending={pendingIds.has(card.id)}
               />
             </Button>
             <CardMenu
               card={card}
-              className="absolute top-3 right-3"
+              className="absolute top-2.5 right-2.5"
               onAction={(action) => onMenuAction(card, action)}
             />
           </li>

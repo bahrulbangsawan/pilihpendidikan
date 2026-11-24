@@ -672,8 +672,12 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="cv-preview-scroll p-6">
-            <CVPreview data={data} style={style} />
+          {/* The sheet rests on a padded well one step darker than the
+              pane (32px around it, 2px corner); print drops the well. */}
+          <div className="cv-preview-scroll p-4 sm:p-6">
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              <CVPreview data={data} style={style} />
+            </div>
           </div>
         </div>
         {/* Floating download button, mobile only */}

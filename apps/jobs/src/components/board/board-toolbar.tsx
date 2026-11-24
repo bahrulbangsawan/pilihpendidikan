@@ -91,7 +91,7 @@ export function BoardFiltersMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="max-sm:h-8" size="sm" variant="outline">
+        <Button size="sm" variant="outline">
           <ListFilter aria-hidden="true" data-icon="inline-start" />
           {t("board.filterButton")}
           {active > 0 ? (
@@ -235,7 +235,6 @@ export function ViewSwitcher({
   return (
     <SegmentedControl
       aria-label={t("board.view.label")}
-      className="max-sm:h-8"
       onValueChange={(next) => onChange(next as BoardView)}
       size="sm"
       value={value}

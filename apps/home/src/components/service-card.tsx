@@ -127,17 +127,17 @@ export function ServiceCard({
       </FeatureCopy>
       <FeatureMedia flip={flip} stage={stage}>
         <WindowFrame
-          className="absolute inset-x-6 top-6 lg:inset-x-10 lg:top-10"
+          className="absolute inset-x-6 top-6 lg:inset-x-5 lg:top-10"
           title={t("features.windowTitle").replace("{{name}}", name)}
         >
           <img
             alt={t("features.shotAlt").replace("{{name}}", name)}
             className="block h-auto w-full"
             decoding="async"
-            height={800}
+            height={612}
             loading="lazy"
             src={`/shots/${id}.webp`}
-            width={1000}
+            width={800}
           />
         </WindowFrame>
       </FeatureMedia>

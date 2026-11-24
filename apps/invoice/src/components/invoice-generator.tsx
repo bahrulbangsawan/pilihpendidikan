@@ -340,8 +340,8 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
   );
 }
 
-// The white document sheet resting on the card-coloured preview well, 24px
-// in from the pane's edges with a 2px corner on screen; it prints bare at full width (the print CSS in
+// The white document sheet resting on the darker preview well, 32px in from
+// the well's edges with a 2px corner on screen; it prints bare at full width (the print CSS in
 // styles.css prints `.invoice-page` alone). The empty state stays unframed.
 function PreviewSheet({ data }: { data: InvoiceData }) {
   const { t } = useTranslation();
@@ -694,8 +694,12 @@ export function InvoiceGenerator() {
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="invoice-preview-scroll p-6">
-            <PreviewSheet data={data} />
+          {/* The sheet rests on a padded well one step darker than the
+              pane (32px around it, 2px corner); print drops the well. */}
+          <div className="invoice-preview-scroll p-4 sm:p-6">
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              <PreviewSheet data={data} />
+            </div>
           </div>
         </div>
         {/* Floating download button — mobile only */}

@@ -411,7 +411,7 @@ export function FoundationsSection() {
           title="Colour roles"
           wide
         >
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
             {ROLE_PAIRS.map((pair) => (
               <ColorPair
                 background={pair.background}
@@ -434,7 +434,7 @@ export function FoundationsSection() {
                 <h4 className="type-caption text-muted-foreground">
                   {group.group}
                 </h4>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 lg:grid-cols-4">
                   {group.swatches.map((swatch) => (
                     <Swatch
                       key={swatch.token}

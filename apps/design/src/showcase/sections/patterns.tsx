@@ -279,7 +279,7 @@ function StatsBlock() {
 function IdentityBlock() {
   return (
     <Block
-      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 32px outlined fact chip (8px corners) with an icon and a muted label; propertyChipClassName gives a select trigger the same chip. Badge tone: a 4px status chip on a 12% tint with a dot and tone text (stages: neutral, violet, blue, amber, success, destructive). SectionCard: the nested frame (title on a 12px frame, content in an 8px inner panel), or flat inside a sheet."
+      description="EntityAvatar: up to two initials from a name (or the image), round or square. PropertyChip: a 32px outlined fact chip (8px corners) with an icon and a muted label; propertyChipClassName gives a select trigger the same chip. Badge tone: a 4px status chip on a 12% tint with a dot and tone text (stages: neutral, violet, blue, amber, success, destructive); `dot={false}` makes the 20px borderless mini-badge beside a label (a value's provenance: From CV, Suggested; see Settings below). SectionCard: the nested frame (title on a 12px frame, content in an 8px inner panel), or flat inside a sheet."
       title="Avatar, property chips, section card"
       wide
     >
@@ -385,13 +385,20 @@ function SettingsBlock() {
                 <Button size="sm" variant="outline">
                   Cancel
                 </Button>
-                <Button size="sm">Save</Button>
+                <Button disabled size="sm">
+                  Save changes
+                </Button>
               </>
             }
             id="pattern-settings-profile"
             title="Profile"
           >
             <SettingsRow
+              badge={
+                <Badge dot={false} tone="neutral">
+                  From CV
+                </Badge>
+              }
               description="As it appears on applications."
               htmlFor="pattern-name"
               label="Full name"
@@ -399,6 +406,11 @@ function SettingsBlock() {
               <Input defaultValue="Rina Kartika" id="pattern-name" />
             </SettingsRow>
             <SettingsRow
+              badge={
+                <Badge dot={false} tone="blue">
+                  Suggested
+                </Badge>
+              }
               description="Where recruiters reply."
               htmlFor="pattern-email"
               label="Email"
@@ -480,7 +492,7 @@ function PageBlock() {
 function DocHeaderBlock() {
   return (
     <Block
-      description="DocHeader: the docs-style header of a document form (cursor.com/docs) — a muted 13px area line, the 22px semibold title and a muted 16px lead, 8px apart with 16px above the lead. The builders put it on top of their form columns with 32px to the first section."
+      description="DocHeader: the docs-style header of a document form (cursor.com/docs) — a muted 13px area line, the title (36px at weight 400 from md up, 22px on phones) and a muted 16px lead, 8px apart with 16px above the lead. The builders put it on top of their form columns with 32px to the first section."
       title="Document header"
     >
       <Example>

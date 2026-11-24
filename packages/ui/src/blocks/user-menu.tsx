@@ -19,7 +19,9 @@ import { EntityAvatar } from "../ui/entity-avatar";
 // the keyboard). Group the items with separators (account pages / preferences /
 // sign out) and put a `DropdownMenuShortcut` only on rows whose key really exists. The menu items are the app's: pass
 // DropdownMenuItem / DropdownMenuSub children (Profile, Settings, Language,
-// Sign out). Presentational: no session, routing or copy inside.
+// Sign out). The menu is a window over the board: a 1px 20% border and the
+// window shadow (`shadow-lg`); the row stays on `pane-2` while it is open.
+// Presentational: no session, routing or copy inside.
 
 function UserIdentity({
   name,
@@ -77,7 +79,7 @@ function UserMenu({
       <DropdownMenuTrigger
         aria-label={label}
         className={cn(
-          "flex h-12 w-full items-center gap-2.5 rounded-md px-2 text-left outline-none transition-colors duration-140 ease-standard hover:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid data-[state=open]:bg-pane",
+          "flex h-12 w-full items-center gap-2.5 rounded-md px-2 text-left outline-none transition-colors duration-140 ease-standard hover:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid data-[state=open]:bg-pane-2",
           collapsed && "justify-center px-0"
         )}
         data-slot="user-menu-trigger"
@@ -103,7 +105,7 @@ function UserMenu({
         align="end"
         className={cn(
           // Uniform 28px rows (reui's app-shell menu); separators keep 4px.
-          "w-60 [&_[role^=menuitem]]:min-h-7 [&_[role^=menuitem]]:py-0.5",
+          "w-60 border-input shadow-lg [&_[role^=menuitem]]:min-h-7 [&_[role^=menuitem]]:py-0.5",
           contentClassName
         )}
         side="right"

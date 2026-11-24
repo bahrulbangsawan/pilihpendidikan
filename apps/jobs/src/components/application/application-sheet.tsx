@@ -4,9 +4,11 @@
 // (40px top padding, company avatar, 22px role, company), one line of 32px
 // property chips (the stage select, then labelled facts), then flat sections
 // (Next step, Notes, Interviews, Follow-up) split by hairlines and 24px of
-// space, scrolling under a 16px fade; the footer (an 8% hairline, 16px
-// padding) stacks the next step's primary action (`Y`) over a full-width
-// secondary "Open full page".
+// space, scrolling under a 16px fade (22px role: no 24px role exists; the
+// section actions such as "Manage" are small filled ghost pills); the
+// footer is a distinct `pane` band under a hairline (16px padding) that
+// stacks the next step's primary action (`Y`) over a full-width secondary
+// "Open full page".
 
 import { SectionCard } from "@rulisme/ui/blocks/settings";
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
@@ -29,7 +31,12 @@ import {
 } from "@rulisme/ui/ui/sheet";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, CircleAlert, Maximize2 } from "lucide-react";
+import {
+  CalendarClock,
+  ChevronRight,
+  CircleAlert,
+  Maximize2,
+} from "lucide-react";
 import { useCallback, useRef } from "react";
 import { useApplication, useApplicationEvents } from "@/hooks/use-application";
 import type { ApplicationPatch } from "@/hooks/use-conflict-write";
@@ -67,13 +74,19 @@ function InterviewsSummary({
   return (
     <SectionCard
       action={
-        <Button asChild size="xs" variant="ghost">
+        <Button
+          asChild
+          className="bg-pane text-ink-sec hover:bg-pane-2 hover:text-foreground"
+          size="xs"
+          variant="ghost"
+        >
           <Link
             params={{ appId }}
             search={{ tab: "interviews" }}
             to="/applications/$appId"
           >
             {t("application.sheet.manage")}
+            <ChevronRight aria-hidden="true" data-icon="inline-end" />
           </Link>
         </Button>
       }
@@ -247,7 +260,7 @@ function SheetBody({
           onEdit={() => onFollowUp(detail)}
         />
       </div>
-      <SheetFooter className="gap-2 border-ink/8 border-t p-4">
+      <SheetFooter className="gap-2 border-border border-t bg-pane p-4">
         {step ? (
           <NextStepButton
             className="w-full"

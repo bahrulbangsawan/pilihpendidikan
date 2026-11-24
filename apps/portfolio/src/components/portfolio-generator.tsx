@@ -23,7 +23,6 @@ import {
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { PropertyChip } from "@rulisme/ui/ui/property-chip";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -476,11 +475,11 @@ export function PortfolioGenerator({
         </div>
         <div className="pf-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
           <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
-            {/* The deck's format as a 28px neutral pill, level with the
-                deck's left edge (the pane's 24px gutter). */}
-            <PropertyChip className="h-7 min-w-0 rounded-full">
-              <span className="truncate">{t("preview.documentLabel")}</span>
-            </PropertyChip>
+            {/* The deck's format as plain muted text, level with the deck's
+                left edge (the pane's gutter plus the well's padding). */}
+            <span className="type-caption ml-4 min-w-0 truncate text-muted-foreground sm:ml-8">
+              {t("preview.documentLabel")}
+            </span>
             {portfolioId && cloud.hasToken ? (
               <CloudStatus error={cloud.error} status={cloud.status} />
             ) : null}
@@ -524,15 +523,19 @@ export function PortfolioGenerator({
               </DropdownMenu>
             </ButtonGroup>
           </div>
-          <div className="pf-preview-scroll p-6">
-            {hasPreviewContent(data) ? (
-              <PortfolioPreview data={data} />
-            ) : (
-              <GhostPage
-                description={t("preview.empty")}
-                orientation="landscape"
-              />
-            )}
+          {/* The deck rests on a padded well one step darker than the pane
+              (32px around it, 2px corner); print drops the well. */}
+          <div className="pf-preview-scroll p-4 sm:p-6">
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              {hasPreviewContent(data) ? (
+                <PortfolioPreview data={data} />
+              ) : (
+                <GhostPage
+                  description={t("preview.empty")}
+                  orientation="landscape"
+                />
+              )}
+            </div>
           </div>
         </div>
         {/* Floating download button, mobile only */}

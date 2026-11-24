@@ -9,7 +9,9 @@ import { badgeVariants } from "./badge-variants";
 // A status chip (reui's status badges): `tone` turns the pill into a 4px
 // chip on a 12% tint of the tone with a matching 6px dot before the label,
 // in the tone's own text colour (every tone is AA on its tint). `neutral`
-// and `ink` keep foreground text; `link` stays for links only.
+// and `ink` keep foreground text; `link` stays for links only. `dot={false}`
+// drops the dot for a mini-badge beside a label (a value's provenance:
+// "From CV", "Suggested").
 const BADGE_TONE = {
   neutral: {
     chip: "bg-offgray/12 text-ink-sec",
@@ -36,6 +38,7 @@ function Badge({
   className,
   variant = "default",
   tone,
+  dot = true,
   asChild = false,
   children,
   ...props
@@ -44,6 +47,8 @@ function Badge({
     asChild?: boolean;
     /** A tinted status chip with a dot (overrides `variant`'s colours). */
     tone?: BadgeTone;
+    /** With `tone`: show the leading dot (default) or a plain tinted chip. */
+    dot?: boolean;
   }) {
   const Comp = asChild ? Slot.Root : "span";
 
@@ -60,11 +65,16 @@ function Badge({
         data-tone={tone}
         {...props}
       >
-        <span
-          aria-hidden="true"
-          className={cn("size-1.5 shrink-0 rounded-full", BADGE_TONE[tone].dot)}
-          data-slot="badge-dot"
-        />
+        {dot ? (
+          <span
+            aria-hidden="true"
+            className={cn(
+              "size-1.5 shrink-0 rounded-full",
+              BADGE_TONE[tone].dot
+            )}
+            data-slot="badge-dot"
+          />
+        ) : null}
         {children}
       </span>
     );

@@ -29,7 +29,6 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import type { PointerEvent, ReactNode } from "react";
 import { useMemo, useRef, useState } from "react";
-import { cn } from "@rulisme/ui/lib/utils";
 import { toast } from "sonner";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
@@ -351,15 +350,13 @@ export function DesktopBoard(props: DesktopBoardProps) {
         data-testid="board-columns"
       >
         {BOARD_STAGES.map(renderLane)}
-        {/* The closed lanes close the row. While both are collapsed rails
-            they stick to the right edge (16px gutter), so Rejected and
-            Withdrawn stay in view and take drops however far the row
-            scrolls; the page shows through nowhere behind them. */}
+        {/* The closed lanes close the row: they follow the last open lane
+            inside the horizontal scroll (rails while collapsed), never
+            pinned over another lane. While dragging, dnd-kit scrolls the
+            row to them. */}
         <div
-          className={cn(
-            "flex shrink-0 items-stretch gap-3 pr-4",
-            closedRails && "sticky right-0 z-10 bg-background pl-3"
-          )}
+          className="flex shrink-0 items-stretch gap-3 pr-4"
+          data-collapsed={closedRails || undefined}
           data-testid="board-closed-lanes"
         >
           {CLOSED_STAGES.map(renderLane)}

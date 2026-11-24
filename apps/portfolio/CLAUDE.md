@@ -76,10 +76,10 @@ print CSS. What is specific to this app:
 - **Editor frame.** A split view in cursor.com's dark app chrome: each pane is
   headed by a 48px toolbar (`h-12`, `border-border` rule, `size="sm"` /
   `icon-sm` pill buttons), the panes are divided by a `border-border` rule,
-  and the deck rests on the card colour. A docs-style page header opens the
-  form; sections are 40px apart with no rules, headings `type-title-compact
-  weight-semibold`, the column capped at 640px; the deck sits in the well with
-  24px padding. Below `md` the panes stack and a floating button downloads.
+  and the deck rests on the card colour. A docs-style page header (`DocHeader`,
+  36px/400 title) opens the form; sections are 40px apart with no rules, headings `type-title-compact
+  weight-semibold`, the column capped at 640px; the deck sits on a `bg-background`
+  well (32px padding) inside the card pane's 24px gutter. Below `md` the panes stack and a floating button downloads.
 - **Theme.** Dark only (Zedative has one scheme): `<html>` carries
   `className="dark"` from the server and next-themes is pinned with
   `forcedTheme="dark"`; there is no toggle.

@@ -140,7 +140,7 @@ function PreviewWindow() {
       className="absolute top-[278px] right-[-78px] hidden w-[480px] lg:flex"
       title={t("editor.previewTitle")}
     >
-      <div className="bg-pane px-10 pt-6">
+      <div className="bg-pane px-12 pt-8">
         <div className="h-[300px] bg-foreground px-7 pt-6 font-print text-background">
           <p className="type-subtitle weight-bold">{t("editor.name")}</p>
           <p className="type-caption text-background/60">{t("editor.role")}</p>

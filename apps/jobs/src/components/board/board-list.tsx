@@ -41,7 +41,7 @@ function ListRow({
   const { t } = useTranslation();
   const location = useLocationLine(card.posting);
   return (
-    <li className="relative">
+    <li className="group/row relative">
       <Button
         aria-busy={pending || undefined}
         aria-keyshortcuts="Enter M X F E R W"
@@ -143,7 +143,7 @@ function ListGroup({
       aria-labelledby={headingId}
       className="flex min-w-0 flex-col rounded-xl border border-border bg-card p-1"
     >
-      <h2 className="type-body" id={headingId}>
+      <h2 className="type-body mb-1" id={headingId}>
         <Button
           aria-expanded={expanded}
           className="h-10 w-full justify-start gap-2 rounded-lg px-2.5 hover:bg-transparent aria-expanded:bg-transparent"

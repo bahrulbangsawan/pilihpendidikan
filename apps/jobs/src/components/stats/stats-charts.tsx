@@ -1,8 +1,11 @@
 // The Stats charts (10 §8), drawn with the shared chart wrapper of
 // @rulisme/ui: series are a neutral ramp of the `ink` token (70% down to
 // 28%, never pure white; orange stays for links), the line is a 1.5px
-// `chart-2` monotone curve with a dot only at the last point and under the
-// pointer, the grid is a hairline, nothing animates in (DESIGN.md § Motion). Each chart is a
+// `chart-2` monotoneX curve (values clamped at 0, the axis starts at 0, so
+// the curve never dips below the baseline) with a dot only at the last point and under the
+// pointer, the grid is a hairline (horizontal rules only; bar charts have
+// none: their values sit at the bar ends and the scale runs to 1.1× the
+// largest value), nothing animates in (DESIGN.md § Motion). Each chart is a
 // picture of its view model; ChartFrame pairs it with the same numbers as a
 // table. Recharts' own keyboard layer is off: the chart sits inside
 // role="img" and the data table is the keyboard path (T10-10).
@@ -41,6 +44,12 @@ const FUNNEL_COLORS = [70, 58, 46, 36, 28].map(inkAt);
 const LINE_COLOR = "var(--chart-2)";
 const LINE_WIDTH = 1.5;
 const DOT_RADIUS = 3;
+
+/** Bars end at 1.1× the largest value, so the longest bar leaves room
+ * for its label and never reads as "full". */
+const BAR_HEADROOM = 1.1;
+const barDomainMax = (dataMax: number) =>
+  Math.max(1, Math.ceil(dataMax * BAR_HEADROOM));
 
 /** Recharts' dot callback: a dot on the last point only. */
 function LastPointDot({
@@ -90,11 +99,10 @@ function HorizontalBars({
         layout="vertical"
         margin={{ left: 0, right: 40 }}
       >
-        <CartesianGrid horizontal={false} />
         <XAxis
           allowDecimals={false}
-          axisLine={false}
-          tickLine={false}
+          domain={[0, barDomainMax]}
+          hide
           type="number"
         />
         <YAxis
@@ -173,7 +181,10 @@ export function SeriesChart({
     >
       <LineChart
         accessibilityLayer={false}
-        data={[...points]}
+        data={points.map((point) => ({
+          ...point,
+          value: Math.max(0, point.value),
+        }))}
         margin={{ left: 0, right: 12, top: 8 }}
       >
         <CartesianGrid vertical={false} />
@@ -188,6 +199,7 @@ export function SeriesChart({
         <YAxis
           allowDecimals={false}
           axisLine={false}
+          domain={[0, "auto"]}
           tickCount={4}
           tickLine={false}
           width={32}
@@ -213,7 +225,7 @@ export function SeriesChart({
           isAnimationActive={false}
           stroke={LINE_COLOR}
           strokeWidth={LINE_WIDTH}
-          type="monotone"
+          type="monotoneX"
         />
       </LineChart>
     </ChartContainer>

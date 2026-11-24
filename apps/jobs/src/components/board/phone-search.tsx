@@ -46,7 +46,6 @@ export function PhoneSearch({ query, onQueryChange, phone }: SearchProps) {
       {shown ? (
         <BoardSearchField
           autoFocus={open}
-          className="h-8"
           onQueryChange={onQueryChange}
           query={query}
         />

@@ -90,7 +90,9 @@ export function CardMenu({
   card: BoardCard;
   onAction: (action: CardMenuAction) => void;
   className?: string;
-  /** A 28px outlined icon button (list rows) instead of the 24px ghost. */
+  /** A 28px ghost icon button for list and table rows whose outline shows
+   * only while its row (`group/row`) is hovered or holds focus, or while
+   * the menu is open; the default is the 24px ghost of the cards. */
   bordered?: boolean;
 }) {
   const { t } = useTranslation();
@@ -104,11 +106,12 @@ export function CardMenu({
           })}
           className={cn(
             "text-muted-foreground hover:text-foreground",
-            bordered && "border-border",
+            bordered &&
+              "border-transparent focus-visible:border-input group-focus-within/row:border-border group-hover/row:border-border aria-expanded:border-input",
             className
           )}
           size={bordered ? "icon-sm" : "icon-xs"}
-          variant={bordered ? "outline" : "ghost"}
+          variant="ghost"
         >
           <Ellipsis aria-hidden="true" />
         </Button>

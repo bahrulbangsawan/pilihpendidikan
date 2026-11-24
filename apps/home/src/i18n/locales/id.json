@@ -96,7 +96,8 @@
     "resources": "Sumber",
     "mcp": "Endpoint MCP",
     "english": "English",
-    "indonesian": "Bahasa Indonesia"
+    "indonesian": "Bahasa Indonesia",
+    "note": "Gratis · bahasa Inggris dan bahasa Indonesia"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",
@@ -195,7 +196,7 @@
   },
   "about": {
     "heading": "Dibuat untuk pelajar dan pencari kerja",
-    "body": "Pilih Pendidikan dibuat oleh Bahrul Bangsawan. Setiap pembuat dokumen gratis, tersedia dalam bahasa Inggris dan bahasa Indonesia, dan menyimpan dokumen Anda di browser sampai Anda memilih untuk menyimpannya.",
+    "body": "Setiap pembuat dokumen gratis, tersedia dalam bahasa Inggris dan bahasa Indonesia, dan menyimpan dokumen Anda di browser sampai Anda menyimpannya.",
     "link": "Cara kerja crawler kami",
     "shotAlt": "Halaman statistik pelacak lamaran"
   }

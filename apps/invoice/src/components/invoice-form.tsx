@@ -19,20 +19,14 @@ import {
 import { SwatchPicker } from "@rulisme/ui/ui/swatch-picker";
 import {
   Banknote,
-  Building2,
   ChevronDown,
   CircleMinus,
   CirclePlus,
-  FileText,
-  ListOrdered,
   Palette,
   Percent,
   Plus,
-  SlidersHorizontal,
-  StickyNote,
   Trash2,
   Upload,
-  UserRound,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
@@ -104,25 +98,13 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// Every section heading: a muted 16px icon and the 18px compact title role
-// at the semibold weight on a 32px row, with a chevron at the right. The whole row
+// Every section heading: the 18px compact title role at the semibold weight
+// on a 32px row, with a chevron at the right (plain titles, like the CV's). The whole row
 // toggles the section; the chevron flips instantly (nothing animates layout).
-function SectionToggle({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-}) {
+function SectionToggle({ children }: { children: ReactNode }) {
   return (
     <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
-      <span className="type-title-compact weight-semibold flex items-center gap-2 text-foreground">
-        <span
-          aria-hidden="true"
-          className="inline-flex shrink-0 text-muted-foreground"
-        >
-          {icon}
-        </span>
+      <span className="type-title-compact weight-semibold text-foreground">
         {children}
       </span>
       <ChevronDown
@@ -377,9 +359,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       />
       {/* ── Invoice Details ── */}
       <Collapsible defaultOpen>
-        <SectionToggle icon={<FileText className="size-4" />}>
-          {t("form.invoiceDetails")}
-        </SectionToggle>
+        <SectionToggle>{t("form.invoiceDetails")}</SectionToggle>
         <CollapsibleContent>
           {/* Number and currency share a two-column row, the two dates
             the next one, then the accent colour. */}
@@ -457,9 +437,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── From (Sender) ── */}
       <Collapsible defaultOpen>
-        <SectionToggle icon={<Building2 className="size-4" />}>
-          {t("form.fromSection")}
-        </SectionToggle>
+        <SectionToggle>{t("form.fromSection")}</SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
             <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
@@ -541,9 +519,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── Bill To ── */}
       <Collapsible defaultOpen>
-        <SectionToggle icon={<UserRound className="size-4" />}>
-          {t("form.billToSection")}
-        </SectionToggle>
+        <SectionToggle>{t("form.billToSection")}</SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
             <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
@@ -721,15 +697,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
           }
           title={t("form.lineItems")}
           titleClassName="type-title-compact weight-semibold"
-          titleIcon={<ListOrdered className="size-4" />}
         />
       </div>
 
       {/* ── Adjustments ── */}
       <Collapsible defaultOpen>
-        <SectionToggle icon={<SlidersHorizontal className="size-4" />}>
-          {t("form.adjustments")}
-        </SectionToggle>
+        <SectionToggle>{t("form.adjustments")}</SectionToggle>
         <CollapsibleContent>
           <p className="type-caption text-muted-foreground">
             {t("form.adjustmentsDesc")}
@@ -829,9 +802,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
       {/* ── Notes & Settings ── */}
       <Collapsible defaultOpen>
-        <SectionToggle icon={<StickyNote className="size-4" />}>
-          {t("form.notesSettings")}
-        </SectionToggle>
+        <SectionToggle>{t("form.notesSettings")}</SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 flex flex-col gap-3">
             {data.customFields.map((cf) => (

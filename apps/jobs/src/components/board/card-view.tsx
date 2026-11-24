@@ -145,7 +145,10 @@ function CardFooter({
   const { locale, t } = useTranslation();
   const followUpAt = isFollowUpDue(card, nowMs) ? card.follow_up_at : null;
   return (
-    <div className="type-micro flex items-center gap-3 text-muted-foreground">
+    <div
+      className="type-micro flex min-h-4 items-center gap-3 text-muted-foreground"
+      data-slot="card-meta"
+    >
       <span
         className="inline-flex items-center gap-1 tabular-nums"
         title={t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
@@ -174,7 +177,7 @@ function CardFooter({
       )}
       {card.cv_variant_id ? (
         <span
-          className="ml-auto inline-flex items-center gap-1"
+          className="ml-auto inline-flex shrink-0 items-center gap-1"
           title={t("board.cvAttached")}
         >
           <FileText aria-hidden="true" className="size-3" />
@@ -191,6 +194,7 @@ export function CardView({
   pending = false,
   selected = false,
   wideAction = false,
+  compact = false,
   className,
 }: {
   card: BoardCard;
@@ -199,6 +203,8 @@ export function CardView({
   selected?: boolean;
   /** A labelled button (not the ⋯ icon) sits in the top-right corner. */
   wideAction?: boolean;
+  /** Phones: 14px padding and 10px gaps, so two cards fit the fold. */
+  compact?: boolean;
   className?: string;
 }) {
   const { t } = useTranslation();
@@ -206,7 +212,7 @@ export function CardView({
   const location = useLocationLine(posting);
   return (
     <KanbanCard
-      className={className}
+      className={cn(compact ? "gap-2.5 p-3.5 pb-3" : "pb-3", className)}
       dashed={card.archived}
       muted={card.priority === -1}
       pending={pending}

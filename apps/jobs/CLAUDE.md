@@ -28,26 +28,38 @@ there opens the board search inline). Page titles are `type-title-compact`
 at `weight-semibold` (PageHeader); titles and labels inside app blocks
 (card, sheet and section titles, setting-row labels, list / table primary
 cells, the menu header name) are `weight-semibold` too. Settings cards,
-framed section cards, stat cards and chart cards are reui's **nested
-frame**: a 12px outer frame (`bg-card`, 4px padding) with the header and
+framed section cards and stat cards are reui's **nested
+frame** (chart cards keep only the outer frame): a 12px outer frame (`bg-card`, 4px padding) with the header and
 footer, around an 8px inner panel on `bg-background` holding the rows
 (`@rulisme/ui/blocks/settings`, `ui/stat-card`), in a 640px column on
 account pages. Kanban lanes are 296px 12px `bg-card` wells with a 1px
 `border-border` and 12px padding; cards (16px padding, 12px gaps) lead
 with the title, then company and location icon rows, then the match meter
-with the source chip at its right; on phones the same card keeps the
-desktop "…" menu (Move inside). The closed lanes (Rejected, Withdrawn) stick to the row's right end as rails
-while collapsed. Stage tones (`components/board/stage-meta.tsx`, used by
+with the source chip at its right, then one meta row (age left, the CV
+glyph right; 12px bottom padding); on phones the same card is compact
+(14px padding, 10px gaps, so two cards show above the fold) and keeps the
+desktop "…" menu (Move inside); phone toolbar controls are 28px (`sm`) and
+the stage tab strip fades out over its last 56px. The closed lanes
+(Rejected, Withdrawn) follow the last open lane inside the horizontal
+scroll (rails while collapsed), never pinned over another lane. Stage tones (`components/board/stage-meta.tsx`, used by
 lane icons, dots and `StageBadge` everywhere): saved neutral, preparing
 violet, ready blue, applied amber, interviewing / offer / accepted success,
 rejected destructive, withdrawn neutral. The list is one nested-frame card per
 stage (header inside the outer frame) on a fixed grid every group shares
 (32px tile, title 280–360, location 160, source 140, match 140 as a 64px
-inline meter, stage 110, age 48, a 28px outlined menu; 16px gaps; container
-queries); the table is unboxed (56px rows, 13px semibold headers, a 40px
-actions column). The details sheet is a 480px floating window (40px top
-padding, chips on one line above 440px, footer under an 8% hairline with a
-16px fade above it). Every control is an
+inline meter, stage 110, age 48, a 28px "…" menu; 16px gaps; container
+queries; the group header sits 4px above its rows' panel); the table is
+unboxed (57px rows, 13px semibold headers, the match as a 48px inline bar
+with the value on the same line, a 40px actions column). In list and table
+rows the "…" is a ghost icon button whose outline shows only while its row
+(`group/row`) is hovered or focused, or its menu is open. The details sheet
+is a 480px floating window (40px top padding, a 22px title — there is no
+24px role — chips on one line above 440px; section actions like "Manage"
+are small filled ghost pills; the footer is a distinct `pane` band under a
+hairline, with a 16px fade above it). The profile dropdown is a window
+(20% border, `shadow-lg`) and its footer trigger stays `pane-2` while
+open. Form footers: Cancel is the outline pill, Save the primary pill even
+when disabled (50% opacity until something changed). Every control is an
 `@rulisme/ui` component (no raw `<button>` / `<input>` / `<select>`), and
 select / menu options carry a lucide icon.
 
@@ -127,8 +139,8 @@ await api("POST /api/v1/applications/{app_id}/move", {
 
 ## Screens of 12 §4–§9 (contracts worth keeping)
 
-- Stats (`components/stats/`): four stat cards (value, delta chip against the period of the same length before — counts in %, the response rate in points — and the previous value; all time has no delta), then every chart in `ChartFrame` (role="img" summary + a `aria-pressed` "Data table" toggle remembered per chart in localStorage); rates hidden for cohorts under 5; range, metric and breakdown in the URL. No automation metrics.
-- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer; an empty first / last name is filled from the full name with a "Suggested" chip, and placeholders are generic hints, never sample values), Answers and CVs (tables inside cards).
+- Stats (`components/stats/`): charts sit straight on their card's frame (one border per card, no inner bordered panel); the line is a monotoneX curve on values clamped at 0 with the axis from 0; bar charts have no gridlines or value axis (values at the bar ends) and run to 1.1× the largest value. Four stat cards (value, delta chip against the period of the same length before — counts in %, the response rate in points — and the previous value; all time has no delta), then every chart in `ChartFrame` (role="img" summary + a `aria-pressed` "Data table" toggle remembered per chart in localStorage); rates hidden for cohorts under 5; range, metric and breakdown in the URL. No automation metrics.
+- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer; each field's provenance is a 20px borderless mini-badge (`Badge dot={false}`: From CV / You neutral, Suggested blue, Verified success) and the field takes the right 60% of the row; an empty first / last name is filled from the full name with a "Suggested" badge, and placeholders are generic hints, never sample values), Answers and CVs (tables inside cards).
 - Settings (`components/settings/`): every section on one page — Account (email, sign out), Language & region (language and timezone, Cancel / Save), AI (consent, sensitive scoring, Cancel / Save), Your data (export, delete); the sub-nav is anchor links that highlight the section in view, and `?section=` scrolls to its section. The automation settings (default mode, pause all, MCP approvals, AI-drafted form text, evidence screenshots and retention) are no longer shown.
 
 ## Render ticket mode (08 §6, PLAN C8)

@@ -96,7 +96,7 @@ function SourceChip({
   const { t } = useTranslation();
   if (suggested) {
     return (
-      <Badge title={t("profile.suggestedTitle")} variant="outline">
+      <Badge dot={false} title={t("profile.suggestedTitle")} tone="blue">
         {t("profile.suggested")}
       </Badge>
     );
@@ -104,7 +104,14 @@ function SourceChip({
   if (!fact) {
     return null;
   }
-  return <Badge variant="outline">{t(`profile.sources.${fact.source}`)}</Badge>;
+  return (
+    <Badge
+      dot={false}
+      tone={fact.source === "verified_document" ? "success" : "neutral"}
+    >
+      {t(`profile.sources.${fact.source}`)}
+    </Badge>
+  );
 }
 
 interface WorkAuthRow {

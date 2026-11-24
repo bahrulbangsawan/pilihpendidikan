@@ -96,7 +96,8 @@
     "resources": "Resources",
     "mcp": "MCP endpoint",
     "english": "English",
-    "indonesian": "Bahasa Indonesia"
+    "indonesian": "Bahasa Indonesia",
+    "note": "Free · English and Bahasa Indonesia"
   },
   "notFound": {
     "title": "Page not found",
@@ -195,7 +196,7 @@
   },
   "about": {
     "heading": "Built for students and job seekers",
-    "body": "Pilih Pendidikan is made by Bahrul Bangsawan. Every builder is free, works in English and Bahasa Indonesia, and keeps your documents in your browser until you choose to save them.",
+    "body": "Every builder is free, works in English and Bahasa Indonesia, and keeps your documents in your browser until you save them.",
     "link": "How our crawler works",
     "shotAlt": "The job tracker's stats page"
   }

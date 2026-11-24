@@ -7,7 +7,8 @@ import { cn } from "../lib/utils";
 // stays neutral by default: an `ink-sec` bar, the number carries the value
 // (orange is for links). `tone="auto"` colours by value (success from
 // `high`, orange from `mid`) for the rare meter that must alarm. `inline`
-// puts a 64px bar and the value on one line (list rows).
+// puts a 64px bar and the value on one line (list rows; a table cell narrows
+// the bar with `**:data-[slot=meter-bar]:w-12`).
 
 type MeterTone = "auto" | "success" | "link" | "neutral" | "destructive";
 
@@ -63,6 +64,7 @@ function Meter({
         "relative block h-1 overflow-hidden rounded-full bg-pane-2",
         inline ? "w-16 shrink-0" : "w-full"
       )}
+      data-slot="meter-bar"
     >
       <span
         className={cn("absolute inset-y-0 left-0 rounded-full", FILL[resolved])}

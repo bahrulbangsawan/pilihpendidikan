@@ -417,12 +417,7 @@ export function BoardPage({
               value={view}
               views={isPhone ? PHONE_VIEWS : DESKTOP_VIEWS}
             />
-            <Button
-              aria-keyshortcuts="N"
-              className="max-sm:h-8"
-              onClick={shell.openNewJob}
-              size="sm"
-            >
+            <Button aria-keyshortcuts="N" onClick={shell.openNewJob} size="sm">
               <Plus aria-hidden="true" data-icon="inline-start" />
               {t("board.newApplication")}
               <Kbd aria-hidden="true">N</Kbd>

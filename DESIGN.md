@@ -114,7 +114,7 @@ Flat. Cards are separated from the page by colour and a 2.5% hairline. Menus, po
 
 ## Components
 
-- **Buttons** (`buttonVariants`): `default` light pill · `secondary` warm-grey pill with a hairline · `outline` transparent pill with a 20% border · `ghost` borderless · `link` orange text ending in → · `destructive` red at 10%. Sizes: `lg` 43px at 16px (Cursor's hero buttons), `default` 36px, `sm` 28px (Cursor's header buttons), `xs` 24px. Icon buttons are circles. Disabled buttons turn into a flat `pane-2` pill with grey text.
+- **Buttons** (`buttonVariants`): `default` light pill · `secondary` warm-grey pill with a hairline · `outline` transparent pill with a 20% border · `ghost` borderless · `link` orange text ending in → · `destructive` red at 10%. Sizes: `lg` 43px at 16px (Cursor's hero buttons), `default` 36px, `sm` 28px (Cursor's header buttons), `xs` 24px. Icon buttons are circles. Disabled filled buttons (primary, destructive) keep their colours at 50% opacity so the main action still reads as the main action; disabled secondary, outline, ghost and link buttons stay as they are with muted text.
 - **Fields**: 36px, 8px radius, `border` on the page colour, `input` border on hover and focus, a 2px ink focus outline.
 - **Cards** (`Card`): `bg-card`, 4px, `hairline`, 17.5px padding; title `type-subtitle`, description `type-subtitle` in grey.
 - **Badges**: pills in the caption role; `default` is orange text on orange 10% (cursor.com's "Most popular").

@@ -2,7 +2,8 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 
 // The docs-style page header of a document form (cursor.com/docs): the area
-// line in muted 13px, the document title at 22px semibold and one muted 16px
+// line in muted 13px, the document title at the docs-title scale (36px at
+// weight 400 like cursor.com/docs' h1, 22px on phones) and one muted 16px
 // lead saying what the page does. 8px between the lines, 16px above the
 // lead. The space below is the caller's (the builders' form columns keep 32px
 // to the first section). Presentational: copy comes in as props.
@@ -32,7 +33,7 @@ function DocHeader({
       {area ? (
         <p className="type-body-compact text-muted-foreground">{area}</p>
       ) : null}
-      <Title className="type-display-compact weight-semibold text-foreground">
+      <Title className="type-display-compact md:type-headline weight-normal text-balance text-foreground">
         {title}
       </Title>
       {lead ? (

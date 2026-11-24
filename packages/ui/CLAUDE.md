@@ -51,10 +51,10 @@ upstream props; the table names what Zedative adds or what to pass.
 | AspectRatio | `ui/aspect-ratio` | Ratio box | `ratio` |
 | Attachment (+Group, Media, Content, Title, Description, Actions, Action, Trigger) | `ui/attachment` | File chip / card | composition |
 | Avatar (+Image, Fallback, Group, GroupCount, Badge) | `ui/avatar` | Round avatar | `size` xs / sm / default / lg |
-| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`, `tone` (neutral / ink / link / success / destructive / blue / violet / amber: 4px chip on a 12% tint with a dot and tone text); BadgeButton `removeLabel`, `onClick` |
+| Badge, BadgeButton | `ui/badge`, `ui/badge-variants` | Pill label; removable chip | `variant`, `tone` (neutral / ink / link / success / destructive / blue / violet / amber: 4px chip on a 12% tint with a dot and tone text), `dot` (false: the 20px borderless mini-badge beside a label, e.g. a value's provenance); BadgeButton `removeLabel`, `onClick` |
 | Breadcrumb (+parts) | `ui/breadcrumb` | Path trail | composition |
 | Bubble (+Group, Content, Reactions) | `ui/bubble` | Chat bubble | `align`, `variant` |
-| Button, buttonVariants | `ui/button`, `ui/button-variants` | Pill button | `variant` default / outline / secondary / ghost / destructive / link / row, `size` xs / sm / default / lg / icon* , `asChild` |
+| Button, buttonVariants | `ui/button`, `ui/button-variants` | Pill button (a disabled primary / destructive keeps its colours at 50% opacity, so a form's Save stays the primary pill) | `variant` default / outline / secondary / ghost / destructive / link / row, `size` xs / sm / default / lg / icon* , `asChild` |
 | ButtonGroup (+Separator, Text) | `ui/button-group` | Joined buttons (split button) | `orientation` |
 | Calendar (+DayButton) | `ui/calendar` | Month grid | react-day-picker props |
 | Card (+Header, Title, Description, Action, Content, Footer) | `ui/card` | 4px card | `size` |
@@ -88,7 +88,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | Marker (+Icon, Content) | `ui/marker` | Timeline marker | `variant` |
 | Menubar (+parts) | `ui/menubar` | App menu bar | Radix |
 | Message (+Group, Avatar, Content, Header, Footer), MessageScroller (+parts) | `ui/message`, `ui/message-scroller` | Chat thread | composition |
-| Meter | `ui/meter` | Labelled 4px score bar; `inline`: 64px bar with the value on its right | `value`, `max`, `inline`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
+| Meter | `ui/meter` | Labelled 4px score bar; `inline`: 64px bar with the value on its right (narrow it with `**:data-[slot=meter-bar]:w-12`, as the jobs table does) | `value`, `max`, `inline`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
 | NativeSelect (+Option, OptGroup) | `ui/native-select` | Native select | `size` |
 | NavigationMenu (+parts) | `ui/navigation-menu` | Site nav | Radix |
 | NotFound | `ui/not-found` | 404 page | copy props |
@@ -125,10 +125,10 @@ upstream props; the table names what Zedative adds or what to pass.
 | Component | File | What it is | Main props |
 | --- | --- | --- | --- |
 | PageHeader, PageContent, PageSection, PageGutter, CountBadge, PAGE_GUTTER, PAGE_COLUMN | `blocks/page` | App screen frame (title 18px at 500); `CountBadge` is the 18px bordered count square (page titles, lanes) | `title`, `description`, `count`, `actions`, `wide`; CountBadge `count`, `label` |
-| DocHeader | `blocks/doc-header` | Docs-style header of a document form (the builders): muted 13px area line, 22px semibold title, muted 16px lead | `area`, `title`, `lead`, `titleAs` h1 / h2 (default h2); spacing below is the caller's (builders: 32px) |
+| DocHeader | `blocks/doc-header` | Docs-style header of a document form (the builders): muted 13px area line, title 36px at 400 from md up (`md:type-headline weight-normal`), 22px on phones, muted 16px lead | `area`, `title`, `lead`, `titleAs` h1 / h2 (default h2); spacing below is the caller's (builders: 32px) |
 | SubNavLayout, SettingsCard, SettingsRow, SectionCard | `blocks/settings` | Settings page with sub-nav; reui's nested frame (12px outer frame with 4px padding carrying the header and footer, 8px inner panel one step darker holding the content) for cards of label / control rows and titled cards | `items`, `value`, `onChange`, `hrefOf` (anchor links for a page of stacked sections; current item bordered); card `title`, `description`, `action`, `footer` (first of two children sits left), `tone`, `inset`; row `label` (500), `description`, `htmlFor`, `icon` (34px bordered tile), `badge`, `control` (`fill`: full-width field on a 2/3 grid; `end`: switch/button at the right); SectionCard `description`, `action`, `className` (inner panel), `frameClassName`, `flat` (no boxes). Content column capped at 640px |
 | Kanban, KanbanColumn, KanbanColumnHeader, KanbanColumnContent, KanbanColumnEmpty, KanbanCard, KanbanCollapsedColumn | `blocks/kanban` | Render-only board (the app wires drag and drop): 296px `card` lanes with a 1px border, 12px corners and 12px padding; 8px bordered cards with 16px padding and 12px gaps; the count in a CountBadge | header `icon`, `title`, `titleId`, `count`, `countLabel`, `actions`; content `state` idle / over / blocked, `ref`; card `selected`, `pending`, `muted`, `dashed`; collapsed `expandLabel`, `onExpand` |
-| UserMenu | `blocks/user-menu` | Sidebar account row + menu (32px square avatar in the row, 28px round avatar in the menu header, 500-weight name, uniform 28px rows of 14px text) | `name`, `email`, `label`, `collapsed`, children = menu items (shortcut hints only for keys that exist) |
+| UserMenu | `blocks/user-menu` | Sidebar account row + menu (a window: 20% border + `shadow-lg`; the row stays `pane-2` while open; 32px square avatar in the row, 28px round avatar in the menu header, 500-weight name, uniform 28px rows of 14px text) | `name`, `email`, `label`, `collapsed`, children = menu items (shortcut hints only for keys that exist) |
 | AppBrand | `blocks/app-brand` | Mark + name in a toolbar | `name`, `src` |
 | GhostPage | `blocks/ghost-page` | Empty A4 sheet | `title`, `description`, `orientation` |
 | WindowFrame | `blocks/window-frame` | Desktop window for product shots | `title`, children |

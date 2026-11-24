@@ -141,6 +141,29 @@ const SEMESTER_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_96px]";
 const YEAR_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_128px]";
 const EXPERIENCE_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_152px]";
 
+// The social link's type: a Select of the platforms a portfolio usually
+// lists (brand names, not translated). A label imported from JSON that is not
+// one of them stays selectable at the top of the list.
+const SOCIAL_TYPES = [
+  "LinkedIn",
+  "GitHub",
+  "X",
+  "Instagram",
+  "Dribbble",
+  "Behance",
+  "YouTube",
+  "Medium",
+  "TikTok",
+  "Threads",
+] as const;
+
+function socialTypeOptions(current: string): readonly string[] {
+  if (!current || (SOCIAL_TYPES as readonly string[]).includes(current)) {
+    return SOCIAL_TYPES;
+  }
+  return [current, ...SOCIAL_TYPES];
+}
+
 const MAX_IMAGE_MB = 5;
 const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 // Project media fills a 16:9 slot up to ~half an A4-landscape page, so 1200px on
@@ -1090,18 +1113,29 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
           {socials.map((social, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
             <div className="flex items-center gap-2" key={index}>
-              <div className="w-28 shrink-0">
-                <Input
-                  aria-label={t("form.socialLabel")}
-                  maxLength={LIMITS.contact.socialLabel}
-                  onChange={(e) =>
+              <div className="w-32 shrink-0">
+                <Select
+                  onValueChange={(v) =>
                     updateSocial(index, {
-                      label: clamp(e.target.value, LIMITS.contact.socialLabel),
+                      label: clamp(v, LIMITS.contact.socialLabel),
                     })
                   }
-                  placeholder={t("placeholders.socialLabel")}
-                  value={social.label}
-                />
+                  value={social.label || undefined}
+                >
+                  <SelectTrigger
+                    aria-label={t("form.socialLabel")}
+                    className="w-full"
+                  >
+                    <SelectValue placeholder={t("form.socialLabel")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {socialTypeOptions(social.label).map((label) => (
+                      <SelectItem key={label} value={label}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <Input
                 aria-label={t("form.socialUrl")}

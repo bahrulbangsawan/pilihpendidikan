@@ -3,7 +3,8 @@
 // with aria-pressed, so Enter and Space work) swaps the chart for a <table>
 // with a caption and scoped headers that holds the same numbers. The chart
 // is an image to assistive technology, labelled with a written summary. The
-// choice is remembered per chart in this browser.
+// choice is remembered per chart in this browser. One border per card: the
+// chart sits straight on the frame (no inner bordered panel).
 
 import { cn } from "@rulisme/ui/lib/utils";
 import { SectionCard } from "@rulisme/ui/blocks/settings";
@@ -148,7 +149,7 @@ export function ChartFrame({
             </Toggle>
           </div>
         }
-        className="min-w-0"
+        className="min-w-0 border-transparent bg-transparent px-3 pt-2 pb-3"
         description={description}
         frameClassName="h-full"
         id={headingId}
