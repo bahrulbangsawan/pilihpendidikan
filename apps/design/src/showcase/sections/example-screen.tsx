@@ -259,7 +259,7 @@ function RecentExports() {
     <section aria-labelledby="exports-title" className="flex flex-col gap-3">
       <div className="flex items-end justify-between gap-3">
         <div className="flex flex-col gap-0.5">
-          <h4 className="type-subtitle weight-semibold" id="exports-title">
+          <h4 className="type-subtitle" id="exports-title">
             Recent exports
           </h4>
           <p className="type-caption text-muted-foreground">
@@ -278,7 +278,7 @@ function RecentExports() {
           </Button>
         ) : null}
       </div>
-      <div className="border border-line">
+      <div className="rounded-sm border border-hairline bg-card">
         {rows.length > 0 ? (
           <Table>
             <TableHeader>
@@ -317,7 +317,7 @@ function RecentExports() {
             </TableBody>
           </Table>
         ) : (
-          <Empty className="graph-paper py-10">
+          <Empty className="py-10">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <Download aria-hidden="true" />
@@ -360,7 +360,7 @@ function DangerZone({
       className="flex flex-col gap-3 border border-destructive/25 p-4 sm:flex-row sm:items-center sm:justify-between"
     >
       <div className="flex flex-col gap-0.5">
-        <h4 className="type-body weight-semibold" id="danger-title">
+        <h4 className="type-body" id="danger-title">
           Delete the cloud copy
         </h4>
         <p className="type-caption text-muted-foreground">
@@ -635,7 +635,7 @@ function OtherPage({
   onBack: () => void;
 }) {
   return (
-    <Empty className="graph-paper min-h-96 border-0">
+    <Empty className="min-h-96 border-0">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <page.icon aria-hidden="true" />
@@ -709,14 +709,14 @@ function SettingsScreen() {
   return (
     // overflow-clip, not overflow-hidden: a hidden overflow would make the
     // window a scroll container and pin the sticky save bar to it.
-    <div className="flex flex-col overflow-clip border border-line bg-background">
+    <div className="flex flex-col overflow-clip rounded-lg border border-border bg-background">
       <div className="band flex h-12 shrink-0 items-center justify-between gap-3 px-4">
         <span className="type-body flex min-w-0 items-center gap-2 text-foreground">
           <FileText
             aria-hidden="true"
             className="size-3.5 shrink-0 text-muted-foreground"
           />
-          <span className="weight-semibold">CV builder</span>
+          <span>CV builder</span>
           <span className="text-muted-foreground">/</span>
           <span className="truncate">Settings</span>
         </span>

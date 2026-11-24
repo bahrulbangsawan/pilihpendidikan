@@ -54,7 +54,7 @@ import {
 } from "@rulisme/ui/ui/table";
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+import { CalendarRange, Plus } from "lucide-react";
 import type { FormEvent } from "react";
 import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -82,6 +82,8 @@ import {
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { offerStatusLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
+import { OfferStatusIcon } from "./option-icons";
+import { DatePicker } from "@rulisme/ui/ui/date-picker";
 
 interface Draft {
   base: string;
@@ -274,7 +276,7 @@ export function OffersTab({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="type-subtitle weight-semibold">{t("offers.heading")}</h2>
+        <h2 className="type-subtitle">{t("offers.heading")}</h2>
         <Button onClick={() => open("new")} size="sm" variant="outline">
           <Plus aria-hidden="true" data-icon="inline-start" />
           {t("offers.add")}
@@ -284,7 +286,7 @@ export function OffersTab({
       {sorted.length === 0 ? (
         <p className="type-body text-muted-foreground">{t("offers.empty")}</p>
       ) : (
-        <div className="overflow-x-auto border border-line">
+        <div className="overflow-x-auto rounded-sm border border-line">
           <Table>
             <TableHeader>
               <TableRow>
@@ -373,11 +375,9 @@ export function OffersTab({
                   <FieldLabel htmlFor={`${id}-received`}>
                     {t("offers.received")}
                   </FieldLabel>
-                  <Input
-                    className="field-touch"
+                  <DatePicker
                     id={`${id}-received`}
-                    onChange={(event) => set({ received: event.target.value })}
-                    type="date"
+                    onValueChange={(value) => set({ received: value })}
                     value={draft.received}
                   />
                 </Field>
@@ -385,11 +385,9 @@ export function OffersTab({
                   <FieldLabel htmlFor={`${id}-deadline`}>
                     {t("offers.deadline")}
                   </FieldLabel>
-                  <Input
-                    className="field-touch"
+                  <DatePicker
                     id={`${id}-deadline`}
-                    onChange={(event) => set({ deadline: event.target.value })}
-                    type="date"
+                    onValueChange={(value) => set({ deadline: value })}
                     value={draft.deadline}
                   />
                 </Field>
@@ -438,6 +436,7 @@ export function OffersTab({
                   <SelectContent>
                     {SALARY_PERIODS.map((period) => (
                       <SelectItem key={period} value={period}>
+                        <CalendarRange aria-hidden="true" />
                         {t(`salaryPeriods.${period}`)}
                       </SelectItem>
                     ))}
@@ -493,6 +492,7 @@ export function OffersTab({
                   <SelectContent>
                     {OFFER_STATUSES.map((status) => (
                       <SelectItem key={status} value={status}>
+                        <OfferStatusIcon status={status} />
                         {offerStatusLabel(t, status)}
                       </SelectItem>
                     ))}

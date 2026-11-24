@@ -7,6 +7,7 @@
     "ogImageAlt": "Invoice Generator by Bahrul Bangsawan — free online invoice maker with real-time preview"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "importJson": "Import JSON",
     "loadSample": "Load Sample Invoice",
     "download": "Download",
@@ -17,10 +18,6 @@
     "moreFormats": "More download formats",
     "clearAll": "Clear All",
     "mcp": "MCP"
-  },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
   },
   "confirm": {
     "title": "Clear all data?",
@@ -49,6 +46,11 @@
     "signedInAs": "Signed in as {email}. Edits to a loaded invoice save automatically.",
     "tokenNotRecognized": "Token not recognized — generate a new one.",
     "tokenOptional": "Optional. Without a token, edits stay in this browser only."
+  },
+  "pageHeader": {
+    "area": "Builders",
+    "title": "Invoice",
+    "lead": "Add your business, your client and the work done; the totals add up as you type."
   },
   "form": {
     "invoiceDetails": "Invoice Details",
@@ -80,8 +82,8 @@
     "type": "Type",
     "mode": "Mode",
     "addAdjustment": "Add Adjustment",
-    "typeAdd": "+ Add",
-    "typeDeduct": "- Deduct",
+    "typeAdd": "Add",
+    "typeDeduct": "Deduct",
     "modeFixed": "Fixed",
     "modePercentage": "%",
     "notesSettings": "Notes & Settings",
@@ -95,7 +97,24 @@
     "postalCode": "Postal Code",
     "country": "Country",
     "period": "Period",
-    "itemFallback": "Item {n}"
+    "itemFallback": "Item {n}",
+    "datePresets": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "inAWeek": "In a week",
+      "in14Days": "In 14 days",
+      "in30Days": "In 30 days",
+      "last7Days": "Last 7 days",
+      "last30Days": "Last 30 days",
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "thisYear": "This year",
+      "label": "Presets",
+      "clearDate": "Clear date",
+      "clearPeriod": "Clear period"
+    },
+    "modePercent": "Percentage",
+    "itemsEmpty": "No items yet. Add each service or product you are billing for."
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",
@@ -124,7 +143,8 @@
     "stateSender": "California",
     "cityRecipient": "Jakarta",
     "stateRecipient": "DKI Jakarta",
-    "postalCode": "Postal Code"
+    "postalCode": "Postal Code",
+    "selectDate": "Select date…"
   },
   "preview": {
     "emptyState": "Start filling in the form to see your invoice preview",
@@ -147,6 +167,7 @@
     "pageOf": "Page {page} of {total}"
   },
   "a11y": {
+    "toggleLineItems": "Show or hide line items",
     "apiKeySettings": "API Key Settings",
     "setupAiAssistant": "Set up AI Assistant",
     "setAccentColor": "Set accent color to {color}",

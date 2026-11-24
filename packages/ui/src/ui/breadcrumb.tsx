@@ -4,9 +4,9 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative breadcrumb: muted body-role links that turn `foreground` on
-// hover, a 14px muted chevron between levels, and the current page in
-// `foreground`.
+// cursor.com docs breadcrumb: muted body-role links that turn `foreground`
+// on hover, a 14px muted chevron between levels, and the current page in
+// `foreground` at weight 400.
 function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
 }
@@ -46,7 +46,7 @@ function BreadcrumbLink({
   return (
     <Comp
       className={cn(
-        "rounded-sm outline-none transition-[color] duration-150 ease-standard hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2",
+        "rounded-sm outline-none transition-[color] duration-140 ease-standard hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2",
         className
       )}
       data-slot="breadcrumb-link"

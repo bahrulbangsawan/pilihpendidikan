@@ -1,73 +1,146 @@
-import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
+import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
+import { cn } from "@rulisme/ui/lib/utils";
 import { Badge } from "@rulisme/ui/ui/badge";
-import { Button } from "@rulisme/ui/ui/button";
-import { Kbd } from "@rulisme/ui/ui/kbd";
-import { ArrowUpRight } from "lucide-react";
+import type { ReactNode } from "react";
 import type { Service, ToolId } from "@/config/services";
 import { connectUrl, isLive, mcpEndpoint } from "@/config/services";
 import { useTranslation } from "@/i18n";
 
-// The single-letter shortcut behind each action's <Kbd> hint (DESIGN.md
-// § Components). A key is registered only while its service is live, so a
-// hint never shows without a working shortcut.
-const TOOL_SHORTCUTS: Record<ToolId, string> = {
-  cv: "C",
-  invoice: "I",
-  portfolio: "P",
-  jobs: "J",
-};
-const MCP_SHORTCUT = "M";
+// cursor.com's large feature card: the card colour, a 4px radius, a 2.5%
+// hairline, 17.5px padding, 24 columns with 10px gaps. The copy (383px)
+// sits centred against a 16-column media panel.
+const LARGE_CARD_CLASS =
+  "grid grid-cols-1 gap-x-[10px] gap-y-6 rounded-sm border border-hairline bg-card p-[17.5px] lg:grid-cols-24";
 
-// A butted cell in the ruled column (DESIGN.md § Layout), not a floating
-// card: the hub's grid draws the hairlines between cells.
-const CELL_CLASS = "flex h-full flex-col gap-3 px-5 py-8 sm:px-10";
+// cursor.com's text link: orange, dims to 75% on hover, ends in →.
+export const TEXT_LINK_CLASS =
+  "type-subtitle inline-flex items-center gap-1 text-link transition-colors duration-140 ease-standard hover:text-link/75";
 
-/** Same-tab navigation, exactly what a click on the action's link does. */
-function navigateTo(href: string) {
-  window.location.assign(href);
+/** Copy block of a large card: title, grey continuation, the link. */
+function FeatureCopy({
+  title,
+  body,
+  children,
+  flip,
+}: {
+  title: string;
+  body: string;
+  children?: ReactNode;
+  flip: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex max-w-[383px] flex-col justify-center px-[2.5px] lg:col-span-8 lg:row-start-1",
+        flip ? "lg:col-start-17 lg:pl-[30px]" : "lg:col-start-1"
+      )}
+    >
+      <h3 className="type-subtitle md:type-title text-pretty">{title}</h3>
+      <p className="type-subtitle md:type-title text-pretty text-ink-sec">
+        {body}
+      </p>
+      {children}
+    </div>
+  );
 }
 
-function CellHeader({ title, live }: { title: string; live: boolean }) {
-  const { t } = useTranslation();
+/** Media panel of a large card: 16 of 24 columns, 680px tall on desktop. */
+const STAGES = ["bg-stage-warm", "bg-stage-stone", "bg-pane-2"] as const;
+
+function FeatureMedia({
+  children,
+  flip,
+  stage = 2,
+  compact = false,
+}: {
+  children: ReactNode;
+  flip: boolean;
+  stage?: number;
+  /** A short stage (440px) for media that is small, like a config file. */
+  compact?: boolean;
+}) {
   return (
-    <div className="flex items-start justify-between gap-3">
-      <h3 className="type-subtitle weight-semibold">{title}</h3>
-      <Badge className="shrink-0" variant={live ? "secondary" : "outline"}>
-        {live ? t("status.live") : t("status.soon")}
-      </Badge>
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-xs lg:col-span-16 lg:row-start-1",
+        compact
+          ? "h-[280px] lg:h-[440px]"
+          : "h-[240px] sm:h-[420px] lg:h-[680px]",
+        STAGES[stage % STAGES.length],
+        flip ? "lg:col-start-1" : "lg:col-start-9"
+      )}
+    >
+      {children}
     </div>
   );
 }
 
 /**
- * One builder. A "soon" service renders no link at all — not a disabled
- * anchor — so the hub never points at a subdomain that isn't serving.
+ * One builder as a cursor.com feature card. A "soon" service renders no link
+ * at all — not a disabled anchor — so the hub never points at a subdomain
+ * that isn't serving; a live one links exactly once.
  */
-export function ServiceCard({ id, service }: { id: ToolId; service: Service }) {
+export function ServiceCard({
+  id,
+  service,
+  flip,
+  stage,
+}: {
+  id: ToolId;
+  service: Service;
+  flip: boolean;
+  stage: number;
+}) {
   const { locale, t } = useTranslation();
   const live = isLive(service);
   const name = t(`services.${id}.name`);
   // The builders are bilingual too: English at `/`, Indonesian at `/id`.
   const href = locale === "id" ? `${service.url}/id` : service.url;
-  const shortcut = TOOL_SHORTCUTS[id];
-  useShortcut(shortcut, () => navigateTo(href), live);
 
   return (
-    <div className={CELL_CLASS} data-service={id} data-status={service.status}>
-      <CellHeader live={live} title={name} />
-      <p className="type-body flex-1 text-pretty">
-        {t(`services.${id}.description`)}
-      </p>
-      {live && (
-        <Button asChild className="self-start" variant="outline">
-          <a aria-keyshortcuts={shortcut} href={href}>
-            {t("status.open")}
-            <span className="sr-only"> {name}</span>
-            <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
-            <Kbd aria-hidden="true">{shortcut}</Kbd>
-          </a>
-        </Button>
-      )}
+    <div
+      className={LARGE_CARD_CLASS}
+      data-service={id}
+      data-status={service.status}
+    >
+      <FeatureCopy
+        body={t(`services.${id}.description`)}
+        flip={flip}
+        title={name}
+      >
+        {live ? (
+          <>
+            <span className="sr-only">{t("status.live")}</span>
+            <a
+              className={cn(TEXT_LINK_CLASS, "mt-[14.9px] self-start")}
+              href={href}
+            >
+              {t(`features.${id}.cta`)}
+              <span aria-hidden="true">→</span>
+            </a>
+          </>
+        ) : (
+          <Badge className="mt-[14.9px]" variant="secondary">
+            {t("status.soon")}
+          </Badge>
+        )}
+      </FeatureCopy>
+      <FeatureMedia flip={flip} stage={stage}>
+        <WindowFrame
+          className="absolute inset-6 lg:inset-10"
+          title={t("features.windowTitle").replace("{{name}}", name)}
+        >
+          <img
+            alt={t("features.shotAlt").replace("{{name}}", name)}
+            className="block min-h-0 w-full flex-1 object-cover object-top-left"
+            decoding="async"
+            height={612}
+            loading="lazy"
+            src={`/shots/${id}.webp`}
+            width={800}
+          />
+        </WindowFrame>
+      </FeatureMedia>
     </div>
   );
 }
@@ -79,31 +152,60 @@ export function ServiceCard({ id, service }: { id: ToolId; service: Service }) {
 export function McpCard({ api }: { api: Service }) {
   const { t } = useTranslation();
   const live = isLive(api);
-  useShortcut(MCP_SHORTCUT, () => navigateTo(connectUrl(api)), live);
+  const endpoint = mcpEndpoint(api);
 
   return (
-    <div className={CELL_CLASS} data-service="api" data-status={api.status}>
-      <CellHeader live={live} title={t("services.mcp.name")} />
-      <p className="type-body max-w-2xl text-pretty">
-        {t("services.mcp.description")}
-      </p>
-      {live && (
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-1">
-          <p className="type-caption flex min-w-0 flex-wrap items-center gap-2 text-muted-foreground">
-            {t("services.mcp.endpointLabel")}
-            <code className="type-caption break-all rounded-sm bg-muted px-1.5 text-foreground">
-              {mcpEndpoint(api)}
-            </code>
-          </p>
-          <Button asChild variant="outline">
-            <a aria-keyshortcuts={MCP_SHORTCUT} href={connectUrl(api)}>
+    <div
+      className={LARGE_CARD_CLASS}
+      data-service="api"
+      data-status={api.status}
+    >
+      <FeatureCopy
+        body={t("services.mcp.description")}
+        flip={false}
+        title={t("services.mcp.name")}
+      >
+        {live ? (
+          <>
+            <span className="sr-only">{t("status.live")}</span>
+            <p className="mt-[22.4px] flex min-w-0 items-center rounded-sm bg-pane px-2.5 py-2">
+              <span className="sr-only">
+                {t("services.mcp.endpointLabel")}:{" "}
+              </span>
+              <code className="type-body truncate">{endpoint}</code>
+            </p>
+            <a
+              className={cn(TEXT_LINK_CLASS, "mt-[14.9px] self-start")}
+              href={connectUrl(api)}
+            >
               {t("services.mcp.connect")}
-              <ArrowUpRight aria-hidden="true" data-icon="inline-end" />
-              <Kbd aria-hidden="true">{MCP_SHORTCUT}</Kbd>
+              <span aria-hidden="true">↗</span>
             </a>
-          </Button>
-        </div>
-      )}
+          </>
+        ) : (
+          <Badge className="mt-[14.9px] self-start" variant="secondary">
+            {t("status.soon")}
+          </Badge>
+        )}
+      </FeatureCopy>
+      <FeatureMedia compact flip={false} stage={0}>
+        {live && (
+          <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[640px] lg:-translate-x-1/2">
+            <figcaption className="type-caption border-border border-b px-3 py-2 text-center text-muted-foreground">
+              {t("mcpSection.configLabel")}
+            </figcaption>
+            <pre className="type-subtitle overflow-x-auto p-5 text-foreground">
+              {`{
+  "mcpServers": {
+    "pilihpendidikan": {
+      "url": "${endpoint}"
+    }
+  }
+}`}
+            </pre>
+          </figure>
+        )}
+      </FeatureMedia>
     </div>
   );
 }

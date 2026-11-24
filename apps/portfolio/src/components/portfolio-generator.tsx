@@ -1,5 +1,8 @@
+import { AppBrand } from "@rulisme/ui/blocks/app-brand";
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
@@ -14,13 +17,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -32,6 +35,7 @@ import {
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
   FileJson,
   FileText,
   Sparkles,
@@ -40,7 +44,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { makeEmptyPortfolio, PortfolioForm } from "@/components/portfolio-form";
 import { PortfolioPreview } from "@/components/portfolio-preview";
 import type { Portfolio } from "@/components/portfolio-data-model";
@@ -49,6 +52,10 @@ import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
 import { useCloudSave } from "@/lib/use-cloud-save";
+
+// The app mark ships in public/ as the favicon set; the 192px cut stays
+// sharp at 20px on any display density.
+const APP_MARK_SRC = "/favicon-active/android-chrome-192x192.png";
 
 // In dev, target the local api Worker (`wrangler dev` on :8788, apps/api) so
 // end-to-end portfolio load/save is exercised without hitting production. In
@@ -129,6 +136,17 @@ interface PortfolioGeneratorProps {
   print?: boolean;
 }
 
+// Mirrors the preview's own test (portfolio-preview.tsx): until a name or a
+// project has text, the pane shows a ghost page instead of the deck.
+function hasPreviewContent(data: Portfolio): boolean {
+  return (
+    Boolean(data.owner.fullName.trim()) ||
+    data.projects.some(
+      (p) => p.title.trim() || p.summary.trim() || p.description.trim()
+    )
+  );
+}
+
 export function PortfolioGenerator({
   portfolioId,
   print,
@@ -138,8 +156,9 @@ export function PortfolioGenerator({
   const [generating, setGenerating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
   const [pendingImport, setPendingImport] = useState<Portfolio | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEmpty = !(
     data.owner.fullName.trim() || data.projects.some((p) => p.title.trim())
   );
@@ -230,8 +249,8 @@ export function PortfolioGenerator({
       });
   }, [portfolioId, markSaved]);
 
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImportJSON = (files: File[]) => {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -256,7 +275,6 @@ export function PortfolioGenerator({
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
   };
 
   const confirmImport = () => {
@@ -342,47 +360,86 @@ export function PortfolioGenerator({
   return (
     <>
       <a
-        className="sr-only rounded-md border border-border bg-popover px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         href="#portfolio-main"
       >
         {t("a11y.skipToContent")}
       </a>
-      {/* The editor is a split view: two panes ruled by `line` hairlines, each
-          headed by a 56px toolbar band (DESIGN.md § Implementation › Rails). */}
+      {/* The editor is a split view: two panes divided by a 10% hairline,
+          each headed by a 48px toolbar (cursor.com's docs header). */}
       <div
         className="pf-app-shell relative flex min-h-svh flex-col md:flex-row"
         id="portfolio-main"
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-line border-b md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1 border-line border-b bg-background px-4 sm:px-6">
+        <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
               onTokenChange={cloud.setToken}
             />
             <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.importJson")}
-                    onClick={() => fileInputRef.current?.click()}
-                    size="icon-sm"
-                    variant="ghost"
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        aria-label={t("toolbar.moreActions")}
+                        size="icon-sm"
+                        variant="ghost"
+                      >
+                        <Ellipsis aria-hidden="true" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
+                </Tooltip>
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
                   >
-                    <Upload />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
-              <input
-                accept=".json"
-                aria-label={t("a11y.importPortfolio")}
-                className="hidden"
-                onChange={handleImportJSON}
-                ref={fileInputRef}
-                type="file"
-              />
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => applyChange(sampleData as Portfolio)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.prefill")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Dialog
                 onOpenChange={(open) => {
                   if (!open) {
@@ -411,35 +468,7 @@ export function PortfolioGenerator({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.prefill")}
-                    onClick={() => applyChange(sampleData as Portfolio)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.prefill")}</TooltipContent>
-              </Tooltip>
               <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
-                      <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
-                        size="icon-sm"
-                        variant="ghost"
-                      >
-                        <Trash2 />
-                      </Button>
-                    </DialogTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
-                </Tooltip>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
                     <DialogTitle>{t("confirm.title")}</DialogTitle>
@@ -460,23 +489,21 @@ export function PortfolioGenerator({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <ThemeToggle />
-              <LanguageSwitcher />
             </div>
           </div>
           <PortfolioForm data={data} onChange={applyChange} />
         </div>
-        {/* The node where the toolbars' bottom rule crosses the pane divider. */}
-        <span
-          aria-hidden="true"
-          className="pf-no-print pointer-events-none absolute top-14 left-1/2 z-20 hidden md:block"
-        >
-          <Diamond className="-top-1 -left-1" />
-        </span>
-        <div className="pf-preview-pane no-scrollbar graph-paper h-svh w-full overflow-y-auto md:w-1/2">
-          <div className="pf-no-print sticky top-0 z-10 flex h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6">
-            <span className="type-caption min-w-0 truncate text-muted-foreground">
-              {t("preview.documentLabel")}
+        <div className="pf-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
+          <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6">
+            {/* The deck's format as plain muted text, level with the deck's
+                left edge (the pane's gutter plus the well's padding). Below
+                lg the programme name drops so Download PDF keeps its room. */}
+            <span className="type-caption ml-4 min-w-0 whitespace-nowrap text-muted-foreground sm:ml-8">
+              {t("preview.documentFormat")}
+              <span className="max-lg:hidden">
+                {" · "}
+                {t("preview.documentProgram")}
+              </span>
             </span>
             {portfolioId && cloud.hasToken ? (
               <CloudStatus error={cloud.error} status={cloud.status} />
@@ -521,8 +548,19 @@ export function PortfolioGenerator({
               </DropdownMenu>
             </ButtonGroup>
           </div>
+          {/* The deck rests on a padded well one step darker than the pane
+              (32px around it, 2px corner); print drops the well. */}
           <div className="pf-preview-scroll p-4 sm:p-6">
-            <PortfolioPreview data={data} />
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              {hasPreviewContent(data) ? (
+                <PortfolioPreview data={data} />
+              ) : (
+                <GhostPage
+                  description={t("preview.empty")}
+                  orientation="landscape"
+                />
+              )}
+            </div>
           </div>
         </div>
         {/* Floating download button, mobile only */}
@@ -585,9 +623,16 @@ function McpDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Cable data-icon="inline-start" />
-          {t("toolbar.mcp")}
+        <Button
+          aria-label={t("toolbar.mcp")}
+          className="max-lg:size-7 max-lg:px-0"
+          size="sm"
+          variant="outline"
+        >
+          <Cable aria-hidden="true" />
+          {/* Below lg the chip is the icon alone, so the brand keeps its
+              whole name in the half-width pane. */}
+          <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -682,7 +727,7 @@ function DownloadMenuItems({
           {DOWNLOAD_SHORTCUT}
         </DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onJson}>
+      <DropdownMenuItem description=".json" onClick={onJson}>
         <FileJson />
         {t("toolbar.downloadJson")}
       </DropdownMenuItem>
@@ -738,7 +783,7 @@ function PortfolioPrintView({
   }
 
   return (
-    <div className="pf-print-root graph-paper">
+    <div className="pf-print-root">
       <PortfolioPreview data={data} fit={false} />
     </div>
   );

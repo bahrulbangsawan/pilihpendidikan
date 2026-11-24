@@ -1,16 +1,27 @@
 // biome-ignore-all lint/style/useFilenamingConvention: TanStack route params are `$camelCase` in the file name.
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@rulisme/ui/ui/resizable";
 import { createFileRoute } from "@tanstack/react-router";
 import { ApplicationPage } from "@/components/application/application-page";
-import { BoardNavigator } from "@/components/application/board-navigator";
-import { useMediaQuery, WIDE_QUERY } from "@/hooks/use-media-query";
+import type { DetailTab } from "@/components/application/next-step-rail";
+import { DETAIL_TABS } from "@/components/application/next-step-rail";
 import { pageTitle, requireSignedIn } from "./-guards";
 
+interface ApplicationSearch {
+  /** The open tab; absent means Overview. */
+  tab?: Exclude<DetailTab, "overview">;
+}
+
+/** The tab lives in the URL so a tab can be linked (`?tab=interviews`). */
+export function validateApplicationSearch(
+  search: Record<string, unknown>
+): ApplicationSearch {
+  return search.tab !== "overview" &&
+    (DETAIL_TABS as readonly unknown[]).includes(search.tab)
+    ? { tab: search.tab as ApplicationSearch["tab"] }
+    : {};
+}
+
 export const Route = createFileRoute("/applications/$appId")({
+  validateSearch: validateApplicationSearch,
   beforeLoad: requireSignedIn,
   head: ({ match }) => pageTitle(match, "detail.pageTitle"),
   component: ApplicationRoute,
@@ -18,20 +29,19 @@ export const Route = createFileRoute("/applications/$appId")({
 
 function ApplicationRoute() {
   const { appId } = Route.useParams();
-  const wide = useMediaQuery(WIDE_QUERY);
-  const page = <ApplicationPage appId={appId} key={appId} />;
-  if (!wide) {
-    return page;
-  }
+  const { tab } = Route.useSearch();
+  const navigate = Route.useNavigate();
   return (
-    <ResizablePanelGroup className="min-h-0 flex-1" orientation="horizontal">
-      <ResizablePanel defaultSize="20%" maxSize="40%" minSize="14%">
-        <BoardNavigator currentId={appId} />
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize="80%" minSize="50%">
-        <div className="flex h-full flex-col overflow-y-auto">{page}</div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <ApplicationPage
+      appId={appId}
+      key={appId}
+      onTabChange={(next) =>
+        navigate({
+          search: next === "overview" ? {} : { tab: next },
+          replace: true,
+        })
+      }
+      tab={tab ?? "overview"}
+    />
   );
 }

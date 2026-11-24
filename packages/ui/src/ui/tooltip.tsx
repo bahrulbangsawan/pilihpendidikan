@@ -28,12 +28,12 @@ function TooltipTrigger({
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
-// Zedative tooltip: a 2px chip on the dark tooltip fill in the caption role,
-// with a sharp diamond arrow. It appears without animation; a <Kbd> inside
+// cursor.com tooltip: a 4px chip on the inverted tooltip fill in the
+// caption role, no arrow. It appears without animation; a <Kbd> inside
 // turns into a translucent cap (see kbd.tsx).
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 4,
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
@@ -49,7 +49,6 @@ function TooltipContent({
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2 translate-y-[calc(-50%_-_2px)] rotate-45 bg-tooltip fill-tooltip" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

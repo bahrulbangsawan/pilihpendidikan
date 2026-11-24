@@ -5,8 +5,13 @@
 import type { ApplicationEventRecord } from "@pilihpendidikan/jobs-contracts/records";
 import { Button } from "@rulisme/ui/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@rulisme/ui/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@rulisme/ui/ui/input-group";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import type { FormEvent, KeyboardEvent } from "react";
@@ -89,31 +94,37 @@ export function NoteComposer({ appId }: { appId: string }) {
     }
   }
 
+  // The composer pattern: the textarea and a footer row in one field shell,
+  // "Add note ⌘↵" at the footer's right.
   return (
-    <form className="flex flex-col gap-2" onSubmit={submit}>
+    <form onSubmit={submit}>
       <Field>
         <FieldLabel htmlFor={`${id}-note`}>{t("notes.add")}</FieldLabel>
-        <Textarea
-          className="field-touch min-h-20"
-          id={`${id}-note`}
-          maxLength={NOTE_MAX}
-          onChange={(event) => setText(event.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder={t("notes.placeholder")}
-          value={text}
-        />
+        <InputGroup>
+          <InputGroupTextarea
+            className="field-touch min-h-20"
+            id={`${id}-note`}
+            maxLength={NOTE_MAX}
+            onChange={(event) => setText(event.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder={t("notes.placeholder")}
+            value={text}
+          />
+          <InputGroupAddon align="block-end" className="border-t">
+            <InputGroupButton
+              className="ml-auto"
+              disabled={busy || !text.trim()}
+              size="sm"
+              type="submit"
+              variant="secondary"
+            >
+              {t("notes.save")}
+              <Kbd aria-hidden="true">⌘↵</Kbd>
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
         <FieldDescription>{t("notes.help")}</FieldDescription>
       </Field>
-      <Button
-        className="self-start"
-        disabled={busy || !text.trim()}
-        size="sm"
-        type="submit"
-        variant="outline"
-      >
-        {t("notes.save")}
-        <Kbd aria-hidden="true">⌘↵</Kbd>
-      </Button>
     </form>
   );
 }
@@ -123,11 +134,14 @@ export function NoteItem({
   appId,
   actor,
   nowMs,
+  flat = false,
 }: {
   event: ApplicationEventRecord;
   appId: string;
   actor: string;
   nowMs: number;
+  /** In a sheet: a hairline above instead of a boxed card. */
+  flat?: boolean;
 }) {
   const { locale, t } = useTranslation();
   const queryClient = useQueryClient();
@@ -149,7 +163,13 @@ export function NoteItem({
     }
   }
   return (
-    <article className="flex flex-col gap-1.5 border border-border bg-card p-3">
+    <article
+      className={
+        flat
+          ? "flex flex-col gap-1.5 border-border border-t pt-3"
+          : "flex flex-col gap-1.5 rounded-sm border border-hairline bg-card p-3"
+      }
+    >
       <header className="type-caption flex items-center justify-between gap-2 text-muted-foreground">
         <span>
           {actor} ·{" "}

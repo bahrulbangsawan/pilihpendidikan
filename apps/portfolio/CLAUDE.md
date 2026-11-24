@@ -66,28 +66,30 @@ image slot grows (height-driven, never cropped)** to fill the empty space, and
 the reflection strip + footer pack flush at the bottom. Keep the slot exactly
 16:9 (uploads are pre-validated 16:9) and never let content overflow the page.
 
-## Design system — Zedative
+## Design system — Cursor
 
 The chrome follows the root `DESIGN.md` (rules mapped to code in its
 **Implementation** section) and `TYPOGRAPHY.md`; `src/styles.css` only imports
 the shared theme (`bun run parity:typography`) and adds the deck's `.pf-*`
 print CSS. What is specific to this app:
 
-- **Editor frame.** A split view: each pane is headed by a 56px toolbar band
-  (`h-14`, `border-line` rule, `size="sm"` / `icon-sm` buttons), the panes are
-  divided by a `line` rule, a `Diamond` marks where the toolbar rule crosses the
-  divider, and the deck rests on `graph-paper`. Form sections are full-bleed
-  `Band`s. Below `md` the panes stack and a floating button downloads.
-- **Theme.** Light is canonical: next-themes runs with `defaultTheme="light"`
-  and `enableSystem={false}` (the inline script in `__root.tsx` matches it);
-  the toolbar toggle switches to Night Desk (`.dark`).
+- **Editor frame.** A split view in cursor.com's dark app chrome: each pane is
+  headed by a 48px toolbar (`h-12`, `border-border` rule, `size="sm"` /
+  `icon-sm` pill buttons), the panes are divided by a `border-border` rule,
+  and the deck rests on the card colour. A docs-style page header (`DocHeader`,
+  36px/400 title) opens the form; sections are 40px apart with no rules, headings `type-title-compact
+  weight-semibold`, the column capped at 640px; the deck sits on a `bg-background`
+  well (32px padding) inside the card pane's 24px gutter. Below `md` the panes stack and a floating button downloads.
+- **Theme.** Dark only (the Cursor design system has one scheme): `<html>` carries
+  `className="dark"` from the server and next-themes is pinned with
+  `forcedTheme="dark"`; there is no toggle.
 - **Shortcut.** The primary action is downloading the PDF: the toolbar button
   carries `<Kbd>D</Kbd>` and `aria-keyshortcuts="D"`, and `useShortcut("D")`
   performs the same download (never while typing, never behind an open
   window). Keep the hint and the shortcut together.
 - **Print document (the deck).** The deck is ink on paper and mirrors its
   `@react-pdf` twin (`TYPOGRAPHY.md` § Exceptions): literal colours, never
-  re-themed by Night Desk, its own base type (it does not inherit the chrome's
+  re-themed by the dark chrome, its own base type (it does not inherit the chrome's
   body role) in Inter at weights 400 / 600 / 700, copy in sentence case with
   no letter-spacing. The PDF's type comes from the shared print module
   (`@rulisme/ui/print/pdf-fonts`, registered by `src/lib/pdf-fonts.ts`): the
@@ -97,8 +99,8 @@ print CSS. What is specific to this app:
   string through `@rulisme/ui/print/pdf-text`, collapsing spaces and line
   breaks as the preview's paragraphs do.
   `.pf-deck` prints in colour (`print-color-adjust: exact`), so the cover slab
-  survives a browser print. It takes Zedative's colours in
-  **both renderers, kept in sync by hand**: the cover is `shot` `#2f343e` with
+  survives a browser print. It takes the print palette in
+  **both renderers, kept in sync by hand**: the cover is slate `#2f343e` with
   `#fafafa` text, `#b4b9c3` / `#9aa1ad` secondary text and a `#4a505c` rule;
   links are cobalt `#1348dc` on paper and the lifted `#7c9cff` on the cover
   (every text pair ≥ 4.5:1); tags and badges are 2px chips; no drop shadows

@@ -1,12 +1,5 @@
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@rulisme/ui/ui/empty";
-import { FileText } from "lucide-react";
 import { BasicPreview } from "@/components/templates/basic-preview";
 import { HarvardPreview } from "@/components/templates/harvard-preview";
 import { SimplePreview } from "@/components/templates/simple-preview";
@@ -47,23 +40,21 @@ export function CVPreview({ data, style }: CVPreviewProps) {
 
   if (!hasContent) {
     return (
-      <Empty className="py-20">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <FileText aria-hidden="true" />
-          </EmptyMedia>
-          <EmptyTitle>{t("preview.emptyTitle")}</EmptyTitle>
-          <EmptyDescription>{t("preview.emptyDescription")}</EmptyDescription>
-        </EmptyHeader>
-      </Empty>
+      <GhostPage
+        description={t("preview.emptyDescription")}
+        title={t("preview.emptyTitle")}
+      />
     );
   }
 
-  // The sheet rests on the preview's graph paper inside a 1px hairline
-  // frame. The frame is screen-only: print releases it so `.cv-page` flows
-  // across bare paper (styles.css @media print).
+  // The white sheet rests on the card-coloured preview well (24px around it,
+  // from the pane) with a 2px corner. On screen the frame keeps an A4 proportion (1:1.414) as its
+  // minimum height and stretches the sheet to fill it, so a short CV still
+  // reads as a whole page; a longer one grows past it. The frame is
+  // screen-only: print releases it so `.cv-page` flows across bare paper
+  // (styles.css @media print).
   return (
-    <div className="mx-auto w-full max-w-2xl border border-border print:max-w-none print:border-0">
+    <div className="mx-auto flex aspect-[1/1.414] w-full max-w-2xl flex-col overflow-hidden rounded-xs *:w-full *:flex-1 print:block print:aspect-auto print:max-w-none print:overflow-visible print:rounded-none">
       <TemplatePreview data={data} style={style} />
     </div>
   );

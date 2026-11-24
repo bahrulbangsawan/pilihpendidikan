@@ -21,7 +21,7 @@ const OPEN_WINDOW = [
  * Runs `handler` when `key` is pressed on its own — no Ctrl, Meta or Alt,
  * not a repeat, not while an IME is composing — and focus is not in an
  * editable field or behind an open window. These are the single-letter
- * shortcuts that Zedative's `<Kbd>` hints advertise inside primary actions
+ * shortcuts that the Cursor design system's `<Kbd>` hints advertise inside primary actions
  * (DESIGN.md § Components): render the hint and register the key together,
  * never one without the other.
  */

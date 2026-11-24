@@ -1,9 +1,9 @@
 import type * as React from "react";
 import { cn } from "../lib/utils";
 
-// One row of a Zedative thread: an optional framed 2px avatar, a caption-role
-// header with the sender's name in the semibold weight, the bubbles, and a
-// muted caption-role footer for meta.
+// One row of a thread, like Cursor's agent pane: an optional round avatar, a
+// caption-role header with the sender's name in `foreground` (weight 400),
+// the bubbles, and a muted caption-role footer for meta.
 // `align="end"` is the current user's side. Rows appear without animation.
 
 function MessageGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -39,7 +39,7 @@ function MessageAvatar({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         // Sits level with the last bubble, above a footer when there is one.
-        "flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-sm group-has-data-[slot=message-footer]/message:-translate-y-6",
+        "flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full group-has-data-[slot=message-footer]/message:-translate-y-6",
         className
       )}
       data-slot="message-avatar"
@@ -65,7 +65,7 @@ function MessageHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "type-caption weight-semibold flex min-w-0 max-w-full items-center gap-1.5 px-3 text-foreground group-has-data-[variant=ghost]/message:px-0",
+        "type-caption flex min-w-0 max-w-full items-center gap-1.5 px-3 text-foreground group-has-data-[variant=ghost]/message:px-0",
         className
       )}
       data-slot="message-header"

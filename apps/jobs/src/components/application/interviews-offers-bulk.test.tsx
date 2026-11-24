@@ -10,7 +10,7 @@ import {
   pointerDown,
   renderWithProviders,
   waitFor,
-} from "@/components/cli/test-harness";
+} from "@/test/dom-harness";
 import {
   makeApplication,
   makeDetail,

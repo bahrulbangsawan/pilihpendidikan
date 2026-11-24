@@ -115,8 +115,8 @@ function affiliationFootnote(owner: PortfolioOwner, t: Translate): string {
 
 // Print colours, kept in sync by hand with the `.pf-*` deck CSS in
 // src/styles.css (TYPOGRAPHY.md § Exceptions: literals, never re-themed).
-// Project pages are Zedative ink on white paper; the cover sits on Zedative's
-// dark `shot` surface, and links take the cobalt (lifted on the dark cover).
+// Project pages are print ink on white paper; the cover sits on the deck's
+// dark slate surface, and links take the cobalt (lifted on the dark cover).
 const PAPER = "#ffffff";
 const FG = "#000000"; // fg — project title, headings, the author's name
 const INK = "#393d45"; // ink — body copy (summary, description, reflection)
@@ -125,14 +125,14 @@ const LINE = "#cbcfd4"; // line — the hairline rules
 const BORDER = "#dadde2"; // border — chip and image frames
 const PANEL = "#fafafa"; // bg-2 — chip and image-slot fill
 const ACCENT = "#1348dc"; // links on paper — 7.03:1
-const COVER_BG = "#2f343e"; // Zedative `shot`
+const COVER_BG = "#2f343e"; // the deck's dark slate cover
 const COVER_FG = "#fafafa"; // 11.96:1 on the cover
 const COVER_SOFT = "#b4b9c3"; // kicker, subtitle — 6.34:1
 const COVER_FAINT = "#9aa1ad"; // footer columns — 4.80:1
 const COVER_DOT = "#858c99"; // the title's decorative full stop
 const COVER_LINE = "#4a505c"; // the rule above the cover footer
 const COVER_ACCENT = "#7c9cff"; // cobalt lifted for the dark cover — 4.79:1
-// Zedative's xs radius (2px): the chips (tags, badges) and the image tile.
+// The print xs radius (2px): the chips (tags, badges) and the image tile.
 // Never pills, never rounded cards.
 const RADIUS_XS = 2;
 // The hairline frame around the image tile.
@@ -152,7 +152,7 @@ const GIVE_WAY = 10_000;
 const FIGURE_H = 261;
 const FIGURE_W = Math.round((FIGURE_H * 16) / 9); // 464 — exact 16:9
 
-// Type is Zedative's one family, Inter (registered in src/lib/pdf-fonts.ts),
+// Type is the print family, Inter (registered in src/lib/pdf-fonts.ts),
 // set once on each page and inherited. Three weights, as in the preview: 400
 // text, 600 headings and names, 700 the cover title. Copy renders as written,
 // in sentence case, with no case transform and no tracking. Sizes, spacing and
@@ -348,7 +348,7 @@ const s = StyleSheet.create({
   },
   // Exact 16:9 card (FIGURE_W × FIGURE_H), left-aligned in the content column.
   // Sized below full width because a full-width 16:9 would be too tall for one
-  // A4 page. A Zedative tile: 2px corners, 1px `border` frame.
+  // A4 page. A print tile: 2px corners, 1px `border` frame.
   figure: {
     width: FIGURE_W,
     height: FIGURE_H,

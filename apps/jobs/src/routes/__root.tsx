@@ -21,8 +21,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#f4f4f2" },
-      { name: "color-scheme", content: "light dark" },
+      { name: "theme-color", content: "#14120b" },
+      { name: "color-scheme", content: "dark" },
       { name: "robots", content: "noindex, nofollow" },
       { name: "referrer", content: "same-origin" },
       { title: "Pilih Jobs" },

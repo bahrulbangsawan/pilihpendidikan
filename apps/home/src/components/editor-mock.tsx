@@ -1,8 +1,9 @@
+import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
 import { cn } from "@rulisme/ui/lib/utils";
 import { FileBraces } from "lucide-react";
 import { useTranslation } from "@/i18n";
 
-// The product, shown as a light-theme editor window drawn in HTML (DESIGN.md
+// The product, shown as cursor.com's desktop window drawn in HTML (DESIGN.md
 // § Components › Editor mock; § Do's: "real-looking code, not a screenshot or
 // illustration"): traffic lights, a sidebar of documents with one active row,
 // an agent thread, and a cv.json pane with counter line numbers, a
@@ -43,8 +44,6 @@ const FIRST_LINE = 12;
 const ADDED_COUNT = "+9";
 
 const ACTIVE_DOCUMENT = "cv.json";
-const DOCUMENTS = [ACTIVE_DOCUMENT, "invoice.json", "portfolio.json"] as const;
-const TRAFFIC_LIGHTS = ["close", "minimize", "zoom"] as const;
 
 function punct(text: string): Token {
   return { text, tone: "punctuation" };
@@ -132,57 +131,100 @@ function cvLines(description: string): CodeLine[] {
   return lines.map((line, index) => ({ ...line, number: FIRST_LINE + index }));
 }
 
-function TitleBar() {
+/** The exported PDF in a second window, overlapping like cursor.com's CLI. */
+function PreviewWindow() {
+  const { t } = useTranslation();
   return (
-    <div className="grid h-9 grid-cols-[1fr_auto_1fr] items-center gap-3 border-border border-b bg-pane-2 px-3">
-      <div className="flex gap-1.5">
-        {TRAFFIC_LIGHTS.map((light) => (
-          <span
-            className="size-2.5 rounded-full border border-offgray/30 bg-card"
-            key={light}
-          />
-        ))}
+    <WindowFrame
+      className="absolute top-[278px] right-[-78px] hidden w-[480px] lg:flex"
+      title={t("editor.previewTitle")}
+    >
+      <div className="bg-pane px-12 pt-8">
+        <div className="h-[300px] bg-foreground px-7 pt-6 font-print text-background">
+          <p className="type-subtitle weight-bold">{t("editor.name")}</p>
+          <p className="type-caption text-background/60">{t("editor.role")}</p>
+          <p className="type-caption weight-bold mt-4 border-background/20 border-b pb-1">
+            {t("editor.experience")}
+          </p>
+          <p className="type-caption mt-2 flex justify-between">
+            <span className="weight-semibold">
+              iOS Engineering Intern, Gojek
+            </span>
+            <span className="text-background/60">{t("editor.period")}</span>
+          </p>
+          <p className="type-caption text-background/75">
+            {t("editor.description")}
+          </p>
+          <p className="type-caption weight-bold mt-4 border-background/20 border-b pb-1">
+            {t("editor.education")}
+          </p>
+          <p className="type-caption weight-semibold mt-2">
+            Universitas Brawijaya
+          </p>
+          <p className="type-caption text-background/75">S1 Informatika</p>
+        </div>
       </div>
-      <p className="type-caption-compact truncate text-muted-foreground">
-        pilihpendidikan — {ACTIVE_DOCUMENT}
-      </p>
-    </div>
+    </WindowFrame>
+  );
+}
+
+/** One document row: name with a muted meta line, like an agent list. */
+function DocumentRow({
+  name,
+  meta,
+  active = false,
+}: {
+  name: string;
+  meta: string;
+  active?: boolean;
+}) {
+  return (
+    <li
+      className={cn(
+        "flex items-start gap-2 px-3 py-1.5",
+        active ? "bg-pane-2" : undefined
+      )}
+    >
+      <FileBraces className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+      <span className="min-w-0 flex-1">
+        <span
+          className={cn(
+            "type-body-compact block truncate",
+            active ? "text-foreground" : "text-ink-sec"
+          )}
+        >
+          {name}
+        </span>
+        <span className="type-caption-compact block truncate text-muted-foreground">
+          {meta}
+        </span>
+      </span>
+      {active ? (
+        <span className="type-micro-compact pt-0.5 text-syn-2 tabular-nums">
+          {ADDED_COUNT}
+        </span>
+      ) : null}
+    </li>
   );
 }
 
 function Sidebar() {
   const { t } = useTranslation();
   return (
-    <div className="hidden min-w-0 flex-col border-border border-r py-2 lg:flex">
-      <p className="type-caption-compact px-3 pt-1 pb-2 text-muted-foreground">
-        {t("editor.documents")}
+    <div className="hidden min-w-0 flex-col border-border border-r bg-background/40 py-2 lg:flex">
+      <p className="type-caption-compact px-3 pt-1 pb-1.5 text-muted-foreground">
+        {t("editor.groupOpen")} 1
       </p>
       <ul className="flex flex-col">
-        {DOCUMENTS.map((name) => {
-          const active = name === ACTIVE_DOCUMENT;
-          return (
-            <li
-              className={cn(
-                "type-body-compact flex items-center gap-2 px-3 py-1",
-                active
-                  ? "weight-semibold bg-pane-2 text-foreground"
-                  : "text-ink"
-              )}
-              key={name}
-            >
-              <FileBraces className="size-3.5 shrink-0 text-muted-foreground" />
-              <span className="min-w-0 flex-1 truncate">{name}</span>
-              {active ? (
-                <>
-                  <span className="type-micro-compact text-syn-2 tabular-nums">
-                    {ADDED_COUNT}
-                  </span>
-                  <span className="pulse-dot size-1.5 shrink-0 rounded-full bg-syn-2" />
-                </>
-              ) : null}
-            </li>
-          );
-        })}
+        <DocumentRow active meta={t("editor.metaCv")} name={ACTIVE_DOCUMENT} />
+      </ul>
+      <p className="type-caption-compact px-3 pt-4 pb-1.5 text-muted-foreground">
+        {t("editor.groupRecent")} 3
+      </p>
+      <ul className="flex flex-col">
+        <DocumentRow meta={t("editor.metaInvoice")} name="invoice.json" />
+        <DocumentRow meta={t("editor.metaPortfolio")} name="portfolio.json" />
+        <DocumentRow meta={t("editor.metaResume")} name={t("editor.resume")} />
       </ul>
     </div>
   );
@@ -192,21 +234,45 @@ function Thread() {
   const { t } = useTranslation();
   return (
     <div className="hidden min-w-0 flex-col gap-3 border-border border-r p-3 md:flex">
-      <p className="type-body-compact border border-border bg-card px-3 py-2 text-foreground">
+      <p className="type-body-compact text-foreground">
+        {t("editor.threadTitle")}
+      </p>
+      <p className="type-body-compact rounded-sm border border-border bg-background/40 px-3 py-2 text-foreground">
         {t("editor.prompt")}
       </p>
-      <ul className="type-caption-compact flex flex-col gap-1 text-muted-foreground">
+      <ul className="type-body-compact flex flex-col gap-1.5 text-muted-foreground">
         <li>
-          ○ {t("editor.read")}{" "}
-          <span className="text-foreground">{ACTIVE_DOCUMENT}</span>
+          {t("editor.read")}{" "}
+          <span className="text-ink-sec">{ACTIVE_DOCUMENT}</span>
         </li>
         <li>
-          ○ {t("editor.edit")}{" "}
-          <span className="text-foreground">{ACTIVE_DOCUMENT}</span>{" "}
-          <span className="text-syn-2 tabular-nums">{ADDED_COUNT}</span>
+          {t("editor.thought")}{" "}
+          <span className="text-ink-sec">{t("editor.seconds")}</span>
         </li>
       </ul>
+      <p className="type-body-compact flex items-center gap-2 rounded-sm border border-border bg-background/40 px-3 py-2 text-foreground">
+        <FileBraces className="size-3.5 text-muted-foreground" />
+        {ACTIVE_DOCUMENT}
+        <span className="text-syn-2 tabular-nums">{ADDED_COUNT}</span>
+        <span className="text-syn-3 tabular-nums">-0</span>
+      </p>
       <p className="type-body-compact">{t("editor.answer")}</p>
+      <div className="mt-auto flex flex-col gap-2 rounded-sm border border-border bg-background/40 p-2.5">
+        <p className="type-body-compact text-muted-foreground">
+          {t("editor.composer")}
+        </p>
+        <div className="flex items-center gap-2">
+          <span className="type-caption-compact rounded-full bg-pane-2 px-2 py-0.5 text-ink-sec">
+            ∞ {t("editor.mode")}
+          </span>
+          <span className="type-caption-compact text-muted-foreground">
+            Sonnet 5.5
+          </span>
+          <span className="ml-auto flex size-5 items-center justify-center rounded-full bg-pane-3 text-ink-sec">
+            ↑
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -237,9 +303,9 @@ function CodeRow({ line }: { line: CodeLine }) {
 
 function CodePane({ lines }: { lines: CodeLine[] }) {
   return (
-    <div className="flex min-w-0 flex-col bg-card">
-      <div className="flex h-8 shrink-0 border-border border-b bg-pane">
-        <span className="type-caption-compact -mb-px flex items-center gap-1.5 border-border border-r bg-card px-3 text-foreground">
+    <div className="flex min-w-0 flex-col bg-background/40">
+      <div className="flex h-8 shrink-0 border-border border-b">
+        <span className="type-caption-compact -mb-px flex items-center gap-1.5 border-border border-r px-3 text-foreground">
           <FileBraces className="size-3.5 text-muted-foreground" />
           {ACTIVE_DOCUMENT}
         </span>
@@ -251,7 +317,7 @@ function CodePane({ lines }: { lines: CodeLine[] }) {
       <p className="type-caption-compact truncate px-4 pt-2 pb-1 text-muted-foreground">
         {ACTIVE_DOCUMENT} › experience › 0 › company
       </p>
-      <div className="type-body-compact md:type-body overflow-hidden pb-6">
+      <div className="type-body-compact overflow-hidden pb-6 font-mono">
         {lines.map((line) => (
           <CodeRow key={line.number} line={line} />
         ))}
@@ -265,20 +331,22 @@ export function EditorMock({ className }: { className?: string }) {
   const lines = cvLines(t("editor.description"));
 
   return (
-    <figure className={cn("w-full min-w-0", className)}>
+    <figure className={cn("relative w-full min-w-0", className)}>
       <figcaption className="sr-only">{t("editor.label")}</figcaption>
-      {/* The window stands on the band's bottom rule: 6px top corners, no
-          bottom border, and its float shadow clipped at the rule. */}
-      <div
-        aria-hidden="true"
-        className="overflow-hidden rounded-t-lg border border-border border-b-0 bg-pane shadow-float [clip-path:inset(-3rem_-3rem_0_-3rem)]"
-      >
-        <TitleBar />
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:grid-cols-[13rem_minmax(0,1fr)_minmax(0,1.25fr)]">
-          <Sidebar />
-          <Thread />
-          <CodePane lines={lines} />
-        </div>
+      <div aria-hidden="true">
+        {/* cursor.com's desktop window: 1080 × 620, 8px corners, a 28px
+            title bar, three panes. */}
+        <WindowFrame
+          className="h-[420px] max-sm:rounded-b-none sm:h-[620px]"
+          title={`pilihpendidikan — ${ACTIVE_DOCUMENT}`}
+        >
+          <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:grid-cols-[13rem_minmax(0,1fr)_minmax(0,1.25fr)]">
+            <Sidebar />
+            <Thread />
+            <CodePane lines={lines} />
+          </div>
+        </WindowFrame>
+        <PreviewWindow />
       </div>
     </figure>
   );

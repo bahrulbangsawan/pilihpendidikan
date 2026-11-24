@@ -1,8 +1,11 @@
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import { FormField, FormFieldCustom } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
+import { cn } from "@rulisme/ui/lib/utils";
 import { PhoneInput } from "@rulisme/ui/reui/phone-input";
-import { Badge } from "@rulisme/ui/ui/badge";
+import { BadgeButton } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileDropZone } from "@rulisme/ui/ui/file-upload";
 import { Input } from "@rulisme/ui/ui/input";
 import {
   InputGroup,
@@ -11,7 +14,6 @@ import {
   InputGroupText,
 } from "@rulisme/ui/ui/input-group";
 import { Label } from "@rulisme/ui/ui/label";
-import { Band } from "@rulisme/ui/ui/rails";
 import {
   Select,
   SelectContent,
@@ -19,7 +21,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
-import { Plus, Trash2, Upload, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  Briefcase,
+  Code,
+  Compass,
+  GraduationCap,
+  Lightbulb,
+  Palette,
+  Plus,
+  School,
+  Trash2,
+  User,
+  UserRound,
+  Users,
+  X,
+} from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { useTranslation } from "@/i18n";
 import type {
@@ -41,41 +59,122 @@ import {
 } from "@/components/portfolio-data-model";
 import { preprocessImage } from "@/lib/preprocess-image";
 
+// A field's fixed prefix ("https://", "linkedin.com/in/") reads like the
+// phone field's country button: the prefix in its own cell, closed by a
+// hairline divider, and the value 12px past it.
+const PREFIX_GROUP_CLASS = "has-[>[data-align=inline-start]]:[&>input]:pl-3";
+const PREFIX_ADDON_CLASS = "self-stretch border-border border-r pr-3";
+
 // Owner-side affiliation/track/collaboration option lists. Concrete values
 // only (no empty option) — every list maps onto a required discriminant.
-const TRACK_OPTIONS: { value: Track; labelKey: string }[] = [
-  { value: "tech", labelKey: "options.track.tech" },
-  { value: "design", labelKey: "options.track.design" },
-  { value: "domain", labelKey: "options.track.domain" },
+// Each option leads with an icon, shown in the list and in the trigger.
+interface Option<T> {
+  value: T;
+  labelKey: string;
+  icon: LucideIcon;
+}
+
+const TRACK_OPTIONS: Option<Track>[] = [
+  { value: "tech", labelKey: "options.track.tech", icon: Code },
+  { value: "design", labelKey: "options.track.design", icon: Palette },
+  { value: "domain", labelKey: "options.track.domain", icon: Compass },
 ];
 
-const AFFILIATION_OPTIONS: { value: Affiliation["kind"]; labelKey: string }[] =
-  [
-    { value: "student", labelKey: "options.affiliation.student" },
-    { value: "alumni", labelKey: "options.affiliation.alumni" },
-    { value: "professional", labelKey: "options.affiliation.professional" },
-    { value: "independent", labelKey: "options.affiliation.independent" },
-  ];
+const AFFILIATION_OPTIONS: Option<Affiliation["kind"]>[] = [
+  {
+    value: "student",
+    labelKey: "options.affiliation.student",
+    icon: School,
+  },
+  {
+    value: "alumni",
+    labelKey: "options.affiliation.alumni",
+    icon: GraduationCap,
+  },
+  {
+    value: "professional",
+    labelKey: "options.affiliation.professional",
+    icon: Briefcase,
+  },
+  {
+    value: "independent",
+    labelKey: "options.affiliation.independent",
+    icon: UserRound,
+  },
+];
 
-const PROJECT_TYPE_OPTIONS: { value: ProjectType; labelKey: string }[] = [
-  { value: "self-initiated", labelKey: "options.projectType.selfInitiated" },
+const PROJECT_TYPE_OPTIONS: Option<ProjectType>[] = [
+  {
+    value: "self-initiated",
+    labelKey: "options.projectType.selfInitiated",
+    icon: Lightbulb,
+  },
   {
     value: "class-assignment",
     labelKey: "options.projectType.classAssignment",
+    icon: BookOpen,
   },
-  { value: "work-assignment", labelKey: "options.projectType.workAssignment" },
+  {
+    value: "work-assignment",
+    labelKey: "options.projectType.workAssignment",
+    icon: Briefcase,
+  },
 ];
 
-const COLLABORATION_OPTIONS: {
-  value: Collaboration["kind"];
-  labelKey: string;
-}[] = [
-  { value: "individual", labelKey: "options.collaboration.individual" },
-  { value: "group", labelKey: "options.collaboration.group" },
+const COLLABORATION_OPTIONS: Option<Collaboration["kind"]>[] = [
+  {
+    value: "individual",
+    labelKey: "options.collaboration.individual",
+    icon: User,
+  },
+  { value: "group", labelKey: "options.collaboration.group", icon: Users },
 ];
 
 // Reject oversized uploads before decoding. 1920×1080 PNG/JPEG comfortably
 // fits under this; the ratio guard (16:9) is the real gate.
+// The form reads like a docs page: a page header, then sections 40px apart
+// with no rules between them, each under an 18px semibold heading, in a
+// 640px column centred in the pane (24px / 32px side padding).
+const FORM_COLUMN_CLASS =
+  "mx-auto flex w-full max-w-176 flex-col gap-10 px-6 pt-10 pb-16 sm:px-8";
+const SECTION_CLASS = "space-y-3";
+const SECTION_TITLE_CLASS =
+  "type-title-compact weight-semibold flex h-8 items-center text-foreground";
+
+// Field rows sit on a two-column grid. A short number (Semester 96px, the
+// graduation year 128px, years of experience 152px) shares the second
+// column with the field before it, at a fixed width, so the row's edges stay
+// on the 2-up grid: the first field fills column one, the pair fills column
+// two. When the pane is too narrow for that, the first field takes the whole
+// row and the pair sits under it, still edge to edge.
+const AFFILIATION_ROW_CLASS = "grid gap-3 @lg/affiliation:grid-cols-2";
+const SEMESTER_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_96px]";
+const YEAR_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_128px]";
+const EXPERIENCE_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_152px]";
+
+// The social link's type: a Select of the platforms a portfolio usually
+// lists (brand names, not translated). A label imported from JSON that is not
+// one of them stays selectable at the top of the list.
+const SOCIAL_TYPES = [
+  "LinkedIn",
+  "GitHub",
+  "X",
+  "Instagram",
+  "Dribbble",
+  "Behance",
+  "YouTube",
+  "Medium",
+  "TikTok",
+  "Threads",
+] as const;
+
+function socialTypeOptions(current: string): readonly string[] {
+  if (!current || (SOCIAL_TYPES as readonly string[]).includes(current)) {
+    return SOCIAL_TYPES;
+  }
+  return [current, ...SOCIAL_TYPES];
+}
+
 const MAX_IMAGE_MB = 5;
 const MAX_IMAGE_BYTES = MAX_IMAGE_MB * 1024 * 1024;
 // Project media fills a 16:9 slot up to ~half an A4-landscape page, so 1200px on
@@ -219,21 +318,13 @@ function ChipField({
       {items.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {items.map((item) => (
-            <Badge
-              asChild
-              className="press cursor-pointer hover:bg-pane-2"
+            <BadgeButton
               key={item}
-              variant="secondary"
+              onClick={() => remove(item)}
+              removeLabel={t("a11y.removeItem", { item })}
             >
-              <button
-                aria-label={t("a11y.removeItem", { item })}
-                onClick={() => remove(item)}
-                type="button"
-              >
-                {item}
-                <X aria-hidden="true" data-icon="inline-end" />
-              </button>
-            </Badge>
+              {item}
+            </BadgeButton>
           ))}
         </div>
       )}
@@ -427,111 +518,126 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   function renderAffiliationFields() {
     if (affiliation.kind === "student" || affiliation.kind === "alumni") {
       return (
-        <div className="grid gap-3 sm:grid-cols-3">
-          <FormField
-            label={t("form.institution")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  institution: clamp(v, LIMITS.owner.institution),
-                },
-              })
-            }
-            placeholder={t("placeholders.institution")}
-            value={affiliation.institution}
-          />
-          <FormField
-            label={t("form.program")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  program: clamp(v, LIMITS.owner.program),
-                },
-              })
-            }
-            placeholder={t("placeholders.program")}
-            value={affiliation.program ?? ""}
-          />
-          {affiliation.kind === "student" ? (
+        <div className="@container/affiliation">
+          <div className={AFFILIATION_ROW_CLASS}>
             <FormField
-              label={t("form.semester")}
-              numeric
+              label={t("form.institution")}
               onChange={(v) =>
                 updateOwner({
                   affiliation: {
                     ...affiliation,
-                    semester: parseOptionalNumber(v, 2),
+                    institution: clamp(v, LIMITS.owner.institution),
                   },
                 })
               }
-              placeholder={t("placeholders.semester")}
-              value={formatOptionalNumber(affiliation.semester)}
+              placeholder={t("placeholders.institution")}
+              value={affiliation.institution}
             />
-          ) : (
-            <FormField
-              label={t("form.graduationYear")}
-              numeric
-              onChange={(v) =>
-                updateOwner({
-                  affiliation: {
-                    ...affiliation,
-                    graduationYear: parseOptionalNumber(v, 4),
-                  },
-                })
-              }
-              placeholder={t("placeholders.graduationYear")}
-              value={formatOptionalNumber(affiliation.graduationYear)}
-            />
-          )}
+            <div
+              className={cn(
+                "grid gap-3",
+                affiliation.kind === "student"
+                  ? SEMESTER_PAIR_CLASS
+                  : YEAR_PAIR_CLASS
+              )}
+            >
+              <FormField
+                label={t("form.program")}
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      program: clamp(v, LIMITS.owner.program),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.program")}
+                value={affiliation.program ?? ""}
+              />
+              {affiliation.kind === "student" ? (
+                <FormField
+                  label={t("form.semester")}
+                  numeric
+                  onChange={(v) =>
+                    updateOwner({
+                      affiliation: {
+                        ...affiliation,
+                        semester: parseOptionalNumber(v, 2),
+                      },
+                    })
+                  }
+                  placeholder={t("placeholders.semester")}
+                  value={formatOptionalNumber(affiliation.semester)}
+                />
+              ) : (
+                <FormField
+                  label={t("form.graduationYear")}
+                  numeric
+                  onChange={(v) =>
+                    updateOwner({
+                      affiliation: {
+                        ...affiliation,
+                        graduationYear: parseOptionalNumber(v, 4),
+                      },
+                    })
+                  }
+                  placeholder={t("placeholders.graduationYear")}
+                  value={formatOptionalNumber(affiliation.graduationYear)}
+                />
+              )}
+            </div>
+          </div>
         </div>
       );
     }
 
     if (affiliation.kind === "professional") {
       return (
-        <div className="grid gap-3 sm:grid-cols-3">
-          <FormField
-            label={t("form.organization")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  organization: clamp(v, LIMITS.owner.organization),
-                },
-              })
-            }
-            placeholder={t("placeholders.organization")}
-            value={affiliation.organization ?? ""}
-          />
-          <FormField
-            label={t("form.jobTitle")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  jobTitle: clamp(v, LIMITS.owner.jobTitle),
-                },
-              })
-            }
-            placeholder={t("placeholders.jobTitle")}
-            value={affiliation.jobTitle ?? ""}
-          />
-          <FormField
-            label={t("form.yearsExperience")}
-            numeric
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  yearsExperience: parseOptionalNumber(v, 2),
-                },
-              })
-            }
-            placeholder={t("placeholders.yearsExperience")}
-            value={formatOptionalNumber(affiliation.yearsExperience)}
-          />
+        <div className="@container/affiliation">
+          <div className={AFFILIATION_ROW_CLASS}>
+            <FormField
+              label={t("form.organization")}
+              onChange={(v) =>
+                updateOwner({
+                  affiliation: {
+                    ...affiliation,
+                    organization: clamp(v, LIMITS.owner.organization),
+                  },
+                })
+              }
+              placeholder={t("placeholders.organization")}
+              value={affiliation.organization ?? ""}
+            />
+            <div className={cn("grid gap-3", EXPERIENCE_PAIR_CLASS)}>
+              <FormField
+                label={t("form.jobTitle")}
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      jobTitle: clamp(v, LIMITS.owner.jobTitle),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.jobTitle")}
+                value={affiliation.jobTitle ?? ""}
+              />
+              <FormField
+                label={t("form.yearsExperience")}
+                numeric
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      yearsExperience: parseOptionalNumber(v, 2),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.yearsExperience")}
+                value={formatOptionalNumber(affiliation.yearsExperience)}
+              />
+            </div>
+          </div>
         </div>
       );
     }
@@ -605,6 +711,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {PROJECT_TYPE_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -624,6 +731,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {TRACK_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -645,6 +753,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               <SelectContent>
                 {COLLABORATION_OPTIONS.map((o) => (
                   <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
                     {t(o.labelKey)}
                   </SelectItem>
                 ))}
@@ -844,7 +953,7 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 <Button
                   onClick={() => removeMedia(project)}
                   size="sm"
-                  variant="outline"
+                  variant="secondary"
                 >
                   <Trash2 data-icon="inline-start" />
                   {t("form.remove")}
@@ -873,21 +982,11 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
               />
             </div>
           ) : (
-            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-input border-dashed bg-card/60 px-3 py-3 text-muted-foreground transition-[background-color,border-color,color] duration-150 ease-standard hover:bg-pane/70 hover:text-foreground has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2">
-              <Upload aria-hidden="true" className="size-3.5" />
-              {t("form.uploadImage")}
-              <input
-                accept="image/jpeg,image/png,image/webp"
-                aria-label={t("form.uploadImage")}
-                className="sr-only"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  e.target.value = "";
-                  await handleImageUpload(project, file);
-                }}
-                type="file"
-              />
-            </label>
+            <FileDropZone
+              accept="image/jpeg,image/png,image/webp"
+              onFilesSelect={(files) => handleImageUpload(project, files[0])}
+              title={t("form.uploadImage")}
+            />
           )}
           <p className="type-caption text-muted-foreground">
             {t("form.imageHint", {
@@ -905,34 +1004,39 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
     );
   }
 
-  // Each form section is a full-bleed band of the form pane, ruled by a
-  // `line` hairline (DESIGN.md § Layout).
   return (
-    <div>
+    <div className={FORM_COLUMN_CLASS}>
+      {/* -mb-2: 32px to the first section, not the column's 40px gap. */}
+      <DocHeader
+        area={t("pageHeader.area")}
+        className="-mb-2"
+        lead={t("pageHeader.lead")}
+        title={t("pageHeader.title")}
+      />
       {/* ── Profile ── */}
-      <Band asChild>
-        <section className="space-y-3 px-4 py-6 sm:px-6">
-          <h2 className="type-subtitle weight-semibold">{t("form.profile")}</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <FormField
-              label={t("form.fullName")}
-              onChange={(v) =>
-                updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
-              }
-              placeholder={t("placeholders.fullName")}
-              value={owner.fullName}
-            />
-            <FormField
-              label={t("form.headline")}
-              onChange={(v) =>
-                updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
-              }
-              placeholder={t("placeholders.headline")}
-              value={owner.headline ?? ""}
-            />
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <FormFieldCustom label={t("form.track")}>
+      <section className={SECTION_CLASS}>
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.profile")}</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormField
+            label={t("form.fullName")}
+            onChange={(v) =>
+              updateOwner({ fullName: clamp(v, LIMITS.owner.fullName) })
+            }
+            placeholder={t("placeholders.fullName")}
+            value={owner.fullName}
+          />
+          <FormField
+            label={t("form.headline")}
+            onChange={(v) =>
+              updateOwner({ headline: clamp(v, LIMITS.owner.headline) })
+            }
+            placeholder={t("placeholders.headline")}
+            value={owner.headline ?? ""}
+          />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormFieldCustom label={t("form.track")}>
+            <div className="flex flex-col gap-2">
               <Select
                 onValueChange={(v) => updateOwner({ track: v as Track })}
                 value={owner.track}
@@ -943,179 +1047,184 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
                 <SelectContent>
                   {TRACK_OPTIONS.map((o) => (
                     <SelectItem key={o.value} value={o.value}>
+                      <o.icon aria-hidden="true" />
                       {t(o.labelKey)}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            </FormFieldCustom>
-            <FormFieldCustom label={t("form.affiliation")}>
-              <Select
-                onValueChange={(v) =>
-                  changeAffiliationKind(v as Affiliation["kind"])
-                }
-                value={affiliation.kind}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {AFFILIATION_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value}>
-                      {t(o.labelKey)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormFieldCustom>
-          </div>
-          {renderAffiliationFields()}
-        </section>
-      </Band>
+              <p className="type-caption text-muted-foreground">
+                {t("form.trackHint")}
+              </p>
+            </div>
+          </FormFieldCustom>
+          <FormFieldCustom label={t("form.affiliation")}>
+            <Select
+              onValueChange={(v) =>
+                changeAffiliationKind(v as Affiliation["kind"])
+              }
+              value={affiliation.kind}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {AFFILIATION_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    <o.icon aria-hidden="true" />
+                    {t(o.labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormFieldCustom>
+        </div>
+        {renderAffiliationFields()}
+      </section>
 
       {/* ── Contact ── */}
-      <Band asChild>
-        <section className="space-y-3 px-4 py-6 sm:px-6">
-          <h2 className="type-subtitle weight-semibold">{t("form.contact")}</h2>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <FormField
-              label={t("form.email")}
-              onChange={(v) =>
-                updateContact({ email: clamp(v, LIMITS.contact.email) })
-              }
-              placeholder={t("placeholders.email")}
-              type="email"
-              value={contact.email}
-            />
-            <div className="space-y-1.5">
-              <Label>{t("form.phone")}</Label>
-              <PhoneInput
-                defaultCountry="ID"
-                onChange={(value) =>
-                  updateContact({
-                    phone: clamp(String(value ?? ""), LIMITS.contact.phone),
-                  })
-                }
-                placeholder={t("placeholders.phone")}
-                value={contact.phone || undefined}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>{t("form.websiteUrl")}</Label>
-              <InputGroup>
-                <InputGroupAddon align="inline-start">
-                  <InputGroupText>https://</InputGroupText>
-                </InputGroupAddon>
-                <InputGroupInput
-                  onChange={(e) => {
-                    const bare = stripProtocol(e.target.value);
-                    updateContact({
-                      websiteUrl: bare
-                        ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
-                        : "",
-                    });
-                  }}
-                  placeholder={t("placeholders.websiteBare")}
-                  value={stripProtocol(contact.websiteUrl ?? "")}
-                />
-              </InputGroup>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between gap-2">
-              <Label>{t("form.socials")}</Label>
-              <span className="type-micro text-muted-foreground tabular-nums">
-                {socials.length}
-              </span>
-            </div>
-            {socials.map((social, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
-              <div className="flex items-end gap-2" key={index}>
-                <div className="w-28 shrink-0">
-                  <Input
-                    aria-label={t("form.socialLabel")}
-                    maxLength={LIMITS.contact.socialLabel}
-                    onChange={(e) =>
-                      updateSocial(index, {
-                        label: clamp(
-                          e.target.value,
-                          LIMITS.contact.socialLabel
-                        ),
-                      })
-                    }
-                    placeholder={t("placeholders.socialLabel")}
-                    value={social.label}
-                  />
-                </div>
-                <Input
-                  aria-label={t("form.socialUrl")}
-                  maxLength={LIMITS.contact.socialUrl}
-                  onChange={(e) =>
-                    updateSocial(index, {
-                      url: clamp(e.target.value, LIMITS.contact.socialUrl),
-                    })
-                  }
-                  placeholder={t("placeholders.url")}
-                  value={social.url}
-                />
-                <Button
-                  aria-label={t("form.remove")}
-                  onClick={() => removeSocial(index)}
-                  size="icon"
-                  variant="ghost"
-                >
-                  <X />
-                </Button>
-              </div>
-            ))}
-            <Button onClick={addSocial} size="sm" variant="outline">
-              <Plus data-icon="inline-start" />
-              {t("form.addSocial")}
-            </Button>
-          </div>
-        </section>
-      </Band>
-
-      {/* ── Submission ── */}
-      <Band asChild>
-        <section className="space-y-3 px-4 py-6 sm:px-6">
-          <h2 className="type-subtitle weight-semibold">
-            {t("form.submission")}
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <FormField
-              label={t("form.submissionTarget")}
-              onChange={(v) => onChange({ ...data, submissionTarget: v })}
-              placeholder={t("placeholders.submissionTarget")}
-              value={data.submissionTarget ?? ""}
-            />
-            <FormField
-              label={t("form.cohortYear")}
-              numeric
-              onChange={(v) =>
-                onChange({
-                  ...data,
-                  cohortYear: v ? Number(v.slice(0, 4)) : undefined,
+      <section className={SECTION_CLASS}>
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.contact")}</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormField
+            label={t("form.email")}
+            onChange={(v) =>
+              updateContact({ email: clamp(v, LIMITS.contact.email) })
+            }
+            placeholder={t("placeholders.email")}
+            type="email"
+            value={contact.email}
+          />
+          <div className="space-y-1.5">
+            <Label>{t("form.phone")}</Label>
+            <PhoneInput
+              defaultCountry="ID"
+              onChange={(value) =>
+                updateContact({
+                  phone: clamp(String(value ?? ""), LIMITS.contact.phone),
                 })
               }
-              placeholder={t("placeholders.cohortYear")}
-              value={data.cohortYear ? String(data.cohortYear) : ""}
+              placeholder={t("placeholders.phone")}
+              value={contact.phone || undefined}
             />
           </div>
-          <p className="type-caption text-muted-foreground">
-            {t("form.trackHint")}
-          </p>
-        </section>
-      </Band>
+          <div className="space-y-1.5">
+            <Label>{t("form.websiteUrl")}</Label>
+            <InputGroup className={PREFIX_GROUP_CLASS}>
+              <InputGroupAddon
+                align="inline-start"
+                className={PREFIX_ADDON_CLASS}
+              >
+                <InputGroupText>https://</InputGroupText>
+              </InputGroupAddon>
+              <InputGroupInput
+                onChange={(e) => {
+                  const bare = stripProtocol(e.target.value);
+                  updateContact({
+                    websiteUrl: bare
+                      ? clamp(`https://${bare}`, LIMITS.contact.websiteUrl)
+                      : "",
+                  });
+                }}
+                placeholder={t("placeholders.websiteBare")}
+                value={stripProtocol(contact.websiteUrl ?? "")}
+              />
+            </InputGroup>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label>{t("form.socials")}</Label>
+          {socials.map((social, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: socials are controlled rows with no local state; index keying is safe
+            <div className="flex items-center gap-2" key={index}>
+              <div className="w-32 shrink-0">
+                <Select
+                  onValueChange={(v) =>
+                    updateSocial(index, {
+                      label: clamp(v, LIMITS.contact.socialLabel),
+                    })
+                  }
+                  value={social.label || undefined}
+                >
+                  <SelectTrigger
+                    aria-label={t("form.socialLabel")}
+                    className="w-full"
+                  >
+                    <SelectValue placeholder={t("form.socialLabel")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {socialTypeOptions(social.label).map((label) => (
+                      <SelectItem key={label} value={label}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Input
+                aria-label={t("form.socialUrl")}
+                maxLength={LIMITS.contact.socialUrl}
+                onChange={(e) =>
+                  updateSocial(index, {
+                    url: clamp(e.target.value, LIMITS.contact.socialUrl),
+                  })
+                }
+                placeholder={t("placeholders.url")}
+                value={social.url}
+              />
+              {/* A 32px ghost button, centred on the 36px fields. */}
+              <Button
+                aria-label={t("form.remove")}
+                className="size-8 shrink-0 self-center text-muted-foreground hover:text-foreground"
+                onClick={() => removeSocial(index)}
+                size="icon"
+                variant="ghost"
+              >
+                <X />
+              </Button>
+            </div>
+          ))}
+          <Button onClick={addSocial} size="sm" variant="secondary">
+            <Plus data-icon="inline-start" />
+            {t("form.addSocial")}
+          </Button>
+        </div>
+      </section>
+
+      {/* ── Submission ── */}
+      <section className={SECTION_CLASS}>
+        <h2 className={SECTION_TITLE_CLASS}>{t("form.submission")}</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormField
+            label={t("form.submissionTarget")}
+            onChange={(v) => onChange({ ...data, submissionTarget: v })}
+            placeholder={t("placeholders.submissionTarget")}
+            value={data.submissionTarget ?? ""}
+          />
+          <FormField
+            label={t("form.cohortYear")}
+            numeric
+            onChange={(v) =>
+              onChange({
+                ...data,
+                cohortYear: v ? Number(v.slice(0, 4)) : undefined,
+              })
+            }
+            placeholder={t("placeholders.cohortYear")}
+            value={data.cohortYear ? String(data.cohortYear) : ""}
+          />
+        </div>
+      </section>
 
       {/* ── Projects (max 5) ── */}
-      <Band className="px-4 py-6 sm:px-6">
+      <div>
         <SectionList<Project>
           addLabel={
             data.projects.length >= MAX_PROJECTS
               ? t("form.maxProjects", { max: MAX_PROJECTS })
               : t("form.addProject")
           }
+          emptyHint={t("form.projectsEmpty")}
           hasError={(p) => Boolean(imageErrors[p.id])}
           items={data.projects}
           onAdd={addProject}
@@ -1129,13 +1238,17 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
             project.title || t("form.projectFallback", { index: index + 1 })
           }
           title={t("form.projects")}
+          titleClassName="type-title-compact weight-semibold"
           titleExtra={
             <span className="type-micro shrink-0 text-muted-foreground tabular-nums">
-              {data.projects.length}/{MAX_PROJECTS}
+              {t("form.projectCount", {
+                count: data.projects.length,
+                max: MAX_PROJECTS,
+              })}
             </span>
           }
         />
-      </Band>
+      </div>
     </div>
   );
 }

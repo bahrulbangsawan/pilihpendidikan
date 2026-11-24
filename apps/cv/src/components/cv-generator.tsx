@@ -1,7 +1,9 @@
 import { formatCvMarkdown } from "@pilihpendidikan/cv-engine/markdown";
 import type { CVData, CVStyle } from "@pilihpendidikan/cv-engine/types";
+import { AppBrand } from "@rulisme/ui/blocks/app-brand";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
@@ -17,27 +19,36 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
-import { ToggleGroup, ToggleGroupItem } from "@rulisme/ui/ui/toggle-group";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "@rulisme/ui/ui/segmented-control";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@rulisme/ui/ui/tooltip";
+import type { LucideIcon } from "lucide-react";
 import {
+  AlignLeft,
   ArrowUpRight,
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
+  FileCode,
   FileJson,
   FileText,
+  Landmark,
+  LayoutTemplate,
   Sparkles,
   Trash2,
   Upload,
@@ -49,9 +60,12 @@ import { CVPreview } from "@/components/cv-preview";
 import sampleData from "@/data/sample-cv.json";
 import { useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { createBlankCv } from "@/lib/blank-cv";
 import { useCloudSave } from "@/lib/use-cloud-save";
+
+// The app mark ships in public/ as the favicon set; the 192px cut stays
+// sharp at 20px on any display density.
+const APP_MARK_SRC = "/favicon-active/android-chrome-192x192.png";
 
 const initialData: CVData = createBlankCv();
 
@@ -65,6 +79,14 @@ const MCP_API = import.meta.env.DEV
 const MCP_URL = "https://api.pilihpendidikan.com/connect";
 
 const TEMPLATES: CVStyle[] = ["basic", "harvard", "simple", "standard"];
+
+// Each template's segment leads with an icon hinting at its layout.
+const TEMPLATE_ICONS: Record<CVStyle, LucideIcon> = {
+  basic: FileText,
+  harvard: Landmark,
+  simple: AlignLeft,
+  standard: LayoutTemplate,
+};
 
 function isTemplate(value: string): value is CVStyle {
   return (TEMPLATES as string[]).includes(value);
@@ -132,11 +154,11 @@ function DownloadMenuItems({
           {DOWNLOAD_SHORTCUT}
         </DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onMarkdown}>
-        <FileText aria-hidden="true" />
+      <DropdownMenuItem description=".md" onClick={onMarkdown}>
+        <FileCode aria-hidden="true" />
         {t("toolbar.downloadMarkdown")}
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onJson}>
+      <DropdownMenuItem description=".json" onClick={onJson}>
         <FileJson aria-hidden="true" />
         {t("toolbar.downloadJson")}
       </DropdownMenuItem>
@@ -208,7 +230,8 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
   const [generating, setGenerating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
   const isEmpty = !data.personalInfo.fullName.trim();
   // The active template lives on the document so it round-trips into the saved
   // CV and the print/PDF view. A `?template=` query param overrides it (used to
@@ -317,8 +340,8 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
       });
   }, [cvId, markSaved]);
 
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImportJSON = (files: File[]) => {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -334,7 +357,6 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
   };
 
   const handleDownloadPDF = async () => {
@@ -433,7 +455,7 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
   return (
     <>
       <a
-        className="type-body sr-only rounded-md border border-border bg-card px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
         href="#cv-main"
       >
         {t("a11y.skipToContent")}
@@ -443,16 +465,25 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
         id="cv-main"
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        {/* The node where the toolbars' bottom rule crosses the pane divider:
-            56px down (minus half a node), on the divider's 1px rule. */}
-        <Diamond className="cv-no-print top-13 left-1/2 z-20 -ml-1 hidden md:block" />
-        <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-line border-b md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1.5 border-line border-b bg-background px-4 sm:px-6">
+        <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Cable data-icon="inline-start" />
-                  {t("toolbar.mcp")}
+                <Button
+                  aria-label={t("toolbar.mcp")}
+                  className="max-lg:size-7 max-lg:px-0"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Cable aria-hidden="true" />
+                  {/* Below lg the chip is the icon alone, so the brand
+                      keeps its whole name in the half-width pane. */}
+                  <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
@@ -501,56 +532,62 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               </DialogContent>
             </Dialog>
             <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.importJson")}
-                    onClick={() => fileInputRef.current?.click()}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Upload />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
-              <input
-                accept=".json"
-                aria-label={t("a11y.importCv")}
-                className="hidden"
-                onChange={handleImportJSON}
-                ref={fileInputRef}
-                type="file"
-              />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.prefill")}
-                    onClick={() => applyChange(sampleData as CVData)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.prefill")}</TooltipContent>
-              </Tooltip>
-              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
+                    <DropdownMenuTrigger asChild>
                       <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
+                        aria-label={t("toolbar.moreActions")}
                         size="icon-sm"
                         variant="ghost"
                       >
-                        <Trash2 />
+                        <Ellipsis aria-hidden="true" />
                       </Button>
-                    </DialogTrigger>
+                    </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
                 </Tooltip>
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => applyChange(sampleData as CVData)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.prefill")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
                     <DialogTitle>{t("confirm.title")}</DialogTitle>
@@ -571,36 +608,43 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <ThemeToggle />
-              <LanguageSwitcher />
             </div>
           </div>
           <CVForm data={data} onChange={applyChange} />
         </div>
-        <div className="cv-preview-pane graph-paper no-scrollbar h-svh w-full overflow-y-auto md:w-1/2">
-          <div className="cv-no-print sticky top-0 z-10 flex h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6">
-            <ToggleGroup
+        <div className="cv-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
+          <div className="cv-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6">
+            <SegmentedControl
               aria-label={t("template.label")}
               onValueChange={(value) => {
-                // A single toggle group reports "" when the pressed item is
-                // clicked again; a template always stays selected.
                 if (isTemplate(value)) {
                   handleStyleChange(value);
                 }
               }}
               size="sm"
-              type="single"
               value={style}
-              variant="outline"
             >
-              {TEMPLATES.map((s) => (
-                <ToggleGroupItem key={s} value={s}>
-                  {t(`template.${s}`)}
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
+              {TEMPLATES.map((s) => {
+                const Icon = TEMPLATE_ICONS[s];
+                return (
+                  <SegmentedControlItem
+                    // 13px labels: the switcher is the pane's main control.
+                    // The chosen template sits on a raised pane-3 pill in
+                    // foreground with an `input` ring, clearly lifted off
+                    // the track. Below lg the segments are their icons (the
+                    // name stays for screen readers) so Download PDF fits.
+                    className="group-data-[size=sm]/segmented:type-body-compact data-[state=on]:bg-pane-3 data-[state=on]:text-foreground data-[state=on]:shadow-[0_0_0_1px_var(--input)] max-lg:group-data-[size=sm]/segmented:px-2"
+                    key={s}
+                    value={s}
+                  >
+                    <Icon aria-hidden="true" />
+                    <span className="max-lg:sr-only">{t(`template.${s}`)}</span>
+                  </SegmentedControlItem>
+                );
+              })}
+            </SegmentedControl>
             {cvId && cloud.hasToken ? (
-              <span className="type-caption flex items-center gap-1.5 text-muted-foreground">
+              <span className="type-caption flex min-w-0 items-center gap-1.5 truncate text-muted-foreground">
                 {cloud.status === "saving" ? (
                   <>
                     <Spinner className="[--spinner-size:12px]" />
@@ -659,8 +703,12 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               </DropdownMenu>
             </ButtonGroup>
           </div>
+          {/* The sheet rests on a padded well one step darker than the
+              pane (32px around it, 2px corner); print drops the well. */}
           <div className="cv-preview-scroll p-4 sm:p-6">
-            <CVPreview data={data} style={style} />
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              <CVPreview data={data} style={style} />
+            </div>
           </div>
         </div>
         {/* Floating download button, mobile only */}

@@ -20,8 +20,9 @@ export interface AnalyticsRange {
   tz: string;
 }
 
-export function useAnalyticsSummary(range: AnalyticsRange) {
+export function useAnalyticsSummary(range: AnalyticsRange, enabled = true) {
   return useQuery({
+    enabled,
     queryKey: queryKeys.analyticsSummary(range.from, range.to, range.tz),
     queryFn: () =>
       api("GET /api/v1/analytics/summary", {

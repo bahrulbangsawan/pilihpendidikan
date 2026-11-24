@@ -1,5 +1,5 @@
 // Timeline (06 §4, 12 §5.1): `application_events` newest first on a vertical
-// rail, a diamond node per event, the actor chip, relative time with the
+// rail, a small dot per event, the actor chip, relative time with the
 // absolute one on hover, and a sentence. Events that were recorded but not
 // applied (stale writes, conflicts) read in the destructive colour. Task and
 // submission events expand to their details.
@@ -27,7 +27,7 @@ import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 import { formatDateTime, relativeTime } from "@/lib/format";
 import { stageLabel, submissionLabel } from "@/lib/labels";
-import { deletedNoteIds, NoteComposer, noteText } from "./notes";
+import { deletedNoteIds, noteText } from "./notes";
 
 type Payload = Record<string, unknown>;
 
@@ -153,7 +153,10 @@ function EventRow({
   const sentence = describeEvent(event, t);
   return (
     <li className="relative pb-5 pl-6 last:pb-0">
-      <span aria-hidden="true" className="diamond top-1.5 left-[-4px]" />
+      <span
+        aria-hidden="true"
+        className="absolute top-2 left-[-4px] size-[7px] rounded-full bg-muted-foreground"
+      />
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <Badge variant="outline">{actor}</Badge>
         <time
@@ -207,7 +210,6 @@ function EventRow({
 }
 
 export function TimelineTab({
-  appId,
   events,
   actorName,
   nowMs,
@@ -216,7 +218,6 @@ export function TimelineTab({
   onLoadMore,
   loadingMore,
 }: {
-  appId: string;
   events: readonly ApplicationEventRecord[];
   actorName: (event: ApplicationEventRecord) => string;
   nowMs: number;
@@ -235,7 +236,6 @@ export function TimelineTab({
   );
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <NoteComposer appId={appId} />
       <div className="flex items-center gap-2">
         <Switch
           checked={showDeleted}

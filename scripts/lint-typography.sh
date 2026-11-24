@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Zedative style lint — enforces TYPOGRAPHY.md (and the DESIGN.md Don'ts it
-# encodes) across every UI root. Run via `bun run lint:typography`. Exits
-# non-zero on any violation.
+# Cursor design system style lint — enforces TYPOGRAPHY.md (and the
+# DESIGN.md Don'ts it encodes) across every UI root. Run via
+# `bun run lint:typography`. Exits non-zero on any violation.
 
 set -uo pipefail
 
@@ -58,12 +58,12 @@ run_check() {
   fi
 }
 
-printf 'Zedative style lint — see TYPOGRAPHY.md for rules\n\n'
+printf 'Cursor design system (cursor.com dark) style lint — see TYPOGRAPHY.md for rules\n\n'
 
-# 1) Generic Tailwind sizes. Zedative has six roles and nothing else.
+# 1) Generic Tailwind sizes. The Cursor system has eight roles (cursor.com's scale) and nothing else.
 run_check \
   "No generic text sizes (text-xs … text-9xl)" \
-  "use a role: type-display / type-title / type-subtitle / type-body / type-caption / type-micro (or a -compact step)" \
+  "use a role: type-hero / type-headline / type-display / type-title / type-subtitle / type-body / type-caption / type-micro (or a -compact step)" \
   rg -n -P '(?<![\w-])text-(xs|sm|base|lg|xl|[2-9]xl)(?![\w-])' "${SCOPE[@]}" "${SIZE_GLOBS[@]}"
 
 # 2) Warp size tokens no longer exist; Tailwind would silently drop them.
@@ -114,16 +114,16 @@ run_check \
   "pass className with a type-* role instead (recharts: tick={{ className: 'type-micro' }})" \
   bun scripts/check-inline-typography.ts "${SCOPE[@]}"
 
-# 10) Cards and sections are square; only chips, controls and windows round.
+# 10) The radius scale stops at 12px (rounded-xl, app containers per reui).
 run_check \
-  "No rounded-xl and up" \
-  "rounded-none (cards, sections) · rounded-sm 2px (chips) · rounded-md 4px (controls) · rounded-lg 6px (windows)" \
-  rg -n -P '(?<![\w-])rounded(-[trblse]{1,2})?-(xl|[2-4]xl)(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
+  "No rounded-2xl and up" \
+  "rounded-xs 2px · rounded-sm 4px · rounded-lg 8px (fields, menus, cards in apps) · rounded-xl 12px (app containers: lanes, sheets, frames) · rounded-full (buttons, pills)" \
+  rg -n -P '(?<![\w-])rounded(-[trblse]{1,2})?-([2-4]xl)(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 11) No gradients, glows or glass.
 run_check \
   "No gradients or glass (bg-gradient-*, bg-linear-*, backdrop-blur …)" \
-  "use a flat token fill; graph-paper is the only ruled background" \
+  "use a flat token fill" \
   rg -n -P '(?<![\w-])(bg-(gradient|linear|radial|conic)-|backdrop-blur)' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 12) Raw hex colours in classes.
@@ -141,30 +141,30 @@ run_check \
 # 14) Syntax colours live only inside the editor mock.
 run_check \
   "No syntax colours outside an editor mock (text-syn-*, bg-syn-* …)" \
-  "keep syn-1..4 inside *editor-mock*.tsx; elsewhere use text-primary or text-muted-foreground" \
+  "keep syn-1..4 inside *editor-mock*.tsx; elsewhere use text-link or text-muted-foreground" \
   rg -n -P '(?<![\w-])(text|bg|border|fill|stroke|decoration|outline|ring)-syn-[1-4](?![\w-])' "${SCOPE[@]}" "${SYNTAX_GLOBS[@]}"
 
 # 15) Warp palette classes no longer exist.
 run_check \
   "No Warp palette classes (bg-deep-ember, text-gold-leaf …)" \
-  "use the Zedative tokens (DESIGN.md § Implementation › Token map)" \
+  "use the Cursor design system tokens (DESIGN.md § Implementation › Token map)" \
   rg -n -P '(?<![\w-])(bg|text|border|ring|fill|stroke|outline|decoration)-(warm-off-white|bone-gray|pale-stone|faint-linen|smoke-charcoal|iron-veil|slate-hearth|deep-ember|smoked-onyx|absolute|ink-black|gold-leaf|muted-cobalt|surface-(canvas|banded|card|control|floating))(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 16) Semantic tokens already switch with the theme.
 run_check \
   "No manual dark: colour overrides" \
-  "use a semantic token; .dark (Night Desk) swaps every value" \
+  "use a semantic token; there is one (dark) scheme" \
   rg -n -P '(?<![\w-])dark:(\S+:)?(bg|text|border|ring|fill|stroke|outline|shadow|from|to|via)-' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 17) Print documents use the one family too: Inter, the shared print cuts
 #     (packages/ui/src/print/pdf-fonts.ts) in every PDF (the CV templates live
-#     in packages/cv-engine/src/pdf) and --font-sans on the
+#     in packages/cv-engine/src/pdf) and --font-print on the
 #     on-screen paper. Catches a non-Inter family in a StyleSheet (also inside
 #     a fallback list), in a Font.register call, a built-in PDF font named
 #     anywhere in a PDF module, and a literal family in print CSS.
 run_check \
   "One family in print documents (Inter only)" \
-  "PDF StyleSheets: fontFamily PDF_FONT_FAMILY (the shared print family); print CSS: the --font-sans stack" \
+  "PDF StyleSheets: fontFamily PDF_FONT_FAMILY (the shared print family); print CSS: var(--font-print)" \
   rg -n -P -i '(fontFamily:\s*\[?\s*"(?!Inter")|\bfamily:\s*"(?!Inter")|(?-i:"(Helvetica|Times|Courier)(-[A-Za-z]+)?")|font-family:[^;]*(helvetica|arial|times|georgia|menlo|courier))' apps packages/ui/src/print packages/cv-engine/src/pdf --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
 
 # 18) …and no uppercase or letter-spacing on paper either (the on-screen
@@ -174,10 +174,22 @@ run_check \
   "drop textTransform / letterSpacing (PDF) and text-transform / letter-spacing (print CSS)" \
   rg -n -P -i '(textTransform:\s*"uppercase"|letterSpacing:|text-transform:\s*uppercase|letter-spacing:)' apps packages/ui/src/print packages/cv-engine/src/pdf --glob '*-pdf.tsx' --glob '*pdf*.ts' --glob 'apps/*/src/styles.css' --glob '!**/node_modules/**' --glob '!*.test.ts'
 
+# 19) No raw controls in app code: buttons, fields, selects and file pickers
+#     come from @rulisme/ui (TYPOGRAPHY.md § Raw controls). An element styled
+#     by an `asChild` design-system host and <input type="hidden"> are allowed.
+APP_SRC=()
+for dir in apps/*/src; do
+  [[ -d "$dir" ]] && APP_SRC+=("$dir")
+done
+run_check \
+  "No raw <button> / <input> / <select> / <textarea> / <option> in app code" \
+  "use Button, Input, Textarea, Select, NativeSelect, Combobox, DatePicker, FileTrigger / FileDropZone, SegmentedControl, SwatchPicker, FieldButton, BadgeButton, DragHandle or EditableTitle from @rulisme/ui" \
+  bun scripts/check-raw-controls.ts "${APP_SRC[@]}"
+
 printf '\n'
 if [[ $fail -ne 0 ]]; then
-  printf '\033[31mZedative style lint FAILED.\033[0m See TYPOGRAPHY.md.\n'
+  printf '\033[31mCursor style lint FAILED.\033[0m See TYPOGRAPHY.md.\n'
   exit 1
 fi
-printf '\033[32mZedative style lint passed.\033[0m\n'
+printf '\033[32mCursor style lint passed.\033[0m\n'
 exit 0

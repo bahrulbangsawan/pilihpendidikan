@@ -1,5 +1,5 @@
 // The ⌘K / Ctrl K palette (12 §2.1): jump to an application by company or
-// title, run actions, go anywhere, switch the theme.
+// title, run actions, go anywhere.
 
 import {
   Command,
@@ -13,18 +13,7 @@ import {
   CommandShortcut,
 } from "@rulisme/ui/ui/command";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  Briefcase,
-  CircleCheck,
-  Inbox,
-  Keyboard,
-  LogOut,
-  Moon,
-  Plus,
-  Radar,
-  Sun,
-} from "lucide-react";
-import { useTheme } from "next-themes";
+import { Briefcase, Keyboard, LogOut, Plus } from "lucide-react";
 import { useMemo } from "react";
 import { useAppNavigate } from "@/components/app-link";
 import type { BoardData } from "@/hooks/use-board";
@@ -52,7 +41,6 @@ export function CommandPalette({
   const { t } = useTranslation();
   const navigate = useAppNavigate();
   const queryClient = useQueryClient();
-  const { resolvedTheme, setTheme } = useTheme();
   const signOut = useSignOut();
 
   const applications = useMemo(() => {
@@ -70,8 +58,6 @@ export function CommandPalette({
     action();
   }
 
-  const dark = resolvedTheme === "dark";
-
   return (
     <CommandDialog
       description={t("palette.description")}
@@ -88,34 +74,6 @@ export function CommandPalette({
               <Plus aria-hidden="true" />
               {t("palette.newJob")}
               <CommandShortcut>N</CommandShortcut>
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/automation"))}
-              value="approve next approval"
-            >
-              <CircleCheck aria-hidden="true" />
-              {t("palette.approveNext")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/inbox"))}
-              value="open inbox discovery"
-            >
-              <Inbox aria-hidden="true" />
-              {t("palette.openInbox")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => navigate("/sources"))}
-              value="start discovery device"
-            >
-              <Radar aria-hidden="true" />
-              {t("palette.startDiscovery")}
-            </CommandItem>
-            <CommandItem
-              onSelect={() => run(() => setTheme(dark ? "light" : "dark"))}
-              value="switch theme night desk light dark"
-            >
-              {dark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-              {dark ? t("palette.themeLight") : t("palette.themeDark")}
             </CommandItem>
             <CommandItem
               onSelect={() => run(onShortcuts)}

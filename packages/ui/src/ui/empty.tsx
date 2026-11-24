@@ -4,15 +4,15 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative empty state: centred, the icon in a framed 2px tile, a title-role
-// heading, one caption of help and the next action. Add `border
-// border-dashed` for a drop zone and `graph-paper` for the drafting look at
-// the call site.
+// cursor.com empty state: centred, the icon in a 4px card tile (2.5%
+// hairline), a title-role heading at weight 400, one line of muted body text
+// with orange links, and the next action. Add `border border-dashed` at the
+// call site for a drop zone.
 function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-5 text-balance rounded-none border-line border-dashed p-8 text-center",
+        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-5 text-balance rounded-sm border-border border-dashed p-8 text-center",
         className
       )}
       data-slot="empty"
@@ -37,7 +37,7 @@ const emptyMediaVariants = cva(
     variants: {
       variant: {
         default: "bg-transparent",
-        icon: "size-10 rounded-sm border border-border bg-card text-foreground [&_svg:not([class*='size-'])]:size-4",
+        icon: "size-10 rounded-sm border border-hairline bg-card text-foreground [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {
@@ -75,7 +75,7 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <div
       className={cn(
-        "type-caption text-muted-foreground [&>a:hover]:text-foreground [&>a]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+        "type-body text-muted-foreground [&>a:hover]:text-link/75 [&>a]:text-link",
         className
       )}
       data-slot="empty-description"

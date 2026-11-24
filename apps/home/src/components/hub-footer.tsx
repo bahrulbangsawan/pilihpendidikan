@@ -1,13 +1,19 @@
-import { Rail } from "@rulisme/ui/ui/rails";
-import { ArrowUpRight } from "lucide-react";
+import { Button } from "@rulisme/ui/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@rulisme/ui/ui/dropdown-menu";
+import { Check, ChevronDown, Globe, Languages } from "lucide-react";
 import type { ReactNode } from "react";
-import { localePath, otherLocale, useTranslation } from "@/i18n";
+import { TOOL_IDS } from "@/config/services";
+import { localePath, useTranslation } from "@/i18n";
 
-// Footer links: underlined, the underline colour is what animates on hover
-// (DESIGN.md § Motion). The default focus ring is cobalt, invisible on the
-// cobalt slab, so it turns white here.
+// cursor.com's footer links: 14px ink, 4.67px above and below, dimming on
+// hover.
 const LINK_CLASS =
-  "type-body inline-flex items-center gap-1 underline decoration-primary-foreground/40 underline-offset-4 transition-[text-decoration-color] hover:decoration-primary-foreground focus-visible:outline-primary-foreground";
+  "type-body inline-block py-[4.67px] text-foreground transition-colors duration-140 ease-standard hover:text-ink-sec";
 
 function FooterColumn({
   heading,
@@ -17,48 +23,77 @@ function FooterColumn({
   children: ReactNode;
 }) {
   return (
-    <div className="flex min-w-0 flex-col gap-3">
-      <h2 className="type-body weight-semibold text-primary-foreground">
-        {heading}
-      </h2>
-      <ul className="flex flex-col gap-2">{children}</ul>
+    <div className="flex min-w-0 flex-col">
+      <h2 className="type-body pb-[4.67px] text-ink-sec">{heading}</h2>
+      <ul className="flex flex-col">{children}</ul>
     </div>
   );
 }
 
 /**
- * The footer slab (DESIGN.md § Components › Footer, § Do's: "keep the blue
- * scarce above the footer, then flood the footer with it"): the brand blurb
- * and four link columns on the ruled column, then a hatched band carrying the
- * wordmark in outline. Secondary text stays at 80% of the foreground or more
- * (DESIGN.md § Measured contrast). Nothing here links to a builder or the api
- * host: each live service is linked once, from its own cell.
+ * The footer, cursor.com's: the card colour, five 252px columns 10px apart
+ * with grey headings and 14px links, then the copyright line and a language
+ * pill. Nothing here links to a builder or the api host: each live service
+ * is linked once, from its own card.
  */
 export function HubFooter() {
   const { locale, t } = useTranslation();
-  const switchTo = otherLocale(locale);
 
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <Rail
-        className="grid grid-cols-2 gap-x-6 gap-y-10 border-primary-foreground/25 px-5 py-12 sm:px-10 md:grid-cols-[2fr_repeat(4,1fr)] md:gap-x-8"
-        nodes={false}
-      >
-        <div className="col-span-2 flex max-w-xs flex-col gap-2 md:col-span-1">
-          <p className="type-title">{t("meta.siteName")}</p>
-          <p className="type-body text-primary-foreground/80">
-            {t("footer.blurb")}
-          </p>
-        </div>
+    <footer className="bg-card px-5 pt-[67.2px] pb-[30px]">
+      <div className="mx-auto grid max-w-rail grid-cols-2 gap-x-[10px] gap-y-10 md:grid-cols-5">
+        <FooterColumn heading={t("footer.builders")}>
+          {TOOL_IDS.map((id) => (
+            <li key={id}>
+              <a className={LINK_CLASS} href={`${localePath(locale)}#tools`}>
+                {t(`services.${id}.name`)}
+              </a>
+            </li>
+          ))}
+        </FooterColumn>
         <FooterColumn heading={t("footer.onThisPage")}>
           <li>
-            <a className={LINK_CLASS} href="#tools">
-              {t("tools.heading")}
+            <a className={LINK_CLASS} href={`${localePath(locale)}#why`}>
+              {t("nav.features")}
             </a>
           </li>
           <li>
-            <a className={LINK_CLASS} href="#mcp">
-              {t("services.mcp.heading")}
+            <a className={LINK_CLASS} href={`${localePath(locale)}#exports`}>
+              {t("nav.exports")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href={`${localePath(locale)}#mcp`}>
+              {t("footer.assistants")}
+            </a>
+          </li>
+        </FooterColumn>
+        <FooterColumn heading={t("footer.resources")}>
+          <li>
+            <a className={LINK_CLASS} href="/llms.txt">
+              llms.txt
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href="/bot">
+              {t("nav.crawler")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href={`${localePath(locale)}#mcp`}>
+              {t("footer.mcp")}
+            </a>
+          </li>
+        </FooterColumn>
+        <FooterColumn heading={t("footer.language")}>
+          <li>
+            <a className={LINK_CLASS} href="/" lang="en">
+              {t("footer.english")}
+            </a>
+          </li>
+          <li>
+            <a className={LINK_CLASS} href="/id" lang="id">
+              {t("footer.indonesian")}
             </a>
           </li>
         </FooterColumn>
@@ -66,54 +101,44 @@ export function HubFooter() {
           <li>
             <a className={LINK_CLASS} href="https://bahrul.me">
               Bahrul Bangsawan
-              <ArrowUpRight aria-hidden="true" className="size-3.5 shrink-0" />
             </a>
           </li>
         </FooterColumn>
-        <FooterColumn heading={t("footer.language")}>
-          <li>
-            <a
-              className={LINK_CLASS}
-              href={localePath(switchTo)}
-              lang={switchTo}
-            >
-              {t("nav.switchLanguage")}
-            </a>
-          </li>
-        </FooterColumn>
-        <FooterColumn heading={t("footer.agents")}>
-          <li>
-            <a className={LINK_CLASS} href="/llms.txt">
-              llms.txt
-            </a>
-          </li>
-        </FooterColumn>
-      </Rail>
-      <div className="hatch overflow-hidden border-primary-foreground/25 border-t">
-        {/* The viewBox fits the glyphs (about 813 × 105 at this size, the
-            baseline at y=100) with ~17 units of air above and below. */}
-        <svg
-          aria-hidden="true"
-          className="rail block h-20 border-primary-foreground/25 sm:h-32"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 860 140"
-        >
-          {/* The variable font's overlapping contours would show through a
-              bare outline; painting the stroke first under a cobalt fill hides
-              them, so only the glyphs' outer edge shows (hence 2.5 for a
-              1.25-unit line). */}
-          <text
-            className="weight-bold fill-primary italic [paint-order:stroke]"
-            fontSize="112"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            textAnchor="middle"
-            x="430"
-            y="100"
-          >
-            pilihpendidikan
-          </text>
-        </svg>
+      </div>
+      <div className="mx-auto mt-[86px] flex max-w-rail flex-wrap items-center justify-between gap-4">
+        <p className="type-body flex flex-wrap gap-x-4 text-ink-sec">
+          <span>{t("footer.copyright")}</span>
+          <span>{t("footer.note")}</span>
+        </p>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" variant="secondary">
+              <Globe aria-hidden="true" data-icon="inline-start" />
+              {locale === "id" ? t("footer.indonesian") : t("footer.english")}
+              <ChevronDown aria-hidden="true" data-icon="inline-end" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top">
+            <DropdownMenuItem asChild>
+              <a href="/" lang="en">
+                <Languages aria-hidden="true" />
+                {t("footer.english")}
+                {locale === "en" ? (
+                  <Check aria-hidden="true" className="ml-auto" />
+                ) : null}
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a href="/id" lang="id">
+                <Languages aria-hidden="true" />
+                {t("footer.indonesian")}
+                {locale === "id" ? (
+                  <Check aria-hidden="true" className="ml-auto" />
+                ) : null}
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </footer>
   );

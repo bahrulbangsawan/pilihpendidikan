@@ -47,6 +47,6 @@ no visual or data change in `apps/cv`.
   `scripts/check-cv-template-parity.ts`.
 - Sources: `job-tracker-spec/08` §1–§3, §4.2, §10, §11 (T8-01, T8-02);
   `13` §2 M0 deliverable ③; decisions D-14, D-20, D-25 (type only).
-- Interaction with pending changes: the print documents keep the Zedative
-  rules of `update-zedative-design-system` (Inter via `@rulisme/ui/print/*`);
+- Interaction with pending changes: the print documents keep the Cursor print
+  rules of `update-cursor-design-system` (Inter via `@rulisme/ui/print/*`);
   their `*-pdf.tsx` files now live in `packages/cv-engine/src/pdf/`.

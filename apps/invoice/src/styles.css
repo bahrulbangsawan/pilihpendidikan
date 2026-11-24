@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
-/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+/* Cursor design system tokens, type roles and layout (DESIGN.md). Every app
    imports the same theme and defines no tokens of its own; this file adds
    only the print artifact below. */
 @import "@rulisme/ui/styles/theme.css";
@@ -12,11 +12,11 @@
 
 /*
  * Invoice preview document — a print-faithful sheet of paper resting on the
- * editor's graph paper, Zedative on paper like its PDF twin (invoice-pdf.tsx).
+ * editor's dark canvas, in the print style of its PDF twin (invoice-pdf.tsx).
  * Print exception (TYPOGRAPHY.md § Exceptions): it is not themed. The tokens
- * the document uses are re-scoped here to the literal Zedative print values
- * the PDF sets, so the sheet stays ink on white paper in light and Night Desk
- * alike: `foreground` the title, names and amount due; `ink` running text;
+ * the document uses are re-scoped here to the literal print values the PDF
+ * sets, so the sheet stays ink on white paper inside the dark chrome:
+ * `foreground` the title, names and amount due; `ink` running text;
  * `muted-foreground` labels and meta; `line` rules; `border` frames;
  * `primary` links. One family, Inter (`--font-sans`), at the PDF's static
  * optical size (opsz 14); weights 400 / 600 / 700 match its embedded cuts.
@@ -38,7 +38,7 @@
   background: #ffffff;
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-sans);
+  font-family: var(--font-print);
   font-variation-settings: "opsz" 14;
   /* The sheet's own leading: text without a size class of its own does not
      take the editor's 20px body line. */

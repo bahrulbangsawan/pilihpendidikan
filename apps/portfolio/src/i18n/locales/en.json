@@ -7,6 +7,7 @@
     "ogImageAlt": "Bahrul Bangsawan Portfolio Builder — Apple Developer Academy portfolio in a locked A4-landscape layout"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "mcp": "MCP",
     "importJson": "Import JSON",
     "prefill": "Pre-Fill Example",
@@ -25,10 +26,6 @@
     "forbidden": "You don't have permission to edit this document.",
     "saveFailed": "Save failed ({code}). Your change was reverted.",
     "saveOffline": "Save failed — check your connection. Your change was reverted."
-  },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
   },
   "confirm": {
     "title": "Clear all data?",
@@ -65,7 +62,13 @@
     "invalidJson": "Invalid JSON file. Please select a valid portfolio JSON export.",
     "pdfFailed": "Failed to generate PDF. Check the browser console for details."
   },
+  "pageHeader": {
+    "area": "Builders",
+    "title": "Portfolio",
+    "lead": "Describe yourself and up to five projects for your Apple Developer Academy application, laid out on A4 landscape pages."
+  },
   "form": {
+    "projectCount": "{count} of {max}",
     "profile": "Profile",
     "fullName": "Full Name",
     "headline": "Headline",
@@ -119,7 +122,8 @@
     "addProject": "Add Project",
     "maxProjects": "Maximum {max} projects reached",
     "projectFallback": "Project {index}",
-    "chipFull": "Maximum items reached"
+    "chipFull": "Maximum items reached",
+    "projectsEmpty": "No projects yet. Add up to five, your strongest first."
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",
@@ -183,7 +187,8 @@
   },
   "preview": {
     "empty": "Start filling in the form to see your portfolio preview",
-    "documentLabel": "A4 landscape · Apple Developer Academy",
+    "documentFormat": "A4 landscape",
+    "documentProgram": "Apple Developer Academy",
     "kicker": "Portfolio submission — cohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Your Name · Headline",

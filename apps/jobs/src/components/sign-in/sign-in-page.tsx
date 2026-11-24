@@ -1,4 +1,4 @@
-// The sign-in band (12 §1.1): email → "Email me a link" → "Check your inbox"
+// The sign-in card (12 §1.1, laid out like reui's auth blocks): email → "Email me a link" → "Check your inbox"
 // (resend after 60 s, change address). The link returns to `/?code=`, which
 // the index route exchanges for the session cookie.
 
@@ -12,7 +12,6 @@ import {
 } from "@rulisme/ui/ui/field";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Band, Rail } from "@rulisme/ui/ui/rails";
 import { useQueryClient } from "@tanstack/react-query";
 import { CircleAlert, Mail, MailCheck } from "lucide-react";
 import type { FormEvent } from "react";
@@ -26,7 +25,7 @@ import { queryKeys } from "@/lib/query";
 export type SignInError = "expired" | "unavailable" | "session_expired" | null;
 
 const RESEND_SECONDS = 60;
-const GUTTER = "px-5 sm:px-10";
+const MARK_SIZE = 24;
 
 /** Seconds left of a `seconds` countdown that restarts when `round` changes. */
 function useCountdown(round: number, seconds: number) {
@@ -110,139 +109,139 @@ export function SignInPage({ initialError }: { initialError: SignInError }) {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="band">
-        <Rail
-          className={`flex h-14 items-center justify-between ${GUTTER}`}
-          nodes={false}
-        >
-          <BrandMark label={t("app.name")} />
-          <LanguageSwitch />
-        </Rail>
+      <header className="flex h-14 items-center justify-between px-4 sm:px-6">
+        <BrandMark label={t("app.name")} />
+        <LanguageSwitch />
       </header>
-      <main className="flex flex-1 flex-col">
-        <Band asChild className="graph-paper flex flex-1 flex-col">
-          <section aria-labelledby="sign-in-title">
-            <Rail
-              className={`${GUTTER} flex flex-1 flex-col items-start gap-8 pt-20 pb-16 sm:pt-28`}
-            >
-              <div className="flex max-w-xl flex-col gap-3">
-                <h1
-                  className="type-display text-primary italic"
-                  id="sign-in-title"
-                >
-                  {t("signIn.title")}
-                </h1>
-                <p className="type-subtitle text-pretty">{t("signIn.intro")}</p>
-              </div>
+      <main className="flex flex-1 flex-col items-center justify-center px-4 pt-6 pb-16">
+        <section
+          aria-labelledby="sign-in-title"
+          className="flex w-full max-w-sm flex-col gap-5"
+        >
+          <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 sm:p-8">
+            <div className="flex flex-col items-center gap-3 text-center">
+              <span
+                aria-hidden="true"
+                className="flex size-10 items-center justify-center rounded-lg border border-border bg-background"
+              >
+                <img
+                  alt=""
+                  className="block size-6 rounded-sm"
+                  height={MARK_SIZE}
+                  src="/favicon/android-chrome-192x192.png"
+                  width={MARK_SIZE}
+                />
+              </span>
+              <h1 className="type-title text-foreground" id="sign-in-title">
+                {t("signIn.title")}
+              </h1>
+              <p className="type-body text-pretty text-muted-foreground">
+                {t("signIn.intro")}
+              </p>
+            </div>
 
-              {bandError ? (
-                <Alert className="max-w-md" role="alert" variant="destructive">
-                  <CircleAlert aria-hidden="true" />
-                  <AlertTitle>
-                    {t(`signIn.errors.${bandError}Title`)}
-                  </AlertTitle>
-                  <AlertDescription>
-                    {t(`signIn.errors.${bandError}`)}
-                  </AlertDescription>
-                </Alert>
-              ) : null}
+            {bandError ? (
+              <Alert role="alert" variant="destructive">
+                <CircleAlert aria-hidden="true" />
+                <AlertTitle>{t(`signIn.errors.${bandError}Title`)}</AlertTitle>
+                <AlertDescription>
+                  {t(`signIn.errors.${bandError}`)}
+                </AlertDescription>
+              </Alert>
+            ) : null}
 
-              <div className="w-full max-w-md border border-border bg-card p-5 sm:p-6">
-                {sentTo ? (
-                  <div aria-live="polite" className="flex flex-col gap-4">
-                    <div className="flex items-start gap-3">
-                      <MailCheck
-                        aria-hidden="true"
-                        className="mt-0.5 size-4 shrink-0 text-foreground"
-                      />
-                      <div className="flex flex-col gap-1">
-                        <h2 className="type-title">{t("signIn.checkInbox")}</h2>
-                        <p className="type-body text-pretty">
-                          {t("signIn.sentTo", { email: sentTo })}
-                        </p>
-                        <p className="type-caption text-muted-foreground">
-                          {t("signIn.linkLifetime")}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Button
-                        disabled={left > 0 || busy}
-                        onClick={() => send(sentTo)}
-                        size="sm"
-                        variant="outline"
-                      >
-                        {left > 0
-                          ? t("signIn.resendIn", { seconds: left })
-                          : t("signIn.resend")}
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setSentTo(null);
-                          setEmail(sentTo);
-                        }}
-                        size="sm"
-                        variant="link"
-                      >
-                        {t("signIn.change")}
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <form
-                    className="flex flex-col gap-4"
-                    noValidate
-                    onSubmit={submit}
+            {sentTo ? (
+              <div
+                aria-live="polite"
+                className="flex flex-col items-center gap-4 text-center"
+              >
+                <MailCheck
+                  aria-hidden="true"
+                  className="size-5 shrink-0 text-success"
+                />
+                <div className="flex flex-col gap-1">
+                  <h2 className="type-subtitle text-foreground">
+                    {t("signIn.checkInbox")}
+                  </h2>
+                  <p className="type-body text-pretty">
+                    {t("signIn.sentTo", { email: sentTo })}
+                  </p>
+                  <p className="type-caption text-muted-foreground">
+                    {t("signIn.linkLifetime")}
+                  </p>
+                </div>
+                <div className="flex w-full flex-col gap-2">
+                  <Button
+                    className="w-full"
+                    disabled={left > 0 || busy}
+                    onClick={() => send(sentTo)}
+                    variant="outline"
                   >
-                    <Field data-invalid={fieldError !== null}>
-                      <FieldLabel htmlFor={`${id}-email`}>
-                        {t("signIn.emailLabel")}
-                      </FieldLabel>
-                      <Input
-                        aria-describedby={`${id}-email-help`}
-                        aria-invalid={fieldError !== null || undefined}
-                        autoComplete="email"
-                        className="field-touch"
-                        id={`${id}-email`}
-                        inputMode="email"
-                        onChange={(event) => setEmail(event.target.value)}
-                        placeholder={t("signIn.emailPlaceholder")}
-                        type="email"
-                        value={email}
-                      />
-                      {fieldError ? (
-                        <FieldError id={`${id}-email-help`}>
-                          {fieldError}
-                        </FieldError>
-                      ) : (
-                        <FieldDescription id={`${id}-email-help`}>
-                          {t("signIn.emailHelp")}
-                        </FieldDescription>
-                      )}
-                    </Field>
-                    <Button
-                      aria-keyshortcuts="Enter"
-                      className="self-start"
-                      disabled={busy}
-                      type="submit"
-                    >
-                      <Mail aria-hidden="true" data-icon="inline-start" />
-                      {busy ? t("signIn.sending") : t("signIn.submit")}
-                      <Kbd aria-hidden="true">↵</Kbd>
-                    </Button>
-                  </form>
-                )}
+                    {left > 0
+                      ? t("signIn.resendIn", { seconds: left })
+                      : t("signIn.resend")}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSentTo(null);
+                      setEmail(sentTo);
+                    }}
+                    size="sm"
+                    variant="link"
+                  >
+                    {t("signIn.change")}
+                  </Button>
+                </div>
               </div>
-            </Rail>
-          </section>
-        </Band>
-        <Band>
-          <Rail className={`${GUTTER} py-6`}>
-            <p className="type-caption max-w-2xl text-pretty text-muted-foreground">
-              {t("signIn.footnote")}
-            </p>
-          </Rail>
-        </Band>
+            ) : (
+              <form
+                className="flex flex-col gap-4"
+                noValidate
+                onSubmit={submit}
+              >
+                <Field data-invalid={fieldError !== null}>
+                  <FieldLabel htmlFor={`${id}-email`}>
+                    {t("signIn.emailLabel")}
+                  </FieldLabel>
+                  <Input
+                    aria-describedby={`${id}-email-help`}
+                    aria-invalid={fieldError !== null || undefined}
+                    autoComplete="email"
+                    className="field-touch"
+                    id={`${id}-email`}
+                    inputMode="email"
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder={t("signIn.emailPlaceholder")}
+                    type="email"
+                    value={email}
+                  />
+                  {fieldError ? (
+                    <FieldError id={`${id}-email-help`}>
+                      {fieldError}
+                    </FieldError>
+                  ) : (
+                    <FieldDescription id={`${id}-email-help`}>
+                      {t("signIn.emailHelp")}
+                    </FieldDescription>
+                  )}
+                </Field>
+                <Button
+                  aria-keyshortcuts="Enter"
+                  className="w-full"
+                  disabled={busy}
+                  type="submit"
+                >
+                  <Mail aria-hidden="true" data-icon="inline-start" />
+                  {busy ? t("signIn.sending") : t("signIn.submit")}
+                  <Kbd aria-hidden="true">↵</Kbd>
+                </Button>
+              </form>
+            )}
+          </div>
+          <p className="type-caption text-pretty px-2 text-center text-muted-foreground">
+            {t("signIn.footnote")}
+          </p>
+        </section>
       </main>
     </div>
   );

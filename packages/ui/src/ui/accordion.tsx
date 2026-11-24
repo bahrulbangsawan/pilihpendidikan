@@ -4,9 +4,10 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative accordion (DESIGN.md § Components › Feature cells): full-width
-// hairline rows, each ending in a `+` that turns into `−` when it opens. Rows
-// open and close instantly; nothing animates the height or the icon.
+// cursor.com FAQ (the pricing page): full-width rows ruled by 10% `border`
+// lines, a 16px weight-400 question ending in a muted `+` that turns into
+// `−`, and the answer in muted body text with orange links. Rows open and
+// close instantly; nothing animates the height or the icon.
 function Accordion({
   className,
   ...props
@@ -26,7 +27,7 @@ function AccordionItem({
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
     <AccordionPrimitive.Item
-      className={cn("border-line border-b last:border-b-0", className)}
+      className={cn("border-border border-b last:border-b-0", className)}
       data-slot="accordion-item"
       {...props}
     />
@@ -42,7 +43,7 @@ function AccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "group/accordion-trigger type-body weight-semibold relative flex flex-1 items-start justify-between gap-4 py-3 text-left text-foreground underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:shrink-0 **:data-[slot=accordion-trigger-icon]:translate-y-0.5 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger type-subtitle relative flex flex-1 items-start justify-between gap-4 py-4 text-left text-foreground outline-none transition-[color] duration-140 ease-standard hover:text-ink-sec focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:shrink-0 **:data-[slot=accordion-trigger-icon]:translate-y-0.5 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className
         )}
         data-slot="accordion-trigger"
@@ -77,7 +78,7 @@ function AccordionContent({
     >
       <div
         className={cn(
-          "pb-4 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p:not(:last-child)]:mb-3",
+          "type-body pb-4 text-muted-foreground [&_a]:text-link [&_a]:hover:text-link/75 [&_p:not(:last-child)]:mb-3",
           className
         )}
       >

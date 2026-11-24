@@ -3,8 +3,8 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative scroll area: a thin `line` thumb with 2px corners, like the
-// page's own scrollbar colour. The viewport takes the focus outline inside
+// cursor.com scroll area: a thin pill thumb at 10% ink that deepens to 20% on
+// hover, like the page's own scrollbar. The viewport takes the focus outline inside
 // its edge so a clipping parent cannot hide it. Radix wraps the content in a
 // `display: table` box that grows to fit; it is made a block so rows can
 // truncate (a `w-max` child still scrolls sideways).
@@ -48,7 +48,7 @@ function ScrollBar({
       {...props}
     >
       <ScrollAreaPrimitive.ScrollAreaThumb
-        className="relative flex-1 rounded-xs bg-line transition-[background-color] duration-150 ease-standard hover:bg-offgray/60"
+        className="relative flex-1 rounded-full bg-border transition-[background-color] duration-140 ease-standard hover:bg-input"
         data-slot="scroll-area-thumb"
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>

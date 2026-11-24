@@ -7,7 +7,6 @@ import type {
   AnalyticsInterval,
   AnalyticsMetric,
 } from "@pilihpendidikan/jobs-contracts/enums";
-import { ANALYTICS_BREAKDOWNS } from "@pilihpendidikan/jobs-contracts/enums";
 import { DAY_MS, isoDay } from "./board-model";
 
 export const RANGE_PRESETS = ["30d", "90d", "year", "all", "custom"] as const;
@@ -29,14 +28,16 @@ export const SERIES_METRICS = [
   "interviews",
   "offers",
   "rejected",
-  "discovered",
 ] as const satisfies readonly AnalyticsMetric[];
 export type SeriesMetric = (typeof SERIES_METRICS)[number];
 
-/** The breakdown switcher: the four of 10 §8 first, then the rest. */
+/**
+ * The breakdown switcher: the four of 10 §8 first, then the rest. The api's
+ * `mode` dimension (the automation apply mode) is not offered: the dashboard
+ * is a manual tracker.
+ */
 export const BREAKDOWN_ORDER = [
   "source",
-  "mode",
   "cv_variant",
   "score_band",
   "company",
@@ -95,7 +96,7 @@ export function validateStatsSearch(
   if (metric) {
     result.metric = metric;
   }
-  const by = oneOf(ANALYTICS_BREAKDOWNS, search.by);
+  const by = oneOf(BREAKDOWN_ORDER, search.by);
   if (by) {
     result.by = by;
   }
@@ -163,4 +164,24 @@ export function intervalFor(
   range: Pick<ResolvedRange, "from" | "to">
 ): AnalyticsInterval {
   return rangeDays(range) > WEEKLY_MAX_DAYS ? "month" : "week";
+}
+
+/**
+ * The period of the same length right before `range` (the stat cards'
+ * "vs previous period"), or null for all time (nothing before it).
+ */
+export function previousRange(
+  range: ResolvedRange
+): Pick<ResolvedRange, "from" | "to"> | null {
+  if (range.preset === "all") {
+    return null;
+  }
+  const days = rangeDays(range);
+  const start = new Date(dayStartMs(range.from));
+  start.setHours(12, 0, 0, 0);
+  const to = new Date(start);
+  to.setDate(to.getDate() - 1);
+  const from = new Date(start);
+  from.setDate(from.getDate() - days);
+  return { from: isoDay(from), to: isoDay(to) };
 }

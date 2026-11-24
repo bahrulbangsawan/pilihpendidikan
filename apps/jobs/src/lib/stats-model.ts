@@ -17,7 +17,7 @@ import type { Translate } from "@/i18n";
 import { intlLocale } from "@/i18n";
 import { DAY_MS } from "./board-model";
 import { formatNumber, formatPercent } from "./format";
-import { stageLabel, taskErrorLabel, taskStateLabel } from "./labels";
+import { stageLabel } from "./labels";
 import { dayStartMs } from "./stats-range";
 
 const HOUR_MS = 3_600_000;
@@ -521,68 +521,77 @@ export function breakdownTable(
   };
 }
 
-// ── Automation reliability (10 §2.7) ───────────────────────────────────────
+// ── Period over period (the stat cards' delta chips) ───────────────────────
 
-export const APPLY_TASK_STATES = [
-  "submitted",
-  "failed",
-  "cancelled",
-  "outcome_unknown",
-  "expired",
-] as const;
-
-export interface AutomationModel {
-  failures: { key: string; label: string; value: string }[];
-  rates: { key: string; label: string; value: string }[];
-  states: { key: string; label: string; value: string }[];
-  total: number;
+export interface StatDelta {
+  /** "up" / "down" against the previous period, "flat" when equal. */
+  direction: "up" | "down" | "flat";
+  /** The chip text: "+12%" for counts, "+4 pts" for rates. */
+  label: string;
+  /** The previous period's value, formatted like the cell. */
+  previous: string;
 }
 
-export function automationModel(
-  summary: Summary,
+function countDelta(current: number, previous: number, locale: Locale) {
+  if (current === previous) {
+    return { direction: "flat" as const, label: "0%" };
+  }
+  const direction = current > previous ? ("up" as const) : ("down" as const);
+  if (previous === 0) {
+    return { direction, label: `+${formatNumber(current, locale)}` };
+  }
+  const change = (current - previous) / previous;
+  const sign = change > 0 ? "+" : "−";
+  return {
+    direction,
+    label: `${sign}${formatPercent(Math.abs(change), locale)}`,
+  };
+}
+
+/**
+ * Each stat cell's change against the period of the same length before it.
+ * Rates compare in percentage points and only when both periods show them.
+ */
+export function statDeltas(
+  current: Summary,
+  previous: Summary,
   t: Translate,
   locale: Locale
-): AutomationModel {
-  const { automation } = summary;
-  const states = APPLY_TASK_STATES.map((state) => ({
-    key: state,
-    label: taskStateLabel(t, state),
-    value: formatNumber(automation.apply_tasks[state], locale),
-  }));
-  const total = APPLY_TASK_STATES.reduce(
-    (sum, state) => sum + automation.apply_tasks[state],
-    0
-  );
-  const failures = Object.entries(automation.failure_classes)
-    .filter(([, count]) => count > 0)
-    .sort(([a, x], [b, y]) => y - x || a.localeCompare(b))
-    .map(([errorClass, count]) => ({
-      key: errorClass,
-      label: taskErrorLabel(t, errorClass),
-      value: formatNumber(count, locale),
-    }));
-  return {
-    total,
-    states,
-    rates: [
-      {
-        key: "success",
-        label: t("stats.automation.successRate"),
-        value: formatRate(automation.apply_success_rate, locale),
-      },
-      {
-        key: "verified",
-        label: t("stats.automation.verifiedRatio"),
-        value: formatRate(automation.verified_ratio, locale),
-      },
-      {
-        key: "pause",
-        label: t("stats.automation.pauseRate"),
-        value: formatRate(automation.pause_rate, locale),
-      },
-    ],
-    failures,
-  };
+): Partial<Record<StatCell["key"], StatDelta>> {
+  const counts = {
+    applications: [current.funnel.applied, previous.funnel.applied],
+    interviews: [current.funnel.interviewing, previous.funnel.interviewing],
+    offers: [current.funnel.offer, previous.funnel.offer],
+  } as const;
+  const out: Partial<Record<StatCell["key"], StatDelta>> = {};
+  for (const [key, [now, before]] of Object.entries(counts)) {
+    out[key as StatCell["key"]] = {
+      ...countDelta(now, before, locale),
+      previous: formatNumber(before, locale),
+    };
+  }
+  const nowRate = ratesVisible(current) ? current.rates?.response_rate : null;
+  const beforeRate = ratesVisible(previous)
+    ? previous.rates?.response_rate
+    : null;
+  if (typeof nowRate === "number" && typeof beforeRate === "number") {
+    const points = Math.round((nowRate - beforeRate) * 100);
+    let direction: StatDelta["direction"] = "flat";
+    if (points > 0) {
+      direction = "up";
+    } else if (points < 0) {
+      direction = "down";
+    }
+    const sign = points > 0 ? "+" : "";
+    out.responseRate = {
+      direction,
+      label: t("stats.cells.points", {
+        value: `${sign}${points}`.replace("-", "−"),
+      }),
+      previous: formatRate(beforeRate, locale),
+    };
+  }
+  return out;
 }
 
 /** The board link of the unconfirmed callout: "needs attention" filter. */

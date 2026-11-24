@@ -1,54 +1,64 @@
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Rail } from "@rulisme/ui/ui/rails";
 import { BookOpen, Layers } from "lucide-react";
 
+/** Where each group of the hero's switch lands: its first section below the
+ * hero (System's own first section is this intro, so it jumps on to
+ * Foundations). */
 const PRINCIPLES = [
   {
-    title: "One family",
-    body: "Inter Variable in six roles and three weights, each weight paired with an optical size. No all-caps, no letter-spacing.",
+    title: "One family, weight 400",
+    body: "Geist on one type scale: eight roles from the 72px hero to the 11px micro, all at weight 400. Hierarchy comes from size, not bold.",
+    href: "#foundations",
   },
   {
-    title: "Ruled, not raised",
-    body: "Hairlines and diamond nodes do the work of shadows. Cards are square; only buttons and chips round their corners.",
+    title: "Flat, one step up",
+    body: "Cards sit one step above the warm near-black page, #1b1913 on #14120b, with a 2.5% hairline and a 4px radius. No shadows on cards.",
+    href: "#data-display",
   },
   {
-    title: "One blue",
-    body: "Cobalt marks the one action that matters in view, then floods the footer. Everything else is paper and ink.",
+    title: "Pills, and orange for links",
+    body: "Buttons are pills: a light primary, a warm-grey secondary, a 20%-outlined ghost. Orange #f54e00 is kept for text links.",
+    href: "#actions",
   },
 ] as const;
 
 /**
- * The hero band (DESIGN.md § Layout): graph paper, the display role in
- * italic cobalt, a subtitle lead, a primary and a secondary action with their
- * shortcuts, then three butted cells.
+ * The page intro, set like the top of cursor.com/pricing: a centred section
+ * with the 52px hero-compact h1 (36px below lg), a centred lead, the light
+ * primary pill and the filled secondary one with their shortcuts; then three
+ * equal cards.
+ * 52px over 36px: on cursor.com/pricing the h1 is the one big line of the
+ * page, and here too nothing else on the page is larger than 36px, so the
+ * hero keeps one clear step above every section title.
  */
 export function OverviewSection() {
   useShortcut("f", () => {
     window.location.hash = "foundations";
   });
   return (
-    <section aria-labelledby="overview-title" id="overview">
-      <div className="band graph-paper">
-        <Rail className="flex flex-col items-start gap-6 px-5 pt-28 pb-12 sm:px-10">
-          <p className="type-caption text-muted-foreground">
-            Themed from DESIGN.md · shadcn/ui on @rulisme/ui
+    <section aria-labelledby="overview-title" className="band" id="overview">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-5 pt-16 pb-8 sm:px-10 sm:pt-20 xl:px-16">
+        <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+          <p className="type-body text-muted-foreground">
+            System · shadcn/ui on @rulisme/ui
           </p>
           <h1
-            className="type-display max-w-2xl text-primary italic"
+            className="type-headline lg:type-hero-compact text-balance text-foreground"
             id="overview-title"
           >
-            Drafting paper for documents that open doors.
+            Cursor design system
           </h1>
-          <p className="type-subtitle max-w-xl">
-            Zedative is the pilihpendidikan design system: warm graph paper
-            ruled into hairline rails, one family set in six roles, and a single
-            cobalt for the action that matters.
+          <p className="type-subtitle text-pretty text-ink">
+            The pilihpendidikan design system: a warm near-black page, cards one
+            step lighter, one family (Geist) at weight 400, pill buttons, and
+            orange kept for text links. Dark only; the printed documents stay
+            white paper set in Inter.
           </p>
           {/* Through Button so each link carries data-slot="button" and
-              data-variant: the Kbd keys its white cap on them. */}
-          <div className="flex flex-wrap items-center gap-2">
+              data-variant: the Kbd keys its cap on them. */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
             <Button asChild>
               <a href="#actions">
                 <Layers aria-hidden="true" data-icon="inline-start" />
@@ -56,7 +66,7 @@ export function OverviewSection() {
                 <Kbd>C</Kbd>
               </a>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="secondary">
               <a href="#foundations">
                 <BookOpen aria-hidden="true" data-icon="inline-start" />
                 Foundations
@@ -64,25 +74,23 @@ export function OverviewSection() {
               </a>
             </Button>
           </div>
-          <p className="type-caption text-muted-foreground">
-            Light by default. Press T for Night Desk.
-          </p>
-        </Rail>
-      </div>
-      <div className="band">
-        <Rail className="grid md:grid-cols-3">
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
           {PRINCIPLES.map((principle) => (
-            <div
-              className="flex flex-col gap-1.5 border-line border-b px-5 py-8 last:border-b-0 sm:px-10 md:border-r md:border-b-0 md:last:border-r-0"
+            <a
+              className="flex flex-col gap-2 rounded-sm border border-hairline bg-card p-4.5 transition-[background-color] duration-140 ease-standard hover:bg-pane"
+              href={principle.href}
               key={principle.title}
             >
-              <h3 className="type-subtitle weight-semibold">
+              <h3 className="type-subtitle text-foreground">
                 {principle.title}
               </h3>
-              <p className="type-body">{principle.body}</p>
-            </div>
+              <p className="type-body text-muted-foreground">
+                {principle.body}
+              </p>
+            </a>
           ))}
-        </Rail>
+        </div>
       </div>
     </section>
   );

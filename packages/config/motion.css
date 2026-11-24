@@ -1,13 +1,14 @@
 /*
- * Shared motion for every Zedative app (apps/home · apps/cv · apps/invoice ·
- * apps/portfolio · apps/design). DESIGN.md § Motion:
+ * Shared motion for every app on the Cursor design system (apps/home ·
+ * apps/cv · apps/invoice · apps/portfolio · apps/design).
+ * DESIGN.md § Motion:
  *
- *   - Duration 150ms, easing cubic-bezier(0.4, 0, 0.2, 1).
+ *   - Duration 140ms, easing cubic-bezier(0.4, 0, 0.2, 1).
  *   - What animates: button and tile background + lip shadow, nav-link hover
  *     fill, footer underline colour, link opacity.
  *   - What never animates: layout, sections, the editor. Nothing enters on
  *     scroll, nothing fades in on mount, overlays open and close instantly.
- *   - Signature move: pressables press `translateY(1px) scale(0.99)`.
+ *   - Pressables do not move on :active (cursor.com): only colour changes.
  *   - Status dots pulse slowly, only under prefers-reduced-motion:
  *     no-preference.
  *
@@ -30,7 +31,7 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   /* Every bare `transition-*` utility defaults to the system duration and
      curve, so an unannotated hover still matches the spec. */
-  --default-transition-duration: 150ms;
+  --default-transition-duration: 140ms;
   --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* The fake caret inside an InputOTP slot: functional feedback (it shows
@@ -51,10 +52,10 @@
 }
 
 :root {
-  --motion-duration: 150ms;
+  --motion-duration: 140ms;
   --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --motion-press-offset: 1px;
-  --motion-press-scale: 0.99;
+  --motion-press-offset: 0px;
+  --motion-press-scale: 1;
 }
 
 /* Reduced motion: no travel, no scale, and every transition or animation

@@ -19,7 +19,7 @@ keeps every legacy REST and MCP client working through a compatibility facade
   (AES-256-GCM under `BFF_COOKIE_KEY`), magic-link sign-in through
   `/auth/request` + `/auth/exchange`, edge policy (CSP nonce, CSRF Origin
   gate on server functions, noindex, `private, no-store`), locale by setting
-  and `jobs-lang` cookie with no `/id/*` tree (D-27), Zedative only (D-24),
+  and `jobs-lang` cookie with no `/id/*` tree (D-27), the Cursor design system only (D-24),
   global chrome (nav band, sidebar, ⌘K palette, shortcut sheet), Board
   (columns, Closed lane, DnD with pointer/touch/keyboard sensors, `M` stage
   picker, phone stage switcher, bulk actions, follow-ups), Application detail
@@ -68,7 +68,7 @@ keeps every legacy REST and MCP client working through a compatibility facade
   and the parity scripts (lint roots).
 - Depends on: `jobs-add-contracts-and-schema` (contracts),
   `api-add-user-ids-and-jobs-db` (users, `JOBS_DB`, flags), and the
-  `update-zedative-design-system` change (A-08).
+  `update-cursor-design-system` change (A-08).
 - Sources: job-tracker-spec 05 §1–§2, §5, §10, §10a, §14; 06 (all); 10 §2
   (archived stays in analytics); 11 §4.1, §6, §10; 12 §1–§3, §5, §9 (Profile,
   Settings), §10–§15; 13 §2 M1, §5 S-01–S-03, S-31; decisions D-01, D-04,

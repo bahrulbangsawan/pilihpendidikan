@@ -3,6 +3,8 @@
 import type * as React from "react";
 import { Direction } from "radix-ui";
 
+// Unstyled: passes the reading direction (ltr / rtl) to every Radix part.
+
 function DirectionProvider({
   dir,
   direction,

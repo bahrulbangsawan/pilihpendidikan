@@ -25,24 +25,21 @@ function InputOTP({
   );
 }
 
-// A run of slots joined by hairlines; the group carries the 4px outer radius
-// and, when a slot is invalid, the destructive halo.
+// A run of slots joined by one shared border; the group carries the 8px
+// outer radius of the `Input` shell.
 function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "flex items-center rounded-md has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/15",
-        className
-      )}
+      className={cn("flex items-center rounded-lg", className)}
       data-slot="input-otp-group"
       {...props}
     />
   );
 }
 
-// Zedative OTP slot: a 36px box on half-transparent paper. Neighbours share
-// one `line` hairline; the active slot lifts over them with the field focus
-// (cobalt edge and halo) and a blinking caret.
+// OTP slot: a 36px box in the `Input` shell (10% border on the page colour).
+// Neighbours share one border; the active slot lifts over them with the
+// field focus (20% border, 2px ink outline) and a blinking caret.
 function InputOTPSlot({
   index,
   className,
@@ -56,7 +53,7 @@ function InputOTPSlot({
   return (
     <div
       className={cn(
-        "type-body relative not-first:-ml-px flex size-9 items-center justify-center border border-input bg-card/60 text-foreground tabular-nums outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard first:rounded-l-md last:rounded-r-md aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:ring-3 data-[active=true]:ring-ring/20 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/15",
+        "type-body relative not-first:-ml-px flex size-9 items-center justify-center border border-border bg-background text-foreground tabular-nums outline-none transition-[background-color,border-color] duration-140 ease-standard first:rounded-l-lg last:rounded-r-lg aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-input data-[active=true]:outline-2 data-[active=true]:outline-ring data-[active=true]:outline-solid data-[active=true]:outline-offset-0 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:outline-destructive",
         className
       )}
       data-active={isActive}

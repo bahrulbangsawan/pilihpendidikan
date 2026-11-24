@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   ALL_TIME_FROM,
+  BREAKDOWN_ORDER,
   intervalFor,
   isDay,
   rangeDays,
@@ -63,10 +64,13 @@ describe("TW-STATS date range (12 §9, 10 §5)", () => {
         from: "2026-01-01",
         to: "nope",
         metric: "ai_cost",
-        by: "mode",
+        by: "method",
         extra: "x",
       })
-    ).toEqual({ range: "30d", from: "2026-01-01", by: "mode" });
+    ).toEqual({ range: "30d", from: "2026-01-01", by: "method" });
+    // The automation apply mode is not a breakdown the dashboard offers.
+    expect(validateStatsSearch({ by: "mode" })).toEqual({});
+    expect(BREAKDOWN_ORDER).not.toContain("mode");
     expect(validateStatsSearch({ range: "week", metric: "offers" })).toEqual({
       metric: "offers",
     });

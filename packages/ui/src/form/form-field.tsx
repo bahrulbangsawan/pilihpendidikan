@@ -109,7 +109,7 @@ function FormControl(props: FormFieldProps & FormControlIds) {
   );
 }
 
-// The builders' composed field (Zedative): a body-role label, one control and
+// The builders' composed field: a body-role label, one control and
 // a caption-role error in destructive, 6px apart. The label names the control
 // (or, for a month, the month/year pair) and the error describes it.
 export function FormField(props: FormFieldProps) {

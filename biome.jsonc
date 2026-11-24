@@ -23,6 +23,7 @@
       "!!**/.vercel",
       "!!**/.netlify",
       "!!**/.wrangler",
+      "!!cook",
       "!!**/.wrangler-dry-run",
       "!!**/.alchemy",
       "!!**/.docusaurus",

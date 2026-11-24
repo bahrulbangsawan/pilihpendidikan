@@ -11,22 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
-import { Route as AutomationRouteImport } from './routes/automation'
 import { Route as BoardRouteImport } from './routes/board'
-import { Route as CliRouteImport } from './routes/cli'
 import { Route as IdRouteImport } from './routes/id'
-import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as SourcesRouteImport } from './routes/sources'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as ApplicationsAppIdRouteImport } from './routes/applications.$appId'
-import { Route as AutomationIndexRouteImport } from './routes/automation.index'
-import { Route as AutomationRulesRouteImport } from './routes/automation.rules'
-import { Route as AutomationRunsRouteImport } from './routes/automation.runs'
 import { Route as DownloadSplatRouteImport } from './routes/download.$'
-import { Route as JobsUjbIdRouteImport } from './routes/jobs.$ujbId'
-import { Route as AutomationRunsTskIdRouteImport } from './routes/automation_.runs.$tskId'
 import { Route as RenderCvCvvIdRouteImport } from './routes/render.cv.$cvvId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -39,29 +30,14 @@ const SplatRoute = SplatRouteImport.update({
   path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AutomationRoute = AutomationRouteImport.update({
-  id: '/automation',
-  path: '/automation',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BoardRoute = BoardRouteImport.update({
   id: '/board',
   path: '/board',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CliRoute = CliRouteImport.update({
-  id: '/cli',
-  path: '/cli',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IdRoute = IdRouteImport.update({
   id: '/id',
   path: '/id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InboxRoute = InboxRouteImport.update({
-  id: '/inbox',
-  path: '/inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -74,11 +50,6 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SourcesRoute = SourcesRouteImport.update({
-  id: '/sources',
-  path: '/sources',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const StatsRoute = StatsRouteImport.update({
   id: '/stats',
   path: '/stats',
@@ -89,34 +60,9 @@ const ApplicationsAppIdRoute = ApplicationsAppIdRouteImport.update({
   path: '/applications/$appId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AutomationIndexRoute = AutomationIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AutomationRoute,
-} as any)
-const AutomationRulesRoute = AutomationRulesRouteImport.update({
-  id: '/rules',
-  path: '/rules',
-  getParentRoute: () => AutomationRoute,
-} as any)
-const AutomationRunsRoute = AutomationRunsRouteImport.update({
-  id: '/runs',
-  path: '/runs',
-  getParentRoute: () => AutomationRoute,
-} as any)
 const DownloadSplatRoute = DownloadSplatRouteImport.update({
   id: '/download/$',
   path: '/download/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JobsUjbIdRoute = JobsUjbIdRouteImport.update({
-  id: '/jobs/$ujbId',
-  path: '/jobs/$ujbId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AutomationRunsTskIdRoute = AutomationRunsTskIdRouteImport.update({
-  id: '/automation_/runs/$tskId',
-  path: '/automation/runs/$tskId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RenderCvCvvIdRoute = RenderCvCvvIdRouteImport.update({
@@ -128,64 +74,38 @@ const RenderCvCvvIdRoute = RenderCvCvvIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/automation': typeof AutomationRouteWithChildren
   '/board': typeof BoardRoute
-  '/cli': typeof CliRoute
   '/id': typeof IdRoute
-  '/inbox': typeof InboxRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/sources': typeof SourcesRoute
   '/stats': typeof StatsRoute
   '/applications/$appId': typeof ApplicationsAppIdRoute
-  '/automation/rules': typeof AutomationRulesRoute
-  '/automation/runs': typeof AutomationRunsRoute
   '/download/$': typeof DownloadSplatRoute
-  '/jobs/$ujbId': typeof JobsUjbIdRoute
-  '/automation/': typeof AutomationIndexRoute
-  '/automation/runs/$tskId': typeof AutomationRunsTskIdRoute
   '/render/cv/$cvvId': typeof RenderCvCvvIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/board': typeof BoardRoute
-  '/cli': typeof CliRoute
   '/id': typeof IdRoute
-  '/inbox': typeof InboxRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/sources': typeof SourcesRoute
   '/stats': typeof StatsRoute
   '/applications/$appId': typeof ApplicationsAppIdRoute
-  '/automation/rules': typeof AutomationRulesRoute
-  '/automation/runs': typeof AutomationRunsRoute
   '/download/$': typeof DownloadSplatRoute
-  '/jobs/$ujbId': typeof JobsUjbIdRoute
-  '/automation': typeof AutomationIndexRoute
-  '/automation/runs/$tskId': typeof AutomationRunsTskIdRoute
   '/render/cv/$cvvId': typeof RenderCvCvvIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/automation': typeof AutomationRouteWithChildren
   '/board': typeof BoardRoute
-  '/cli': typeof CliRoute
   '/id': typeof IdRoute
-  '/inbox': typeof InboxRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/sources': typeof SourcesRoute
   '/stats': typeof StatsRoute
   '/applications/$appId': typeof ApplicationsAppIdRoute
-  '/automation/rules': typeof AutomationRulesRoute
-  '/automation/runs': typeof AutomationRunsRoute
   '/download/$': typeof DownloadSplatRoute
-  '/jobs/$ujbId': typeof JobsUjbIdRoute
-  '/automation/': typeof AutomationIndexRoute
-  '/automation_/runs/$tskId': typeof AutomationRunsTskIdRoute
   '/render/cv/$cvvId': typeof RenderCvCvvIdRoute
 }
 export interface FileRouteTypes {
@@ -193,82 +113,50 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$'
-    | '/automation'
     | '/board'
-    | '/cli'
     | '/id'
-    | '/inbox'
     | '/profile'
     | '/settings'
-    | '/sources'
     | '/stats'
     | '/applications/$appId'
-    | '/automation/rules'
-    | '/automation/runs'
     | '/download/$'
-    | '/jobs/$ujbId'
-    | '/automation/'
-    | '/automation/runs/$tskId'
     | '/render/cv/$cvvId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$'
     | '/board'
-    | '/cli'
     | '/id'
-    | '/inbox'
     | '/profile'
     | '/settings'
-    | '/sources'
     | '/stats'
     | '/applications/$appId'
-    | '/automation/rules'
-    | '/automation/runs'
     | '/download/$'
-    | '/jobs/$ujbId'
-    | '/automation'
-    | '/automation/runs/$tskId'
     | '/render/cv/$cvvId'
   id:
     | '__root__'
     | '/'
     | '/$'
-    | '/automation'
     | '/board'
-    | '/cli'
     | '/id'
-    | '/inbox'
     | '/profile'
     | '/settings'
-    | '/sources'
     | '/stats'
     | '/applications/$appId'
-    | '/automation/rules'
-    | '/automation/runs'
     | '/download/$'
-    | '/jobs/$ujbId'
-    | '/automation/'
-    | '/automation_/runs/$tskId'
     | '/render/cv/$cvvId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
-  AutomationRoute: typeof AutomationRouteWithChildren
   BoardRoute: typeof BoardRoute
-  CliRoute: typeof CliRoute
   IdRoute: typeof IdRoute
-  InboxRoute: typeof InboxRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
-  SourcesRoute: typeof SourcesRoute
   StatsRoute: typeof StatsRoute
   ApplicationsAppIdRoute: typeof ApplicationsAppIdRoute
   DownloadSplatRoute: typeof DownloadSplatRoute
-  JobsUjbIdRoute: typeof JobsUjbIdRoute
-  AutomationRunsTskIdRoute: typeof AutomationRunsTskIdRoute
   RenderCvCvvIdRoute: typeof RenderCvCvvIdRoute
 }
 
@@ -288,13 +176,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/automation': {
-      id: '/automation'
-      path: '/automation'
-      fullPath: '/automation'
-      preLoaderRoute: typeof AutomationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/board': {
       id: '/board'
       path: '/board'
@@ -302,25 +183,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cli': {
-      id: '/cli'
-      path: '/cli'
-      fullPath: '/cli'
-      preLoaderRoute: typeof CliRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/id': {
       id: '/id'
       path: '/id'
       fullPath: '/id'
       preLoaderRoute: typeof IdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inbox': {
-      id: '/inbox'
-      path: '/inbox'
-      fullPath: '/inbox'
-      preLoaderRoute: typeof InboxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -337,13 +204,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sources': {
-      id: '/sources'
-      path: '/sources'
-      fullPath: '/sources'
-      preLoaderRoute: typeof SourcesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/stats': {
       id: '/stats'
       path: '/stats'
@@ -358,46 +218,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplicationsAppIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/automation/': {
-      id: '/automation/'
-      path: '/'
-      fullPath: '/automation/'
-      preLoaderRoute: typeof AutomationIndexRouteImport
-      parentRoute: typeof AutomationRoute
-    }
-    '/automation/rules': {
-      id: '/automation/rules'
-      path: '/rules'
-      fullPath: '/automation/rules'
-      preLoaderRoute: typeof AutomationRulesRouteImport
-      parentRoute: typeof AutomationRoute
-    }
-    '/automation/runs': {
-      id: '/automation/runs'
-      path: '/runs'
-      fullPath: '/automation/runs'
-      preLoaderRoute: typeof AutomationRunsRouteImport
-      parentRoute: typeof AutomationRoute
-    }
     '/download/$': {
       id: '/download/$'
       path: '/download/$'
       fullPath: '/download/$'
       preLoaderRoute: typeof DownloadSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jobs/$ujbId': {
-      id: '/jobs/$ujbId'
-      path: '/jobs/$ujbId'
-      fullPath: '/jobs/$ujbId'
-      preLoaderRoute: typeof JobsUjbIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/automation_/runs/$tskId': {
-      id: '/automation_/runs/$tskId'
-      path: '/automation/runs/$tskId'
-      fullPath: '/automation/runs/$tskId'
-      preLoaderRoute: typeof AutomationRunsTskIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/render/cv/$cvvId': {
@@ -410,38 +235,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AutomationRouteChildren {
-  AutomationRulesRoute: typeof AutomationRulesRoute
-  AutomationRunsRoute: typeof AutomationRunsRoute
-  AutomationIndexRoute: typeof AutomationIndexRoute
-}
-
-const AutomationRouteChildren: AutomationRouteChildren = {
-  AutomationRulesRoute: AutomationRulesRoute,
-  AutomationRunsRoute: AutomationRunsRoute,
-  AutomationIndexRoute: AutomationIndexRoute,
-}
-
-const AutomationRouteWithChildren = AutomationRoute._addFileChildren(
-  AutomationRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
-  AutomationRoute: AutomationRouteWithChildren,
   BoardRoute: BoardRoute,
-  CliRoute: CliRoute,
   IdRoute: IdRoute,
-  InboxRoute: InboxRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
-  SourcesRoute: SourcesRoute,
   StatsRoute: StatsRoute,
   ApplicationsAppIdRoute: ApplicationsAppIdRoute,
   DownloadSplatRoute: DownloadSplatRoute,
-  JobsUjbIdRoute: JobsUjbIdRoute,
-  AutomationRunsTskIdRoute: AutomationRunsTskIdRoute,
   RenderCvCvvIdRoute: RenderCvCvvIdRoute,
 }
 export const routeTree = rootRouteImport

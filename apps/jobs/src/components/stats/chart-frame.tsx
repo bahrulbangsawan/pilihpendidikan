@@ -3,10 +3,11 @@
 // with aria-pressed, so Enter and Space work) swaps the chart for a <table>
 // with a caption and scoped headers that holds the same numbers. The chart
 // is an image to assistive technology, labelled with a written summary. The
-// choice is remembered per chart in this browser.
+// choice is remembered per chart in this browser. One border per card: the
+// chart sits straight on the frame (no inner bordered panel).
 
 import { cn } from "@rulisme/ui/lib/utils";
-import { Card, CardContent } from "@rulisme/ui/ui/card";
+import { SectionCard } from "@rulisme/ui/blocks/settings";
 import {
   Table,
   TableBody,
@@ -96,41 +97,6 @@ export function DataTable({
   );
 }
 
-/**
- * A card's title block with its controls; the controls wrap under the title
- * on narrow screens instead of squeezing it (375 px).
- */
-export function FrameHeader({
-  headingId,
-  title,
-  description,
-  children,
-}: {
-  headingId: string;
-  title: string;
-  description?: string;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 px-(--card-spacing)">
-      <div className="flex min-w-0 flex-1 basis-56 flex-col gap-1">
-        <h2
-          className="type-subtitle weight-semibold text-card-foreground"
-          id={headingId}
-        >
-          {title}
-        </h2>
-        {description ? (
-          <p className="type-caption text-muted-foreground">{description}</p>
-        ) : null}
-      </div>
-      {children ? (
-        <div className="flex flex-wrap items-center gap-2">{children}</div>
-      ) : null}
-    </div>
-  );
-}
-
 export function ChartFrame({
   id,
   title,
@@ -165,31 +131,31 @@ export function ChartFrame({
   }
 
   return (
-    <section
-      aria-labelledby={headingId}
-      className={cn("min-w-0", className)}
-      data-chart-frame={id}
-    >
-      <Card className="h-full" size="sm">
-        <FrameHeader
-          description={description}
-          headingId={headingId}
-          title={title}
-        >
-          {controls}
-          <Toggle
-            aria-controls={bodyId}
-            className="type-body-compact"
-            onPressedChange={change}
-            pressed={view === "table"}
-            size="sm"
-            variant="outline"
-          >
-            <Table2 aria-hidden="true" data-icon="inline-start" />
-            {t("stats.dataTable")}
-          </Toggle>
-        </FrameHeader>
-        <CardContent className="min-w-0" id={bodyId}>
+    <div className={cn("min-w-0", className)} data-chart-frame={id}>
+      <SectionCard
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            {controls}
+            <Toggle
+              aria-controls={bodyId}
+              className="type-body-compact"
+              onPressedChange={change}
+              pressed={view === "table"}
+              size="sm"
+              variant="outline"
+            >
+              <Table2 aria-hidden="true" data-icon="inline-start" />
+              {t("stats.dataTable")}
+            </Toggle>
+          </div>
+        }
+        className="min-w-0 border-transparent bg-transparent px-3 pt-2 pb-3"
+        description={description}
+        frameClassName="h-full"
+        id={headingId}
+        title={title}
+      >
+        <div className="min-w-0" id={bodyId}>
           {view === "table" ? (
             <DataTable model={table} />
           ) : (
@@ -197,8 +163,8 @@ export function ChartFrame({
               {children}
             </div>
           )}
-        </CardContent>
-      </Card>
-    </section>
+        </div>
+      </SectionCard>
+    </div>
   );
 }

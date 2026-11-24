@@ -1,25 +1,43 @@
-// Board filters in the URL (`/board?due=1&mode=auto…`) so a filtered board
-// can be linked, e.g. from the Stats "unconfirmed submissions" callout.
+// Board state in the URL (`/board?view=table&due=1&app=…`) so a filtered
+// board, a view mode and an open application can be linked, e.g. from the
+// Stats "unconfirmed submissions" callout.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import type { BoardFilters } from "@/lib/board-model";
 import type { MoveRequest } from "./use-move-card";
 
+/** The three ways to look at the board (`?view=`). */
+export const BOARD_VIEWS = ["board", "list", "table"] as const;
+export type BoardView = (typeof BOARD_VIEWS)[number];
+
 export interface BoardSearch {
+  /** The application open in the details sheet. */
+  app?: string;
   archived?: 1;
   attention?: 1;
   due?: 1;
-  mode?: BoardFilters["mode"];
   noResponse?: number;
   priority?: 1;
   q?: string;
   source?: BoardFilters["source"];
+  /** Absent means the Kanban board. */
+  view?: Exclude<BoardView, "board">;
+}
+
+/** The parts of the search that are not filters (kept across filter edits). */
+export function viewState(
+  search: BoardSearch
+): Pick<BoardSearch, "app" | "view"> {
+  return {
+    ...(search.view ? { view: search.view } : {}),
+    ...(search.app ? { app: search.app } : {}),
+  };
 }
 
 export function filtersFromSearch(search: BoardSearch): BoardFilters {
   return {
     q: search.q ?? "",
-    mode: search.mode ?? "any",
+    mode: "any",
     source: search.source ?? "any",
     followUpDue: search.due === 1,
     needsAttention: search.attention === 1,
@@ -34,7 +52,6 @@ export function searchFromFilters(
 ): BoardSearch {
   return {
     ...(filters.q ? { q: filters.q } : {}),
-    ...(filters.mode === "any" ? {} : { mode: filters.mode }),
     ...(filters.source === "any" ? {} : { source: filters.source }),
     ...(filters.followUpDue ? { due: 1 } : {}),
     ...(filters.needsAttention ? { attention: 1 } : {}),

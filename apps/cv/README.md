@@ -9,14 +9,14 @@ export. Production: <https://cv.pilihpendidikan.com>.
 - Four templates (basic, harvard, simple, standard) with a live preview
 - PDF export with `@react-pdf/renderer` (press <kbd>D</kbd> outside a field), plus JSON and Markdown export and JSON import
 - Local draft in the browser; prefill with sample data
-- Light by default, with a Night Desk dark theme from the toolbar
+- Dark only, in the workspace's Cursor design system; the CV itself stays white paper
 - Cloud save with a personal token from <https://api.pilihpendidikan.com/connect>, and editing through any MCP client
 
 ## Tech Stack
 
 - [TanStack Start](https://tanstack.com/start) on [Cloudflare Workers](https://workers.cloudflare.com)
 - [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@rulisme/ui` (shadcn/ui-based, `packages/ui`)
-- The workspace's Zedative design system (root `DESIGN.md`)
+- The workspace's Cursor design system (root `DESIGN.md`)
 - [TypeScript](https://www.typescriptlang.org), [Bun](https://bun.sh), Biome, Vitest
 
 ## Getting Started

@@ -31,11 +31,12 @@ function formatDate(dateStr: string): string {
   return formatInvoiceDate(dateStr);
 }
 
-// ── Zedative on paper ─────────────────────────────────────
+// ── The Cursor print style on paper ───────────────────────
 // The PDF cannot read CSS tokens, so the print palette is literal here; the
 // on-screen sheet (`.invoice-page` in styles.css) re-scopes the same values.
-// Paper is never themed: Night Desk does not recolour the invoice. The user's
-// accent colour (the top rule) is document content and stays as chosen.
+// Paper is never themed: the dark chrome does not recolour the invoice. The
+// user's accent colour (the top rule) is document content and stays as
+// chosen.
 
 const PRINT = {
   foreground: "#000000", // the title, party names, the amount due

@@ -72,7 +72,7 @@ function SectionsPreview({ sections }: { sections: Sections }) {
     <div className="type-caption flex flex-col gap-2">
       {sections.map((section) => (
         <div key={section.id}>
-          <p className="weight-semibold text-foreground">{section.name}</p>
+          <p className="text-foreground">{section.name}</p>
           <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => (
               <li key={item.id}>
@@ -232,9 +232,7 @@ export function ChecklistsTab({
   return (
     <div className="flex max-w-2xl flex-col gap-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="type-subtitle weight-semibold">
-          {t("checklists.heading")}
-        </h2>
+        <h2 className="type-subtitle">{t("checklists.heading")}</h2>
         <span className="type-caption text-muted-foreground" role="status">
           {status === "idle" ? "" : t(`checklists.status.${status}`)}
         </span>
@@ -247,13 +245,13 @@ export function ChecklistsTab({
       {sections.map((section) => (
         <section
           aria-label={section.name || t("checklists.untitled")}
-          className="flex flex-col gap-2 border border-border bg-card p-3"
+          className="flex flex-col gap-2 rounded-sm border border-hairline bg-card p-3"
           key={section.id}
         >
           <div className="flex items-center gap-2">
             <Input
               aria-label={t("checklists.sectionName")}
-              className="field-touch weight-semibold h-8"
+              className="field-touch h-8"
               onChange={(event) =>
                 editSection(section.id, { name: event.target.value })
               }
@@ -402,16 +400,12 @@ export function ChecklistsTab({
           </DialogHeader>
           {conflict ? (
             <div className="grid gap-4 sm:grid-cols-2">
-              <section className="flex flex-col gap-2 border border-border p-3">
-                <h3 className="type-body weight-semibold">
-                  {t("checklists.yourVersion")}
-                </h3>
+              <section className="flex flex-col gap-2 rounded-sm border border-border p-3">
+                <h3 className="type-body">{t("checklists.yourVersion")}</h3>
                 <SectionsPreview sections={conflict.mine} />
               </section>
-              <section className="flex flex-col gap-2 border border-border p-3">
-                <h3 className="type-body weight-semibold">
-                  {t("checklists.theirVersion")}
-                </h3>
+              <section className="flex flex-col gap-2 rounded-sm border border-border p-3">
+                <h3 className="type-body">{t("checklists.theirVersion")}</h3>
                 <SectionsPreview sections={conflict.current.sections} />
               </section>
             </div>

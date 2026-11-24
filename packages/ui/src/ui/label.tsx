@@ -3,8 +3,8 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative label (TYPOGRAPHY.md § Per-Component Guide): the body role in
-// `foreground`, like the control it names. It dims with a disabled peer or a
+// Label: the body role at weight 400 in `foreground`, like the control it
+// names (cursor.com's form labels). It dims with a disabled peer or a
 // disabled `Field`.
 function Label({
   className,

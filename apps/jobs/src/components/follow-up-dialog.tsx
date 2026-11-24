@@ -12,7 +12,6 @@ import {
   DialogTitle,
 } from "@rulisme/ui/ui/dialog";
 import { Field, FieldLabel } from "@rulisme/ui/ui/field";
-import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { useQueryClient } from "@tanstack/react-query";
 import type { FormEvent } from "react";
@@ -25,6 +24,8 @@ import { FOLLOW_UP_PRESETS, presetFollowUpAt } from "@/lib/follow-up";
 import { formatDate, fromLocalInputValue, toDateValue } from "@/lib/format";
 import { newIdempotencyKey } from "@/lib/idempotency";
 import { queryKeys } from "@/lib/query";
+import { DatePicker } from "@rulisme/ui/ui/date-picker";
+import { isoToday } from "@rulisme/ui/lib/iso-date";
 
 export interface FollowUpTarget {
   company: string;
@@ -146,12 +147,11 @@ export function FollowUpDialog({
           </div>
           <Field>
             <FieldLabel htmlFor={`${id}-date`}>{t("followUp.date")}</FieldLabel>
-            <Input
-              className="field-touch"
+            <DatePicker
+              clearable={false}
               id={`${id}-date`}
-              min={toDateValue(Date.now())}
-              onChange={(event) => setDay(event.target.value)}
-              type="date"
+              min={isoToday()}
+              onValueChange={setDay}
               value={day}
             />
           </Field>

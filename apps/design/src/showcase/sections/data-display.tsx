@@ -64,7 +64,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@rulisme/ui/ui/item";
-import { Band, Diamond, Rail } from "@rulisme/ui/ui/rails";
+import { Band, Rail } from "@rulisme/ui/ui/rails";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -109,7 +109,7 @@ const rupiah = new Intl.NumberFormat("id-ID", {
 function CardBlock() {
   return (
     <Block
-      description="Plan and feature cards: square, bordered, flat. A highlighted card adds the flat cobalt offset and graph paper; the footer sits under a hairline."
+      description="The card: one step lighter than the page (#1b1913), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding. A highlighted card takes the 20% input border instead; the footer sits under a 10% rule."
       title="Card"
       wide
     >
@@ -131,7 +131,7 @@ function CardBlock() {
             </p>
           </CardContent>
         </Card>
-        <Card className="graph-paper shadow-offset">
+        <Card className="border-input">
           <CardHeader>
             <CardTitle>Academy portfolio</CardTitle>
             <CardDescription>
@@ -226,11 +226,11 @@ function LineItemsHeader() {
 function TableBlock() {
   return (
     <Block
-      description="Invoice line items: caption-role headers on a pale pane, hairline rows with no zebra, body-role cells and tabular rupiah that line up on the right."
+      description="Invoice line items, set like a pricing comparison: muted caption headers with no fill, 10% rules with no zebra, body-role cells and tabular rupiah that line up on the right."
       title="Table"
       wide
     >
-      <div className="border border-line">
+      <div className="rounded-sm border border-hairline bg-card">
         <Table>
           <TableCaption className="mb-3 px-3 text-left">
             Subtotal {rupiah.format(7_100_000)} plus PPN 11%{" "}
@@ -265,7 +265,7 @@ function TableBlock() {
           </TableFooter>
         </Table>
       </div>
-      <div className="border border-line">
+      <div className="rounded-sm border border-hairline bg-card">
         <Table>
           <LineItemsHeader />
           <TableBody>
@@ -308,8 +308,8 @@ const EXPORTS = [
   { month: "Oct", pdf: 514, json: 102 },
 ] as const;
 
-// Emphasis: cobalt for PDF (the story), the lightest chart grey for JSON.
-// Validated with the dataviz palette script against bg-2 in both schemes.
+// Emphasis: orange (chart-1) for PDF, the story; the darker chart grey
+// (chart-5) for JSON, the context.
 const SERIES_ORDER = ["pdf", "json"];
 
 const EXPORT_CHART = {
@@ -387,7 +387,7 @@ function ChartBlock() {
   const [showNumbers, setShowNumbers] = useState(false);
   return (
     <Block
-      description="CVs exported per month. Cobalt marks the series the story is about, a light grey the context; the grid is a hairline, the tooltip a window, and the numbers are one click away."
+      description="CVs exported per month. Orange (chart-1) marks the series the story is about, a warm grey the context; the grid is a 10% rule, the tooltip a flyout, and the numbers are one click away."
       title="Chart"
       wide
     >
@@ -448,7 +448,7 @@ const DOCUMENTS = [
 function ItemBlock() {
   return (
     <Block
-      description="Rows in a list: a framed media tile, a semibold title, a caption under it and actions at the end. Bare items stack as hairline rows; long titles clamp to one line."
+      description="Rows in a list: a 4px media tile, a body-role title at weight 400, a muted caption under it and actions at the end. Bare items stack as 10% rules; outline items are cards. Long titles clamp to one line."
       title="Item"
     >
       <Example label="typical · hairline rows" stack>
@@ -476,7 +476,7 @@ function ItemBlock() {
         </ItemGroup>
       </Example>
       <Example
-        label="outline · a link tile with the lip · muted · a note"
+        label="outline · a link card that fills on hover · muted · a note"
         stack
       >
         <Item asChild variant="outline">
@@ -542,7 +542,7 @@ const MENTORS = [
 function AvatarBlock() {
   return (
     <Block
-      description="Framed 2px squares. Initials on pane when there is no photo; a group overlaps on a paper ring and ends in a count."
+      description="Circles on pane-2 with a 2.5% hairline. Initials in muted ink when there is no photo; a group overlaps on a page-colour ring and ends in a round count."
       title="Avatar"
     >
       <Example label="sizes · sm, default, lg">
@@ -618,7 +618,7 @@ const FAQ = [
 function AccordionBlock() {
   return (
     <Block
-      description="Full-width rows ending in +, which turns into − when the row is open. Rows open instantly; long questions wrap."
+      description="An FAQ: full-width rows on 10% rules, a 16px question at weight 400 ending in a muted +, which turns into − when the row is open. Rows open instantly; long questions wrap."
       title="Accordion"
     >
       <Example stack>
@@ -667,9 +667,7 @@ function CollapsibleBlock() {
           open={open}
         >
           <div className="flex items-center justify-between gap-3">
-            <span className="type-body weight-semibold text-foreground">
-              Payment details
-            </span>
+            <span className="type-body text-foreground">Payment details</span>
             <CollapsibleTrigger asChild>
               <Button size="sm" variant="ghost">
                 <ChevronsUpDown aria-hidden="true" data-icon="inline-start" />
@@ -740,7 +738,7 @@ function CarouselBlock() {
   }, [api]);
   return (
     <Block
-      description="Swipe through portfolio slides. Embla's drag is the only motion; the controls are outline icon buttons with the lip."
+      description="Swipe through portfolio slides. Embla's drag is the only motion; the controls are round 20%-outlined icon buttons."
       title="Carousel"
     >
       <Example stack>
@@ -807,7 +805,7 @@ const TEMPLATE_NAMES = [
 function ScrollAreaBlock() {
   return (
     <Block
-      description="A hairline-framed scroller with a thin square thumb in the rule colour, vertical or sideways."
+      description="A framed scroller with a thin pill thumb at 10% ink that deepens to 20% on hover, vertical or sideways."
       title="Scroll area"
     >
       <Example label="vertical · 16 universities" stack>
@@ -837,7 +835,7 @@ function ScrollAreaBlock() {
                 className="flex w-28 shrink-0 flex-col gap-1.5"
                 key={name}
               >
-                <div className="graph-paper aspect-3/4 border border-border bg-card" />
+                <div className="aspect-3/4 border border-border bg-card" />
                 <figcaption className="type-caption text-muted-foreground">
                   {name}
                 </figcaption>
@@ -856,7 +854,7 @@ function ScrollAreaBlock() {
 function ResizableBlock() {
   return (
     <Block
-      description="Split the editor between form and preview. The handle is a 1px rule like every pane divider, with a 9px diamond grip; drag it or focus it and use the arrow keys."
+      description="Split the editor between form and preview. The handle is a 1px 10% rule like every pane divider, with a small pill grip; drag it or focus it and use the arrow keys."
       title="Resizable"
       wide
     >
@@ -876,7 +874,7 @@ function ResizableBlock() {
         <ResizablePanel defaultSize="62%" minSize="30%">
           <ResizablePanelGroup orientation="vertical">
             <ResizablePanel defaultSize="70%" minSize="30%">
-              <div className="graph-paper flex h-full flex-col gap-1 p-4">
+              <div className="flex h-full flex-col gap-1 p-4">
                 <span className="type-caption text-muted-foreground">
                   Preview
                 </span>
@@ -908,7 +906,7 @@ function ResizableBlock() {
 function AspectRatioBlock() {
   return (
     <Block
-      description="Portfolio image slots keep 16:9: a dark shot placeholder inside a 1px dashed frame 6px out, until a screenshot fills it."
+      description="Portfolio image slots keep 16:9: the near-black shot placeholder inside a 1px dashed 10% frame, until a screenshot fills it."
       title="Aspect ratio"
     >
       <Example label="16:9 screenshot slot" stack>
@@ -933,14 +931,12 @@ function AspectRatioBlock() {
 function SeparatorBlock() {
   return (
     <Block
-      description="A 1px hairline in the rule colour, across or between."
+      description="A 1px divider at 10% ink, across or between."
       title="Separator"
     >
       <Example stack>
         <div className="flex flex-col gap-1">
-          <span className="type-subtitle weight-semibold text-foreground">
-            Rina Wulandari
-          </span>
+          <span className="type-subtitle text-foreground">Rina Wulandari</span>
           <span className="type-caption text-muted-foreground">
             Informatika, Universitas Brawijaya
           </span>
@@ -958,33 +954,25 @@ function SeparatorBlock() {
   );
 }
 
-/* ── Rails ─────────────────────────────────────────────────────────────── */
+/* ── Band and Rail ─────────────────────────────────────────────────────── */
 
 function RailsBlock() {
   return (
     <Block
-      description="The drafting frame: a Band is a full-bleed 1px rule, a Rail the ruled column with diamond nodes at its top corners, a Diamond one loose node where two rules cross."
-      title="Rails"
+      description="Page layout: a Band is a plain full-bleed section with no border (sections are separated by space), a Rail the centred 1300px container, 20px clear of the viewport edge."
+      title="Band and Rail"
     >
-      <div className="graph-paper overflow-hidden border border-line">
-        <Band className="h-4" />
-        <Band>
-          <Rail className="type-caption flex h-16 items-center justify-center bg-background text-muted-foreground">
-            Rail · the ruled column
+      <div className="flex flex-col gap-3 overflow-hidden rounded-sm border border-hairline bg-background py-4">
+        <Band className="bg-pane/50">
+          <Rail className="type-caption flex h-14 items-center justify-center rounded-sm border border-border border-dashed text-muted-foreground">
+            Band · a section
           </Rail>
         </Band>
-        <Band>
-          <Rail className="grid h-20 grid-cols-[2fr_3fr] bg-background">
-            <div className="type-caption relative flex items-center justify-center border-line border-r text-muted-foreground">
-              Toolbar
-              <Diamond className="-top-1 -right-1" />
-            </div>
-            <div className="type-caption flex items-center justify-center text-muted-foreground">
-              Pane
-            </div>
+        <Band className="bg-pane/50">
+          <Rail className="type-caption flex h-20 items-center justify-center rounded-sm border border-border border-dashed text-muted-foreground">
+            Rail · the 1300px container
           </Rail>
         </Band>
-        <div className="h-4" />
       </div>
     </Block>
   );
@@ -1013,12 +1001,14 @@ function SectionListBlock() {
     );
   return (
     <Block
-      description="The editor's entry list (@rulisme/ui/form/section-list): an inline-editable title, hairline rows with a drag grip, an error dot and a remove ×, then an outline add button."
+      description="The editor's entry list (@rulisme/ui/form/section-list): an inline-editable title (here `collapsible`: a bare chevron folds the list), 36px hairline rows with a drag grip, an error dot and one action cluster (+/− and the remove ×), then a secondary add pill."
       title="Section list"
     >
       <Example stack>
         <SectionList<Experience>
           addLabel="Add experience"
+          collapseLabel="Show or hide work experience"
+          collapsible
           hasError={(entry) => entry.company.trim() === ""}
           items={items}
           onAdd={() =>
@@ -1065,12 +1055,12 @@ function SectionListBlock() {
   );
 }
 
-// Renders: Card, Table, Chart, Item, Avatar, Accordion, Collapsible, Carousel, ScrollArea, Resizable, AspectRatio, Separator, Rails.
+// Renders: Card, Table, Chart, Item, Avatar, Accordion, Collapsible, Carousel, ScrollArea, Resizable, AspectRatio, Separator, Band and Rail.
 export function DataDisplaySection() {
   return (
     <Section
       id="data-display"
-      lead="Hairline cells and square cards. Depth comes from rules, not shadows."
+      lead="Cards one step lighter than the page on a 2.5% hairline, 4px corners, 10% rules between rows. No shadows on anything that stays in the page."
       title="Data display"
     >
       <BlockGrid>

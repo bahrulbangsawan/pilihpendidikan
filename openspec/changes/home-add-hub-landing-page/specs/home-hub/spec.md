@@ -93,9 +93,9 @@ a `Content-Security-Policy` containing `frame-ancestors 'none'`,
 - **THEN** the response carries all six headers
 
 ### Requirement: Design system and typography gates
-The hub SHALL use the shared Zedative theme (`@rulisme/ui/styles/theme.css`)
+The hub SHALL use the shared Cursor theme (`@rulisme/ui/styles/theme.css`)
 and `@rulisme/ui`, and SHALL be covered by `lint:typography`,
-`parity:typography` and `parity:twmerge` (see `update-zedative-design-system`).
+`parity:typography` and `parity:twmerge` (see `update-cursor-design-system`).
 
 #### Scenario: Token drift
 - **WHEN** `apps/home/src/styles.css` declares a token of its own or stops importing the shared theme

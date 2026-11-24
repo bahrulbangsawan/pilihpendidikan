@@ -1,8 +1,8 @@
+import { DocHeader } from "@rulisme/ui/blocks/doc-header";
 import { FormField } from "@rulisme/ui/form/form-field";
 import { SectionList } from "@rulisme/ui/form/section-list";
-import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
-import { buttonVariants } from "@rulisme/ui/ui/button-variants";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,18 +16,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@rulisme/ui/ui/select";
+import { SwatchPicker } from "@rulisme/ui/ui/swatch-picker";
 import {
-  Building2,
+  Banknote,
   ChevronDown,
-  FileText,
-  ListOrdered,
+  CircleMinus,
+  CirclePlus,
   Palette,
+  Percent,
   Plus,
-  SlidersHorizontal,
-  StickyNote,
   Trash2,
   Upload,
-  UserRound,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
@@ -57,6 +56,10 @@ export type {
   SenderInfo,
 } from "@/components/invoice-form-utils";
 
+// The street address starts at exactly two rows (the shared textarea's floor
+// is a touch taller) and grows with each line the user adds.
+const ADDRESS_FIELD_CLASS = "[&_textarea]:min-h-15";
+
 // Logos render at ~h-8 in the editor and small in the PDF, so 320px on the long
 // edge stays crisp while keeping the embed tiny. PNG logos keep their alpha.
 const LOGO_MAX_EDGE = 320;
@@ -71,17 +74,18 @@ const ACCENT_PRESETS = [
   "#7c3aed",
 ] as const;
 
-// Each form section is a band of the form pane, ruled by a 1px `line`
-// hairline (DESIGN.md § Layout). The form is a size container, so its grids
-// follow the pane's width rather than the viewport's.
-const SECTION_CLASS = "border-line border-b px-4 py-6 last:border-b-0 sm:px-6";
+// The form reads like a docs page: a page header, then sections 40px apart
+// with no rules between them, in a 640px column centred in the pane (24px /
+// 32px side padding). The form is a size container, so its grids follow the
+// column's width rather than the viewport's.
+const FORM_COLUMN_CLASS =
+  "@container/form mx-auto flex w-full max-w-176 flex-col gap-10 px-6 pt-10 pb-16 sm:px-8";
 
-// Swatches are 2px tiles at control height; focus draws the action outline.
-const SWATCH_CLASS =
-  "size-9 shrink-0 rounded-sm border border-input transition-[border-color] duration-150 ease-standard hover:border-muted-foreground";
-
-const FOCUS_WITHIN_CLASS =
-  "has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-solid has-focus-visible:outline-offset-2";
+// The accent swatches: 18px dots ringed by a 1px `border` hairline; the
+// chosen one gets a 2px foreground ring 2px off the dot (SwatchPicker's own
+// ring).
+const SWATCH_SIZE_CLASS =
+  "[&_[data-slot^=swatch-picker-]]:size-4.5 [&_[data-slot^=swatch-picker-]]:border-border";
 
 // ── Currency (internal to this file only) ─────────────────
 
@@ -98,46 +102,13 @@ const CURRENCY_OPTIONS = [
 
 // ── Section chrome ─────────────────────────────────────────
 
-// A section heading: subtitle role at the heading weight with a muted 16px
-// icon, on the same 32px row as the line-items title beside it.
-function SectionHeading({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-}) {
-  return (
-    <h2 className="type-subtitle weight-semibold flex h-8 items-center gap-1.5 text-foreground">
-      <span
-        aria-hidden="true"
-        className="inline-flex shrink-0 text-muted-foreground"
-      >
-        {icon}
-      </span>
-      {children}
-    </h2>
-  );
-}
-
-// The whole heading row toggles a collapsible section; the chevron flips
-// instantly (nothing animates layout).
-function SectionToggle({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-}) {
+// Every section heading: the 18px compact title role at the semibold weight
+// on a 32px row, with a chevron at the right (plain titles, like the CV's). The whole row
+// toggles the section; the chevron flips instantly (nothing animates layout).
+function SectionToggle({ children }: { children: ReactNode }) {
   return (
     <CollapsibleTrigger className="flex h-8 w-full items-center justify-between gap-3 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [&[data-state=open]>.chevron]:rotate-180">
-      <span className="type-subtitle weight-semibold flex items-center gap-1.5 text-foreground">
-        <span
-          aria-hidden="true"
-          className="inline-flex shrink-0 text-muted-foreground"
-        >
-          {icon}
-        </span>
+      <span className="type-title-compact weight-semibold text-foreground">
         {children}
       </span>
       <ChevronDown
@@ -367,9 +338,8 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
 
   // ── Logo upload ──
 
-  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = "";
+  async function handleLogoUpload(files: File[]) {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -383,111 +353,95 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
   }
 
   return (
-    <div className="@container/form flex flex-col">
+    <div className={FORM_COLUMN_CLASS}>
+      {/* -mb-2: 32px to the first section, not the column's 40px gap. */}
+      <DocHeader
+        area={t("pageHeader.area")}
+        className="-mb-2"
+        lead={t("pageHeader.lead")}
+        title={t("pageHeader.title")}
+      />
       {/* ── Invoice Details ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<FileText className="size-4" />}>
-          {t("form.invoiceDetails")}
-        </SectionHeading>
-        <div className="mt-3 grid @xl/form:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_minmax(0,1fr)] grid-cols-1 items-end gap-3">
-          <div className="grid @xl/form:contents grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
-            <FormField
-              label={t("form.invoiceNumber")}
-              onChange={(v) => updateField("invoiceNumber", v)}
-              placeholder={t("placeholders.invoiceNumber")}
-              value={data.invoiceNumber}
-            />
-            <div className="space-y-1.5">
-              <Label>{t("form.currency")}</Label>
-              <Select
-                onValueChange={(v) => updateField("currency", v)}
-                value={data.currency}
-              >
-                <SelectTrigger className="w-auto">
-                  <SelectValue>
-                    {(() => {
-                      const c = CURRENCY_OPTIONS.find(
-                        (o) => o.value === data.currency
-                      );
-                      return c ? `${c.flag} ${c.value}` : data.currency;
-                    })()}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {CURRENCY_OPTIONS.map((c) => (
-                    <SelectItem key={c.value} value={c.value}>
-                      {c.flag} {c.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="grid @xl/form:contents grid-cols-2 items-end gap-3">
-            <DatePicker
-              label={t("form.dateOfIssue")}
-              onChange={(v) => updateField("dateOfIssue", v)}
-              value={data.dateOfIssue}
-            />
-            <DatePicker
-              label={t("form.dateDue")}
-              onChange={(v) => updateField("dateDue", v)}
-              value={data.dateDue}
-            />
-          </div>
-          <div className="@xl/form:col-span-full space-y-1.5">
-            <Label className="gap-1.5">
-              <Palette
-                aria-hidden="true"
-                className="size-3.5 text-muted-foreground"
+      <Collapsible defaultOpen>
+        <SectionToggle>{t("form.invoiceDetails")}</SectionToggle>
+        <CollapsibleContent>
+          {/* Number and currency share a two-column row, the two dates
+            the next one, then the accent colour. */}
+          <div className="mt-3 flex flex-col gap-3">
+            <div className="grid grid-cols-2 items-end gap-3">
+              <FormField
+                label={t("form.invoiceNumber")}
+                onChange={(v) => updateField("invoiceNumber", v)}
+                placeholder={t("placeholders.invoiceNumber")}
+                value={data.invoiceNumber}
               />
-              {t("form.color")}
-            </Label>
-            <div className="flex flex-wrap items-center gap-1.5">
-              <label
-                aria-label={t("a11y.setAccentColor", {
+              <div className="space-y-1.5">
+                <Label>{t("form.currency")}</Label>
+                <Select
+                  onValueChange={(v) => updateField("currency", v)}
+                  value={data.currency}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue>
+                      {(() => {
+                        const c = CURRENCY_OPTIONS.find(
+                          (o) => o.value === data.currency
+                        );
+                        return c ? `${c.flag} ${c.value}` : data.currency;
+                      })()}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CURRENCY_OPTIONS.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>
+                        {c.flag} {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 items-end gap-3">
+              <DatePicker
+                label={t("form.dateOfIssue")}
+                onChange={(v) => updateField("dateOfIssue", v)}
+                value={data.dateOfIssue}
+              />
+              <DatePicker
+                label={t("form.dateDue")}
+                onChange={(v) => updateField("dateDue", v)}
+                presetKind="due"
+                value={data.dateDue}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="gap-1.5">
+                <Palette
+                  aria-hidden="true"
+                  className="size-3.5 text-muted-foreground"
+                />
+                {t("form.color")}
+              </Label>
+              <SwatchPicker
+                allowCustom
+                className={SWATCH_SIZE_CLASS}
+                aria-label={t("form.color")}
+                colors={ACCENT_PRESETS}
+                customLabel={t("a11y.setAccentColor", {
                   color: data.accentColor,
                 })}
-                className={cn(
-                  SWATCH_CLASS,
-                  "flex cursor-pointer",
-                  FOCUS_WITHIN_CLASS
-                )}
-                style={{ backgroundColor: data.accentColor }}
-              >
-                <input
-                  aria-label={t("a11y.setAccentColor", {
-                    color: data.accentColor,
-                  })}
-                  className="sr-only"
-                  onChange={(e) => updateField("accentColor", e.target.value)}
-                  type="color"
-                  value={data.accentColor}
-                />
-              </label>
-              {ACCENT_PRESETS.map((c) => (
-                <button
-                  aria-label={t("a11y.setAccentColor", { color: c })}
-                  className={cn(
-                    SWATCH_CLASS,
-                    "press outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2"
-                  )}
-                  key={c}
-                  onClick={() => updateField("accentColor", c)}
-                  style={{ backgroundColor: c }}
-                  type="button"
-                />
-              ))}
+                getColorLabel={(color) => t("a11y.setAccentColor", { color })}
+                onValueChange={(color) => updateField("accentColor", color)}
+                value={data.accentColor}
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* ── From (Sender) ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
-        <SectionToggle icon={<Building2 className="size-4" />}>
-          {t("form.fromSection")}
-        </SectionToggle>
+      <Collapsible defaultOpen>
+        <SectionToggle>{t("form.fromSection")}</SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
             <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
@@ -505,14 +459,16 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 value={data.from.email}
               />
             </div>
-            <FormField
-              label={t("form.address")}
-              multiline
-              onChange={(v) => updateFrom("address", v)}
-              placeholder={t("placeholders.addressSender")}
-              rows={2}
-              value={data.from.address}
-            />
+            <div className={ADDRESS_FIELD_CLASS}>
+              <FormField
+                label={t("form.address")}
+                multiline
+                onChange={(v) => updateFrom("address", v)}
+                placeholder={t("placeholders.addressSender")}
+                rows={2}
+                value={data.from.address}
+              />
+            </div>
             <AddressFields
               cityPlaceholder={t("placeholders.citySender")}
               onChange={(updates) =>
@@ -542,25 +498,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                     width={32}
                   />
                 )}
-                <label
-                  className={cn(
-                    buttonVariants({ size: "sm", variant: "outline" }),
-                    "cursor-pointer",
-                    FOCUS_WITHIN_CLASS
-                  )}
-                >
-                  <Upload aria-hidden="true" data-icon="inline-start" />
-                  {data.from.logoUrl ? t("form.change") : t("form.upload")}
-                  <input
-                    accept="image/*"
-                    aria-label={
-                      data.from.logoUrl ? t("form.change") : t("form.upload")
-                    }
-                    className="sr-only"
-                    onChange={handleLogoUpload}
-                    type="file"
-                  />
-                </label>
+                <FileTrigger accept="image/*" onFilesSelect={handleLogoUpload}>
+                  <Button size="sm" variant="secondary">
+                    <Upload aria-hidden="true" data-icon="inline-start" />
+                    {data.from.logoUrl ? t("form.change") : t("form.upload")}
+                  </Button>
+                </FileTrigger>
                 {data.from.logoUrl && (
                   <Button
                     aria-label={t("a11y.removeLogo")}
@@ -581,10 +524,8 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── Bill To ── */}
-      <Collapsible className={SECTION_CLASS} defaultOpen>
-        <SectionToggle icon={<UserRound className="size-4" />}>
-          {t("form.billToSection")}
-        </SectionToggle>
+      <Collapsible defaultOpen>
+        <SectionToggle>{t("form.billToSection")}</SectionToggle>
         <CollapsibleContent>
           <div className="mt-3 space-y-3">
             <div className="grid @md/form:grid-cols-2 grid-cols-1 gap-3">
@@ -602,14 +543,16 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 value={data.billTo.email}
               />
             </div>
-            <FormField
-              label={t("form.address")}
-              multiline
-              onChange={(v) => updateBillTo("address", v)}
-              placeholder={t("placeholders.clientAddress")}
-              rows={2}
-              value={data.billTo.address}
-            />
+            <div className={ADDRESS_FIELD_CLASS}>
+              <FormField
+                label={t("form.address")}
+                multiline
+                onChange={(v) => updateBillTo("address", v)}
+                placeholder={t("placeholders.clientAddress")}
+                rows={2}
+                value={data.billTo.address}
+              />
+            </div>
             <AddressFields
               cityPlaceholder={t("placeholders.cityRecipient")}
               onChange={(updates) => {
@@ -635,9 +578,12 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
       </Collapsible>
 
       {/* ── Line Items ── */}
-      <div className={SECTION_CLASS}>
+      <div>
         <SectionList
           addLabel={t("form.addItem")}
+          collapseLabel={t("a11y.toggleLineItems")}
+          collapsible
+          emptyHint={t("form.itemsEmpty")}
           items={data.items}
           onAdd={addItem}
           onRemove={removeItem}
@@ -747,7 +693,7 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
               <Button
                 onClick={() => addSubItem(item.id)}
                 size="sm"
-                variant="outline"
+                variant="secondary"
               >
                 <Plus aria-hidden="true" data-icon="inline-start" />
                 {t("form.addSubItem")}
@@ -758,156 +704,164 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
             item.description || t("form.itemFallback", { n: i + 1 })
           }
           title={t("form.lineItems")}
-          titleIcon={<ListOrdered className="size-4" />}
+          titleClassName="type-title-compact weight-semibold"
         />
       </div>
 
       {/* ── Adjustments ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<SlidersHorizontal className="size-4" />}>
-          {t("form.adjustments")}
-        </SectionHeading>
-        <p className="type-caption text-muted-foreground">
-          {t("form.adjustmentsDesc")}
-        </p>
-        <div className="mt-3 flex flex-col gap-3">
-          {data.adjustments.map((adj) => (
-            <div
-              className="grid @xl/form:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] grid-cols-1 items-end gap-2"
-              key={adj.id}
-            >
-              <FormField
-                label={t("form.label")}
-                onChange={(v) => updateAdjustment(adj.id, "label", v)}
-                placeholder={t("placeholders.adjustmentLabel")}
-                value={adj.label}
-              />
-              <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums">
-                <div className="space-y-1.5">
-                  <Label>{t("form.type")}</Label>
-                  <Select
-                    onValueChange={(v) => updateAdjustment(adj.id, "type", v)}
-                    value={adj.type}
+      <Collapsible defaultOpen>
+        <SectionToggle>{t("form.adjustments")}</SectionToggle>
+        <CollapsibleContent>
+          <p className="type-caption text-muted-foreground">
+            {t("form.adjustmentsDesc")}
+          </p>
+          <div className="mt-3 flex flex-col gap-3">
+            {data.adjustments.map((adj) => (
+              <div
+                className="grid @xl/form:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] grid-cols-1 items-end gap-2"
+                key={adj.id}
+              >
+                <FormField
+                  label={t("form.label")}
+                  onChange={(v) => updateAdjustment(adj.id, "label", v)}
+                  placeholder={t("placeholders.adjustmentLabel")}
+                  value={adj.label}
+                />
+                <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-2 tabular-nums">
+                  <div className="space-y-1.5">
+                    <Label>{t("form.type")}</Label>
+                    <Select
+                      onValueChange={(v) => updateAdjustment(adj.id, "type", v)}
+                      value={adj.type}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="add">
+                          <CirclePlus aria-hidden="true" />
+                          {t("form.typeAdd")}
+                        </SelectItem>
+                        <SelectItem value="deduct">
+                          <CircleMinus aria-hidden="true" />
+                          {t("form.typeDeduct")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>{t("form.mode")}</Label>
+                    <Select
+                      onValueChange={(v) => updateAdjustment(adj.id, "mode", v)}
+                      value={adj.mode}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fixed">
+                          <Banknote aria-hidden="true" />
+                          {t("form.modeFixed")}
+                        </SelectItem>
+                        <SelectItem value="percentage">
+                          <Percent aria-hidden="true" />
+                          {t("form.modePercent")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <FormField
+                    label={
+                      adj.mode === "percentage"
+                        ? t("form.modePercentage")
+                        : t("form.amount")
+                    }
+                    min={0}
+                    onChange={(v) =>
+                      updateAdjustment(adj.id, "value", Number(v))
+                    }
+                    step={adj.mode === "percentage" ? "0.1" : "0.01"}
+                    type="number"
+                    value={String(adj.value)}
+                  />
+                  <Button
+                    aria-label={t("a11y.removeAdjustment")}
+                    onClick={() => removeAdjustment(adj.id)}
+                    size="icon"
+                    variant="ghost"
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="add">{t("form.typeAdd")}</SelectItem>
-                      <SelectItem value="deduct">
-                        {t("form.typeDeduct")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <Trash2 aria-hidden="true" className="text-destructive" />
+                  </Button>
                 </div>
-                <div className="space-y-1.5">
-                  <Label>{t("form.mode")}</Label>
-                  <Select
-                    onValueChange={(v) => updateAdjustment(adj.id, "mode", v)}
-                    value={adj.mode}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fixed">
-                        {t("form.modeFixed")}
-                      </SelectItem>
-                      <SelectItem value="percentage">
-                        {t("form.modePercentage")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+              </div>
+            ))}
+            <Button
+              className="self-start"
+              onClick={addAdjustment}
+              size="sm"
+              variant="secondary"
+            >
+              <Plus aria-hidden="true" data-icon="inline-start" />
+              {t("form.addAdjustment")}
+            </Button>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+
+      {/* ── Notes & Settings ── */}
+      <Collapsible defaultOpen>
+        <SectionToggle>{t("form.notesSettings")}</SectionToggle>
+        <CollapsibleContent>
+          <div className="mt-3 flex flex-col gap-3">
+            {data.customFields.map((cf) => (
+              <div
+                className="grid @md/form:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] grid-cols-[minmax(0,1fr)_auto] items-end gap-2"
+                key={cf.id}
+              >
+                <div className="@md/form:col-span-1 col-span-full">
+                  <FormField
+                    label={t("form.label")}
+                    onChange={(v) => updateCustomField(cf.id, "label", v)}
+                    placeholder={t("placeholders.customFieldLabel")}
+                    value={cf.label}
+                  />
                 </div>
                 <FormField
-                  label={
-                    adj.mode === "percentage"
-                      ? t("form.modePercentage")
-                      : t("form.amount")
-                  }
-                  min={0}
-                  onChange={(v) => updateAdjustment(adj.id, "value", Number(v))}
-                  step={adj.mode === "percentage" ? "0.1" : "0.01"}
-                  type="number"
-                  value={String(adj.value)}
+                  label={t("form.value")}
+                  onChange={(v) => updateCustomField(cf.id, "value", v)}
+                  placeholder={t("placeholders.customFieldValue")}
+                  value={cf.value}
                 />
                 <Button
-                  aria-label={t("a11y.removeAdjustment")}
-                  onClick={() => removeAdjustment(adj.id)}
+                  aria-label={t("a11y.removeField")}
+                  onClick={() => removeCustomField(cf.id)}
                   size="icon"
                   variant="ghost"
                 >
-                  <Trash2 aria-hidden="true" className="text-destructive" />
+                  <Trash2 aria-hidden="true" />
                 </Button>
               </div>
-            </div>
-          ))}
-          <Button
-            className="self-start"
-            onClick={addAdjustment}
-            size="sm"
-            variant="outline"
-          >
-            <Plus aria-hidden="true" data-icon="inline-start" />
-            {t("form.addAdjustment")}
-          </Button>
-        </div>
-      </section>
-
-      {/* ── Notes & Settings ── */}
-      <section className={SECTION_CLASS}>
-        <SectionHeading icon={<StickyNote className="size-4" />}>
-          {t("form.notesSettings")}
-        </SectionHeading>
-        <div className="mt-3 flex flex-col gap-3">
-          {data.customFields.map((cf) => (
-            <div
-              className="grid @md/form:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] grid-cols-[minmax(0,1fr)_auto] items-end gap-2"
-              key={cf.id}
+            ))}
+            <Button
+              className="self-start"
+              onClick={addCustomField}
+              size="sm"
+              variant="secondary"
             >
-              <div className="@md/form:col-span-1 col-span-full">
-                <FormField
-                  label={t("form.label")}
-                  onChange={(v) => updateCustomField(cf.id, "label", v)}
-                  placeholder={t("placeholders.customFieldLabel")}
-                  value={cf.label}
-                />
-              </div>
-              <FormField
-                label={t("form.value")}
-                onChange={(v) => updateCustomField(cf.id, "value", v)}
-                placeholder={t("placeholders.customFieldValue")}
-                value={cf.value}
-              />
-              <Button
-                aria-label={t("a11y.removeField")}
-                onClick={() => removeCustomField(cf.id)}
-                size="icon"
-                variant="ghost"
-              >
-                <Trash2 aria-hidden="true" />
-              </Button>
-            </div>
-          ))}
-          <Button
-            className="self-start"
-            onClick={addCustomField}
-            size="sm"
-            variant="outline"
-          >
-            <Plus aria-hidden="true" data-icon="inline-start" />
-            {t("form.addField")}
-          </Button>
-          <FormField
-            label={t("form.notes")}
-            multiline
-            onChange={(v) => updateField("notes", v)}
-            placeholder={t("placeholders.notes")}
-            rows={3}
-            value={data.notes}
-          />
-        </div>
-      </section>
+              <Plus aria-hidden="true" data-icon="inline-start" />
+              {t("form.addField")}
+            </Button>
+            <FormField
+              label={t("form.notes")}
+              multiline
+              onChange={(v) => updateField("notes", v)}
+              placeholder={t("placeholders.notes")}
+              rows={3}
+              value={data.notes}
+            />
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

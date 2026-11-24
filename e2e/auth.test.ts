@@ -1,6 +1,9 @@
 // CLI sign-in and token lifecycle against `wrangler dev` (13 §5 S-04, S-05,
 // S-32; 17 §15 end-to-end items 14 and 15). The user is a real Chromium:
-// signed in on the dashboard, approving the consent page, revoking a device.
+// signed in on the dashboard and approving the consent page. The dashboard no
+// longer has a CLI & devices page (round 3), so the device list and the revoke
+// go through the same `/api/v1/devices` routes that page called, with the
+// dashboard's own session bearer.
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
@@ -8,12 +11,12 @@ import { API_ROUTE_SCHEMAS } from "../packages/jobs-contracts/src/api/routes";
 import { ApiServer } from "./harness/api";
 import { Browser } from "./harness/browser";
 import { CliHome } from "./harness/cli";
-import { uniqueEmail, WEB_ORIGIN } from "./harness/env";
+import { uniqueEmail } from "./harness/env";
 import { poll } from "./harness/procs";
 import type { Exchange } from "./harness/proxy";
 import { ApiProxy } from "./harness/proxy";
 import { webSignIn } from "./harness/scenario";
-import { Client, signIn } from "./harness/users";
+import { Client, newKey, signIn } from "./harness/users";
 import { WebServer } from "./harness/web";
 import { finishFile } from "./harness/cleanup";
 
@@ -23,19 +26,28 @@ const CLI_CLIENT_HEADER = /^cli\/0\.1\.0/;
 
 const CLIENT_ID = "pilih-jobs-cli";
 
+/** The fields of a `DeviceView` (05 §3) these scenarios read. */
+interface DeviceRow {
+  id: string;
+  name: string;
+  online: boolean;
+  signed_in?: boolean;
+}
+
 let api: ApiServer;
 let web: WebServer;
 let browser: Browser;
 const proxies: ApiProxy[] = [];
 const browsers: Browser[] = [];
 
-// S-04's device: later revoked from the web (T17-15).
+// S-04's device: later revoked by the web session (T17-15).
 let laptop: {
   cli: CliHome;
   proxy: ApiProxy;
   deviceId: string;
   name: string;
-  dashboard: Browser;
+  /** The dashboard's session (the bearer its BFF holds). */
+  web: Client;
 };
 // T17-14's device: later used for the refresh rotation (S-05).
 let box: { cli: CliHome; proxy: ApiProxy; email: string };
@@ -124,15 +136,16 @@ afterAll(async () => {
 });
 
 describe("CLI sign-in (17)", () => {
-  test("S-04 pilih-jobs login on a random loopback port: consent shows the device, tokens are stored encrypted, whoami works, /cli shows the device online within 10 s", async () => {
+  test("S-04 pilih-jobs login on a random loopback port: consent shows the device, tokens are stored encrypted, whoami works, the web session lists the device online within 10 s", async () => {
     const email = uniqueEmail("s04");
-    // The user has the dashboard's CLI page open while signing the CLI in
-    // (a second browser window, so the consent page does not replace it).
+    // The user is signed in on the dashboard in a second browser window (so
+    // the consent page does not replace it); its session reads the devices.
     const dashboard = await Browser.launch();
     browsers.push(dashboard);
-    await webSignIn(dashboard, api, email, { confirm: "fetch" });
-    await dashboard.goto(`${WEB_ORIGIN}/cli`);
-    await dashboard.waitForText("Waiting for your computer to connect", 60_000);
+    const { bearer: webBearer } = await webSignIn(dashboard, api, email, {
+      confirm: "fetch",
+    });
+    const web = new Client(api.origin, webBearer);
     const { session: bearer } = await signIn(api, { email });
     const p = await proxy();
     const cli = CliHome.create("s04", p.origin);
@@ -206,16 +219,22 @@ describe("CLI sign-in (17)", () => {
       expect(content.includes(String(issued.refresh_token))).toBe(false);
     }
 
-    // The open CLI page lists the device as online within 10 s, by itself.
-    const row = `tr[data-device="${deviceId}"]`;
-    await dashboard.waitFor(row, { timeout: 10_000 });
+    // The web session's device list (GET /api/v1/devices, what the removed
+    // CLI page polled) shows the device online and signed in within 10 s.
     await poll(
-      "the device row to read Online",
-      async () => (await dashboard.text(row)).includes("Online"),
+      "the device to be listed online",
+      async () => {
+        const page = await web.ok<{ items: DeviceRow[] }>(
+          "GET",
+          "/api/v1/devices"
+        );
+        const device = page.items.find((d) => d.id === deviceId);
+        return device?.online === true && device.signed_in !== false;
+      },
       { timeoutMs: 10_000, intervalMs: 250 }
     );
     expect(Date.now() - loggedInAt).toBeLessThanOrEqual(10_000);
-    laptop = { cli, proxy: p, deviceId, name, dashboard };
+    laptop = { cli, proxy: p, deviceId, name, web };
   }, 300_000);
 
   test("T17-14 a real browser completes pilih-jobs login without a session: e-mail form → approval link → consent → loopback", async () => {
@@ -339,18 +358,19 @@ describe("CLI sign-in (17)", () => {
     expect(again.body.access_token).not.toBe(first.body.access_token);
   }, 180_000);
 
-  test("T17-15 revoking the device on the web stops the CLI at its next request", async () => {
-    const { cli, proxy: p, deviceId, name, dashboard } = laptop;
-    await dashboard.goto(`${WEB_ORIGIN}/cli`);
-    const row = `tr[data-device="${deviceId}"]`;
-    await dashboard.waitForHydration(row);
-    await dashboard.click(`${row} button[aria-label="Actions for ${name}"]`);
-    await dashboard.click('[role="menuitem"]:has-text("Revoke")');
-    await dashboard.waitForText(`Revoke ${name}?`);
-    await dashboard.click(
-      '[role="alertdialog"] button:has-text("Revoke device")'
-    );
-    await dashboard.waitForText(`${name} is signed out.`);
+  test("T17-15 revoking the device from the web session stops the CLI at its next request", async () => {
+    const { cli, proxy: p, deviceId, name, web } = laptop;
+    // The call the removed CLI page's "Revoke device" made.
+    const revoked = await web.call<{
+      device: DeviceRow;
+      tasks: Record<string, number>;
+    }>("POST", `/api/v1/devices/${deviceId}/revoke`, undefined, {
+      idempotencyKey: newKey("t1715"),
+    });
+    expect(revoked.status).toBe(200);
+    expect(revoked.body.device.id).toBe(deviceId);
+    expect(revoked.body.device.name).toBe(name);
+    expect(revoked.body.device.signed_in).toBe(false);
     const revokedAt = Date.now();
     const marker = p.log.length;
     const result = await cli.run(["whoami"]);

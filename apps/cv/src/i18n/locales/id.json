@@ -7,6 +7,7 @@
     "ogImageAlt": "Pembuat CV Bahrul Bangsawan — generator resume online gratis dengan pratinjau langsung dan format ramah ATS"
   },
   "toolbar": {
+    "moreActions": "Aksi dokumen",
     "mcp": "MCP",
     "importJson": "Impor JSON",
     "prefill": "Muat Contoh",
@@ -37,10 +38,6 @@
   "preview": {
     "emptyTitle": "CV Anda masih kosong",
     "emptyDescription": "Mulai isi formulir untuk melihat pratinjau CV Anda."
-  },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
   },
   "confirm": {
     "title": "Hapus semua data?",
@@ -73,6 +70,11 @@
   "alert": {
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON CV yang valid.",
     "pdfFailed": "Gagal membuat PDF. Periksa konsol browser untuk detail."
+  },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "CV Anda",
+    "lead": "Isi data Anda dan pratinjau langsung berubah saat Anda mengetik. Unduh PDF jika sudah pas."
   },
   "form": {
     "personalInformation": "Informasi Pribadi",
@@ -156,7 +158,17 @@
     "months": "{n} Bulan",
     "day": "{n} Hari",
     "days": "{n} Hari",
-    "zeroDays": "0 Hari"
+    "zeroDays": "0 Hari",
+    "empty": {
+      "experience": "Belum ada pengalaman. Tambahkan pekerjaan dan magang, yang terbaru dulu.",
+      "education": "Belum ada pendidikan. Tambahkan gelar, sekolah atau kursus.",
+      "skills": "Belum ada keahlian. Kelompokkan per kategori, misalnya Bahasa atau Tools.",
+      "awards": "Belum ada penghargaan. Tambahkan prestasi, hadiah atau beasiswa.",
+      "certificates": "Belum ada sertifikat. Tambahkan lisensi dan sertifikat kursus.",
+      "languages": "Belum ada bahasa. Tambahkan masing-masing dengan tingkatnya.",
+      "projects": "Belum ada proyek. Tambahkan karya yang bisa ditautkan.",
+      "volunteer": "Belum ada kegiatan relawan. Tambahkan peran di komunitas, acara atau kegiatan sosial."
+    }
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",

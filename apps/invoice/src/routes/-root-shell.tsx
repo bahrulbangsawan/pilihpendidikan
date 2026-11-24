@@ -33,7 +33,12 @@ function localeFromPath(pathname: string): Locale {
 
 export function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      className="dark"
+      lang="en"
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+    >
       <head>
         <HeadContent />
       </head>
@@ -65,17 +70,18 @@ export function RootComponent() {
 
   const i18nValue = useMemo(() => ({ locale, t: getT(locale) }), [locale]);
 
-  // Light is canonical (DESIGN.md); Night Desk (`.dark`) is the derived
-  // scheme the toolbar toggle switches to. The system theme is not followed,
-  // and the head script in `__root.tsx` applies the same rule before paint.
-  // Toasts are Zedative windows (`@rulisme/ui/ui/sonner`) and stay until
+  // The builder is dark only (cursor.com's dark theme): `<html>` carries
+  // `.dark` from the server and next-themes is pinned to it. The invoice
+  // sheet keeps its own white-paper tokens.
+  // Toasts are Cursor-style windows (`@rulisme/ui/ui/sonner`) and stay until
   // dismissed.
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       disableTransitionOnChange
       enableSystem={false}
+      forcedTheme="dark"
     >
       <I18nProvider value={i18nValue}>
         <TooltipProvider>

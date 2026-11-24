@@ -131,7 +131,7 @@ const PORTFOLIO_PAGES = [
 function TabsBlock() {
   return (
     <Block
-      description="Switch between views of the same thing. Default is a segmented track whose selected segment sits on paper with the lip; line sets the tabs on a hairline rule. Selected tabs take the heading weight, never the blue."
+      description="Switch between views of the same thing. Default is the pricing toggle: a pill track on pane whose selected segment is a card-colour pill with a hairline ring; line sets the tabs on a 10% rule and underlines the selected one in foreground. Weight stays 400."
       title="Tabs"
       wide
     >
@@ -278,7 +278,7 @@ function TabsBlock() {
 function BreadcrumbBlock() {
   return (
     <Block
-      description="Where this page sits. Muted links that darken on hover, a 14px chevron between levels, the current page in black."
+      description="Where this page sits, like a docs page: muted body-role links that turn foreground on hover, a 14px muted chevron between levels, the current page in foreground."
       title="Breadcrumb"
     >
       <Example label="typical">
@@ -436,7 +436,7 @@ function InvoicePagination({ initialPage }: { initialPage: number }) {
 function PaginationBlock() {
   return (
     <Block
-      description="Step through long lists. Page links are ghost buttons; the current page is outlined and set in the heading weight. Below 640px Previous and Next drop their words and only the neighbouring pages stay."
+      description="Step through long lists. Page links are round ghost buttons, Previous and Next pills; the current page takes the 20% outline at weight 400. Below 640px Previous and Next drop their words and only the neighbouring pages stay."
       title="Pagination"
     >
       <Example label="many pages · ellipsis on both sides">
@@ -495,7 +495,7 @@ function MenuLinks({
             className="flex-col items-start gap-0.5"
             href="#navigation"
           >
-            <span className="weight-semibold">{link.title}</span>
+            <span>{link.title}</span>
             <span className="type-caption text-muted-foreground">
               {link.description}
             </span>
@@ -509,7 +509,7 @@ function MenuLinks({
 function NavigationMenuBlock() {
   return (
     <Block
-      description="The site nav: ghost links with a muted chevron. A menu opens instantly in a window under its trigger; the current page takes the heading weight, not a colour."
+      description="The header nav: pill ghost links with a muted ▾. A menu opens instantly in the 8px flyout under its trigger; the current page is orange, like the active item in the docs nav."
       title="Navigation menu"
       wide
     >
@@ -552,7 +552,7 @@ function NavigationMenuBlock() {
 const TEMPLATES = ["Harvard", "Standard", "Simple", "Basic"] as const;
 
 function EditorMenubar() {
-  const [graphPaper, setGraphPaper] = useState(true);
+  const [rulers, setRulers] = useState(true);
   const [pageBreaks, setPageBreaks] = useState(false);
   const [template, setTemplate] = useState<string>("Harvard");
   return (
@@ -623,11 +623,8 @@ function EditorMenubar() {
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
           <MenubarGroup>
-            <MenubarCheckboxItem
-              checked={graphPaper}
-              onCheckedChange={setGraphPaper}
-            >
-              Graph paper
+            <MenubarCheckboxItem checked={rulers} onCheckedChange={setRulers}>
+              Rulers
             </MenubarCheckboxItem>
             <MenubarCheckboxItem
               checked={pageBreaks}
@@ -663,7 +660,7 @@ function EditorMenubar() {
 function MenubarBlock() {
   return (
     <Block
-      description="Desktop-style menus for an editor toolbar. Triggers are flat; each menu is a window of 2px rows, with a check for toggles and a diamond for the chosen option."
+      description="Desktop-style menus for an editor toolbar: a 36px bar with an 8px radius and flat 4px triggers that fill with pane. Each menu is the dropdown flyout of 32px rows, with a check for toggles and a dot for the chosen option."
       title="Menubar"
       wide
     >
@@ -821,7 +818,7 @@ function CvEditorSidebar() {
   const current =
     CV_SECTIONS.find((section) => section.id === active) ?? CV_SECTIONS[0];
   return (
-    <div className="flex overflow-hidden border border-line">
+    <div className="flex overflow-hidden rounded-sm border border-border">
       <SidebarProvider className="min-h-0">
         <Sidebar className="w-full sm:w-(--sidebar-width)" collapsible="none">
           <SidebarHeader className="border-sidebar-border border-b">
@@ -830,7 +827,7 @@ function CvEditorSidebar() {
                 aria-hidden="true"
                 className="size-3.5 text-muted-foreground"
               />
-              <span className="type-body-compact weight-semibold truncate text-foreground">
+              <span className="type-body-compact truncate text-foreground">
                 Rina Wulandari · CV
               </span>
             </div>
@@ -861,7 +858,7 @@ function CvEditorSidebar() {
                     <AvatarFallback>RW</AvatarFallback>
                   </Avatar>
                   <div className="grid min-w-0 flex-1 text-left">
-                    <span className="weight-semibold truncate text-foreground">
+                    <span className="truncate text-foreground">
                       Rina Wulandari
                     </span>
                     <span className="type-caption truncate text-muted-foreground">
@@ -879,7 +876,7 @@ function CvEditorSidebar() {
         </Sidebar>
         <div className="hidden min-w-0 flex-1 flex-col sm:flex">
           <div className="band flex h-12 shrink-0 items-center justify-between gap-3 px-4">
-            <span className="type-body weight-semibold truncate text-foreground">
+            <span className="type-body truncate text-foreground">
               {current.label}
             </span>
             <Button size="sm" variant="outline">
@@ -887,7 +884,7 @@ function CvEditorSidebar() {
               Export PDF
             </Button>
           </div>
-          <div className="graph-paper flex flex-1 flex-col gap-1 p-6">
+          <div className="flex flex-1 flex-col gap-1 p-6">
             <h4 className="type-title">{current.label}</h4>
             <p className="type-body max-w-prose">{current.description}</p>
           </div>
@@ -900,7 +897,7 @@ function CvEditorSidebar() {
 function SidebarBlock() {
   return (
     <Block
-      description="The editor's section list: a pane ruled off by a hairline, caption group labels, compact rows, and one active row on pane-2 in the heading weight. Click a section to move the active row."
+      description="The docs nav: a column on the card colour ruled off by a 10% border, 12px muted group labels, 30px rows at 4px radius. The active row sits on pane-2 in a dense app sidebar; a docs nav (like this page's) marks it orange. Click a section to move the active row."
       title="Sidebar"
       wide
     >
@@ -914,7 +911,7 @@ export function NavigationSection() {
   return (
     <Section
       id="navigation"
-      lead="Nav links are ghost buttons; selected items get the heading weight, not a colour."
+      lead="Nav links are pill ghost buttons or plain muted links. The current item in a primary nav is orange with no fill; in dense app chrome it sits on pane-2."
       title="Navigation"
     >
       <BlockGrid>

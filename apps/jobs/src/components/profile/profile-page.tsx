@@ -1,14 +1,23 @@
-// Profile (12 §9): Facts, Answers, CVs — what the agent may use when it fills
-// a form, and where each value came from.
+// Profile (12 §9), laid out like reui's account-settings block: a left
+// sub-nav (Facts, Answers, CVs) and the section's cards of rows.
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rulisme/ui/ui/tabs";
+import { FileText, MessageSquareText, UserRound } from "lucide-react";
+import type { SubNavItem } from "@rulisme/ui/blocks/settings";
+import { SubNavLayout } from "@rulisme/ui/blocks/settings";
 import { useTranslation } from "@/i18n";
 import { AnswersTab } from "./answers-tab";
 import { CvsTab } from "./cvs-tab";
 import { FactsTab } from "./facts-tab";
-import { PageGutter, PageHeader } from "@/components/shell/page";
 
 export type ProfileTab = "facts" | "answers" | "cvs";
+
+const TAB_ICONS = {
+  facts: UserRound,
+  answers: MessageSquareText,
+  cvs: FileText,
+} as const;
+
+const TABS: readonly ProfileTab[] = ["facts", "answers", "cvs"];
 
 export function ProfilePage({
   tab,
@@ -18,40 +27,23 @@ export function ProfilePage({
   onTabChange: (tab: ProfileTab) => void;
 }) {
   const { t } = useTranslation();
+  const items: SubNavItem<ProfileTab>[] = TABS.map((value) => ({
+    value,
+    icon: TAB_ICONS[value],
+    label: t(`profile.tabs.${value}`),
+  }));
   return (
-    <div className="flex flex-col">
-      <Tabs
-        className="gap-0"
-        onValueChange={(value) => onTabChange(value as ProfileTab)}
-        value={tab}
-      >
-        <PageHeader description={t("profile.intro")} title={t("profile.title")}>
-          <div className="no-scrollbar -mb-px overflow-x-auto">
-            <TabsList
-              aria-label={t("profile.tabsLabel")}
-              className="border-b-0"
-              variant="line"
-            >
-              <TabsTrigger value="facts">{t("profile.tabs.facts")}</TabsTrigger>
-              <TabsTrigger value="answers">
-                {t("profile.tabs.answers")}
-              </TabsTrigger>
-              <TabsTrigger value="cvs">{t("profile.tabs.cvs")}</TabsTrigger>
-            </TabsList>
-          </div>
-        </PageHeader>
-        <PageGutter className="py-6">
-          <TabsContent value="facts">
-            <FactsTab />
-          </TabsContent>
-          <TabsContent value="answers">
-            <AnswersTab />
-          </TabsContent>
-          <TabsContent value="cvs">
-            <CvsTab />
-          </TabsContent>
-        </PageGutter>
-      </Tabs>
-    </div>
+    <SubNavLayout
+      description={t("profile.intro")}
+      items={items}
+      label={t("profile.tabsLabel")}
+      onChange={onTabChange}
+      title={t("profile.title")}
+      value={tab}
+    >
+      {tab === "facts" ? <FactsTab /> : null}
+      {tab === "answers" ? <AnswersTab /> : null}
+      {tab === "cvs" ? <CvsTab /> : null}
+    </SubNavLayout>
   );
 }

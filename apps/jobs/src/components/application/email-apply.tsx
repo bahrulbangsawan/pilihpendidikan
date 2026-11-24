@@ -32,7 +32,7 @@ import {
 } from "@rulisme/ui/ui/select";
 import { Textarea } from "@rulisme/ui/ui/textarea";
 import { useQueryClient } from "@tanstack/react-query";
-import { CircleCheck, FileText, TriangleAlert } from "lucide-react";
+import { CircleCheck, FileText, Languages, TriangleAlert } from "lucide-react";
 import type { FormEvent } from "react";
 import { useId, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -68,7 +68,7 @@ function RecipientHint({ check }: { check: RecipientCheck }) {
   if (check.kind === "employer") {
     return (
       <FieldDescription className="flex items-center gap-1">
-        <CircleCheck aria-hidden="true" className="size-3.5 text-primary" />
+        <CircleCheck aria-hidden="true" className="size-3.5 text-success" />
         {t("email.recipient.employer", { domain: check.domain })}
       </FieldDescription>
     );
@@ -208,7 +208,7 @@ export function EmailApply({ detail }: { detail: ApplicationDetail }) {
         onSubmit={submit}
       >
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h3 className="type-subtitle weight-semibold" id={`${id}-heading`}>
+          <h3 className="type-subtitle" id={`${id}-heading`}>
             {t("email.composeHeading")}
           </h3>
           <div className="flex items-end gap-2">
@@ -224,8 +224,14 @@ export function EmailApply({ detail }: { detail: ApplicationDetail }) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">{t("email.languages.en")}</SelectItem>
-                  <SelectItem value="id">{t("email.languages.id")}</SelectItem>
+                  <SelectItem value="en">
+                    <Languages aria-hidden="true" />
+                    {t("email.languages.en")}
+                  </SelectItem>
+                  <SelectItem value="id">
+                    <Languages aria-hidden="true" />
+                    {t("email.languages.id")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </Field>

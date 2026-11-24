@@ -7,6 +7,7 @@
     "ogImageAlt": "Pembuat Portofolio Bahrul Bangsawan — portofolio Apple Developer Academy dalam tata letak A4 lanskap terkunci"
   },
   "toolbar": {
+    "moreActions": "Aksi dokumen",
     "mcp": "MCP",
     "importJson": "Impor JSON",
     "prefill": "Isi Contoh",
@@ -25,10 +26,6 @@
     "forbidden": "Anda tidak punya izin untuk mengedit dokumen ini.",
     "saveFailed": "Gagal menyimpan ({code}). Perubahan Anda dibatalkan.",
     "saveOffline": "Gagal menyimpan — periksa koneksi Anda. Perubahan Anda dibatalkan."
-  },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
   },
   "confirm": {
     "title": "Hapus semua data?",
@@ -65,7 +62,13 @@
     "invalidJson": "Berkas JSON tidak valid. Pilih ekspor JSON portofolio yang valid.",
     "pdfFailed": "Gagal membuat PDF. Periksa konsol peramban untuk detail."
   },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "Portofolio",
+    "lead": "Ceritakan diri Anda dan hingga lima proyek untuk pendaftaran Apple Developer Academy, ditata di halaman A4 lanskap."
+  },
   "form": {
+    "projectCount": "{count} dari {max}",
     "profile": "Profil",
     "fullName": "Nama Lengkap",
     "headline": "Tagline",
@@ -119,7 +122,8 @@
     "addProject": "Tambah Proyek",
     "maxProjects": "Maksimal {max} proyek tercapai",
     "projectFallback": "Proyek {index}",
-    "chipFull": "Jumlah maksimum tercapai"
+    "chipFull": "Jumlah maksimum tercapai",
+    "projectsEmpty": "Belum ada proyek. Tambahkan hingga lima, yang terkuat dulu."
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",
@@ -183,7 +187,8 @@
   },
   "preview": {
     "empty": "Mulai isi formulir untuk melihat pratinjau portofolio Anda",
-    "documentLabel": "A4 lanskap · Apple Developer Academy",
+    "documentFormat": "A4 lanskap",
+    "documentProgram": "Apple Developer Academy",
     "kicker": "Pengajuan portofolio — kohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Nama Anda · Tagline",

@@ -1,6 +1,6 @@
 # Add CV Template System
 
-> **Superseded font wording.** REQ-TL-6 below (Helvetica in every template) is replaced by `update-zedative-design-system`: the templates now use Inter, embedded in the PDFs, with Zedative's ink colours and no uppercase or letter-spacing. The Helvetica references here are historical.
+> **Superseded font wording.** REQ-TL-6 below (Helvetica in every template) is replaced by `update-cursor-design-system`: the templates now use Inter, embedded in the PDFs, with the print ink colours and no uppercase or letter-spacing. The Helvetica references here are historical.
 
 ## Summary
 

@@ -1,6 +1,6 @@
 # Change: Add the pilihpendidikan.com hub landing page (apps/home)
 
-> **Superseded design wording.** This change built the hub on the Warp design system. `update-zedative-design-system` has since replaced Warp with Zedative across the workspace, the hub included; the Warp references below are historical.
+> **Superseded design wording.** This change built the hub on the Warp design system. `update-cursor-design-system` has since replaced Warp with the Cursor design system across the workspace, the hub included; the Warp references below are historical.
 
 > **Superseded service list.** `jobs-add-dashboard` adds a fifth entry, `jobs`
 > (`https://jobs.pilihpendidikan.com`, status `"soon"`), to

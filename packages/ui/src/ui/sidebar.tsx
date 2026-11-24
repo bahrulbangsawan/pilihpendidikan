@@ -27,11 +27,13 @@ import {
 import { Skeleton } from "./skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
-// Zedative sidebar (DESIGN.md § Implementation › Rails): a `pane` column
-// ruled off from the content by a `line` hairline. Group labels are captions,
-// rows use the compact body step (sidebars are dense regions), and the one
-// active row sits on `pane-2` in the heading weight. Opening, collapsing and
-// the mobile sheet are instant: no width, offset or padding transitions.
+// Sidebar, cursor.com/docs nav: a `sidebar` column ruled off from the
+// content by a 10% border. Group labels are 12px captions in muted ink; rows
+// are 30px, 4px-radius, body role at weight 400, `pane/70` on hover. The
+// active row sits on `pane-2` in `foreground` (dense app sidebars); a docs
+// nav can pass `className="data-active:bg-transparent data-active:text-link"`
+// for Cursor's orange active item. Opening, collapsing and the mobile sheet
+// are instant: no width, offset or padding transitions.
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -252,7 +254,7 @@ function Sidebar({
         {...props}
       >
         <div
-          className="flex size-full flex-col bg-sidebar group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border"
+          className="flex size-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-md"
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
         >
@@ -319,7 +321,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   return (
     <main
       className={cn(
-        "relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-line",
+        "relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-lg md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-line",
         className
       )}
       data-slot="sidebar-inset"
@@ -413,7 +415,7 @@ function SidebarGroupLabel({
   return (
     <Comp
       className={cn(
-        "type-caption flex h-8 shrink-0 items-center gap-2 rounded-sm px-2 text-muted-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 [&>svg]:size-3.5 [&>svg]:shrink-0",
+        "type-caption flex h-7 shrink-0 items-center gap-2 rounded-sm px-2 text-muted-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 [&>svg]:size-3.5 [&>svg]:shrink-0",
         className
       )}
       data-sidebar="group-label"
@@ -433,7 +435,7 @@ function SidebarGroupAction({
   return (
     <Comp
       className={cn(
-        "absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-sm p-0 text-muted-foreground outline-none transition-[background-color,color] duration-150 ease-standard after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 group-data-[collapsible=icon]:hidden md:after:hidden [&>svg]:size-3.5 [&>svg]:shrink-0",
+        "absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-sm p-0 text-muted-foreground outline-none transition-[background-color,color] duration-140 ease-standard after:absolute after:-inset-2 hover:bg-pane hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 group-data-[collapsible=icon]:hidden md:after:hidden [&>svg]:size-3.5 [&>svg]:shrink-0",
         className
       )}
       data-sidebar="group-action"
@@ -449,7 +451,7 @@ function SidebarGroupContent({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("type-body-compact w-full", className)}
+      className={cn("type-body w-full", className)}
       data-sidebar="group-content"
       data-slot="sidebar-group-content"
       {...props}
@@ -480,17 +482,16 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button group/menu-button type-body-compact data-active:weight-semibold flex w-full items-center gap-2 overflow-hidden rounded-sm p-2 text-left text-sidebar-foreground outline-none transition-[background-color,color] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:shrink-0",
+  "peer/menu-button group/menu-button type-body flex w-full items-center gap-2 overflow-hidden rounded-sm p-2 text-left text-sidebar-foreground outline-none transition-[background-color,color] duration-140 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-0 active:bg-pane-2 disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-pane-2 data-active:text-foreground data-open:hover:bg-pane/70 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "hover:text-sidebar-accent-foreground data-[active=false]:hover:bg-sidebar-accent/60",
+        default: "hover:text-foreground data-[active=false]:hover:bg-pane/70",
         outline:
-          "border border-sidebar-border bg-card hover:text-sidebar-accent-foreground data-[active=false]:hover:bg-sidebar-accent/60",
+          "border border-sidebar-border bg-card hover:text-foreground data-[active=false]:hover:bg-pane/70",
       },
       size: {
-        default: "h-8",
+        default: "h-7.5",
         sm: "type-caption h-7",
         lg: "h-12 group-data-[collapsible=icon]:p-0!",
       },
@@ -563,9 +564,9 @@ function SidebarMenuAction({
   return (
     <Comp
       className={cn(
-        "absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-sm p-0 text-muted-foreground outline-none transition-[background-color,color,opacity] duration-150 ease-standard after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 peer-hover/menu-button:text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-3.5 peer-data-[size=sm]/menu-button:top-1 md:after:hidden [&>svg]:size-3.5 [&>svg]:shrink-0",
+        "absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-sm p-0 text-muted-foreground outline-none transition-[background-color,color,opacity] duration-140 ease-standard after:absolute after:-inset-2 hover:bg-pane hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 peer-hover/menu-button:text-foreground group-data-[collapsible=icon]:hidden peer-data-[size=default]/menu-button:top-1.25 peer-data-[size=lg]/menu-button:top-3.5 peer-data-[size=sm]/menu-button:top-1 md:after:hidden [&>svg]:size-3.5 [&>svg]:shrink-0",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 aria-expanded:opacity-100 peer-data-active/menu-button:text-sidebar-accent-foreground md:opacity-0",
+          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 aria-expanded:opacity-100 peer-data-active/menu-button:text-foreground md:opacity-0",
         className
       )}
       data-sidebar="menu-action"
@@ -582,7 +583,7 @@ function SidebarMenuBadge({
   return (
     <div
       className={cn(
-        "type-micro pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-sm px-1 text-muted-foreground tabular-nums peer-hover/menu-button:text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-3.5 peer-data-[size=sm]/menu-button:top-1 peer-data-active/menu-button:text-sidebar-accent-foreground",
+        "type-caption pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-sm px-1 text-muted-foreground tabular-nums peer-hover/menu-button:text-foreground group-data-[collapsible=icon]:hidden peer-data-[size=default]/menu-button:top-1.25 peer-data-[size=lg]/menu-button:top-3.5 peer-data-[size=sm]/menu-button:top-1 peer-data-active/menu-button:text-foreground",
         className
       )}
       data-sidebar="menu-badge"
@@ -592,8 +593,7 @@ function SidebarMenuBadge({
   );
 }
 
-// Loading rows. Skeletons are `pane`, so here they step up to `pane-2` to
-// stay visible on the sidebar.
+// Loading rows: `sidebar-accent` (= `pane`) bars at text height.
 function SidebarMenuSkeleton({
   className,
   showIcon = false,
@@ -606,7 +606,7 @@ function SidebarMenuSkeleton({
 
   return (
     <div
-      className={cn("flex h-8 items-center gap-2 rounded-sm px-2", className)}
+      className={cn("flex h-7.5 items-center gap-2 rounded-sm px-2", className)}
       data-sidebar="menu-skeleton"
       data-slot="sidebar-menu-skeleton"
       {...props}
@@ -674,10 +674,8 @@ function SidebarMenuSubButton({
   return (
     <Comp
       className={cn(
-        "data-active:weight-semibold flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-sm px-2 text-sidebar-foreground outline-none transition-[background-color,color] duration-150 ease-standard hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground data-[active=false]:hover:bg-sidebar-accent/60 group-data-[collapsible=icon]:hidden [&>span:last-child]:truncate [&>svg]:size-3.5 [&>svg]:shrink-0 [&>svg]:text-muted-foreground",
-        // The role is set without a variant so `data-active:weight-semibold`
-        // always lands after it.
-        size === "sm" ? "type-caption" : "type-body-compact",
+        "flex h-7.5 w-full min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-sm px-2 text-sidebar-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-0 active:bg-pane-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-pane-2 data-active:text-foreground data-[active=false]:hover:bg-pane/70 group-data-[collapsible=icon]:hidden [&>span:last-child]:truncate [&>svg]:size-3.5 [&>svg]:shrink-0 [&>svg]:text-muted-foreground",
+        size === "sm" ? "type-caption" : "type-body",
         className
       )}
       data-active={isActive}

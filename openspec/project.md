@@ -19,8 +19,8 @@ source of truth. The apps were extracted from the
 - **Framework**: React 19 + TanStack Router + TanStack Start (SSR)
 - **Bundler**: Vite 8 with `@cloudflare/vite-plugin`; Wrangler for deploys
 - **Orchestration**: Turborepo (`apps/*`, `packages/*`)
-- **Styling**: Tailwind CSS 4 — CSS-native config; one Zedative theme (`@rulisme/ui/styles/theme.css`)
-- **UI**: `@rulisme/ui` (`packages/ui`): every shadcn/ui component (lyra geometry, radix base) on `@base-ui/react` / Radix + CVA, restyled to Zedative
+- **Styling**: Tailwind CSS 4 — CSS-native config; one Cursor theme (`@rulisme/ui/styles/theme.css`)
+- **UI**: `@rulisme/ui` (`packages/ui`): every shadcn/ui component (lyra geometry, radix base) on `@base-ui/react` / Radix + CVA, restyled to the Cursor design system
 - **PDF**: `@react-pdf/renderer`
 - **Icons**: lucide-react
 - **Font**: Inter Variable 4.0 (opsz axis) via `@fontsource-variable/inter`, the only family
@@ -40,10 +40,10 @@ source of truth. The apps were extracted from the
 | `apps/invoice` | Invoice builder with Indonesian region data | `4004` | `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`) |
 | `apps/portfolio` | Apple Developer Academy portfolio builder (A4 landscape) | `4005` | `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`) |
 | `apps/api` | Backend Worker: cloud save, sign-in, tokens, OAuth (MCP clients + the `pilih-jobs-cli` first-party client), MCP server, and the Job Tracker API `/api/v1/*` with its queue consumer and crons | `8788` (wrangler dev) | `api.pilihpendidikan.com` |
-| `apps/jobs` | Job Tracker dashboard (TanStack Start SSR, BFF session cookie, Zedative) | `4007` | `jobs.pilihpendidikan.com` (Worker `jobs-pilihpendidikan`; not deployed, hub entry `soon`) |
+| `apps/jobs` | Job Tracker dashboard (TanStack Start SSR, BFF session cookie, Cursor design system) | `4007` | `jobs.pilihpendidikan.com` (Worker `jobs-pilihpendidikan`; not deployed, hub entry `soon`) |
 | `apps/jobs-cli` | `pilih-jobs` Python CLI (uv project; `package.json` is a Turborepo shim): discovery, browser agent, worker, sync | — | PyPI `pilih-jobs` (not published) |
-| `apps/design` | Zedative design system page (Vite SPA, renders `@rulisme/ui` from source) | `4006` | not deployed |
-| `packages/ui` | `@rulisme/ui` shared components and the Zedative theme (apps compile it from `src/`; `dist/` for package exports) | — | — |
+| `apps/design` | Cursor design system page (Vite SPA, renders `@rulisme/ui` from source) | `4006` | not deployed |
+| `packages/ui` | `@rulisme/ui` shared components and the Cursor theme (apps compile it from `src/`; `dist/` for package exports) | — | — |
 | `packages/config` | `@pilihpendidikan/config`: `tsconfig.base.json`, `motion.css` | — | — |
 | `packages/jobs-contracts` | `@pilihpendidikan/jobs-contracts`: Job Tracker Zod contracts (records, `/api/v1` schemas, state machines, fingerprint, adapters manifest), committed JSON Schema, golden test vectors | — | — |
 | `packages/cv-engine` | `@pilihpendidikan/cv-engine`: `CVData` types and schema, markdown export, bullets; `./pdf` (browser only) holds the four `@react-pdf` templates and `renderCvPdfBlob` | — | — |
@@ -57,7 +57,7 @@ source of truth. The apps were extracted from the
 - Named exports, PascalCase function components, no default-exported components
 - React 19 ref-as-prop (no `forwardRef`); `data-slot` on primitives
 - No barrel files; `@/*` alias per app; shared UI via `@rulisme/ui/<dir>/<file>`
-- Design follows `DESIGN.md` (Zedative) and `TYPOGRAPHY.md`; tokens live only in the shared theme, and every app's `styles.css` is parity-checked to import it and define nothing
+- Design follows `DESIGN.md` (the Cursor design system) and `TYPOGRAPHY.md`; tokens live only in the shared theme, and every app's `styles.css` is parity-checked to import it and define nothing
 
 ### Architecture Patterns
 
@@ -89,7 +89,7 @@ source of truth. The apps were extracted from the
 
 ## Important Constraints
 
-- Printed documents are ink on white paper inside the Zedative chrome, in light and Night Desk alike: Inter only, no uppercase or letter-spacing, Zedative ink colours, print sizes and the static weights 400 / 600 / 700 (the PDFs embed `@fontsource/inter`)
+- Printed documents are ink on white paper inside the dark Cursor chrome: Inter only, no uppercase or letter-spacing, print ink colours, print sizes and the static weights 400 / 600 / 700 (the PDFs embed `@fontsource/inter`)
 - No deploys, DNS changes or remote data migrations without the owner's approval. For the Job Tracker this includes creating `JOBS_DB`, `JOBS_FILES` and the `jobs-ai` queues, `OPENAI_API_KEY`, the legacy `JOBS_KV` → `JOBS_DB` migration `--execute`, flipping D-33 flags in production, and publishing `pilih-jobs`
 - Discovery never uses Scrapling's stealth features and never touches LinkedIn or Indeed (D-16, D-17); submissions are never inferred (D-18) and a lease lost after `submit_intent` is never retried (D-19); `auto` mode stays behind `JOBS_AUTO_MODE_ENABLED` and the A-07 legal review
 

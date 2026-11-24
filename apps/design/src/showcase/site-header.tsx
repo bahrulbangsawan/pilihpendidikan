@@ -1,105 +1,164 @@
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
+import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
 import { buttonVariants } from "@rulisme/ui/ui/button-variants";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@rulisme/ui/ui/command";
+import { FieldButton } from "@rulisme/ui/ui/field-button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { Moon, Sun } from "lucide-react";
-import { useScheme } from "./theme";
+import { Search } from "lucide-react";
+import { useState } from "react";
+import { useActiveSection } from "./active-section";
+import { groupOf, NAV_GROUPS } from "./nav";
 
-export const SECTIONS = [
-  { id: "foundations", label: "Foundations" },
-  { id: "actions", label: "Actions" },
-  { id: "inputs", label: "Inputs" },
-  { id: "navigation", label: "Navigation" },
-  { id: "data-display", label: "Data" },
-  { id: "feedback", label: "Feedback" },
-  { id: "overlays", label: "Overlays" },
-  { id: "conversation", label: "Conversation" },
-  { id: "dos-and-donts", label: "Do & don't" },
-  { id: "recipes", label: "Recipes" },
-] as const;
-
-function Wordmark() {
+/**
+ * The lettermark: a 20px light tile with the pilihpendidikan "p", then the
+ * system's name.
+ */
+export function Wordmark() {
   return (
     <a
-      className="type-title flex shrink-0 items-center gap-2 text-foreground"
+      className="type-subtitle flex shrink-0 items-center gap-2 text-foreground"
       href="#overview"
     >
       <span
         aria-hidden="true"
-        className="grid size-5 place-items-center rounded-sm bg-primary"
+        className="type-caption grid size-5 place-items-center rounded-sm bg-primary text-primary-foreground"
       >
-        <span className="size-2 rotate-45 border border-primary-foreground" />
+        p
       </span>
-      Zedative
+      Cursor style
     </a>
   );
 }
 
-function ThemeToggle() {
-  const { scheme, setScheme } = useScheme();
-  const dark = scheme === "dark";
-  const toggle = () => setScheme(dark ? "light" : "dark");
-  useShortcut("t", toggle);
+/**
+ * The docs search box (36px, 8px radius, 10% border) that opens a jump list
+ * of every section. "/" opens it; ⌘K stays with the palette demo in
+ * Overlays.
+ */
+function JumpSearch() {
+  const [open, setOpen] = useState(false);
+  useShortcut("/", () => setOpen(true));
+
+  const jump = (id: string) => {
+    setOpen(false);
+    window.location.hash = id;
+  };
+
   return (
-    <Button
-      aria-label={dark ? "Switch to light (T)" : "Switch to Night Desk (T)"}
-      onClick={toggle}
-      size="icon-sm"
-      title={dark ? "Light (T)" : "Night Desk (T)"}
-      variant="ghost"
-    >
-      {dark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-    </Button>
+    <>
+      <FieldButton
+        aria-keyshortcuts="/"
+        className="hidden w-full max-w-80 pr-1.5 hover:text-foreground md:flex"
+        empty
+        onClick={() => setOpen(true)}
+      >
+        <Search aria-hidden="true" />
+        <span className="flex-1">Search the system…</span>
+        <Kbd>/</Kbd>
+      </FieldButton>
+      <CommandDialog
+        description="Jump to a section of the design system page."
+        onOpenChange={setOpen}
+        open={open}
+        title="Search the system"
+      >
+        <Command>
+          <CommandInput placeholder="Jump to a section…" />
+          <CommandList>
+            <CommandEmpty>No section by that name.</CommandEmpty>
+            {NAV_GROUPS.map((group) => (
+              <CommandGroup heading={group.label} key={group.id}>
+                {group.sections.map((section) => (
+                  <CommandItem
+                    key={section.id}
+                    onSelect={() => jump(section.id)}
+                  >
+                    {section.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ))}
+          </CommandList>
+        </Command>
+      </CommandDialog>
+    </>
   );
 }
 
 /**
- * The 56px nav band at column width (DESIGN.md § Components › Nav): wordmark,
- * section links as ghost buttons, the theme toggle and one cobalt action
- * with its shortcut. A pale-blue news bar sits under it.
+ * The 49px docs header (cursor.com/docs, dark): the wordmark over the nav
+ * column, group tabs with an orange active tab underlined in orange, the
+ * search box in the middle and two pills on the right.
  */
 export function SiteHeader() {
+  const active = useActiveSection();
+  const activeGroup = groupOf(active)?.id;
   useShortcut("c", () => {
     window.location.hash = "actions";
   });
+
   return (
-    <header className="sticky top-0 z-40 bg-background">
-      <div className="band">
-        <div className="rail flex h-14 items-center gap-3 px-3 sm:px-4">
-          <Wordmark />
-          <nav
-            aria-label="Sections"
-            className="no-scrollbar ml-2 hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto lg:flex"
-          >
-            {SECTIONS.map((section) => (
-              <a
-                className={buttonVariants({ variant: "ghost", size: "sm" })}
-                href={`#${section.id}`}
-                key={section.id}
-              >
-                {section.label}
-              </a>
-            ))}
-          </nav>
-          <div className="ml-auto flex items-center gap-1.5">
-            <ThemeToggle />
-            {/* Through Button so the link carries data-slot="button" and
-                data-variant: the Kbd keys its white cap on them. */}
-            <Button asChild size="sm">
-              <a href="#actions">
-                Components
-                <Kbd>C</Kbd>
-              </a>
-            </Button>
-          </div>
-        </div>
+    <header className="sticky top-0 z-40 flex h-12.25 items-center border-border border-b bg-background">
+      <div className="flex h-full shrink-0 items-center pr-6 pl-4 sm:pl-6">
+        <Wordmark />
       </div>
-      <div className="band bg-wash">
-        <p className="rail type-caption px-3 py-2 text-foreground sm:px-4">
-          <span className="weight-semibold">News:</span> pilihpendidikan now
-          runs on Zedative, from the hub to the CV, invoice and portfolio
-          builders.
-        </p>
+      <nav
+        aria-label="Parts of the system"
+        className="hidden h-full items-stretch gap-1 md:flex"
+      >
+        {NAV_GROUPS.map((group) => {
+          const current = group.id === activeGroup;
+          return (
+            <a
+              aria-current={current ? "true" : undefined}
+              className={cn(
+                "type-body -mb-px flex items-center border-b-2 px-3 transition-[color,border-color] duration-140 ease-standard",
+                current
+                  ? "border-link text-link"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+              href={`#${group.sections[0].id}`}
+              key={group.id}
+            >
+              {group.label}
+            </a>
+          );
+        })}
+      </nav>
+      <div className="flex min-w-0 flex-1 justify-center px-4">
+        <JumpSearch />
+      </div>
+      <div className="flex shrink-0 items-center gap-2 pr-2 pl-4 sm:pr-3">
+        <a
+          className={cn(
+            buttonVariants({ variant: "secondary", size: "sm" }),
+            // Only from lg up: below it the tabs, search and Components
+            // pill fill the bar.
+            "hidden lg:inline-flex"
+          )}
+          href="https://pilihpendidikan.com"
+          rel="noopener"
+          target="_blank"
+        >
+          pilihpendidikan.com
+        </a>
+        {/* Through Button so the link carries data-slot="button" and
+            data-variant: the Kbd keys its cap on them. */}
+        <Button asChild size="sm">
+          <a href="#actions">
+            Components
+            <Kbd>C</Kbd>
+          </a>
+        </Button>
       </div>
     </header>
   );

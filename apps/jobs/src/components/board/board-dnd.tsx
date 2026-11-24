@@ -32,13 +32,18 @@ import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
-import type { BoardColumns, ClosedStage } from "@/lib/board-model";
-import { BOARD_STAGES, findCard, moveCard } from "@/lib/board-model";
+import type { BoardColumns } from "@/lib/board-model";
+import {
+  BOARD_STAGES,
+  CLOSED_STAGES,
+  findCard,
+  moveCard,
+} from "@/lib/board-model";
 import { canMoveTo } from "@/lib/board-move";
 import { stageLabel } from "@/lib/labels";
 import { boardCollisionDetection } from "./board-collision";
 import type { CardHandlers, ColumnState } from "./board-columns";
-import { BoardColumn, COLUMN_PREFIX, ClosedLane } from "./board-columns";
+import { BoardColumn, COLUMN_PREFIX, CollapsedLane } from "./board-columns";
 import { moveSubject } from "./board-search";
 import { CardView } from "./card-view";
 import type { MoveRequest } from "./use-move-card";
@@ -163,17 +168,17 @@ function dropPosition(working: BoardColumns, activeId: string, overId: string) {
 
 export interface DesktopBoardProps {
   announce: (message: string) => void;
-  closedExpanded: boolean;
-  closedFilter: ClosedStage | "both";
+  /** Lanes shown as narrow vertical strips. */
+  collapsed: ReadonlySet<Stage>;
   empty: ReactNode;
   /** Filters are on: counts are the visible ones. */
   filtered: boolean;
   handlers: CardHandlers;
   nowMs: number;
-  onClosedExpandedChange: (expanded: boolean) => void;
-  onClosedFilterChange: (filter: ClosedStage | "both") => void;
+  onCollapsedChange: (stage: Stage, collapsed: boolean) => void;
   onDraggingChange: (dragging: boolean) => void;
   pendingIds: ReadonlySet<string>;
+  onSelectAll: (stage: Stage) => void;
   requestMove: (request: MoveRequest) => void;
   selectedIds: ReadonlySet<string>;
   totals: Record<Stage, number>;
@@ -300,6 +305,33 @@ export function DesktopBoard(props: DesktopBoardProps) {
     selectedIds: props.selectedIds,
   };
 
+  const closedRails = CLOSED_STAGES.every((stage) =>
+    props.collapsed.has(stage)
+  );
+  const renderLane = (stage: Stage) =>
+    props.collapsed.has(stage) ? (
+      <CollapsedLane
+        count={props.filtered ? shown[stage].length : totals[stage]}
+        key={stage}
+        onExpand={() => props.onCollapsedChange(stage, false)}
+        stage={stage}
+        state={stateFor(stage)}
+      />
+    ) : (
+      <BoardColumn
+        {...common}
+        cards={shown[stage]}
+        empty={stage === "saved" ? props.empty : undefined}
+        filtered={props.filtered}
+        key={stage}
+        onCollapse={() => props.onCollapsedChange(stage, true)}
+        onSelectAll={() => props.onSelectAll(stage)}
+        stage={stage}
+        state={stateFor(stage)}
+        total={totals[stage]}
+      />
+    );
+
   return (
     <DndContext
       accessibility={{
@@ -314,39 +346,27 @@ export function DesktopBoard(props: DesktopBoardProps) {
       sensors={sensors}
     >
       <div
-        className="flex min-h-0 flex-1 overflow-x-auto"
+        className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto pb-3 pl-4 [scrollbar-color:var(--color-offgray)_transparent] [scrollbar-width:thin] sm:pl-6 lg:pl-8"
         data-testid="board-columns"
       >
-        {BOARD_STAGES.map((stage) => (
-          <BoardColumn
-            {...common}
-            cards={shown[stage]}
-            empty={stage === "saved" ? props.empty : null}
-            key={stage}
-            stage={stage}
-            state={stateFor(stage)}
-            total={props.filtered ? shown[stage].length : totals[stage]}
-          />
-        ))}
-        <ClosedLane
-          {...common}
-          columns={{ rejected: shown.rejected, withdrawn: shown.withdrawn }}
-          expanded={props.closedExpanded}
-          filter={props.closedFilter}
-          onExpandedChange={props.onClosedExpandedChange}
-          onFilterChange={props.onClosedFilterChange}
-          states={{
-            rejected: stateFor("rejected"),
-            withdrawn: stateFor("withdrawn"),
-          }}
-          totals={{ rejected: totals.rejected, withdrawn: totals.withdrawn }}
-        />
+        {BOARD_STAGES.map(renderLane)}
+        {/* The closed lanes close the row: they follow the last open lane
+            inside the horizontal scroll (rails while collapsed), never
+            pinned over another lane. While dragging, dnd-kit scrolls the
+            row to them. */}
+        <div
+          className="flex shrink-0 items-stretch gap-3 pr-4"
+          data-collapsed={closedRails || undefined}
+          data-testid="board-closed-lanes"
+        >
+          {CLOSED_STAGES.map(renderLane)}
+        </div>
       </div>
       <DragOverlay dropAnimation={null}>
         {activeCard ? (
           <CardView
             card={activeCard}
-            className="w-56 shadow-float"
+            className="w-72 shadow-float"
             nowMs={props.nowMs}
           />
         ) : null}

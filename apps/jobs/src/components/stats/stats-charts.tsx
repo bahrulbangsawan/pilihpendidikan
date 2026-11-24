@@ -1,6 +1,11 @@
-// The Stats charts (10 §8), drawn with the Zedative chart wrapper of
-// @rulisme/ui: series colours are the `--chart-N` tokens only, the grid is a
-// hairline, nothing animates in (DESIGN.md § Motion). Each chart is a
+// The Stats charts (10 §8), drawn with the shared chart wrapper of
+// @rulisme/ui: series are a neutral ramp of the `ink` token (70% down to
+// 28%, never pure white; orange stays for links), the line is a 1.5px
+// `chart-2` polyline of straight segments (values clamped at 0, the axis
+// pinned to start at 0, so it never dips below the baseline) with a dot only
+// at the last point and under the pointer, the grid is a hairline (horizontal rules only; bar charts have
+// none: their values sit at the bar ends and the scale runs to 1.1× the
+// largest value), nothing animates in (DESIGN.md § Motion). Each chart is a
 // picture of its view model; ChartFrame pairs it with the same numbers as a
 // table. Recharts' own keyboard layer is off: the chart sits inside
 // role="img" and the data table is the keyboard path (T10-10).
@@ -29,13 +34,49 @@ import type { BarRow, SeriesPoint, TimingPoint } from "@/lib/stats-model";
 /** Recharts measures its box; tests and the first paint use this size. */
 const INITIAL_DIMENSION = { width: 640, height: 240 } as const;
 const CATEGORY_AXIS_WIDTH = 132;
-const FUNNEL_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-] as const;
+/** The ink ramp: `ink` at 70%, 58%, 46%, 36% and 28% (no pure white). */
+const inkAt = (percent: number) =>
+  `color-mix(in oklab, var(--ink) ${percent}%, transparent)`;
+const INK_STRONG = inkAt(70);
+const INK_MID = inkAt(52);
+const INK_SOFT = inkAt(36);
+const FUNNEL_COLORS = [70, 58, 46, 36, 28].map(inkAt);
+const LINE_COLOR = "var(--chart-2)";
+const LINE_WIDTH = 1.5;
+const DOT_RADIUS = 3;
+
+/** Bars end at 1.1× the largest value, so the longest bar leaves room
+ * for its label and never reads as "full". */
+const BAR_HEADROOM = 1.1;
+const barDomainMax = (dataMax: number) =>
+  Math.max(1, Math.ceil(dataMax * BAR_HEADROOM));
+
+/** Recharts' dot callback: a dot on the last point only. */
+function LastPointDot({
+  cx,
+  cy,
+  index,
+  count,
+}: {
+  cx?: number;
+  cy?: number;
+  index?: number;
+  count: number;
+}) {
+  if (index !== count - 1 || cx === undefined || cy === undefined) {
+    return <g />;
+  }
+  return (
+    <circle
+      cx={cx}
+      cy={cy}
+      fill={LINE_COLOR}
+      r={DOT_RADIUS}
+      stroke="var(--background)"
+      strokeWidth={1.5}
+    />
+  );
+}
 
 function HorizontalBars({
   rows,
@@ -58,11 +99,10 @@ function HorizontalBars({
         layout="vertical"
         margin={{ left: 0, right: 40 }}
       >
-        <CartesianGrid horizontal={false} />
         <XAxis
           allowDecimals={false}
-          axisLine={false}
-          tickLine={false}
+          domain={[0, barDomainMax]}
+          hide
           type="number"
         />
         <YAxis
@@ -105,7 +145,7 @@ export function FunnelChart({ rows }: { rows: readonly BarRow[] }) {
     <HorizontalBars
       colors={FUNNEL_COLORS}
       config={{
-        value: { label: t("stats.funnel.count"), color: "var(--chart-1)" },
+        value: { label: t("stats.funnel.count"), color: INK_STRONG },
       }}
       rows={rows}
     />
@@ -118,7 +158,7 @@ export function RejectionChart({ rows }: { rows: readonly BarRow[] }) {
   return (
     <HorizontalBars
       config={{
-        value: { label: t("stats.rejection.count"), color: "var(--chart-2)" },
+        value: { label: t("stats.rejection.count"), color: INK_MID },
       }}
       rows={rows}
     />
@@ -136,12 +176,15 @@ export function SeriesChart({
   return (
     <ChartContainer
       className="aspect-auto h-60 w-full"
-      config={{ value: { label: metricName, color: "var(--chart-1)" } }}
+      config={{ value: { label: metricName, color: LINE_COLOR } }}
       initialDimension={INITIAL_DIMENSION}
     >
       <LineChart
         accessibilityLayer={false}
-        data={[...points]}
+        data={points.map((point) => ({
+          ...point,
+          value: Math.max(0, point.value),
+        }))}
         margin={{ left: 0, right: 12, top: 8 }}
       >
         <CartesianGrid vertical={false} />
@@ -156,17 +199,33 @@ export function SeriesChart({
         <YAxis
           allowDecimals={false}
           axisLine={false}
+          allowDataOverflow
+          domain={[0, (dataMax: number) => Math.max(1, dataMax)]}
           tickCount={4}
           tickLine={false}
           width={32}
         />
         <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
         <Line
+          activeDot={{
+            r: DOT_RADIUS,
+            fill: LINE_COLOR,
+            stroke: "var(--background)",
+            strokeWidth: 1.5,
+          }}
           dataKey="value"
-          dot={{ r: 2.5, fill: "var(--color-value)" }}
+          dot={(props: { cx?: number; cy?: number; index?: number }) => (
+            <LastPointDot
+              count={points.length}
+              cx={props.cx}
+              cy={props.cy}
+              index={props.index}
+              key={`dot-${props.index}`}
+            />
+          )}
           isAnimationActive={false}
-          stroke="var(--color-value)"
-          strokeWidth={2}
+          stroke={LINE_COLOR}
+          strokeWidth={LINE_WIDTH}
           type="linear"
         />
       </LineChart>
@@ -181,8 +240,8 @@ export function TimingChart({ points }: { points: readonly TimingPoint[] }) {
     <ChartContainer
       className="aspect-auto h-60 w-full"
       config={{
-        median: { label: t("stats.timing.median"), color: "var(--chart-1)" },
-        p75: { label: t("stats.timing.p75"), color: "var(--chart-3)" },
+        median: { label: t("stats.timing.median"), color: INK_STRONG },
+        p75: { label: t("stats.timing.p75"), color: INK_SOFT },
       }}
       initialDimension={INITIAL_DIMENSION}
     >

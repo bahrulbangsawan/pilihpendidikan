@@ -181,25 +181,7 @@ describe("board model (06 §1)", () => {
 describe("next step (12 §5.1)", () => {
   it("recommends exactly one action from the state", () => {
     const base = makeDetail();
-    expect(computeNextStep(base)?.kind).toBe("generate_cv");
-    expect(
-      computeNextStep({
-        ...base,
-        application: {
-          ...base.application,
-          submission_status: "outcome_unknown",
-        },
-      })?.kind
-    ).toBe("review_outcome");
-    expect(
-      computeNextStep({
-        ...base,
-        application: {
-          ...base.application,
-          submission_status: "submitted_unverified",
-        },
-      })?.kind
-    ).toBe("confirm_submission");
+    expect(computeNextStep(base)?.kind).toBe("mark_applied");
     expect(
       computeNextStep({
         ...base,
@@ -210,12 +192,6 @@ describe("next step (12 §5.1)", () => {
         },
       })?.kind
     ).toBe("add_interview");
-    expect(
-      computeNextStep({
-        ...base,
-        application: { ...base.application, mode: "manual" },
-      })?.kind
-    ).toBe("start_apply");
     expect(
       computeNextStep({
         ...base,

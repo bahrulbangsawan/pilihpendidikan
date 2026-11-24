@@ -8,7 +8,11 @@ const breaks = (pieces: string[]) => pieces.join("|");
 
 describe("hyphenateForPrint", () => {
   it("keeps ordinary words whole, long Indonesian compounds included", () => {
-    for (const word of ["Zedative", "dipertanggungjawabkan,", "Ševčík"]) {
+    for (const word of [
+      "pilihpendidikan",
+      "dipertanggungjawabkan,",
+      "Ševčík",
+    ]) {
       expect(hyphenateForPrint(word)).toEqual([word]);
     }
   });

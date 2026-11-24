@@ -28,7 +28,7 @@ import {
   TableRow,
 } from "@rulisme/ui/ui/table";
 import { useQueryClient } from "@tanstack/react-query";
-import { Sparkles } from "lucide-react";
+import { FileText, LayoutTemplate, Sparkles } from "lucide-react";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { cvBuilderOrigin, useBaseCvs } from "@/hooks/use-cvs";
@@ -128,7 +128,7 @@ export function CvTab({
         aria-labelledby="cv-generate-heading"
         className="flex max-w-2xl flex-col gap-3"
       >
-        <h2 className="type-subtitle weight-semibold" id="cv-generate-heading">
+        <h2 className="type-subtitle" id="cv-generate-heading">
           {t("cv.generateHeading")}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -145,6 +145,7 @@ export function CvTab({
               <SelectContent>
                 {bases.map((cv) => (
                   <SelectItem key={cv.id} value={cv.id}>
+                    <FileText aria-hidden="true" />
                     {cv.full_name || cv.id} · {cv.job_title}
                   </SelectItem>
                 ))}
@@ -154,7 +155,7 @@ export function CvTab({
               <FieldDescription>
                 {t("cv.noBase")}{" "}
                 <a
-                  className="text-primary hover:underline"
+                  className="text-link hover:underline"
                   href={cvBuilderOrigin()}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -178,6 +179,7 @@ export function CvTab({
               <SelectContent>
                 {CV_TEMPLATES.map((value) => (
                   <SelectItem key={value} value={value}>
+                    <LayoutTemplate aria-hidden="true" />
                     {t(`cv.templates.${value}`)}
                   </SelectItem>
                 ))}
@@ -199,7 +201,7 @@ export function CvTab({
         aria-labelledby="cv-variants-heading"
         className="flex flex-col gap-3"
       >
-        <h2 className="type-subtitle weight-semibold" id="cv-variants-heading">
+        <h2 className="type-subtitle" id="cv-variants-heading">
           {t("cv.variants")}
         </h2>
         {variants.length === 0 ? (
@@ -207,7 +209,7 @@ export function CvTab({
             {t("cv.noVariants")}
           </p>
         ) : (
-          <div className="overflow-x-auto border border-line">
+          <div className="overflow-x-auto rounded-sm border border-line">
             <Table>
               <TableHeader>
                 <TableRow>

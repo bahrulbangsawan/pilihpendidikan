@@ -1,6 +1,6 @@
 ## Context
 
-> **Superseded design wording.** This change built the hub on the Warp design system. `update-zedative-design-system` has since replaced Warp with Zedative across the workspace, the hub included; the Warp references below are historical.
+> **Superseded design wording.** This change built the hub on the Warp design system. `update-cursor-design-system` has since replaced Warp with the Cursor design system across the workspace, the hub included; the Warp references below are historical.
 
 The apex `pilihpendidikan.com` has to resolve before any of the builders are
 deployed, and has to stay correct while they go live one at a time. The apps

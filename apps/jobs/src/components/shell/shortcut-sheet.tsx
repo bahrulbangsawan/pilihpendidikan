@@ -19,11 +19,6 @@ const SCOPES: readonly ShortcutScope[] = [
   "card",
   "application",
   "profile",
-  "inbox",
-  "job",
-  "approvals",
-  "monitor",
-  "cli",
 ];
 
 export function ShortcutSheet({

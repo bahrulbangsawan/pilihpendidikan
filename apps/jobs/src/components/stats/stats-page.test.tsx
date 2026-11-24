@@ -123,10 +123,30 @@ function toggleOf(frame: Element): HTMLButtonElement {
   return button;
 }
 
-async function change(select: HTMLSelectElement, value: string) {
+/** Opens a shared Select from the keyboard and picks the option `label`
+ * (Radix Select opens on ArrowDown and selects on Enter). */
+async function pick(trigger: Element | undefined, label: string) {
+  if (!trigger) {
+    throw new Error("no select trigger");
+  }
   await act(async () => {
-    select.value = value;
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+    (trigger as HTMLElement).focus();
+    trigger.dispatchEvent(
+      new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" })
+    );
+    await Promise.resolve();
+  });
+  const option = () =>
+    [...document.querySelectorAll<HTMLElement>("[role=option]")].find(
+      (item) => item.textContent?.trim() === label
+    );
+  await until(() => option() !== undefined, `option ${label}`);
+  await act(async () => {
+    const item = option() as HTMLElement;
+    item.focus();
+    item.dispatchEvent(
+      new KeyboardEvent("keydown", { bubbles: true, key: "Enter" })
+    );
     await Promise.resolve();
   });
 }
@@ -339,9 +359,21 @@ describe("TW-STATS stats page (12 §9, 10 §8)", () => {
     });
 
     // Switching to all time asks again with the new range and monthly buckets.
-    const preset = container.querySelector("select");
-    expect(preset?.value).toBe("30d");
-    await change(preset as HTMLSelectElement, "all");
+    const trigger = container.querySelector("[data-slot=date-picker-trigger]");
+    expect(trigger?.textContent).toContain("Last 30 days");
+    await click(trigger);
+    await until(
+      () =>
+        [...document.querySelectorAll("button")].some(
+          (button) => button.textContent === "All time"
+        ),
+      "range presets"
+    );
+    await click(
+      [...document.querySelectorAll("button")].find(
+        (button) => button.textContent === "All time"
+      )
+    );
     await until(
       () =>
         api.requests.some(
@@ -371,36 +403,36 @@ describe("TW-STATS stats page (12 §9, 10 §8)", () => {
       () => container.textContent?.includes("Greenhouse") ?? false,
       "breakdown"
     );
-    const by = [...container.querySelectorAll("select")].find(
-      (select) => select.value === "source"
-    ) as HTMLSelectElement;
-    await change(by, "mode");
+    const by = [
+      ...container.querySelectorAll("[data-slot=select-trigger]"),
+    ].find((trigger) => trigger.textContent?.trim() === "Source");
+    await pick(by, "Workplace");
     await until(
       () =>
         api.requests.some(
           (request) =>
             request.route === "GET /api/v1/analytics/breakdown" &&
-            request.query?.by === "mode"
+            request.query?.by === "workplace_type"
         ),
-      "breakdown by mode"
+      "breakdown by workplace"
     );
     await until(
-      () => container.textContent?.includes("Approval") ?? false,
-      "mode rows"
+      () => container.textContent?.includes("Hybrid") ?? false,
+      "workplace rows"
     );
     const section = [...container.querySelectorAll("section")].find(
       (element) => element.querySelector("h2")?.textContent === "Breakdown"
     );
     const table = section?.querySelector("table");
-    expect(table?.querySelector("thead th")?.textContent).toBe("Mode");
+    expect(table?.querySelector("thead th")?.textContent).toBe("Workplace");
     expect(
       [...(table?.querySelectorAll("tbody th[scope=row]") ?? [])].map(
         (th) => th.textContent
       )
-    ).toEqual(["Approval", "Assisted", "Manual"]);
+    ).toEqual(["Remote", "Hybrid", "On-site"]);
   });
 
-  it("TW-STATS the automation card and the unconfirmed callout link to the right places", async () => {
+  it("TW-STATS the unconfirmed callout links to the board's needs-attention filter", async () => {
     installApi(makeAnalyticsSummary({ unconfirmed_count: 2 }));
     const { container } = mount();
     await until(
@@ -413,17 +445,10 @@ describe("TW-STATS stats page (12 §9, 10 §8)", () => {
       (anchor) => anchor.textContent === "Review on the board"
     );
     expect(link?.getAttribute("href")).toBe("/board?attention=1");
-    const text = container.textContent ?? "";
-    expect(text).toContain("15 apply runs finished in the period.");
-    expect(text).toContain("Success rate79%");
-    expect(text).toContain("Login required");
-    const runs = [...container.querySelectorAll("a")].find(
-      (anchor) => anchor.textContent === "See the runs"
-    );
-    expect(runs?.getAttribute("href")).toBe("/automation/runs");
+    expect(container.textContent).not.toContain("apply runs");
   });
 
-  it("TW-STATS an empty period shows the empty state with Board and Inbox", async () => {
+  it("TW-STATS an empty period shows the empty state with a link to the board", async () => {
     const empty = makeAnalyticsSummary({
       cohort_size: 0,
       rates: null,
@@ -448,7 +473,8 @@ describe("TW-STATS stats page (12 §9, 10 §8)", () => {
     const hrefs = [...container.querySelectorAll("a")].map((anchor) =>
       anchor.getAttribute("href")
     );
-    expect(hrefs).toEqual(expect.arrayContaining(["/board", "/inbox"]));
+    expect(hrefs).toEqual(expect.arrayContaining(["/board"]));
+    expect(hrefs).not.toContain("/inbox");
     const showAll = [...container.querySelectorAll("button")].find(
       (button) => button.textContent === "Show all time"
     );

@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Theme parity check — Zedative design system.
+ * Theme parity check — Cursor design system.
  *
  * Every token and type utility lives in one file,
  * `packages/ui/src/styles/theme.css` (`@rulisme/ui/styles/theme.css`). This

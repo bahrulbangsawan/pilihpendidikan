@@ -42,10 +42,9 @@ import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { Block, BlockGrid, Example, Section } from "../layout";
 import { previewState, StateMatrix } from "../state-matrix";
-import { useScheme } from "../theme";
 
 // Every Kbd hint in this section names a key that works on this page: D and
-// E below, F (overview), T (theme), S (share dialog, overlays).
+// E below, F (overview), C (header), S (share dialog, overlays).
 const OPEN_LAYER =
   "[data-slot=dialog-content], [data-slot=alert-dialog-content], [data-slot=sheet-content], [data-slot=drawer-content], [data-slot=select-content]";
 
@@ -100,17 +99,17 @@ const BUTTON_WHEN: Record<
   default: {
     label: "Download PDF",
     icon: <Download aria-hidden="true" data-icon="inline-start" />,
-    when: "The one action that matters in view: solid cobalt with a darker lip. One per group.",
+    when: "The one action that matters in view: the light pill with dark text. One per group.",
   },
   outline: {
     label: "Save draft",
     icon: <Cloud aria-hidden="true" data-icon="inline-start" />,
-    when: "The secondary action: paper at 60%, a 60% border and a grey lip.",
+    when: "The 20%-outlined ghost pill: transparent, filling with the card colour on hover.",
   },
   secondary: {
     label: "Duplicate",
     icon: <Copy aria-hidden="true" data-icon="inline-start" />,
-    when: "A neutral filled control when outline is too quiet; keeps the blue scarce.",
+    when: "The warm-grey pill (pane-2), for a filled action beside the primary.",
   },
   ghost: {
     label: "Preview",
@@ -125,15 +124,15 @@ const BUTTON_WHEN: Record<
   link: {
     label: "Read the guide",
     icon: null,
-    when: "Inline navigation in cobalt; it ends in a › chevron unless it carries an icon.",
+    when: "The orange text link; it ends in → unless it carries an icon.",
   },
 };
 
 const BUTTON_SIZES = [
   { size: "xs", label: "xs · 24px" },
-  { size: "sm", label: "sm · 32px" },
+  { size: "sm", label: "sm · 28px" },
   { size: "default", label: "default · 36px" },
-  { size: "lg", label: "lg · 40px" },
+  { size: "lg", label: "lg · 43px" },
 ] as const;
 
 const ICON_SIZES = ["icon-xs", "icon-sm", "icon", "icon-lg"] as const;
@@ -147,12 +146,12 @@ const BADGE_VARIANTS = [
   {
     variant: "outline",
     label: "PDF",
-    when: "Formats, tags and filters on paper.",
+    when: "Formats, tags and filters: a 10% ring, no fill.",
   },
   {
     variant: "default",
     label: "New",
-    when: "Spends the blue: only when the badge is the one cobalt thing in view.",
+    when: 'The one highlighted pill ("Most popular"): orange text on a 10% orange tint. One in view.',
   },
   {
     variant: "destructive",
@@ -181,11 +180,11 @@ const TOGGLE_STATES = [
 function ButtonBlock() {
   return (
     <Block
-      description="36px tall (32px in the nav), 0 12px 0 10px around a leading 14px icon, body role, 4px radius. Primary is solid blue with a darker 2px inset lip; secondary is paper at 60% with a grey lip. The lip drops on hover and the button presses 1px on click."
+      description="Pills at weight 400: 36px with 14px text by default, 28px small, 24px extra small and a 43px large at 16px (the hero button). Primary is the light pill (#edecec on #14120b), secondary warm grey, outline a 20% ring. Only colours change on hover, over 140ms; nothing moves on click."
       title="Button"
       wide
     >
-      <Example label="Typical: the CV builder toolbar · press D" paper>
+      <Example label="Typical: the CV builder toolbar · press D">
         <Button onClick={downloadPdf}>
           <Download aria-hidden="true" data-icon="inline-start" />
           Download PDF
@@ -288,6 +287,46 @@ function ButtonBlock() {
       />
 
       <div className="grid gap-4 md:grid-cols-2">
+        <Example label="toolbar icons · a disabled ghost or outline stays transparent, muted">
+          <Button aria-label="Undo" size="icon-sm" variant="ghost">
+            <Undo2 aria-hidden="true" />
+          </Button>
+          <Button aria-label="Redo" size="icon-sm" variant="ghost">
+            <Redo2 aria-hidden="true" />
+          </Button>
+          <Button
+            aria-label="Clear all"
+            disabled
+            size="icon-sm"
+            variant="ghost"
+          >
+            <Trash2 aria-hidden="true" />
+          </Button>
+          <Button disabled size="sm" variant="outline">
+            Export
+          </Button>
+          <Button disabled size="sm" variant="secondary">
+            Saved
+          </Button>
+        </Example>
+        <Example label="a bare disclosure chevron · no fill while open">
+          <Button
+            aria-expanded
+            aria-label="Hide line items"
+            className="text-muted-foreground hover:bg-pane aria-expanded:bg-transparent"
+            size="icon-sm"
+            variant="ghost"
+          >
+            <ChevronDown aria-hidden="true" className="rotate-180" />
+          </Button>
+          <Button aria-expanded size="sm" variant="ghost">
+            Menu trigger, open
+            <ChevronDown aria-hidden="true" data-icon="inline-end" />
+          </Button>
+        </Example>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
         <Example label="buttonVariants on a link, and asChild">
           <a
             className={buttonVariants({ variant: "outline" })}
@@ -322,10 +361,10 @@ function ButtonBlock() {
 function ButtonGroupBlock() {
   return (
     <Block
-      description="Related actions joined into one control. Neighbours share a single hairline and only the outer corners keep the 4px radius."
+      description="Related actions joined into one control. Neighbours share one border and only the outer ends keep their pill (or 8px field) radius."
       title="ButtonGroup"
     >
-      <Example label="Typical: a split action" paper>
+      <Example label="Typical: a split action">
         <ButtonGroup aria-label="Export">
           <Button variant="outline">
             <Download aria-hidden="true" data-icon="inline-start" />
@@ -395,10 +434,10 @@ function ButtonGroupBlock() {
 function ToggleBlock() {
   return (
     <Block
-      description="A two-state pressable. Ghost for toolbars, outline for options on paper; on, it fills pane-2 and its label goes semibold."
+      description="A two-state pill in the body role. Ghost for toolbars, outline (20% border) for options; on, it fills pane-2 and its text turns foreground, still weight 400."
       title="Toggle"
     >
-      <Example label="Typical: preview options" paper>
+      <Example label="Typical: preview options">
         <Toggle aria-label="Bold" defaultPressed>
           <Bold aria-hidden="true" />
         </Toggle>
@@ -439,12 +478,12 @@ function ToggleBlock() {
 function ToggleGroupBlock() {
   return (
     <Block
-      description="Option sets of two to seven choices: outlined segments joined edge to edge, one shared hairline between them and a 4px outer radius. The chosen segment fills pane-2 and goes semibold."
+      description="Option sets of two to seven choices: toggle pills joined edge to edge, one shared border between them and pill ends. The chosen segment fills pane-2 in foreground, weight 400."
       title="ToggleGroup"
       wide
     >
       <div className="grid gap-4 md:grid-cols-2">
-        <Example label="Typical: one choice" paper stack>
+        <Example label="Typical: one choice" stack>
           <ToggleGroup
             aria-label="CV template"
             defaultValue="modern"
@@ -576,10 +615,10 @@ function ToggleGroupBlock() {
 function BadgeBlock() {
   return (
     <Block
-      description="Tiny badges: a 2px chip in the micro role. Secondary and outline by default; default spends the blue."
+      description="Full-round chips, 20px tall in the caption role. Secondary and outline for most status; the orange default is the one highlighted pill in view."
       title="Badge"
     >
-      <Example label="Typical: a saved document" paper>
+      <Example label="Typical: a saved document">
         <span className="type-body text-foreground">Rina Wulandari — CV</span>
         <Badge variant="secondary">Draft</Badge>
         <Badge variant="outline">A4</Badge>
@@ -638,17 +677,15 @@ function BadgeBlock() {
 }
 
 function KbdBlock() {
-  const { scheme, setScheme } = useScheme();
-  const dark = scheme === "dark";
   return (
     <Block
-      description="Shortcut hints: 20px, 2px radius, the micro role in muted ink on half-transparent paper. Inside a primary button the cap turns translucent white."
+      description="Shortcut hints, like the ⌘K chip in the docs search: 20px tall, 4px radius, no border, the caption role in 60% ink on a 10% tint. Inside the light primary pill the cap takes the pill's dark text colour."
       title="Kbd"
     >
-      <Example label="Typical: in running text" paper>
+      <Example label="Typical: in running text">
         <p className="type-body">
-          Press <Kbd>T</Kbd> for Night Desk, <Kbd>S</Kbd> to share a read-only
-          link and <Kbd>D</Kbd> to download the PDF.
+          Press <Kbd>/</Kbd> to jump to a section, <Kbd>S</Kbd> to share a
+          read-only link and <Kbd>D</Kbd> to download the PDF.
         </p>
       </Example>
       <Example label="KbdGroup: chords and sequences">
@@ -678,13 +715,9 @@ function KbdBlock() {
             <Kbd>F</Kbd>
           </a>
         </Button>
-        <Button
-          onClick={() => setScheme(dark ? "light" : "dark")}
-          size="sm"
-          variant="ghost"
-        >
-          {dark ? "Light" : "Night Desk"}
-          <Kbd>T</Kbd>
+        <Button onClick={exportJson} size="sm" variant="ghost">
+          Export JSON
+          <Kbd>E</Kbd>
         </Button>
       </Example>
     </Block>
@@ -697,7 +730,7 @@ export function ActionsSection() {
   return (
     <Section
       id="actions"
-      lead="Buttons, groups, toggles, badges and keyboard hints. One cobalt action per group; everything else on paper."
+      lead="Buttons, groups, toggles, badges and keyboard hints. Everything you press is a pill; one light primary pill per group, the rest secondary, outline or ghost."
       title="Actions"
     >
       <BlockGrid>

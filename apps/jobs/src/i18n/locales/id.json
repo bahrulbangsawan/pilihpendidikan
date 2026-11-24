@@ -15,38 +15,32 @@
   },
   "nav": {
     "board": "Papan",
-    "inbox": "Kotak masuk",
-    "automation": "Otomasi",
-    "approvals": "Persetujuan",
-    "runs": "Proses",
-    "sources": "Sumber",
     "stats": "Statistik",
-    "cli": "CLI & perangkat",
     "profile": "Profil",
     "settings": "Pengaturan",
+    "application": "Lamaran",
+    "language": "Bahasa",
+    "shortcuts": "Pintasan keyboard",
     "search": "Cari",
-    "new": "Baru",
+    "searchField": "Cari…",
+    "collapse": "Ciutkan bilah samping",
+    "expand": "Bentangkan bilah samping",
     "home": "Pilih Jobs, buka papan",
     "sidebar": "Bagian",
     "skip": "Langsung ke konten",
     "openMenu": "Buka menu",
     "menuTitle": "Menu",
     "menuDescription": "Semua bagian Pilih Jobs.",
-    "countLabel": "{count} menunggu",
-    "devicesNone": "Tidak ada perangkat online",
-    "devicesOne": "1 perangkat online",
-    "devicesMany": "{count} perangkat online",
     "group": {
-      "track": "Lacak",
-      "automate": "Otomasi",
-      "setup": "Penyiapan"
+      "track": "Ruang kerja",
+      "account": "Akun"
     },
-    "account": "Pengaturan akun untuk {email}"
+    "account": "Menu akun untuk {email}"
   },
   "signIn": {
     "pageTitle": "Masuk",
     "title": "Semua lamaran, satu papan",
-    "intro": "Lacak lowongan yang Anda lamar, lihat apa yang perlu Anda kerjakan berikutnya, dan biarkan CLI Pilih Jobs mengisi formulir di komputer Anda dengan persetujuan Anda.",
+    "intro": "Lacak lowongan yang Anda lamar dan lihat apa yang perlu Anda kerjakan berikutnya.",
     "emailLabel": "Email",
     "emailPlaceholder": "anda@contoh.com",
     "emailHelp": "Kami mengirim tautan masuk ke email Anda. Tanpa kata sandi.",
@@ -82,12 +76,6 @@
     "accepted": "Diterima",
     "rejected": "Ditolak",
     "withdrawn": "Ditarik"
-  },
-  "modes": {
-    "manual": "Manual",
-    "assisted": "Dibantu",
-    "approval": "Persetujuan",
-    "auto": "Otomatis"
   },
   "sourceKinds": {
     "greenhouse": "Greenhouse",
@@ -129,31 +117,7 @@
     "submitted_verified": "Terkirim ✓",
     "submitted_unverified": "Belum terkonfirmasi",
     "failed": "Gagal",
-    "outcome_unknown": "Perlu ditinjau",
-    "confirmTitle": "Apakah lamaran ini sudah terkirim?",
-    "confirmBody": "Proses selesai tetapi tidak dapat memastikan pengirimannya. Periksa email Anda atau situs pemberi kerja terlebih dahulu.",
-    "unknownTitle": "Apakah lamaran ini sudah terkirim?",
-    "unknownBody": "Proses berhenti setelah mulai mengirim, jadi kami tidak bisa memastikannya. Periksa email Anda terlebih dahulu.",
-    "submitted": "Terkirim",
-    "notSubmitted": "Tidak terkirim",
-    "notSure": "Belum tahu",
-    "confirmed": "Ditandai terkirim.",
-    "denied": "Ditandai tidak terkirim.",
-    "changed": "Lamaran ini berubah sementara itu. Periksa lagi lalu coba ulang.",
-    "failedToSave": "Tidak dapat menyimpannya. Coba lagi."
-  },
-  "taskStates": {
-    "queued": "Dalam antrean",
-    "claimed": "Memulai",
-    "running": "Berjalan",
-    "paused": "Dijeda — perlu Anda",
-    "awaiting_approval": "Menunggu persetujuan",
-    "submitted": "Terkirim",
-    "succeeded": "Selesai",
-    "failed": "Gagal",
-    "cancelled": "Dibatalkan",
-    "outcome_unknown": "Perlu ditinjau",
-    "expired": "Kedaluwarsa"
+    "outcome_unknown": "Perlu ditinjau"
   },
   "progressStages": {
     "claimed": "Diambil",
@@ -198,8 +162,7 @@
     "automation": "Otomasi",
     "system": "Sistem",
     "mcp": "Asisten AI (MCP)",
-    "legacy_migration": "Impor",
-    "device": "{device} (CLI)"
+    "legacy_migration": "Impor"
   },
   "changeSources": {
     "web": "tab browser lain",
@@ -244,18 +207,6 @@
     "day": "per hari",
     "hour": "per jam"
   },
-  "evidenceKinds": {
-    "browser_confirmation": "Halaman konfirmasi",
-    "ats_api_response": "Balasan sistem pemberi kerja",
-    "email_sent": "Email terkirim",
-    "user_attestation": "Konfirmasi Anda",
-    "confirmation_email": "Email konfirmasi"
-  },
-  "evidenceVerdicts": {
-    "verified": "Terverifikasi",
-    "unverified": "Belum terverifikasi",
-    "negative": "Tidak terkirim"
-  },
   "shortcuts": {
     "title": "Pintasan keyboard",
     "description": "Tombol tunggal berlaku di mana saja kecuali saat Anda mengetik di kolom isian.",
@@ -264,19 +215,11 @@
       "board": "Di papan",
       "card": "Pada kartu yang dipilih",
       "application": "Pada lamaran",
-      "profile": "Di profil",
-      "inbox": "Di kotak masuk",
-      "job": "Di lowongan temuan",
-      "approvals": "Di persetujuan",
-      "monitor": "Di proses yang berjalan",
-      "cli": "Di CLI & perangkat"
+      "profile": "Di profil"
     },
     "actions": {
       "palette": "Palet perintah",
       "board": "Papan",
-      "inbox": "Kotak masuk",
-      "approvals": "Persetujuan",
-      "runs": "Proses",
       "newJob": "Lowongan baru lewat URL",
       "sheet": "Daftar ini",
       "close": "Tutup jendela",
@@ -295,21 +238,7 @@
       "select": "Pilih untuk tindakan massal",
       "followUp": "Atur tindak lanjut",
       "nextStep": "Kerjakan langkah berikutnya",
-      "saveFacts": "Simpan fakta",
-      "filter": "Fokus ke filter",
-      "nextRow": "Baris berikutnya",
-      "previousRow": "Baris sebelumnya",
-      "openRow": "Buka baris",
-      "selectRow": "Pilih baris",
-      "track": "Lacak yang dipilih",
-      "dismiss": "Abaikan yang dipilih",
-      "trackJob": "Lacak lowongan ini",
-      "nextApproval": "Persetujuan berikutnya",
-      "previousApproval": "Persetujuan sebelumnya",
-      "approve": "Setujui (dengan konfirmasi)",
-      "rejectApproval": "Tolak (dengan konfirmasi)",
-      "resumeOrConfirm": "Lanjutkan, atau konfirmasi hasilnya",
-      "copyInstall": "Salin perintah instalasi"
+      "saveFacts": "Simpan fakta"
     }
   },
   "palette": {
@@ -321,11 +250,6 @@
     "applications": "Lamaran",
     "goTo": "Pergi ke",
     "newJob": "Lowongan baru lewat URL",
-    "approveNext": "Setujui berikutnya",
-    "openInbox": "Buka kotak masuk",
-    "startDiscovery": "Mulai pencarian di perangkat…",
-    "themeDark": "Ganti ke Night Desk",
-    "themeLight": "Ganti ke tema terang",
     "shortcuts": "Pintasan keyboard"
   },
   "newJob": {
@@ -351,8 +275,6 @@
       "noResponseDays": "Tanpa balasan selama",
       "days": "{days} hari"
     },
-    "mode": "Mode",
-    "anyMode": "Semua mode",
     "source": "Sumber",
     "anySource": "Semua sumber",
     "showArchived": "Tampilkan arsip",
@@ -361,31 +283,82 @@
     "noMatches": "Tidak ada kartu yang cocok dengan filter ini.",
     "clearFilters": "Hapus filter",
     "closed": "Ditutup",
-    "closedFilter": "Tampilkan yang ditutup",
-    "closedBoth": "Keduanya",
     "capped": "Menampilkan {shown} terbaru dari {total}.",
     "countLabel": "{count} kartu",
     "emptyTitle": "Belum ada lamaran",
-    "empty": "Lacak lowongan dari kotak masuk atau tambahkan lewat URL.",
     "emptyColumn": "Kosong.",
     "errorTitle": "Papan gagal dimuat",
     "error": "Server tidak dapat dihubungi. Lamaran Anda tetap aman.",
-    "overview": {
-      "label": "Ringkasan minggu ini",
-      "appliedThisWeek": "Dilamar minggu ini",
-      "responseRate": "Tingkat balasan, 30 hari",
-      "ratesLater": "setelah 5 lamaran",
-      "interviewsUpcoming": "Wawancara mendatang",
-      "followUpsDue": "Tindak lanjut jatuh tempo"
+    "intro": "Semua lamaran per tahap. Seret kartu untuk memindahkannya, atau beralih ke daftar atau tabel.",
+    "match": "Kecocokan",
+    "cvAttached": "CV yang disesuaikan sudah terlampir",
+    "openFullPage": "Buka halaman penuh",
+    "newApplication": "Lamaran baru",
+    "emptyManual": "Tambahkan lowongan pertama yang Anda lamar lewat URL-nya.",
+    "searchPlaceholder": "Cari lowongan",
+    "filterButton": "Filter",
+    "filtersActive": "{count} filter aktif",
+    "lane": {
+      "menu": "Tindakan untuk jalur {stage}",
+      "selectAll": "Pilih semua kartu",
+      "collapse": "Ciutkan jalur",
+      "expand": "Buka {stage}, {count} kartu"
     },
-    "intro": "Semua lamaran per tahap. Seret kartu untuk memindahkannya."
+    "view": {
+      "label": "Tampilan",
+      "board": "Papan",
+      "list": "Daftar",
+      "table": "Tabel"
+    },
+    "table": {
+      "company": "Perusahaan dan posisi",
+      "stage": "Tahap",
+      "score": "Kecocokan",
+      "location": "Lokasi",
+      "source": "Sumber",
+      "since": "Di tahap ini sejak",
+      "updated": "Diperbarui",
+      "actions": "Tindakan"
+    }
+  },
+  "application": {
+    "emailHeading": "Kirim email ke perusahaan",
+    "noNotes": "Belum ada catatan.",
+    "tabs": {
+      "notes": "Catatan"
+    },
+    "nextStep": {
+      "reviewCv": "Tinjau CV",
+      "reviewCvWhy": "CV yang disesuaikan siap Anda tinjau.",
+      "markApplied": "Tandai sudah dilamar",
+      "markAppliedWhy": "Sudah mengirim lamaran? Pindahkan ke Dilamar agar pengingat tindak lanjut dimulai.",
+      "addInterview": "Tambah wawancara",
+      "addInterviewWhy": "Dapat panggilan wawancara? Tambahkan agar linimasa tetap tepat."
+    },
+    "sheet": {
+      "description": "Detail lamaran",
+      "manage": "Kelola",
+      "noInterviews": "Belum ada wawancara.",
+      "round": "Babak {round} · {kind}",
+      "unscheduled": "Belum dijadwalkan",
+      "missing": "Lamaran tidak ditemukan",
+      "missingBody": "Mungkin sudah dihapus, atau tautannya salah."
+    },
+    "props": {
+      "stage": "Tahap",
+      "match": "Kecocokan",
+      "location": "Lokasi",
+      "source": "Sumber",
+      "applied": "Dilamar",
+      "posting": "Lowongan"
+    }
   },
   "card": {
     "label": "{company}, {title}, di {stage}",
     "menu": "Tindakan untuk {company}, {title}",
     "moveLabel": "Pindahkan {company}",
     "score": "Skor",
-    "scoring": "Menilai",
+    "scoring": "Menilai…",
     "aiOff": "Dinilai tanpa AI",
     "aiOffShort": "AI mati",
     "cvReady": "CV",
@@ -394,11 +367,6 @@
     "offerOpen": "Tawaran terbuka",
     "highPriority": "Tinggi",
     "selected": "Dipilih",
-    "anyDevice": "sebuah perangkat",
-    "liveRunning": "Berjalan di {device}",
-    "liveRunningStage": "{stage} di {device}",
-    "livePaused": "Dijeda — perlu Anda",
-    "liveAwaitingApproval": "Menunggu persetujuan",
     "followUpDue": "Tindak lanjut · {when}",
     "interview": "Wawancara {when}",
     "updated": "Berubah {age} lalu",
@@ -406,13 +374,6 @@
     "what": "lamaran ini",
     "archivedToast": "Diarsipkan.",
     "unarchivedToast": "Kembali ke papan.",
-    "submission": {
-      "in_progress": "Sedang melamar…",
-      "submitted_verified": "Terverifikasi",
-      "submitted_unverified": "? Belum terkonfirmasi",
-      "failed": "Gagal",
-      "outcome_unknown": "! Perlu ditinjau"
-    },
     "actions": {
       "open": "Buka",
       "move": "Pindahkan ke…",
@@ -498,14 +459,11 @@
     "followUp": "Atur tindak lanjut",
     "followUpIn": "Tindak lanjut dalam {when}",
     "followUpClear": "Hapus tindak lanjut",
-    "mode": "Atur mode",
-    "setMode": "Mode: {mode}",
     "requestScoring": "Nilai ulang",
     "generateCv": "Buat varian CV",
     "generateCvTitle": "Buat CV yang disesuaikan",
     "generateCvBody": "Satu CV yang disesuaikan per lamaran, paling banyak {count} per tindakan.",
     "cvCapped": "Hanya {limit} lamaran pertama yang dibuatkan CV sekaligus.",
-    "queueApply": "Antrekan proses melamar",
     "clear": "Hapus pilihan",
     "summary": "{ok} selesai · {skipped} dilewati · {conflict} berubah di tempat lain · {failed} gagal",
     "details": "Rincian",
@@ -513,9 +471,6 @@
     "illegalReason": "Pemindahan itu tidak diizinkan dari tahapnya sekarang.",
     "liveTask": "Sebuah proses sedang mengerjakannya: pindahkan secara terpisah.",
     "unchanged": "Sudah sesuai.",
-    "alreadyRunning": "Sudah ada proses yang mengantre atau sedang mengerjakannya.",
-    "autoNeedsRule": "Tidak ada aturan otomatis aktif yang cocok.",
-    "setModeAuto": "Mode: Otomatis (hanya yang cocok dengan aturan)",
     "purge": "Hapus permanen",
     "purgeMenu": "Hapus permanen…",
     "purgeTitle": "Hapus {count} lamaran secara permanen?",
@@ -523,7 +478,6 @@
     "purgeSubmission": "Pengiriman sedang berlangsung: tunggu sampai selesai.",
     "purgeLiveTask": "Sebuah proses sedang mengerjakannya: batalkan prosesnya dulu.",
     "purgeAction": "Hapus permanen {count}",
-    "manualMode": "Lamaran manual tidak dapat diantrekan.",
     "scoring": "{queued} masuk antrean penilaian, {cached} sudah dinilai.",
     "scoringFailed": "Tidak dapat meminta penilaian.",
     "status": {
@@ -535,8 +489,6 @@
     "selectAll": "Pilih semua",
     "selectRow": "Pilih {name}",
     "resultsTitleRows": "Hasil per item",
-    "deleteTitle": "Hapus {count} item?",
-    "deleteBody": "Tindakan ini tidak bisa dibatalkan.",
     "delete": "Hapus {count}"
   },
   "followUp": {
@@ -572,14 +524,8 @@
   "detail": {
     "pageTitle": "Lamaran",
     "stage": "Tahap",
-    "mode": "Mode",
-    "modeWhat": "Mode",
     "more": "Tindakan lainnya",
-    "autoNeedsRule": "Otomatis (perlu aturan otomatis yang cocok)",
     "openPosting": "Buka lowongan",
-    "posted": "diunggah {when}",
-    "score": "Skor {score}",
-    "postingOpen": "Lowongan dibuka",
     "postingClosed": "Lowongan ditutup",
     "purge": "Hapus permanen…",
     "purgeTitle": "Hapus lamaran ini secara permanen?",
@@ -594,7 +540,6 @@
     "tabs": {
       "overview": "Ringkasan",
       "cv": "CV",
-      "apply": "Melamar",
       "timeline": "Linimasa",
       "interviews": "Wawancara",
       "offers": "Tawaran",
@@ -606,41 +551,14 @@
     "requirements": "Persyaratan",
     "salary": "Gaji",
     "rail": "Langkah berikutnya dan status",
-    "liveTask": "Tugas berjalan",
-    "updated": "Diperbarui {when}",
-    "openRun": "Buka proses",
-    "evidence": "Pengiriman",
-    "evidenceKind": "Bukti",
-    "evidenceVerdict": "Hasil",
-    "evidenceWhen": "Diambil",
-    "finalUrl": "Halaman akhir",
-    "backToBoard": "Kembali ke papan",
-    "boardNav": "Papan",
     "stale": "Offline — menampilkan data terakhir yang kami terima.",
     "errorTitle": "Lamaran ini gagal dimuat",
-    "error": "Server tidak dapat dihubungi."
+    "error": "Server tidak dapat dihubungi.",
+    "postingClosedShort": "Ditutup"
   },
   "nextStep": {
     "heading": "Langkah berikutnya",
-    "none": "Tidak ada yang perlu Anda kerjakan sekarang.",
-    "why": {
-      "review_outcome": "Proses terakhir berhenti saat mengirim. Beri tahu kami apakah lamaran terkirim.",
-      "confirm_submission": "Proses selesai tetapi tidak dapat memastikannya. Periksa dan konfirmasi.",
-      "approve_submission": "Formulir sudah terisi dan menunggu persetujuan Anda.",
-      "review_cv": "CV yang disesuaikan siap Anda tinjau.",
-      "generate_cv": "Mulailah dengan CV yang disesuaikan untuk lowongan ini.",
-      "start_apply": "Bahan lamaran sudah siap. Mulai melamar.",
-      "add_interview": "Dapat panggilan wawancara? Tambahkan agar linimasa tetap tepat."
-    },
-    "actions": {
-      "review_outcome": "Tinjau hasil",
-      "confirm_submission": "Konfirmasi pengiriman",
-      "approve_submission": "Setujui pengiriman",
-      "review_cv": "Tinjau CV",
-      "generate_cv": "Buat CV",
-      "start_apply": "Mulai melamar",
-      "add_interview": "Tambah wawancara"
-    }
+    "none": "Tidak ada yang perlu Anda kerjakan sekarang."
   },
   "notes": {
     "heading": "Catatan",
@@ -820,7 +738,6 @@
     "rejected": "CV ditolak.",
     "needsPdf": "PDF belum siap. Coba lagi sebentar lagi.",
     "decideFailed": "Tidak dapat menyimpannya.",
-    "openTailored": "Buka CV yang disesuaikan",
     "templates": {
       "basic": "Basic",
       "harvard": "Harvard",
@@ -890,43 +807,17 @@
     "review": "Tinjau",
     "reviewing": "Sedang ditinjau"
   },
-  "apply": {
-    "method": "Cara melamar",
-    "methods": {
-      "browser": "Lewat browser (CLI)",
-      "email": "Lewat email",
-      "manual": "Sendiri"
-    },
-    "browserHelp": "CLI Pilih Jobs mengisi formulir di komputer Anda dengan mode {mode}.",
-    "device": "Perangkat",
-    "anyDevice": "Perangkat saya yang mana saja",
-    "online": "online",
-    "offline": "offline",
-    "noDevice": "Belum ada perangkat yang bisa melamar.",
-    "connectCli": "Hubungkan CLI",
-    "start": "Mulai melamar",
-    "started": "Masuk antrean. Sebuah perangkat akan segera mengambilnya.",
-    "duplicate": "Proses untuk lamaran ini sudah diantrekan atau sedang berjalan.",
-    "refused": "Tidak dimulai: {message}",
-    "startFailed": "Tidak dapat memulai proses.",
-    "manualMode": "Lamaran ini dalam mode Manual. Ubah modenya agar CLI bisa melamar.",
-    "manualHelp": "Melamar sendiri? Catat agar papan tahu lamaran benar-benar terkirim.",
-    "markedApplied": "Dicatat sudah melamar.",
-    "alreadyApplied": "Lamaran ini tercatat sudah terkirim.",
-    "watchRun": "Pantau prosesnya",
-    "alreadyRunning": "Proses untuk lamaran ini sudah antre atau berjalan.",
-    "mode": "Mode",
-    "modeHelp": {
-      "manual": "Anda melamar sendiri; CLI tidak menyentuh formulir.",
-      "assisted": "CLI mengisi formulir; Anda sendiri yang menekan Kirim.",
-      "approval": "CLI mengisi formulir dan meminta persetujuan Anda sebelum mengirim.",
-      "auto": "Aturan otomasi boleh mengirim tanpa bertanya, dalam batasnya."
-    }
-  },
   "profile": {
     "title": "Profil",
-    "intro": "Data yang boleh dipakai agen untuk mengisi formulir, beserta asal setiap nilainya.",
+    "intro": "Data diri, jawaban tersimpan, dan CV Anda, beserta asal setiap nilainya.",
     "tabsLabel": "Bagian profil",
+    "groupHelp": {
+      "contact": "Cara perekrut menghubungi Anda.",
+      "links": "Profil yang Anda sertakan dalam lamaran.",
+      "preferences": "Pekerjaan yang Anda cari."
+    },
+    "saveHint": "Hanya data yang berubah yang disimpan.",
+    "workAuthEmpty": "Belum ada negara.",
     "tabs": {
       "facts": "Fakta",
       "answers": "Jawaban",
@@ -965,6 +856,8 @@
         "age_18_plus": "Saya berusia 18 tahun atau lebih"
       }
     },
+    "suggested": "Saran",
+    "suggestedTitle": "Diambil dari nama lengkap Anda. Simpan untuk memakainya.",
     "sources": {
       "user_entered": "Anda",
       "cv_import": "Dari CV",
@@ -981,13 +874,63 @@
       "none": "Tidak punya izin kerja"
     },
     "addCountry": "Tambah negara",
-    "listHelp": "Pisahkan dengan koma.",
     "save": "Simpan fakta",
     "saved": "Fakta disimpan.",
     "saveFailed": "Tidak dapat menyimpan fakta.",
     "noChanges": "Tidak ada perubahan.",
     "invalid": "Perbaiki isian yang ditandai terlebih dahulu.",
-    "conflict": "Berubah di tempat lain sementara itu: {keys}. Bagian itu tidak disimpan."
+    "conflict": "Berubah di tempat lain sementara itu: {keys}. Bagian itu tidak disimpan.",
+    "factHelp": {
+      "contact": {
+        "full_name": "Sesuai yang tertulis di CV Anda.",
+        "first_name": "Untuk formulir yang memisahkan nama.",
+        "last_name": "Nama keluarga, jika ada.",
+        "email": "Alamat balasan dari perekrut.",
+        "phone": "Lengkap dengan kode negara.",
+        "location": "Kota tempat Anda tinggal.",
+        "country": "Negara tempat Anda tinggal."
+      },
+      "links": {
+        "linkedin": "URL profil publik Anda.",
+        "github": "Untuk posisi engineering.",
+        "portfolio": "Contoh karya Anda.",
+        "website": "Situs pribadi atau blog."
+      },
+      "prefs": {
+        "target_titles": "Pisahkan dengan koma.",
+        "timezone": "Zona waktu kerja pilihan Anda."
+      },
+      "skills": {
+        "extra": "Pisahkan dengan koma."
+      },
+      "eligibility": {
+        "age_18_plus": "Beberapa formulir menanyakannya."
+      }
+    },
+    "factPlaceholder": {
+      "contact": {
+        "full_name": "Nama lengkap Anda",
+        "first_name": "Nama depan",
+        "last_name": "Nama keluarga",
+        "email": "anda@contoh.com",
+        "phone": "+62 812 0000 0000",
+        "location": "Kota",
+        "country": "Negara"
+      },
+      "links": {
+        "linkedin": "https://linkedin.com/in/anda",
+        "github": "https://github.com/anda",
+        "portfolio": "https://anda.dev/karya",
+        "website": "https://anda.dev"
+      },
+      "prefs": {
+        "target_titles": "Frontend Engineer, Web Developer",
+        "timezone": "Asia/Jakarta"
+      },
+      "skills": {
+        "extra": "Figma, SQL, Public speaking"
+      }
+    }
   },
   "answers": {
     "intro": "Jawaban untuk pertanyaan seleksi. Pertanyaan terlindungi tidak pernah dijawab tanpa persetujuan Anda.",
@@ -1062,45 +1005,37 @@
   },
   "settings": {
     "title": "Pengaturan",
-    "intro": "Akun, privasi, dan perilaku otomasi Anda.",
+    "intro": "Akun, bahasa, preferensi AI, dan data Anda.",
     "what": "Pengaturan ini",
     "loadFailed": "Tidak dapat memuat pengaturan Anda.",
+    "sectionsLabel": "Bagian pengaturan",
+    "sections": {
+      "account": "Akun",
+      "language": "Bahasa & wilayah",
+      "ai": "AI",
+      "data": "Data Anda"
+    },
     "account": "Akun",
+    "accountHelp": "Akun yang Anda pakai untuk masuk.",
     "email": "Masuk sebagai",
+    "emailHelp": "Tautan masuk dikirim ke sini.",
     "signOut": "Keluar",
-    "display": "Bahasa dan tema",
+    "signOutHelp": "Mengakhiri sesi di browser ini.",
+    "display": "Bahasa & wilayah",
     "displayHelp": "Bahasa disimpan ke akun Anda.",
     "locale": "Bahasa",
-    "theme": "Tema",
-    "themeLight": "Terang",
-    "themeDark": "Night Desk",
+    "localeHelp": "Dipakai di semua layar.",
+    "localeFailed": "Tidak dapat mengganti bahasa.",
     "timezone": "Zona waktu",
-    "automation": "Otomasi",
-    "automationHelp": "Cara lamaran baru dimulai, dan sakelar untuk menghentikan semuanya.",
-    "defaultMode": "Mode bawaan untuk lamaran baru",
-    "defaultModeHelp": "Persetujuan selalu bertanya sebelum setiap pengiriman.",
-    "paused": "Jeda semua otomasi",
-    "pausedHelp": "Perangkat berhenti mengambil pekerjaan dan tugas yang berjalan dijeda pada detak berikutnya.",
-    "mcp": "Izinkan asisten AI (MCP) menjawab pertanyaan dan menyetujui varian CV",
-    "mcpHelp": "Tidak pernah untuk pengiriman atau aktivasi aturan. Mati secara bawaan.",
+    "timezoneHelp": "Tanggal dan tindak lanjut memakai zona ini, misalnya Asia/Jakarta.",
+    "saveChanges": "Simpan perubahan",
+    "dataHelp": "Ekspor semuanya, atau hapus akun Anda.",
     "ai": "AI",
     "aiHelp": "Penilaian dan penyesuaian CV memakai OpenAI dengan penyimpanan data dimatikan.",
     "aiConsent": "Gunakan fitur AI",
     "aiConsentHelp": "Menilai lowongan terhadap profil Anda dan menyesuaikan CV. Bisa dimatikan kapan saja.",
     "aiSensitive": "Sertakan preferensi seperti gaji dalam penilaian",
     "aiSensitiveHelp": "Data kontak tidak pernah dikirim.",
-    "generatedText": "Izinkan teks buatan AI di formulir",
-    "generatedTextHelp": "Kolom seperti surat lamaran, selalu ditunjukkan kepada Anda untuk disetujui terlebih dahulu.",
-    "evidence": "Bukti",
-    "evidenceHelp": "Apa yang disimpan CLI sebagai bukti bahwa lamaran sudah terkirim.",
-    "screenshots": "Tangkapan layar",
-    "screenshotModes": {
-      "off": "Mati",
-      "on_submit": "Saat mengirim",
-      "all_steps": "Setiap langkah"
-    },
-    "retention": "Simpan bukti selama (hari)",
-    "retentionHelp": "Antara {min} dan {max} hari.",
     "dangerTitle": "Data Anda",
     "exportTitle": "Ekspor data Anda",
     "exportBody": "Kami mengirim tautan ZIP berisi semua data ke email Anda, berlaku 24 jam.",
@@ -1117,82 +1052,14 @@
     "deleteWord": "hapus",
     "deleteAction": "Kirim konfirmasi",
     "deleteRequested": "Periksa email Anda untuk mengonfirmasi penghapusan.",
-    "deleteFailed": "Tidak dapat memulai penghapusan."
+    "deleteFailed": "Tidak dapat memulai penghapusan.",
+    "timezonePlaceholder": "Asia/Jakarta"
   },
   "notFound": {
     "title": "Halaman tidak ditemukan",
     "description": "Halaman ini tidak ada, atau lamaran ini bukan milik Anda.",
     "home": "Buka papan",
     "back": "Kembali"
-  },
-  "approvalKinds": {
-    "submit": "Pengiriman",
-    "answer": "Jawaban",
-    "cv_variant": "CV",
-    "rule_activation": "Aktivasi aturan"
-  },
-  "approvalStates": {
-    "pending": "Menunggu",
-    "approved": "Disetujui",
-    "rejected": "Ditolak",
-    "expired": "Kedaluwarsa"
-  },
-  "taskKinds": {
-    "apply": "Melamar",
-    "discover": "Penemuan",
-    "render_cv": "Render CV"
-  },
-  "runStatuses": {
-    "running": "Berjalan",
-    "completed": "Selesai",
-    "partial": "Sebagian",
-    "failed": "Gagal",
-    "cancelled": "Dibatalkan"
-  },
-  "discoveryErrors": {
-    "network": "Galat jaringan",
-    "timeout": "Waktu habis",
-    "http_5xx": "Galat server",
-    "rate_limited": "Dibatasi",
-    "access_denied": "Akses ditolak",
-    "challenge_detected": "Pemeriksaan bot",
-    "robots_disallowed": "Diblokir robots.txt",
-    "not_found": "Tidak ditemukan",
-    "source_closed": "Papan ditutup",
-    "source_unavailable": "Sumber tidak tersedia",
-    "parse_error": "Gagal dibaca",
-    "schema_invalid": "Format berubah",
-    "selector_drift": "Tata letak halaman berubah",
-    "unsupported_content": "Halaman tidak didukung",
-    "policy_blocked": "Tidak diizinkan",
-    "cancelled": "Dibatalkan"
-  },
-  "inboxStates": {
-    "new": "Baru",
-    "seen": "Dilihat",
-    "dismissed": "Diabaikan",
-    "tracked": "Dilacak"
-  },
-  "platforms": {
-    "macos": "macOS",
-    "windows": "Windows",
-    "linux": "Linux"
-  },
-  "capabilities": {
-    "discover": "Penemuan",
-    "apply": "Melamar",
-    "render_cv": "Render CV",
-    "headed_browser": "Browser terlihat"
-  },
-  "fetchModes": {
-    "json_api": "API resmi",
-    "static_html": "HTML",
-    "browser": "Halaman dinamis"
-  },
-  "postingStatuses": {
-    "open": "Lowongan dibuka",
-    "closed": "Lowongan ditutup",
-    "unknown": "Status tidak diketahui"
   },
   "breakdowns": {
     "source": "Sumber",
@@ -1211,56 +1078,9 @@
     "discovered": "Ditemukan",
     "ai_cost": "Biaya AI"
   },
-  "taskErrors": {
-    "network_offline": "Perangkat sedang offline",
-    "upstream_unavailable": "Server kami tidak tersedia",
-    "browser_crashed": "Browser mogok",
-    "lease_expired": "Perangkat berhenti merespons",
-    "timeout": "Waktu habis",
-    "navigation_timeout": "Halaman terlalu lama dimuat",
-    "page_changed": "Halaman berubah",
-    "selector_not_found": "Kolom tidak ditemukan",
-    "login_required": "Perlu masuk",
-    "captcha_or_challenge": "Pemeriksaan bot",
-    "mfa_required": "Perlu verifikasi dua langkah",
-    "unsupported_form": "Formulir tidak didukung",
-    "prohibited_platform": "Platform tidak diizinkan",
-    "domain_not_allowed": "Situs tidak ada di daftar izin",
-    "policy_violation": "Diblokir aturan keamanan",
-    "validation_errors_unresolved": "Formulir terus menolak sebuah isian",
-    "posting_closed": "Lowongan ditutup",
-    "posting_unavailable": "Lowongan tidak tersedia",
-    "approval_rejected": "Anda menolak pengiriman",
-    "approval_expired": "Persetujuan kedaluwarsa",
-    "cancelled": "Dibatalkan",
-    "missing_information": "Ada jawaban yang kurang",
-    "injection_suspected": "Instruksi halaman mencurigakan",
-    "budget_exceeded": "Anggaran AI habis",
-    "auto_precondition_failed": "Pemeriksaan aturan otomatis gagal",
-    "precheck_failed": "Pemeriksaan awal gagal",
-    "email_application_required": "Lowongan ini menerima lamaran lewat email",
-    "render_failed": "PDF CV gagal dibuat",
-    "artifact_integrity": "Sebuah berkas gagal diperiksa keasliannya",
-    "files_unavailable": "Berkas tidak tersedia",
-    "cdp_non_loopback": "Koneksi browser yang tidak aman ditolak",
-    "device_revoked": "Perangkat telah dikeluarkan"
-  },
   "pages": {
-    "inbox": "Kotak masuk",
-    "job": "Lowongan",
-    "automation": "Otomasi",
-    "approvals": "Persetujuan",
-    "rules": "Aturan",
-    "runs": "Proses",
-    "monitor": "Proses berjalan",
-    "cli": "CLI & perangkat",
-    "sources": "Sumber",
     "stats": "Statistik",
     "render": "Membuat PDF CV"
-  },
-  "copy": {
-    "copy": "Salin perintah",
-    "copied": "Tersalin"
   },
   "render": {
     "working": "Membuat PDF CV Anda",
@@ -1342,1155 +1162,6 @@
       "handed_off": "Diserahkan"
     }
   },
-  "score": {
-    "explanation": {
-      "bands": {
-        "strong": "Sangat cocok",
-        "good": "Cocok",
-        "partial": "Cukup cocok",
-        "weak": "Kurang cocok"
-      },
-      "gateLevel": {
-        "blocking": "⚠ Penghalang",
-        "possible": "⚠ Kemungkinan penghalang"
-      },
-      "gate": {
-        "requires_unavailable_work_authorization": "lowongan mensyaratkan izin kerja yang belum Anda cantumkan",
-        "requires_degree_user_lacks": "lowongan mensyaratkan gelar yang belum Anda cantumkan",
-        "requires_onsite_outside_user_locations": "lowongan di kantor di luar lokasi Anda"
-      },
-      "skills": "Keahlian: {list} ({matched} dari {total} yang diminta)",
-      "skillsNone": "Keahlian: tidak ada dari {total} yang diminta",
-      "skillsMissing": "✗ Belum ada: {list}",
-      "skillsUnknown": "· Keahlian tidak dibandingkan (tidak ada di lowongan atau profil Anda)",
-      "more": "+{count} lainnya",
-      "title": {
-        "exact": "✓ Jabatan sesuai target Anda \"{target}\"",
-        "close": "✓ Jabatan mirip target Anda \"{target}\"",
-        "partial": "~ Jabatan sebagian mirip target Anda \"{target}\"",
-        "differs": "✗ Jabatan berbeda dari target Anda",
-        "none": "· Belum ada target jabatan"
-      },
-      "location": {
-        "remote_in_country": "✓ Remote di negara Anda",
-        "remote_anywhere": "✓ Remote tanpa batas lokasi",
-        "location_match": "✓ Lokasi sesuai preferensi Anda",
-        "hybrid_same_country": "~ Hybrid di negara Anda, kota lain",
-        "remote_outside_region": "✗ Remote hanya di luar negara Anda",
-        "outside_locations": "✗ Lokasi di luar preferensi Anda"
-      },
-      "seniority": "Senioritas: lowongan {posting}, Anda {user}",
-      "seniorityWords": {
-        "intern": "magang",
-        "junior": "junior",
-        "mid": "menengah",
-        "senior": "senior",
-        "lead": "lead",
-        "principal": "principal"
-      },
-      "salary": {
-        "meets": "✓ Gaji memenuhi batas minimum Anda",
-        "slightly": "~ Gaji sedikit di bawah batas minimum Anda",
-        "below": "✗ Gaji di bawah batas minimum Anda"
-      },
-      "languagesMet": "✓ Bahasa: {codes}",
-      "languagesMissing": "✗ Bahasa yang belum ada: {codes}",
-      "freshness": "~ Diposting {days} hari lalu",
-      "aiLevels": {
-        "poor": "buruk",
-        "weak": "lemah",
-        "partial": "sebagian",
-        "good": "baik",
-        "excellent": "sangat baik"
-      },
-      "aiFit": "Kecocokan AI: {label}",
-      "aiFitConfidence": "Kecocokan AI: {label} (keyakinan {confidence}%)",
-      "aiDeclined": "AI menolak menilai",
-      "aiStatus": {
-        "budget": "Pencocokan AI dijeda untuk bulan ini",
-        "error": "Penilaian AI gagal: hanya skor deterministik",
-        "dlq": "AI nonaktif: hanya skor deterministik",
-        "disabled": "Pencocokan AI dimatikan",
-        "skipped": "Tambahkan keahlian ke profil Anda agar pencocokan lebih baik"
-      }
-    }
-  },
-  "automation": {
-    "title": "Otomasi",
-    "intro": "Setujui yang disiapkan CLI, atur aturan, pantau proses.",
-    "tabsLabel": "Bagian otomasi",
-    "tabs": {
-      "approvals": "Persetujuan",
-      "rules": "Aturan",
-      "runs": "Proses"
-    }
-  },
-  "approvals": {
-    "bulk": {
-      "approve": "Setujui…",
-      "reject": "Tolak…",
-      "approveTitle": "Setujui persetujuan yang dipilih?",
-      "rejectTitle": "Tolak persetujuan yang dipilih?",
-      "approveBody": "{send} akan disetujui dan {skipped} dilewati. Pengiriman, jawaban, dan aktivasi aturan ditinjau satu per satu.",
-      "rejectBody": "{send} akan ditolak dan {skipped} dilewati. Pengiriman yang ditolak tidak pernah dikirim.",
-      "approveConfirm": "Setujui {count}",
-      "rejectConfirm": "Tolak {count}",
-      "actionApprove": "Setujui persetujuan",
-      "actionReject": "Tolak persetujuan",
-      "skip": {
-        "notPending": "Sudah diputuskan.",
-        "expired": "Persetujuan ini kedaluwarsa.",
-        "submitReview": "Pengiriman ditinjau satu per satu: buka secara terpisah.",
-        "answerInput": "Perlu jawaban Anda: buka secara terpisah.",
-        "ruleName": "Nama aturan perlu diketik: buka secara terpisah."
-      }
-    },
-    "viewLabel": "Tampilkan",
-    "pending": "Menunggu",
-    "decided": "Sudah diputuskan",
-    "listLabel": "Persetujuan",
-    "keysHint": "J / K untuk berpindah, Y untuk menyetujui, X untuk menolak",
-    "stale": "Offline — menampilkan persetujuan dari {time}",
-    "loadErrorTitle": "Persetujuan gagal dimuat",
-    "loadError": "Periksa koneksi Anda, lalu coba lagi.",
-    "empty": "Tidak ada yang perlu disetujui.",
-    "emptyHelp": "Saat CLI butuh keputusan Anda, permintaannya muncul di sini.",
-    "emptyDecided": "Belum ada keputusan.",
-    "emptyDecidedHelp": "Persetujuan yang Anda putuskan muncul di sini.",
-    "headings": {
-      "submit": "Kirim lamaran ke {company} — {title}",
-      "submitUnknown": "Kirim lamaran ini",
-      "email": "Lamaran lewat email ke {to}",
-      "answer": "Pertanyaan dari {company} — {title}",
-      "answerUnknown": "Pertanyaan dari formulir",
-      "cv": "CV untuk {company} — {title}",
-      "cvUnknown": "CV yang disesuaikan",
-      "rule": "Aktifkan “{name}”"
-    },
-    "expiresIn": "Kedaluwarsa dalam {hours} j {minutes} m",
-    "expired": "Kedaluwarsa",
-    "decidedAt": "{state} {time} lewat {via}",
-    "via": {
-      "web": "web",
-      "cli": "CLI",
-      "mcp": "asisten AI",
-      "unknown": "tidak diketahui"
-    },
-    "fromDevice": "dari {device}",
-    "attempt": "percobaan {n}",
-    "openRun": "Buka prosesnya",
-    "actions": {
-      "approveSubmit": "Setujui dan kirim",
-      "approveEmail": "Setujui email",
-      "sendAnswers": "Kirim jawaban",
-      "approveCv": "Setujui CV",
-      "activate": "Aktifkan aturan",
-      "reject": "Tolak"
-    },
-    "confirm": {
-      "submit": "Kirim lamaran ini ke {company}?",
-      "submitUnknown": "Kirim lamaran ini?",
-      "submitBody": "Ini tidak bisa dibatalkan. Perangkat mengirim formulir persis seperti yang ditampilkan.",
-      "email": "Setujui email ke {to}?",
-      "emailBody": "Setelah itu Anda sendiri yang mengirimnya dari aplikasi email.",
-      "answer": "Kirim jawaban ini?",
-      "answerBody": "Proses mengisinya lalu berlanjut.",
-      "cv": "Setujui CV ini?",
-      "cvBody": "CV ini yang akan dikirim dengan lamaran.",
-      "rule": "Aktifkan “{name}”?"
-    },
-    "reject": {
-      "submit": "Jangan kirim lamaran ini?",
-      "submitBody": "Proses menutup halaman tanpa mengirim. Lamaran tetap di tahapnya.",
-      "answer": "Tolak pertanyaan ini?",
-      "answerBody": "Proses berhenti di pertanyaan ini tanpa menjawabnya.",
-      "cv_variant": "Tolak CV ini?",
-      "cv_variantBody": "Varian ditandai ditolak. Anda bisa membuat yang lain.",
-      "rule_activation": "Biarkan aturan ini nonaktif?",
-      "rule_activationBody": "Aturan tetap nonaktif dan tidak berlaku untuk apa pun."
-    },
-    "done": {
-      "submit": "Disetujui. Perangkat mengirimnya sekarang.",
-      "answer": "Jawaban terkirim. Proses berlanjut.",
-      "cv_variant": "CV disetujui.",
-      "rule_activation": "Aturan diaktifkan.",
-      "rejected": "Ditolak."
-    },
-    "errors": {
-      "title": "Belum diputuskan",
-      "hash_mismatch": "Formulir berubah sejak ini disiapkan. Agen akan meminta lagi.",
-      "already_decided": "Ini sudah diputuskan di perangkat lain atau di CLI.",
-      "rule_changed": "Aturan berubah setelah permintaan ini dibuat. Aktifkan lagi untuk meminta aktivasi baru.",
-      "expired": "Persetujuan ini kedaluwarsa. Proses akan meminta lagi bila masih perlu.",
-      "not_allowed": "Pengiriman otomatis sedang tidak tersedia.",
-      "gone": "Persetujuan ini sudah tidak ada.",
-      "failed": "Keputusan gagal disimpan. Coba lagi."
-    },
-    "filledFields": "Kolom yang diisi",
-    "fieldLabel": "Label",
-    "fieldValue": "Nilai",
-    "fieldSource": "Sumber",
-    "showValues": "Tampilkan data kontak",
-    "hideValues": "Sembunyikan data kontak",
-    "masked": "Disembunyikan. Pilih Tampilkan data kontak untuk membacanya.",
-    "sources": {
-      "fact": "Fakta",
-      "answer": "Bank jawaban",
-      "option": "Opsi formulir",
-      "cv_file": "Varian CV",
-      "cover_letter_file": "Surat lamaran",
-      "generated_text": "Ditulis AI",
-      "user": "Diketik Anda"
-    },
-    "aiWritten": "Ditulis AI",
-    "aiDrafted": "Paragraf rancangan AI",
-    "attachments": "Lampiran",
-    "noAttachments": "Tidak ada lampiran.",
-    "sha": "SHA-256 {sha}… terverifikasi",
-    "screenshot": "Tangkapan layar halaman tinjauan",
-    "screenshotAlt": "Halaman tinjauan formulir seperti yang dilihat perangkat",
-    "screenshotHelp": "Diambil perangkat tepat sebelum meminta persetujuan Anda.",
-    "zoomScreenshot": "Perbesar tangkapan layar",
-    "finalUrl": "URL akhir",
-    "injectionTitle": "Halaman berisi instruksi mencurigakan",
-    "injectionBody": "Periksa setiap nilai sebelum menyetujui. Agen mengabaikan instruksi itu, tetapi isian formulir mungkin keliru.",
-    "emailTo": "Kepada",
-    "emailCc": "Cc",
-    "emailSubject": "Subjek",
-    "emailBody": "Pesan",
-    "recipientConfirmed": "Penerima sudah Anda konfirmasi",
-    "recipientUnconfirmed": "Penerima belum dikonfirmasi",
-    "answerHelp": "Formulir menanyakan hal yang belum ada jawabannya. Jawaban Anda hanya dipakai untuk lamaran ini, kecuali Anda menyimpannya.",
-    "questionFromPage": "Pertanyaan dari halaman:",
-    "required": "Wajib",
-    "suggested": "Saran: {value}",
-    "yourAnswer": "Jawaban Anda",
-    "saveToBank": "Simpan ke bank jawaban saya",
-    "protectedLocked": "Pertanyaan terlindungi tetap terlindungi: tidak pernah dijawab tanpa persetujuan Anda.",
-    "rephrased": "Poin yang ditulis ulang",
-    "cvNotes": "Sebelum menyetujui",
-    "cvPdf": "CV yang disesuaikan (PDF)",
-    "reviewCv": "Tinjau CV di halaman lamaran"
-  },
-  "rules": {
-    "bulk": {
-      "enable": "Aktifkan",
-      "disable": "Nonaktifkan",
-      "delete": "Hapus…",
-      "actionEnable": "Aktifkan aturan",
-      "actionDisable": "Nonaktifkan aturan",
-      "actionDelete": "Hapus aturan",
-      "deleteTitle": "Hapus aturan yang dipilih?",
-      "deleteBody": "Aturan yang dihapus: {count}. Aktivasi yang menunggu ikut kedaluwarsa; proses yang sudah dimulai tetap berjalan. Tindakan ini tidak bisa dibatalkan.",
-      "deleteConfirm": "Hapus {count}",
-      "skip": {
-        "alreadyOn": "Sudah aktif.",
-        "alreadyOff": "Sudah nonaktif.",
-        "needsActivation": "Aturan otomatis diaktifkan satu per satu: gunakan sakelarnya dan ketik namanya untuk mengaktifkan.",
-        "expired": "Kedaluwarsa: ubah aturan untuk memperpanjangnya dulu."
-      }
-    },
-    "intro": "Aturan memulai proses sendiri untuk lowongan yang cocok. Aturan otomatis mengirim tanpa bertanya, dalam batas yang ketat.",
-    "new": "Aturan baru",
-    "newTitle": "Aturan baru",
-    "editTitle": "Ubah aturan",
-    "sheetHelp": "Lowongan mana, berapa banyak, dan di mana agen boleh mengirim.",
-    "what": "Aturan ini",
-    "name": "Nama",
-    "mode": "Mode",
-    "modeHelp": {
-      "assisted": "CLI mengisi formulir; Anda sendiri yang mengirimnya.",
-      "approval": "CLI mengisi formulir dan meminta persetujuan sebelum mengirim.",
-      "auto": "CLI mengirim tanpa bertanya, dalam batas di bawah. Perlu diaktifkan."
-    },
-    "criteria": "Kriteria",
-    "minScore": "Skor minimum: {score}",
-    "minScoreLabel": "Skor minimum",
-    "autoMinScoreHelp": "Aturan otomatis butuh {score} atau lebih.",
-    "keywords": "Kata kunci",
-    "chipsPlaceholder": "Ketik lalu tekan Enter",
-    "titlePatterns": "Pola judul",
-    "titlePatternsPlaceholder": "Frontend*, Web engineer",
-    "companies": "Perusahaan",
-    "excludeCompanies": "Kecuali perusahaan ini",
-    "locations": "Lokasi",
-    "sources": "Sumber",
-    "noSources": "Belum ada sumber. Semua sumber dihitung.",
-    "workplaceTypes": "Tempat kerja",
-    "seniority": "Jenjang",
-    "seniorityLevels": {
-      "intern": "Magang",
-      "junior": "Junior",
-      "mid": "Menengah",
-      "senior": "Senior",
-      "lead": "Lead",
-      "principal": "Principal"
-    },
-    "maxScoreAge": "Skor tidak lebih lama dari (hari)",
-    "maxScoreAgeHelp": "Skor yang lebih lama dihitung ulang sebelum aturan bertindak.",
-    "requireAi": "Hanya lowongan dengan skor kecocokan AI",
-    "excludePossibleGates": "Lewati lowongan yang mungkin terhalang syarat",
-    "blockingAlwaysExcluded": "Lowongan dengan syarat yang kemungkinan besar menghalangi (izin kerja, gelar, lokasi kantor) selalu dilewati.",
-    "limits": "Batas",
-    "maxPerDay": "Lamaran per hari",
-    "maxPerDayHelp": "Paling banyak {max}.",
-    "maxPerCompany": "Per perusahaan dalam 30 hari",
-    "maxPerCompanyHelp": "Paling banyak {max}.",
-    "activeHours": "Hanya pada jam tertentu",
-    "from": "Dari",
-    "to": "Sampai",
-    "expiresOn": "Berakhir pada",
-    "expiryHelp": "Opsional. Aturan berhenti setelah tanggal ini.",
-    "autoExpiryHelp": "Aturan otomatis berlaku paling lama 30 hari; perpanjangan butuh aktivasi baru.",
-    "allowedDomains": "Domain yang diizinkan",
-    "addDomain": "Tambah domain",
-    "domainsHelp": "Opsional. Agen tidak pernah keluar dari situs lamaran lowongan itu.",
-    "domainsAutoHelp": "Wajib untuk aturan otomatis: agen hanya mengirim di situs ini.",
-    "removeChip": "Hapus {value}",
-    "cvPolicy": "CV",
-    "baseCv": "CV dasar",
-    "applicationCv": "CV milik lamaran itu",
-    "tailor": "Sesuaikan CV untuk setiap lowongan",
-    "requireCvApproval": "Minta persetujuan saya untuk setiap CV yang disesuaikan",
-    "enabled": "Aktif",
-    "enableNamed": "Aktifkan {name}",
-    "autoActivationHelp": "Saat disimpan, Anda diminta mengaktifkannya: ketik nama aturan untuk konfirmasi.",
-    "fixProblems": "Perbaiki dulu kolom yang ditandai.",
-    "statusLabel": "Status",
-    "status": {
-      "active": "Berjalan",
-      "off": "Nonaktif",
-      "needs_activation": "Perlu diaktifkan",
-      "expired": "Kedaluwarsa"
-    },
-    "activate": "Aktifkan…",
-    "actionsFor": "Tindakan untuk {name}",
-    "activationNeeded": "Tersimpan. Aktifkan aturan untuk menyalakannya.",
-    "activationWarning": "Lamaran yang dikirimnya tidak bisa ditarik kembali.",
-    "activated": "“{name}” sudah aktif.",
-    "typeName": "Ketik “{name}” untuk konfirmasi",
-    "typeNameHelp": "Persis seperti tertulis, termasuk huruf besar.",
-    "saved": "Aturan tersimpan.",
-    "saveFailed": "Aturan gagal disimpan.",
-    "refused": "Tidak tersimpan: {message}",
-    "deleteTitle": "Hapus “{name}”?",
-    "deleteBody": "Proses yang sudah dimulai tetap berjalan; aturan ini tidak memulai yang baru.",
-    "deleted": "Aturan dihapus.",
-    "deleteFailed": "Aturan gagal dihapus.",
-    "changedMeanwhile": "Aturan berubah sementara itu. Periksa lagi, lalu coba ulang.",
-    "loadErrorTitle": "Aturan gagal dimuat",
-    "loadError": "Periksa koneksi Anda, lalu coba lagi.",
-    "empty": "Belum ada aturan.",
-    "emptyHelp": "Aturan memulai proses untuk lowongan yang cocok, jadi Anda tidak perlu.",
-    "summary": {
-      "score": "skor {score}+",
-      "perDay": "{count} per hari",
-      "perCompany": "{count} per perusahaan dalam 30 hari",
-      "hours": "{start}–{end}",
-      "sentence": "Hingga {count} lamaran per hari ke lowongan di {where} dengan skor {score}+, paling banyak {company} per perusahaan dalam 30 hari.",
-      "sentenceHours": "Hanya antara pukul {start} dan {end}.",
-      "sentenceUntil": "Sampai {date}.",
-      "anywhere": "situs mana pun"
-    },
-    "errors": {
-      "name": "Beri nama aturan (maksimal 120 karakter).",
-      "minScore": "Pilih skor antara 0 dan 100.",
-      "maxScoreAgeDays": "Gunakan 1 sampai 365 hari.",
-      "maxPerDay": "Gunakan 1 sampai 25 per hari.",
-      "maxPerCompany": "Gunakan 1 sampai 3 per perusahaan.",
-      "activeHours": "Gunakan dua jam berbeda dengan format HH:MM.",
-      "expiresPast": "Pilih tanggal setelah hari ini.",
-      "domainInvalid": "Itu bukan domain, contohnya greenhouse.io.",
-      "autoMinScore": "Aturan otomatis butuh skor minimum 70 atau lebih.",
-      "autoNarrow": "Aturan otomatis butuh kata kunci, pola judul, perusahaan, atau sumber.",
-      "autoDomains": "Aturan otomatis butuh minimal satu domain yang diizinkan.",
-      "autoExpiry": "Aturan otomatis butuh tanggal berakhir.",
-      "autoExpiryTooFar": "Aturan otomatis berakhir dalam 30 hari."
-    }
-  },
-  "runs": {
-    "bulk": {
-      "cancel": "Batalkan…",
-      "retry": "Coba lagi…",
-      "cancelTitle": "Batalkan proses yang dipilih?",
-      "cancelBody": "{send} akan dibatalkan dan {skipped} dilewati. Perangkat berhenti sebelum mengirim apa pun.",
-      "retryTitle": "Ulangi proses yang dipilih?",
-      "retryBody": "{send} proses yang gagal diantrekan lagi dan {skipped} dilewati. Proses yang hasilnya tidak diketahui perlu menjawab “Apakah lamaran ini terkirim?” secara terpisah.",
-      "cancelConfirm": "Batalkan {count}",
-      "retryConfirm": "Coba lagi {count}",
-      "actionCancel": "Batalkan proses",
-      "actionRetry": "Ulangi proses",
-      "skip": {
-        "notCancellable": "Sudah selesai.",
-        "alreadyCancelling": "Sedang dihentikan.",
-        "submitting": "Sudah mengirim: terlambat untuk dibatalkan.",
-        "needsAnswer": "Jawab “Apakah lamaran ini terkirim?” di proses ini dulu.",
-        "notRetryable": "Hanya proses yang gagal yang bisa diulang."
-      }
-    },
-    "filter": "Status",
-    "allStates": "Semua status",
-    "stale": "Offline — menampilkan proses dari {time}",
-    "loadErrorTitle": "Proses gagal dimuat",
-    "loadError": "Periksa koneksi Anda, lalu coba lagi.",
-    "empty": "Belum ada proses.",
-    "emptyFiltered": "Tidak ada proses dengan status ini.",
-    "emptyHelp": "Mulai dari tab Melamar di sebuah lamaran, atau biarkan aturan yang menjalankannya.",
-    "kind": "Jenis",
-    "what": "Untuk",
-    "device": "Perangkat",
-    "state": "Status",
-    "attempt": "Percobaan",
-    "attemptOf": "{n} dari {max}",
-    "started": "Dimulai",
-    "duration": "Durasi",
-    "application": "Lamaran",
-    "discoverAll": "Semua sumber aktif",
-    "discoverSources": "{count} sumber",
-    "anyDevice": "Perangkat mana pun",
-    "unknownDevice": "Perangkat yang sudah dihapus",
-    "units": {
-      "s": "dtk",
-      "min": "mnt",
-      "h": "j"
-    },
-    "openMonitor": "Buka proses ({state})",
-    "retry": "Coba lagi",
-    "retryTitle": "Ulangi proses ini?",
-    "retryBody": "Proses baru diantrekan untuk lowongan yang sama. Proses yang gagal tidak mengirim apa pun.",
-    "settleTitle": "Apakah lamaran ini terkirim?",
-    "settleBody": "Periksa email Anda dulu. Proses berhenti setelah mulai mengirim, jadi mungkin sudah terkirim.",
-    "notSubmittedRetry": "Tidak terkirim — coba lagi",
-    "retried": "Proses baru sudah diantrekan.",
-    "cancelRun": "Batalkan proses",
-    "cancelTitle": "Batalkan proses ini?",
-    "cancelBody": "Perangkat berhenti sebelum mengirim apa pun.",
-    "cancelBodySubmitting": "Proses sudah mulai mengirim. Jika tidak sempat berhenti, lamaran ditandai perlu ditinjau.",
-    "keepRunning": "Biarkan berjalan",
-    "cancelRequested": "Pembatalan dikirim ke perangkat.",
-    "actionFailed": "Gagal. Coba lagi.",
-    "refused": "Tidak dilakukan: {message}"
-  },
-  "monitor": {
-    "applyingTo": "Melamar ke {company}",
-    "taskId": "tugas {id}…",
-    "attempt": "percobaan {n} dari {max}",
-    "deviceOnline": "{device} (online)",
-    "deviceOffline": "{device} (offline)",
-    "anyDevice": "Perangkat mana pun milik Anda",
-    "modeLabel": "Mode {mode}",
-    "stale": "Offline — menampilkan proses per {time}",
-    "loadErrorTitle": "Proses gagal dimuat",
-    "loadError": "Periksa koneksi Anda, lalu coba lagi.",
-    "stepsLabel": "Langkah",
-    "stepStatus": {
-      "done": "selesai",
-      "current": "sedang berjalan",
-      "paused": "dijeda",
-      "failed": "berhenti di sini",
-      "unknown": "hasil tidak diketahui",
-      "skipped": "dilewati",
-      "pending": "belum"
-    },
-    "cvReady": "CV siap (sha {sha} terverifikasi)",
-    "cv": {
-      "rendering": "CV sedang dibuat",
-      "missing": "Belum ada CV terlampir"
-    },
-    "current": "Saat ini: {stage}",
-    "currentNone": "Menunggu perangkat memulai",
-    "executor": {
-      "waiting": "Pelaksana: dalam antrean",
-      "running": "Pelaksana: berjalan",
-      "paused": "Pelaksana: dijeda",
-      "pausedReason": "Pelaksana: dijeda ({reason})",
-      "awaitingApproval": "Pelaksana: menunggu persetujuan",
-      "syncPending": "Selesai di perangkat — menunggu sinkronisasi",
-      "finished": "Pelaksana: selesai"
-    },
-    "headed": "browser terlihat",
-    "headless": "browser latar belakang",
-    "browserModes": {
-      "managed": "profil terkelola",
-      "connected": "Chrome Anda",
-      "persistent": "profil tersimpan"
-    },
-    "actions": "{n}/{max} tindakan",
-    "aiCalls": "{n}/{max} AI",
-    "heartbeat": "Sinyal terakhir {seconds} dtk lalu",
-    "notResponding": "Perangkat tidak merespons",
-    "releasedAt": "Proses akan dilepas pukul {time}.",
-    "releasedSoon": "Proses akan segera dilepas.",
-    "cancelling": "Membatalkan — perangkat berhenti pada pemeriksaan berikutnya.",
-    "awaitingTitle": "Menunggu persetujuan Anda",
-    "awaitingBody": "Tinjau di Persetujuan; perangkat mengirim hanya setelah Anda menyetujui.",
-    "pausedTitle": "Dijeda — butuh Anda",
-    "pausedUnknown": "Perangkat menjeda proses. Periksa jendela browser, lalu lanjutkan atau batalkan.",
-    "pauseTitles": {
-      "captcha_or_challenge": "Pemeriksaan bot di situs",
-      "login_required": "Perlu masuk",
-      "account_creation_required": "Perlu membuat akun",
-      "mfa_required": "Verifikasi dua langkah",
-      "credential_field": "Kolom kata sandi",
-      "missing_information": "Informasi kurang",
-      "protected_question": "Pertanyaan terlindungi",
-      "unknown_question": "Pertanyaan baru",
-      "unsupported_form": "Formulir tidak didukung",
-      "unclear_page": "Halaman tidak jelas",
-      "off_domain_navigation": "Keluar dari situs pemberi kerja",
-      "validation_unresolved": "Isian terus ditolak",
-      "stuck_loop": "Berputar-putar",
-      "needs_headed_restart": "Perlu browser yang terlihat",
-      "payment_requested": "Diminta pembayaran",
-      "network_offline": "Perangkat offline",
-      "resource_exhausted": "Batas proses tercapai",
-      "low_confidence": "Kurang yakin",
-      "injection_suspected": "Instruksi mencurigakan",
-      "ai_unavailable": "AI tidak tersedia",
-      "user_requested": "Dijeda oleh Anda"
-    },
-    "pauseActions": {
-      "login": "Masuk (atau selesaikan langkahnya) di jendela browser pada {device}, lalu tekan Lanjutkan di terminal atau di sini.",
-      "challenge": "Selesaikan pemeriksaan di jendela browser pada {device} sendiri, lalu tekan Lanjutkan.",
-      "answer": "Jawab di Persetujuan; proses di {device} berlanjut setelahnya.",
-      "takeover": "Ambil alih di browser pada {device}, atau batalkan proses.",
-      "injection": "Baca teks yang ditandai di bawah sebelum melanjutkan di {device}.",
-      "explain": "Lanjutkan di {device} saat Anda siap, atau batalkan proses."
-    },
-    "flaggedExcerpt": "Teks yang ditandai dari halaman",
-    "openAnswer": "Jawab di Persetujuan",
-    "resume": "Lanjutkan",
-    "resumeAgain": "Kirim lanjutkan lagi",
-    "resumeQueued": "Lanjutkan terkirim — menunggu perangkat",
-    "resumeSent": "Perintah lanjutkan dikirim ke {device}.",
-    "resumeRefused": "Proses sudah tidak dijeda.",
-    "stepLog": "Log langkah",
-    "noLog": "Belum ada langkah yang dilaporkan.",
-    "log": {
-      "created": "Diantrekan",
-      "claimed": "Diambil oleh {device}",
-      "paused": "Dijeda: {reason}",
-      "pausedUnknown": "Dijeda",
-      "finished": "Selesai: {state}",
-      "finishedUnknown": "Selesai",
-      "approvalRequested": "Meminta persetujuan Anda",
-      "approvalDecided": "Persetujuan diputuskan",
-      "submitIntent": "Pengiriman tercatat — perangkat boleh mengirim sekarang",
-      "progress": "Kemajuan",
-      "summary": "{count} langkah baru. Terakhir: {latest}"
-    },
-    "outcome": {
-      "submitted": "Terkirim",
-      "succeeded": "Selesai",
-      "failed": "Proses gagal",
-      "cancelled": "Proses dibatalkan",
-      "outcome_unknown": "Hasil tidak diketahui — perlu ditinjau",
-      "expired": "Proses kedaluwarsa sebelum diambil perangkat"
-    },
-    "submissionNow": "Lamaran: {status}",
-    "evidence": "Bukti",
-    "noEvidence": "Tidak ada bukti yang tercatat.",
-    "settleHelp": "Periksa email atau situs pemberi kerja, lalu beri tahu kami apakah terkirim.",
-    "confirmSubmitted": "Konfirmasi terkirim",
-    "screenshotAlt": "Halaman setelah pengiriman, seperti yang dilihat perangkat",
-    "signals": {
-      "urlMatch": "URL konfirmasi",
-      "domMarker": "Teks konfirmasi",
-      "formGone": "Formulir hilang",
-      "xhr": "Server menerima",
-      "negative": "Galat ditampilkan",
-      "http": "Respons {status}"
-    }
-  },
-  "cliPage": {
-    "title": "CLI & perangkat",
-    "intro": "Komputer Anda menjalankan penemuan lowongan dan lamaran dengan Pilih Jobs CLI. Hubungkan satu, lalu kelola di sini.",
-    "stale": "Offline — menampilkan perangkat yang terakhir terlihat.",
-    "errorTitle": "Perangkat Anda tidak dapat dimuat",
-    "error": "Periksa koneksi Anda lalu coba lagi.",
-    "connectTitle": "Hubungkan komputer Anda",
-    "connectAnother": "Hubungkan komputer lain",
-    "connectIntro": "Pasang CLI, masuk sekali, dan halaman ini menampilkan komputer begitu terhubung.",
-    "connectSteps": "Langkah menghubungkan komputer",
-    "showSteps": "Tampilkan langkah",
-    "hideSteps": "Sembunyikan langkah",
-    "install": {
-      "copy": "Salin",
-      "copiedToast": "Perintah instalasi tersalin.",
-      "copyFailed": "Gagal menyalin. Pilih perintahnya lalu salin sendiri.",
-      "osLabel": "Sistem operasi Anda",
-      "requirements": "Memerlukan Python 3.12 melalui uv (dipasang otomatis oleh skrip instalasi).",
-      "uv": "Belum punya uv? Pasang dulu:",
-      "uvDocs": "Panduan instalasi uv",
-      "alternatives": "Cara lain memasang",
-      "soon": "Segera hadir"
-    },
-    "steps": {
-      "install": {
-        "title": "Pasang",
-        "note": "Jika perintahnya tidak ditemukan setelahnya, jalankan uv tool update-shell lalu buka terminal baru."
-      },
-      "browser": {
-        "title": "Pasang browser",
-        "note": "Sekitar 550 MB (Chromium dan shell tanpa tampilannya)."
-      },
-      "login": {
-        "title": "Masuk",
-        "note": "Jendela browser meminta Anda menyetujui perangkat ini di api.pilihpendidikan.com."
-      },
-      "verify": {
-        "title": "Periksa",
-        "note": "Halaman ini menampilkan perangkat begitu terhubung."
-      },
-      "next": {
-        "title": "Langkah berikutnya",
-        "note": "Lalu jalankan worker agar web bisa memberinya tugas."
-      },
-      "worker": {
-        "title": "Jalankan worker",
-        "note": "Berjalan di latar belakang dan mengambil tugas untuk perangkat ini."
-      }
-    },
-    "login": {
-      "explain": "Jendela browser terbuka dan meminta Anda menyetujui Pilih Jobs CLI di komputer ini, dengan nama komputernya — misalnya {example} — di api.pilihpendidikan.com.",
-      "example": "“laptop-saya ({os})”"
-    },
-    "verify": {
-      "connected": "Terhubung · {name} · baru saja",
-      "countOne": "1 perangkat terhubung.",
-      "countMany": "{count} perangkat terhubung.",
-      "waiting": "Menunggu komputer Anda terhubung…"
-    },
-    "next": {
-      "addSources": "Tambahkan papan lowongan untuk penemuan"
-    },
-    "alternatives": {
-      "pipx": "pipx",
-      "uvx": "uvx (coba tanpa memasang)",
-      "homebrew": "Homebrew",
-      "install_script": "Skrip instalasi"
-    },
-    "troubleshooting": {
-      "title": "Pemecahan masalah",
-      "doctor": "Periksa instalasi",
-      "bundle": "Buat paket dukungan",
-      "no_browser": "Masuk di mesin tanpa layar atau lewat SSH",
-      "sync_status": "Lihat perubahan yang gagal disinkronkan",
-      "keyring": "Di server Linux tanpa keyring desktop, CLI menyimpan sesi masuk Anda di berkas terenkripsi dalam folder datanya.",
-      "wsl": "Di Windows dengan WSL, pasang dan jalankan CLI di dalam WSL; proses masuk membuka tautan di browser Windows Anda."
-    },
-    "stepUp": {
-      "title": "Izin tambahan untuk CLI",
-      "automation_manage": "Setujui pengiriman dan aktifkan aturan dari CLI",
-      "devices_manage": "Kelola perangkat dari CLI"
-    },
-    "activity": {
-      "title": "Aktivitas terbaru",
-      "log": "Log eksekusi",
-      "failed": "Operasi yang gagal",
-      "outbox": "Peringatan outbox",
-      "noRuns": "Belum ada proses.",
-      "task": "Tugas",
-      "state": "Status",
-      "device": "Perangkat",
-      "attempts": "Percobaan",
-      "started": "Dimulai",
-      "anyDevice": "Perangkat mana pun milik saya",
-      "retryOn": "Ulangi di",
-      "retry": "Ulangi",
-      "retryQueued": "Dimasukkan ke antrean lagi. Sebuah perangkat segera mengambilnya.",
-      "retryRefused": "Tidak diulang: {message}",
-      "retryFailed": "Gagal mengulang. Coba lagi.",
-      "noFailures": "Tidak ada kegagalan yang bisa diperbaiki dengan mengulang.",
-      "failedTask": "{reason} · {device} · {time}",
-      "failedRun": "Penemuan: {sources}",
-      "noOutbox": "Semua perangkat sudah sinkron.",
-      "outboxOne": "{name} punya 1 perubahan yang gagal disinkronkan.",
-      "outboxMany": "{name} punya {count} perubahan yang gagal disinkronkan.",
-      "outboxFix": "Jalankan ini di komputer tersebut untuk melihat apa yang tertahan dan sebabnya:"
-    }
-  },
-  "devices": {
-    "title": "Perangkat",
-    "what": "{name}",
-    "actionsFor": "Tindakan untuk {name}",
-    "acceptsTasksFor": "Izinkan {name} mengambil tugas",
-    "status": {
-      "active": "Aktif",
-      "online": "Online",
-      "offlineSince": "Offline · {time}",
-      "offlineNever": "Belum pernah terhubung",
-      "signedOut": "Keluar"
-    },
-    "signedOutReasons": {
-      "user": "Dikeluarkan oleh Anda",
-      "device_revoked": "Keluar — perangkat dihapus",
-      "refresh_reuse": "Perangkat dikeluarkan — penggunaan ulang token yang mencurigakan",
-      "admin": "Dikeluarkan oleh tim dukungan",
-      "account_deleted": "Keluar — akun dihapus"
-    },
-    "version": {
-      "tooOld": "Terlalu lama — wajib diperbarui",
-      "update": "Pembaruan tersedia",
-      "howTo": "Perbarui ke {recommended} di setiap komputer dengan:"
-    },
-    "work": {
-      "task": "{kind} · {state}",
-      "discoveryOne": "Penemuan: 1 sumber",
-      "discoveryMany": "Penemuan: {count} sumber"
-    },
-    "columns": {
-      "name": "Nama",
-      "status": "Status",
-      "lastSync": "Sinkron terakhir",
-      "version": "Versi",
-      "work": "Pekerjaan aktif",
-      "tasks": "Menerima tugas"
-    },
-    "rename": {
-      "action": "Ganti nama",
-      "title": "Ganti nama perangkat",
-      "description": "Nama ini tampil di papan, di proses, dan di persetujuan.",
-      "label": "Nama",
-      "help": "Misalnya MacBook atau Komputer kantor.",
-      "invalid": "Gunakan 1 sampai {max} karakter."
-    },
-    "revoke": {
-      "action": "Cabut",
-      "title": "Cabut {name}?",
-      "confirm": "Cabut perangkat",
-      "signsOut": "Mengeluarkan {name}. Perangkat ini tidak bisa sinkron atau mengambil tugas sampai Anda masuk lagi di sana.",
-      "runningOne": "1 tugas yang berjalan akan dihentikan; jika sudah mulai mengirim, tugas itu ditandai perlu ditinjau.",
-      "runningMany": "{count} tugas yang berjalan akan dihentikan; yang sudah mulai mengirim ditandai perlu ditinjau.",
-      "submitting": "Sedang mengirim: {count}. Periksa lamaran itu setelahnya.",
-      "pinnedOne": "1 tugas dalam antrean untuk perangkat ini akan dibatalkan.",
-      "pinnedMany": "{count} tugas dalam antrean untuk perangkat ini akan dibatalkan.",
-      "idle": "Tidak ada yang sedang berjalan di perangkat ini.",
-      "done": "{name} telah dikeluarkan.",
-      "gone": "Perangkat ini sudah dihapus.",
-      "failed": "Gagal mencabut perangkat. Coba lagi.",
-      "resultReview": "{count} ditandai perlu ditinjau",
-      "resultRequeued": "{count} kembali ke antrean",
-      "resultAwaiting": "{count} masih menunggu persetujuan",
-      "resultCancelled": "{count} dibatalkan"
-    },
-    "bulk": {
-      "tasksOn": "Menerima tugas: ya",
-      "tasksOff": "Menerima tugas: tidak",
-      "revoke": "Cabut",
-      "revokeTitle": "Cabut {count} perangkat?",
-      "revokeConfirm": "Cabut {count}",
-      "signsOut": "Mengeluarkan {count} perangkat. Perangkat itu tidak bisa sinkron atau mengambil tugas sampai Anda masuk lagi di sana.",
-      "idle": "Tidak ada yang sedang berjalan di perangkat itu.",
-      "pinned": "Tugas dalam antrean untuk perangkat itu akan dibatalkan: {count}.",
-      "leavesNone": "Tidak ada komputer yang tetap masuk: penemuan dan pelamaran berhenti sampai Anda masuk lagi dengan CLI.",
-      "skipRevoked": "Sudah dicabut, dilewati: {count}.",
-      "alreadyRevoked": "Sudah dicabut.",
-      "signedOut": "Sudah keluar: masuk lagi di perangkat itu sebelum mengambil tugas.",
-      "unchanged": "Sudah sesuai."
-    }
-  },
-  "sources": {
-    "title": "Sumber",
-    "intro": "Papan lowongan remote yang dicek server kami setiap jam, serta papan lowongan dan halaman karier tempat CLI Anda menemukan lowongan.",
-    "listTitle": "Sumber CLI Anda",
-    "listLabel": "Sumber lowongan",
-    "add": "Tambah sumber",
-    "emptyTitle": "Tambahkan sumber untuk mulai menemukan lowongan",
-    "empty": "Pilih papan lowongan seperti Greenhouse atau Lever, atau halaman karier sebuah perusahaan.",
-    "emptyThen": "Lalu jalankan penemuan dari komputer Anda:",
-    "errorTitle": "Sumber Anda tidak dapat dimuat",
-    "error": "Periksa koneksi Anda lalu coba lagi.",
-    "saved": "{label} ditambahkan.",
-    "refused": "Tidak disimpan: {message}",
-    "saveFailed": "Gagal menyimpan sumber. Coba lagi.",
-    "what": "{label}",
-    "deleted": "{label} dihapus.",
-    "changedMeanwhile": "Sumber ini berubah sementara itu. Periksa lagi lalu coba ulang.",
-    "deleteFailed": "Gagal menghapus sumber. Coba lagi.",
-    "runQueued": "Penemuan masuk antrean. Sebuah perangkat segera mengambilnya.",
-    "runQueuedNoDevice": "Penemuan masuk antrean. Dimulai saat perangkat yang bisa melakukan penemuan terhubung.",
-    "runFailed": "Gagal memulai penemuan. Coba lagi.",
-    "runNow": "Jalankan sekarang",
-    "runNowFor": "Jalankan {label} sekarang",
-    "runOn": "Jalankan di",
-    "anyDevice": "Perangkat mana pun milik saya",
-    "online": "online",
-    "offline": "offline",
-    "noDevice": "Belum ada perangkat yang menerima tugas penemuan. Tugas berjalan begitu ada yang terhubung.",
-    "actionsFor": "Tindakan untuk {label}",
-    "enabledFor": "{label} aktif",
-    "never": "Belum pernah",
-    "disabledBecause": "Nonaktif: {reason}",
-    "disabledReasons": {
-      "challenge": "pemeriksaan bot",
-      "access_denied": "akses ditolak",
-      "rate_limited": "dibatasi"
-    },
-    "excluded": "Tidak didukung — {reason}",
-    "status": {
-      "beta": "Beta",
-      "optIn": "Perlu persetujuan"
-    },
-    "capabilities": {
-      "label": "Kemampuan",
-      "discovery": "Menemukan lowongan dari sebuah papan",
-      "pagination": "Menelusuri halaman hasil: {kind}",
-      "detail": "Mengambil detail setiap lowongan",
-      "incremental": "Hanya mengambil yang berubah: {kinds}"
-    },
-    "pagination": {
-      "none": "tidak ada",
-      "offset": "dengan offset",
-      "cursor": "dengan kursor",
-      "page_links": "dengan tautan halaman berikutnya",
-      "single_response": "satu respons"
-    },
-    "incremental": {
-      "etag": "ETag",
-      "watermark": "waktu pembaruan",
-      "content_hash": "pemeriksaan isi"
-    },
-    "applicationSupport": {
-      "browser_supported": "Melamar di browser dengan CLI",
-      "browser_unsupported": "Melamar sendiri",
-      "external_redirect": "Melamar berpindah ke situs lain",
-      "unknown": "Cara melamar tergantung lowongannya"
-    },
-    "columns": {
-      "label": "Sumber",
-      "adapter": "Adapter",
-      "config": "Papan",
-      "lastRun": "Proses terakhir",
-      "lastSuccess": "Terakhir berhasil",
-      "enabled": "Aktif"
-    },
-    "test": {
-      "title": "Uji sumber ini",
-      "action": "Uji",
-      "explain": "Pengujian berjalan di komputer Anda, tidak pernah di server kami. Perintah ini mengambil papan sekali dan menampilkan temuannya tanpa menyimpan apa pun:",
-      "saveFirst": "Simpan sumber terlebih dahulu; setelah itu Uji menampilkan perintah untuk mencobanya dari komputer Anda."
-    },
-    "delete": {
-      "title": "Hapus {label}?",
-      "body": "Penemuan berhenti memakainya. Lowongan yang sudah ditemukan tetap ada di kotak masuk dan papan Anda."
-    },
-    "bulk": {
-      "enable": "Aktifkan",
-      "disable": "Nonaktifkan",
-      "alreadyEnabled": "Sudah aktif.",
-      "alreadyDisabled": "Sudah nonaktif.",
-      "runNow": "Jalankan sekarang",
-      "disabledSkip": "Sumber nonaktif tidak dijalankan: aktifkan dulu.",
-      "runBatches": "Dikirim sebagai satu tugas penemuan per {max} sumber.",
-      "delete": "Hapus",
-      "deleteTitle": "Hapus {count} sumber?",
-      "deleteBody": "Penemuan berhenti memakainya. Lowongan yang sudah ditemukan tetap ada di kotak masuk dan papan Anda. Tindakan ini tidak bisa dibatalkan.",
-      "gone": "Sumber ini sudah tidak ada di daftar."
-    },
-    "sheet": {
-      "addTitle": "Tambah sumber",
-      "editTitle": "Ubah {label}",
-      "description": "CLI Anda mengambil lowongan publik dari sumber ini, dengan sopan dan sesuai aturan tiap situs.",
-      "adapter": "Asal lowongan",
-      "adapterFixed": "Adapter: {adapter}. Untuk menggantinya, tambahkan sumber baru.",
-      "label": "Nama",
-      "labelHelp": "Tampil di kotak masuk dan di proses. Biarkan kosong untuk memakai saran.",
-      "enabled": "Sertakan dalam penemuan",
-      "add": "Tambah sumber"
-    },
-    "optIn": {
-      "title": "Sumber ini perlu persetujuan Anda",
-      "confirm": "Saya memahami risikonya dan ingin memakai sumber ini",
-      "required": "Centang kotak untuk memakai sumber ini."
-    },
-    "form": {
-      "optional": "{label} (opsional)",
-      "default": "Bawaan",
-      "mapKey": "{field}: nama {n}",
-      "mapValue": "{field}: selektor {n}",
-      "mapKeyPlaceholder": "Kolom",
-      "mapValuePlaceholder": "Selektor",
-      "mapRemove": "Hapus baris {n}",
-      "mapAdd": "Tambah kolom",
-      "errors": {
-        "required": "Wajib diisi.",
-        "pattern": "Gunakan huruf, angka, titik, tanda hubung, atau garis bawah.",
-        "url": "Masukkan alamat web yang diawali https:// atau http://.",
-        "tooLong": "Gunakan paling banyak {max} karakter.",
-        "tooShort": "Gunakan paling sedikit {min} karakter.",
-        "integer": "Masukkan bilangan bulat.",
-        "min": "Masukkan {min} atau lebih.",
-        "max": "Masukkan {max} atau kurang.",
-        "enum": "Pilih salah satu opsi.",
-        "mapKey": "Setiap kolom perlu nama yang unik."
-      }
-    },
-    "options": {
-      "global": "Global",
-      "eu": "Uni Eropa"
-    },
-    "fields": {
-      "greenhouse": {
-        "board_token": "Token papan"
-      },
-      "lever": {
-        "site": "Situs Lever",
-        "region": "Wilayah",
-        "filters": "Filter",
-        "filters_location": "Lokasi",
-        "filters_commitment": "Jenis kerja",
-        "filters_team": "Tim",
-        "filters_department": "Departemen"
-      },
-      "ashby": {
-        "job_board_name": "Nama papan lowongan"
-      },
-      "smartrecruiters": {
-        "company_identifier": "Pengenal perusahaan"
-      },
-      "workable": {
-        "subdomain": "Subdomain"
-      },
-      "workday": {
-        "tenant": "Tenant",
-        "wd_host_number": "Nomor host (wdN)",
-        "site": "Situs karier",
-        "search_text": "Teks pencarian"
-      },
-      "career_page": {
-        "url": "Alamat halaman karier",
-        "item_css": "Selektor item",
-        "fields": "Selektor kolom",
-        "next_css": "Selektor halaman berikutnya",
-        "allow_browser": "Izinkan browser untuk halaman yang memerlukannya"
-      },
-      "generic_listing": {
-        "start_url": "Alamat awal",
-        "detail_url_pattern": "Pola halaman lowongan (ekspresi reguler)",
-        "listing_url_pattern": "Pola halaman daftar (ekspresi reguler)",
-        "max_pages": "Jumlah halaman maksimum",
-        "allow_browser": "Izinkan browser untuk halaman yang memerlukannya"
-      },
-      "custom_url": {
-        "url": "Alamat lowongan",
-        "private": "Jadikan lowongan ini pribadi"
-      }
-    },
-    "hints": {
-      "greenhouse": {
-        "board_token": "Bagian setelah boards.greenhouse.io/, misalnya acme."
-      },
-      "lever": {
-        "site": "Bagian setelah jobs.lever.co/, misalnya globex."
-      },
-      "ashby": {
-        "job_board_name": "Bagian setelah jobs.ashbyhq.com/."
-      },
-      "smartrecruiters": {
-        "company_identifier": "Bagian setelah careers.smartrecruiters.com/."
-      },
-      "workable": {
-        "subdomain": "Bagian setelah apply.workable.com/, dalam huruf kecil."
-      },
-      "workday": {
-        "tenant": "Bagian pertama alamat, misalnya nvidia pada nvidia.wd5.myworkdayjobs.com.",
-        "wd_host_number": "Angka setelah wd pada alamat itu, misalnya 5.",
-        "site": "Nama situs karier di akhir alamat."
-      },
-      "career_page": {
-        "url": "Halaman yang mencantumkan lowongan perusahaan. Data lowongan terstruktur dibaca lebih dulu.",
-        "item_css": "Hanya diperlukan jika halaman tidak memiliki data lowongan terstruktur."
-      },
-      "generic_listing": {
-        "start_url": "Penemuan tetap di situs ini.",
-        "detail_url_pattern": "Cocok dengan alamat satu halaman lowongan.",
-        "max_pages": "Paling banyak 50."
-      },
-      "custom_url": {
-        "url": "Satu lowongan. LinkedIn dan Indeed tidak didukung."
-      }
-    },
-    "runs": {
-      "title": "Proses penemuan",
-      "empty": "Belum ada proses penemuan. Jalankan dari salah satu sumber di atas atau dari komputer Anda.",
-      "error": "Proses penemuan tidak dapat dimuat.",
-      "run": "Proses",
-      "device": "Perangkat",
-      "sources": "Sumber",
-      "status": "Status",
-      "found": "Ditemukan",
-      "new": "Baru",
-      "updated": "Diperbarui",
-      "duplicates": "Duplikat",
-      "invalid": "Tidak valid",
-      "errors": "Galat",
-      "duration": "Durasi",
-      "runningFor": "Berjalan {duration}",
-      "removedDevice": "Perangkat dihapus",
-      "accessDenied": "Akses ditolak oleh {host} · {count}",
-      "errorCount": "{error} · {count}",
-      "statsLine": "{found} ditemukan · {new} baru · {updated} diperbarui · {duplicates} duplikat · {invalid} tidak valid"
-    }
-  },
-  "inbox": {
-    "tabsLabel": "Daftar kotak masuk",
-    "search": "Cari judul atau perusahaan",
-    "listLabel": "Lowongan temuan",
-    "rowLabel": "{title} di {company}",
-    "selectAll": "Pilih semua baris",
-    "selectRow": "Pilih {title} di {company}",
-    "selected": "Dipilih",
-    "notSelected": "Tidak dipilih",
-    "expand": "Tampilkan detail {title}",
-    "collapse": "Sembunyikan detail",
-    "fromRun": "proses",
-    "listings": "{count} sumber",
-    "loadMore": "Muat lagi",
-    "longPressHint": "Tekan dan tahan lowongan untuk memilih beberapa.",
-    "stale": "Offline — menampilkan data dari {time}",
-    "errorTitle": "Kotak masuk gagal dimuat",
-    "error": "Kami tidak dapat menghubungi server.",
-    "columns": {
-      "details": "Detail",
-      "score": "Skor",
-      "title": "Judul",
-      "company": "Perusahaan",
-      "location": "Lokasi",
-      "source": "Sumber",
-      "seen": "Ditemukan",
-      "duplicates": "Duplikat"
-    },
-    "filters": {
-      "minScore": "Skor min.",
-      "source": "Sumber",
-      "anySource": "Semua sumber",
-      "workplace": "Tempat kerja",
-      "anyWorkplace": "Semua tempat kerja",
-      "posted": "Diunggah",
-      "anyTime": "Kapan saja",
-      "postedWithin": "{days} hari terakhir",
-      "score": "Skor",
-      "anyScore": "Semua skor",
-      "bands": {
-        "high": "80 ke atas",
-        "mid": "60–79",
-        "low": "Di bawah 60",
-        "unscored": "Belum dinilai"
-      },
-      "gates": "Penghalang",
-      "hideBlockers": "Sembunyikan kemungkinan penghalang",
-      "clear": "Hapus filter ({count})"
-    },
-    "score": {
-      "heading": "Kecocokan",
-      "label": "Skor {score}, lihat alasannya",
-      "none": "Belum dinilai",
-      "loading": "Memuat rinciannya…",
-      "unavailable": "Rinciannya belum tersedia.",
-      "weight": "bobot {weight}",
-      "components": {
-        "label": "Komponen skor",
-        "skills_overlap": "Keahlian",
-        "title_similarity": "Jabatan",
-        "location_fit": "Lokasi",
-        "seniority_fit": "Senioritas",
-        "salary_fit": "Gaji",
-        "language_fit": "Bahasa",
-        "freshness": "Kebaruan",
-        "ai": "Kecocokan AI"
-      }
-    },
-    "details": {
-      "provenance": "Asal data",
-      "adapter": "Adaptor",
-      "version": "v{version}",
-      "fetchMode": "Cara pengambilan",
-      "run": "Proses penemuan",
-      "confidence": "Keyakinan ekstraksi",
-      "firstSeen": "Pertama dilihat",
-      "lastSeen": "Terakhir dilihat",
-      "status": "Status lowongan",
-      "source": "Sumber Anda",
-      "unknown": "Tidak diketahui",
-      "duplicates": "Juga dicantumkan oleh",
-      "noDuplicates": "Tidak ada sumber lain yang mencantumkan lowongan ini.",
-      "duplicateGroup": "{count} lowongan serupa dari sumber lain",
-      "openJob": "Buka lowongan"
-    },
-    "selection": {
-      "label": "Lowongan terpilih",
-      "count": "{count} dipilih",
-      "track": "Lacak",
-      "dismiss": "Abaikan",
-      "score": "Nilai",
-      "seen": "Tandai dilihat",
-      "restore": "Pulihkan",
-      "clear": "Batalkan pilihan",
-      "working": "Memproses…"
-    },
-    "bulk": {
-      "done": {
-        "track": "{count} dilacak",
-        "dismiss": "{count} diabaikan",
-        "seen": "{count} ditandai dilihat",
-        "score": "Menilai {count}",
-        "restore": "{count} dipulihkan"
-      },
-      "already": {
-        "track": "{count} sudah dilacak",
-        "dismiss": "{count} sudah diabaikan",
-        "seen": "{count} sudah dilihat",
-        "score": "{count} sudah dinilai",
-        "restore": "{count} sudah ada di kotak masuk"
-      },
-      "conflicts": "{count} sudah dilacak, tidak diabaikan",
-      "failed": "{count} gagal",
-      "open": "Buka",
-      "error": "Gagal diproses. Coba lagi."
-    },
-    "strip": {
-      "label": "Proses penemuan terakhir",
-      "run": "Proses di {device} · {time}",
-      "found": "{count} ditemukan",
-      "new": "{count} baru",
-      "updated": "{count} diperbarui",
-      "invalid": "{count} tidak valid",
-      "blocked": "{count} diblokir ({list})",
-      "running": "Penemuan sedang berjalan di {device}. Lowongan baru muncul di sini saat tiba.",
-      "unknownDevice": "sebuah perangkat",
-      "open": "Lihat proses"
-    },
-    "empty": {
-      "noSourcesTitle": "Belum ada sumber",
-      "noSources": "Tambahkan sumber untuk mulai menemukan lowongan.",
-      "addSource": "Sumber",
-      "noRunsTitle": "Belum ada proses penemuan",
-      "noRuns": "Jalankan penemuan dari CLI Anda.",
-      "noRunsHelp": "Belum disiapkan?",
-      "connectCli": "Hubungkan CLI",
-      "caughtUpTitle": "Semua sudah ditinjau",
-      "caughtUp": "Tidak ada lowongan baru. Proses terakhir {when}.",
-      "caughtUpNoRun": "Tidak ada lowongan baru.",
-      "noMatchesTitle": "Tidak ada yang cocok",
-      "noMatches": "Tidak ada lowongan di daftar ini yang cocok dengan filter.",
-      "clearFilters": "Hapus filter",
-      "emptyTabTitle": "Belum ada apa-apa",
-      "emptySeen": "Lowongan yang Anda tandai dilihat muncul di sini.",
-      "emptyDismissed": "Lowongan yang Anda abaikan muncul di sini."
-    },
-    "intro": "Lowongan dari CLI-mu dan papan lowongan remote yang kamu ikuti, paling cocok di atas."
-  },
-  "trackedJob": {
-    "back": "Kotak masuk",
-    "track": "Lacak",
-    "tracking": "Melacak…",
-    "dismiss": "Abaikan",
-    "dismissedHelp": "Anda mengabaikan lowongan ini. Lacak untuk tetap memasukkannya ke papan.",
-    "noScore": "Belum dinilai.",
-    "redirecting": "Membuka lamaran…",
-    "errorTitle": "Lowongan ini gagal dimuat"
-  },
   "stats": {
     "intro": "Perkembangan lamaran Anda: apa yang Anda lamar, siapa yang membalas, dan berapa lama.",
     "dataTable": "Tabel data",
@@ -2505,7 +1176,13 @@
       "interviews": "Wawancara",
       "interviewRate": "Tingkat wawancara {rate}",
       "offers": "Tawaran",
-      "offerRate": "Tingkat tawaran {rate}"
+      "offerRate": "Tingkat tawaran {rate}",
+      "points": "{value} poin",
+      "vsPrevious": "Vs periode sebelumnya:",
+      "noPrevious": "Sepanjang waktu: tanpa periode sebelumnya",
+      "menu": "Lainnya untuk {label}",
+      "openBoard": "Buka papan",
+      "copy": "Salin angka"
     },
     "unconfirmed": {
       "one": "1 pengiriman belum terkonfirmasi",
@@ -2584,18 +1261,6 @@
       "n": "Lamaran",
       "empty": "Belum ada yang bisa dibandingkan pada periode ini."
     },
-    "automation": {
-      "title": "Otomasi",
-      "description": "{count} proses melamar selesai pada periode ini.",
-      "none": "Belum ada proses melamar yang selesai pada periode ini.",
-      "statesLabel": "Proses melamar menurut hasil",
-      "ratesLabel": "Keandalan",
-      "successRate": "Tingkat keberhasilan",
-      "verifiedRatio": "Pengiriman terverifikasi",
-      "pauseRate": "Proses yang butuh bantuan Anda",
-      "failures": "Penyebab proses gagal",
-      "seeRuns": "Lihat prosesnya"
-    },
     "range": {
       "label": "Periode",
       "presets": {
@@ -2605,328 +1270,19 @@
         "all": "Sepanjang waktu",
         "custom": "Pilih sendiri"
       },
-      "from": "Dari",
-      "to": "Sampai",
-      "span": "{from} sampai {to}"
+      "span": "{from} sampai {to}",
+      "presetsLabel": "Rentang cepat"
     },
     "empty": {
       "title": "Belum ada yang bisa dihitung",
       "body": "Tidak ada lamaran pada periode ini. Coba periode yang lebih panjang, atau lacak lowongan dan catat lamaran Anda.",
-      "bodyAllTime": "Lacak lowongan dari kotak masuk atau tambahkan lewat URL, lalu catat lamaran Anda. Angkanya muncul di sini.",
+      "bodyAllTime": "Tambahkan lowongan lewat URL, lalu catat lamaran Anda. Angkanya muncul di sini.",
       "board": "Buka papan",
-      "inbox": "Buka kotak masuk",
       "allTime": "Tampilkan sepanjang waktu"
     },
     "error": {
       "title": "Statistik gagal dimuat",
       "body": "Periksa koneksi Anda, lalu coba lagi."
     }
-  },
-  "cloudSources": {
-    "title": "Papan lowongan remote",
-    "intro": "Papan lowongan remote publik yang dicek server kami setiap jam, dengan sopan dan sesuai aturan tiap situs. Ikuti sebuah papan agar lowongan barunya masuk ke kotak masuk Anda; tidak ada yang diambil dari balik login.",
-    "listLabel": "Papan lowongan remote",
-    "empty": "Belum ada papan di katalog.",
-    "noMatch": "Tidak ada papan yang cocok dengan filter ini.",
-    "errorTitle": "Gagal memuat papan lowongan remote",
-    "error": "Periksa koneksi Anda lalu coba lagi.",
-    "stale": "Offline: menampilkan data lama",
-    "never": "Belum pernah",
-    "what": "{name}",
-    "refused": "Tidak dilakukan: {message}",
-    "statusWithReason": "{status}: {reason}",
-    "openDetails": "Buka {name}",
-    "lastRunWas": "Run terakhir: {status}",
-    "newLastRun": "+{count} run terakhir",
-    "statuses": {
-      "ACTIVE": "Aktif",
-      "DISABLED": "Nonaktif",
-      "SCRAPING": "Sedang dicek",
-      "FAILED": "Gagal",
-      "BLOCKED": "Diblokir",
-      "AUTH_REQUIRED": "Perlu akun",
-      "RATE_LIMITED": "Dibatasi",
-      "UNSUPPORTED": "Bukan papan lowongan"
-    },
-    "categories": {
-      "job_board": "Papan lowongan",
-      "aggregator": "Agregator",
-      "freelance_marketplace": "Marketplace freelance",
-      "talent_network": "Jaringan talenta",
-      "staffing_service": "Layanan penyalur",
-      "tutoring_platform": "Platform les",
-      "content_marketplace": "Marketplace konten",
-      "community": "Komunitas",
-      "directory": "Direktori",
-      "defunct": "Sudah tutup",
-      "unknown": "Belum diklasifikasi"
-    },
-    "strategies": {
-      "json_api": "API publik",
-      "rss": "Feed RSS",
-      "json_ld": "Data terstruktur",
-      "embedded_json": "Data dalam halaman",
-      "html_selectors": "Selektor halaman",
-      "browser": "Render browser",
-      "ai": "Ekstraksi AI",
-      "none": "Tidak diambil"
-    },
-    "strategyHelp": {
-      "json_api": "Endpoint publik terdokumentasi yang mengembalikan lowongan sebagai data. Konfigurasi: url, items_path, fields.",
-      "rss": "Feed RSS atau Atom berisi lowongan. Konfigurasi: url, title_pattern, serta kolom perusahaan / lokasi opsional.",
-      "json_ld": "Halaman detail dengan data schema.org JobPosting. Konfigurasi: listing_url, detail_link_selector.",
-      "embedded_json": "Lowongan di dalam skrip halaman seperti __NEXT_DATA__. Konfigurasi: url, items_path, fields.",
-      "html_selectors": "Selektor CSS pada halaman daftar, dengan relokasi adaptif saat tata letak berubah. Konfigurasi: url, item, fields.",
-      "browser": "Seperti selektor halaman, setelah halaman dirender di browser headless. Render browser harus diizinkan.",
-      "ai": "Teks halaman dibaca oleh cadangan AI; hanya dipakai bila ekstraksi AI aktif dan masih dalam anggaran. Konfigurasi: url.",
-      "none": "Papan tercantum tetapi tidak pernah diambil."
-    },
-    "origins": {
-      "default": "Bawaan",
-      "directory": "Direktori",
-      "operator": "Ditambahkan"
-    },
-    "runStatuses": {
-      "queued": "Antre",
-      "running": "Berjalan",
-      "succeeded": "Berhasil",
-      "partial": "Sebagian",
-      "failed": "Gagal",
-      "blocked": "Diblokir",
-      "auth_required": "Perlu akun",
-      "rate_limited": "Dibatasi",
-      "unsupported": "Tidak didukung",
-      "skipped": "Dilewati"
-    },
-    "errors": {
-      "network": "Galat jaringan",
-      "timeout": "Waktu habis",
-      "http_5xx": "Galat server",
-      "rate_limited": "Dibatasi",
-      "access_denied": "Akses ditolak",
-      "challenge_detected": "Pemeriksaan bot",
-      "robots_disallowed": "Diblokir robots.txt",
-      "not_found": "Tidak ditemukan",
-      "source_closed": "Papan ditutup",
-      "source_unavailable": "Sumber tidak tersedia",
-      "parse_error": "Gagal dibaca",
-      "schema_invalid": "Format berubah",
-      "selector_drift": "Tata letak halaman berubah",
-      "unsupported_content": "Halaman tidak didukung",
-      "policy_blocked": "Tidak diizinkan",
-      "cancelled": "Dibatalkan",
-      "auth_required": "Perlu login",
-      "engine_unavailable": "Scraper tidak tersedia",
-      "invalid_config": "Konfigurasi tidak valid",
-      "operatorOnly": "Hanya operator katalog yang bisa melakukan ini."
-    },
-    "diagnostics": {
-      "challenge": "Situs menampilkan pemeriksaan bot kepada crawler yang jujur. Pilih tidak pernah menembusnya; operator bisa mencoba lagi nanti atau menonaktifkan sumber ini.",
-      "denied": "Situs menolak akses crawler kami. Pilih berhenti alih-alih memaksa; operator bisa mencoba lagi nanti atau menonaktifkan sumber ini.",
-      "auth": "Lowongan hanya terlihat dengan akun di situs itu. Pilih tidak pernah login atau mengumpulkan kata sandi, jadi papan ini tidak diambil.",
-      "robots": "robots.txt situs tidak mengizinkan daftar lowongan dirayapi, jadi Pilih membiarkannya.",
-      "rate_limited": "Situs meminta kami memperlambat. Pengecekan berikutnya menunggu sampai diizinkan.",
-      "rate_limitedUntil": "Situs meminta kami memperlambat. Pengecekan berikutnya menunggu sampai {at}.",
-      "layout": "Tata letak halaman atau format data berubah dan tidak ada lowongan yang terbaca. Operator bisa memperbarui konfigurasi strategi lalu mencoba lagi.",
-      "engine": "Scraper kami tidak dapat dihubungi. Run akan dicoba ulang otomatis.",
-      "config": "Konfigurasi strategi tidak valid. Operator perlu memperbaikinya.",
-      "transient": "Masalah jaringan atau server sementara. Run dicoba ulang otomatis dengan jeda yang makin panjang.",
-      "gone": "Halaman daftar lowongan sudah tidak ada. Papan mungkin pindah atau tutup.",
-      "policy": "Sumber ini tidak diizinkan oleh aturan penemuan Pilih.",
-      "other": "Run terakhir tidak selesai. Lihat lognya di bawah."
-    },
-    "intervals": {
-      "m60": "Setiap jam",
-      "m120": "Setiap 2 jam",
-      "m180": "Setiap 3 jam",
-      "m360": "Setiap 6 jam",
-      "m720": "Setiap 12 jam",
-      "m1440": "Setiap hari",
-      "m10080": "Setiap minggu",
-      "custom": "Setiap {minutes} menit"
-    },
-    "next": {
-      "scraping": "Sedang dicek",
-      "due": "Pada run per jam berikutnya",
-      "breaker": "Dijeda setelah gagal; dicoba lagi {time}",
-      "paused": {
-        "pipeline_off": "Dijeda: penemuan cloud mati",
-        "disabled": "Dijeda: nonaktif",
-        "breaker": "Dijeda setelah gagal",
-        "needs_retry": "Menunggu operator",
-        "unsupported": "Tidak diambil",
-        "no_strategy": "Tidak diambil"
-      }
-    },
-    "columns": {
-      "board": "Papan",
-      "type": "Jenis",
-      "status": "Status",
-      "lastSuccess": "Terakhir berhasil",
-      "nextRun": "Cek berikutnya",
-      "jobs": "Lowongan",
-      "successRate": "Tingkat berhasil",
-      "follow": "Ikuti",
-      "checks": "Pengecekan"
-    },
-    "filters": {
-      "status": "Status",
-      "following": "Diikuti",
-      "search": "Cari papan",
-      "searchPlaceholder": "Cari nama atau domain",
-      "groups": {
-        "all": "Semua",
-        "active": "Aktif",
-        "attention": "Perlu perhatian",
-        "inactive": "Tidak didukung dan nonaktif"
-      }
-    },
-    "pipeline": {
-      "offTitle": "Penemuan cloud sedang mati",
-      "off": "Papan sedang tidak dicek. Mengikuti tetap bisa; lowongan baru masuk setelah dinyalakan.",
-      "offOperator": "Papan sedang tidak dicek. Nyalakan feature flag {flag} untuk memulai run per jam.",
-      "schedule": "Dicek setiap jam",
-      "directoryRefreshed": "direktori diperbarui {time}"
-    },
-    "directory": {
-      "refresh": "Perbarui direktori",
-      "queued": "Pembaruan direktori diantrekan. Papan baru muncul setelah dicek.",
-      "failed": "Gagal mengantrekan pembaruan direktori. Coba lagi."
-    },
-    "add": {
-      "open": "Tambah papan",
-      "title": "Tambah papan lowongan remote",
-      "description": "Pilih mengecek situs lebih dulu: robots.txt, feed, data terstruktur, dan apakah lowongan memerlukan akun.",
-      "name": "Nama",
-      "nameRequired": "Isi nama.",
-      "url": "Situs web",
-      "urlHelp": "Halaman utama papan atau halaman lowongannya.",
-      "listingUrl": "Halaman daftar lowongan (opsional)",
-      "category": "Kategori",
-      "strategy": "Strategi",
-      "detect": "Deteksi otomatis",
-      "submit": "Tambah dan cek",
-      "added": "{name} ditambahkan. Situs sedang dicek.",
-      "failed": "Gagal menambah papan. Coba lagi.",
-      "duplicate": "Papan ini sudah ada di katalog.",
-      "probeStatus": "Cek situs:",
-      "probeHelp": "Papan diklasifikasi dalam beberapa menit; papan muncul di daftar beserta statusnya.",
-      "urlProblems": {
-        "empty": "Isi alamat web papan.",
-        "invalid": "Isi alamat web lengkap, misalnya https://jobs.example.com.",
-        "scheme": "Gunakan alamat yang diawali https:// atau http://.",
-        "credentials": "Jangan sertakan nama pengguna atau kata sandi.",
-        "local": "Gunakan situs publik, bukan alamat lokal atau privat."
-      }
-    },
-    "follow": {
-      "label": "Ikuti papan ini",
-      "help": "Lowongan barunya masuk ke kotak masuk Anda dan dinilai untuk Anda. Berhenti mengikuti tidak menghapus yang sudah ada.",
-      "switchFor": "Ikuti {name}",
-      "followed": "Mengikuti {name}.",
-      "unfollowed": "Berhenti mengikuti {name}.",
-      "backfilled": "Mengikuti {name}: {count} lowongan terbaru ditambahkan ke kotak masuk Anda.",
-      "failed": "Gagal mengubah status mengikuti {name}. Coba lagi."
-    },
-    "run": {
-      "now": "Jalankan sekarang",
-      "retry": "Coba lagi",
-      "probe": "Cek ulang situs",
-      "queued": "{name} diantrekan untuk dicek.",
-      "retryQueued": "{name}: pemutus dibuka kembali dan percobaan ulang diantrekan.",
-      "probeQueued": "{name}: cek situs diantrekan.",
-      "failed": "Gagal mengantrekan run. Coba lagi."
-    },
-    "retry": {
-      "title": "Coba lagi {name}?",
-      "body": "Ini mengosongkan hitungan gagal, menutup pemutus dan mencabut status diblokir, perlu login, atau dibatasi, lalu mengantrekan pengecekan. Jika situs masih menolak crawler yang jujur, sumber berhenti lagi.",
-      "confirm": "Coba lagi sekarang"
-    },
-    "editor": {
-      "title": "Pengaturan operator",
-      "intro": "Perubahan berlaku untuk semua yang mengikuti papan ini dan tetap dipertahankan saat direktori diperbarui.",
-      "enabled": "Aktif",
-      "enabledHelp": "Papan nonaktif tidak pernah dicek dan tetap nonaktif setelah direktori diperbarui.",
-      "priority": "Prioritas",
-      "priorityHelp": "0 sampai 100; yang lebih tinggi berjalan lebih dulu.",
-      "priorityError": "Isi bilangan bulat dari 0 sampai 100.",
-      "interval": "Cek setiap",
-      "strategy": "Strategi ekstraksi",
-      "config": "Konfigurasi strategi (JSON)",
-      "configSyntax": "Ini bukan JSON yang valid.",
-      "configInvalid": "Konfigurasi tidak cocok dengan strategi ini:",
-      "configValid": "Valid untuk strategi ini.",
-      "rateTitle": "Batas kesopanan",
-      "rateDefault": "Bawaan",
-      "rangeError": "Isi bilangan bulat dari {min} sampai {max}.",
-      "rate": {
-        "minDelayMs": "Jeda antarpermintaan (ms)",
-        "maxPages": "Halaman daftar per run",
-        "maxItems": "Lowongan per run",
-        "maxDetails": "Halaman detail per run"
-      },
-      "ai": "Cadangan ekstraksi AI",
-      "aiHelp": "Hanya bila ekstraksi deterministik tidak menemukan apa pun, AI aktif secara global, dan masih dalam anggaran bulanan.",
-      "browser": "Izinkan render browser",
-      "browserHelp": "Merender halaman di browser headless untuk situs yang membangun daftar lowongan dengan JavaScript. Lebih lambat; pakai hanya bila perlu.",
-      "health": "Kondisi",
-      "healthKeep": "Pertahankan",
-      "healthActive": "Aktif (aktifkan lagi)",
-      "healthUnsupported": "Bukan papan lowongan (pensiunkan)",
-      "authRequired": "Lowongan perlu akun",
-      "statusReason": "Catatan status",
-      "authNote": "Catatan akun",
-      "reset": "Atur ulang"
-    },
-    "sheet": {
-      "stats": "Statistik",
-      "runs": "Run",
-      "avgDuration": "Durasi rata-rata",
-      "jobs": "Lowongan ditemukan",
-      "jobsValue": "{total} ({open} masih buka)",
-      "newLastRun": "Baru di run terakhir",
-      "followers": "Pengikut",
-      "confidence": "Keyakinan ekstraksi",
-      "warnings": "Peringatan di run terakhir",
-      "aiCalls": "Panggilan AI",
-      "listing": "Halaman daftar",
-      "terms": "Ketentuan",
-      "termsLink": "Baca ketentuan situs",
-      "attribution": "Atribusi",
-      "authTitle": "Perlu akun",
-      "authBody": "Papan ini hanya menampilkan lowongan kepada pengguna yang login. Pilih tidak pernah login atas nama Anda."
-    },
-    "runs": {
-      "title": "Run terbaru",
-      "loading": "Memuat run…",
-      "none": "Belum ada run.",
-      "error": "Gagal memuat run.",
-      "loadMore": "Muat run lama",
-      "showLog": "Tampilkan log ({count})",
-      "hideLog": "Sembunyikan log",
-      "warnings": "Peringatan",
-      "log": "Log run",
-      "http": "HTTP {status}",
-      "counts": "{found} ditemukan, {added} baru, {updated} diperbarui",
-      "directoryCounts": "{entries} entri, {registered} papan baru",
-      "confidence": "keyakinan {value}%",
-      "attempt": "percobaan {n}",
-      "levels": {
-        "info": "Info",
-        "warn": "Peringatan",
-        "error": "Galat"
-      },
-      "triggers": {
-        "schedule": "Terjadwal",
-        "manual": "Manual",
-        "retry": "Coba lagi"
-      },
-      "kinds": {
-        "scrape": "Pengambilan",
-        "directory": "Pembaruan direktori",
-        "probe": "Cek situs"
-      }
-    },
-    "nextPrefix": "Berikutnya:"
   }
 }

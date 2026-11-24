@@ -7,6 +7,7 @@
     "ogImageAlt": "Generator Faktur oleh Bahrul Bangsawan — pembuat faktur online gratis dengan pratinjau langsung"
   },
   "toolbar": {
+    "moreActions": "Aksi dokumen",
     "importJson": "Impor JSON",
     "loadSample": "Muat Contoh Faktur",
     "download": "Unduh",
@@ -17,10 +18,6 @@
     "moreFormats": "Format unduhan lainnya",
     "clearAll": "Hapus Semua",
     "mcp": "MCP"
-  },
-  "theme": {
-    "toLight": "Beralih ke mode terang",
-    "toDark": "Beralih ke mode gelap"
   },
   "confirm": {
     "title": "Hapus semua data?",
@@ -49,6 +46,11 @@
     "signedInAs": "Masuk sebagai {email}. Perubahan pada invoice yang dimuat tersimpan otomatis.",
     "tokenNotRecognized": "Token tidak dikenali — buat yang baru.",
     "tokenOptional": "Opsional. Tanpa token, perubahan hanya tersimpan di browser ini."
+  },
+  "pageHeader": {
+    "area": "Pembuat dokumen",
+    "title": "Invoice",
+    "lead": "Isi data usaha, klien, dan pekerjaan Anda; totalnya dihitung otomatis saat Anda mengetik."
   },
   "form": {
     "invoiceDetails": "Detail Faktur",
@@ -80,8 +82,8 @@
     "type": "Tipe",
     "mode": "Mode",
     "addAdjustment": "Tambah Penyesuaian",
-    "typeAdd": "+ Tambah",
-    "typeDeduct": "- Kurangi",
+    "typeAdd": "Tambah",
+    "typeDeduct": "Kurangi",
     "modeFixed": "Tetap",
     "modePercentage": "%",
     "notesSettings": "Catatan & Pengaturan",
@@ -95,7 +97,24 @@
     "postalCode": "Kode Pos",
     "country": "Negara",
     "period": "Periode",
-    "itemFallback": "Item {n}"
+    "itemFallback": "Item {n}",
+    "datePresets": {
+      "today": "Hari ini",
+      "tomorrow": "Besok",
+      "inAWeek": "Seminggu lagi",
+      "in14Days": "14 hari lagi",
+      "in30Days": "30 hari lagi",
+      "last7Days": "7 hari terakhir",
+      "last30Days": "30 hari terakhir",
+      "thisMonth": "Bulan ini",
+      "lastMonth": "Bulan lalu",
+      "thisYear": "Tahun ini",
+      "label": "Pilihan cepat",
+      "clearDate": "Hapus tanggal",
+      "clearPeriod": "Hapus periode"
+    },
+    "modePercent": "Persentase",
+    "itemsEmpty": "Belum ada item. Tambahkan setiap jasa atau produk yang ditagihkan."
   },
   "placeholders": {
     "invoiceNumber": "IN-00000001",
@@ -124,7 +143,8 @@
     "stateSender": "California",
     "cityRecipient": "Jakarta",
     "stateRecipient": "DKI Jakarta",
-    "postalCode": "Kode Pos"
+    "postalCode": "Kode Pos",
+    "selectDate": "Pilih tanggal…"
   },
   "preview": {
     "emptyState": "Mulai isi formulir untuk melihat pratinjau faktur Anda",
@@ -147,6 +167,7 @@
     "pageOf": "Halaman {page} dari {total}"
   },
   "a11y": {
+    "toggleLineItems": "Tampilkan atau sembunyikan item",
     "apiKeySettings": "Pengaturan Kunci API",
     "setupAiAssistant": "Atur Asisten AI",
     "setAccentColor": "Atur warna aksen ke {color}",

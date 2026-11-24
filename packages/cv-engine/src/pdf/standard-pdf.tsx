@@ -17,11 +17,12 @@ import type { CVData, CVSectionId } from "../types";
 import { formatOngoingEndDate, getDescriptionLines } from "../template-utils";
 import { getTextLines, PDF_FONT_FAMILY } from "./print";
 
-// Zedative on paper: Inter (the caller registers it, ./print.ts), name and
-// headings #000000, body ink #393d45, dates and meta #5a6170, rules #cbcfd4,
-// the photo frame #dadde2, links cobalt #1348dc. Weight 700 for the name,
-// 600 for headings and labels; copy set as written, no letter-spacing. The
-// preview uses the matching token classes.
+// The Cursor print style on paper: Inter (the caller registers it,
+// ./print.ts), name and headings #000000, body ink #393d45, dates and meta
+// #5a6170, rules #cbcfd4, the photo frame #dadde2, links cobalt #1348dc. Weight 700 for the
+// name, 600 for headings and labels; copy set as written, no
+// letter-spacing. The preview (standard-preview.tsx in apps/cv) uses the
+// matching token classes.
 const s = StyleSheet.create({
   page: {
     fontFamily: PDF_FONT_FAMILY,

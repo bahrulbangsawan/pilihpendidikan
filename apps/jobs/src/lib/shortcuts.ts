@@ -3,19 +3,14 @@
 // test checks that each hint has a handler.
 //
 // Keys on a focused board card are handled by the card itself (they win over
-// the global keys: `R` on a card rejects it, elsewhere it opens Runs).
+// the global keys).
 
 export type ShortcutScope =
   | "global"
   | "board"
   | "card"
   | "application"
-  | "profile"
-  | "inbox"
-  | "job"
-  | "approvals"
-  | "monitor"
-  | "cli";
+  | "profile";
 
 export interface ShortcutDef {
   /** i18n key under `shortcuts.` */
@@ -28,9 +23,6 @@ export interface ShortcutDef {
 export const SHORTCUTS: readonly ShortcutDef[] = [
   { scope: "global", keys: ["⌘", "K"], action: "palette" },
   { scope: "global", keys: ["B"], action: "board" },
-  { scope: "global", keys: ["I"], action: "inbox" },
-  { scope: "global", keys: ["A"], action: "approvals" },
-  { scope: "global", keys: ["R"], action: "runs" },
   { scope: "global", keys: ["N"], action: "newJob" },
   { scope: "global", keys: ["?"], action: "sheet" },
   { scope: "global", keys: ["Esc"], action: "close" },
@@ -51,20 +43,6 @@ export const SHORTCUTS: readonly ShortcutDef[] = [
   { scope: "application", keys: ["M"], action: "move" },
   { scope: "application", keys: ["Y"], action: "nextStep" },
   { scope: "profile", keys: ["S"], action: "saveFacts" },
-  { scope: "inbox", keys: ["/"], action: "filter" },
-  { scope: "inbox", keys: ["J"], action: "nextRow" },
-  { scope: "inbox", keys: ["K"], action: "previousRow" },
-  { scope: "inbox", keys: ["Enter"], action: "openRow" },
-  { scope: "inbox", keys: ["X"], action: "selectRow" },
-  { scope: "inbox", keys: ["S"], action: "track" },
-  { scope: "inbox", keys: ["D"], action: "dismiss" },
-  { scope: "job", keys: ["S"], action: "trackJob" },
-  { scope: "approvals", keys: ["J"], action: "nextApproval" },
-  { scope: "approvals", keys: ["K"], action: "previousApproval" },
-  { scope: "approvals", keys: ["Y"], action: "approve" },
-  { scope: "approvals", keys: ["X"], action: "rejectApproval" },
-  { scope: "monitor", keys: ["Y"], action: "resumeOrConfirm" },
-  { scope: "cli", keys: ["C"], action: "copyInstall" },
 ];
 
 /** Keys a focused board card handles itself (06 §10, 12 §2.2). */
@@ -84,9 +62,6 @@ export const STAGE_DIGITS = ["1", "2", "3", "4", "5", "6", "7"] as const;
 /** Global single-key navigation (12 §2.2). */
 export const NAV_SHORTCUTS = {
   b: "/board",
-  i: "/inbox",
-  a: "/automation",
-  r: "/automation/runs",
 } as const;
 
 const BOARD_ORDER = [

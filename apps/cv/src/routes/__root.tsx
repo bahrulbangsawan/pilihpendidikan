@@ -6,18 +6,13 @@ import { jsonLd } from "./-root-helpers";
 
 const BASE_URL = "https://cv.pilihpendidikan.com";
 
-// Resolve the theme before body content paints, matching next-themes
-// (`defaultTheme="light"`, no system theme): Night Desk only when the visitor
-// chose it with the toggle, light otherwise.
-const themeScript = `(function(){try{var d=document.documentElement,k=localStorage.getItem("theme")==="dark";d.classList.toggle("dark",k);d.style.colorScheme=k?"dark":"light"}catch(_){}})()`;
-
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#f4f4f2" },
-      { name: "color-scheme", content: "light dark" },
+      { name: "theme-color", content: "#14120b" },
+      { name: "color-scheme", content: "dark" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -62,7 +57,6 @@ export const Route = createRootRoute({
       { rel: "manifest", href: "/favicon-active/site.webmanifest" },
     ],
     scripts: [
-      { children: themeScript },
       {
         type: "application/ld+json",
         children: JSON.stringify(jsonLd),

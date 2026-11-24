@@ -1,7 +1,8 @@
-// Stats (12 §9, 10 §8): the toolbar band with the date range, four stat
-// cells, the unconfirmed-submissions callout, the funnel, the weekly series,
-// rejections by stage, time to response (median with P75), the breakdown
-// table and the automation reliability card. Every chart has a data-table
+// Stats (12 §9, 10 §8), laid out like reui's stats blocks: the header with
+// the date range, four stat cards (value, change and the previous period of
+// the same length), the unconfirmed-submissions callout, then the charts in
+// cards — the funnel, the weekly series, rejections by stage, time to
+// response (median with P75) — and the breakdown table. Every chart has a data-table
 // toggle (T10-10). Numbers come from /api/v1/analytics/* for the range in
 // the browser's time zone; rates stay hidden for cohorts under 5 (10 §2.2).
 
@@ -21,7 +22,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@rulisme/ui/ui/empty";
-import { Band } from "@rulisme/ui/ui/rails";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
 import { BarChart3, CircleAlert } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -36,10 +36,9 @@ import { isoDay } from "@/lib/board-model";
 import { browserTimeZone } from "@/lib/format";
 import { isEmptySummary } from "@/lib/stats-model";
 import type { SeriesMetric, StatsSearch } from "@/lib/stats-range";
-import { intervalFor, resolveRange } from "@/lib/stats-range";
+import { intervalFor, previousRange, resolveRange } from "@/lib/stats-range";
 import { RangePicker } from "./range-picker";
 import {
-  AutomationCard,
   BreakdownSection,
   FunnelSection,
   RejectionSection,
@@ -49,7 +48,7 @@ import {
   TimingSection,
   UnconfirmedCallout,
 } from "./stats-sections";
-import { PageGutter, PageHeader } from "@/components/shell/page";
+import { PageGutter, PageHeader } from "@rulisme/ui/blocks/page";
 
 const DEFAULT_METRIC: SeriesMetric = "applied";
 const DEFAULT_BREAKDOWN: AnalyticsBreakdown = "source";
@@ -73,7 +72,7 @@ function EmptyStats({
 }) {
   const { t } = useTranslation();
   return (
-    <Empty className="border">
+    <Empty className="rounded-lg border border-border">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <BarChart3 aria-hidden="true" />
@@ -86,9 +85,6 @@ function EmptyStats({
       <EmptyContent className="flex-row flex-wrap justify-center">
         <Button asChild size="sm" variant="outline">
           <AppLink href="/board">{t("stats.empty.board")}</AppLink>
-        </Button>
-        <Button asChild size="sm" variant="outline">
-          <AppLink href="/inbox">{t("stats.empty.inbox")}</AppLink>
         </Button>
         {allTime ? null : (
           <Button onClick={onShowAll} size="sm" variant="ghost">
@@ -118,6 +114,11 @@ export function StatsPage({
   const by = search.by ?? DEFAULT_BREAKDOWN;
 
   const summary = useAnalyticsSummary(query);
+  const before = previousRange(range);
+  const previous = useAnalyticsSummary(
+    before ? { ...before, tz } : query,
+    before !== null
+  );
   const series = useAnalyticsTimeseries(metric, intervalFor(range), query);
   const breakdown = useAnalyticsBreakdown(by, query);
 
@@ -178,7 +179,6 @@ export function StatsPage({
           onByChange={(next) => update({ by: next })}
           onRetry={() => breakdown.refetch()}
         />
-        <AutomationCard summary={data} />
       </>
     );
   }
@@ -194,21 +194,27 @@ export function StatsPage({
           />
         }
         description={t("stats.intro")}
+        hideTitleOnPhone
         title={t("pages.stats")}
+        wide
       />
       {summary.data && !isEmptySummary(summary.data) ? (
-        <Band>
-          <StatCells summary={summary.data} />
-        </Band>
+        <PageGutter className="pt-4" wide>
+          <StatCells
+            previous={before ? previous.data : undefined}
+            summary={summary.data}
+          />
+        </PageGutter>
       ) : null}
       {summary.isPending ? (
-        <Band>
+        <PageGutter className="pt-4" wide>
           <StatCellsSkeleton />
-        </Band>
+        </PageGutter>
       ) : null}
       <PageGutter
         aria-busy={summary.isPending}
         className="flex min-w-0 flex-col gap-6 py-6"
+        wide
       >
         {content}
       </PageGutter>

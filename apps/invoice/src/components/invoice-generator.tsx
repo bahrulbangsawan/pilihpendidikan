@@ -1,6 +1,9 @@
+import { AppBrand } from "@rulisme/ui/blocks/app-brand";
+import { GhostPage } from "@rulisme/ui/blocks/ghost-page";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { cn } from "@rulisme/ui/lib/utils";
 import { Button } from "@rulisme/ui/ui/button";
+import { FileTrigger } from "@rulisme/ui/ui/file-upload";
 import { ButtonGroup, ButtonGroupSeparator } from "@rulisme/ui/ui/button-group";
 import {
   Dialog,
@@ -15,13 +18,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
 import { Input } from "@rulisme/ui/ui/input";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Label } from "@rulisme/ui/ui/label";
-import { Diamond } from "@rulisme/ui/ui/rails";
 import { Spinner } from "@rulisme/ui/ui/spinner";
 import {
   Tooltip,
@@ -34,6 +37,7 @@ import {
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
   FileJson,
   FileText,
   Sparkles,
@@ -45,12 +49,15 @@ import { toast } from "sonner";
 import type { InvoiceData } from "@/components/invoice-form";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
-import { ThemeToggle } from "@/components/theme-toggle";
 import sampleData from "@/data/sample-invoice.json";
 import { translateNow, useTranslation } from "@/i18n";
 import { LanguageSwitcher } from "@/i18n/components/language-switcher";
 import type { SaveStatus } from "@/lib/use-cloud-save";
 import { useCloudSave } from "@/lib/use-cloud-save";
+
+// The app mark ships in public/ as the favicon set; the 192px cut stays
+// sharp at 20px on any display density.
+const APP_MARK_SRC = "/favicon-active/android-chrome-192x192.png";
 
 // Canonical ISO `yyyy-MM-dd` seed for a new invoice's issue date, matching what
 // the mcp tools and createEmptyInvoice() persist (was "dd MMM yyyy"). [defect-1]
@@ -230,16 +237,23 @@ interface McpDialogProps extends CloudAuthStatusProps {
   onTokenChange: (token: string) => void;
 }
 
-// The MCP guide: three numbered steps, the cobalt link to mint a token, and
+// The MCP guide: three numbered steps, the primary link to mint a token, and
 // the optional personal-token field that turns on cloud save.
 function McpDialog({ auth, hasToken, onTokenChange }: McpDialogProps) {
   const { t } = useTranslation();
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Cable aria-hidden="true" data-icon="inline-start" />
-          {t("toolbar.mcp")}
+        <Button
+          aria-label={t("toolbar.mcp")}
+          className="max-lg:size-7 max-lg:px-0"
+          size="sm"
+          variant="outline"
+        >
+          <Cable aria-hidden="true" />
+          {/* Below lg the chip is the icon alone, so the brand keeps its
+              whole name in the half-width pane. */}
+          <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -327,7 +341,7 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
           {DOWNLOAD_SHORTCUT}
         </DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem onClick={onJson}>
+      <DropdownMenuItem description=".json" onClick={onJson}>
         <FileJson aria-hidden="true" />
         {t("toolbar.downloadJson")}
       </DropdownMenuItem>
@@ -335,18 +349,17 @@ function DownloadMenuItems({ onPdf, onJson }: DownloadMenuItemsProps) {
   );
 }
 
-// The document sheet resting on the editor's graph paper: a 1px hairline
-// frames it on screen, and it prints bare at full width (the print CSS in
+// The white document sheet resting on the darker preview well, 32px in from
+// the well's edges with a 2px corner on screen; it prints bare at full width (the print CSS in
 // styles.css prints `.invoice-page` alone). The empty state stays unframed.
 function PreviewSheet({ data }: { data: InvoiceData }) {
+  const { t } = useTranslation();
   const hasDocument = Boolean(data.from.companyName) || data.items.length > 0;
+  if (!hasDocument) {
+    return <GhostPage description={t("preview.emptyState")} />;
+  }
   return (
-    <div
-      className={cn(
-        "mx-auto w-full max-w-2xl print:max-w-none",
-        hasDocument && "border border-border print:border-0"
-      )}
-    >
+    <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-xs print:max-w-none print:overflow-visible print:rounded-none">
       <InvoicePreview data={data} />
     </div>
   );
@@ -364,6 +377,8 @@ export function InvoiceGenerator() {
   const [data, setDataRaw] = useState<InvoiceData>(initialData);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
 
   // Owner-authenticated optimistic persistence for a loaded `?invoice=<slug>`.
   // A ref keeps the memoized `setData` stable while always calling the latest
@@ -439,7 +454,6 @@ export function InvoiceGenerator() {
     []
   );
   const [generating, setGenerating] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEmpty = !data.from.companyName.trim() && data.items.length === 0;
   const canDownload = !(isEmpty || generating);
   const showCloudStatus = Boolean(invoiceId) && cloud.hasToken;
@@ -451,8 +465,8 @@ export function InvoiceGenerator() {
     setConfirmOpen(false);
   };
 
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImportJSON = (files: File[]) => {
+    const file = files[0];
     if (!file) {
       return;
     }
@@ -468,7 +482,6 @@ export function InvoiceGenerator() {
       }
     };
     reader.readAsText(file);
-    e.target.value = "";
   };
 
   const handleDownloadPDF = async () => {
@@ -543,7 +556,7 @@ export function InvoiceGenerator() {
   return (
     <>
       <a
-        className="sr-only rounded-md border border-border bg-popover px-3 py-2 text-foreground shadow-float focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        className="type-body sr-only rounded-lg border border-border bg-popover px-3 py-2 text-foreground shadow-md focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         href="#main-content"
       >
         {t("a11y.skipToContent")}
@@ -554,96 +567,102 @@ export function InvoiceGenerator() {
         tabIndex={-1}
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
-        {/* Form pane: a 56px toolbar band over the form's ruled sections. */}
-        <div className="invoice-no-print no-scrollbar w-full border-line border-b md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-14 items-center gap-1.5 border-line border-b bg-background px-4 sm:px-6">
+        {/* Form pane: a 48px toolbar over the form's ruled sections. */}
+        <div className="invoice-no-print no-scrollbar w-full border-border border-b bg-background md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
               onTokenChange={cloud.setToken}
             />
             <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.importJson")}
-                    onClick={() => fileInputRef.current?.click()}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Upload aria-hidden="true" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
-              <input
-                accept=".json"
-                aria-label={t("toolbar.importJson")}
-                className="hidden"
-                onChange={handleImportJSON}
-                ref={fileInputRef}
-                type="file"
-              />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.loadSample")}
-                    onClick={() => setData(sampleData as InvoiceData)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles aria-hidden="true" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.loadSample")}</TooltipContent>
-              </Tooltip>
-              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
+                    <DropdownMenuTrigger asChild>
                       <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
+                        aria-label={t("toolbar.moreActions")}
                         size="icon-sm"
                         variant="ghost"
                       >
-                        <Trash2 aria-hidden="true" />
+                        <Ellipsis aria-hidden="true" />
                       </Button>
-                    </DialogTrigger>
+                    </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
                 </Tooltip>
-                <DialogContent className="sm:max-w-sm">
-                  <DialogHeader>
-                    <DialogTitle>{t("confirm.title")}</DialogTitle>
-                    <DialogDescription>
-                      {t("confirm.description")}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button
-                      onClick={() => setConfirmOpen(false)}
-                      variant="outline"
-                    >
-                      {t("confirm.cancel")}
-                    </Button>
-                    <Button onClick={handleClearAll} variant="destructive">
-                      {t("confirm.confirm")}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <ThemeToggle />
-              <LanguageSwitcher />
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => setData(sampleData as InvoiceData)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.loadSample")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
+          <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogHeader>
+                <DialogTitle>{t("confirm.title")}</DialogTitle>
+                <DialogDescription>
+                  {t("confirm.description")}
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button onClick={() => setConfirmOpen(false)} variant="outline">
+                  {t("confirm.cancel")}
+                </Button>
+                <Button onClick={handleClearAll} variant="destructive">
+                  {t("confirm.confirm")}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <InvoiceForm data={data} onChange={setData} />
         </div>
-        {/* Preview pane: the same band, then the sheet on graph paper. */}
-        <div className="invoice-preview-pane no-scrollbar graph-paper w-full md:h-svh md:w-1/2 md:overflow-y-auto">
+        {/* Preview pane: the same toolbar, then the white sheet on the card pane. */}
+        <div className="invoice-preview-pane no-scrollbar w-full bg-card md:h-svh md:w-1/2 md:overflow-y-auto">
           <div
             className={cn(
-              "invoice-no-print h-14 items-center gap-3 border-line border-b bg-background px-4 sm:px-6 md:sticky md:top-0 md:z-10",
+              "invoice-no-print h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6 md:sticky md:top-0 md:z-10",
               showCloudStatus ? "flex" : "hidden md:flex"
             )}
           >
@@ -690,12 +709,14 @@ export function InvoiceGenerator() {
               </DropdownMenu>
             </ButtonGroup>
           </div>
+          {/* The sheet rests on a padded well one step darker than the
+              pane (32px around it, 2px corner); print drops the well. */}
           <div className="invoice-preview-scroll p-4 sm:p-6">
-            <PreviewSheet data={data} />
+            <div className="rounded-xs bg-background p-4 sm:p-8 print:rounded-none print:bg-transparent print:p-0">
+              <PreviewSheet data={data} />
+            </div>
           </div>
         </div>
-        {/* The node where the toolbar rule crosses the pane divider. */}
-        <Diamond className="invoice-no-print top-[calc(3.5rem-var(--node)/2-0.5px)] left-[calc(50%-var(--node)/2-0.5px)] z-20 hidden md:block" />
         {/* Floating download button — mobile only */}
         <div className="invoice-no-print fixed bottom-4 left-4 z-50 md:hidden">
           <DropdownMenu>

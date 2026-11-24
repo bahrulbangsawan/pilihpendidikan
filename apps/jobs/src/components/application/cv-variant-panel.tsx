@@ -75,7 +75,7 @@ function PdfPreview({ fileId, title }: { fileId: string; title: string }) {
   return (
     <figure className="flex w-full max-w-xl flex-col gap-2">
       <AspectRatio
-        className="border border-line bg-card"
+        className="rounded-sm border border-hairline bg-card"
         ratio={1 / Math.SQRT2}
       >
         {/*
@@ -238,7 +238,7 @@ export function CvVariantPanel({
       className="flex flex-col gap-5 border-line border-t pt-5"
     >
       <header className="flex flex-wrap items-center gap-2">
-        <h3 className="type-subtitle weight-semibold" id={`${id}-title`}>
+        <h3 className="type-subtitle" id={`${id}-title`}>
           {t("cv.variantTitle", {
             template: t(`cv.templates.${current.template}`),
           })}

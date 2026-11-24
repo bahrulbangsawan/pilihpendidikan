@@ -7,6 +7,7 @@
 // content, V10). All text is the user's own CV or model output: plain text.
 
 import { CV_SECTION_IDS } from "@pilihpendidikan/jobs-contracts/cv-tailoring";
+import { Button } from "@rulisme/ui/ui/button";
 import { cn } from "@rulisme/ui/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@rulisme/ui/ui/alert";
 import { Badge } from "@rulisme/ui/ui/badge";
@@ -86,11 +87,11 @@ function BulletRow({
       <div className="order-1 flex items-start gap-2 md:order-2">
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
+            <Button
               aria-pressed={marked}
               className={cn(
-                "type-body flex-1 rounded-sm px-1.5 py-0.5 text-left outline-none focus-visible:outline-2 focus-visible:outline-ring",
-                bullet.rewritten && "bg-highlight"
+                "w-auto flex-1 px-1.5! py-0.5",
+                bullet.rewritten && "bg-highlight hover:bg-highlight"
               )}
               data-bullet-key={bullet.key}
               onBlur={() => onMark(null)}
@@ -98,7 +99,7 @@ function BulletRow({
               onFocus={() => onMark(bullet.key)}
               onMouseEnter={() => onMark(bullet.key)}
               onMouseLeave={() => onMark(null)}
-              type="button"
+              variant="row"
             >
               {bullet.text}
               <span className="sr-only">
@@ -108,11 +109,11 @@ function BulletRow({
                     .join(" / "),
                 })}`}
               </span>
-            </button>
+            </Button>
           </TooltipTrigger>
           <TooltipContent className="max-w-sm" side="top">
             <span className="flex flex-col gap-1">
-              <span className="type-caption weight-semibold">
+              <span className="type-caption">
                 {t("cv.diff.sourceTitle", { count: bullet.sources.length })}
               </span>
               {bullet.sources.map((source) => (
@@ -160,7 +161,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-summary"
           className="flex flex-col gap-2"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-summary">
+          <h3 className="type-body" id="cv-diff-summary">
             {t("cv.diff.summary")}
           </h3>
           <div className="grid gap-2 md:grid-cols-2 md:gap-4">
@@ -194,7 +195,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-order"
           className="flex flex-col gap-1"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-order">
+          <h3 className="type-body" id="cv-diff-order">
             {t("cv.diff.sectionOrder")}
           </h3>
           <p className="type-caption flex flex-wrap items-center gap-1 text-muted-foreground">
@@ -225,9 +226,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           className="flex flex-col"
           key={entry.entryId}
         >
-          <h3 className="type-body weight-semibold pb-1 text-foreground">
-            {entry.label}
-          </h3>
+          <h3 className="type-body pb-1 text-foreground">{entry.label}</h3>
           <ul className="flex flex-col">
             {entry.bullets.map((bullet) => (
               <BulletRow
@@ -246,7 +245,7 @@ export function CvDiffView({ model }: { model: DiffModel }) {
           aria-labelledby="cv-diff-excluded"
           className="flex flex-col gap-1"
         >
-          <h3 className="type-body weight-semibold" id="cv-diff-excluded">
+          <h3 className="type-body" id="cv-diff-excluded">
             {t("cv.diff.excluded")}
           </h3>
           <ul className="flex flex-col gap-1">

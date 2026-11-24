@@ -6,11 +6,12 @@ import type * as React from "react";
 import { cn } from "../lib/utils";
 import { Separator } from "./separator";
 
-// Zedative item. Bare (`default`) items are square hairline rows: each item
-// that follows another draws a `line` rule above itself. `outline` items are
-// 2px tiles on bg-2 (a link tile carries the button lip, gone on hover);
-// `muted` items sit on `pane`. In a group those two keep an 8px gap. Titles
-// are body-role semibold, descriptions captions, media a framed 2px tile.
+// cursor.com list item. Bare (`default`) items are flat rows: each item that
+// follows another draws a 10% `border` rule above itself. `outline` items are
+// cursor.com cards (one step off the page, 4px, 2.5% hairline) and `muted`
+// items sit on `pane`; in a group those two keep an 8px gap. A link item
+// fills with `pane` on hover. Titles are body role in `foreground` at weight
+// 400, descriptions muted captions, media a 4px tile.
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     // biome-ignore lint/a11y/useSemanticElements: items are <div>s or asChild links, which a <ul> cannot hold
@@ -41,15 +42,14 @@ function ItemSeparator({
 }
 
 const itemVariants = cva(
-  "group/item type-body flex w-full flex-wrap items-center rounded-sm border outline-none transition-[background-color,border-color,box-shadow] duration-150 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [a]:hover:bg-pane/70",
+  "group/item type-body flex w-full flex-wrap items-center rounded-sm border outline-none transition-[background-color,border-color,box-shadow] duration-140 ease-standard focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 [a]:hover:bg-pane",
   {
     variants: {
       variant: {
         default:
-          "rounded-none border-transparent [[data-slot=item]+&]:border-t-line",
-        outline:
-          "[a]:press border-border bg-card [a]:inset-shadow-lip [a]:hover:inset-shadow-none",
-        muted: "border-transparent bg-pane/60",
+          "rounded-none border-transparent [[data-slot=item]+&]:border-t-border",
+        outline: "border-hairline bg-card",
+        muted: "border-transparent bg-pane",
       },
       size: {
         default: "gap-3 px-3 py-3",
@@ -90,9 +90,9 @@ const itemMediaVariants = cva(
     variants: {
       variant: {
         default: "bg-transparent",
-        icon: "size-8 rounded-sm border border-border bg-card text-foreground group-data-[size=xs]/item:size-6 [&_svg:not([class*='size-'])]:size-3.5",
+        icon: "size-8 rounded-sm border border-hairline bg-pane text-foreground group-data-[size=xs]/item:size-6 [&_svg:not([class*='size-'])]:size-3.5",
         image:
-          "size-10 overflow-hidden rounded-sm border border-border group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover",
+          "size-10 overflow-hidden rounded-sm border border-hairline group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6 [&_img]:size-full [&_img]:object-cover",
       },
     },
     defaultVariants: {
@@ -133,7 +133,7 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "type-body weight-semibold line-clamp-1 w-fit text-foreground underline-offset-4 [&>svg:not([class*='size-'])]:size-3.5 [&>svg]:inline-block [&>svg]:align-[-2px]",
+        "type-body line-clamp-1 w-fit text-foreground [&>svg:not([class*='size-'])]:size-3.5 [&>svg]:inline-block [&>svg]:align-[-2px]",
         className
       )}
       data-slot="item-title"
@@ -146,7 +146,7 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
       className={cn(
-        "type-caption line-clamp-2 text-left text-muted-foreground [&>a:hover]:underline [&>a]:text-primary [&>a]:underline-offset-4",
+        "type-caption line-clamp-2 text-left text-muted-foreground [&>a:hover]:text-link/75 [&>a]:text-link",
         className
       )}
       data-slot="item-description"

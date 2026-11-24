@@ -105,17 +105,17 @@ function Screens() {
 }
 
 export function RootComponent() {
-  // Zedative is light-canonical; Night Desk (`.dark`) only when chosen in
-  // Settings or the command palette, remembered in localStorage. next-themes
-  // sets the class before the body paints with an inline script that carries
-  // this response's CSP nonce.
+  // The dashboard is dark only (cursor.com's dark theme): next-themes pins
+  // the `.dark` class before the body paints with an inline script that
+  // carries this response's CSP nonce. There is no theme switch.
   const nonce = useRouter().options.ssr?.nonce;
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       disableTransitionOnChange
       enableSystem={false}
+      forcedTheme="dark"
       nonce={nonce}
     >
       <Screens />

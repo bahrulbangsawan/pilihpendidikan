@@ -7,6 +7,7 @@
     "ogImageAlt": "Bahrul Bangsawan CV Builder — free online resume generator with real-time preview and ATS-friendly formatting"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "mcp": "MCP",
     "importJson": "Import JSON",
     "prefill": "Pre-Fill Example",
@@ -37,10 +38,6 @@
   "preview": {
     "emptyTitle": "Your CV is empty",
     "emptyDescription": "Start filling in the form to see your CV preview."
-  },
-  "theme": {
-    "toLight": "Switch to light mode",
-    "toDark": "Switch to dark mode"
   },
   "confirm": {
     "title": "Clear all data?",
@@ -73,6 +70,11 @@
   "alert": {
     "invalidJson": "Invalid JSON file. Please select a valid CV JSON export.",
     "pdfFailed": "Failed to generate PDF. Check the browser console for details."
+  },
+  "pageHeader": {
+    "area": "Builders",
+    "title": "Your CV",
+    "lead": "Fill in your details and the preview updates as you type. Download a PDF when it reads right."
   },
   "form": {
     "personalInformation": "Personal Information",
@@ -156,7 +158,17 @@
     "months": "{n} Months",
     "day": "{n} Day",
     "days": "{n} Days",
-    "zeroDays": "0 Days"
+    "zeroDays": "0 Days",
+    "empty": {
+      "experience": "No roles yet. Add your jobs and internships, newest first.",
+      "education": "No schools yet. Add your degree, school or course.",
+      "skills": "No skills yet. Group them by category, like Languages or Tools.",
+      "awards": "No awards yet. Add honours, prizes or scholarships.",
+      "certificates": "No certificates yet. Add licences and course certificates.",
+      "languages": "No languages yet. Add each with your level.",
+      "projects": "No projects yet. Add work you can link to.",
+      "volunteer": "No volunteering yet. Add roles in clubs, events or causes."
+    }
   },
   "placeholders": {
     "fullName": "Bahrul Bangsawan",

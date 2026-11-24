@@ -5,11 +5,10 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative navigation menu (DESIGN.md § Components › Nav): triggers and
-// top-level links are ghost nav links (4px, body role, `pane` hover fill)
-// with a muted ▾; the menu opens instantly in a window (6px, border,
-// `shadow-float`) holding 2px menu rows. The current page takes the heading
-// weight, not a colour.
+// cursor.com header nav: triggers and top-level links are pill ghost links
+// (36px, body role, `pane` hover fill) with a muted ▾; the menu opens
+// instantly in the 8px flyout holding 32px menu rows. The current page is
+// orange (`text-link`), like the active item in Cursor's docs nav.
 function NavigationMenu({
   className,
   children,
@@ -64,7 +63,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group/navigation-menu-trigger type-body data-active:weight-semibold inline-flex h-9 w-max items-center justify-center gap-1 rounded-md px-3 text-foreground outline-none transition-[background-color,color] duration-150 ease-standard hover:bg-pane/70 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 data-open:bg-pane/70 data-popup-open:bg-pane/70"
+  "group/navigation-menu-trigger type-body inline-flex h-9 w-max items-center justify-center gap-1 rounded-full px-3 text-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 data-open:bg-pane data-popup-open:bg-pane data-active:text-link"
 );
 
 function NavigationMenuTrigger({
@@ -95,7 +94,7 @@ function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       className={cn(
         "top-0 left-0 w-full p-1 md:absolute md:w-auto",
-        "group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:overflow-hidden group-data-[viewport=false]/navigation-menu:rounded-lg group-data-[viewport=false]/navigation-menu:border group-data-[viewport=false]/navigation-menu:border-border group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:shadow-float",
+        "group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:overflow-hidden group-data-[viewport=false]/navigation-menu:rounded-lg group-data-[viewport=false]/navigation-menu:border group-data-[viewport=false]/navigation-menu:border-border group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:shadow-md",
         className
       )}
       data-slot="navigation-menu-content"
@@ -112,7 +111,7 @@ function NavigationMenuViewport({
     <div className="absolute top-full left-0 isolate z-50 flex justify-center">
       <NavigationMenuPrimitive.Viewport
         className={cn(
-          "relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-float md:w-(--radix-navigation-menu-viewport-width)",
+          "relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md md:w-(--radix-navigation-menu-viewport-width)",
           className
         )}
         data-slot="navigation-menu-viewport"
@@ -129,7 +128,7 @@ function NavigationMenuLink({
   return (
     <NavigationMenuPrimitive.Link
       className={cn(
-        "type-body data-active:weight-semibold flex items-center gap-2 rounded-sm p-2 text-foreground outline-none transition-[background-color,color] duration-150 ease-standard hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:-outline-offset-2 [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "type-body flex min-h-8 items-center gap-2 rounded-sm px-2 py-1 text-foreground outline-none transition-[background-color,color] duration-140 ease-standard hover:bg-pane focus-visible:bg-pane focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-solid focus-visible:-outline-offset-2 data-active:text-link [&_svg:not([class*='size-'])]:size-3.5 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="navigation-menu-link"
@@ -138,7 +137,7 @@ function NavigationMenuLink({
   );
 }
 
-// A diamond pointer under the open trigger: the brand's node, not an arrow.
+// A short ink bar under the open trigger, in place of an arrow.
 function NavigationMenuIndicator({
   className,
   ...props
@@ -152,7 +151,7 @@ function NavigationMenuIndicator({
       data-slot="navigation-menu-indicator"
       {...props}
     >
-      <div className="relative top-[60%] size-2 rotate-45 border border-line bg-card" />
+      <div className="h-0.5 w-4 rounded-full bg-foreground" />
     </NavigationMenuPrimitive.Indicator>
   );
 }

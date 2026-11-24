@@ -3,16 +3,8 @@
 // lists per-card success, skips and conflicts.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
-import type {
-  ApplicationMode,
-  CvTemplate,
-  Stage,
-} from "@pilihpendidikan/jobs-contracts/enums";
-import {
-  APPLICATION_MODES,
-  CV_TEMPLATES,
-  STAGES,
-} from "@pilihpendidikan/jobs-contracts/enums";
+import type { CvTemplate, Stage } from "@pilihpendidikan/jobs-contracts/enums";
+import { CV_TEMPLATES, STAGES } from "@pilihpendidikan/jobs-contracts/enums";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -49,7 +41,19 @@ import {
   SelectValue,
 } from "@rulisme/ui/ui/select";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  CalendarClock,
+  CalendarX,
+  ChevronDown,
+  FileText,
+  LayoutTemplate,
+  Minus,
+  Sparkles,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { commitApplicationToBoard } from "@/hooks/use-board";
@@ -59,7 +63,6 @@ import { api } from "@/lib/api-client";
 import { canMoveTo, hasLiveTask } from "@/lib/board-move";
 import type { BulkItemResult } from "@/lib/bulk";
 import {
-  autoModeAllowed,
   BULK_CV_LIMIT,
   BulkSkip,
   bulkArchiveTarget,
@@ -70,8 +73,9 @@ import {
 } from "@/lib/bulk";
 import { FOLLOW_UP_PRESETS, presetFollowUpAt } from "@/lib/follow-up";
 import { newIdempotencyKey } from "@/lib/idempotency";
-import { modeLabel, stageLabel } from "@/lib/labels";
+import { stageLabel } from "@/lib/labels";
 import { queryKeys } from "@/lib/query";
+import { StageIcon } from "./stage-meta";
 
 export interface BulkReport {
   action: string;
@@ -82,7 +86,6 @@ export interface BulkReport {
 interface PatchBody {
   archived?: boolean;
   follow_up_at?: number | null;
-  mode?: ApplicationMode;
   priority?: number;
 }
 
@@ -153,31 +156,6 @@ export function BulkBar({
     });
   }
 
-  /**
-   * `auto` only where an enabled auto rule matched (06 §9): each card's
-   * application is read first (the board card lacks the rule) and the PATCH
-   * uses that fresh revision; the others are skipped with the reason.
-   */
-  function setAutoMode() {
-    return run(t("bulk.mode"), selected, async (card) => {
-      if (card.mode === "auto") {
-        throw new BulkSkip("unchanged", t("bulk.unchanged"));
-      }
-      const detail = await api("GET /api/v1/applications/{app_id}", {
-        params: { app_id: card.id },
-      });
-      if (!autoModeAllowed(detail.application)) {
-        throw new BulkSkip("no_auto_rule", t("bulk.autoNeedsRule"));
-      }
-      const { application } = await api("PATCH /api/v1/applications/{app_id}", {
-        params: { app_id: card.id },
-        body: { mode: "auto", base_revision: detail.application.revision },
-        idempotencyKey: newIdempotencyKey(),
-      });
-      commitApplicationToBoard(queryClient, application);
-    });
-  }
-
   function moveAll(target: Stage) {
     return run(
       t("bulk.moveTo", { stage: stageLabel(t, target) }),
@@ -227,27 +205,6 @@ export function BulkBar({
     }
   }
 
-  function queueApply() {
-    return run(t("bulk.queueApply"), selected, async (card) => {
-      if (card.mode === "manual") {
-        throw new BulkSkip("manual_mode", t("bulk.manualMode"));
-      }
-      if (hasLiveTask(card)) {
-        throw new BulkSkip("live_task", t("bulk.alreadyRunning"));
-      }
-      const key = newIdempotencyKey();
-      await api("POST /api/v1/tasks", {
-        body: {
-          kind: "apply",
-          application_id: card.id,
-          payload: { mode: card.mode },
-          idempotency_key: key,
-        },
-        idempotencyKey: key,
-      });
-    });
-  }
-
   function generateCvs(baseCvId: string, template: CvTemplate) {
     setCvOpen(false);
     const cards = selected.slice(0, BULK_CV_LIMIT);
@@ -293,13 +250,10 @@ export function BulkBar({
   return (
     <div
       aria-label={t("bulk.toolbar")}
-      className="band flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
+      className="flex flex-wrap items-center gap-1.5 bg-pane px-4 py-2 sm:px-6"
       role="toolbar"
     >
-      <span
-        className="type-body-compact weight-semibold mr-2 tabular-nums"
-        role="status"
-      >
+      <span className="type-body-compact mr-2 tabular-nums" role="status">
         {t("bulk.selected", { count: selected.length })}
       </span>
       <DropdownMenu>
@@ -316,6 +270,7 @@ export function BulkBar({
             ).length;
             return (
               <DropdownMenuItem key={stage} onSelect={() => moveAll(stage)}>
+                <StageIcon className="size-3.5" stage={stage} />
                 {stageLabel(t, stage)}
                 <span className="type-micro ml-auto text-muted-foreground tabular-nums">
                   {movable}/{selected.length}
@@ -344,16 +299,19 @@ export function BulkBar({
           <DropdownMenuItem
             onSelect={() => patchAll(t("bulk.priority"), { priority: 1 })}
           >
+            <ArrowUp aria-hidden="true" />
             {t("card.actions.priorityHigh")}
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => patchAll(t("bulk.priority"), { priority: 0 })}
           >
+            <Minus aria-hidden="true" />
             {t("card.actions.priorityNormal")}
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => patchAll(t("bulk.priority"), { priority: -1 })}
           >
+            <ArrowDown aria-hidden="true" />
             {t("card.actions.priorityLow")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -366,6 +324,7 @@ export function BulkBar({
                 })
               }
             >
+              <CalendarClock aria-hidden="true" />
               {t("bulk.followUpIn", {
                 when: t(`followUp.presets.${preset.key}`),
               })}
@@ -376,38 +335,24 @@ export function BulkBar({
               patchAll(t("bulk.followUp"), { follow_up_at: null })
             }
           >
+            <CalendarX aria-hidden="true" />
             {t("bulk.followUpClear")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {APPLICATION_MODES.map((mode) => (
-            <DropdownMenuItem
-              key={mode}
-              onSelect={() =>
-                mode === "auto"
-                  ? setAutoMode()
-                  : patchAll(t("bulk.mode"), { mode })
-              }
-            >
-              {mode === "auto"
-                ? t("bulk.setModeAuto")
-                : t("bulk.setMode", { mode: modeLabel(t, mode) })}
-            </DropdownMenuItem>
-          ))}
-          <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={requestScoring}>
+            <Sparkles aria-hidden="true" />
             {t("bulk.requestScoring")}
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setCvOpen(true)}>
+            <FileText aria-hidden="true" />
             {t("bulk.generateCv")}
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={queueApply}>
-            {t("bulk.queueApply")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onSelect={() => setPurgeOpen(true)}
             variant="destructive"
           >
+            <Trash2 aria-hidden="true" />
             {t("bulk.purgeMenu")}
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -554,6 +499,7 @@ function GenerateCvDialog({
             <SelectContent>
               {bases.map((cv) => (
                 <SelectItem key={cv.id} value={cv.id}>
+                  <FileText aria-hidden="true" />
                   {cv.full_name || cv.id} · {cv.job_title}
                 </SelectItem>
               ))}
@@ -572,6 +518,7 @@ function GenerateCvDialog({
             <SelectContent>
               {CV_TEMPLATES.map((value) => (
                 <SelectItem key={value} value={value}>
+                  <LayoutTemplate aria-hidden="true" />
                   {t(`cv.templates.${value}`)}
                 </SelectItem>
               ))}

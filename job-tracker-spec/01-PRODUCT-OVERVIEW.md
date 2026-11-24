@@ -147,7 +147,7 @@ requires preserving are listed below with their current state.
 | Email applications | None (only the sign-in email binding [VERIFIED] `apps/api/src/email.ts`) | **[NEW]** local hand-off + optional server send | 09 |
 | Statistics | None | **[NEW]** funnel, response times, breakdowns | 10 |
 | User isolation | **[VERIFIED]** owner stamps, not-owned returns 404 (`apps/api/src/ownership.ts`) | **[NEW]** `user_id` on every row, repository guard, cross-user test suite | 04 §5, 11 |
-| UI/UX | Zedative being rolled out [VERIFIED] (`openspec/changes/update-zedative-design-system`) | **[NEW]** `apps/jobs` on Zedative | 12 |
+| UI/UX | Cursor design system being rolled out [VERIFIED] (`openspec/changes/update-cursor-design-system`) | **[NEW]** `apps/jobs` on the Cursor design system | 12 |
 | Discovery | None | **[NEW]** Scrapling engine + adapters | 15 |
 | CLI | None | **[NEW]** `pilih-jobs` | 16, 22 |
 | Browser automation | None | **[NEW]** modes A/B/C, deterministic executor | 18 |

@@ -19,6 +19,8 @@ describe("typeClass()", () => {
 
   it("names every role at both steps, and nothing else", () => {
     expect(TYPE_ROLES).toEqual([
+      "hero",
+      "headline",
       "display",
       "title",
       "subtitle",
@@ -31,10 +33,10 @@ describe("typeClass()", () => {
       typeClass(role, "compact").replace("type-", ""),
     ]);
     expect(TYPE_UTILITIES).toEqual(fromHelper);
-    expect(TYPE_UTILITIES).toHaveLength(12);
+    expect(TYPE_UTILITIES).toHaveLength(16);
   });
 
-  it("offers exactly the three Zedative weights", () => {
+  it("offers exactly the three Cursor weights", () => {
     expect(TYPE_WEIGHTS).toEqual(["normal", "semibold", "bold"]);
   });
 });

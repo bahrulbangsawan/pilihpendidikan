@@ -1,199 +1,155 @@
-// The right rail (12 §5.1): "Next step" — exactly one recommended action, the
-// page's only blue button, behind `Y` — then the live task, the latest
-// submission evidence and the follow-up.
+// The application's side column (12 §5.1) and the pieces the details sheet
+// reuses: "Next step" — exactly one recommended action, the screen's only
+// primary button, behind `Y` — and the follow-up, each in a card.
 
 import type { ApplicationDetail } from "@pilihpendidikan/jobs-contracts/api";
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
-import { Badge } from "@rulisme/ui/ui/badge";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import { ArrowRight } from "lucide-react";
-import { AppLink } from "@/components/app-link";
+import { SectionCard } from "@rulisme/ui/blocks/settings";
 import type { ApplicationPatch } from "@/hooks/use-conflict-write";
+import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
-import { formatDateTime, relativeTime } from "@/lib/format";
-import { submissionLabel, taskStateLabel } from "@/lib/labels";
 import type { NextStep } from "@/lib/next-step";
 import { computeNextStep } from "@/lib/next-step";
-import { isLivePollState } from "@/lib/polling";
-import { displayUrl, safeHref } from "@/lib/safe-url";
 import { FollowUpCard } from "./follow-up-card";
 
-export type DetailTab =
-  | "overview"
-  | "cv"
-  | "apply"
-  | "timeline"
-  | "interviews"
-  | "offers"
-  | "checklists";
+export const DETAIL_TABS = [
+  "overview",
+  "cv",
+  "interviews",
+  "offers",
+  "timeline",
+  "notes",
+  "checklists",
+] as const;
+export type DetailTab = (typeof DETAIL_TABS)[number];
 
-function NextStepCard({
+/** The why line and the button label of a next step. */
+export function nextStepCopy(
+  t: Translate,
+  step: NextStep
+): { why: string; action: string } {
+  switch (step.kind) {
+    case "review_cv":
+      return {
+        why: t("application.nextStep.reviewCvWhy"),
+        action: t("application.nextStep.reviewCv"),
+      };
+    case "add_interview":
+      return {
+        why: t("application.nextStep.addInterviewWhy"),
+        action: t("application.nextStep.addInterview"),
+      };
+    default:
+      return {
+        why: t("application.nextStep.markAppliedWhy"),
+        action: t("application.nextStep.markApplied"),
+      };
+  }
+}
+
+/** The primary button of a next step, behind `Y`. */
+export function NextStepButton({
   step,
   onRun,
-  shortcutEnabled,
+  shortcutEnabled = true,
+  className,
 }: {
-  step: NextStep | null;
+  step: NextStep;
   onRun: (step: NextStep) => void;
-  shortcutEnabled: boolean;
+  /** False while another `Y` owner is on screen (one handler per key). */
+  shortcutEnabled?: boolean;
+  className?: string;
 }) {
   const { t } = useTranslation();
-  useShortcut("y", () => step && onRun(step), step !== null && shortcutEnabled);
+  useShortcut("y", () => onRun(step), shortcutEnabled);
   return (
-    <section
-      aria-labelledby="next-step-heading"
-      className="flex flex-col gap-3 border-line border-b p-4"
+    <Button
+      aria-keyshortcuts="Y"
+      className={className}
+      onClick={() => onRun(step)}
     >
-      <h2 className="type-caption text-muted-foreground" id="next-step-heading">
-        {t("nextStep.heading")}
-      </h2>
+      {nextStepCopy(t, step).action}
+      <Kbd aria-hidden="true">Y</Kbd>
+    </Button>
+  );
+}
+
+export function NextStepCard({
+  detail,
+  onRun,
+  shortcutEnabled,
+  withButton = true,
+  flat = false,
+}: {
+  detail: ApplicationDetail;
+  onRun: (step: NextStep) => void;
+  shortcutEnabled: boolean;
+  /** The sheet puts the button in its footer instead. */
+  withButton?: boolean;
+  /** A flat section (the sheet) instead of a card. */
+  flat?: boolean;
+}) {
+  const { t } = useTranslation();
+  const step = computeNextStep(detail);
+  return (
+    <SectionCard
+      flat={flat}
+      id="next-step-heading"
+      title={t("nextStep.heading")}
+    >
       {step ? (
         <>
-          <p className="type-body text-pretty">
-            {t(`nextStep.why.${step.kind}`)}
-          </p>
-          {step.kind === "approve_submission" ? (
-            <Button asChild className="self-start">
-              <AppLink
-                aria-keyshortcuts="Y"
-                href={`/automation?approval=${step.approvalId ?? ""}`}
-              >
-                {t(`nextStep.actions.${step.kind}`)}
-                <Kbd aria-hidden="true">Y</Kbd>
-              </AppLink>
-            </Button>
-          ) : (
-            <Button
-              aria-keyshortcuts="Y"
+          <p className="type-body text-pretty">{nextStepCopy(t, step).why}</p>
+          {withButton ? (
+            <NextStepButton
               className="self-start"
-              onClick={() => onRun(step)}
-            >
-              {t(`nextStep.actions.${step.kind}`)}
-              <Kbd aria-hidden="true">Y</Kbd>
-            </Button>
-          )}
+              onRun={onRun}
+              shortcutEnabled={shortcutEnabled}
+              step={step}
+            />
+          ) : null}
         </>
       ) : (
         <p className="type-body text-muted-foreground">{t("nextStep.none")}</p>
       )}
-    </section>
+    </SectionCard>
   );
 }
 
-function LiveTaskCard({
+export function FollowUpSection({
   detail,
   nowMs,
+  onAccept,
+  onEdit,
+  flat = false,
 }: {
   detail: ApplicationDetail;
   nowMs: number;
+  onAccept: (changes: ApplicationPatch) => Promise<unknown>;
+  onEdit: () => void;
+  /** A flat section (the sheet) instead of a card. */
+  flat?: boolean;
 }) {
-  const { locale, t } = useTranslation();
-  const task = detail.tasks.find((entry) =>
-    ["queued", "claimed", "running", "paused", "awaiting_approval"].includes(
-      entry.state
-    )
+  const card = (
+    <FollowUpCard
+      detail={detail}
+      nowMs={nowMs}
+      onAccept={onAccept}
+      onEdit={onEdit}
+    />
   );
-  if (!task) {
-    return null;
+  if (flat) {
+    return card;
   }
-  const progress = "stage" in task.progress ? task.progress : null;
+  // The nested frame of the rail's other cards (12px frame, 8px panel).
   return (
-    <section
-      aria-labelledby="live-task-heading"
-      className="flex flex-col gap-2 border-line border-b p-4"
-    >
-      <h2 className="type-caption text-muted-foreground" id="live-task-heading">
-        {t("detail.liveTask")}
-      </h2>
-      <div className="flex flex-wrap items-center gap-1.5">
-        <Badge
-          className={task.state === "paused" ? "text-destructive" : undefined}
-          variant="outline"
-        >
-          {isLivePollState(task.state) ? (
-            <span
-              aria-hidden="true"
-              className="pulse-dot size-1.5 rounded-full bg-current"
-            />
-          ) : null}
-          {taskStateLabel(t, task.state)}
-        </Badge>
-        {task.pause_reason ? (
-          <span className="type-caption text-destructive">
-            {t(`pauseReasons.${task.pause_reason}`)}
-          </span>
-        ) : null}
+    <div className="rounded-xl border border-border bg-card p-1">
+      <div className="rounded-lg border border-border bg-background p-4">
+        {card}
       </div>
-      {progress ? (
-        <p className="type-caption text-muted-foreground">
-          {t(`progressStages.${progress.stage}`)} · {progress.message}
-        </p>
-      ) : null}
-      <p className="type-micro text-muted-foreground">
-        {t("detail.updated", {
-          when: relativeTime(task.updated_at, nowMs, locale),
-        })}
-      </p>
-      <Button asChild className="self-start" size="xs" variant="link">
-        <AppLink href={`/automation/runs/${task.id}`}>
-          {t("detail.openRun")}
-        </AppLink>
-      </Button>
-    </section>
-  );
-}
-
-function EvidenceCard({ detail }: { detail: ApplicationDetail }) {
-  const { locale, t } = useTranslation();
-  const latest = [...detail.evidence].sort(
-    (a, b) => b.captured_at - a.captured_at
-  )[0];
-  const status = detail.application.submission_status;
-  if (!latest && status === "not_started") {
-    return null;
-  }
-  const href = safeHref(latest?.final_url);
-  return (
-    <section
-      aria-labelledby="evidence-heading"
-      className="flex flex-col gap-2 border-line border-b p-4"
-    >
-      <h2 className="type-caption text-muted-foreground" id="evidence-heading">
-        {t("detail.evidence")}
-      </h2>
-      <p className="type-body text-foreground">{submissionLabel(t, status)}</p>
-      {latest ? (
-        <dl className="type-caption grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-muted-foreground">
-          <dt>{t("detail.evidenceKind")}</dt>
-          <dd className="text-foreground">
-            {t(`evidenceKinds.${latest.kind}`)}
-          </dd>
-          <dt>{t("detail.evidenceVerdict")}</dt>
-          <dd className="text-foreground">
-            {t(`evidenceVerdicts.${latest.verdict}`)}
-          </dd>
-          <dt>{t("detail.evidenceWhen")}</dt>
-          <dd className="text-foreground">
-            {formatDateTime(latest.captured_at, locale)}
-          </dd>
-          {href ? (
-            <>
-              <dt>{t("detail.finalUrl")}</dt>
-              <dd className="min-w-0 truncate">
-                <a
-                  className="text-primary hover:underline"
-                  href={href}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {displayUrl(href)}
-                </a>
-              </dd>
-            </>
-          ) : null}
-        </dl>
-      ) : null}
-    </section>
+    </div>
   );
 }
 
@@ -214,33 +170,19 @@ export function NextStepRail({
   shortcutEnabled?: boolean;
 }) {
   const { t } = useTranslation();
-  const step = computeNextStep(detail);
   return (
-    <aside
-      aria-label={t("detail.rail")}
-      className="order-first flex flex-col border-line border-b lg:order-none lg:border-b-0 lg:border-l"
-    >
+    <aside aria-label={t("detail.rail")} className="flex flex-col gap-3">
       <NextStepCard
+        detail={detail}
         onRun={onRun}
         shortcutEnabled={shortcutEnabled}
-        step={step}
       />
-      <LiveTaskCard detail={detail} nowMs={nowMs} />
-      <EvidenceCard detail={detail} />
-      <FollowUpCard
+      <FollowUpSection
         detail={detail}
         nowMs={nowMs}
         onAccept={onAcceptFollowUp}
         onEdit={onEditFollowUp}
       />
-      <div className="hidden p-4 lg:block">
-        <Button asChild size="xs" variant="link">
-          <AppLink href="/board">
-            {t("detail.backToBoard")}
-            <ArrowRight aria-hidden="true" data-icon="inline-end" />
-          </AppLink>
-        </Button>
-      </div>
     </aside>
   );
 }

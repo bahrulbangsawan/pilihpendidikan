@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
-/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+/* Cursor design system tokens, type roles and layout (DESIGN.md). Every app
    imports the same theme and defines no tokens of its own; this file adds
    only the print artifact below. */
 @import "@rulisme/ui/styles/theme.css";
@@ -12,15 +12,15 @@
 
 /*
  * CV preview document — a print-faithful sheet of paper resting on the
- * editor's graph paper, and the twin of the @react-pdf export
- * (components/templates/*-pdf.tsx). Zedative on paper: one family (Inter,
+ * editor's dark canvas, and the twin of the @react-pdf export
+ * (components/templates/*-pdf.tsx). The Cursor print style: one family (Inter,
  * the static cuts registered in src/lib/pdf-fonts.ts on the PDF side), copy
  * set as written, no letter-spacing, 1px hairline rules. It keeps print sizes
  * and the PDF's weights 400 / 600 / 700 (TYPOGRAPHY.md § Exceptions).
  *
  * The paper is not themed. The token classes the templates use are re-scoped
- * here to the light Zedative values, so Night Desk never recolours the sheet:
- * text-foreground is the name and headings, text-ink the body,
+ * here to the literal print values, so the dark chrome never recolours the
+ * sheet: text-foreground is the name and headings, text-ink the body,
  * text-muted-foreground dates and meta, border-line the rules, border-border
  * the photo frame, text-primary the links.
  */
@@ -30,7 +30,7 @@
   background: #ffffff;
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-sans);
+  font-family: var(--font-print);
   /* The static PDF cuts are Inter's text optical size; pin it so bold
      headings keep the same letterforms on screen. */
   font-variation-settings: "opsz" 14;

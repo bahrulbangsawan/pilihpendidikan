@@ -31,7 +31,7 @@ Playwright browser automation on the user's machine, and the Cloudflare backend
 | 09 | `09-EMAIL-APPLICATIONS.md` | Authorized email application flow |
 | 10 | `10-ANALYTICS-AND-STATISTICS.md` | Funnel, conversion, interview/offer/rejection analytics |
 | 11 | `11-SECURITY-PRIVACY-AND-ISOLATION.md` | System-wide threat model, isolation, PII, retention, compliance |
-| 12 | `12-UI-UX-SPECIFICATION.md` | `apps/jobs` screens on the Zedative design system |
+| 12 | `12-UI-UX-SPECIFICATION.md` | `apps/jobs` screens on the Cursor design system |
 | 13 | `13-IMPLEMENTATION-ROADMAP-AND-TESTING.md` | Milestones, OpenSpec change plan, end-to-end test plan |
 | 14 | `14-CLOUDFLARE-ARCHITECTURE.md` | Service-by-service justification, bindings, costs |
 | 15 | `15-SCRAPLING-ENGINE-WRAPPER.md` | `ScraplingJobEngine`, source adapter registry and contracts |
@@ -85,7 +85,7 @@ decision below.
 | CV engine | `CVData` type in `apps/cv/src/components/cv-form.tsx:65-254` (hand-copied to `apps/api/src/types.ts:1-152`); 4 `@react-pdf` templates (`apps/cv/src/components/templates/*-pdf.tsx`) rendered **client-side only**; `formatCvMarkdown()` in `apps/cv/src/lib/cv-markdown.ts:109`. CV ids are user-chosen slugs; public read by id; no REST create (MCP `cv_create` only). | apps/cv audit |
 | PDF on server | **None.** `/cv/:slug.pdf` only 302s to the browser print view; `@react-pdf` (yoga-layout runtime WASM compile) does not run in Workers as shipped. | `apps/api/src/documents/handlers.ts:161-177` |
 | CORS | Credentialed CORS only for `cv.`, `invoice.`, `portfolio.` origins (+ localhost 4003–4005 in dev). **No jobs origin.** | `apps/api/src/origins.ts:7-20` |
-| Design system | In-progress OpenSpec change `update-zedative-design-system` replaces dark Warp with **Zedative** (`zedative.DESIGN.md`) via shared `@rulisme/ui/styles/theme.css`; `apps/home` already imports it; `apps/cv` still on Warp. | `openspec/changes/update-zedative-design-system/proposal.md` |
+| Design system | In-progress OpenSpec change `update-cursor-design-system` replaces dark Warp with the **Cursor** design system (`DESIGN.md`) via shared `@rulisme/ui/styles/theme.css`; `apps/home` already imports it; `apps/cv` still on Warp. | `openspec/changes/update-cursor-design-system/proposal.md` |
 | Python | **No Python anywhere in the repository.** | `find` |
 | Previous Job Tracker spec | **No earlier documents exist** (no `job-tracker-spec/`, no 01–13 files in this or sibling repos). Documents 01–13 are therefore written fresh in this pass and already embody the local-CLI architecture; "previous specification" assumptions are recorded in the conflict register (§5). | filesystem search |
 
@@ -121,7 +121,7 @@ renumber.
 | D-21 | **Optimistic concurrency everywhere**: every mutable record has an integer `revision`; writes carry `base_revision`; stale writes get `409 revision_conflict`. Stage history is an append-only event log. | 20 | Last-write-wins (lets stale CLI data overwrite newer cloud statuses). |
 | D-22 | **Browser automation is Playwright for Python** (the same `playwright` package Scrapling's fetchers depend on), so one Chromium install serves discovery and applications. | 18 | Node Playwright (second runtime), Selenium (weaker auto-waiting). |
 | D-23 | **Mode B "existing browser" means a user-launched Chrome on a dedicated, non-default profile** with `--remote-debugging-port` bound to `127.0.0.1`. Attaching to the user's everyday Chrome profile is impossible by design (Chrome ≥ 136) and not attempted. | 18 | Attaching to the default profile; extracting cookies. |
-| D-24 | **`apps/jobs` follows Zedative** (`zedative.DESIGN.md`) through `@rulisme/ui/styles/theme.css`; no jobs-specific token set. | 12 | Warp (being replaced), a bespoke CLI-integration look. |
+| D-24 | **`apps/jobs` follows the Cursor design system** (`DESIGN.md`) through `@rulisme/ui/styles/theme.css`; no jobs-specific token set. | 12 | Warp (being replaced), a bespoke CLI-integration look. |
 | D-25 | CV documents gain a `visibility` flag; tailored variants default to `private` (owner-only read); existing CVs stay `public`. | 08, 11 |
 | D-26 | Admins do **not** bypass ownership on `JOBS_DB`; the legacy facade ignores `?mine=0` for jobs (BREAKING for admin tooling); break-glass access is logged in `support_access_log` (`DB`). | 11 |
 | D-27 | `apps/jobs` has no `/id/*` route tree; locale comes from a user setting + `jobs-lang` cookie. | 12 |
@@ -153,7 +153,7 @@ renumber.
 | C-05 | "OpenAI Decisions API for AI-driven application planning." | Decisions is a beta classifier/selector: predicates, choices, scores; no tool calling, no custom JSON output, no state, no browser control. | Decisions chooses among executor-enumerated actions and gates; Responses API Structured Outputs generates field values (D-12, D-13). |
 | C-06 | "`apps/cv` engine generates tailored CVs." | The engine renders client-side only and has no AI; no copy/tailor operation; types duplicated. | Extract `packages/cv-engine`, add tailoring in `apps/api`, render in a browser runtime (D-14). |
 | C-07 | "Connect to existing browser sessions." | Chrome ≥ 136 ignores `--remote-debugging-port` on the default profile; profiles lock; CDP connections are lower fidelity. | Mode B limited to a dedicated debug profile (D-23). |
-| C-08 | Root `CLAUDE.md` / `DESIGN.md` describe Warp (dark, weights 400/500, `text-heading` tokens). | The brief mandates Zedative; the Zedative migration is in progress. | `apps/jobs` is born on Zedative and depends on that change landing first (D-24, roadmap M0). |
+| C-08 | Root `CLAUDE.md` / `DESIGN.md` describe Warp (dark, weights 400/500, `text-heading` tokens). | The brief mandates the Cursor design system; its migration is in progress. | `apps/jobs` is born on the Cursor design system and depends on that change landing first (D-24, roadmap M0). |
 | C-09 | Diagram lists Workflows, Durable Objects and KV as backend parts. | Evaluated; not needed for v1 (D-06, D-11). | Documented as optional later additions with triggers for adoption. |
 | C-10 | "Cookies/session tokens remain local." | Already true for the CLI design; the existing SPA pattern stores bearers in `localStorage`. | `apps/jobs` uses BFF cookies (D-15). Browser profiles never leave the machine. |
 | C-11 | "Workday adapter." | No public Workday job-board API; the `cxs` JSON endpoint is undocumented and often bot-protected. | Best-effort, opt-in, rate-limited, no protection bypass (D-17). |
@@ -172,7 +172,7 @@ renumber.
 | A-05 | Operator pays OpenAI cost within a per-user monthly budget (see 14 §9.4); BYOK is not needed for launch. | Owner decision. | M4 |
 | A-06 | The owner accepts Python + `uv` as a second toolchain in the workspace (`bun run check` gains a Python leg). | Owner decision. | M2 |
 | A-07 | Users have legal authority to apply on their own behalf to each target employer through automation; per-platform terms for Greenhouse/Lever/Ashby-hosted application forms do not prohibit user-directed browser automation. | Legal review per platform; default mode stays approval-based. | M7 (auto mode); review starts in M5 |
-| A-08 | The Zedative design-system change (`update-zedative-design-system`) lands before `apps/jobs` UI work starts. | Track the OpenSpec change. | M1 |
+| A-08 | The Cursor design-system change (`update-cursor-design-system`) lands before `apps/jobs` UI work starts. | Track the OpenSpec change. | M1 |
 | A-09 | Indonesia's Personal Data Protection Law (UU PDP, Law 27/2022) and GDPR-style handling (consent for AI processing, export, deletion, breach notification) are satisfied by the design in 11. | Legal review. | Release gate G6 (13) |
 | A-10 | The Workers request and CPU prices used in 14 §9.3 are current (not re-verified on 2026-10-11). | Check the Workers pricing page before budgeting. | M7 |
 | A-11 | The CLI and repository are published under the MIT license. | Owner decision. | M2 (PyPI publish) |

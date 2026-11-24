@@ -49,7 +49,7 @@ recorded" were NOT executed and are listed only so the owner can act on them.
 - [x] 4.5 Edge policy: CSP nonce, Origin gate, noindex, no-store (`src/server.ts`, `src/lib/edge-policy.ts`, `src/start.ts`; T11-CSRF)
 - [x] 4.6 Safe rendering of untrusted text (`src/components/rich-text.tsx`, `src/lib/safe-url.ts`; T11-XSS)
 - [x] 4.7 Locale cookie, `/id` redirect, en/id catalogues (`src/lib/locale.ts`, `src/routes/id.tsx`, `src/i18n/`; TW-LOCALE, TW-I18N)
-- [x] 4.8 Zedative theme import and lint roots (`apps/jobs/src/styles.css`; `scripts/lint-typography.sh` and the parity scripts include `apps/jobs/src`)
+- [x] 4.8 Cursor theme import and lint roots (`apps/jobs/src/styles.css`; `scripts/lint-typography.sh` and the parity scripts include `apps/jobs/src`)
 
 ## 5. Dashboard screens
 
@@ -75,6 +75,6 @@ recorded" were NOT executed and are listed only so the owner can act on them.
 - [x] 7.2 Handoff recorded (NOT executed — owner action): run `migrate-jobs-kv-to-d1.ts` as a dry run against production `JOBS_KV`, review the report, then `--execute`; flip `JOBS_LEGACY_BACKEND` to `d1`; retire `JOBS_KV` after the 30-day grace (06 §12.5)
 - [x] 7.3 Handoff recorded (NOT executed — owner action): turn on `JOBS_V1_ENABLED` in the production `DB.feature_flags`
 - [x] 7.4 Handoff recorded (NOT executed — owner action): flip `SERVICES.jobs.status` to `live` and redeploy the hub after the Going-live checklist (12 §15 step 5)
-- [x] 7.5 Handoff recorded (NOT executed — owner action): M1 exit criteria — Lighthouse accessibility ≥ 95 on Board, the 12 §14 checklist review with `agent-browser` screenshots at 375/1280 in light and Night Desk, and one week of owner dogfood
+- [x] 7.5 Handoff recorded (NOT executed — owner action): M1 exit criteria — Lighthouse accessibility ≥ 95 on Board, the 12 §14 checklist review with `agent-browser` screenshots at 375/1280 in the dark scheme, and one week of owner dogfood
 - [x] 7.6 Handoff recorded (NOT executed here — e2e suite / owner): S-01 (sign-in, no bearer in `document.cookie`) and S-03 (web drag and drop with an illegal move) are automated in `e2e/web.test.ts` against the real api and dashboard (`bun run e2e`; nightly `.github/workflows/e2e.yml`); this change does not claim them passing, the e2e suite's own gate reports the result. T6-07 (keyboard drag and drop via `agent-browser`) stays a manual `agent-browser` check (`e2e/HANDOFF.md`: visual flows are owned by `apps/jobs`)
 - [x] 7.7 Handoff recorded (NOT executed — owner action): tell MCP / admin-tooling users about the D-26 admin-bypass removal before the api deploy; the release note is written in `DEPLOY.md` § Release notes

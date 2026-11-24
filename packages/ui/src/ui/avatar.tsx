@@ -3,10 +3,10 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative avatar (DESIGN.md § Shapes / Components): a 2px square in a 1px
-// `border` frame. Without a photo it shows semibold initials on `pane`.
-// Groups overlap on a paper ring and end in a count tile. Images appear
-// without a fade.
+// cursor.com avatar (the blog bylines): a circle on `pane-2` with a 2.5%
+// hairline. Without a photo it shows weight-400 initials in muted ink.
+// Groups overlap on a page-colour ring and end in a round count. Images
+// appear without a fade.
 function Avatar({
   className,
   size = "default",
@@ -17,7 +17,7 @@ function Avatar({
   return (
     <AvatarPrimitive.Root
       className={cn(
-        "group/avatar relative flex size-8 shrink-0 select-none rounded-sm border border-border bg-pane data-[size=lg]:size-10 data-[size=sm]:size-6 data-[size=xs]:size-5",
+        "group/avatar relative flex size-8 shrink-0 select-none rounded-full border border-hairline bg-pane-2 data-[size=lg]:size-10 data-[size=sm]:size-6 data-[size=xs]:size-5",
         className
       )}
       data-size={size}
@@ -34,7 +34,7 @@ function AvatarImage({
   return (
     <AvatarPrimitive.Image
       className={cn(
-        "aspect-square size-full rounded-xs object-cover",
+        "aspect-square size-full rounded-full object-cover",
         className
       )}
       data-slot="avatar-image"
@@ -50,7 +50,7 @@ function AvatarFallback({
   return (
     <AvatarPrimitive.Fallback
       className={cn(
-        "type-caption weight-semibold group-data-[size=sm]/avatar:type-micro group-data-[size=sm]/avatar:weight-semibold group-data-[size=xs]/avatar:type-micro-compact group-data-[size=xs]/avatar:weight-semibold flex size-full items-center justify-center rounded-xs bg-pane text-muted-foreground",
+        "type-caption group-data-[size=sm]/avatar:type-micro group-data-[size=xs]/avatar:type-micro-compact flex size-full items-center justify-center rounded-full bg-pane-2 text-muted-foreground",
         className
       )}
       data-slot="avatar-fallback"
@@ -59,7 +59,7 @@ function AvatarFallback({
   );
 }
 
-// A status dot: the one place an avatar is round.
+// A status dot on the avatar's corner.
 function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -96,7 +96,7 @@ function AvatarGroupCount({
   return (
     <div
       className={cn(
-        "type-caption group-has-data-[size=sm]/avatar-group:type-micro group-has-data-[size=xs]/avatar-group:type-micro-compact relative flex size-8 shrink-0 items-center justify-center rounded-sm border border-border bg-card text-muted-foreground tabular-nums ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 [&>svg]:size-3.5 group-has-data-[size=lg]/avatar-group:[&>svg]:size-4 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
+        "type-caption group-has-data-[size=sm]/avatar-group:type-micro group-has-data-[size=xs]/avatar-group:type-micro-compact relative flex size-8 shrink-0 items-center justify-center rounded-full border border-hairline bg-pane-2 text-muted-foreground tabular-nums ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 [&>svg]:size-3.5 group-has-data-[size=lg]/avatar-group:[&>svg]:size-4 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
         className
       )}
       data-slot="avatar-group-count"

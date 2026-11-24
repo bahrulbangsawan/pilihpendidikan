@@ -1,25 +1,10 @@
-// The navigation of 12 §2.1: every section lives in the sidebar, grouped by
-// what the user is doing, with single-key shortcuts (12 §2.2) and counters.
+// The sidebar's sections (reui app-shell): the work group at the top (Board,
+// Stats) and the account group at the bottom (Profile, Settings).
 
-import type { BoardResponse } from "@pilihpendidikan/jobs-contracts/api";
-
-type BoardCounts = BoardResponse["counts"];
 import type { LucideIcon } from "lucide-react";
-import {
-  BarChart3,
-  CircleCheck,
-  Inbox,
-  Kanban,
-  ListChecks,
-  Rss,
-  Settings,
-  Terminal,
-  UserRound,
-} from "lucide-react";
+import { ChartColumn, Kanban, Settings, UserRound } from "lucide-react";
 
 export interface NavItem {
-  /** BoardCounts field shown as the sidebar counter. */
-  count?: keyof BoardCounts;
   href: string;
   icon: LucideIcon;
   /** i18n key under `nav.` */
@@ -46,42 +31,12 @@ export const NAV_GROUPS: readonly NavGroup[] = [
         shortcut: "B",
         prefix: "/applications",
       },
-      {
-        key: "inbox",
-        href: "/inbox",
-        icon: Inbox,
-        shortcut: "I",
-        count: "inbox_new",
-        prefix: "/jobs",
-      },
-      { key: "stats", href: "/stats", icon: BarChart3 },
+      { key: "stats", href: "/stats", icon: ChartColumn },
     ],
   },
   {
-    key: "automate",
+    key: "account",
     items: [
-      {
-        key: "approvals",
-        href: "/automation",
-        icon: CircleCheck,
-        shortcut: "A",
-        count: "approvals_pending",
-        prefix: "/automation/rules",
-      },
-      {
-        key: "runs",
-        href: "/automation/runs",
-        icon: ListChecks,
-        shortcut: "R",
-        count: "tasks_live",
-      },
-      { key: "sources", href: "/sources", icon: Rss },
-    ],
-  },
-  {
-    key: "setup",
-    items: [
-      { key: "cli", href: "/cli", icon: Terminal },
       { key: "profile", href: "/profile", icon: UserRound },
       { key: "settings", href: "/settings", icon: Settings },
     ],
@@ -92,13 +47,6 @@ export function isCurrent(
   pathname: string,
   item: Pick<NavItem, "href" | "prefix">
 ): boolean {
-  if (item.href === "/automation") {
-    return (
-      pathname === "/automation" ||
-      pathname === "/automation/" ||
-      (item.prefix !== undefined && pathname.startsWith(item.prefix))
-    );
-  }
   return (
     pathname === item.href ||
     pathname.startsWith(`${item.href}/`) ||

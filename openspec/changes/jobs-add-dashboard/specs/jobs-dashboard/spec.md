@@ -77,8 +77,8 @@ The dashboard SHALL choose its language (`en` | `id`) from the `jobs-lang` cooki
 - **WHEN** a key exists in `en.json` but not in `id.json`, or a static `t("…")` key is missing
 - **THEN** the `apps/jobs` i18n test fails
 
-### Requirement: Zedative design compliance
-The dashboard SHALL use only the shared Zedative theme and `@rulisme/ui` components: `apps/jobs/src/styles.css` MUST import `@rulisme/ui/styles/theme.css` and define no tokens, `apps/jobs/src` MUST be covered by `lint:typography` and the typography parity checks, light MUST be the default with Night Desk as a toggle, and every primary action MUST pair a `<Kbd>` hint with a registered `useShortcut`. (Source: 12 §1, §14; D-24)
+### Requirement: Cursor design compliance
+The dashboard SHALL use only the shared Cursor theme and `@rulisme/ui` components: `apps/jobs/src/styles.css` MUST import `@rulisme/ui/styles/theme.css` and define no tokens, `apps/jobs/src` MUST be covered by `lint:typography` and the typography parity checks, the dashboard MUST be dark only (one scheme, no theme toggle), and every primary action MUST pair a `<Kbd>` hint with a registered `useShortcut`. (Source: 12 §1, §14; D-24)
 
 #### Scenario: Token defined in the app
 - **WHEN** `apps/jobs/src/styles.css` declares a token of its own

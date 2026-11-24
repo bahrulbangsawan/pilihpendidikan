@@ -2,11 +2,12 @@ import { cn } from "@rulisme/ui/lib/utils";
 import { ChevronRight, CornerDownRight, FileJson, Search } from "lucide-react";
 
 /*
- * The DESIGN.md editor mock: the product drawn as a light-theme window in
- * HTML, never a screenshot. Traffic lights (the only circles besides status
- * dots), a title bar on pane-2, documents grouped by builder with one active
- * row and a pulsing dot, an agent thread on pane with a bordered prompt and
- * `○ Read …` tool lines, and a code pane on bg-2 with tabs, a breadcrumb,
+ * The DESIGN.md editor mock: the product drawn as a dark window in HTML,
+ * like the app shots on cursor.com, never a screenshot. Traffic lights, a
+ * title bar on the card colour, documents grouped by builder with one active
+ * row and a pulsing dot, an agent thread on the card colour with a bordered
+ * prompt and `○ Read …` tool lines, and a code pane on the page colour with
+ * tabs, a breadcrumb,
  * counter line numbers, a current-line wash and one wavy red underline.
  * Syntax colours (`syn-1..4`) belong to code like this and nowhere else on
  * the page. Nothing in the window animates except the active document's
@@ -142,7 +143,7 @@ const TABS = ["cv.json", "inv-2026-014.json", "sapa.md"] as const;
 function CodePane() {
   return (
     <div className="flex min-w-0 flex-col bg-card">
-      <div className="flex h-9 shrink-0 items-stretch border-line border-b bg-pane-2">
+      <div className="flex h-9 shrink-0 items-stretch border-border border-b bg-card">
         <TrafficLights className="px-3 md:hidden" />
         {TABS.map((tab, index) => (
           <span
@@ -202,8 +203,8 @@ const ACTIVE_DOCUMENT = "tokopedia";
 
 function DocumentSidebar() {
   return (
-    <div className="hidden min-w-0 flex-col border-line border-r bg-pane md:flex">
-      <div className="flex h-9 shrink-0 items-center gap-3 border-line border-b bg-pane-2 px-3">
+    <div className="hidden min-w-0 flex-col border-border border-r bg-card md:flex">
+      <div className="flex h-9 shrink-0 items-center gap-3 border-border border-b bg-card px-3">
         <TrafficLights />
         <span className="type-caption-compact flex items-center gap-1 text-muted-foreground">
           <Search className="size-3" />
@@ -264,9 +265,9 @@ const TOOL_LINES = [
 
 function AgentThread() {
   return (
-    <div className="hidden min-w-0 flex-col border-line border-r bg-pane lg:flex">
-      <div className="type-caption-compact flex h-9 shrink-0 items-center gap-1 border-line border-b bg-pane-2 px-3 text-foreground">
-        <span className="weight-semibold">rina-wulandari</span>
+    <div className="hidden min-w-0 flex-col border-border border-r bg-card lg:flex">
+      <div className="type-caption-compact flex h-9 shrink-0 items-center gap-1 border-border border-b bg-card px-3 text-foreground">
+        <span>rina-wulandari</span>
         <CornerDownRight className="size-3 text-muted-foreground" />
         <span className="truncate text-muted-foreground">cv / tokopedia</span>
       </div>
@@ -300,8 +301,8 @@ function AgentThread() {
 }
 
 /**
- * The light-theme editor window: 6px top corners, a hairline frame and the
- * float shadow. It rests on the band's bottom rule (no bottom border). Below
+ * The dark editor window: 8px corners, a 10% border and the one soft drop,
+ * the side panes on the card colour and the code on the page colour. Below
  * `md` it is the code pane alone; the documents join at `md` and the agent
  * thread at `lg` (256px / 1fr / 1.25fr).
  */
@@ -315,7 +316,7 @@ export function EditorMock({ className }: { className?: string }) {
       </figcaption>
       <div
         aria-hidden="true"
-        className="grid overflow-hidden rounded-t-lg border border-border border-b-0 bg-pane shadow-float md:grid-cols-[13rem_minmax(0,1fr)] lg:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1.25fr)]"
+        className="grid overflow-hidden rounded-lg border border-border bg-background shadow-lg md:grid-cols-[13rem_minmax(0,1fr)] lg:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1.25fr)]"
       >
         <DocumentSidebar />
         <AgentThread />

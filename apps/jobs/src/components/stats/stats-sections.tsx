@@ -1,7 +1,8 @@
-// The blocks of the Stats page (12 §9, 10 §8): stat cells, the unconfirmed
-// callout, the four charts (each with its data table), the breakdown table
-// and the automation reliability card.
+// The blocks of the Stats page (12 §9, 10 §8): stat cards, the unconfirmed
+// callout, the four charts (each with its data table) and the breakdown
+// table.
 
+import { StatCard, StatGrid } from "@rulisme/ui/ui/stat-card";
 import type {
   AnalyticsBreakdownResponse,
   AnalyticsSummaryResponse,
@@ -15,18 +16,45 @@ import {
   AlertTitle,
 } from "@rulisme/ui/ui/alert";
 import { Button } from "@rulisme/ui/ui/button";
-import { Card, CardContent } from "@rulisme/ui/ui/card";
+import { SectionCard } from "@rulisme/ui/blocks/settings";
 import { Field, FieldLabel } from "@rulisme/ui/ui/field";
-import { NativeSelect, NativeSelectOption } from "@rulisme/ui/ui/native-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@rulisme/ui/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@rulisme/ui/ui/dropdown-menu";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
-import { CircleAlert, CircleHelp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Award,
+  Building2,
+  CalendarClock,
+  CircleAlert,
+  CircleHelp,
+  CircleX,
+  Copy,
+  FileText,
+  Gauge,
+  Globe,
+  LayoutGrid,
+  MapPin,
+  MoreHorizontal,
+  Send,
+} from "lucide-react";
 import { useId, useMemo } from "react";
-import { AppLink } from "@/components/app-link";
+import { AppLink, useAppNavigate } from "@/components/app-link";
 import { useTranslation } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { breakdownLabel, metricLabel } from "@/lib/labels";
 import {
-  automationModel,
   breakdownTable,
   funnelRows,
   funnelSummary,
@@ -38,6 +66,7 @@ import {
   seriesSummary,
   seriesTable,
   statCells,
+  statDeltas,
   timingChartData,
   timingRows,
   timingSummary,
@@ -46,7 +75,7 @@ import {
 } from "@/lib/stats-model";
 import type { SeriesMetric } from "@/lib/stats-range";
 import { BREAKDOWN_ORDER, SERIES_METRICS } from "@/lib/stats-range";
-import { ChartFrame, DataTable, FrameHeader } from "./chart-frame";
+import { ChartFrame, DataTable } from "./chart-frame";
 import {
   FunnelChart,
   RejectionChart,
@@ -55,6 +84,22 @@ import {
 } from "./stats-charts";
 
 type Summary = AnalyticsSummaryResponse;
+
+const METRIC_ICONS: Record<SeriesMetric, LucideIcon> = {
+  applied: FileText,
+  interviews: CalendarClock,
+  offers: Award,
+  rejected: CircleX,
+};
+
+const BREAKDOWN_ICONS: Record<(typeof BREAKDOWN_ORDER)[number], LucideIcon> = {
+  source: Globe,
+  cv_variant: FileText,
+  score_band: Gauge,
+  company: Building2,
+  method: Send,
+  workplace_type: MapPin,
+};
 
 /** Inline failure of one block, with Retry (the page stays usable). */
 export function BlockError({ onRetry }: { onRetry: () => void }) {
@@ -72,42 +117,107 @@ export function BlockError({ onRetry }: { onRetry: () => void }) {
   );
 }
 
-export function StatCells({ summary }: { summary: Summary }) {
+/** The four stat cards (reui stats): label, value + delta chip, then the
+ * previous period's value or the cell's note under a rule. */
+/** A stat card's `…` menu: open the board, or copy the figure. */
+function StatCellMenu({ label, value }: { label: string; value: string }) {
+  const { t } = useTranslation();
+  const navigate = useAppNavigate();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          aria-label={t("stats.cells.menu", { label })}
+          className="text-foreground"
+          size="icon-xs"
+          variant="ghost"
+        >
+          <MoreHorizontal aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onSelect={() => navigate("/board")}>
+          <LayoutGrid aria-hidden="true" />
+          {t("stats.cells.openBoard")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => {
+            navigator.clipboard
+              ?.writeText(`${label}: ${value}`)
+              .catch(() => undefined);
+          }}
+        >
+          <Copy aria-hidden="true" />
+          {t("stats.cells.copy")}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function StatCells({
+  summary,
+  previous,
+}: {
+  summary: Summary;
+  /** The period of the same length before, for the delta chips. */
+  previous?: Summary;
+}) {
   const { locale, t } = useTranslation();
   const cells = statCells(summary, t, locale);
+  const deltas = previous ? statDeltas(summary, previous, t, locale) : {};
   return (
-    <dl
-      aria-label={t("stats.cells.label")}
-      className="grid grid-cols-2 sm:grid-cols-4"
-    >
-      {cells.map((cell) => (
-        <div
-          className="flex min-w-0 flex-col gap-1 border-line border-r border-b px-4 py-4 even:border-r-0 sm:border-b-0 sm:px-6 sm:even:border-r sm:last:border-r-0 [&:nth-child(n+3)]:border-b-0"
-          data-stat={cell.key}
-          key={cell.key}
-        >
-          <dt className="type-caption truncate text-muted-foreground">
-            {cell.label}
-          </dt>
-          <dd className="type-title text-foreground tabular-nums">
-            {cell.value}
-          </dd>
-          {cell.note ? (
-            <dd className="type-caption text-muted-foreground">{cell.note}</dd>
-          ) : null}
-        </div>
-      ))}
-    </dl>
+    <StatGrid aria-label={t("stats.cells.label")}>
+      {cells.map((cell) => {
+        const delta = deltas[cell.key];
+        return (
+          <StatCard
+            action={<StatCellMenu label={cell.label} value={cell.value} />}
+            data-stat={cell.key}
+            delta={
+              delta
+                ? { direction: delta.direction, label: delta.label }
+                : undefined
+            }
+            footer={
+              delta ? (
+                <>
+                  {t("stats.cells.vsPrevious")}{" "}
+                  <span className="text-foreground tabular-nums">
+                    {delta.previous}
+                  </span>
+                  {cell.note ? (
+                    <span className="sr-only">. {cell.note}</span>
+                  ) : null}
+                </>
+              ) : (
+                (cell.note ?? t("stats.cells.noPrevious"))
+              )
+            }
+            key={cell.key}
+            label={cell.label}
+            value={cell.value}
+          />
+        );
+      })}
+    </StatGrid>
   );
 }
 
 export function StatCellsSkeleton() {
   return (
-    <div aria-hidden="true" className="grid grid-cols-2 sm:grid-cols-4">
+    <div
+      aria-hidden="true"
+      className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4"
+    >
       {["a", "b", "c", "d"].map((key) => (
-        <div className="flex flex-col gap-2 px-4 py-4 sm:px-6" key={key}>
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-7 w-16" />
+        <div
+          className="flex flex-col gap-3 rounded-lg border border-border bg-card px-5 py-4"
+          key={key}
+        >
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-8 w-20" />
+          <Skeleton className="h-3 w-32" />
         </div>
       ))}
     </div>
@@ -121,7 +231,7 @@ export function UnconfirmedCallout({ count }: { count: number }) {
     return null;
   }
   return (
-    <Alert role="status">
+    <Alert className="max-sm:pr-4" role="status">
       <CircleHelp aria-hidden="true" />
       <AlertTitle>
         {count === 1
@@ -131,7 +241,7 @@ export function UnconfirmedCallout({ count }: { count: number }) {
             })}
       </AlertTitle>
       <AlertDescription>{t("stats.unconfirmed.body")}</AlertDescription>
-      <AlertAction>
+      <AlertAction className="max-sm:static max-sm:col-start-2 max-sm:mt-2">
         <Button asChild size="sm" variant="outline">
           <AppLink href={UNCONFIRMED_BOARD_HREF}>
             {t("stats.unconfirmed.action")}
@@ -231,18 +341,25 @@ export function SeriesSection({
       <FieldLabel className="sr-only" htmlFor={`${id}-metric`}>
         {t("stats.series.metric")}
       </FieldLabel>
-      <NativeSelect
-        id={`${id}-metric`}
-        onChange={(event) => onMetricChange(event.target.value as SeriesMetric)}
-        size="sm"
+      <Select
+        onValueChange={(value) => onMetricChange(value as SeriesMetric)}
         value={metric}
       >
-        {SERIES_METRICS.map((value) => (
-          <NativeSelectOption key={value} value={value}>
-            {metricLabel(t, value)}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
+        <SelectTrigger id={`${id}-metric`} size="sm">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent align="end">
+          {SERIES_METRICS.map((value) => {
+            const Icon = METRIC_ICONS[value];
+            return (
+              <SelectItem key={value} value={value}>
+                <Icon aria-hidden="true" />
+                {metricLabel(t, value)}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
     </Field>
   );
   let body = <SeriesChart metricName={metricName} points={points} />;
@@ -306,123 +423,42 @@ export function BreakdownSection({
       );
   }
   return (
-    <section aria-labelledby={headingId} className="min-w-0">
-      <Card size="sm">
-        <FrameHeader
-          description={t("stats.breakdown.description")}
-          headingId={headingId}
-          title={t("stats.breakdown.title")}
-        >
+    <div className="min-w-0">
+      <SectionCard
+        action={
           <Field className="w-auto" orientation="horizontal">
             <FieldLabel htmlFor={`${id}-by`}>
               {t("stats.breakdown.by")}
             </FieldLabel>
-            <NativeSelect
-              id={`${id}-by`}
-              onChange={(event) =>
-                onByChange(event.target.value as AnalyticsBreakdown)
-              }
-              size="sm"
+            <Select
+              onValueChange={(value) => onByChange(value as AnalyticsBreakdown)}
               value={by}
             >
-              {BREAKDOWN_ORDER.map((value) => (
-                <NativeSelectOption key={value} value={value}>
-                  {breakdownLabel(t, value)}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
+              <SelectTrigger id={`${id}-by`} size="sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="end">
+                {BREAKDOWN_ORDER.map((value) => {
+                  const Icon = BREAKDOWN_ICONS[value];
+                  return (
+                    <SelectItem key={value} value={value}>
+                      <Icon aria-hidden="true" />
+                      {breakdownLabel(t, value)}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
           </Field>
-        </FrameHeader>
-        <CardContent aria-busy={loading} className="min-w-0">
+        }
+        description={t("stats.breakdown.description")}
+        id={headingId}
+        title={t("stats.breakdown.title")}
+      >
+        <div aria-busy={loading} className="min-w-0">
           {body}
-        </CardContent>
-      </Card>
-    </section>
-  );
-}
-
-export function AutomationCard({ summary }: { summary: Summary }) {
-  const { locale, t } = useTranslation();
-  const headingId = useId();
-  const model = automationModel(summary, t, locale);
-  return (
-    <section aria-labelledby={headingId} className="min-w-0">
-      <Card size="sm">
-        <FrameHeader
-          description={
-            model.total === 0
-              ? t("stats.automation.none")
-              : t("stats.automation.description", {
-                  count: formatNumber(model.total, locale),
-                })
-          }
-          headingId={headingId}
-          title={t("stats.automation.title")}
-        />
-        {model.total === 0 ? null : (
-          <CardContent className="flex flex-col gap-4">
-            <dl
-              aria-label={t("stats.automation.statesLabel")}
-              className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-5"
-            >
-              {model.states.map((entry) => (
-                <div className="flex flex-col" key={entry.key}>
-                  <dt className="type-caption text-muted-foreground">
-                    {entry.label}
-                  </dt>
-                  <dd className="type-subtitle text-foreground tabular-nums">
-                    {entry.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <dl
-              aria-label={t("stats.automation.ratesLabel")}
-              className="grid grid-cols-1 gap-x-6 gap-y-2 border-line border-t pt-3 sm:grid-cols-3"
-            >
-              {model.rates.map((entry) => (
-                <div
-                  className="flex items-baseline justify-between gap-3 sm:flex-col sm:justify-start sm:gap-0"
-                  key={entry.key}
-                >
-                  <dt className="type-caption text-muted-foreground">
-                    {entry.label}
-                  </dt>
-                  <dd className="type-body weight-semibold text-foreground tabular-nums">
-                    {entry.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            {model.failures.length > 0 ? (
-              <div className="flex flex-col gap-1.5 border-line border-t pt-3">
-                <h3 className="type-caption weight-semibold text-foreground">
-                  {t("stats.automation.failures")}
-                </h3>
-                <ul className="flex flex-col">
-                  {model.failures.map((entry) => (
-                    <li
-                      className="type-body-compact flex justify-between gap-3 border-line border-b py-1.5 last:border-b-0"
-                      key={entry.key}
-                    >
-                      <span className="min-w-0 truncate">{entry.label}</span>
-                      <span className="text-foreground tabular-nums">
-                        {entry.value}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            <AppLink
-              className="type-body-compact self-start text-primary underline-offset-4 hover:underline"
-              href="/automation/runs"
-            >
-              {t("stats.automation.seeRuns")}
-            </AppLink>
-          </CardContent>
-        )}
-      </Card>
-    </section>
+        </div>
+      </SectionCard>
+    </div>
   );
 }

@@ -8,7 +8,15 @@
   },
   "nav": {
     "switchLanguage": "Bahasa Indonesia",
-    "sections": "Sections on this page"
+    "sections": "Sections on this page",
+    "builders": "Builders",
+    "assistants": "AI assistants",
+    "home": "Pilih Pendidikan home",
+    "features": "Features",
+    "exports": "What you get",
+    "crawler": "Crawler",
+    "menu": "Menu",
+    "menuTitle": "Pilih Pendidikan"
   },
   "news": {
     "label": "News:",
@@ -18,7 +26,10 @@
   "hero": {
     "title": "Pilih Pendidikan",
     "intro": "Pilih Pendidikan is a set of document builders for students and job seekers, in English and Bahasa Indonesia. Each one runs in your browser, shows a live preview and exports a print-ready PDF.",
-    "rollout": "The builders are launching one at a time. Each one gets a link here once it is live."
+    "rollout": "The builders are launching one at a time. Each one gets a link here once it is live.",
+    "headline": "Pilih Pendidikan builds your CV, invoice and portfolio in your browser.",
+    "primary": "See the builders",
+    "secondary": "Use it from an AI assistant"
   },
   "editor": {
     "label": "Illustration: in a code editor, an AI assistant adds a Gojek internship to cv.json.",
@@ -27,7 +38,26 @@
     "read": "Read",
     "edit": "Edit",
     "answer": "Added the internship under Experience. One typo is left in Education.",
-    "description": "Built the trip receipt screen in SwiftUI"
+    "description": "Built the trip receipt screen in SwiftUI",
+    "previewTitle": "cv.pdf — Preview",
+    "name": "Rina Putri",
+    "role": "iOS developer · Makassar",
+    "experience": "Experience",
+    "education": "Education",
+    "period": "Jul – Dec 2025",
+    "thought": "Thought",
+    "seconds": "4s",
+    "composer": "Ask to edit your CV…",
+    "mode": "Agent",
+    "threadTitle": "Add Gojek internship",
+    "editingNow": "Editing now",
+    "groupOpen": "Open",
+    "groupRecent": "Recent",
+    "metaInvoice": "INV-2026-0001 · 2d",
+    "metaPortfolio": "3 projects · 1w",
+    "metaCv": "Experience · now",
+    "resume": "cv-old.json",
+    "metaResume": "Archived · 3w"
   },
   "tools": {
     "heading": "Builders"
@@ -47,7 +77,7 @@
     },
     "jobs": {
       "name": "Job tracker",
-      "description": "Track applications on a board, discover jobs and apply from your computer with the CLI."
+      "description": "Track your applications on a board, as a list or a table, with stats on how they are going."
     },
     "mcp": {
       "heading": "AI assistants",
@@ -67,11 +97,115 @@
     "blurb": "CV, invoice and portfolio builders that run in your browser and export print-ready PDFs.",
     "onThisPage": "On this page",
     "language": "Language",
-    "agents": "For AI agents"
+    "agents": "For AI agents",
+    "copyright": "© 2026 Pilih Pendidikan",
+    "builders": "Builders",
+    "assistants": "AI assistants",
+    "resources": "Resources",
+    "mcp": "MCP endpoint",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia",
+    "note": "Free · English and Bahasa Indonesia"
   },
   "notFound": {
     "title": "Page not found",
     "description": "The page you're looking for doesn't exist or may have moved.",
     "home": "Back to home"
+  },
+  "strip": {
+    "heading": "Free for students and job seekers, in English and Bahasa Indonesia",
+    "cv": "CV",
+    "invoice": "Invoice",
+    "portfolio": "Portfolio",
+    "jobs": "Job tracker",
+    "pdf": "PDF export",
+    "preview": "Live preview",
+    "english": "English",
+    "indonesian": "Bahasa Indonesia"
+  },
+  "features": {
+    "cv": {
+      "cta": "Open the CV builder"
+    },
+    "invoice": {
+      "cta": "Open the invoice builder"
+    },
+    "portfolio": {
+      "cta": "Open the portfolio builder"
+    },
+    "jobs": {
+      "cta": "Open the job tracker"
+    },
+    "shotAlt": "Screenshot of the {{name}}",
+    "windowTitle": "{{name}} — pilihpendidikan"
+  },
+  "why": {
+    "heading": "Write it, see it, download it.",
+    "preview": {
+      "title": "Live preview",
+      "body": "Every change shows on the page as you type, in the same layout as the PDF."
+    },
+    "pdf": {
+      "title": "Print-ready PDF",
+      "body": "Download a PDF that prints the way it looks on screen."
+    },
+    "languages": {
+      "title": "Two languages",
+      "body": "Every builder works in English and in Bahasa Indonesia."
+    },
+    "templates": {
+      "title": "Four CV templates",
+      "body": "Pick Basic, Harvard, Simple or Standard and switch at any time."
+    },
+    "regions": {
+      "title": "Indonesian addresses",
+      "body": "Invoice addresses use Indonesian province, city and district data."
+    },
+    "browser": {
+      "title": "Runs in your browser",
+      "body": "Nothing to install: open a builder and start writing."
+    }
+  },
+  "mcpSection": {
+    "configLabel": "MCP client configuration"
+  },
+  "cta": {
+    "title": "Start your CV now.",
+    "button": "See the builders"
+  },
+  "exports": {
+    "heading": "What you get",
+    "cv": {
+      "label": "CV",
+      "title": "A PDF, or your data as Markdown or JSON"
+    },
+    "invoice": {
+      "label": "Invoice",
+      "title": "A PDF with Indonesian addresses"
+    },
+    "portfolio": {
+      "label": "Portfolio",
+      "title": "An A4-landscape PDF for the Apple Developer Academy"
+    },
+    "jobs": {
+      "label": "Job tracker",
+      "title": "Your applications as a board, a list or a table"
+    }
+  },
+  "templates": {
+    "heading": "Four CV templates",
+    "lead": "Pick one and switch at any time; the PDF follows.",
+    "label": "CV template",
+    "basic": "Basic",
+    "harvard": "Harvard",
+    "simple": "Simple",
+    "standard": "Standard",
+    "alt": "The {{name}} CV template with a sample CV"
+  },
+  "about": {
+    "heading": "Built for students and job seekers",
+    "body": "Every builder is free, works in English and Bahasa Indonesia, and keeps your documents in your browser until you save them.",
+    "link": "How our crawler works",
+    "shotAlt": "The job tracker's stats page"
   }
 }

@@ -13,8 +13,6 @@ import type {
   FileView,
   GetMetaResponse,
   InboxItem,
-  TaskDetail,
-  UserJobDetail,
 } from "@pilihpendidikan/jobs-contracts/api";
 import {
   AnalyticsBreakdownResponseSchema,
@@ -24,8 +22,6 @@ import {
   FileViewSchema,
   GetMetaResponseSchema,
   InboxItemSchema,
-  TaskDetailSchema,
-  UserJobDetailSchema,
 } from "@pilihpendidikan/jobs-contracts/api";
 import type { CvVariantDiff } from "@pilihpendidikan/jobs-contracts/cv-tailoring";
 import { CvVariantDiffSchema } from "@pilihpendidikan/jobs-contracts/cv-tailoring";
@@ -67,11 +63,6 @@ const HOUR = 3_600_000;
 const SHA_A = "a".repeat(64);
 const SHA_C = "c".repeat(64);
 const SHA_D = "d".repeat(64);
-
-/** A stable sha256-looking hex string for fixture `n`. */
-export function fixtureSha(n: number): string {
-  return n.toString(16).padStart(2, "0").repeat(32);
-}
 
 // ── Meta ────────────────────────────────────────────────────────────────────
 
@@ -291,29 +282,6 @@ export function makeInboxItem(spec: InboxItemSpec): InboxItem {
   });
 }
 
-export function makeUserJobDetail(
-  overrides: Partial<UserJobDetail> = {}
-): UserJobDetail {
-  const posting = overrides.posting ?? makePosting();
-  return UserJobDetailSchema.parse({
-    user_job: makeUserJob(posting.id),
-    posting,
-    score: {
-      posting_id: posting.id,
-      score: 91,
-      status: "ready",
-      confidence: 0.82,
-      deterministic_only: false,
-      profile_version: 4,
-      rubric_version: "r1",
-      explanation: "91 · Strong match\n✓ Skills: react, typescript",
-      created_at: NOW - HOUR,
-    },
-    application: null,
-    ...overrides,
-  });
-}
-
 // ── Sources and discovery runs ──────────────────────────────────────────────
 
 export function makeSource(
@@ -496,22 +464,6 @@ export function makeEvidence(
     form_hash: SHA_C,
     captured_at: NOW - 60_000,
     recorded_at: NOW - 55_000,
-    ...overrides,
-  });
-}
-
-export function makeTaskDetail(
-  overrides: Partial<TaskDetail> = {}
-): TaskDetail {
-  const task = overrides.task ?? makeTask();
-  const deviceId = task.lease_device_id ?? fixtureId("dev");
-  return TaskDetailSchema.parse({
-    task,
-    attempts: [makeAttempt(task, deviceId)],
-    approvals: [],
-    evidence: [],
-    device_name: "MacBook",
-    context: null,
     ...overrides,
   });
 }

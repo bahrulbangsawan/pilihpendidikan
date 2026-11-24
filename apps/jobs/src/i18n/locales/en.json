@@ -15,38 +15,32 @@
   },
   "nav": {
     "board": "Board",
-    "inbox": "Inbox",
-    "automation": "Automation",
-    "approvals": "Approvals",
-    "runs": "Runs",
-    "sources": "Sources",
     "stats": "Stats",
-    "cli": "CLI & devices",
     "profile": "Profile",
     "settings": "Settings",
+    "application": "Application",
+    "language": "Language",
+    "shortcuts": "Keyboard shortcuts",
     "search": "Search",
-    "new": "New",
+    "searchField": "Search…",
+    "collapse": "Collapse the sidebar",
+    "expand": "Expand the sidebar",
     "home": "Pilih Jobs, go to the board",
     "sidebar": "Sections",
     "skip": "Skip to content",
     "openMenu": "Open the menu",
     "menuTitle": "Menu",
     "menuDescription": "Every section of Pilih Jobs.",
-    "countLabel": "{count} waiting",
-    "devicesNone": "No devices online",
-    "devicesOne": "1 device online",
-    "devicesMany": "{count} devices online",
     "group": {
-      "track": "Track",
-      "automate": "Automate",
-      "setup": "Setup"
+      "track": "Workspace",
+      "account": "Account"
     },
-    "account": "Account settings for {email}"
+    "account": "Account menu for {email}"
   },
   "signIn": {
     "pageTitle": "Sign in",
     "title": "Every application, one board",
-    "intro": "Track the jobs you apply to, see what needs you next, and let the Pilih Jobs CLI fill forms on your computer with your approval.",
+    "intro": "Track the jobs you apply to and see what needs you next.",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
     "emailHelp": "We email you a sign-in link. No password.",
@@ -82,12 +76,6 @@
     "accepted": "Accepted",
     "rejected": "Rejected",
     "withdrawn": "Withdrawn"
-  },
-  "modes": {
-    "manual": "Manual",
-    "assisted": "Assisted",
-    "approval": "Approval",
-    "auto": "Auto"
   },
   "sourceKinds": {
     "greenhouse": "Greenhouse",
@@ -129,31 +117,7 @@
     "submitted_verified": "Submitted ✓",
     "submitted_unverified": "Unconfirmed",
     "failed": "Failed",
-    "outcome_unknown": "Needs review",
-    "confirmTitle": "Did this application go through?",
-    "confirmBody": "The run finished but couldn't confirm the submission. Check your email or the employer's site first.",
-    "unknownTitle": "Did this application go through?",
-    "unknownBody": "The run stopped after it started submitting, so we can't tell. Check your email first.",
-    "submitted": "Submitted",
-    "notSubmitted": "Not submitted",
-    "notSure": "Not sure",
-    "confirmed": "Marked as submitted.",
-    "denied": "Marked as not submitted.",
-    "changed": "This application changed meanwhile. Look again and retry.",
-    "failedToSave": "Couldn't save that. Try again."
-  },
-  "taskStates": {
-    "queued": "Queued",
-    "claimed": "Starting",
-    "running": "Running",
-    "paused": "Paused — needs you",
-    "awaiting_approval": "Awaiting approval",
-    "submitted": "Submitted",
-    "succeeded": "Done",
-    "failed": "Failed",
-    "cancelled": "Cancelled",
-    "outcome_unknown": "Needs review",
-    "expired": "Expired"
+    "outcome_unknown": "Needs review"
   },
   "progressStages": {
     "claimed": "Claimed",
@@ -198,8 +162,7 @@
     "automation": "Automation",
     "system": "System",
     "mcp": "AI assistant (MCP)",
-    "legacy_migration": "Import",
-    "device": "{device} (CLI)"
+    "legacy_migration": "Import"
   },
   "changeSources": {
     "web": "another browser tab",
@@ -244,18 +207,6 @@
     "day": "a day",
     "hour": "an hour"
   },
-  "evidenceKinds": {
-    "browser_confirmation": "Confirmation page",
-    "ats_api_response": "Employer system reply",
-    "email_sent": "Email sent",
-    "user_attestation": "Your confirmation",
-    "confirmation_email": "Confirmation email"
-  },
-  "evidenceVerdicts": {
-    "verified": "Verified",
-    "unverified": "Not verified",
-    "negative": "Not submitted"
-  },
   "shortcuts": {
     "title": "Keyboard shortcuts",
     "description": "Single keys work anywhere except while you type in a field.",
@@ -264,19 +215,11 @@
       "board": "On the board",
       "card": "On a focused card",
       "application": "On an application",
-      "profile": "On the profile",
-      "inbox": "In the inbox",
-      "job": "On a found job",
-      "approvals": "In approvals",
-      "monitor": "On a live run",
-      "cli": "On CLI & devices"
+      "profile": "On the profile"
     },
     "actions": {
       "palette": "Command palette",
       "board": "Board",
-      "inbox": "Inbox",
-      "approvals": "Approvals",
-      "runs": "Runs",
       "newJob": "New job by URL",
       "sheet": "This sheet",
       "close": "Close a window",
@@ -295,21 +238,7 @@
       "select": "Select for bulk actions",
       "followUp": "Set a follow-up",
       "nextStep": "Do the next step",
-      "saveFacts": "Save the facts",
-      "filter": "Focus the filter",
-      "nextRow": "Next row",
-      "previousRow": "Previous row",
-      "openRow": "Open the row",
-      "selectRow": "Select the row",
-      "track": "Track selected",
-      "dismiss": "Dismiss selected",
-      "trackJob": "Track this job",
-      "nextApproval": "Next approval",
-      "previousApproval": "Previous approval",
-      "approve": "Approve (asks first)",
-      "rejectApproval": "Reject (asks first)",
-      "resumeOrConfirm": "Resume, or confirm the outcome",
-      "copyInstall": "Copy the install command"
+      "saveFacts": "Save the facts"
     }
   },
   "palette": {
@@ -321,11 +250,6 @@
     "applications": "Applications",
     "goTo": "Go to",
     "newJob": "New job by URL",
-    "approveNext": "Approve next",
-    "openInbox": "Open inbox",
-    "startDiscovery": "Start discovery on a device…",
-    "themeDark": "Switch to Night Desk",
-    "themeLight": "Switch to the light theme",
     "shortcuts": "Keyboard shortcuts"
   },
   "newJob": {
@@ -351,8 +275,6 @@
       "noResponseDays": "No response for",
       "days": "{days} days"
     },
-    "mode": "Mode",
-    "anyMode": "Any mode",
     "source": "Source",
     "anySource": "Any source",
     "showArchived": "Show archived",
@@ -361,31 +283,82 @@
     "noMatches": "No cards match these filters.",
     "clearFilters": "Clear filters",
     "closed": "Closed",
-    "closedFilter": "Show closed",
-    "closedBoth": "Both",
     "capped": "Showing the {shown} most recent of {total}.",
     "countLabel": "{count} cards",
     "emptyTitle": "No applications yet",
-    "empty": "Track a job from your inbox or add one by URL.",
     "emptyColumn": "Nothing here.",
     "errorTitle": "The board didn't load",
     "error": "We couldn't reach the server. Your applications are safe.",
-    "overview": {
-      "label": "This week at a glance",
-      "appliedThisWeek": "Applied this week",
-      "responseRate": "Response rate, 30 days",
-      "ratesLater": "after 5 applications",
-      "interviewsUpcoming": "Interviews coming up",
-      "followUpsDue": "Follow-ups due"
+    "intro": "Every application by stage. Drag a card to move it, or switch to a list or a table.",
+    "match": "Match",
+    "cvAttached": "A tailored CV is attached",
+    "openFullPage": "Open full page",
+    "newApplication": "New application",
+    "emptyManual": "Add the first job you're applying to by its URL.",
+    "searchPlaceholder": "Search jobs",
+    "filterButton": "Filters",
+    "filtersActive": "{count} filters on",
+    "lane": {
+      "menu": "Actions for the {stage} lane",
+      "selectAll": "Select all cards",
+      "collapse": "Collapse lane",
+      "expand": "Expand {stage}, {count} cards"
     },
-    "intro": "Every application by stage. Drag a card to move it."
+    "view": {
+      "label": "View",
+      "board": "Board",
+      "list": "List",
+      "table": "Table"
+    },
+    "table": {
+      "company": "Company and role",
+      "stage": "Stage",
+      "score": "Match",
+      "location": "Location",
+      "source": "Source",
+      "since": "In stage since",
+      "updated": "Updated",
+      "actions": "Actions"
+    }
+  },
+  "application": {
+    "emailHeading": "Email the employer",
+    "noNotes": "No notes yet.",
+    "tabs": {
+      "notes": "Notes"
+    },
+    "nextStep": {
+      "reviewCv": "Review CV",
+      "reviewCvWhy": "A tailored CV is ready for your review.",
+      "markApplied": "Mark as applied",
+      "markAppliedWhy": "Sent your application? Move it to Applied so the follow-up reminders start.",
+      "addInterview": "Add interview",
+      "addInterviewWhy": "Got an interview? Add it to keep the timeline right."
+    },
+    "sheet": {
+      "description": "Application details",
+      "manage": "Manage",
+      "noInterviews": "No interviews yet.",
+      "round": "Round {round} · {kind}",
+      "unscheduled": "Not scheduled yet",
+      "missing": "Application not found",
+      "missingBody": "It may have been deleted, or the link is wrong."
+    },
+    "props": {
+      "stage": "Stage",
+      "match": "Match",
+      "location": "Location",
+      "source": "Source",
+      "applied": "Applied",
+      "posting": "Posting"
+    }
   },
   "card": {
     "label": "{company}, {title}, in {stage}",
     "menu": "Actions for {company}, {title}",
     "moveLabel": "Move {company}",
     "score": "Score",
-    "scoring": "Scoring",
+    "scoring": "Scoring…",
     "aiOff": "Scored without AI",
     "aiOffShort": "AI off",
     "cvReady": "CV",
@@ -394,11 +367,6 @@
     "offerOpen": "Offer open",
     "highPriority": "High",
     "selected": "Selected",
-    "anyDevice": "a device",
-    "liveRunning": "Running on {device}",
-    "liveRunningStage": "{stage} on {device}",
-    "livePaused": "Paused — needs you",
-    "liveAwaitingApproval": "Awaiting approval",
     "followUpDue": "Follow up · {when}",
     "interview": "Interview {when}",
     "updated": "Changed {age} ago",
@@ -406,13 +374,6 @@
     "what": "this application",
     "archivedToast": "Archived.",
     "unarchivedToast": "Back on the board.",
-    "submission": {
-      "in_progress": "Applying…",
-      "submitted_verified": "Verified",
-      "submitted_unverified": "? Unconfirmed",
-      "failed": "Failed",
-      "outcome_unknown": "! Needs review"
-    },
     "actions": {
       "open": "Open",
       "move": "Move to…",
@@ -498,14 +459,11 @@
     "followUp": "Set follow-up",
     "followUpIn": "Follow up in {when}",
     "followUpClear": "Clear follow-up",
-    "mode": "Set mode",
-    "setMode": "Mode: {mode}",
     "requestScoring": "Score again",
     "generateCv": "Generate CV variants",
     "generateCvTitle": "Generate tailored CVs",
     "generateCvBody": "One tailored CV per application, {count} at most per action.",
     "cvCapped": "Only the first {limit} applications get a CV in one go.",
-    "queueApply": "Queue apply runs",
     "clear": "Clear selection",
     "summary": "{ok} done · {skipped} skipped · {conflict} changed elsewhere · {failed} failed",
     "details": "Details",
@@ -513,9 +471,6 @@
     "illegalReason": "That move isn't allowed from its current stage.",
     "liveTask": "A run is working on it: move it on its own.",
     "unchanged": "Already set.",
-    "alreadyRunning": "A run is already queued or working on it.",
-    "autoNeedsRule": "No enabled auto rule matches it.",
-    "setModeAuto": "Mode: Auto (rule matches only)",
     "purge": "Delete for good",
     "purgeMenu": "Delete for good…",
     "purgeTitle": "Delete {count} applications for good?",
@@ -523,7 +478,6 @@
     "purgeSubmission": "A submission is in progress: wait for it to finish.",
     "purgeLiveTask": "A run is working on it: cancel the run first.",
     "purgeAction": "Delete {count} for good",
-    "manualMode": "Manual applications can't be queued.",
     "scoring": "{queued} queued for scoring, {cached} already scored.",
     "scoringFailed": "Couldn't request scoring.",
     "status": {
@@ -535,8 +489,6 @@
     "selectAll": "Select all",
     "selectRow": "Select {name}",
     "resultsTitleRows": "Results per item",
-    "deleteTitle": "Delete {count} items?",
-    "deleteBody": "This can't be undone.",
     "delete": "Delete {count}"
   },
   "followUp": {
@@ -572,14 +524,8 @@
   "detail": {
     "pageTitle": "Application",
     "stage": "Stage",
-    "mode": "Mode",
-    "modeWhat": "The mode",
     "more": "More actions",
-    "autoNeedsRule": "Auto (needs a matching auto rule)",
     "openPosting": "Open the posting",
-    "posted": "posted {when}",
-    "score": "Score {score}",
-    "postingOpen": "Posting open",
     "postingClosed": "Posting closed",
     "purge": "Delete for good…",
     "purgeTitle": "Delete this application for good?",
@@ -594,7 +540,6 @@
     "tabs": {
       "overview": "Overview",
       "cv": "CV",
-      "apply": "Apply",
       "timeline": "Timeline",
       "interviews": "Interviews",
       "offers": "Offers",
@@ -606,41 +551,14 @@
     "requirements": "Requirements",
     "salary": "Salary",
     "rail": "Next step and status",
-    "liveTask": "Live task",
-    "updated": "Updated {when}",
-    "openRun": "Open the run",
-    "evidence": "Submission",
-    "evidenceKind": "Evidence",
-    "evidenceVerdict": "Verdict",
-    "evidenceWhen": "Captured",
-    "finalUrl": "Final page",
-    "backToBoard": "Back to the board",
-    "boardNav": "Board",
     "stale": "Offline — showing the last data we received.",
     "errorTitle": "This application didn't load",
-    "error": "We couldn't reach the server."
+    "error": "We couldn't reach the server.",
+    "postingClosedShort": "Closed"
   },
   "nextStep": {
     "heading": "Next step",
-    "none": "Nothing needs you right now.",
-    "why": {
-      "review_outcome": "The last run stopped while submitting. Tell us whether it went through.",
-      "confirm_submission": "The run finished but couldn't confirm it. Check and confirm.",
-      "approve_submission": "The form is filled and waiting for your approval.",
-      "review_cv": "A tailored CV is ready for your review.",
-      "generate_cv": "Start with a CV tailored to this posting.",
-      "start_apply": "Your materials are ready. Start applying.",
-      "add_interview": "Got an interview? Add it to keep the timeline right."
-    },
-    "actions": {
-      "review_outcome": "Review outcome",
-      "confirm_submission": "Confirm submission",
-      "approve_submission": "Approve submission",
-      "review_cv": "Review CV",
-      "generate_cv": "Generate CV",
-      "start_apply": "Start apply",
-      "add_interview": "Add interview"
-    }
+    "none": "Nothing needs you right now."
   },
   "notes": {
     "heading": "Notes",
@@ -820,7 +738,6 @@
     "rejected": "CV rejected.",
     "needsPdf": "The PDF isn't ready yet. Try again in a moment.",
     "decideFailed": "Couldn't save that.",
-    "openTailored": "Open the tailored CV",
     "templates": {
       "basic": "Basic",
       "harvard": "Harvard",
@@ -890,43 +807,17 @@
     "review": "Review",
     "reviewing": "Reviewing"
   },
-  "apply": {
-    "method": "How to apply",
-    "methods": {
-      "browser": "In the browser (CLI)",
-      "email": "By email",
-      "manual": "Myself"
-    },
-    "browserHelp": "The Pilih Jobs CLI fills the form on your computer in {mode} mode.",
-    "device": "Device",
-    "anyDevice": "Any of my devices",
-    "online": "online",
-    "offline": "offline",
-    "noDevice": "No device can apply yet.",
-    "connectCli": "Connect the CLI",
-    "start": "Start apply",
-    "started": "Queued. A device picks it up shortly.",
-    "duplicate": "A run for this application is already queued or running.",
-    "refused": "Not started: {message}",
-    "startFailed": "Couldn't start the run.",
-    "manualMode": "This application is in Manual mode. Change the mode to let the CLI apply.",
-    "manualHelp": "Applied yourself? Record it so the board knows it was really sent.",
-    "markedApplied": "Recorded as applied.",
-    "alreadyApplied": "This application is recorded as submitted.",
-    "watchRun": "Watch the run",
-    "alreadyRunning": "A run for this application is already queued or running.",
-    "mode": "Mode",
-    "modeHelp": {
-      "manual": "You apply yourself; the CLI doesn't touch the form.",
-      "assisted": "The CLI fills the form; you click Submit yourself.",
-      "approval": "The CLI fills the form and asks you before it submits.",
-      "auto": "An automation rule may submit without asking, within its limits."
-    }
-  },
   "profile": {
     "title": "Profile",
-    "intro": "What the agent may use to fill forms, and where each value came from.",
+    "intro": "Your details, saved answers and CVs, and where each value came from.",
     "tabsLabel": "Profile sections",
+    "groupHelp": {
+      "contact": "How employers reach you.",
+      "links": "Profiles you share with applications.",
+      "preferences": "What you are looking for."
+    },
+    "saveHint": "Only changed facts are saved.",
+    "workAuthEmpty": "No countries yet.",
     "tabs": {
       "facts": "Facts",
       "answers": "Answers",
@@ -965,6 +856,8 @@
         "age_18_plus": "I am 18 or older"
       }
     },
+    "suggested": "Suggested",
+    "suggestedTitle": "Taken from your full name. Save to keep it.",
     "sources": {
       "user_entered": "You",
       "cv_import": "From CV",
@@ -981,13 +874,63 @@
       "none": "No right to work"
     },
     "addCountry": "Add a country",
-    "listHelp": "Separate with commas.",
     "save": "Save facts",
     "saved": "Facts saved.",
     "saveFailed": "Couldn't save the facts.",
     "noChanges": "Nothing changed.",
     "invalid": "Fix the highlighted values first.",
-    "conflict": "Changed elsewhere meanwhile: {keys}. Those weren't saved."
+    "conflict": "Changed elsewhere meanwhile: {keys}. Those weren't saved.",
+    "factHelp": {
+      "contact": {
+        "full_name": "As it appears on your CV.",
+        "first_name": "For forms that split your name.",
+        "last_name": "Your family name, if you have one.",
+        "email": "Where employers reply.",
+        "phone": "With the country code.",
+        "location": "The city you live in.",
+        "country": "The country you live in."
+      },
+      "links": {
+        "linkedin": "Your public profile URL.",
+        "github": "For engineering roles.",
+        "portfolio": "Your work samples.",
+        "website": "A personal site or blog."
+      },
+      "prefs": {
+        "target_titles": "Separate with commas.",
+        "timezone": "Where you prefer to work from."
+      },
+      "skills": {
+        "extra": "Separate with commas."
+      },
+      "eligibility": {
+        "age_18_plus": "Some forms ask for it."
+      }
+    },
+    "factPlaceholder": {
+      "contact": {
+        "full_name": "Your full name",
+        "first_name": "Given name",
+        "last_name": "Family name",
+        "email": "you@example.com",
+        "phone": "+62 812 0000 0000",
+        "location": "City",
+        "country": "Country"
+      },
+      "links": {
+        "linkedin": "https://linkedin.com/in/you",
+        "github": "https://github.com/you",
+        "portfolio": "https://you.dev/work",
+        "website": "https://you.dev"
+      },
+      "prefs": {
+        "target_titles": "Frontend Engineer, Web Developer",
+        "timezone": "Asia/Jakarta"
+      },
+      "skills": {
+        "extra": "Figma, SQL, Public speaking"
+      }
+    }
   },
   "answers": {
     "intro": "Answers to screening questions. Protected questions are never answered without your approval.",
@@ -1062,45 +1005,37 @@
   },
   "settings": {
     "title": "Settings",
-    "intro": "Your account, privacy and how automation behaves.",
+    "intro": "Your account, language, AI preferences and data.",
     "what": "This setting",
     "loadFailed": "Couldn't load your settings.",
+    "sectionsLabel": "Settings sections",
+    "sections": {
+      "account": "Account",
+      "language": "Language & region",
+      "ai": "AI",
+      "data": "Your data"
+    },
     "account": "Account",
+    "accountHelp": "The account you are signed in with.",
     "email": "Signed in as",
+    "emailHelp": "Sign-in links are sent here.",
     "signOut": "Sign out",
-    "display": "Language and theme",
+    "signOutHelp": "Ends this session on this browser.",
+    "display": "Language & region",
     "displayHelp": "The language is saved to your account.",
     "locale": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Night Desk",
+    "localeHelp": "Used on every screen.",
+    "localeFailed": "Couldn't change the language.",
     "timezone": "Timezone",
-    "automation": "Automation",
-    "automationHelp": "How new applications start, and a switch to stop everything.",
-    "defaultMode": "Default mode for new applications",
-    "defaultModeHelp": "Approval asks before every submission.",
-    "paused": "Pause all automation",
-    "pausedHelp": "Devices stop claiming work and running tasks pause at their next heartbeat.",
-    "mcp": "Allow AI assistants (MCP) to answer questions and approve CV variants",
-    "mcpHelp": "Never submissions or rule activations. Off by default.",
+    "timezoneHelp": "Dates and follow-ups use this zone, e.g. Asia/Jakarta.",
+    "saveChanges": "Save changes",
+    "dataHelp": "Export everything, or delete your account.",
     "ai": "AI",
     "aiHelp": "Scoring and CV tailoring use OpenAI with data retention off.",
     "aiConsent": "Use AI features",
     "aiConsentHelp": "Scores jobs against your profile and tailors CVs. Turn it off any time.",
     "aiSensitive": "Include preferences like salary in scoring",
     "aiSensitiveHelp": "Contact details are never sent.",
-    "generatedText": "Allow AI-drafted text in forms",
-    "generatedTextHelp": "Cover-letter style fields, always shown to you for approval first.",
-    "evidence": "Evidence",
-    "evidenceHelp": "What the CLI keeps as proof that an application went through.",
-    "screenshots": "Screenshots",
-    "screenshotModes": {
-      "off": "Off",
-      "on_submit": "When submitting",
-      "all_steps": "Every step"
-    },
-    "retention": "Keep evidence for (days)",
-    "retentionHelp": "Between {min} and {max} days.",
     "dangerTitle": "Your data",
     "exportTitle": "Export your data",
     "exportBody": "We email you a link to a ZIP of everything, valid for 24 hours.",
@@ -1117,82 +1052,14 @@
     "deleteWord": "delete",
     "deleteAction": "Send confirmation",
     "deleteRequested": "Check your email to confirm the deletion.",
-    "deleteFailed": "Couldn't start the deletion."
+    "deleteFailed": "Couldn't start the deletion.",
+    "timezonePlaceholder": "Asia/Jakarta"
   },
   "notFound": {
     "title": "Page not found",
     "description": "This page doesn't exist, or the application isn't yours.",
     "home": "Go to the board",
     "back": "Go back"
-  },
-  "approvalKinds": {
-    "submit": "Submission",
-    "answer": "Answer",
-    "cv_variant": "CV",
-    "rule_activation": "Rule activation"
-  },
-  "approvalStates": {
-    "pending": "Pending",
-    "approved": "Approved",
-    "rejected": "Rejected",
-    "expired": "Expired"
-  },
-  "taskKinds": {
-    "apply": "Apply",
-    "discover": "Discovery",
-    "render_cv": "CV render"
-  },
-  "runStatuses": {
-    "running": "Running",
-    "completed": "Completed",
-    "partial": "Partial",
-    "failed": "Failed",
-    "cancelled": "Cancelled"
-  },
-  "discoveryErrors": {
-    "network": "Network error",
-    "timeout": "Timed out",
-    "http_5xx": "Server error",
-    "rate_limited": "Rate limited",
-    "access_denied": "Access denied",
-    "challenge_detected": "Bot check",
-    "robots_disallowed": "Blocked by robots.txt",
-    "not_found": "Not found",
-    "source_closed": "Board closed",
-    "source_unavailable": "Source unavailable",
-    "parse_error": "Couldn't read",
-    "schema_invalid": "Format changed",
-    "selector_drift": "Page layout drifted",
-    "unsupported_content": "Unsupported page",
-    "policy_blocked": "Not allowed",
-    "cancelled": "Cancelled"
-  },
-  "inboxStates": {
-    "new": "New",
-    "seen": "Seen",
-    "dismissed": "Dismissed",
-    "tracked": "Tracked"
-  },
-  "platforms": {
-    "macos": "macOS",
-    "windows": "Windows",
-    "linux": "Linux"
-  },
-  "capabilities": {
-    "discover": "Discovery",
-    "apply": "Apply",
-    "render_cv": "CV render",
-    "headed_browser": "Visible browser"
-  },
-  "fetchModes": {
-    "json_api": "Official API",
-    "static_html": "HTML",
-    "browser": "Dynamic page"
-  },
-  "postingStatuses": {
-    "open": "Posting open",
-    "closed": "Posting closed",
-    "unknown": "Status unknown"
   },
   "breakdowns": {
     "source": "Source",
@@ -1211,56 +1078,9 @@
     "discovered": "Discovered",
     "ai_cost": "AI cost"
   },
-  "taskErrors": {
-    "network_offline": "The device was offline",
-    "upstream_unavailable": "Our server was unavailable",
-    "browser_crashed": "The browser crashed",
-    "lease_expired": "The device stopped responding",
-    "timeout": "Timed out",
-    "navigation_timeout": "The page took too long",
-    "page_changed": "The page changed",
-    "selector_not_found": "A field couldn't be found",
-    "login_required": "Login required",
-    "captcha_or_challenge": "Bot check",
-    "mfa_required": "Two-step sign-in required",
-    "unsupported_form": "Unsupported form",
-    "prohibited_platform": "Platform not allowed",
-    "domain_not_allowed": "Site not on the allowed list",
-    "policy_violation": "Blocked by a safety rule",
-    "validation_errors_unresolved": "The form kept rejecting a value",
-    "posting_closed": "The posting closed",
-    "posting_unavailable": "The posting is unavailable",
-    "approval_rejected": "You rejected the submission",
-    "approval_expired": "The approval expired",
-    "cancelled": "Cancelled",
-    "missing_information": "An answer was missing",
-    "injection_suspected": "Suspicious page instructions",
-    "budget_exceeded": "AI budget used up",
-    "auto_precondition_failed": "An automation rule check failed",
-    "precheck_failed": "A pre-check failed",
-    "email_application_required": "This job takes applications by email",
-    "render_failed": "The CV PDF couldn't be rendered",
-    "artifact_integrity": "A file failed its integrity check",
-    "files_unavailable": "Files were unavailable",
-    "cdp_non_loopback": "Unsafe browser connection refused",
-    "device_revoked": "The device was signed out"
-  },
   "pages": {
-    "inbox": "Inbox",
-    "job": "Job",
-    "automation": "Automation",
-    "approvals": "Approvals",
-    "rules": "Rules",
-    "runs": "Runs",
-    "monitor": "Live run",
-    "cli": "CLI & devices",
-    "sources": "Sources",
     "stats": "Stats",
     "render": "Rendering the CV"
-  },
-  "copy": {
-    "copy": "Copy command",
-    "copied": "Copied"
   },
   "render": {
     "working": "Rendering your CV",
@@ -1342,1155 +1162,6 @@
       "handed_off": "Handed off"
     }
   },
-  "score": {
-    "explanation": {
-      "bands": {
-        "strong": "Strong match",
-        "good": "Good match",
-        "partial": "Partial match",
-        "weak": "Weak match"
-      },
-      "gateLevel": {
-        "blocking": "⚠ Blocker",
-        "possible": "⚠ Possible blocker"
-      },
-      "gate": {
-        "requires_unavailable_work_authorization": "posting requires a work authorization you have not listed",
-        "requires_degree_user_lacks": "posting requires a degree you have not listed",
-        "requires_onsite_outside_user_locations": "posting is on-site outside your locations"
-      },
-      "skills": "Skills: {list} ({matched} of {total} required)",
-      "skillsNone": "Skills: none of the {total} required",
-      "skillsMissing": "✗ Missing: {list}",
-      "skillsUnknown": "· Skills not compared (none listed in the posting or your profile)",
-      "more": "+{count} more",
-      "title": {
-        "exact": "✓ Title matches your target \"{target}\"",
-        "close": "✓ Title close to your target \"{target}\"",
-        "partial": "~ Title partly matches your target \"{target}\"",
-        "differs": "✗ Title differs from your target titles",
-        "none": "· No target titles set"
-      },
-      "location": {
-        "remote_in_country": "✓ Remote within your country",
-        "remote_anywhere": "✓ Remote with no location limit",
-        "location_match": "✓ Location matches your preferences",
-        "hybrid_same_country": "~ Hybrid in your country, another city",
-        "remote_outside_region": "✗ Remote only outside your countries",
-        "outside_locations": "✗ Location outside your preferences"
-      },
-      "seniority": "Seniority: posting {posting}, you {user}",
-      "seniorityWords": {
-        "intern": "intern",
-        "junior": "junior",
-        "mid": "mid",
-        "senior": "senior",
-        "lead": "lead",
-        "principal": "principal"
-      },
-      "salary": {
-        "meets": "✓ Salary meets your minimum",
-        "slightly": "~ Salary slightly below your minimum",
-        "below": "✗ Salary below your minimum"
-      },
-      "languagesMet": "✓ Languages: {codes}",
-      "languagesMissing": "✗ Missing language: {codes}",
-      "freshness": "~ Posted {days} days ago",
-      "aiLevels": {
-        "poor": "poor",
-        "weak": "weak",
-        "partial": "partial",
-        "good": "good",
-        "excellent": "excellent"
-      },
-      "aiFit": "AI fit: {label}",
-      "aiFitConfidence": "AI fit: {label} (confidence {confidence}%)",
-      "aiDeclined": "AI declined to assess",
-      "aiStatus": {
-        "budget": "AI matching paused for this month",
-        "error": "AI assessment failed: deterministic score only",
-        "dlq": "AI off: deterministic score only",
-        "disabled": "AI matching is turned off",
-        "skipped": "Add skills to your profile to improve matching"
-      }
-    }
-  },
-  "automation": {
-    "title": "Automation",
-    "intro": "Approve what the CLI prepared, set rules, follow runs.",
-    "tabsLabel": "Automation sections",
-    "tabs": {
-      "approvals": "Approvals",
-      "rules": "Rules",
-      "runs": "Runs"
-    }
-  },
-  "approvals": {
-    "bulk": {
-      "approve": "Approve…",
-      "reject": "Reject…",
-      "approveTitle": "Approve the selected approvals?",
-      "rejectTitle": "Reject the selected approvals?",
-      "approveBody": "{send} will be approved and {skipped} skipped. Submissions, answers and rule activations are reviewed one at a time.",
-      "rejectBody": "{send} will be rejected and {skipped} skipped. Rejected submissions are never sent.",
-      "approveConfirm": "Approve {count}",
-      "rejectConfirm": "Reject {count}",
-      "actionApprove": "Approve approvals",
-      "actionReject": "Reject approvals",
-      "skip": {
-        "notPending": "Already decided.",
-        "expired": "This approval has expired.",
-        "submitReview": "Submissions are reviewed one at a time: open it on its own.",
-        "answerInput": "Needs your answers: open it on its own.",
-        "ruleName": "Needs the rule's name typed: open it on its own."
-      }
-    },
-    "viewLabel": "Show",
-    "pending": "Pending",
-    "decided": "Decided",
-    "listLabel": "Approvals",
-    "keysHint": "J / K to move, Y to approve, X to reject",
-    "stale": "Offline — showing approvals from {time}",
-    "loadErrorTitle": "Approvals didn't load",
-    "loadError": "Check your connection and try again.",
-    "empty": "Nothing to approve.",
-    "emptyHelp": "When the CLI needs your decision, it shows up here.",
-    "emptyDecided": "No decisions yet.",
-    "emptyDecidedHelp": "Approvals you decide appear here.",
-    "headings": {
-      "submit": "Submit application to {company} — {title}",
-      "submitUnknown": "Submit this application",
-      "email": "Email application to {to}",
-      "answer": "Questions from {company} — {title}",
-      "answerUnknown": "Questions from the form",
-      "cv": "CV for {company} — {title}",
-      "cvUnknown": "Tailored CV",
-      "rule": "Activate “{name}”"
-    },
-    "expiresIn": "Expires in {hours} h {minutes} m",
-    "expired": "Expired",
-    "decidedAt": "{state} {time} via {via}",
-    "via": {
-      "web": "the web",
-      "cli": "the CLI",
-      "mcp": "an AI assistant",
-      "unknown": "unknown"
-    },
-    "fromDevice": "from {device}",
-    "attempt": "attempt {n}",
-    "openRun": "Open in run",
-    "actions": {
-      "approveSubmit": "Approve and submit",
-      "approveEmail": "Approve email",
-      "sendAnswers": "Send answers",
-      "approveCv": "Approve CV",
-      "activate": "Activate rule",
-      "reject": "Reject"
-    },
-    "confirm": {
-      "submit": "Submit this application to {company}?",
-      "submitUnknown": "Submit this application?",
-      "submitBody": "This can't be undone. The device submits the form exactly as shown.",
-      "email": "Approve this email to {to}?",
-      "emailBody": "You send it yourself from your mail app afterwards.",
-      "answer": "Send these answers?",
-      "answerBody": "The run fills them in and continues.",
-      "cv": "Approve this CV?",
-      "cvBody": "It becomes the CV this application sends.",
-      "rule": "Activate “{name}”?"
-    },
-    "reject": {
-      "submit": "Don't submit this application?",
-      "submitBody": "The run closes the page without submitting. The application stays where it is.",
-      "answer": "Reject these questions?",
-      "answerBody": "The run stops at this question without answering it.",
-      "cv_variant": "Reject this CV?",
-      "cv_variantBody": "The variant is marked rejected. You can generate another.",
-      "rule_activation": "Keep this rule off?",
-      "rule_activationBody": "The rule stays disabled and applies to nothing."
-    },
-    "done": {
-      "submit": "Approved. The device submits it now.",
-      "answer": "Answers sent. The run continues.",
-      "cv_variant": "CV approved.",
-      "rule_activation": "Rule activated.",
-      "rejected": "Rejected."
-    },
-    "errors": {
-      "title": "Not decided",
-      "hash_mismatch": "The form changed since this was prepared. The agent will ask again.",
-      "already_decided": "Someone already decided this, on another device or in the CLI.",
-      "rule_changed": "The rule changed after this was requested. Turn it on again to get a new activation.",
-      "expired": "This approval expired. The run asks again if it still needs you.",
-      "not_allowed": "Automatic submission isn't available right now.",
-      "gone": "This approval no longer exists.",
-      "failed": "Couldn't save the decision. Try again."
-    },
-    "filledFields": "Filled fields",
-    "fieldLabel": "Label",
-    "fieldValue": "Value",
-    "fieldSource": "Source",
-    "showValues": "Show contact values",
-    "hideValues": "Hide contact values",
-    "masked": "Hidden. Use Show contact values to read it.",
-    "sources": {
-      "fact": "Fact",
-      "answer": "Answer bank",
-      "option": "Form option",
-      "cv_file": "CV variant",
-      "cover_letter_file": "Cover letter",
-      "generated_text": "Written by AI",
-      "user": "Typed by you"
-    },
-    "aiWritten": "AI-written",
-    "aiDrafted": "AI-drafted paragraph",
-    "attachments": "Attachments",
-    "noAttachments": "No attachments.",
-    "sha": "SHA-256 {sha}… verified",
-    "screenshot": "Screenshot of the review page",
-    "screenshotAlt": "The form's review page as the device saw it",
-    "screenshotHelp": "Captured by the device just before it asked you.",
-    "zoomScreenshot": "Enlarge the screenshot",
-    "finalUrl": "Final URL",
-    "injectionTitle": "The page contained suspicious instructions",
-    "injectionBody": "Check every value before you approve. The agent ignored the instructions, but the form may be wrong.",
-    "emailTo": "To",
-    "emailCc": "Cc",
-    "emailSubject": "Subject",
-    "emailBody": "Message",
-    "recipientConfirmed": "Recipient confirmed by you",
-    "recipientUnconfirmed": "Recipient not confirmed",
-    "answerHelp": "The form asked questions without a saved answer. Your answers are used for this application only, unless you save them.",
-    "questionFromPage": "Question from the page:",
-    "required": "Required",
-    "suggested": "Suggested: {value}",
-    "yourAnswer": "Your answer",
-    "saveToBank": "Save to my answer bank",
-    "protectedLocked": "A protected question stays protected: it is never answered without your approval.",
-    "rephrased": "Rephrased bullets",
-    "cvNotes": "Before you approve",
-    "cvPdf": "Tailored CV (PDF)",
-    "reviewCv": "Review the CV on the application"
-  },
-  "rules": {
-    "bulk": {
-      "enable": "Turn on",
-      "disable": "Turn off",
-      "delete": "Delete…",
-      "actionEnable": "Turn rules on",
-      "actionDisable": "Turn rules off",
-      "actionDelete": "Delete rules",
-      "deleteTitle": "Delete the selected rules?",
-      "deleteBody": "Rules to delete: {count}. Their pending activations expire with them; runs already started keep going. This can't be undone.",
-      "deleteConfirm": "Delete {count}",
-      "skip": {
-        "alreadyOn": "Already on.",
-        "alreadyOff": "Already off.",
-        "needsActivation": "Auto rules are turned on one at a time: use its switch and type its name to activate it.",
-        "expired": "Expired: edit the rule to extend it first."
-      }
-    },
-    "intro": "Rules start runs on their own for jobs that match. Auto rules submit without asking, within strict limits.",
-    "new": "New rule",
-    "newTitle": "New rule",
-    "editTitle": "Edit the rule",
-    "sheetHelp": "Which jobs, how many, and where the agent may submit.",
-    "what": "This rule",
-    "name": "Name",
-    "mode": "Mode",
-    "modeHelp": {
-      "assisted": "The CLI fills the form; you submit it yourself.",
-      "approval": "The CLI fills the form and asks you before it submits.",
-      "auto": "The CLI submits without asking, within the limits below. Needs activation."
-    },
-    "criteria": "Criteria",
-    "minScore": "Minimum score: {score}",
-    "minScoreLabel": "Minimum score",
-    "autoMinScoreHelp": "Auto rules need {score} or more.",
-    "keywords": "Keywords",
-    "chipsPlaceholder": "Type and press Enter",
-    "titlePatterns": "Title patterns",
-    "titlePatternsPlaceholder": "Frontend*, Web engineer",
-    "companies": "Companies",
-    "excludeCompanies": "Never these companies",
-    "locations": "Locations",
-    "sources": "Sources",
-    "noSources": "No sources yet. Any source counts.",
-    "workplaceTypes": "Workplace",
-    "seniority": "Seniority",
-    "seniorityLevels": {
-      "intern": "Intern",
-      "junior": "Junior",
-      "mid": "Mid-level",
-      "senior": "Senior",
-      "lead": "Lead",
-      "principal": "Principal"
-    },
-    "maxScoreAge": "Score no older than (days)",
-    "maxScoreAgeHelp": "Older scores are recomputed before the rule acts.",
-    "requireAi": "Only jobs with an AI fit score",
-    "excludePossibleGates": "Skip jobs with a possible blocker",
-    "blockingAlwaysExcluded": "Jobs with a likely blocker (work permit, degree, on-site location) are always skipped.",
-    "limits": "Limits",
-    "maxPerDay": "Applications a day",
-    "maxPerDayHelp": "At most {max}.",
-    "maxPerCompany": "Per company in 30 days",
-    "maxPerCompanyHelp": "At most {max}.",
-    "activeHours": "Only between certain hours",
-    "from": "From",
-    "to": "To",
-    "expiresOn": "Ends on",
-    "expiryHelp": "Optional. The rule stops after this day.",
-    "autoExpiryHelp": "Auto rules last at most 30 days; renewing needs a new activation.",
-    "allowedDomains": "Allowed domains",
-    "addDomain": "Add a domain",
-    "domainsHelp": "Optional. The agent never leaves the posting's own application site.",
-    "domainsAutoHelp": "Required for auto rules: the agent submits only on these sites.",
-    "removeChip": "Remove {value}",
-    "cvPolicy": "CV",
-    "baseCv": "Base CV",
-    "applicationCv": "The application's own CV",
-    "tailor": "Tailor the CV for each job",
-    "requireCvApproval": "Ask me to approve each tailored CV",
-    "enabled": "Enabled",
-    "enableNamed": "Enable {name}",
-    "autoActivationHelp": "Saving asks you to activate it: type the rule's name to confirm.",
-    "fixProblems": "Fix the highlighted fields first.",
-    "statusLabel": "Status",
-    "status": {
-      "active": "Active",
-      "off": "Off",
-      "needs_activation": "Needs activation",
-      "expired": "Expired"
-    },
-    "activate": "Activate…",
-    "actionsFor": "Actions for {name}",
-    "activationNeeded": "Saved. Activate the rule to turn it on.",
-    "activationWarning": "Applications it submits can't be taken back.",
-    "activated": "“{name}” is on.",
-    "typeName": "Type “{name}” to confirm",
-    "typeNameHelp": "Exactly as written, including capitals.",
-    "saved": "Rule saved.",
-    "saveFailed": "Couldn't save the rule.",
-    "refused": "Not saved: {message}",
-    "deleteTitle": "Delete “{name}”?",
-    "deleteBody": "Runs it already started keep going; it starts no new ones.",
-    "deleted": "Rule deleted.",
-    "deleteFailed": "Couldn't delete the rule.",
-    "changedMeanwhile": "The rule changed meanwhile. Look again and retry.",
-    "loadErrorTitle": "Rules didn't load",
-    "loadError": "Check your connection and try again.",
-    "empty": "No rules yet.",
-    "emptyHelp": "A rule starts runs for matching jobs, so you don't have to.",
-    "summary": {
-      "score": "score {score}+",
-      "perDay": "{count} a day",
-      "perCompany": "{count} per company in 30 days",
-      "hours": "{start}–{end}",
-      "sentence": "Up to {count} applications a day to {where} jobs scoring {score}+, at most {company} per company in 30 days.",
-      "sentenceHours": "Only between {start} and {end}.",
-      "sentenceUntil": "Until {date}.",
-      "anywhere": "any site"
-    },
-    "errors": {
-      "name": "Give the rule a name (up to 120 characters).",
-      "minScore": "Pick a score between 0 and 100.",
-      "maxScoreAgeDays": "Use 1 to 365 days.",
-      "maxPerDay": "Use 1 to 25 a day.",
-      "maxPerCompany": "Use 1 to 3 per company.",
-      "activeHours": "Use two different times as HH:MM.",
-      "expiresPast": "Pick a day after today.",
-      "domainInvalid": "That isn't a domain, like greenhouse.io.",
-      "autoMinScore": "Auto rules need a minimum score of 70 or more.",
-      "autoNarrow": "Auto rules need keywords, title patterns, companies or sources.",
-      "autoDomains": "Auto rules need at least one allowed domain.",
-      "autoExpiry": "Auto rules need an end date.",
-      "autoExpiryTooFar": "Auto rules end within 30 days."
-    }
-  },
-  "runs": {
-    "bulk": {
-      "cancel": "Cancel…",
-      "retry": "Retry…",
-      "cancelTitle": "Cancel the selected runs?",
-      "cancelBody": "{send} will be cancelled and {skipped} skipped. Devices stop before submitting anything.",
-      "retryTitle": "Retry the selected runs?",
-      "retryBody": "{send} failed runs will be queued again and {skipped} skipped. A run whose outcome is unknown needs “Did this application go through?” answered on its own.",
-      "cancelConfirm": "Cancel {count}",
-      "retryConfirm": "Retry {count}",
-      "actionCancel": "Cancel runs",
-      "actionRetry": "Retry runs",
-      "skip": {
-        "notCancellable": "Already finished.",
-        "alreadyCancelling": "Already stopping.",
-        "submitting": "Already submitting: too late to cancel.",
-        "needsAnswer": "Answer “Did this application go through?” on this run first.",
-        "notRetryable": "Only failed runs can be retried."
-      }
-    },
-    "filter": "State",
-    "allStates": "All states",
-    "stale": "Offline — showing runs from {time}",
-    "loadErrorTitle": "Runs didn't load",
-    "loadError": "Check your connection and try again.",
-    "empty": "No runs yet.",
-    "emptyFiltered": "No runs in this state.",
-    "emptyHelp": "Start one from an application's Apply tab, or let a rule do it.",
-    "kind": "Kind",
-    "what": "For",
-    "device": "Device",
-    "state": "State",
-    "attempt": "Attempt",
-    "attemptOf": "{n} of {max}",
-    "started": "Started",
-    "duration": "Duration",
-    "application": "Application",
-    "discoverAll": "All enabled sources",
-    "discoverSources": "{count} sources",
-    "anyDevice": "Any device",
-    "unknownDevice": "A removed device",
-    "units": {
-      "s": "s",
-      "min": "min",
-      "h": "h"
-    },
-    "openMonitor": "Open the run ({state})",
-    "retry": "Retry",
-    "retryTitle": "Retry this run?",
-    "retryBody": "A new run is queued for the same job. Nothing was submitted by the failed one.",
-    "settleTitle": "Did this application go through?",
-    "settleBody": "Check your email first. The run stopped after it started submitting, so it may have been sent.",
-    "notSubmittedRetry": "Not submitted — retry",
-    "retried": "A new run is queued.",
-    "cancelRun": "Cancel run",
-    "cancelTitle": "Cancel this run?",
-    "cancelBody": "The device stops before it submits anything.",
-    "cancelBodySubmitting": "It already started submitting. If it can't stop in time, the application is marked for review.",
-    "keepRunning": "Keep running",
-    "cancelRequested": "Cancel sent to the device.",
-    "actionFailed": "Couldn't do that. Try again.",
-    "refused": "Not done: {message}"
-  },
-  "monitor": {
-    "applyingTo": "Applying to {company}",
-    "taskId": "task {id}…",
-    "attempt": "attempt {n} of {max}",
-    "deviceOnline": "{device} (online)",
-    "deviceOffline": "{device} (offline)",
-    "anyDevice": "Any of your devices",
-    "modeLabel": "{mode} mode",
-    "stale": "Offline — showing the run as of {time}",
-    "loadErrorTitle": "The run didn't load",
-    "loadError": "Check your connection and try again.",
-    "stepsLabel": "Steps",
-    "stepStatus": {
-      "done": "done",
-      "current": "in progress",
-      "paused": "paused",
-      "failed": "stopped here",
-      "unknown": "outcome unknown",
-      "skipped": "skipped",
-      "pending": "not yet"
-    },
-    "cvReady": "CV ready (sha {sha} verified)",
-    "cv": {
-      "rendering": "CV rendering",
-      "missing": "No CV attached"
-    },
-    "current": "Current: {stage}",
-    "currentNone": "Waiting for a device to start",
-    "executor": {
-      "waiting": "Executor: queued",
-      "running": "Executor: running",
-      "paused": "Executor: paused",
-      "pausedReason": "Executor: paused ({reason})",
-      "awaitingApproval": "Executor: awaiting approval",
-      "syncPending": "Finished on device — waiting to sync",
-      "finished": "Executor: finished"
-    },
-    "headed": "visible browser",
-    "headless": "background browser",
-    "browserModes": {
-      "managed": "managed profile",
-      "connected": "your Chrome",
-      "persistent": "saved profile"
-    },
-    "actions": "{n}/{max} actions",
-    "aiCalls": "{n}/{max} AI",
-    "heartbeat": "Last heartbeat {seconds} s ago",
-    "notResponding": "Device not responding",
-    "releasedAt": "The run will be released at {time}.",
-    "releasedSoon": "The run will be released shortly.",
-    "cancelling": "Cancelling — the device stops at its next check.",
-    "awaitingTitle": "Waiting for your approval",
-    "awaitingBody": "Review it in Approvals; the device submits only after you approve.",
-    "pausedTitle": "Paused — needs you",
-    "pausedUnknown": "The device paused the run. Check the browser window, then resume or cancel.",
-    "pauseTitles": {
-      "captcha_or_challenge": "Bot check on the site",
-      "login_required": "Login required",
-      "account_creation_required": "An account is required",
-      "mfa_required": "Two-step sign-in",
-      "credential_field": "Password field",
-      "missing_information": "Missing information",
-      "protected_question": "Protected question",
-      "unknown_question": "Unknown question",
-      "unsupported_form": "Unsupported form",
-      "unclear_page": "Unclear page",
-      "off_domain_navigation": "Left the employer's site",
-      "validation_unresolved": "A value keeps being rejected",
-      "stuck_loop": "Going in circles",
-      "needs_headed_restart": "Needs a visible browser",
-      "payment_requested": "Payment requested",
-      "network_offline": "Device offline",
-      "resource_exhausted": "Run limits reached",
-      "low_confidence": "Not sure enough",
-      "injection_suspected": "Suspicious instructions",
-      "ai_unavailable": "AI unavailable",
-      "user_requested": "Paused by you"
-    },
-    "pauseActions": {
-      "login": "Log in (or finish the step) in the browser window on {device}, then press Resume in the terminal or here.",
-      "challenge": "Complete the check in the browser window on {device} yourself, then press Resume.",
-      "answer": "Answer it in Approvals; the run continues on {device} after that.",
-      "takeover": "Take over in the browser on {device}, or cancel the run.",
-      "injection": "Read the flagged text below before you resume on {device}.",
-      "explain": "Resume on {device} when you're ready, or cancel the run."
-    },
-    "flaggedExcerpt": "Flagged text from the page",
-    "openAnswer": "Answer in Approvals",
-    "resume": "Resume",
-    "resumeAgain": "Send resume again",
-    "resumeQueued": "Resume sent — waiting for the device",
-    "resumeSent": "Resume sent to {device}.",
-    "resumeRefused": "The run isn't paused anymore.",
-    "stepLog": "Step log",
-    "noLog": "No steps reported yet.",
-    "log": {
-      "created": "Queued",
-      "claimed": "Claimed by {device}",
-      "paused": "Paused: {reason}",
-      "pausedUnknown": "Paused",
-      "finished": "Finished: {state}",
-      "finishedUnknown": "Finished",
-      "approvalRequested": "Asked for your approval",
-      "approvalDecided": "Approval decided",
-      "submitIntent": "Submit recorded — the device may submit now",
-      "progress": "Progress",
-      "summary": "{count} new steps. Latest: {latest}"
-    },
-    "outcome": {
-      "submitted": "Submitted",
-      "succeeded": "Done",
-      "failed": "The run failed",
-      "cancelled": "The run was cancelled",
-      "outcome_unknown": "Outcome unknown — needs review",
-      "expired": "The run expired before a device took it"
-    },
-    "submissionNow": "Application: {status}",
-    "evidence": "Evidence",
-    "noEvidence": "No evidence was recorded.",
-    "settleHelp": "Check your email or the employer's site, then tell us whether it was sent.",
-    "confirmSubmitted": "Confirm submitted",
-    "screenshotAlt": "The page after submitting, as the device saw it",
-    "signals": {
-      "urlMatch": "Confirmation URL",
-      "domMarker": "Confirmation text",
-      "formGone": "Form gone",
-      "xhr": "Server accepted",
-      "negative": "Error shown",
-      "http": "Response {status}"
-    }
-  },
-  "cliPage": {
-    "title": "CLI & devices",
-    "intro": "Your computers run discovery and applications with the Pilih Jobs CLI. Connect one, then manage it here.",
-    "stale": "Offline — showing the last devices we saw.",
-    "errorTitle": "Couldn't load your devices",
-    "error": "Check your connection and try again.",
-    "connectTitle": "Connect your computer",
-    "connectAnother": "Connect another computer",
-    "connectIntro": "Install the CLI, sign in once, and this page shows the computer as soon as it connects.",
-    "connectSteps": "Steps to connect a computer",
-    "showSteps": "Show the steps",
-    "hideSteps": "Hide the steps",
-    "install": {
-      "copy": "Copy",
-      "copiedToast": "Install command copied.",
-      "copyFailed": "Couldn't copy. Select the command and copy it yourself.",
-      "osLabel": "Your operating system",
-      "requirements": "Requires Python 3.12 via uv (installed automatically by the installer script).",
-      "uv": "No uv yet? Install it first:",
-      "uvDocs": "uv installation guide",
-      "alternatives": "Other ways to install",
-      "soon": "Coming soon"
-    },
-    "steps": {
-      "install": {
-        "title": "Install",
-        "note": "If the command is not found afterwards, run uv tool update-shell and open a new terminal."
-      },
-      "browser": {
-        "title": "Install the browser",
-        "note": "About 550 MB (Chromium and its headless shell)."
-      },
-      "login": {
-        "title": "Sign in",
-        "note": "A browser window asks you to approve this device on api.pilihpendidikan.com."
-      },
-      "verify": {
-        "title": "Verify",
-        "note": "This page shows the device as soon as it connects."
-      },
-      "next": {
-        "title": "Next steps",
-        "note": "Then start the worker so the web can hand it tasks."
-      },
-      "worker": {
-        "title": "Start the worker",
-        "note": "Runs in the background and claims tasks for this device."
-      }
-    },
-    "login": {
-      "explain": "A browser window opens and asks you to approve Pilih Jobs CLI on this computer, named after it — for example {example} — on api.pilihpendidikan.com.",
-      "example": "“my-laptop ({os})”"
-    },
-    "verify": {
-      "connected": "Connected · {name} · just now",
-      "countOne": "1 device connected.",
-      "countMany": "{count} devices connected.",
-      "waiting": "Waiting for your computer to connect…"
-    },
-    "next": {
-      "addSources": "Add the job boards to discover from"
-    },
-    "alternatives": {
-      "pipx": "pipx",
-      "uvx": "uvx (try it without installing)",
-      "homebrew": "Homebrew",
-      "install_script": "Install script"
-    },
-    "troubleshooting": {
-      "title": "Troubleshooting",
-      "doctor": "Check the installation",
-      "bundle": "Create a support bundle",
-      "no_browser": "Sign in on a headless machine or over SSH",
-      "sync_status": "See changes that could not sync",
-      "keyring": "On a Linux server without a desktop keyring, the CLI keeps your sign-in in an encrypted file in its data folder instead.",
-      "wsl": "On Windows with WSL, install and run the CLI inside WSL; sign-in opens the link in your Windows browser."
-    },
-    "stepUp": {
-      "title": "Extra permissions for the CLI",
-      "automation_manage": "Approve submissions and enable rules from the CLI",
-      "devices_manage": "Manage devices from the CLI"
-    },
-    "activity": {
-      "title": "Recent activity",
-      "log": "Execution log",
-      "failed": "Failed operations",
-      "outbox": "Outbox warnings",
-      "noRuns": "No runs yet.",
-      "task": "Task",
-      "state": "State",
-      "device": "Device",
-      "attempts": "Attempts",
-      "started": "Started",
-      "anyDevice": "Any of my devices",
-      "retryOn": "Retry on",
-      "retry": "Retry",
-      "retryQueued": "Queued again. A device picks it up shortly.",
-      "retryRefused": "Not retried: {message}",
-      "retryFailed": "Couldn't retry. Try again.",
-      "noFailures": "Nothing failed that a retry could fix.",
-      "failedTask": "{reason} · {device} · {time}",
-      "failedRun": "Discovery: {sources}",
-      "noOutbox": "Every device is in sync.",
-      "outboxOne": "{name} has 1 change that couldn't sync.",
-      "outboxMany": "{name} has {count} changes that couldn't sync.",
-      "outboxFix": "Run this on that computer to see what is stuck and why:"
-    }
-  },
-  "devices": {
-    "title": "Devices",
-    "what": "{name}",
-    "actionsFor": "Actions for {name}",
-    "acceptsTasksFor": "Let {name} take tasks",
-    "status": {
-      "active": "Active",
-      "online": "Online",
-      "offlineSince": "Offline · {time}",
-      "offlineNever": "Never connected",
-      "signedOut": "Signed out"
-    },
-    "signedOutReasons": {
-      "user": "Signed out by you",
-      "device_revoked": "Signed out — device removed",
-      "refresh_reuse": "Device signed out — suspicious token reuse",
-      "admin": "Signed out by support",
-      "account_deleted": "Signed out — account deleted"
-    },
-    "version": {
-      "tooOld": "Too old — update required",
-      "update": "Update available",
-      "howTo": "Update to {recommended} on each computer with:"
-    },
-    "work": {
-      "task": "{kind} · {state}",
-      "discoveryOne": "Discovery: 1 source",
-      "discoveryMany": "Discovery: {count} sources"
-    },
-    "columns": {
-      "name": "Name",
-      "status": "Status",
-      "lastSync": "Last sync",
-      "version": "Version",
-      "work": "Active work",
-      "tasks": "Takes tasks"
-    },
-    "rename": {
-      "action": "Rename",
-      "title": "Rename device",
-      "description": "The name shows on the board, in runs and in approvals.",
-      "label": "Name",
-      "help": "For example MacBook or Office desktop.",
-      "invalid": "Use 1 to {max} characters."
-    },
-    "revoke": {
-      "action": "Revoke",
-      "title": "Revoke {name}?",
-      "confirm": "Revoke device",
-      "signsOut": "Signs {name} out. It can't sync or take tasks until you sign in on it again.",
-      "runningOne": "1 running task will be stopped; if it already started submitting, it will be marked for review.",
-      "runningMany": "{count} running tasks will be stopped; any that already started submitting will be marked for review.",
-      "submitting": "Already submitting: {count}. Check those applications afterwards.",
-      "pinnedOne": "1 queued task waiting for this device will be cancelled.",
-      "pinnedMany": "{count} queued tasks waiting for this device will be cancelled.",
-      "idle": "Nothing is running on it right now.",
-      "done": "{name} is signed out.",
-      "gone": "This device was already removed.",
-      "failed": "Couldn't revoke the device. Try again.",
-      "resultReview": "{count} marked for review",
-      "resultRequeued": "{count} back in the queue",
-      "resultAwaiting": "{count} still waiting for approval",
-      "resultCancelled": "{count} cancelled"
-    },
-    "bulk": {
-      "tasksOn": "Take tasks: on",
-      "tasksOff": "Take tasks: off",
-      "revoke": "Revoke",
-      "revokeTitle": "Revoke {count} devices?",
-      "revokeConfirm": "Revoke {count}",
-      "signsOut": "Signs {count} devices out. They can't sync or take tasks until you sign in on them again.",
-      "idle": "Nothing is running on them right now.",
-      "pinned": "Queued tasks waiting for these devices will be cancelled: {count}.",
-      "leavesNone": "No computer will be left signed in: discovery and applying stop until you sign in with the CLI again.",
-      "skipRevoked": "Already revoked, skipped: {count}.",
-      "alreadyRevoked": "Already revoked.",
-      "signedOut": "Signed out: sign in on it before it takes tasks.",
-      "unchanged": "Already set."
-    }
-  },
-  "sources": {
-    "title": "Sources",
-    "intro": "Remote job boards our servers check every hour, and the job boards and career pages your CLI discovers from.",
-    "listTitle": "Your CLI sources",
-    "listLabel": "Job sources",
-    "add": "Add source",
-    "emptyTitle": "Add a source to start discovering jobs",
-    "empty": "Pick a job board such as Greenhouse or Lever, or a company's careers page.",
-    "emptyThen": "Then run discovery from your computer:",
-    "errorTitle": "Couldn't load your sources",
-    "error": "Check your connection and try again.",
-    "saved": "{label} added.",
-    "refused": "Not saved: {message}",
-    "saveFailed": "Couldn't save the source. Try again.",
-    "what": "{label}",
-    "deleted": "{label} deleted.",
-    "changedMeanwhile": "This source changed meanwhile. Look again and retry.",
-    "deleteFailed": "Couldn't delete the source. Try again.",
-    "runQueued": "Discovery queued. A device picks it up shortly.",
-    "runQueuedNoDevice": "Discovery queued. It starts when a device that can discover connects.",
-    "runFailed": "Couldn't start discovery. Try again.",
-    "runNow": "Run now",
-    "runNowFor": "Run {label} now",
-    "runOn": "Run on",
-    "anyDevice": "Any of my devices",
-    "online": "online",
-    "offline": "offline",
-    "noDevice": "No device takes discovery tasks yet. It runs once one connects.",
-    "actionsFor": "Actions for {label}",
-    "enabledFor": "{label} enabled",
-    "never": "Never",
-    "disabledBecause": "Disabled: {reason}",
-    "disabledReasons": {
-      "challenge": "bot check",
-      "access_denied": "access denied",
-      "rate_limited": "rate limited"
-    },
-    "excluded": "Not supported — {reason}",
-    "status": {
-      "beta": "Beta",
-      "optIn": "Opt-in"
-    },
-    "capabilities": {
-      "label": "Capabilities",
-      "discovery": "Discovers postings from a board",
-      "pagination": "Pages through results: {kind}",
-      "detail": "Fetches each posting's details",
-      "incremental": "Only fetches what changed: {kinds}"
-    },
-    "pagination": {
-      "none": "none",
-      "offset": "by offset",
-      "cursor": "by cursor",
-      "page_links": "by next-page links",
-      "single_response": "one response"
-    },
-    "incremental": {
-      "etag": "ETag",
-      "watermark": "update time",
-      "content_hash": "content check"
-    },
-    "applicationSupport": {
-      "browser_supported": "Apply in the browser with the CLI",
-      "browser_unsupported": "Apply yourself",
-      "external_redirect": "Applying leaves for another site",
-      "unknown": "Applying depends on the posting"
-    },
-    "columns": {
-      "label": "Source",
-      "adapter": "Adapter",
-      "config": "Board",
-      "lastRun": "Last run",
-      "lastSuccess": "Last success",
-      "enabled": "Enabled"
-    },
-    "test": {
-      "title": "Test this source",
-      "action": "Test",
-      "explain": "Tests run on your computer, never on our servers. This fetches the board once and shows what it would find without saving anything:",
-      "saveFirst": "Save the source first; then Test shows the command to try it from your computer."
-    },
-    "delete": {
-      "title": "Delete {label}?",
-      "body": "Discovery stops using it. Jobs it already found stay in your inbox and on your board."
-    },
-    "bulk": {
-      "enable": "Enable",
-      "disable": "Disable",
-      "alreadyEnabled": "Already enabled.",
-      "alreadyDisabled": "Already disabled.",
-      "runNow": "Run now",
-      "disabledSkip": "Disabled sources don't run: enable it first.",
-      "runBatches": "Sent as one discovery task per {max} sources.",
-      "delete": "Delete",
-      "deleteTitle": "Delete {count} sources?",
-      "deleteBody": "Discovery stops using them. Jobs they already found stay in your inbox and on your board. This can't be undone.",
-      "gone": "This source is no longer listed."
-    },
-    "sheet": {
-      "addTitle": "Add a source",
-      "editTitle": "Edit {label}",
-      "description": "Your CLI fetches public job listings from it, politely and within each site's rules.",
-      "adapter": "Where the jobs come from",
-      "adapterFixed": "Adapter: {adapter}. To switch, add a new source.",
-      "label": "Name",
-      "labelHelp": "Shown in the inbox and in runs. Leave it empty to use the suggestion.",
-      "enabled": "Include in discovery",
-      "add": "Add source"
-    },
-    "optIn": {
-      "title": "This source needs your opt-in",
-      "confirm": "I understand the risks and want to use this source",
-      "required": "Tick the box to use this source."
-    },
-    "form": {
-      "optional": "{label} (optional)",
-      "default": "Default",
-      "mapKey": "{field}: name {n}",
-      "mapValue": "{field}: selector {n}",
-      "mapKeyPlaceholder": "Field",
-      "mapValuePlaceholder": "Selector",
-      "mapRemove": "Remove row {n}",
-      "mapAdd": "Add a field",
-      "errors": {
-        "required": "Required.",
-        "pattern": "Use letters, numbers, dots, dashes or underscores.",
-        "url": "Enter a web address starting with https:// or http://.",
-        "tooLong": "Use at most {max} characters.",
-        "tooShort": "Use at least {min} characters.",
-        "integer": "Enter a whole number.",
-        "min": "Enter {min} or more.",
-        "max": "Enter {max} or less.",
-        "enum": "Choose one of the options.",
-        "mapKey": "Each field needs a unique name."
-      }
-    },
-    "options": {
-      "global": "Global",
-      "eu": "European Union"
-    },
-    "fields": {
-      "greenhouse": {
-        "board_token": "Board token"
-      },
-      "lever": {
-        "site": "Lever site",
-        "region": "Region",
-        "filters": "Filters",
-        "filters_location": "Location",
-        "filters_commitment": "Commitment",
-        "filters_team": "Team",
-        "filters_department": "Department"
-      },
-      "ashby": {
-        "job_board_name": "Job board name"
-      },
-      "smartrecruiters": {
-        "company_identifier": "Company identifier"
-      },
-      "workable": {
-        "subdomain": "Subdomain"
-      },
-      "workday": {
-        "tenant": "Tenant",
-        "wd_host_number": "Host number (wdN)",
-        "site": "Career site",
-        "search_text": "Search text"
-      },
-      "career_page": {
-        "url": "Careers page address",
-        "item_css": "Item selector",
-        "fields": "Field selectors",
-        "next_css": "Next-page selector",
-        "allow_browser": "Allow a browser for pages that need one"
-      },
-      "generic_listing": {
-        "start_url": "Start address",
-        "detail_url_pattern": "Job page pattern (regular expression)",
-        "listing_url_pattern": "Listing page pattern (regular expression)",
-        "max_pages": "Most pages to visit",
-        "allow_browser": "Allow a browser for pages that need one"
-      },
-      "custom_url": {
-        "url": "Job address",
-        "private": "Keep this posting private"
-      }
-    },
-    "hints": {
-      "greenhouse": {
-        "board_token": "The part after boards.greenhouse.io/, for example acme."
-      },
-      "lever": {
-        "site": "The part after jobs.lever.co/, for example globex."
-      },
-      "ashby": {
-        "job_board_name": "The part after jobs.ashbyhq.com/."
-      },
-      "smartrecruiters": {
-        "company_identifier": "The part after careers.smartrecruiters.com/."
-      },
-      "workable": {
-        "subdomain": "The part after apply.workable.com/, in lower case."
-      },
-      "workday": {
-        "tenant": "The first part of the address, for example nvidia in nvidia.wd5.myworkdayjobs.com.",
-        "wd_host_number": "The number after wd in that address, for example 5.",
-        "site": "The career site name at the end of the address."
-      },
-      "career_page": {
-        "url": "A page that lists the company's jobs. Structured job data is read first.",
-        "item_css": "Only needed when the page has no structured job data."
-      },
-      "generic_listing": {
-        "start_url": "Discovery stays on this site.",
-        "detail_url_pattern": "Matches the address of a single job page.",
-        "max_pages": "At most 50."
-      },
-      "custom_url": {
-        "url": "One job posting. LinkedIn and Indeed aren't supported."
-      }
-    },
-    "runs": {
-      "title": "Discovery runs",
-      "empty": "No discovery runs yet. Run one from a source above or from your computer.",
-      "error": "Couldn't load the discovery runs.",
-      "run": "Run",
-      "device": "Device",
-      "sources": "Sources",
-      "status": "Status",
-      "found": "Found",
-      "new": "New",
-      "updated": "Updated",
-      "duplicates": "Duplicates",
-      "invalid": "Invalid",
-      "errors": "Errors",
-      "duration": "Duration",
-      "runningFor": "Running for {duration}",
-      "removedDevice": "Removed device",
-      "accessDenied": "Access denied by {host} · {count}",
-      "errorCount": "{error} · {count}",
-      "statsLine": "{found} found · {new} new · {updated} updated · {duplicates} duplicates · {invalid} invalid"
-    }
-  },
-  "inbox": {
-    "tabsLabel": "Inbox lists",
-    "search": "Search title or company",
-    "listLabel": "Discovered jobs",
-    "rowLabel": "{title} at {company}",
-    "selectAll": "Select every row",
-    "selectRow": "Select {title} at {company}",
-    "selected": "Selected",
-    "notSelected": "Not selected",
-    "expand": "Show details of {title}",
-    "collapse": "Hide details",
-    "fromRun": "run",
-    "listings": "{count} sources",
-    "loadMore": "Load more",
-    "longPressHint": "Press and hold a job to select several.",
-    "stale": "Offline — showing data from {time}",
-    "errorTitle": "The inbox didn't load",
-    "error": "We couldn't reach the server.",
-    "columns": {
-      "details": "Details",
-      "score": "Score",
-      "title": "Title",
-      "company": "Company",
-      "location": "Location",
-      "source": "Source",
-      "seen": "Seen",
-      "duplicates": "Dup"
-    },
-    "filters": {
-      "minScore": "Min score",
-      "source": "Source",
-      "anySource": "Any source",
-      "workplace": "Workplace",
-      "anyWorkplace": "Any workplace",
-      "posted": "Posted",
-      "anyTime": "Any time",
-      "postedWithin": "Last {days} days",
-      "score": "Score",
-      "anyScore": "Any score",
-      "bands": {
-        "high": "80 and above",
-        "mid": "60–79",
-        "low": "Below 60",
-        "unscored": "Unscored"
-      },
-      "gates": "Blockers",
-      "hideBlockers": "Hide possible blockers",
-      "clear": "Clear filters ({count})"
-    },
-    "score": {
-      "heading": "Match",
-      "label": "Score {score}, show why",
-      "none": "Not scored",
-      "loading": "Loading the breakdown…",
-      "unavailable": "The breakdown isn't available right now.",
-      "weight": "weight {weight}",
-      "components": {
-        "label": "Score components",
-        "skills_overlap": "Skills",
-        "title_similarity": "Title",
-        "location_fit": "Location",
-        "seniority_fit": "Seniority",
-        "salary_fit": "Salary",
-        "language_fit": "Language",
-        "freshness": "Freshness",
-        "ai": "AI fit"
-      }
-    },
-    "details": {
-      "provenance": "Provenance",
-      "adapter": "Adapter",
-      "version": "v{version}",
-      "fetchMode": "Fetch method",
-      "run": "Discovery run",
-      "confidence": "Extraction confidence",
-      "firstSeen": "First seen",
-      "lastSeen": "Last seen",
-      "status": "Posting status",
-      "source": "Your source",
-      "unknown": "Unknown",
-      "duplicates": "Also listed by",
-      "noDuplicates": "No other source lists this job.",
-      "duplicateGroup": "{count} similar postings from other sources",
-      "openJob": "Open the job"
-    },
-    "selection": {
-      "label": "Selected jobs",
-      "count": "{count} selected",
-      "track": "Track",
-      "dismiss": "Dismiss",
-      "score": "Score",
-      "seen": "Mark seen",
-      "restore": "Restore",
-      "clear": "Clear selection",
-      "working": "Working…"
-    },
-    "bulk": {
-      "done": {
-        "track": "Tracked {count}",
-        "dismiss": "Dismissed {count}",
-        "seen": "Marked {count} as seen",
-        "score": "Scoring {count}",
-        "restore": "Restored {count}"
-      },
-      "already": {
-        "track": "{count} already tracked",
-        "dismiss": "{count} already dismissed",
-        "seen": "{count} already seen",
-        "score": "{count} already scored",
-        "restore": "{count} already in the inbox"
-      },
-      "conflicts": "{count} tracked, not dismissed",
-      "failed": "{count} failed",
-      "open": "Open",
-      "error": "That didn't go through. Try again."
-    },
-    "strip": {
-      "label": "Last discovery run",
-      "run": "Run on {device} · {time}",
-      "found": "{count} found",
-      "new": "{count} new",
-      "updated": "{count} updated",
-      "invalid": "{count} invalid",
-      "blocked": "{count} blocked ({list})",
-      "running": "Discovery is running on {device}. New jobs appear here as they arrive.",
-      "unknownDevice": "a device",
-      "open": "View runs"
-    },
-    "empty": {
-      "noSourcesTitle": "No sources yet",
-      "noSources": "Add a source to start discovering jobs.",
-      "addSource": "Sources",
-      "noRunsTitle": "No discovery runs yet",
-      "noRuns": "Run discovery from your CLI.",
-      "noRunsHelp": "Not set up yet?",
-      "connectCli": "Connect the CLI",
-      "caughtUpTitle": "All caught up",
-      "caughtUp": "No new jobs. Last run {when}.",
-      "caughtUpNoRun": "No new jobs.",
-      "noMatchesTitle": "Nothing matches",
-      "noMatches": "No job in this list matches the filters.",
-      "clearFilters": "Clear filters",
-      "emptyTabTitle": "Nothing here",
-      "emptySeen": "Jobs you mark as seen show up here.",
-      "emptyDismissed": "Jobs you dismiss show up here."
-    },
-    "intro": "Jobs your CLI and the remote job boards you follow found for you, best match first."
-  },
-  "trackedJob": {
-    "back": "Inbox",
-    "track": "Track",
-    "tracking": "Tracking…",
-    "dismiss": "Dismiss",
-    "dismissedHelp": "You dismissed this job. Track it to put it on your board anyway.",
-    "noScore": "Not scored yet.",
-    "redirecting": "Opening the application…",
-    "errorTitle": "This job didn't load"
-  },
   "stats": {
     "intro": "How your applications are going: what you applied for, who answered and how long it took.",
     "dataTable": "Data table",
@@ -2505,7 +1176,13 @@
       "interviews": "Interviews",
       "interviewRate": "Interview rate {rate}",
       "offers": "Offers",
-      "offerRate": "Offer rate {rate}"
+      "offerRate": "Offer rate {rate}",
+      "points": "{value} pts",
+      "vsPrevious": "Vs previous period:",
+      "noPrevious": "All time: no previous period",
+      "menu": "More for {label}",
+      "openBoard": "Open the board",
+      "copy": "Copy the figure"
     },
     "unconfirmed": {
       "one": "1 submission is unconfirmed",
@@ -2584,18 +1261,6 @@
       "n": "Applications",
       "empty": "Nothing to compare in this period."
     },
-    "automation": {
-      "title": "Automation",
-      "description": "{count} apply runs finished in the period.",
-      "none": "No apply runs finished in this period.",
-      "statesLabel": "Apply runs by outcome",
-      "ratesLabel": "Reliability",
-      "successRate": "Success rate",
-      "verifiedRatio": "Verified submissions",
-      "pauseRate": "Runs that needed you",
-      "failures": "Why runs failed",
-      "seeRuns": "See the runs"
-    },
     "range": {
       "label": "Period",
       "presets": {
@@ -2605,328 +1270,19 @@
         "all": "All time",
         "custom": "Custom"
       },
-      "from": "From",
-      "to": "To",
-      "span": "{from} to {to}"
+      "span": "{from} to {to}",
+      "presetsLabel": "Quick ranges"
     },
     "empty": {
       "title": "Nothing to count yet",
       "body": "No applications in this period. Try a longer period, or track jobs and record your applications.",
-      "bodyAllTime": "Track jobs from your inbox or add them by URL, then record your applications. Your numbers appear here.",
+      "bodyAllTime": "Add jobs by URL, then record your applications. Your numbers appear here.",
       "board": "Open the board",
-      "inbox": "Open the inbox",
       "allTime": "Show all time"
     },
     "error": {
       "title": "Couldn't load your stats",
       "body": "Check your connection and try again."
     }
-  },
-  "cloudSources": {
-    "title": "Remote job boards",
-    "intro": "Public remote-job boards our servers check every hour, politely and within each site's rules. Follow a board to get its new jobs in your inbox; nothing is fetched behind a login.",
-    "listLabel": "Remote job boards",
-    "empty": "No boards in the catalog yet.",
-    "noMatch": "No board matches these filters.",
-    "errorTitle": "Couldn't load the remote job boards",
-    "error": "Check your connection and try again.",
-    "stale": "Offline: showing older data",
-    "never": "Never",
-    "what": "{name}",
-    "refused": "Not done: {message}",
-    "statusWithReason": "{status}: {reason}",
-    "openDetails": "Open {name}",
-    "lastRunWas": "Last run: {status}",
-    "newLastRun": "+{count} last run",
-    "statuses": {
-      "ACTIVE": "Active",
-      "DISABLED": "Disabled",
-      "SCRAPING": "Checking now",
-      "FAILED": "Failed",
-      "BLOCKED": "Blocked",
-      "AUTH_REQUIRED": "Needs an account",
-      "RATE_LIMITED": "Rate limited",
-      "UNSUPPORTED": "Not a job board"
-    },
-    "categories": {
-      "job_board": "Job board",
-      "aggregator": "Aggregator",
-      "freelance_marketplace": "Freelance marketplace",
-      "talent_network": "Talent network",
-      "staffing_service": "Staffing service",
-      "tutoring_platform": "Tutoring platform",
-      "content_marketplace": "Content marketplace",
-      "community": "Community",
-      "directory": "Directory",
-      "defunct": "Closed down",
-      "unknown": "Unclassified"
-    },
-    "strategies": {
-      "json_api": "Public API",
-      "rss": "RSS feed",
-      "json_ld": "Structured data",
-      "embedded_json": "Embedded page data",
-      "html_selectors": "Page selectors",
-      "browser": "Browser rendering",
-      "ai": "AI extraction",
-      "none": "Not scraped"
-    },
-    "strategyHelp": {
-      "json_api": "A documented public endpoint returning jobs as data. Config: url, items_path, fields.",
-      "rss": "An RSS or Atom feed of jobs. Config: url, title_pattern, and optional company / location fields.",
-      "json_ld": "Detail pages carrying schema.org JobPosting data. Config: listing_url, detail_link_selector.",
-      "embedded_json": "Jobs inside a page script such as __NEXT_DATA__. Config: url, items_path, fields.",
-      "html_selectors": "CSS selectors on the listing page, with adaptive relocation when the layout drifts. Config: url, item, fields.",
-      "browser": "Like page selectors, after rendering the page in a headless browser. Needs browser rendering allowed.",
-      "ai": "Page text is read by the AI fallback; used only with AI extraction on and within the budget. Config: url.",
-      "none": "The board is listed but never fetched."
-    },
-    "origins": {
-      "default": "Default",
-      "directory": "Directory",
-      "operator": "Added"
-    },
-    "runStatuses": {
-      "queued": "Queued",
-      "running": "Running",
-      "succeeded": "Succeeded",
-      "partial": "Partial",
-      "failed": "Failed",
-      "blocked": "Blocked",
-      "auth_required": "Needs an account",
-      "rate_limited": "Rate limited",
-      "unsupported": "Not supported",
-      "skipped": "Skipped"
-    },
-    "errors": {
-      "network": "Network error",
-      "timeout": "Timed out",
-      "http_5xx": "Server error",
-      "rate_limited": "Rate limited",
-      "access_denied": "Access denied",
-      "challenge_detected": "Bot check",
-      "robots_disallowed": "Blocked by robots.txt",
-      "not_found": "Not found",
-      "source_closed": "Board closed",
-      "source_unavailable": "Source unavailable",
-      "parse_error": "Couldn't read",
-      "schema_invalid": "Format changed",
-      "selector_drift": "Page layout drifted",
-      "unsupported_content": "Unsupported page",
-      "policy_blocked": "Not allowed",
-      "cancelled": "Cancelled",
-      "auth_required": "Login required",
-      "engine_unavailable": "Scraper unavailable",
-      "invalid_config": "Invalid configuration",
-      "operatorOnly": "Only catalog operators can do this."
-    },
-    "diagnostics": {
-      "challenge": "The site shows a bot challenge to honest crawlers. Pilih never bypasses it; an operator can retry later or disable the source.",
-      "denied": "The site refused access to our crawler. Pilih stops instead of trying harder; an operator can retry later or disable the source.",
-      "auth": "Listings need an account on the site. Pilih never signs in or collects passwords, so this board is not scraped.",
-      "robots": "The site's robots.txt does not allow crawling the listings, so Pilih leaves them alone.",
-      "rate_limited": "The site asked us to slow down. The next check waits until it allows one.",
-      "rate_limitedUntil": "The site asked us to slow down. The next check waits until {at}.",
-      "layout": "The page layout or data format changed and no jobs could be read. An operator can update the strategy configuration and retry.",
-      "engine": "Our scraper could not be reached. The run is retried automatically.",
-      "config": "The strategy configuration is invalid. An operator needs to fix it.",
-      "transient": "A temporary network or server problem. The run is retried automatically with a growing delay.",
-      "gone": "The listing page no longer exists. The board may have moved or closed.",
-      "policy": "This source is not allowed by Pilih's discovery rules.",
-      "other": "The last run did not finish. Look at its log below."
-    },
-    "intervals": {
-      "m60": "Every hour",
-      "m120": "Every 2 hours",
-      "m180": "Every 3 hours",
-      "m360": "Every 6 hours",
-      "m720": "Every 12 hours",
-      "m1440": "Every day",
-      "m10080": "Every week",
-      "custom": "Every {minutes} minutes"
-    },
-    "next": {
-      "scraping": "Checking now",
-      "due": "At the next hourly run",
-      "breaker": "Paused after failures; tries again {time}",
-      "paused": {
-        "pipeline_off": "Paused: cloud discovery is off",
-        "disabled": "Paused: disabled",
-        "breaker": "Paused after failures",
-        "needs_retry": "Waiting for an operator",
-        "unsupported": "Not scraped",
-        "no_strategy": "Not scraped"
-      }
-    },
-    "columns": {
-      "board": "Board",
-      "type": "Type",
-      "status": "Status",
-      "lastSuccess": "Last success",
-      "nextRun": "Next check",
-      "jobs": "Jobs",
-      "successRate": "Success rate",
-      "follow": "Follow",
-      "checks": "Checks"
-    },
-    "filters": {
-      "status": "Status",
-      "following": "Following",
-      "search": "Search boards",
-      "searchPlaceholder": "Search by name or domain",
-      "groups": {
-        "all": "All",
-        "active": "Active",
-        "attention": "Needs attention",
-        "inactive": "Unsupported and disabled"
-      }
-    },
-    "pipeline": {
-      "offTitle": "Cloud discovery is off",
-      "off": "Boards are not being checked right now. Following still works; new jobs arrive once it is turned on.",
-      "offOperator": "Boards are not being checked. Turn on the {flag} feature flag to start the hourly runs.",
-      "schedule": "Checked every hour",
-      "directoryRefreshed": "directory refreshed {time}"
-    },
-    "directory": {
-      "refresh": "Refresh directory",
-      "queued": "Directory refresh queued. New boards show up after they are checked.",
-      "failed": "Couldn't queue the directory refresh. Try again."
-    },
-    "add": {
-      "open": "Add board",
-      "title": "Add a remote job board",
-      "description": "Pilih checks the site first: robots.txt, feeds, structured data and whether listings need an account.",
-      "name": "Name",
-      "nameRequired": "Enter a name.",
-      "url": "Website",
-      "urlHelp": "The board's home page or jobs page.",
-      "listingUrl": "Listing page (optional)",
-      "category": "Category",
-      "strategy": "Strategy",
-      "detect": "Detect automatically",
-      "submit": "Add and check",
-      "added": "{name} added. Checking the site now.",
-      "failed": "Couldn't add the board. Try again.",
-      "duplicate": "This board is already in the catalog.",
-      "probeStatus": "Site check:",
-      "probeHelp": "The board is classified within a few minutes; it appears in the list with its status.",
-      "urlProblems": {
-        "empty": "Enter the board's web address.",
-        "invalid": "Enter a full web address, like https://jobs.example.com.",
-        "scheme": "Use an address starting with https:// or http://.",
-        "credentials": "Leave out user names and passwords.",
-        "local": "Use a public website, not a local or private address."
-      }
-    },
-    "follow": {
-      "label": "Follow this board",
-      "help": "New jobs from it arrive in your inbox and are scored for you. Unfollowing keeps what you already have.",
-      "switchFor": "Follow {name}",
-      "followed": "Following {name}.",
-      "unfollowed": "Stopped following {name}.",
-      "backfilled": "Following {name}: added {count} recent jobs to your inbox.",
-      "failed": "Couldn't change following {name}. Try again."
-    },
-    "run": {
-      "now": "Run now",
-      "retry": "Retry",
-      "probe": "Re-check site",
-      "queued": "{name} queued for a check.",
-      "retryQueued": "{name}: breaker cleared and a retry queued.",
-      "probeQueued": "{name}: site check queued.",
-      "failed": "Couldn't queue the run. Try again."
-    },
-    "retry": {
-      "title": "Retry {name}?",
-      "body": "This clears the failure count, closes the breaker and lifts a blocked, login or rate-limit stop, then queues a check. If the site still refuses honest crawlers, it stops again.",
-      "confirm": "Retry now"
-    },
-    "editor": {
-      "title": "Operator settings",
-      "intro": "Changes apply to everyone following this board and are kept when the directory is refreshed.",
-      "enabled": "Enabled",
-      "enabledHelp": "Disabled boards are never checked and stay disabled after directory refreshes.",
-      "priority": "Priority",
-      "priorityHelp": "0 to 100; higher runs first.",
-      "priorityError": "Enter a whole number from 0 to 100.",
-      "interval": "Check every",
-      "strategy": "Extraction strategy",
-      "config": "Strategy configuration (JSON)",
-      "configSyntax": "This is not valid JSON.",
-      "configInvalid": "The configuration does not match this strategy:",
-      "configValid": "Valid for this strategy.",
-      "rateTitle": "Politeness limits",
-      "rateDefault": "Default",
-      "rangeError": "Enter a whole number from {min} to {max}.",
-      "rate": {
-        "minDelayMs": "Delay between requests (ms)",
-        "maxPages": "Listing pages per run",
-        "maxItems": "Jobs per run",
-        "maxDetails": "Detail pages per run"
-      },
-      "ai": "AI extraction fallback",
-      "aiHelp": "Only when deterministic extraction finds nothing, with AI on globally and within the monthly budget.",
-      "browser": "Allow browser rendering",
-      "browserHelp": "Renders the page in a headless browser for sites that build listings with JavaScript. Slower; use only when needed.",
-      "health": "Health",
-      "healthKeep": "Keep current",
-      "healthActive": "Active (re-activate)",
-      "healthUnsupported": "Not a job board (retire)",
-      "authRequired": "Listings need an account",
-      "statusReason": "Status note",
-      "authNote": "Account note",
-      "reset": "Reset"
-    },
-    "sheet": {
-      "stats": "Statistics",
-      "runs": "Runs",
-      "avgDuration": "Average duration",
-      "jobs": "Jobs found",
-      "jobsValue": "{total} ({open} open)",
-      "newLastRun": "New in the last run",
-      "followers": "Followers",
-      "confidence": "Extraction confidence",
-      "warnings": "Warnings in the last run",
-      "aiCalls": "AI calls",
-      "listing": "Listing page",
-      "terms": "Terms",
-      "termsLink": "Read the site's terms",
-      "attribution": "Attribution",
-      "authTitle": "Needs an account",
-      "authBody": "This board shows its listings only to signed-in users. Pilih never logs in for you."
-    },
-    "runs": {
-      "title": "Recent runs",
-      "loading": "Loading runs…",
-      "none": "No runs yet.",
-      "error": "Couldn't load the runs.",
-      "loadMore": "Load older runs",
-      "showLog": "Show log ({count})",
-      "hideLog": "Hide log",
-      "warnings": "Warnings",
-      "log": "Run log",
-      "http": "HTTP {status}",
-      "counts": "{found} found, {added} new, {updated} updated",
-      "directoryCounts": "{entries} entries, {registered} new boards",
-      "confidence": "{value}% confidence",
-      "attempt": "attempt {n}",
-      "levels": {
-        "info": "Info",
-        "warn": "Warning",
-        "error": "Error"
-      },
-      "triggers": {
-        "schedule": "Scheduled",
-        "manual": "Manual",
-        "retry": "Retry"
-      },
-      "kinds": {
-        "scrape": "Scrape",
-        "directory": "Directory refresh",
-        "probe": "Site check"
-      }
-    },
-    "nextPrefix": "Next:"
   }
 }

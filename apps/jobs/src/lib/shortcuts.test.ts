@@ -81,12 +81,12 @@ describe("TW-SHORTCUTS keyboard shortcuts (12 §2.2, 06 §10)", () => {
     expect(missing).toEqual([]);
   });
 
-  it("TW-SHORTCUTS the global navigation keys B / I / A / R / N / ? are registered", () => {
+  it("TW-SHORTCUTS the global navigation keys B / N / ? are registered", () => {
     const registered = registeredKeys();
-    for (const key of ["b", "i", "a", "r", "n", "?", "/", "j", "k", "m", "y"]) {
+    for (const key of ["b", "n", "?", "/", "j", "k", "m"]) {
       expect(registered.has(key), key).toBe(true);
     }
-    expect(Object.keys(NAV_SHORTCUTS)).toEqual(["b", "i", "a", "r"]);
+    expect(Object.keys(NAV_SHORTCUTS)).toEqual(["b"]);
   });
 
   it("TW-SHORTCUTS sidebar hints match the navigation shortcuts", () => {

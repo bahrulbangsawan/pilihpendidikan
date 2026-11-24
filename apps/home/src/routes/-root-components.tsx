@@ -16,8 +16,8 @@ function useLocale() {
   return localeFromPath(pathname);
 }
 
-// Zedative is light-canonical (DESIGN.md: "Scheme: light") and the hub has no
-// theme toggle, so <html> carries no theme class and no theme script runs.
+// The Cursor design system is dark only (the theme's :root is the one
+// scheme), so <html> carries no theme class and no theme script runs.
 export function RootDocument({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
   return (

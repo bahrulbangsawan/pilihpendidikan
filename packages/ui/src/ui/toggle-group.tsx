@@ -18,10 +18,10 @@ const ToggleGroupContext = createContext<ToggleGroupContextValue>({
   orientation: "horizontal",
 });
 
-// Zedative toggle group: a segmented control. By default its items are
-// outlined pressables joined edge to edge (`spacing` 0) — neighbours share
-// one hairline and only the outer corners take the 4px radius. Pass
-// `spacing` for separate chips, or `variant="default"` for a ghost toolbar.
+// Toggle group: by default its items are outlined pills joined edge to edge
+// (`spacing` 0), so neighbours share one 20% border and only the outer ends
+// stay round. Pass `spacing` for separate pills, or `variant="default"` for a
+// ghost toolbar.
 function ToggleGroup({
   className,
   variant = "outline",
@@ -43,7 +43,7 @@ function ToggleGroup({
   return (
     <ToggleGroupPrimitive.Root
       className={cn(
-        "group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-md data-vertical:flex-col data-vertical:items-stretch",
+        "group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-full data-vertical:flex-col data-vertical:items-stretch",
         className
       )}
       data-orientation={orientation}
