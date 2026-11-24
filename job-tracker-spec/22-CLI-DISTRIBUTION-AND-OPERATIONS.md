@@ -377,7 +377,7 @@ Route `/cli` (12 §2). Content, top to bottom:
 
 1. **Install:** a tabbed command block (macOS/Linux · Windows) showing
    `uv tool install pilih-jobs`, with a link to install uv. The alternative
-   is pipx. Each block has a copy button with a `C` kbd hint (Zedative).
+   is pipx. Each block has a copy button with a `C` kbd hint (Cursor design system).
 2. **Install browser:** `pilih-jobs browser install` plus a disk-space note
    (≈ 550 MB).
 3. **Sign in:** `pilih-jobs login`. The page explains that a browser window

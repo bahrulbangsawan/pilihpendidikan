@@ -64,7 +64,7 @@ Only services actually adopted in v1 are drawn. Rejected or deferred services
 └──────────────────────────────────────────────────────┬────────────────────────────────────────────────┘
                                                        │ HTTPS (cookie)
                                                        ▼
-                                    Browser: apps/jobs dashboard (Zedative, D-24)
+                                    Browser: apps/jobs dashboard (Cursor design system, D-24)
              Board · Inbox · Application detail · Approvals · Automation · Devices · Stats · Profile
 
 External: api.openai.com (/v1/decisions, /v1/responses) — called ONLY by apps/api (D-12)
@@ -135,7 +135,7 @@ pilihpendidikan/
 │   ├── home/                             adds `jobs` to services.ts ("soon" until going live)
 │   └── invoice/, portfolio/, design/     unchanged
 ├── packages/
-│   ├── ui/                               [VERIFIED] @rulisme/ui (Zedative theme)
+│   ├── ui/                               [VERIFIED] @rulisme/ui (Cursor theme)
 │   ├── config/                           [VERIFIED]
 │   ├── jobs-contracts/                   [NEW] Zod schemas → JSON Schema → Pydantic (D-20)
 │   │   ├── src/*.ts  schema/*.json (generated)  adapters.json  test-vectors/

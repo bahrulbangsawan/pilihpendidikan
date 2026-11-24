@@ -283,7 +283,7 @@ summary and a compact funnel in the terminal.
   - breakdown table with source/mode/CV/score band switcher;
   - automation reliability card;
   - unconfirmed submissions callout linking to the filtered board.
-- Charts use `@rulisme/ui` `chart` (recharts) styled per Zedative (12 §2).
+- Charts use `@rulisme/ui` `chart` (recharts) styled per the Cursor design system (12 §2).
   Every chart has a data table toggle for accessibility.
 
 ---

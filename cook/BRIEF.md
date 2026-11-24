@@ -1,6 +1,6 @@
 # Brief: pilihpendidikan × cursor.com redesign
 
-Target: full redesign of every pilihpendidikan web surface and the shared design system (Zedative, `packages/ui`) to match cursor.com: colours, buttons, sizing, spacing, typography, layout. Stack: Bun workspace, TanStack Start, Tailwind 4, `@rulisme/ui`.
+Target: full redesign of every pilihpendidikan web surface and the shared design system (now named Cursor, `packages/ui`) to match cursor.com: colours, buttons, sizing, spacing, typography, layout. Stack: Bun workspace, TanStack Start, Tailwind 4, `@rulisme/ui`.
 References: `cook/refs/R01`–`R04` (cursor.com home, pricing, features (same as home), docs; light + dark; 1440 and 390). Recreate closely.
 Measured tokens: `cook/refs/vars-{light,dark}.json`, `tokens-*.json`, `more-light.json`, `rules.css`, `type.css`.
 Bar (UI mapping): layout/spacing [99], colour [99], typography [99], components (buttons, cards, inputs) [99], detail (borders, radii, icons, states) [99], motion (hover/press timing) [9/10].
@@ -16,4 +16,4 @@ Time: floor 8h. Started: 2026-11-23 23:30 WITA.
 Usage: 5h window, about 20% per hour, never 100%.
 Deliverable: commits on branch `cook/cursor-redesign` (one per round), before/after compares in `cook/compare/`. No merge to main.
 Permissions: fetch cursor.com for reference only; install free fonts from npm; no push, no deploy, no publish.
-User's words: "btw dark mode only, without lightmode." / "Full re-design pilihpendidikan web and that related zedative to https://cursor.com, make sure the colors, the buttons, sizing, spacing, typography, layout, etc pixel perfect exact match."
+User's words: "btw dark mode only, without lightmode." / "Full re-design pilihpendidikan web and that related [design system] to https://cursor.com, make sure the colors, the buttons, sizing, spacing, typography, layout, etc pixel perfect exact match."

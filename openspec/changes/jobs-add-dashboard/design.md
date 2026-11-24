@@ -41,7 +41,7 @@ of `jobs_*`, admin tooling that relied on `?mine=0`.
   second line (11 §4.1).
 - **D-27 locale.** `jobs-lang` cookie, then `Accept-Language`; `/id` only
   sets `id` and redirects to `/board`.
-- **D-24 Zedative.** `apps/jobs/src/styles.css` imports the shared theme and
+- **D-24 Cursor design system.** `apps/jobs/src/styles.css` imports the shared theme and
   defines no tokens; `apps/jobs/src` is a typography-lint and parity root.
 - **D-01 kernel inside `apps/api`.** Dispatch order: auth (bearer only, cookies
   ignored) → `JOBS_V1_ENABLED` → CLI 426 gate → scope → device → presence →
@@ -108,7 +108,7 @@ Travel restore to the bookmark the script prints before `--execute`.
 
 ## Open Questions
 
-- A-08: the Zedative change must land before the dashboard ships (it is
+- A-08: the Cursor design-system change must land before the dashboard ships (it is
   complete in the working tree; it is not yet archived).
 - A-09: the account export/deletion design is subject to the UU PDP / GDPR
   legal review (release gate G6).

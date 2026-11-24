@@ -31,5 +31,5 @@
 
 - [x] 5.1 Handoff recorded (NOT executed — owner action): deploying `apps/api` (routes, cron, queue consumers) and `apps/jobs` (Stats screen). Nothing was deployed.
 - [x] 5.2 Handoff recorded (NOT executed — owner action): any rebuild of production `analytics_daily` (through `rebuild_analytics` messages); `analytics:rebuild --execute` was not run against any remote database and refuses `--remote`.
-- [x] 5.3 Handoff recorded (NOT executed — leaf-5.1 / owner): the agent-browser review of the Stats screen at 375 / 1280 px in light and Night Desk and the full-stack e2e suite (`e2e/` does not exist yet).
+- [x] 5.3 Handoff recorded (NOT executed — leaf-5.1 / owner): the agent-browser review of the Stats screen at 375 / 1280 px in the dark scheme and the full-stack e2e suite (`e2e/` does not exist yet).
 - [x] 5.4 Handoff recorded (NOT executed — owner decision): the operator aggregate script (10 §7) and the "Recalculating statistics…" notice (10 §5) are not implemented (see design.md).

@@ -31,8 +31,8 @@ Archived applications (`applications.archived = 1`) are hidden from the board
 and shown under **Archive** (§8).
 
 **[DECISION]** `rejected` and `withdrawn` share one collapsed lane rather than
-two full columns. Reason: on a 1120 px Zedative column (12 §2) nine columns do
-not fit, and terminal cards are rarely acted on. Keyboard and drag targets still
+two full columns. Reason: in a 1300 px content column (12 §2) nine lanes do not
+fit, and terminal cards are rarely acted on. Keyboard and drag targets still
 distinguish the two stages.
 
 ### 1.2 Ordering

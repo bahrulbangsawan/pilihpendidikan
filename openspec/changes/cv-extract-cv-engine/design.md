@@ -55,7 +55,7 @@ page or the CLI's headless Chromium loading the same page (D-14).
 - 08 §3.1 plans to use `CVDataSchema` for `/api/cv` PUT behind a flag; that
   tightening is not done — `PUT` validation is unchanged.
 - 08 §1 / A-02 assume built-in Helvetica; since
-  `update-zedative-design-system` the templates embed Inter through the
+  `update-cursor-design-system` the templates embed Inter through the
   shared print module, which the baseline test also checks.
 - 08 §11 T8-01 names `src/data/sample-cv.json`; the frozen copy lives at
   `packages/cv-engine/test/fixtures/sample-cv.json`, with a second, wider

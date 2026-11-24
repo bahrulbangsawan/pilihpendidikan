@@ -4,8 +4,8 @@
 covers its routes and layouts, each screen with its data, states, interactions
 and responsive behaviour, the CLI-integration and monitoring screens,
 accessibility, copy, the polling strategy, and the design-system compliance
-checklist. The visual language is **Zedative** (`zedative.DESIGN.md`, as
-implemented in the root `DESIGN.md` § Implementation). There is no
+checklist. The visual language is the **Cursor** design system (the root `DESIGN.md`,
+implemented as its § Implementation describes). There is no
 jobs-specific visual system (D-24).
 
 Legend: see `00-README.md` §2.
@@ -22,7 +22,7 @@ Legend: see `00-README.md` §2.
 | Data layer | **[NEW]** `@tanstack/react-query` (not yet in the workspace) over TanStack Start server functions; server functions call `apps/api` through the `API` service binding (D-15) |
 | Session | BFF cookie `__Host-jobs-session` (HttpOnly, Secure, SameSite=Lax, Path=/). [DECISION] The cookie value is the API bearer encrypted with AES-GCM under the Worker secret `BFF_COOKIE_KEY`, so the BFF needs no session store (a KV session table was rejected as an extra moving part). Max-age = bearer expiry: 7 d, matching the **[VERIFIED]** browser-session TTL (`apps/api/src/session.ts:21`). Sign-out calls `/auth/logout` with the bearer, then clears the cookie. |
 | Styles | `src/styles.css` = `tailwindcss` + `@pilihpendidikan/config/motion.css` + `@rulisme/ui/styles/shadcn.css` + `@rulisme/ui/styles/theme.css` + `@source` for `@rulisme/ui/dist` — **nothing else** (parity script rule **[VERIFIED]** `TYPOGRAPHY.md` § Single Source of Truth) |
-| Theme | Light default; Night Desk via the `.dark` class with a toggle in Settings (builders' pattern) |
+| Theme | Dark only: one scheme, `.dark` pinned (`forcedTheme="dark"`), no toggle (the builders' pattern) |
 | Lint roots | **[NEW]** add `apps/jobs/src` to `scripts/lint-typography.sh`, `check-typography-parity.ts`, `check-inline-typography.ts` |
 
 ### 1.1 Sign-in flow (UX)
@@ -90,7 +90,7 @@ convention **[VERIFIED]** (root `CLAUDE.md` § Conventions).
 ┌ band: nav (56px) ──────────────────────────────────────────────────────────────────────────┐
 │ ◆ Pilih Jobs   Board  Inbox  Automation  Stats        ⌘K Search      ● 2 devices   [N] New │
 └────────────────────────────────────────────────────────────────────────────────────────────┘
-┌ sidebar (compact roles) ┬ rail (1120px max for reading pages; full width for Board) ───────┐
+┌ sidebar (compact roles) ┬ rail (1300px max for reading pages; full width for Board) ───────┐
 │ Board            B      │                                                                  │
 │ Inbox  12        I      │                                                                  │
 │ Approvals  3     A      │                                                                  │
@@ -142,16 +142,16 @@ modifiers) and always appear as a `Kbd` hint next to the action.
 └────────────┴─────────────┴─┴───────┴┴─────────┴─┴─────────────────┴─────────┴──────────┴────────────┘
 ```
 
-- **Columns**: `saved, preparing, ready, applied, interviewing, offer, accepted` laid out horizontally on one band, separated by `line` rules, with a **diamond node** where each column rule meets the toolbar rule. `rejected` and `withdrawn` sit in a collapsible "Closed" column on the right (collapsed by default) so terminal cards don't crowd the board.
+- **Columns**: `saved, preparing, ready, applied, interviewing, offer, accepted` laid out horizontally as `Kanban` lanes (`@rulisme/ui/blocks/kanban`: card-coloured columns with 12px corners, each headed by its stage icon, title and count). `rejected` and `withdrawn` sit in a collapsible "Closed" column on the right (collapsed by default) so terminal cards don't crowd the board.
 - **Column header**: stage name (`type-subtitle weight-semibold`), count (`type-micro tabular-nums text-muted-foreground`).
-- **Card** (`Card`: square, bordered, flat, `bg-card`; 2px-radius chips inside):
+- **Card** (`KanbanCard`: bordered, flat, on `pane`, 8px corners; pill chips inside):
   - company (`type-caption text-muted-foreground`), title (`type-body weight-semibold`, two-line clamp);
   - **badges** (`Badge` `outline` unless noted):
     - **score** `87` with a tiny bar;
     - **source** (`GH`, `Lever`, `Ashby`, `Web`);
     - **mode** (`Assisted`, `Approval`, `Auto`);
     - **CV state**: `◐` generating, `CV draft`, `✓ CV`;
-    - **submission**: `✓ Verified`, `? Unconfirmed` (`Badge` `default`, blue, spends attention deliberately), `! Needs review` for `outcome_unknown` in `text-destructive`;
+    - **submission**: `✓ Verified`, `? Unconfirmed` (`Badge` `default`, orange, spends attention deliberately), `! Needs review` for `outcome_unknown` in `text-destructive`;
     - **live task**: `⟳ Applying · step 4/9` with a pulse-dot;
     - **posting closed**: `Closed posting`;
   - relative time of the last change (`type-micro`).
@@ -230,7 +230,7 @@ redirects to the application.
   - Review outcome (`outcome_unknown`);
   - Add interview.
 
-  It is the page's only primary (blue) button.
+  It is the page's only primary (light pill) button.
 - **Overview**: posting description (plain text, `type-body`, `max-width` 72ch), requirements list, salary, notes (autosave with `base_revision`), follow-up date.
 - **CV tab** (08):
   - base CV selector;
@@ -245,7 +245,7 @@ redirects to the application.
   - a start button that creates the task (`POST /api/v1/tasks`);
   - for email, the draft composer (09);
   - for manual, "I applied" (date and method), which records a `user_attestation`.
-- **Timeline**: `application_events` rendered as a vertical rail. Each event is a row with a diamond node on the rule, the actor chip (You / *MacBook* CLI / System / MCP), time, and a description. Conflict events (`applied_to_state = 0`) render in `text-destructive` with "Not applied: the stage had changed to Rejected by you at 13:20".
+- **Timeline**: `application_events` rendered as a vertical rail. Each event is a row with a dot on the rule, the actor chip (You / *MacBook* CLI / System / MCP), time, and a description. Conflict events (`applied_to_state = 0`) render in `text-destructive` with "Not applied: the stage had changed to Rejected by you at 13:20".
 - **Interviews / Offers**: tables with add/edit in a `Sheet`.
 - **Data**: `GET /api/v1/applications/{id}` and `…/events`. Polling: 15 s; **2 s while a task for this application is `claimed`/`running`/`awaiting_approval`** (§10).
 
@@ -352,7 +352,7 @@ and execution visibility.
 ```
 
 - **Install instructions per OS** (tabs). The commands are defined in 22. Each block is a copyable command chip (`Kbd`-styled caption) with a copy button and a "Requires: Python 3.12 via uv (installed automatically by the installer script)" caption. A link offers the alternative installers (Homebrew tap, Scoop, pipx).
-- **Consent page for CLI login**: the OAuth consent screen is served by `apps/api` (17), not `apps/jobs`, but uses the same Zedative look via `htmlPage()`. `/cli` explains it in advance: "You'll be asked to approve *Pilih Jobs CLI* on *device name*".
+- **Consent page for CLI login**: the OAuth consent screen is served by `apps/api` (17), not `apps/jobs`, but uses the same Cursor look via `htmlPage()`. `/cli` explains it in advance: "You'll be asked to approve *Pilih Jobs CLI* on *device name*".
 - **Device row**:
   - **Status**: `active` (`●` pulse-dot) when it holds a lease with a heartbeat ≤ 90 s; `online` when `last_seen_at` ≤ 6 min; else offline with relative time (04 §1).
   - **Last sync**: the device's last successful outbox flush (from heartbeat).
@@ -436,7 +436,7 @@ Server cost is in 14 §9.
 
 ## 12. Accessibility
 
-- WCAG 2.2 AA target. Contrast comes from the measured token pairs (**[VERIFIED]** `DESIGN.md` § Measured contrast: muted text ≥ 4.54:1 on every surface, light and Night Desk). Hairlines below 3:1 are a known, accepted spec choice, so **state is never conveyed by a hairline alone**: selected rows also get `bg-pane-2` and `weight-semibold`.
+- WCAG 2.2 AA target. Contrast comes from the measured token pairs (**[VERIFIED]** `DESIGN.md` § Measured contrast: muted text ≥ 4.54:1 on every surface of the one dark scheme). Hairlines below 3:1 are a known, accepted spec choice, so **state is never conveyed by a hairline alone**: selected rows also get `bg-pane-2` and `weight-semibold`.
 - Focus: the theme's focus recipes (**[VERIFIED]** `DESIGN.md` § Focus). Never remove outlines.
 - **DnD**: a keyboard sensor plus the "Move to…" menu (`M`). Announcements: "Picked up Acme, Senior Frontend Engineer, in Saved. Position 2 of 14." / "Moved to Ready."
 - **Live regions**:
@@ -483,18 +483,18 @@ Every screen must pass these before merge (CI enforces the starred items):
 
 - [ ] ★ `type-*` roles only; no `text-xs/sm/base/lg…`, no `text-[…]`, no `leading-*`, no `tracking-*` (`lint:typography`).
 - [ ] ★ No `uppercase` / `capitalize`; sentence case.
-- [ ] ★ Weights only via the role defaults or `weight-normal/semibold/bold` (400/550/700); `weight-bold` only with `type-display`, once per page (the page title).
+- [ ] ★ Weights only via the role defaults or `weight-normal/semibold/bold` (400/500/600); titles and labels inside app surfaces take `weight-semibold`, `weight-bold` only for a rare figure.
 - [ ] ★ No hex in classes; tokens only; no `dark:` manual colours.
 - [ ] ★ No gradients, `backdrop-blur`, or enter/exit animations.
-- [ ] ★ Radii: cards/tables/bands/sheets `rounded-none`; chips/badges/kbd `rounded-sm` (2px); buttons/inputs `rounded-md` (4px); windows (dialog, popover, command, toast) `rounded-lg` (6px); nothing larger.
+- [ ] ★ Radii: cards and tiles `rounded-sm` (4px); fields, menus, popovers, dialogs and kanban cards `rounded-lg` (8px); kanban lanes, the floating sheet and nested-frame outers `rounded-xl` (12px); buttons, badges, tabs, switches and avatars pills; nothing else.
 - [ ] ★ `apps/jobs/src/styles.css` imports the shared theme and defines no tokens (`parity:typography`).
-- [ ] Blue (`primary`) at most twice per viewport: the nav **New** button and the page's single primary action. Scores and links may use `text-primary` sparingly.
-- [ ] Bands and rails: each page section is a `Band`; reading pages use `Rail` (1120px) with diamond nodes; the Board uses full-width bands with diamonds at column-rule crossings.
+- [ ] The light pill (`primary`) at most twice per viewport: the nav **New** button and the page's single primary action. Orange (`text-link`) only for text links, the active nav item and the orange badge.
+- [ ] Layout: screens are framed by `PageHeader` / `PageContent`; the Board's lanes are `Kanban` columns; sections are separated by space, with rules only inside app chrome (header bottom, sidebar edge, table rows).
 - [ ] Compact roles (`-compact`) in toolbars, sidebars, tables and filter bars; default roles elsewhere.
 - [ ] Every primary action has a `Kbd` hint and a registered `useShortcut`.
 - [ ] Body copy in `ink` (inherited); headings/labels `text-foreground`; meta `text-muted-foreground`; errors `text-destructive`.
-- [ ] Motion: 150ms standard curve only on colour/opacity/box-shadow; `press` on buttons; no route transitions.
-- [ ] Light and Night Desk both reviewed at 375px and 1280px with `agent-browser` screenshots (root `CLAUDE.md` § Browser testing).
+- [ ] Motion: 140ms on the standard curve, colours only; no press offset, no enter animations, no route transitions.
+- [ ] The dark scheme reviewed at 375px and 1280px with `agent-browser` screenshots (root `CLAUDE.md` § Browser testing).
 - [ ] No component forked per app; re-skins go into `packages/ui` (root `CLAUDE.md` § Conventions).
 
 ---

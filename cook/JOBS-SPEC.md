@@ -11,7 +11,7 @@ User request (2026-11-24, verbatim): "Pada jobs: Hapus fitur inbox, approvals, r
 
 ## Design language
 
-The whole workspace is Zedative = cursor.com's dark system (read `DESIGN.md`, tokens in `packages/ui/src/styles/theme.css`): warm near-black `bg-background`, `bg-card` surfaces with `border-hairline`/`border-border`, Geist weight 400, orange `text-link` for links/active nav. Keep those tokens. Take LAYOUT and COMPOSITE-COMPONENT structure from reui.io blocks; use the shared `@rulisme/ui` primitives (Button pills, Input, Select, Sheet, DropdownMenu, Tabs, Badge, Avatar, Switch, Table…) for controls — never fork a primitive into the app.
+The whole workspace is the Cursor design system = cursor.com's dark theme (read `DESIGN.md`, tokens in `packages/ui/src/styles/theme.css`): warm near-black `bg-background`, `bg-card` surfaces with `border-hairline`/`border-border`, Geist weight 400, orange `text-link` for links/active nav. Keep those tokens. Take LAYOUT and COMPOSITE-COMPONENT structure from reui.io blocks; use the shared `@rulisme/ui` primitives (Button pills, Input, Select, Sheet, DropdownMenu, Tabs, Badge, Avatar, Switch, Table…) for controls — never fork a primitive into the app.
 
 Composite geometry from reui (allowed within the lint: radius ≤ 8px, no gradients, no hex classes, no enter animations):
 - Kanban/list cards: `rounded-lg border border-border bg-card p-3`, hover `bg-pane`; columns `rounded-lg bg-card/50 border border-hairline` with a header row (status dot/icon in a semantic colour, title, count badge, column menu).

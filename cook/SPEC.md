@@ -1,4 +1,4 @@
-# Zedative × cursor.com — implementation spec (round 1)
+# Cursor design system × cursor.com — implementation spec (round 1)
 
 Every value here was measured from cursor.com (light and dark) with computed styles. The tokens are already in `packages/ui/src/styles/theme.css`; read it first. Reference screenshots: `cook/refs/` (`R01-home-*`, `R02-pricing-*`, `R04-docs-*`; `crops/` has them sliced). Raw measurements: `cook/refs/*.json`, `rules.css`, `type.css`.
 

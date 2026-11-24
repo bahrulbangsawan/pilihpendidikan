@@ -33,11 +33,11 @@ Legend: see `00-README.md` §2.
 
 | | |
 |---|---|
-| **Scope** | Zedative change landed; shared contracts; CV engine extraction; user ids; jobs database; legacy migration dry run |
-| **Deliverables** | ① `update-zedative-design-system` completed (tasks 2.x–5.x) — A-08. ② `packages/jobs-contracts`: Zod schemas for every 04/05 record and request, JSON Schema export (`z.toJSONSchema`, zod 4 **[VERIFIED]** catalog `zod ^4.6.5`), fingerprint test vectors (03 §4.2), `adapters.json`. ③ `packages/cv-engine`: `CVData` types, 4 `*-pdf.tsx` templates, `template-utils`, `formatCvMarkdown`; `apps/cv` and `apps/api` import from it (removes the duplicated type, **[VERIFIED]** `apps/api/src/types.ts:1-152`). ④ `DB` migration `0002_users_devices_oauth.sql` + lazy `users` creation in `resolveCaller`. ⑤ D1 `pilihpendidikan-jobs` created (owner), `migrations-jobs/0001_jobs_core.sql`. ⑥ Legacy migration script `apps/api/scripts/migrate-jobs-kv-to-d1.ts` (dry run by default, **[VERIFIED]** existing `scripts/` convention). |
+| **Scope** | Cursor design-system change landed; shared contracts; CV engine extraction; user ids; jobs database; legacy migration dry run |
+| **Deliverables** | ① `update-cursor-design-system` completed (tasks 2.x–5.x) — A-08. ② `packages/jobs-contracts`: Zod schemas for every 04/05 record and request, JSON Schema export (`z.toJSONSchema`, zod 4 **[VERIFIED]** catalog `zod ^4.6.5`), fingerprint test vectors (03 §4.2), `adapters.json`. ③ `packages/cv-engine`: `CVData` types, 4 `*-pdf.tsx` templates, `template-utils`, `formatCvMarkdown`; `apps/cv` and `apps/api` import from it (removes the duplicated type, **[VERIFIED]** `apps/api/src/types.ts:1-152`). ④ `DB` migration `0002_users_devices_oauth.sql` + lazy `users` creation in `resolveCaller`. ⑤ D1 `pilihpendidikan-jobs` created (owner), `migrations-jobs/0001_jobs_core.sql`. ⑥ Legacy migration script `apps/api/scripts/migrate-jobs-kv-to-d1.ts` (dry run by default, **[VERIFIED]** existing `scripts/` convention). |
 | **Exit criteria** | `bun run check` and `bun run check-types` green; `apps/cv` "Download PDF" output unchanged (byte-compare of 4 templates × 3 fixtures); dry-run report for production `JOBS_KV` shows 100% mappable records; isolation and SQL-predicate tests exist (empty repo passes). |
-| **Dependencies** | Owner approval for the D1 creation; Zedative change |
-| **Risks** | Zedative change slips (mitigation: contracts, schema and api work proceed in parallel; only the UI waits). CV extraction breaks `apps/cv` (mitigation: render-diff test before and after). |
+| **Dependencies** | Owner approval for the D1 creation; the Cursor design-system change |
+| **Risks** | The Cursor design-system change slips (mitigation: contracts, schema and api work proceed in parallel; only the UI waits). CV extraction breaks `apps/cv` (mitigation: render-diff test before and after). |
 
 ### M1 — Dashboard v1 and legacy facade
 
@@ -154,7 +154,7 @@ capability so far exists only as change deltas. **[DECISION]** M0 adds
 | M7 | `jobs-add-auto-apply` | `jobs-automation` (MODIFIED: auto mode), `jobs-discovery` (MODIFIED: adapters) | Yes (security, legal) | 19 §8, 15 |
 
 Every change runs `openspec validate <id> --strict` before review. Conflicts
-are checked against active changes (**[VERIFIED]** `update-zedative-design-system`
+are checked against active changes (**[VERIFIED]** `update-cursor-design-system`
 and `home-add-hub-landing-page` are active today).
 
 ---
@@ -167,7 +167,7 @@ and `home-add-hub-landing-page` are active today).
 | `packages/jobs-contracts` | `bun test` | Schema round-trips; JSON Schema export snapshot; fingerprint vectors | Python side consumes the same vectors (pytest) | Contract drift fails both suites |
 | `packages/cv-engine` | vitest | Template-utils, markdown | Render to buffer in Node for the 4 templates × fixtures → PDF text extraction snapshot | A-02 |
 | `apps/jobs` | vitest (per-app, **[VERIFIED]** repo convention) | Hooks, merge logic, polling backoff, i18n keys parity EN/ID | Server functions against a stubbed `API` binding | |
-| `apps/jobs` UI e2e | `agent-browser` (**[VERIFIED]** mandated by root `CLAUDE.md` § Browser testing) scripted flows + screenshots at 375/1280, light/Night Desk | — | Against `bun dev` (`apps/jobs` 4007 + `apps/api` 8788 with local D1) | Snapshot review of a11y tree (`agent-browser snapshot -i`) |
+| `apps/jobs` UI e2e | `agent-browser` (**[VERIFIED]** mandated by root `CLAUDE.md` § Browser testing) scripted flows + screenshots at 375/1280 in the dark scheme | — | Against `bun dev` (`apps/jobs` 4007 + `apps/api` 8788 with local D1) | Snapshot review of a11y tree (`agent-browser snapshot -i`) |
 | `apps/jobs-cli` | pytest (+ `pytest-asyncio`), ruff, pyright | Adapters (recorded fixtures), normalization, fingerprint, outbox, backoff, redaction, policy guard, action validator | CLI ↔ `wrangler dev` on `:8788` with local D1 migrations applied (`bun run db:migrate:local`) | OS matrix in CI |
 | Browser agent | pytest + Playwright Python against a **fixture ATS server** | Observation extraction, candidate enumeration | Full apply loops with a **fake AI provider** (deterministic, scripted answers) and a recorded-cassette mode against the real provider (nightly, budget-capped) | See §5 |
 | Load / non-functional | k6 or a Bun script against `wrangler dev` and a staging Worker | — | §6 | |
@@ -294,5 +294,5 @@ Notation: **W** = web (`apps/jobs`), **C** = CLI, **A** = API.
 - [ ] Tests: unit + integration for every new route/command; the isolation case for every new route; e2e scenarios for the milestone pass.
 - [ ] Security: threat-model deltas reviewed against 11; no new logging of secrets/PII; scopes declared for every route.
 - [ ] Docs: the relevant `job-tracker-spec/` document updated if behaviour diverged; `apps/api/CLAUDE.md` route table updated; `CLAUDE.md`/`AGENTS.md` updated for new apps/packages and ports (4007).
-- [ ] UI: design compliance checklist (12 §14); `agent-browser` screenshots at 375/1280 in light and Night Desk; no console errors (`agent-browser errors`).
+- [ ] UI: design compliance checklist (12 §14); `agent-browser` screenshots at 375/1280 in the dark scheme; no console errors (`agent-browser errors`).
 - [ ] Ops: migrations applied locally and dry-run against staging; owner sign-off for any remote resource, deploy or data migration.
