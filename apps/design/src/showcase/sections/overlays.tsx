@@ -1167,7 +1167,7 @@ export function OverlaysSection() {
   return (
     <Section
       id="overlays"
-      lead="Windows and flyouts: 8px corners and a 10% border on the popover fill. Menus get Cursor's two whisper shadows, windows the one soft drop over a flat scrim with no blur. Nothing animates open."
+      lead="Windows and flyouts: 8px corners and a 10% border on the popover fill. Menus get two whisper shadows, windows the one soft drop over a flat scrim with no blur. Nothing animates open."
       title="Overlays"
     >
       <BlockGrid>
@@ -1223,7 +1223,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Small contextual content on click, in Cursor's flyout (8px, 10% border, two whisper shadows): a date picker or a one-field form."
+          description="Small contextual content on click, in the flyout (8px, 10% border, two whisper shadows): a date picker or a one-field form."
           title="Popover"
         >
           <Example label="Date picker">
@@ -1283,7 +1283,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Actions on click, like Cursor's model picker: 32px rows at 4px radius that fill with pane when highlighted; a trailing check for options, a small dot for the chosen one."
+          description="Actions on click, like a model picker: 32px rows at 4px radius that fill with pane when highlighted; a trailing check for options, a small dot for the chosen one."
           title="Dropdown menu"
         >
           <Example label="Download menu">
@@ -1321,7 +1321,7 @@ export function OverlaysSection() {
         </Block>
 
         <Block
-          description="Not an overlay: the 404 page every app renders for unknown URLs. cursor.com's closing-CTA look on the plain page: a hero-size numeral at weight 400, the light pill home action and an outlined way back."
+          description="Not an overlay: the 404 page every app renders for unknown URLs. The closing call to action on the plain page: a hero-size numeral at weight 400, the light pill home action and an outlined way back."
           title="Not found page"
           wide
         >

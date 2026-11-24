@@ -295,7 +295,7 @@
     "openFullPage": "Open full page",
     "newApplication": "New application",
     "emptyManual": "Add the first job you're applying to by its URL.",
-    "searchPlaceholder": "Search company, role or location",
+    "searchPlaceholder": "Search jobs",
     "filterButton": "Filters",
     "filtersActive": "{count} filters on",
     "lane": {
@@ -358,7 +358,7 @@
     "menu": "Actions for {company}, {title}",
     "moveLabel": "Move {company}",
     "score": "Score",
-    "scoring": "Scoring",
+    "scoring": "Scoring…",
     "aiOff": "Scored without AI",
     "aiOffShort": "AI off",
     "cvReady": "CV",

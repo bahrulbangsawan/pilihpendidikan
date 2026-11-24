@@ -88,14 +88,14 @@ upstream props; the table names what Zedative adds or what to pass.
 | Marker (+Icon, Content) | `ui/marker` | Timeline marker | `variant` |
 | Menubar (+parts) | `ui/menubar` | App menu bar | Radix |
 | Message (+Group, Avatar, Content, Header, Footer), MessageScroller (+parts) | `ui/message`, `ui/message-scroller` | Chat thread | composition |
-| Meter | `ui/meter` | Labelled 4px score bar; `inline`: 64px bar with the value on its right (narrow it with `**:data-[slot=meter-bar]:w-12`, as the jobs table does) | `value`, `max`, `inline`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
+| Meter | `ui/meter` | Labelled 4px score bar; `inline`: 64px bar with the value on its right (narrow it with `**:data-[slot=meter-bar]:w-12`, as the jobs table does); `joined`: one caption run "Match · 87%" above a full-width bar; `pending`: static skeleton track + muted caption ("Scoring…") where the value sits | `value`, `max`, `inline`, `joined`, `pending`, `tone` (default `neutral`; `auto` colours by value) / success / link / destructive, `high`, `mid`, `label`, `valueLabel` |
 | NativeSelect (+Option, OptGroup) | `ui/native-select` | Native select | `size` |
 | NavigationMenu (+parts) | `ui/navigation-menu` | Site nav | Radix |
 | NotFound | `ui/not-found` | 404 page | copy props |
 | Pagination (+parts) | `ui/pagination` | Pager | composition |
 | Popover (+Anchor, Content, Header, Title, Description) | `ui/popover` | Flyout panel | Radix |
 | Progress | `ui/progress` | Loading bar | `value` |
-| PropertyChip | `ui/property-chip` | 32px fact chip (8px corners, 8px side padding) with icon and a muted label | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
+| PropertyChip | `ui/property-chip` | 32px fact chip (8px corners, 8px side padding) with icon, an `ink-sec` label and a `foreground` value | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
 | Questionnaire (+parts) | `ui/questionnaire` | Step-by-step form | composition |
 | RadioGroup (+Item) | `ui/radio-group` | Radios | Radix |
 | Band, Rail, Diamond | `ui/rails` | Layout container (Diamond renders nothing) | — |
@@ -113,7 +113,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | StatCard, StatGrid, DeltaChip | `ui/stat-card` | KPI card (nested frame: 12px outer, 8px inner panel), its grid, the delta chip | `label` (14px), `value` (22px), 16px grid gap, `delta {direction, label}` (tint + border + arrow, neutral bordered at zero), `footer` (12px, under a hairline), `action` (e.g. a `…` menu, in foreground) |
 | StatusDot | `ui/status-dot` | 8px status dot | `tone` neutral / link / warning (amber) / success / destructive / ink / blue / violet / amber, `pulse` |
 | SwatchPicker | `ui/swatch-picker` | Colour swatches (document colours) | `colors`, `value`, `onValueChange`, `allowCustom` |
-| Switch | `ui/switch` | Toggle switch | `size` |
+| Switch | `ui/switch` | Toggle switch: 36×20 track, off `pane-3` with an `ink-sec` knob, on `foreground` with a `background` knob (`sm` 28×16) | `size` |
 | Table (+parts) | `ui/table` | Data table (36px header, 13px muted labels) | composition |
 | Tabs (+List, Trigger, Content), tab variants | `ui/tabs`, `ui/tabs-variants` | Tabs | List `variant` default / line |
 | Textarea | `ui/textarea` | Multi-line field | textarea props |

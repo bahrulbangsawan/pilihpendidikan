@@ -7,6 +7,7 @@
     "ogImageAlt": "Invoice Generator by Bahrul Bangsawan — free online invoice maker with real-time preview"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "importJson": "Import JSON",
     "loadSample": "Load Sample Invoice",
     "download": "Download",

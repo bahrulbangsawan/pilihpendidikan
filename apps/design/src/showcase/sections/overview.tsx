@@ -1,27 +1,15 @@
 import { useShortcut } from "@rulisme/ui/hooks/use-shortcut";
 import { Button } from "@rulisme/ui/ui/button";
 import { Kbd } from "@rulisme/ui/ui/kbd";
-import {
-  SegmentedControl,
-  SegmentedControlItem,
-} from "@rulisme/ui/ui/segmented-control";
 import { BookOpen, Layers } from "lucide-react";
-import { useActiveSection } from "../active-section";
-import { groupOf, NAV_GROUPS } from "../nav";
 
 /** Where each group of the hero's switch lands: its first section below the
  * hero (System's own first section is this intro, so it jumps on to
  * Foundations). */
-const GROUP_TARGETS: Record<string, string> = {
-  system: "foundations",
-  components: "actions",
-  guidance: "dos-and-donts",
-};
-
 const PRINCIPLES = [
   {
     title: "One family, weight 400",
-    body: "Geist on cursor.com's type scale: eight roles from the 72px hero to the 11px micro, all at weight 400. Hierarchy comes from size, not bold.",
+    body: "Geist on one type scale: eight roles from the 72px hero to the 11px micro, all at weight 400. Hierarchy comes from size, not bold.",
     href: "#foundations",
   },
   {
@@ -39,16 +27,13 @@ const PRINCIPLES = [
 /**
  * The page intro, set like the top of cursor.com/pricing: a centred section
  * with the 52px hero-compact h1 (36px below lg), a centred lead, the light
- * primary pill and the filled secondary one with their shortcuts, and a
- * filled pill switch (System / Components / Guidance) that jumps to those
- * groups and follows the reader down the page; then three equal cards.
+ * primary pill and the filled secondary one with their shortcuts; then three
+ * equal cards.
  * 52px over 36px: on cursor.com/pricing the h1 is the one big line of the
  * page, and here too nothing else on the page is larger than 36px, so the
  * hero keeps one clear step above every section title.
  */
 export function OverviewSection() {
-  const active = useActiveSection();
-  const activeGroup = groupOf(active)?.id ?? "system";
   useShortcut("f", () => {
     window.location.hash = "foundations";
   });
@@ -66,9 +51,10 @@ export function OverviewSection() {
             Zedative design system
           </h1>
           <p className="type-subtitle text-pretty text-ink">
-            The pilihpendidikan design system, rebuilt on cursor.com's dark
-            theme: a warm near-black page, cards one step lighter, Geist at
-            weight 400, pill buttons, and orange only where text links.
+            The pilihpendidikan design system: a warm near-black page, cards one
+            step lighter, one family (Geist) at weight 400, pill buttons, and
+            orange kept for text links. Dark only; the printed documents stay
+            white paper set in Inter.
           </p>
           {/* Through Button so each link carries data-slot="button" and
               data-variant: the Kbd keys its cap on them. */}
@@ -88,27 +74,6 @@ export function OverviewSection() {
               </a>
             </Button>
           </div>
-          <SegmentedControl
-            aria-label="Jump to a group"
-            className="mt-4"
-            onValueChange={(group) => {
-              const target = GROUP_TARGETS[group];
-              if (target) {
-                window.location.hash = target;
-              }
-            }}
-            value={activeGroup}
-          >
-            {NAV_GROUPS.map((group) => (
-              <SegmentedControlItem key={group.id} value={group.id}>
-                {group.label}
-              </SegmentedControlItem>
-            ))}
-          </SegmentedControl>
-          <p className="type-caption text-muted-foreground">
-            Dark only: there is no light scheme and no theme switch. Press / to
-            jump to any section.
-          </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {PRINCIPLES.map((principle) => (

@@ -145,7 +145,7 @@ export function ColorPair({
       )}
     >
       <div
-        className="flex h-24 items-end justify-between p-4"
+        className="flex h-28 items-end justify-between gap-3 p-4"
         ref={ref}
         style={{
           backgroundColor: `var(--${background})`,
@@ -159,16 +159,20 @@ export function ColorPair({
           </span>
         ) : null}
       </div>
-      <div className="flex flex-col gap-1.5 border-border border-t bg-card p-3">
-        <span className="type-body text-foreground">{name}</span>
-        <span className="type-caption text-muted-foreground">
+      {/* Every tile is the same height: one line each for the name, the
+          token pair and the measured value; a long name or token truncates
+          (the full pair stays in the title). */}
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5 border-border border-t bg-card p-3">
+        <span className="type-body truncate text-foreground">{name}</span>
+        <span
+          className="type-caption truncate text-muted-foreground"
+          title={`--${background} / --${foreground}`}
+        >
           --{background} / --{foreground}
         </span>
-        {info ? (
-          <span className="type-caption text-muted-foreground tabular-nums">
-            {info.bg}
-          </span>
-        ) : null}
+        <span className="type-caption text-muted-foreground tabular-nums">
+          {info ? info.bg : "\u00a0"}
+        </span>
       </div>
     </div>
   );

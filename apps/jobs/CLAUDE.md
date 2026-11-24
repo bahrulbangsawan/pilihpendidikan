@@ -22,9 +22,15 @@ rail, remembered in localStorage), a search field that opens ⌘K, the
 the user footer that opens the profile dropdown (Profile, Settings, Language
 submenu, Keyboard shortcuts, Sign out). Rows are 32px `rounded-md`, hover
 `bg-pane`, current `bg-pane-2 text-foreground`. The content column has a
-48px top bar (breadcrumb left, page-actions slot right; on phones a menu
-button opens the sidebar in a Sheet; on the board a search icon button
-there opens the board search inline). Page titles are `type-title-compact`
+48px top bar (breadcrumb left, page-actions slot right; a top-level page —
+one crumb: Board, Stats — shows "Workspace › Board" from 640px up instead
+of repeating the H1, while nested pages keep their own trail (Profile / Facts, Board /
+Application); on phones a menu button opens the sidebar in a Sheet, a
+top-level page's title sits next to it (`PageHeader hideTitleOnPhone` hides
+the H1 there), and on the board a search icon button opens the board search
+inline, followed by a 28px icon-only primary "+" (New application, with a
+tooltip) that replaces the labelled button; the phone toolbar row keeps
+Filters + the view switch). Page titles are `type-title-compact`
 at `weight-semibold` (PageHeader); titles and labels inside app blocks
 (card, sheet and section titles, setting-row labels, list / table primary
 cells, the menu header name) are `weight-semibold` too. Settings cards,
@@ -34,12 +40,15 @@ footer, around an 8px inner panel on `bg-background` holding the rows
 (`@rulisme/ui/blocks/settings`, `ui/stat-card`), in a 640px column on
 account pages. Kanban lanes are 296px 12px `bg-card` wells with a 1px
 `border-border` and 12px padding; cards (16px padding, 12px gaps) lead
-with the title, then company and location icon rows, then the match meter
-with the source chip at its right, then one meta row (age left, the CV
-glyph right; 12px bottom padding); on phones the same card is compact
+with the title, then company and location icon rows, then a full-width match
+bar on a muted track under a "Match · 87%" caption (`Meter joined`; a
+queued score is the `pending` skeleton track with "Scoring…"), then one
+footer row (source chip left, the CV glyph and the age right; 12px bottom
+padding); on phones the same card is compact
 (14px padding, 10px gaps, so two cards show above the fold) and keeps the
 desktop "…" menu (Move inside); phone toolbar controls are 28px (`sm`) and
-the stage tab strip fades out over its last 56px. The closed lanes
+the stage tab strip fades out over its last 56px and scroll-snaps each
+stage to its start. The closed lanes
 (Rejected, Withdrawn) follow the last open lane inside the horizontal
 scroll (rails while collapsed), never pinned over another lane. Stage tones (`components/board/stage-meta.tsx`, used by
 lane icons, dots and `StageBadge` everywhere): saved neutral, preparing
@@ -50,7 +59,11 @@ stage (header inside the outer frame) on a fixed grid every group shares
 inline meter, stage 110, age 48, a 28px "…" menu; 16px gaps; container
 queries; the group header sits 4px above its rows' panel); the table is
 unboxed (57px rows, 13px semibold headers, the match as a 48px inline bar
-with the value on the same line, a 40px actions column). In list and table
+with the value on the same line, a 40px actions column; a queued score in
+list and table is the `pending` skeleton bar with "Scoring…" where the %
+sits). The sheet's property chips put the label in `ink-sec` and the value
+in `foreground`; the notes composer is one field shell (textarea + a footer
+row with "Add note ⌘↵" at its right). In list and table
 rows the "…" is a ghost icon button whose outline shows only while its row
 (`group/row`) is hovered or focused, or its menu is open. The details sheet
 is a 480px floating window (40px top padding, a 22px title — there is no
@@ -139,8 +152,8 @@ await api("POST /api/v1/applications/{app_id}/move", {
 
 ## Screens of 12 §4–§9 (contracts worth keeping)
 
-- Stats (`components/stats/`): charts sit straight on their card's frame (one border per card, no inner bordered panel); the line is a monotoneX curve on values clamped at 0 with the axis from 0; bar charts have no gridlines or value axis (values at the bar ends) and run to 1.1× the largest value. Four stat cards (value, delta chip against the period of the same length before — counts in %, the response rate in points — and the previous value; all time has no delta), then every chart in `ChartFrame` (role="img" summary + a `aria-pressed` "Data table" toggle remembered per chart in localStorage); rates hidden for cohorts under 5; range, metric and breakdown in the URL. No automation metrics.
-- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer; each field's provenance is a 20px borderless mini-badge (`Badge dot={false}`: From CV / You neutral, Suggested blue, Verified success) and the field takes the right 60% of the row; an empty first / last name is filled from the full name with a "Suggested" badge, and placeholders are generic hints, never sample values), Answers and CVs (tables inside cards).
+- Stats (`components/stats/`): charts sit straight on their card's frame (one border per card, no inner bordered panel); the line is straight segments (`type="linear"`) on values clamped at 0, the y-domain pinned to start at 0, with dots only at the last point and under the pointer; bar charts have no gridlines or value axis (values at the bar ends) and run to 1.1× the largest value. Four stat cards (value, delta chip against the period of the same length before — counts in %, the response rate in points — and the previous value; all time has no delta), then every chart in `ChartFrame` (role="img" summary + a `aria-pressed` "Data table" toggle remembered per chart in localStorage); rates hidden for cohorts under 5; range, metric and breakdown in the URL. No automation metrics.
+- Profile (`components/profile/`): Facts (one card of label / field rows per group, Save `S` in the work-authorization card's footer; each field's provenance is a 20px borderless mini-badge (`Badge dot={false}`: From CV / You / Suggested neutral, Verified success only for a verified document) and the field takes the right 60% of the row; an empty first / last name is filled from the full name with a "Suggested" badge, and placeholders are generic hints, never sample values), Answers and CVs (tables inside cards).
 - Settings (`components/settings/`): every section on one page — Account (email, sign out), Language & region (language and timezone, Cancel / Save), AI (consent, sensitive scoring, Cancel / Save), Your data (export, delete); the sub-nav is anchor links that highlight the section in view, and `?section=` scrolls to its section. The automation settings (default mode, pause all, MCP approvals, AI-drafted form text, evidence screenshots and retention) are no longer shown.
 
 ## Render ticket mode (08 §6, PLAN C8)

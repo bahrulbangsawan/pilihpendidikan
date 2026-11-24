@@ -1019,7 +1019,7 @@ export function ConversationSection() {
   return (
     <Section
       id="conversation"
-      lead="Cursor's agent pane: the thread on the card colour, the prompt as a bordered 8px tile, the answer as running text."
+      lead="An agent pane: the thread on the card colour, the prompt as a bordered 8px tile, the answer as running text."
       title="Conversation"
     >
       <BlockGrid>

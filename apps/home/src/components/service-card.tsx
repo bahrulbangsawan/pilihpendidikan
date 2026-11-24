@@ -127,12 +127,12 @@ export function ServiceCard({
       </FeatureCopy>
       <FeatureMedia flip={flip} stage={stage}>
         <WindowFrame
-          className="absolute inset-x-6 top-6 lg:inset-x-5 lg:top-10"
+          className="absolute inset-6 lg:inset-10"
           title={t("features.windowTitle").replace("{{name}}", name)}
         >
           <img
             alt={t("features.shotAlt").replace("{{name}}", name)}
-            className="block h-auto w-full"
+            className="block min-h-0 w-full flex-1 object-cover object-top-left"
             decoding="async"
             height={612}
             loading="lazy"
@@ -188,7 +188,7 @@ export function McpCard({ api }: { api: Service }) {
           </Badge>
         )}
       </FeatureCopy>
-      <FeatureMedia compact flip={false}>
+      <FeatureMedia compact flip={false} stage={0}>
         {live && (
           <figure className="absolute inset-x-8 top-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-border bg-background shadow-lg lg:inset-x-auto lg:left-1/2 lg:w-[640px] lg:-translate-x-1/2">
             <figcaption className="type-caption border-border border-b px-3 py-2 text-center text-muted-foreground">

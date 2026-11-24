@@ -151,7 +151,7 @@ const BADGE_VARIANTS = [
   {
     variant: "default",
     label: "New",
-    when: 'Cursor\'s "Most popular" pill: orange text on a 10% orange tint. One in view.',
+    when: 'The one highlighted pill ("Most popular"): orange text on a 10% orange tint. One in view.',
   },
   {
     variant: "destructive",
@@ -180,7 +180,7 @@ const TOGGLE_STATES = [
 function ButtonBlock() {
   return (
     <Block
-      description="Pills at weight 400: 36px with 14px text by default, 28px small, 24px extra small and a 43px large at 16px (Cursor's hero button). Primary is the light pill (#edecec on #14120b), secondary warm grey, outline a 20% ring. Only colours change on hover, over 140ms; nothing moves on click."
+      description="Pills at weight 400: 36px with 14px text by default, 28px small, 24px extra small and a 43px large at 16px (the hero button). Primary is the light pill (#edecec on #14120b), secondary warm grey, outline a 20% ring. Only colours change on hover, over 140ms; nothing moves on click."
       title="Button"
       wide
     >
@@ -615,7 +615,7 @@ function ToggleGroupBlock() {
 function BadgeBlock() {
   return (
     <Block
-      description="Full-round chips, 20px tall in the caption role. Secondary and outline for most status; the orange default is Cursor's one highlighted pill."
+      description="Full-round chips, 20px tall in the caption role. Secondary and outline for most status; the orange default is the one highlighted pill in view."
       title="Badge"
     >
       <Example label="Typical: a saved document">
@@ -679,7 +679,7 @@ function BadgeBlock() {
 function KbdBlock() {
   return (
     <Block
-      description="Shortcut hints, cursor.com's ⌘K chip: 20px tall, 4px radius, no border, the caption role in 60% ink on a 10% tint. Inside the light primary pill the cap takes the pill's dark text colour."
+      description="Shortcut hints, like the ⌘K chip in the docs search: 20px tall, 4px radius, no border, the caption role in 60% ink on a 10% tint. Inside the light primary pill the cap takes the pill's dark text colour."
       title="Kbd"
     >
       <Example label="Typical: in running text">

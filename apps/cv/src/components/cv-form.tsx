@@ -91,6 +91,12 @@ import { useId, useMemo, useState } from "react";
 import { useTranslation } from "@/i18n";
 import { preprocessImage } from "@/lib/preprocess-image";
 
+// A field's fixed prefix ("https://", "linkedin.com/in/") reads like the
+// phone field's country button: the prefix in its own cell, closed by a
+// hairline divider, and the value 12px past it.
+const PREFIX_GROUP_CLASS = "has-[>[data-align=inline-start]]:[&>input]:pl-3";
+const PREFIX_ADDON_CLASS = "self-stretch border-border border-r pr-3";
+
 // Profile photos render into a ~64px avatar in the preview and a small fixed box
 // in every PDF template, so 480px on the long edge is retina-sharp yet tiny.
 const PHOTO_MAX_EDGE = 480;
@@ -927,9 +933,18 @@ export function CVForm({ data, onChange }: CVFormProps) {
           {/* LinkedIn */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="linkedIn">{t("form.linkedIn")}</Label>
-            <InputGroup>
-              <InputGroupAddon align="inline-start">
-                <InputGroupText>linkedin.com/in/</InputGroupText>
+            <InputGroup className={PREFIX_GROUP_CLASS}>
+              <InputGroupAddon
+                align="inline-start"
+                className={PREFIX_ADDON_CLASS}
+              >
+                <InputGroupText>
+                  {/* Below lg the half-width field keeps only "/in/", so
+                      the handle stays readable. */}
+                  <span>
+                    <span className="max-lg:hidden">linkedin.com</span>/in/
+                  </span>
+                </InputGroupText>
               </InputGroupAddon>
               <InputGroupInput
                 id="linkedIn"

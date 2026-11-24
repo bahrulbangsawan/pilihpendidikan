@@ -18,6 +18,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
@@ -36,6 +37,7 @@ import {
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
   FileJson,
   FileText,
   Sparkles,
@@ -242,9 +244,16 @@ function McpDialog({ auth, hasToken, onTokenChange }: McpDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Cable aria-hidden="true" data-icon="inline-start" />
-          {t("toolbar.mcp")}
+        <Button
+          aria-label={t("toolbar.mcp")}
+          className="max-lg:size-7 max-lg:px-0"
+          size="sm"
+          variant="outline"
+        >
+          <Cable aria-hidden="true" />
+          {/* Below lg the chip is the icon alone, so the brand keeps its
+              whole name in the half-width pane. */}
+          <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -368,6 +377,8 @@ export function InvoiceGenerator() {
   const [data, setDataRaw] = useState<InvoiceData>(initialData);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
 
   // Owner-authenticated optimistic persistence for a loaded `?invoice=<slug>`.
   // A ref keeps the memoized `setData` stable while always calling the latest
@@ -542,57 +553,6 @@ export function InvoiceGenerator() {
     return <InvoicePrintView data={data} loading={loading} />;
   }
 
-  // The document actions (import, sample, clear, language) sit at the far
-  // right of the window like cursor.com's top bar: in the preview toolbar
-  // beside Download PDF from `md` up, in the form toolbar when the panes
-  // stack. The clear-all window is rendered once, below.
-  const toolbarActions = (
-    <>
-      <Tooltip>
-        <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
-          <TooltipTrigger asChild>
-            <Button
-              aria-label={t("toolbar.importJson")}
-              size="icon-sm"
-              variant="ghost"
-            >
-              <Upload aria-hidden="true" />
-            </Button>
-          </TooltipTrigger>
-        </FileTrigger>
-        <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            aria-label={t("toolbar.loadSample")}
-            onClick={() => setData(sampleData as InvoiceData)}
-            size="icon-sm"
-            variant="ghost"
-          >
-            <Sparkles aria-hidden="true" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>{t("toolbar.loadSample")}</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            aria-label={t("toolbar.clearAll")}
-            disabled={isEmpty}
-            onClick={() => setConfirmOpen(true)}
-            size="icon-sm"
-            variant="ghost"
-          >
-            <Trash2 aria-hidden="true" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
-      </Tooltip>
-      <LanguageSwitcher />
-    </>
-  );
-
   return (
     <>
       <a
@@ -610,14 +570,72 @@ export function InvoiceGenerator() {
         {/* Form pane: a 48px toolbar over the form's ruled sections. */}
         <div className="invoice-no-print no-scrollbar w-full border-border border-b bg-background md:h-svh md:w-1/2 md:overflow-y-auto md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
-            <AppBrand name={t("meta.siteName")} src={APP_MARK_SRC} />
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
               onTokenChange={cloud.setToken}
             />
-            <div className="ml-auto flex items-center gap-1 md:hidden">
-              {toolbarActions}
+            <div className="ml-auto flex items-center gap-1">
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        aria-label={t("toolbar.moreActions")}
+                        size="icon-sm"
+                        variant="ghost"
+                      >
+                        <Ellipsis aria-hidden="true" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
+                </Tooltip>
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => setData(sampleData as InvoiceData)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.loadSample")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
@@ -644,19 +662,16 @@ export function InvoiceGenerator() {
         <div className="invoice-preview-pane no-scrollbar w-full bg-card md:h-svh md:w-1/2 md:overflow-y-auto">
           <div
             className={cn(
-              "invoice-no-print h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6 md:sticky md:top-0 md:z-10",
+              "invoice-no-print h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6 md:sticky md:top-0 md:z-10",
               showCloudStatus ? "flex" : "hidden md:flex"
             )}
           >
             {showCloudStatus ? (
               <CloudSaveStatus error={cloud.error} status={cloud.status} />
             ) : null}
-            <div className="ml-auto hidden items-center gap-1 md:flex">
-              {toolbarActions}
-            </div>
             <ButtonGroup
               aria-label={t("toolbar.download")}
-              className="hidden md:flex"
+              className="ml-auto hidden md:flex"
             >
               <Button
                 aria-keyshortcuts={DOWNLOAD_SHORTCUT}

@@ -27,6 +27,11 @@ import {
 } from "@rulisme/ui/ui/empty";
 import { Kbd } from "@rulisme/ui/ui/kbd";
 import { Skeleton } from "@rulisme/ui/ui/skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@rulisme/ui/ui/tooltip";
 import { useNavigate } from "@tanstack/react-router";
 import { CircleAlert, Plus } from "lucide-react";
 import type { ReactNode } from "react";
@@ -40,6 +45,7 @@ import type { FollowUpTarget } from "@/components/follow-up-dialog";
 import { FollowUpDialog } from "@/components/follow-up-dialog";
 import { PageHeader } from "@rulisme/ui/blocks/page";
 import { useShellActions } from "@/components/shell/shell-context";
+import { TopBarActions } from "@/components/shell/top-bar";
 import { useAnnouncer } from "@/hooks/use-announcer";
 import { useBoard } from "@/hooks/use-board";
 import { useApplicationPatch } from "@/hooks/use-conflict-write";
@@ -195,6 +201,48 @@ function readingOrder(
   );
 }
 
+/** The labelled primary action of the header row (tablets and desktops). */
+function NewApplicationButton({ phone }: { phone: boolean }) {
+  const { t } = useTranslation();
+  const shell = useShellActions();
+  if (phone) {
+    return null;
+  }
+  return (
+    <Button aria-keyshortcuts="N" onClick={shell.openNewJob} size="sm">
+      <Plus aria-hidden="true" data-icon="inline-start" />
+      {t("board.newApplication")}
+      <Kbd aria-hidden="true">N</Kbd>
+    </Button>
+  );
+}
+
+/** Phones: a 28px icon-only "+" in the top bar, after the search button. */
+function PhoneNewApplication({ phone }: { phone: boolean }) {
+  const { t } = useTranslation();
+  const shell = useShellActions();
+  if (!phone) {
+    return null;
+  }
+  return (
+    <TopBarActions>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            aria-keyshortcuts="N"
+            aria-label={t("board.newApplication")}
+            onClick={shell.openNewJob}
+            size="icon-sm"
+          >
+            <Plus aria-hidden="true" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>{t("board.newApplication")}</TooltipContent>
+      </Tooltip>
+    </TopBarActions>
+  );
+}
+
 export function BoardPage({
   search,
   onSearchChange,
@@ -204,7 +252,6 @@ export function BoardPage({
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const shell = useShellActions();
   const isPhone = useMediaQuery(PHONE_QUERY);
   const now = useNow();
   const { message, announce } = useAnnouncer();
@@ -417,15 +464,12 @@ export function BoardPage({
               value={view}
               views={isPhone ? PHONE_VIEWS : DESKTOP_VIEWS}
             />
-            <Button aria-keyshortcuts="N" onClick={shell.openNewJob} size="sm">
-              <Plus aria-hidden="true" data-icon="inline-start" />
-              {t("board.newApplication")}
-              <Kbd aria-hidden="true">N</Kbd>
-            </Button>
+            <NewApplicationButton phone={isPhone} />
           </>
         }
         className="pb-4"
         count={totalCount}
+        hideTitleOnPhone
         title={t("board.title")}
         wide
       >
@@ -434,6 +478,7 @@ export function BoardPage({
           phone={isPhone}
           query={filters.q}
         />
+        <PhoneNewApplication phone={isPhone} />
         <BoardStatusRow
           activeFilters={activeFilterCount(filters, includeArchived)}
           onClearFilters={clearFilters}

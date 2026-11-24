@@ -49,7 +49,15 @@
     "seconds": "4s",
     "composer": "Ask to edit your CV…",
     "mode": "Agent",
-    "threadTitle": "Add Gojek internship"
+    "threadTitle": "Add Gojek internship",
+    "editingNow": "Editing now",
+    "groupOpen": "Open",
+    "groupRecent": "Recent",
+    "metaInvoice": "INV-2026-0001 · 2d",
+    "metaPortfolio": "3 projects · 1w",
+    "metaCv": "Experience · now",
+    "resume": "cv-old.json",
+    "metaResume": "Archived · 3w"
   },
   "tools": {
     "heading": "Builders"
@@ -113,7 +121,7 @@
     "pdf": "PDF export",
     "preview": "Live preview",
     "english": "English",
-    "indonesian": "Indonesia"
+    "indonesian": "Bahasa Indonesia"
   },
   "features": {
     "cv": {

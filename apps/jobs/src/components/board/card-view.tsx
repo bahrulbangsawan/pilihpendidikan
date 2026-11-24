@@ -1,7 +1,8 @@
 // One Kanban card (06 §1.3, reui's kanban / Deal Risk Board cards): the
 // company avatar and name, the role, the location line, the match score as
-// a meter, neutral chips, and a footer with the age, the follow-up and the
-// CV. Status is never colour alone: every chip and meter carries text.
+// a full-width meter under a "Match · 87%" caption, neutral chips, and one
+// footer row: the source chip left, the CV glyph and the age right. Status
+// is never colour alone: every chip and meter carries text.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import { cn } from "@rulisme/ui/lib/utils";
@@ -44,10 +45,18 @@ export function ScoreMeter({
     return null;
   }
   if (score.status === "queued") {
+    // A static skeleton track with "Scoring…" where the % would sit, so
+    // queued rows line up with scored ones.
     return (
-      <span className={cn("type-caption text-muted-foreground", className)}>
-        {t("card.scoring")}
-      </span>
+      <Meter
+        className={className}
+        inline={inline}
+        joined={!inline}
+        label={label ? t("board.match") : undefined}
+        pending
+        value={0}
+        valueLabel={t("card.scoring")}
+      />
     );
   }
   return (
@@ -55,6 +64,7 @@ export function ScoreMeter({
       className={className}
       high={HIGH_SCORE}
       inline={inline}
+      joined={!inline}
       label={label ? t("board.match") : undefined}
       mid={MID_SCORE}
       title={score.deterministic_only ? t("card.aiOff") : undefined}
@@ -84,7 +94,7 @@ export function useLocationLine(posting: BoardCard["posting"]): string {
   return [posting.location, workplace].filter(Boolean).join(" · ");
 }
 
-/** The source chip that sits at the end of the match row. */
+/** The source chip that leads the card's footer row. */
 function SourceChip({ card }: { card: BoardCard }) {
   const { t } = useTranslation();
   return (
@@ -144,27 +154,13 @@ function CardFooter({
 }) {
   const { locale, t } = useTranslation();
   const followUpAt = isFollowUpDue(card, nowMs) ? card.follow_up_at : null;
+  const age = compactAge(card.updated_at, nowMs);
   return (
     <div
-      className="type-micro flex min-h-4 items-center gap-3 text-muted-foreground"
+      className="type-micro flex min-h-5 items-center gap-2 text-muted-foreground"
       data-slot="card-meta"
     >
-      <span
-        className="inline-flex items-center gap-1 tabular-nums"
-        title={t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
-      >
-        <Clock aria-hidden="true" className="size-3" />
-        {pending ? (
-          t("card.saving")
-        ) : (
-          <>
-            <span className="sr-only">
-              {t("card.updated", { age: compactAge(card.updated_at, nowMs) })}
-            </span>
-            <span aria-hidden="true">{compactAge(card.updated_at, nowMs)}</span>
-          </>
-        )}
-      </span>
+      <SourceChip card={card} />
       {followUpAt === null ? null : (
         <span className="inline-flex min-w-0 items-center gap-1 text-foreground">
           <CalendarClock aria-hidden="true" className="size-3 text-link" />
@@ -175,15 +171,31 @@ function CardFooter({
           </span>
         </span>
       )}
-      {card.cv_variant_id ? (
+      <span className="ml-auto inline-flex shrink-0 items-center gap-3">
+        {card.cv_variant_id ? (
+          <span
+            className="inline-flex items-center gap-1"
+            title={t("board.cvAttached")}
+          >
+            <FileText aria-hidden="true" className="size-3" />
+            {t("card.cvReady")}
+          </span>
+        ) : null}
         <span
-          className="ml-auto inline-flex shrink-0 items-center gap-1"
-          title={t("board.cvAttached")}
+          className="inline-flex items-center gap-1 tabular-nums"
+          title={t("card.updated", { age })}
         >
-          <FileText aria-hidden="true" className="size-3" />
-          {t("card.cvReady")}
+          <Clock aria-hidden="true" className="size-3" />
+          {pending ? (
+            t("card.saving")
+          ) : (
+            <>
+              <span className="sr-only">{t("card.updated", { age })}</span>
+              <span aria-hidden="true">{age}</span>
+            </>
+          )}
         </span>
-      ) : null}
+      </span>
     </div>
   );
 }
@@ -255,10 +267,7 @@ export function CardView({
           </span>
         ) : null}
       </div>
-      <div className="flex items-end gap-3">
-        <ScoreMeter className="min-w-0 flex-1" score={card.score} />
-        <SourceChip card={card} />
-      </div>
+      <ScoreMeter score={card.score} />
       <CardChips card={card} />
       <CardFooter card={card} nowMs={nowMs} pending={pending} />
     </KanbanCard>

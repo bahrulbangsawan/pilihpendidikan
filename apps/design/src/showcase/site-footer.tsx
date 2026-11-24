@@ -41,7 +41,7 @@ export function SiteFooter() {
         <div className="flex max-w-xs flex-col gap-3">
           <Wordmark />
           <p className="type-body text-muted-foreground">
-            The pilihpendidikan design system, on cursor.com's dark theme: one
+            The pilihpendidikan design system: a warm near-black page, one
             family at weight 400, flat cards, pill buttons and an orange kept
             for links.
           </p>

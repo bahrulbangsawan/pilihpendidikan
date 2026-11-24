@@ -109,7 +109,7 @@ const rupiah = new Intl.NumberFormat("id-ID", {
 function CardBlock() {
   return (
     <Block
-      description="cursor.com's card: one step lighter than the page (#1b1913), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding. A highlighted card takes the 20% input border instead; the footer sits under a 10% rule."
+      description="The card: one step lighter than the page (#1b1913), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding. A highlighted card takes the 20% input border instead; the footer sits under a 10% rule."
       title="Card"
       wide
     >
@@ -226,7 +226,7 @@ function LineItemsHeader() {
 function TableBlock() {
   return (
     <Block
-      description="Invoice line items, like cursor.com's pricing comparison: muted caption headers with no fill, 10% rules with no zebra, body-role cells and tabular rupiah that line up on the right."
+      description="Invoice line items, set like a pricing comparison: muted caption headers with no fill, 10% rules with no zebra, body-role cells and tabular rupiah that line up on the right."
       title="Table"
       wide
     >
@@ -618,7 +618,7 @@ const FAQ = [
 function AccordionBlock() {
   return (
     <Block
-      description="cursor.com's FAQ: full-width rows on 10% rules, a 16px question at weight 400 ending in a muted +, which turns into − when the row is open. Rows open instantly; long questions wrap."
+      description="An FAQ: full-width rows on 10% rules, a 16px question at weight 400 ending in a muted +, which turns into − when the row is open. Rows open instantly; long questions wrap."
       title="Accordion"
     >
       <Example stack>
@@ -959,7 +959,7 @@ function SeparatorBlock() {
 function RailsBlock() {
   return (
     <Block
-      description="Page layout, cursor.com style: a Band is a plain full-bleed section with no border (sections are separated by space), a Rail the centred 1300px container, 20px clear of the viewport edge."
+      description="Page layout: a Band is a plain full-bleed section with no border (sections are separated by space), a Rail the centred 1300px container, 20px clear of the viewport edge."
       title="Band and Rail"
     >
       <div className="flex flex-col gap-3 overflow-hidden rounded-sm border border-hairline bg-background py-4">

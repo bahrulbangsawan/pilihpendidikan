@@ -133,7 +133,7 @@ function KanbanBlock() {
                       <EntityAvatar name={card.company} size="xs" />
                       {card.company}
                     </span>
-                    <Meter label="Match" value={card.score} />
+                    <Meter joined label="Match" value={card.score} />
                   </KanbanCard>
                 ))}
                 {lane.cards.length === 0 ? (
@@ -211,7 +211,7 @@ function KanbanBlock() {
 function StatsBlock() {
   return (
     <Block
-      description="StatCard: reui's nested frame (a 12px outer frame, 4px of padding, an 8px inner panel one step darker), a 13px muted label with the … menu in its corner, the 22px value, a tinted delta chip with an arrow and a matching border (green up, red down, a neutral bordered chip at zero) and a 12px footer under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm; `inline` is a 64px bar with the value on its right (list rows)."
+      description="StatCard: reui's nested frame (a 12px outer frame, 4px of padding, an 8px inner panel one step darker), a 13px muted label with the … menu in its corner, the 22px value, a tinted delta chip with an arrow and a matching border (green up, red down, a neutral bordered chip at zero) and a 12px footer under a hairline; StatGrid lays them out two, then four across. Meter is a labelled 4px bar, neutral ink by default (the number carries the value); a fixed tone only where it must alarm; `inline` is a 64px bar with the value on its right (list rows); `joined` writes the caption as one run (“Match · 87%”, board cards); `pending` is a static skeleton track with a muted caption where the value goes (“Scoring…”)."
       title="Stat card and meter"
       wide
     >
@@ -253,7 +253,7 @@ function StatsBlock() {
         </StatGrid>
       </Example>
       <Example
-        label="Meters: neutral at any value, one fixed tone, inline"
+        label="Meters: neutral at any value, one fixed tone, joined caption, pending, inline"
         stack
       >
         <div className="grid gap-4 sm:grid-cols-4">
@@ -267,9 +267,14 @@ function StatsBlock() {
             valueLabel="19 / 20"
           />
         </div>
+        <div className="grid gap-4 sm:grid-cols-4">
+          <Meter joined label="Match" value={87} />
+          <Meter joined label="Match" pending value={0} valueLabel="Scoring…" />
+        </div>
         <div className="flex flex-wrap gap-6">
           <Meter inline value={87} />
           <Meter inline value={42} />
+          <Meter inline pending value={0} valueLabel="Scoring…" />
         </div>
       </Example>
     </Block>
@@ -492,7 +497,7 @@ function PageBlock() {
 function DocHeaderBlock() {
   return (
     <Block
-      description="DocHeader: the docs-style header of a document form (cursor.com/docs) — a muted 13px area line, the title (36px at weight 400 from md up, 22px on phones) and a muted 16px lead, 8px apart with 16px above the lead. The builders put it on top of their form columns with 32px to the first section."
+      description="DocHeader: the docs-style header of a document form — a muted 13px area line, the title (36px at weight 400 from md up, 22px on phones) and a muted 16px lead, 8px apart with 16px above the lead. The builders put it on top of their form columns with 32px to the first section."
       title="Document header"
     >
       <Example>

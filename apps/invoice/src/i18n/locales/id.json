@@ -7,6 +7,7 @@
     "ogImageAlt": "Generator Faktur oleh Bahrul Bangsawan — pembuat faktur online gratis dengan pratinjau langsung"
   },
   "toolbar": {
+    "moreActions": "Aksi dokumen",
     "importJson": "Impor JSON",
     "loadSample": "Muat Contoh Faktur",
     "download": "Unduh",

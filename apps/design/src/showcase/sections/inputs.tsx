@@ -506,7 +506,7 @@ function InputGroupBlock() {
 function InputBlock() {
   return (
     <Block
-      description="A single-line field, cursor.com's docs search box: 36px like the buttons beside it, 8px radius, a 10% border on the page colour, the body role (16px on touch screens). Hover and focus deepen the border to 20%; focus adds the 2px ink outline."
+      description="A single-line field, drawn like the docs search box: 36px like the buttons beside it, 8px radius, a 10% border on the page colour, the body role (16px on touch screens). Hover and focus deepen the border to 20%; focus adds the 2px ink outline."
       title="Input"
       wide
     >
@@ -633,7 +633,7 @@ function DegreeOptions() {
 function SelectBlock() {
   return (
     <Block
-      description="A short fixed list behind the field shell. The menu opens in Cursor's flyout (8px, 10% border, two whisper shadows) with 32px rows at 4px radius; the chosen row shows a check. It opens and closes instantly."
+      description="A short fixed list behind the field shell. The menu opens in the flyout (8px, 10% border, two whisper shadows) with 32px rows at 4px radius; the chosen row shows a check. It opens and closes instantly."
       title="Select"
       wide
     >

@@ -56,6 +56,10 @@ export type {
   SenderInfo,
 } from "@/components/invoice-form-utils";
 
+// The street address starts at exactly two rows (the shared textarea's floor
+// is a touch taller) and grows with each line the user adds.
+const ADDRESS_FIELD_CLASS = "[&_textarea]:min-h-15";
+
 // Logos render at ~h-8 in the editor and small in the PDF, so 320px on the long
 // edge stays crisp while keeping the embed tiny. PNG logos keep their alpha.
 const LOGO_MAX_EDGE = 320;
@@ -455,14 +459,16 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 value={data.from.email}
               />
             </div>
-            <FormField
-              label={t("form.address")}
-              multiline
-              onChange={(v) => updateFrom("address", v)}
-              placeholder={t("placeholders.addressSender")}
-              rows={2}
-              value={data.from.address}
-            />
+            <div className={ADDRESS_FIELD_CLASS}>
+              <FormField
+                label={t("form.address")}
+                multiline
+                onChange={(v) => updateFrom("address", v)}
+                placeholder={t("placeholders.addressSender")}
+                rows={2}
+                value={data.from.address}
+              />
+            </div>
             <AddressFields
               cityPlaceholder={t("placeholders.citySender")}
               onChange={(updates) =>
@@ -537,14 +543,16 @@ export function InvoiceForm({ data, onChange }: InvoiceFormProps) {
                 value={data.billTo.email}
               />
             </div>
-            <FormField
-              label={t("form.address")}
-              multiline
-              onChange={(v) => updateBillTo("address", v)}
-              placeholder={t("placeholders.clientAddress")}
-              rows={2}
-              value={data.billTo.address}
-            />
+            <div className={ADDRESS_FIELD_CLASS}>
+              <FormField
+                label={t("form.address")}
+                multiline
+                onChange={(v) => updateBillTo("address", v)}
+                placeholder={t("placeholders.clientAddress")}
+                rows={2}
+                value={data.billTo.address}
+              />
+            </div>
             <AddressFields
               cityPlaceholder={t("placeholders.cityRecipient")}
               onChange={(updates) => {

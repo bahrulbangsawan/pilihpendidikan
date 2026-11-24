@@ -54,7 +54,7 @@ function JumpSearch() {
     <>
       <FieldButton
         aria-keyshortcuts="/"
-        className="hidden w-80 pr-1.5 hover:text-foreground md:flex"
+        className="hidden w-full max-w-80 pr-1.5 hover:text-foreground md:flex"
         empty
         onClick={() => setOpen(true)}
       >
@@ -131,14 +131,16 @@ export function SiteHeader() {
           );
         })}
       </nav>
-      <div className="flex flex-1 justify-center px-4">
+      <div className="flex min-w-0 flex-1 justify-center px-4">
         <JumpSearch />
       </div>
       <div className="flex shrink-0 items-center gap-2 pr-2 pl-4 sm:pr-3">
         <a
           className={cn(
             buttonVariants({ variant: "secondary", size: "sm" }),
-            "hidden sm:inline-flex"
+            // Only from lg up: below it the tabs, search and Components
+            // pill fill the bar.
+            "hidden lg:inline-flex"
           )}
           href="https://pilihpendidikan.com"
           rel="noopener"

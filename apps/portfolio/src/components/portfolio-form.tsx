@@ -59,6 +59,12 @@ import {
 } from "@/components/portfolio-data-model";
 import { preprocessImage } from "@/lib/preprocess-image";
 
+// A field's fixed prefix ("https://", "linkedin.com/in/") reads like the
+// phone field's country button: the prefix in its own cell, closed by a
+// hairline divider, and the value 12px past it.
+const PREFIX_GROUP_CLASS = "has-[>[data-align=inline-start]]:[&>input]:pl-3";
+const PREFIX_ADDON_CLASS = "self-stretch border-border border-r pr-3";
+
 // Owner-side affiliation/track/collaboration option lists. Concrete values
 // only (no empty option) — every list maps onto a required discriminant.
 // Each option leads with an icon, shown in the list and in the trigger.
@@ -135,11 +141,16 @@ const SECTION_CLASS = "space-y-3";
 const SECTION_TITLE_CLASS =
   "type-title-compact weight-semibold flex h-8 items-center text-foreground";
 
-// Field rows sit on a two-column grid; a third column joins only for a short
-// number, at a fixed width that fits its label (Semester 96px).
-const SEMESTER_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_96px]";
-const YEAR_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_128px]";
-const EXPERIENCE_ROW_CLASS = "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_152px]";
+// Field rows sit on a two-column grid. A short number (Semester 96px, the
+// graduation year 128px, years of experience 152px) shares the second
+// column with the field before it, at a fixed width, so the row's edges stay
+// on the 2-up grid: the first field fills column one, the pair fills column
+// two. When the pane is too narrow for that, the first field takes the whole
+// row and the pair sits under it, still edge to edge.
+const AFFILIATION_ROW_CLASS = "grid gap-3 @lg/affiliation:grid-cols-2";
+const SEMESTER_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_96px]";
+const YEAR_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_128px]";
+const EXPERIENCE_PAIR_CLASS = "grid-cols-[minmax(0,1fr)_152px]";
 
 // The social link's type: a Select of the platforms a portfolio usually
 // lists (brand names, not translated). A label imported from JSON that is not
@@ -507,116 +518,126 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
   function renderAffiliationFields() {
     if (affiliation.kind === "student" || affiliation.kind === "alumni") {
       return (
-        <div
-          className={cn(
-            "grid gap-3",
-            affiliation.kind === "student" ? SEMESTER_ROW_CLASS : YEAR_ROW_CLASS
-          )}
-        >
-          <FormField
-            label={t("form.institution")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  institution: clamp(v, LIMITS.owner.institution),
-                },
-              })
-            }
-            placeholder={t("placeholders.institution")}
-            value={affiliation.institution}
-          />
-          <FormField
-            label={t("form.program")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  program: clamp(v, LIMITS.owner.program),
-                },
-              })
-            }
-            placeholder={t("placeholders.program")}
-            value={affiliation.program ?? ""}
-          />
-          {affiliation.kind === "student" ? (
+        <div className="@container/affiliation">
+          <div className={AFFILIATION_ROW_CLASS}>
             <FormField
-              label={t("form.semester")}
-              numeric
+              label={t("form.institution")}
               onChange={(v) =>
                 updateOwner({
                   affiliation: {
                     ...affiliation,
-                    semester: parseOptionalNumber(v, 2),
+                    institution: clamp(v, LIMITS.owner.institution),
                   },
                 })
               }
-              placeholder={t("placeholders.semester")}
-              value={formatOptionalNumber(affiliation.semester)}
+              placeholder={t("placeholders.institution")}
+              value={affiliation.institution}
             />
-          ) : (
-            <FormField
-              label={t("form.graduationYear")}
-              numeric
-              onChange={(v) =>
-                updateOwner({
-                  affiliation: {
-                    ...affiliation,
-                    graduationYear: parseOptionalNumber(v, 4),
-                  },
-                })
-              }
-              placeholder={t("placeholders.graduationYear")}
-              value={formatOptionalNumber(affiliation.graduationYear)}
-            />
-          )}
+            <div
+              className={cn(
+                "grid gap-3",
+                affiliation.kind === "student"
+                  ? SEMESTER_PAIR_CLASS
+                  : YEAR_PAIR_CLASS
+              )}
+            >
+              <FormField
+                label={t("form.program")}
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      program: clamp(v, LIMITS.owner.program),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.program")}
+                value={affiliation.program ?? ""}
+              />
+              {affiliation.kind === "student" ? (
+                <FormField
+                  label={t("form.semester")}
+                  numeric
+                  onChange={(v) =>
+                    updateOwner({
+                      affiliation: {
+                        ...affiliation,
+                        semester: parseOptionalNumber(v, 2),
+                      },
+                    })
+                  }
+                  placeholder={t("placeholders.semester")}
+                  value={formatOptionalNumber(affiliation.semester)}
+                />
+              ) : (
+                <FormField
+                  label={t("form.graduationYear")}
+                  numeric
+                  onChange={(v) =>
+                    updateOwner({
+                      affiliation: {
+                        ...affiliation,
+                        graduationYear: parseOptionalNumber(v, 4),
+                      },
+                    })
+                  }
+                  placeholder={t("placeholders.graduationYear")}
+                  value={formatOptionalNumber(affiliation.graduationYear)}
+                />
+              )}
+            </div>
+          </div>
         </div>
       );
     }
 
     if (affiliation.kind === "professional") {
       return (
-        <div className={cn("grid gap-3", EXPERIENCE_ROW_CLASS)}>
-          <FormField
-            label={t("form.organization")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  organization: clamp(v, LIMITS.owner.organization),
-                },
-              })
-            }
-            placeholder={t("placeholders.organization")}
-            value={affiliation.organization ?? ""}
-          />
-          <FormField
-            label={t("form.jobTitle")}
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  jobTitle: clamp(v, LIMITS.owner.jobTitle),
-                },
-              })
-            }
-            placeholder={t("placeholders.jobTitle")}
-            value={affiliation.jobTitle ?? ""}
-          />
-          <FormField
-            label={t("form.yearsExperience")}
-            numeric
-            onChange={(v) =>
-              updateOwner({
-                affiliation: {
-                  ...affiliation,
-                  yearsExperience: parseOptionalNumber(v, 2),
-                },
-              })
-            }
-            placeholder={t("placeholders.yearsExperience")}
-            value={formatOptionalNumber(affiliation.yearsExperience)}
-          />
+        <div className="@container/affiliation">
+          <div className={AFFILIATION_ROW_CLASS}>
+            <FormField
+              label={t("form.organization")}
+              onChange={(v) =>
+                updateOwner({
+                  affiliation: {
+                    ...affiliation,
+                    organization: clamp(v, LIMITS.owner.organization),
+                  },
+                })
+              }
+              placeholder={t("placeholders.organization")}
+              value={affiliation.organization ?? ""}
+            />
+            <div className={cn("grid gap-3", EXPERIENCE_PAIR_CLASS)}>
+              <FormField
+                label={t("form.jobTitle")}
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      jobTitle: clamp(v, LIMITS.owner.jobTitle),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.jobTitle")}
+                value={affiliation.jobTitle ?? ""}
+              />
+              <FormField
+                label={t("form.yearsExperience")}
+                numeric
+                onChange={(v) =>
+                  updateOwner({
+                    affiliation: {
+                      ...affiliation,
+                      yearsExperience: parseOptionalNumber(v, 2),
+                    },
+                  })
+                }
+                placeholder={t("placeholders.yearsExperience")}
+                value={formatOptionalNumber(affiliation.yearsExperience)}
+              />
+            </div>
+          </div>
         </div>
       );
     }
@@ -1089,8 +1110,11 @@ export function PortfolioForm({ data, onChange }: PortfolioFormProps) {
           </div>
           <div className="space-y-1.5">
             <Label>{t("form.websiteUrl")}</Label>
-            <InputGroup>
-              <InputGroupAddon align="inline-start">
+            <InputGroup className={PREFIX_GROUP_CLASS}>
+              <InputGroupAddon
+                align="inline-start"
+                className={PREFIX_ADDON_CLASS}
+              >
                 <InputGroupText>https://</InputGroupText>
               </InputGroupAddon>
               <InputGroupInput

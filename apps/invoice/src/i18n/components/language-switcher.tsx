@@ -52,7 +52,7 @@ export function LanguageSwitcher() {
             value={lang.code}
           >
             <FlagIcon code={lang.code === "en" ? "gb" : "id"} />
-            <span>{lang.code.toUpperCase()}</span>
+            <span className="max-lg:sr-only">{lang.code.toUpperCase()}</span>
           </SegmentedControlItem>
         );
       })}

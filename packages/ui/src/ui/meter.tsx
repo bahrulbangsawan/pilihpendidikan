@@ -8,7 +8,11 @@ import { cn } from "../lib/utils";
 // (orange is for links). `tone="auto"` colours by value (success from
 // `high`, orange from `mid`) for the rare meter that must alarm. `inline`
 // puts a 64px bar and the value on one line (list rows; a table cell narrows
-// the bar with `**:data-[slot=meter-bar]:w-12`).
+// the bar with `**:data-[slot=meter-bar]:w-12`). `joined` writes the
+// caption as one run ("Match · 87%") above a full-width bar (board cards).
+// `pending` is the not-yet-known state: a static skeleton track (nothing
+// animates) with the `valueLabel` (e.g. "Scoring…") in muted text, at the
+// same place the value would sit.
 
 type MeterTone = "auto" | "success" | "link" | "neutral" | "destructive";
 
@@ -31,6 +35,8 @@ function Meter({
   label,
   valueLabel,
   inline = false,
+  joined = false,
+  pending = false,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
   value: number;
@@ -45,6 +51,10 @@ function Meter({
   valueLabel?: React.ReactNode;
   /** One line: a 64px bar with the value to its right (list rows). */
   inline?: boolean;
+  /** The caption as one run, "Label · value", left-aligned above the bar. */
+  joined?: boolean;
+  /** Value not known yet: a skeleton track and a muted `valueLabel`. */
+  pending?: boolean;
 }) {
   const percent = Math.min(100, Math.max(0, (value / max) * 100));
   let resolved: Exclude<MeterTone, "auto">;
@@ -61,19 +71,30 @@ function Meter({
     <span
       aria-hidden="true"
       className={cn(
-        "relative block h-1 overflow-hidden rounded-full bg-pane-2",
+        "relative block h-1 overflow-hidden rounded-full",
+        pending ? "bg-pane-3" : "bg-pane-2",
         inline ? "w-16 shrink-0" : "w-full"
       )}
       data-slot="meter-bar"
     >
-      <span
-        className={cn("absolute inset-y-0 left-0 rounded-full", FILL[resolved])}
-        style={{ width: `${Math.max(MIN_FILL, percent)}%` }}
-      />
+      {pending ? null : (
+        <span
+          className={cn(
+            "absolute inset-y-0 left-0 rounded-full",
+            FILL[resolved]
+          )}
+          style={{ width: `${Math.max(MIN_FILL, percent)}%` }}
+        />
+      )}
     </span>
   );
   const text = (
-    <span className="text-foreground tabular-nums">
+    <span
+      className={cn(
+        "tabular-nums",
+        pending ? "text-muted-foreground" : "text-foreground"
+      )}
+    >
       {valueLabel ?? `${Math.round(percent)}%`}
     </span>
   );
@@ -82,6 +103,7 @@ function Meter({
       <div
         className={cn("type-caption flex items-center gap-2", className)}
         data-inline=""
+        data-pending={pending ? "" : undefined}
         data-slot="meter"
         data-tone={resolved}
         {...props}
@@ -95,14 +117,31 @@ function Meter({
   return (
     <div
       className={cn("flex flex-col gap-1.5", className)}
+      data-pending={pending ? "" : undefined}
       data-slot="meter"
       data-tone={resolved}
       {...props}
     >
-      <div className="type-caption flex items-center justify-between gap-2">
-        {label ? <span className="text-muted-foreground">{label}</span> : null}
-        <span className="ml-auto">{text}</span>
-      </div>
+      {joined ? (
+        <div className="type-caption flex items-center gap-1">
+          {label ? (
+            <>
+              <span className="text-muted-foreground">{label}</span>
+              <span aria-hidden="true" className="text-muted-foreground">
+                ·
+              </span>
+            </>
+          ) : null}
+          {text}
+        </div>
+      ) : (
+        <div className="type-caption flex items-center justify-between gap-2">
+          {label ? (
+            <span className="text-muted-foreground">{label}</span>
+          ) : null}
+          <span className="ml-auto">{text}</span>
+        </div>
+      )}
       {bar}
     </div>
   );

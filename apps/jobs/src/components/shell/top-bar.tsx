@@ -1,7 +1,9 @@
 // The 48px bar over the content column (reui app-shell): the phone menu
 // button, a breadcrumb on the left and a slot for page actions on the right.
-// On phones a top-level page shows the brand instead of its one crumb, which
-// would only repeat the page's H1.
+// A top-level page (one crumb) shows no breadcrumb on tablets and desktops:
+// it would only repeat the page's H1. On phones the bar carries that page
+// title next to the menu button instead (the page hides its H1 there, see
+// `PageHeader hideTitleOnPhone`), and pages may portal a 28px icon action.
 //
 // Screens shape it while they are mounted:
 // - `useBreadcrumbs([{ label, href? }, …])` replaces the breadcrumb derived
@@ -28,9 +30,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { cn } from "@rulisme/ui/lib/utils";
 import { AppLink } from "@/components/app-link";
-import { BrandMark } from "./brand-mark";
 import type { Translate } from "@/i18n";
 import { useTranslation } from "@/i18n";
 
@@ -140,8 +140,10 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
   const crumbs =
     state?.crumbs ??
     crumbsForLocation(t, location.pathname, location.search ?? {});
-  // A top-level page's one crumb repeats its H1: phones show the brand.
+  // A top-level page's one crumb repeats its H1: only phones show it, as the
+  // page title (the H1 is visually hidden there).
   const topLevel = crumbs.length === 1;
+  const pageTitle = crumbs[0]?.label ?? t("app.name");
   return (
     <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center gap-2 border-border border-b bg-background px-3 sm:px-4 lg:px-6">
       <Button
@@ -154,38 +156,61 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
         <Menu aria-hidden="true" />
       </Button>
       {topLevel ? (
-        <span className="min-w-0 flex-1 sm:hidden">
-          <BrandMark label={t("app.name")} />
-        </span>
-      ) : null}
-      <Breadcrumb className={cn("min-w-0 flex-1", topLevel && "max-sm:hidden")}>
-        <BreadcrumbList className="flex-nowrap">
-          {crumbs.map((crumb, index) => {
-            const last = index === crumbs.length - 1;
-            return (
-              <Fragment key={`${crumb.label}-${crumb.href ?? index}`}>
-                {index > 0 ? (
-                  <BreadcrumbSeparator className="max-sm:hidden" />
-                ) : null}
-                <BreadcrumbItem className={last ? "min-w-0" : "max-sm:hidden"}>
-                  {last || !crumb.href ? (
-                    <BreadcrumbPage className="truncate">
-                      {crumb.label}
-                    </BreadcrumbPage>
-                  ) : (
-                    <AppLink
-                      className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-                      href={crumb.href}
-                    >
-                      {crumb.label}
-                    </AppLink>
-                  )}
-                </BreadcrumbItem>
-              </Fragment>
-            );
-          })}
-        </BreadcrumbList>
-      </Breadcrumb>
+        <div className="min-w-0 flex-1">
+          <span
+            aria-hidden="true"
+            className="type-body weight-semibold block truncate text-foreground sm:hidden"
+          >
+            {pageTitle}
+          </span>
+          {/* Desktop: the section's place in the workspace, not a copy of
+              the H1 (reui's "Workspace › Projects" bar). */}
+          <Breadcrumb className="max-sm:hidden">
+            <BreadcrumbList className="flex-nowrap">
+              <BreadcrumbItem className="text-muted-foreground">
+                {t("nav.group.track")}
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem className="min-w-0">
+                <BreadcrumbPage className="truncate">
+                  {pageTitle}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      ) : (
+        <Breadcrumb className="min-w-0 flex-1">
+          <BreadcrumbList className="flex-nowrap">
+            {crumbs.map((crumb, index) => {
+              const last = index === crumbs.length - 1;
+              return (
+                <Fragment key={`${crumb.label}-${crumb.href ?? index}`}>
+                  {index > 0 ? (
+                    <BreadcrumbSeparator className="max-sm:hidden" />
+                  ) : null}
+                  <BreadcrumbItem
+                    className={last ? "min-w-0" : "max-sm:hidden"}
+                  >
+                    {last || !crumb.href ? (
+                      <BreadcrumbPage className="truncate">
+                        {crumb.label}
+                      </BreadcrumbPage>
+                    ) : (
+                      <AppLink
+                        className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                        href={crumb.href}
+                      >
+                        {crumb.label}
+                      </AppLink>
+                    )}
+                  </BreadcrumbItem>
+                </Fragment>
+              );
+            })}
+          </BreadcrumbList>
+        </Breadcrumb>
+      )}
       <div
         className="flex shrink-0 items-center gap-2"
         ref={state?.setActionsSlot}

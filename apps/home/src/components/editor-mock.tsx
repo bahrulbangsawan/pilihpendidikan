@@ -44,7 +44,6 @@ const FIRST_LINE = 12;
 const ADDED_COUNT = "+9";
 
 const ACTIVE_DOCUMENT = "cv.json";
-const DOCUMENTS = [ACTIVE_DOCUMENT, "invoice.json", "portfolio.json"] as const;
 
 function punct(text: string): Token {
   return { text, tone: "punctuation" };
@@ -169,37 +168,63 @@ function PreviewWindow() {
   );
 }
 
+/** One document row: name with a muted meta line, like an agent list. */
+function DocumentRow({
+  name,
+  meta,
+  active = false,
+}: {
+  name: string;
+  meta: string;
+  active?: boolean;
+}) {
+  return (
+    <li
+      className={cn(
+        "flex items-start gap-2 px-3 py-1.5",
+        active ? "bg-pane-2" : undefined
+      )}
+    >
+      <FileBraces className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+      <span className="min-w-0 flex-1">
+        <span
+          className={cn(
+            "type-body-compact block truncate",
+            active ? "text-foreground" : "text-ink-sec"
+          )}
+        >
+          {name}
+        </span>
+        <span className="type-caption-compact block truncate text-muted-foreground">
+          {meta}
+        </span>
+      </span>
+      {active ? (
+        <span className="type-micro-compact pt-0.5 text-syn-2 tabular-nums">
+          {ADDED_COUNT}
+        </span>
+      ) : null}
+    </li>
+  );
+}
+
 function Sidebar() {
   const { t } = useTranslation();
   return (
     <div className="hidden min-w-0 flex-col border-border border-r bg-background/40 py-2 lg:flex">
-      <p className="type-caption px-3 pt-1 pb-2 text-muted-foreground">
-        {t("editor.documents")}
+      <p className="type-caption-compact px-3 pt-1 pb-1.5 text-muted-foreground">
+        {t("editor.groupOpen")} 1
       </p>
       <ul className="flex flex-col">
-        {DOCUMENTS.map((name) => {
-          const active = name === ACTIVE_DOCUMENT;
-          return (
-            <li
-              className={cn(
-                "type-body-compact flex items-center gap-2 px-3 py-1.5",
-                active ? "bg-pane-2 text-foreground" : "text-ink-sec"
-              )}
-              key={name}
-            >
-              <FileBraces className="size-3.5 shrink-0 text-muted-foreground" />
-              <span className="min-w-0 flex-1 truncate">{name}</span>
-              {active ? (
-                <>
-                  <span className="type-micro-compact text-syn-2 tabular-nums">
-                    {ADDED_COUNT}
-                  </span>
-                  <span className="pulse-dot size-1.5 shrink-0 rounded-full bg-syn-2" />
-                </>
-              ) : null}
-            </li>
-          );
-        })}
+        <DocumentRow active meta={t("editor.metaCv")} name={ACTIVE_DOCUMENT} />
+      </ul>
+      <p className="type-caption-compact px-3 pt-4 pb-1.5 text-muted-foreground">
+        {t("editor.groupRecent")} 3
+      </p>
+      <ul className="flex flex-col">
+        <DocumentRow meta={t("editor.metaInvoice")} name="invoice.json" />
+        <DocumentRow meta={t("editor.metaPortfolio")} name="portfolio.json" />
+        <DocumentRow meta={t("editor.metaResume")} name={t("editor.resume")} />
       </ul>
     </div>
   );

@@ -19,6 +19,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
@@ -42,6 +43,7 @@ import {
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
   FileCode,
   FileJson,
   FileText,
@@ -228,6 +230,8 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
   const [generating, setGenerating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
   const isEmpty = !data.personalInfo.fullName.trim();
   // The active template lives on the document so it round-trips into the saved
   // CV and the print/PDF view. A `?template=` query param overrides it (used to
@@ -463,12 +467,23 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
         <h1 className="sr-only">{t("meta.title")}</h1>
         <div className="cv-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
           <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
-            <AppBrand name={t("meta.siteName")} src={APP_MARK_SRC} />
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Cable data-icon="inline-start" />
-                  {t("toolbar.mcp")}
+                <Button
+                  aria-label={t("toolbar.mcp")}
+                  className="max-lg:size-7 max-lg:px-0"
+                  size="sm"
+                  variant="outline"
+                >
+                  <Cable aria-hidden="true" />
+                  {/* Below lg the chip is the icon alone, so the brand
+                      keeps its whole name in the half-width pane. */}
+                  <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
@@ -517,49 +532,62 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
               </DialogContent>
             </Dialog>
             <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      aria-label={t("toolbar.importJson")}
-                      size="icon-sm"
-                      variant="ghost"
-                    >
-                      <Upload />
-                    </Button>
-                  </TooltipTrigger>
-                </FileTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.prefill")}
-                    onClick={() => applyChange(sampleData as CVData)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.prefill")}</TooltipContent>
-              </Tooltip>
-              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
+                    <DropdownMenuTrigger asChild>
                       <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
+                        aria-label={t("toolbar.moreActions")}
                         size="icon-sm"
                         variant="ghost"
                       >
-                        <Trash2 />
+                        <Ellipsis aria-hidden="true" />
                       </Button>
-                    </DialogTrigger>
+                    </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
                 </Tooltip>
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => applyChange(sampleData as CVData)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.prefill")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
                     <DialogTitle>{t("confirm.title")}</DialogTitle>
@@ -580,13 +608,12 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <LanguageSwitcher />
             </div>
           </div>
           <CVForm data={data} onChange={applyChange} />
         </div>
         <div className="cv-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
-          <div className="cv-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
+          <div className="cv-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6">
             <SegmentedControl
               aria-label={t("template.label")}
               onValueChange={(value) => {
@@ -602,18 +629,22 @@ export function CVGenerator({ cvId, print, template }: CVGeneratorProps) {
                 return (
                   <SegmentedControlItem
                     // 13px labels: the switcher is the pane's main control.
-                    className="group-data-[size=sm]/segmented:type-body-compact"
+                    // The chosen template sits on a raised pane-3 pill in
+                    // foreground with an `input` ring, clearly lifted off
+                    // the track. Below lg the segments are their icons (the
+                    // name stays for screen readers) so Download PDF fits.
+                    className="group-data-[size=sm]/segmented:type-body-compact data-[state=on]:bg-pane-3 data-[state=on]:text-foreground data-[state=on]:shadow-[0_0_0_1px_var(--input)] max-lg:group-data-[size=sm]/segmented:px-2"
                     key={s}
                     value={s}
                   >
                     <Icon aria-hidden="true" />
-                    {t(`template.${s}`)}
+                    <span className="max-lg:sr-only">{t(`template.${s}`)}</span>
                   </SegmentedControlItem>
                 );
               })}
             </SegmentedControl>
             {cvId && cloud.hasToken ? (
-              <span className="type-caption flex items-center gap-1.5 text-muted-foreground">
+              <span className="type-caption flex min-w-0 items-center gap-1.5 truncate text-muted-foreground">
                 {cloud.status === "saving" ? (
                   <>
                     <Spinner className="[--spinner-size:12px]" />

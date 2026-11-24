@@ -16,71 +16,103 @@ import {
 import { ColorPair, Swatch } from "../color-pair";
 import { Block, BlockGrid, Example, Section } from "../layout";
 
-const ROLE_PAIRS = [
-  { name: "Page", background: "background", foreground: "foreground" },
+// The colour roles, grouped by what they paint: surfaces with the text set
+// on them, the greys of running text and meta, then the accents (links,
+// status and the data-only stage tones). Six each, three to a row.
+const ROLE_GROUPS = [
   {
-    name: "Body copy on the page",
-    background: "background",
-    foreground: "ink",
-  },
-  { name: "Card", background: "card", foreground: "card-foreground" },
-  {
-    name: "Primary pill",
-    background: "primary",
-    foreground: "primary-foreground",
-  },
-  {
-    name: "Secondary pill",
-    background: "secondary",
-    foreground: "secondary-foreground",
-  },
-  {
-    name: "Small grey text (60%)",
-    background: "background",
-    foreground: "muted-foreground",
-  },
-  {
-    name: "Large grey text (ink-sec)",
-    background: "background",
-    foreground: "ink-sec",
-  },
-  {
-    name: "Meta at 16px+ (ink-mid)",
-    background: "background",
-    foreground: "ink-mid",
+    group: "Surfaces",
+    pairs: [
+      { name: "Page", background: "background", foreground: "foreground" },
+      { name: "Card", background: "card", foreground: "card-foreground" },
+      {
+        name: "Selected row (pane-2)",
+        background: "pane-2",
+        foreground: "foreground",
+      },
+      {
+        name: "Primary pill",
+        background: "primary",
+        foreground: "primary-foreground",
+      },
+      {
+        name: "Secondary pill",
+        background: "secondary",
+        foreground: "secondary-foreground",
+      },
+      {
+        name: "Tooltip",
+        background: "tooltip",
+        foreground: "tooltip-foreground",
+      },
+    ],
   },
   {
-    name: "Selected row (pane-2)",
-    background: "pane-2",
-    foreground: "foreground",
+    group: "Text",
+    pairs: [
+      {
+        name: "Body copy on the page",
+        background: "background",
+        foreground: "ink",
+      },
+      {
+        name: "Large grey text (ink-sec)",
+        background: "background",
+        foreground: "ink-sec",
+      },
+      {
+        name: "Small grey text (60%)",
+        background: "background",
+        foreground: "muted-foreground",
+      },
+      {
+        name: "Meta at 16px+ (ink-mid)",
+        background: "background",
+        foreground: "ink-mid",
+      },
+      {
+        name: "Small grey text on a card",
+        background: "card",
+        foreground: "muted-foreground",
+      },
+      {
+        name: "Meta on a card (ink-mid)",
+        background: "card",
+        foreground: "ink-mid",
+      },
+    ],
   },
-  { name: "Text link", background: "background", foreground: "link" },
   {
-    name: "Destructive on the page",
-    background: "background",
-    foreground: "destructive",
-  },
-  {
-    name: "Success on the page",
-    background: "background",
-    foreground: "success",
-  },
-  { name: "Tooltip", background: "tooltip", foreground: "tooltip-foreground" },
-  // Stage / category tints (data only); on their 12% chips they hold AA too.
-  {
-    name: "Tone blue (Ready)",
-    background: "background",
-    foreground: "tone-blue",
-  },
-  {
-    name: "Tone violet (Preparing)",
-    background: "background",
-    foreground: "tone-violet",
-  },
-  {
-    name: "Tone amber (Applied)",
-    background: "background",
-    foreground: "tone-amber",
+    group: "Accents",
+    pairs: [
+      { name: "Text link", background: "background", foreground: "link" },
+      {
+        name: "Destructive on the page",
+        background: "background",
+        foreground: "destructive",
+      },
+      {
+        name: "Success on the page",
+        background: "background",
+        foreground: "success",
+      },
+      // Stage / category tints (data only); on their 12% chips they hold AA too.
+      {
+        name: "Tone blue (Ready)",
+        background: "background",
+        foreground: "tone-blue",
+      },
+      {
+        name: "Tone violet (Preparing)",
+        background: "background",
+        foreground: "tone-violet",
+      },
+      {
+        name: "Tone amber (Applied)",
+        background: "background",
+        foreground: "tone-amber",
+      },
+    ],
   },
 ] as const;
 
@@ -407,18 +439,27 @@ export function FoundationsSection() {
     >
       <BlockGrid>
         <Block
-          description="Each surface with its foreground and the contrast measured live. There is one scheme: cursor.com's dark theme."
+          description="Each surface with its foreground and the contrast measured live. There is one scheme: dark, on a warm near-black page."
           title="Colour roles"
           wide
         >
-          <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
-            {ROLE_PAIRS.map((pair) => (
-              <ColorPair
-                background={pair.background}
-                foreground={pair.foreground}
-                key={pair.name}
-                name={pair.name}
-              />
+          <div className="flex flex-col gap-8">
+            {ROLE_GROUPS.map((group) => (
+              <div className="flex flex-col gap-3" key={group.group}>
+                <h4 className="type-caption text-muted-foreground">
+                  {group.group}
+                </h4>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.pairs.map((pair) => (
+                    <ColorPair
+                      background={pair.background}
+                      foreground={pair.foreground}
+                      key={pair.name}
+                      name={pair.name}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </Block>
@@ -449,7 +490,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Geist Variable for everything on screen (Geist Mono for code), on cursor.com's scale: eight roles at a default and a compact step, all weight 400. Pick by purpose, not by pixel size. Print artifacts keep Inter to match their PDFs."
+          description="Geist Variable for everything on screen (Geist Mono for code), on one scale: eight roles at a default and a compact step, all weight 400. Pick by purpose, not by pixel size. Print artifacts keep Inter to match their PDFs."
           title="Type roles"
           wide
         >
@@ -563,7 +604,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="Flat. Cards are one step lighter on a 2.5% hairline; flyouts get Cursor's two whisper shadows, windows one soft drop. Never a shadow on a card, never a glow."
+          description="Flat. Cards are one step lighter on a 2.5% hairline; flyouts get two whisper shadows, windows one soft drop. Never a shadow on a card, never a glow."
           title="Elevation"
           wide
         >
@@ -632,7 +673,7 @@ export function FoundationsSection() {
         </Block>
 
         <Block
-          description="A Band is a full-bleed section with no border; a Rail is Cursor's 1300px container with 20px gutters. App pages add a 49px header and a docs nav on the card colour, like this one."
+          description="A Band is a full-bleed section with no border; a Rail is the 1300px container with 20px gutters. App pages add a 49px header and a docs nav on the card colour, like this one."
           title="Layout"
           wide
         >

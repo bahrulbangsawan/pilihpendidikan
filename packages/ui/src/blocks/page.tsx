@@ -7,6 +7,8 @@ import { cn } from "../lib/utils";
 // - `PageHeader`: title (18px, weight 500 like reui's app titles; + a
 //   `CountBadge`, an 18px bordered square), a one-line description, actions
 //   on the right, and an optional row under it (tabs, a toolbar).
+//   `hideTitleOnPhone` keeps the H1 for screen readers but hides it below
+//   640px, for shells whose top bar already shows the page title there.
 // - `PageContent`: a block of content in the column.
 // - `PageSection`: a label column + content column section, ruled on top.
 // - `PageGutter`: a plain div on the gutter (and the column unless `wide`).
@@ -50,6 +52,7 @@ function PageHeader({
   children,
   className,
   wide = false,
+  hideTitleOnPhone = false,
 }: {
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -61,20 +64,33 @@ function PageHeader({
   className?: string;
   /** Full-width screens keep the actions at the right edge. */
   wide?: boolean;
+  /** Below 640px the title is visually hidden (the app bar shows it). */
+  hideTitleOnPhone?: boolean;
 }) {
   return (
     <div className={className} data-slot="page-header">
       <div
         className={cn(
           "flex flex-col gap-4 pt-6",
+          hideTitleOnPhone && "max-sm:pt-4",
           children ? "pb-0" : "pb-2",
           !wide && PAGE_COLUMN,
           PAGE_GUTTER
         )}
       >
         <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-          <div className="flex min-w-0 flex-col gap-1">
-            <div className="flex items-center gap-2">
+          <div
+            className={cn(
+              "flex min-w-0 flex-col gap-1",
+              hideTitleOnPhone && !description && "max-sm:sr-only"
+            )}
+          >
+            <div
+              className={cn(
+                "flex items-center gap-2",
+                hideTitleOnPhone && "max-sm:sr-only"
+              )}
+            >
               <h1 className="type-title-compact weight-semibold text-foreground">
                 {title}
               </h1>

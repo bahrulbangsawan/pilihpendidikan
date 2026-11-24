@@ -194,6 +194,7 @@ export function StatsPage({
           />
         }
         description={t("stats.intro")}
+        hideTitleOnPhone
         title={t("pages.stats")}
         wide
       />

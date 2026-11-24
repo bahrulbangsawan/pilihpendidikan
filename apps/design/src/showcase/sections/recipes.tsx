@@ -716,7 +716,7 @@ export function RecipesSection() {
   return (
     <Section
       id="recipes"
-      lead="cursor.com's marketing pieces rebuilt from tokens and components, in the builders' own words."
+      lead="Marketing pieces built from tokens and components, in the builders' own words."
       title="Recipes"
     >
       <BlockGrid>
@@ -756,7 +756,7 @@ export function RecipesSection() {
           <TemplateTiles />
         </Block>
         <Block
-          description="cursor.com's pricing cards: a 16px plan name, a headline-size price at weight 400, muted ticks and a full-width pill pinned to the bottom. The recommended card takes the 20% border, the orange badge and the light primary pill."
+          description="Pricing cards: a 16px plan name, a headline-size price at weight 400, muted ticks and a full-width pill pinned to the bottom. The recommended card takes the 20% border, the orange badge and the light primary pill."
           title="Plans"
           wide
         >

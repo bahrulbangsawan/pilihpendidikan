@@ -7,6 +7,7 @@
     "ogImageAlt": "Pembuat Portofolio Bahrul Bangsawan — portofolio Apple Developer Academy dalam tata letak A4 lanskap terkunci"
   },
   "toolbar": {
+    "moreActions": "Aksi dokumen",
     "mcp": "MCP",
     "importJson": "Impor JSON",
     "prefill": "Isi Contoh",
@@ -186,7 +187,8 @@
   },
   "preview": {
     "empty": "Mulai isi formulir untuk melihat pratinjau portofolio Anda",
-    "documentLabel": "A4 lanskap · Apple Developer Academy",
+    "documentFormat": "A4 lanskap",
+    "documentProgram": "Apple Developer Academy",
     "kicker": "Pengajuan portofolio — kohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Nama Anda · Tagline",

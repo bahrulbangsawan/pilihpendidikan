@@ -96,7 +96,7 @@ function SourceChip({
   const { t } = useTranslation();
   if (suggested) {
     return (
-      <Badge dot={false} title={t("profile.suggestedTitle")} tone="blue">
+      <Badge dot={false} title={t("profile.suggestedTitle")} tone="neutral">
         {t("profile.suggested")}
       </Badge>
     );

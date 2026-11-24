@@ -131,7 +131,7 @@ const PORTFOLIO_PAGES = [
 function TabsBlock() {
   return (
     <Block
-      description="Switch between views of the same thing. Default is cursor.com's pricing toggle: a pill track on pane whose selected segment is a card-colour pill with a hairline ring; line sets the tabs on a 10% rule and underlines the selected one in foreground. Weight stays 400."
+      description="Switch between views of the same thing. Default is the pricing toggle: a pill track on pane whose selected segment is a card-colour pill with a hairline ring; line sets the tabs on a 10% rule and underlines the selected one in foreground. Weight stays 400."
       title="Tabs"
       wide
     >
@@ -278,7 +278,7 @@ function TabsBlock() {
 function BreadcrumbBlock() {
   return (
     <Block
-      description="Where this page sits, like cursor.com/docs: muted body-role links that turn foreground on hover, a 14px muted chevron between levels, the current page in foreground."
+      description="Where this page sits, like a docs page: muted body-role links that turn foreground on hover, a 14px muted chevron between levels, the current page in foreground."
       title="Breadcrumb"
     >
       <Example label="typical">
@@ -509,7 +509,7 @@ function MenuLinks({
 function NavigationMenuBlock() {
   return (
     <Block
-      description="cursor.com's header nav: pill ghost links with a muted ▾. A menu opens instantly in the 8px flyout under its trigger; the current page is orange, like the active item in Cursor's docs nav."
+      description="The header nav: pill ghost links with a muted ▾. A menu opens instantly in the 8px flyout under its trigger; the current page is orange, like the active item in the docs nav."
       title="Navigation menu"
       wide
     >
@@ -897,7 +897,7 @@ function CvEditorSidebar() {
 function SidebarBlock() {
   return (
     <Block
-      description="cursor.com/docs nav: a column on the card colour ruled off by a 10% border, 12px muted group labels, 30px rows at 4px radius. The active row sits on pane-2 in a dense app sidebar; a docs nav (like this page's) marks it orange. Click a section to move the active row."
+      description="The docs nav: a column on the card colour ruled off by a 10% border, 12px muted group labels, 30px rows at 4px radius. The active row sits on pane-2 in a dense app sidebar; a docs nav (like this page's) marks it orange. Click a section to move the active row."
       title="Sidebar"
       wide
     >

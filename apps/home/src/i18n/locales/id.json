@@ -49,7 +49,15 @@
     "seconds": "4 dtk",
     "composer": "Minta ubah CV Anda…",
     "mode": "Agen",
-    "threadTitle": "Tambah magang Gojek"
+    "threadTitle": "Tambah magang Gojek",
+    "editingNow": "Sedang diedit",
+    "groupOpen": "Terbuka",
+    "groupRecent": "Terbaru",
+    "metaInvoice": "INV-2026-0001 · 2h",
+    "metaPortfolio": "3 proyek · 1mg",
+    "metaCv": "Pengalaman · sekarang",
+    "resume": "cv-old.json",
+    "metaResume": "Diarsipkan · 3mg"
   },
   "tools": {
     "heading": "Pembuat dokumen"
@@ -113,7 +121,7 @@
     "pdf": "Ekspor PDF",
     "preview": "Pratinjau langsung",
     "english": "English",
-    "indonesian": "Indonesia"
+    "indonesian": "Bahasa Indonesia"
   },
   "features": {
     "cv": {

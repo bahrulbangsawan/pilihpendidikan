@@ -7,6 +7,7 @@
     "ogImageAlt": "Bahrul Bangsawan Portfolio Builder — Apple Developer Academy portfolio in a locked A4-landscape layout"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "mcp": "MCP",
     "importJson": "Import JSON",
     "prefill": "Pre-Fill Example",
@@ -186,7 +187,8 @@
   },
   "preview": {
     "empty": "Start filling in the form to see your portfolio preview",
-    "documentLabel": "A4 landscape · Apple Developer Academy",
+    "documentFormat": "A4 landscape",
+    "documentProgram": "Apple Developer Academy",
     "kicker": "Portfolio submission — cohort {year}",
     "portfolio": "Portfolio",
     "yourName": "Your Name · Headline",

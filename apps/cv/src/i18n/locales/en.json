@@ -7,6 +7,7 @@
     "ogImageAlt": "Bahrul Bangsawan CV Builder — free online resume generator with real-time preview and ATS-friendly formatting"
   },
   "toolbar": {
+    "moreActions": "Document actions",
     "mcp": "MCP",
     "importJson": "Import JSON",
     "prefill": "Pre-Fill Example",

@@ -2,15 +2,12 @@ import { WindowFrame } from "@rulisme/ui/blocks/window-frame";
 import { Button } from "@rulisme/ui/ui/button";
 import type { ComponentProps } from "react";
 import {
-  BriefcaseBusiness,
   Eye,
   FileDown,
-  FileText,
   Globe,
   Languages,
   LayoutTemplate,
   MapPin,
-  ReceiptText,
 } from "lucide-react";
 import type { Services } from "@/config/services";
 import { isLive, TOOL_IDS } from "@/config/services";
@@ -27,14 +24,14 @@ const SECTION_CLASS = "px-5 py-[67.2px]";
 const CONTAINER_CLASS = "mx-auto w-full max-w-rail";
 
 const STRIP_ITEMS = [
-  { key: "cv", Icon: FileText },
-  { key: "invoice", Icon: ReceiptText },
-  { key: "portfolio", Icon: LayoutTemplate },
-  { key: "jobs", Icon: BriefcaseBusiness },
-  { key: "preview", Icon: Eye },
-  { key: "pdf", Icon: FileDown },
-  { key: "english", Icon: Languages },
-  { key: "indonesian", Icon: Languages },
+  "cv",
+  "invoice",
+  "portfolio",
+  "jobs",
+  "preview",
+  "pdf",
+  "english",
+  "indonesian",
 ] as const;
 
 const EXPORT_ITEMS = ["cv", "invoice", "portfolio", "jobs"] as const;
@@ -126,13 +123,12 @@ function Strip() {
         <h2 className="type-body text-center" id="strip-heading">
           {t("strip.heading")}
         </h2>
-        <ul className="mt-[22px] grid grid-cols-4 gap-[10px] lg:grid-cols-8">
-          {STRIP_ITEMS.map(({ key, Icon }) => (
+        <ul className="mt-[22px] grid grid-cols-2 gap-[10px] sm:grid-cols-4 lg:grid-cols-8">
+          {STRIP_ITEMS.map((key) => (
             <li
-              className="type-caption sm:type-title-compact flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-sm border border-hairline bg-card text-center text-foreground sm:h-[100px] sm:flex-row sm:gap-2"
+              className="type-subtitle weight-semibold sm:type-title-compact flex h-[64px] items-center justify-center rounded-sm border border-hairline bg-card px-2 text-center text-foreground sm:h-[100px]"
               key={key}
             >
-              <Icon aria-hidden="true" className="size-5 shrink-0" />
               {t(`strip.${key}`)}
             </li>
           ))}
@@ -248,12 +244,12 @@ function About() {
         </div>
         <div className="relative h-[280px] overflow-hidden rounded-xs bg-stage-warm lg:col-span-16 lg:h-[465px]">
           <WindowFrame
-            className="absolute inset-x-6 top-6 lg:inset-x-5 lg:top-10"
+            className="absolute inset-6 lg:inset-10"
             title="Pilih Jobs — Stats"
           >
             <img
               alt={t("about.shotAlt")}
-              className="block h-auto w-full"
+              className="block min-h-0 w-full flex-1 object-cover object-top-left"
               decoding="async"
               height={612}
               loading="lazy"
@@ -383,7 +379,7 @@ export function HubPage({ services }: { services: Services }) {
             <Button asChild size="lg">
               <a href="#tools">
                 {t("cta.button")}
-                <span aria-hidden="true">↑</span>
+                <span aria-hidden="true">→</span>
               </a>
             </Button>
           </div>

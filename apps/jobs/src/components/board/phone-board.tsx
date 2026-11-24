@@ -1,8 +1,8 @@
 // The board below 640px (12 §3): a scrollable stage switcher with counts and
-// one vertical list. The switcher scrolls under a 24px right-edge fade with
-// 16px of scroll padding at both ends; cards put the match and source on one
-// row. No drag and drop; each card has the desktop "…" menu (Move is in it)
-// and opens the details sheet.
+// one vertical list. The switcher scrolls under a 56px right-edge fade and
+// snaps each stage to its start (16px of scroll padding at both ends). No
+// drag and drop; each card has the desktop "…" menu (Move is in it) and
+// opens the details sheet.
 
 import type { BoardCard } from "@pilihpendidikan/jobs-contracts/api";
 import type { Stage } from "@pilihpendidikan/jobs-contracts/enums";
@@ -47,17 +47,17 @@ export function PhoneBoard({
   return (
     <div className="flex flex-col">
       <Tabs onValueChange={(value) => setTab(value as Tab)} value={tab}>
-        <div className="no-scrollbar mask-r-from-[calc(100%-56px)] scroll-px-4 overflow-x-auto px-4 pb-2">
+        <div className="no-scrollbar mask-r-from-[calc(100%-56px)] snap-x snap-proximity scroll-px-4 overflow-x-auto px-4 pb-2">
           <TabsList aria-label={t("board.stages")} className="mr-4">
             {BOARD_STAGES.map((stage) => (
-              <TabsTrigger key={stage} value={stage}>
+              <TabsTrigger className="snap-start" key={stage} value={stage}>
                 {stageLabel(t, stage)}
                 <span className="type-micro text-muted-foreground tabular-nums">
                   {totals[stage]}
                 </span>
               </TabsTrigger>
             ))}
-            <TabsTrigger value="closed">
+            <TabsTrigger className="snap-start" value="closed">
               {t("board.closed")}
               <span className="type-micro text-muted-foreground tabular-nums">
                 {closedTotal}

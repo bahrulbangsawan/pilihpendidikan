@@ -1,9 +1,9 @@
 // The Stats charts (10 §8), drawn with the shared chart wrapper of
 // @rulisme/ui: series are a neutral ramp of the `ink` token (70% down to
 // 28%, never pure white; orange stays for links), the line is a 1.5px
-// `chart-2` monotoneX curve (values clamped at 0, the axis starts at 0, so
-// the curve never dips below the baseline) with a dot only at the last point and under the
-// pointer, the grid is a hairline (horizontal rules only; bar charts have
+// `chart-2` polyline of straight segments (values clamped at 0, the axis
+// pinned to start at 0, so it never dips below the baseline) with a dot only
+// at the last point and under the pointer, the grid is a hairline (horizontal rules only; bar charts have
 // none: their values sit at the bar ends and the scale runs to 1.1× the
 // largest value), nothing animates in (DESIGN.md § Motion). Each chart is a
 // picture of its view model; ChartFrame pairs it with the same numbers as a
@@ -199,7 +199,8 @@ export function SeriesChart({
         <YAxis
           allowDecimals={false}
           axisLine={false}
-          domain={[0, "auto"]}
+          allowDataOverflow
+          domain={[0, (dataMax: number) => Math.max(1, dataMax)]}
           tickCount={4}
           tickLine={false}
           width={32}
@@ -225,7 +226,7 @@ export function SeriesChart({
           isAnimationActive={false}
           stroke={LINE_COLOR}
           strokeWidth={LINE_WIDTH}
-          type="monotoneX"
+          type="linear"
         />
       </LineChart>
     </ChartContainer>

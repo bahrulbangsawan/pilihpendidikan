@@ -17,6 +17,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@rulisme/ui/ui/dropdown-menu";
@@ -34,6 +35,7 @@ import {
   Cable,
   ChevronDown,
   Download,
+  Ellipsis,
   FileJson,
   FileText,
   Sparkles,
@@ -154,6 +156,8 @@ export function PortfolioGenerator({
   const [generating, setGenerating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  // The hidden host of the JSON file picker; the actions menu clicks it.
+  const importHostRef = useRef<HTMLButtonElement>(null);
   const [pendingImport, setPendingImport] = useState<Portfolio | null>(null);
   const isEmpty = !(
     data.owner.fullName.trim() || data.projects.some((p) => p.title.trim())
@@ -369,28 +373,73 @@ export function PortfolioGenerator({
       >
         <h1 className="sr-only">{t("meta.title")}</h1>
         <div className="pf-no-print no-scrollbar h-svh w-full overflow-y-auto border-border border-b bg-background md:w-1/2 md:border-r md:border-b-0">
-          <div className="sticky top-0 z-10 flex h-12 items-center gap-1 border-border border-b bg-background px-4 sm:px-6">
-            <AppBrand name={t("meta.siteName")} src={APP_MARK_SRC} />
+          <div className="sticky top-0 z-10 flex h-12 items-center gap-1.5 border-border border-b bg-background px-4 sm:px-6">
+            <AppBrand
+              className="shrink-0"
+              name={t("meta.siteName")}
+              src={APP_MARK_SRC}
+            />
             <McpDialog
               auth={cloud.auth}
               hasToken={cloud.hasToken}
               onTokenChange={cloud.setToken}
             />
             <div className="ml-auto flex items-center gap-1">
-              <Tooltip>
-                <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+              <LanguageSwitcher />
+              {/* The document's actions in one menu, so the brand never
+                  truncates. The file picker lives outside the menu (the
+                  menu unmounts on select, which would drop the input's
+                  change event); the Import row clicks its hidden host. */}
+              <FileTrigger accept=".json" onFilesSelect={handleImportJSON}>
+                <Button
+                  aria-hidden="true"
+                  className="hidden"
+                  ref={importHostRef}
+                  tabIndex={-1}
+                  variant="ghost"
+                >
+                  {t("toolbar.importJson")}
+                </Button>
+              </FileTrigger>
+              <DropdownMenu>
+                <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      aria-label={t("toolbar.importJson")}
-                      size="icon-sm"
-                      variant="ghost"
-                    >
-                      <Upload />
-                    </Button>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        aria-label={t("toolbar.moreActions")}
+                        size="icon-sm"
+                        variant="ghost"
+                      >
+                        <Ellipsis aria-hidden="true" />
+                      </Button>
+                    </DropdownMenuTrigger>
                   </TooltipTrigger>
-                </FileTrigger>
-                <TooltipContent>{t("toolbar.importJson")}</TooltipContent>
-              </Tooltip>
+                  <TooltipContent>{t("toolbar.moreActions")}</TooltipContent>
+                </Tooltip>
+                <DropdownMenuContent align="end" className="min-w-48">
+                  <DropdownMenuItem
+                    onSelect={() => importHostRef.current?.click()}
+                  >
+                    <Upload aria-hidden="true" />
+                    {t("toolbar.importJson")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => applyChange(sampleData as Portfolio)}
+                  >
+                    <Sparkles aria-hidden="true" />
+                    {t("toolbar.prefill")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    disabled={isEmpty}
+                    onSelect={() => setConfirmOpen(true)}
+                    variant="destructive"
+                  >
+                    <Trash2 aria-hidden="true" />
+                    {t("toolbar.clearAll")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Dialog
                 onOpenChange={(open) => {
                   if (!open) {
@@ -419,35 +468,7 @@ export function PortfolioGenerator({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    aria-label={t("toolbar.prefill")}
-                    onClick={() => applyChange(sampleData as Portfolio)}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Sparkles />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("toolbar.prefill")}</TooltipContent>
-              </Tooltip>
               <Dialog onOpenChange={setConfirmOpen} open={confirmOpen}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DialogTrigger asChild>
-                      <Button
-                        aria-label={t("toolbar.clearAll")}
-                        disabled={isEmpty}
-                        size="icon-sm"
-                        variant="ghost"
-                      >
-                        <Trash2 />
-                      </Button>
-                    </DialogTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>{t("toolbar.clearAll")}</TooltipContent>
-                </Tooltip>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
                     <DialogTitle>{t("confirm.title")}</DialogTitle>
@@ -468,17 +489,21 @@ export function PortfolioGenerator({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <LanguageSwitcher />
             </div>
           </div>
           <PortfolioForm data={data} onChange={applyChange} />
         </div>
         <div className="pf-preview-pane no-scrollbar h-svh w-full overflow-y-auto bg-card md:w-1/2">
-          <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background px-4 sm:px-6">
+          <div className="pf-no-print sticky top-0 z-10 flex h-12 items-center gap-3 border-border border-b bg-background pr-4 pl-4 sm:pl-6">
             {/* The deck's format as plain muted text, level with the deck's
-                left edge (the pane's gutter plus the well's padding). */}
-            <span className="type-caption ml-4 min-w-0 truncate text-muted-foreground sm:ml-8">
-              {t("preview.documentLabel")}
+                left edge (the pane's gutter plus the well's padding). Below
+                lg the programme name drops so Download PDF keeps its room. */}
+            <span className="type-caption ml-4 min-w-0 whitespace-nowrap text-muted-foreground sm:ml-8">
+              {t("preview.documentFormat")}
+              <span className="max-lg:hidden">
+                {" · "}
+                {t("preview.documentProgram")}
+              </span>
             </span>
             {portfolioId && cloud.hasToken ? (
               <CloudStatus error={cloud.error} status={cloud.status} />
@@ -598,9 +623,16 @@ function McpDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Cable data-icon="inline-start" />
-          {t("toolbar.mcp")}
+        <Button
+          aria-label={t("toolbar.mcp")}
+          className="max-lg:size-7 max-lg:px-0"
+          size="sm"
+          variant="outline"
+        >
+          <Cable aria-hidden="true" />
+          {/* Below lg the chip is the icon alone, so the brand keeps its
+              whole name in the half-width pane. */}
+          <span className="max-lg:sr-only">{t("toolbar.mcp")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

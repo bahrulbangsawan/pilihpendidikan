@@ -295,7 +295,7 @@
     "openFullPage": "Buka halaman penuh",
     "newApplication": "Lamaran baru",
     "emptyManual": "Tambahkan lowongan pertama yang Anda lamar lewat URL-nya.",
-    "searchPlaceholder": "Cari perusahaan, posisi, atau lokasi",
+    "searchPlaceholder": "Cari lowongan",
     "filterButton": "Filter",
     "filtersActive": "{count} filter aktif",
     "lane": {
@@ -358,7 +358,7 @@
     "menu": "Tindakan untuk {company}, {title}",
     "moveLabel": "Pindahkan {company}",
     "score": "Skor",
-    "scoring": "Menilai",
+    "scoring": "Menilai…",
     "aiOff": "Dinilai tanpa AI",
     "aiOffShort": "AI mati",
     "cvReady": "CV",
