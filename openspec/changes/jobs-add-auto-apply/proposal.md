@@ -1,5 +1,10 @@
 # Change: Add controlled auto-apply and the remaining source adapters
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this change's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 ## Why
 
 Once assisted and approval modes have run in production, some users want the

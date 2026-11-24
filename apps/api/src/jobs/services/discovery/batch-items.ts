@@ -126,7 +126,7 @@ export interface ItemContext {
     string,
     { adapter: string; config: Record<string, unknown> }
   >;
-  /** The discovery run (null for cloud runs, whose id goes in `cloud`). */
+  /** The discovery run. */
   runId: string | null;
 }
 

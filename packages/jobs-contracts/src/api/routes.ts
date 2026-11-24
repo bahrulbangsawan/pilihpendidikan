@@ -5,7 +5,6 @@ import { aiRoutes } from "./ai";
 import { analyticsRoutes } from "./analytics";
 import { applicationsRoutes } from "./applications";
 import { automationRoutes } from "./automation";
-import { cloudRoutes } from "./cloud";
 import { cvRoutes } from "./cv";
 import { devicesRoutes } from "./devices";
 import { discoveryRoutes } from "./discovery";
@@ -32,7 +31,6 @@ export const API_ROUTE_SCHEMAS = {
   ...syncRoutes,
   ...analyticsRoutes,
   ...emailRoutes,
-  ...cloudRoutes,
 } as const satisfies Record<string, RouteContract>;
 
 export type ApiRouteKey = keyof typeof API_ROUTE_SCHEMAS;

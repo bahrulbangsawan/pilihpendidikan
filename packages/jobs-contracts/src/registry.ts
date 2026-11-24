@@ -1,8 +1,7 @@
 // Named-schema registry for the JSON Schema export (D-20).
 //
 // Every schema that should appear as a named definition in `schema/*.json`
-// (and therefore as a named Pydantic class in the CLI) is created through
-// `defineSchema(group, Name, schema)`. The id becomes the `$defs` key and the
+// is created through `defineSchema(group, Name, schema)`. The id becomes the `$defs` key and the
 // `$ref` target, so names are part of the contract: never rename one without
 // a matching change in every consumer.
 import { z } from "zod";
@@ -29,7 +28,6 @@ export const SCHEMA_GROUPS = [
   "adapters",
   "email",
   "data",
-  "cloud",
 ] as const;
 export type SchemaGroup = (typeof SCHEMA_GROUPS)[number];
 

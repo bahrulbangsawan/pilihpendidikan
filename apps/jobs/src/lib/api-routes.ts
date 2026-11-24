@@ -115,10 +115,10 @@ export const NON_WEB_ROUTE_KEYS: Readonly<
   "POST /api/v1/ai/verify-submission": "lease-bound AI proxy",
   "POST /api/v1/telemetry": "anonymous CLI telemetry",
   "POST /api/v1/telemetry/crash": "anonymous CLI telemetry",
-  // The automation surfaces (devices, sources and the cloud catalog, the
-  // inbox, rules, tasks, approvals) left the dashboard in round 3. The api,
-  // the CLI and the mock api still serve these routes; the web never calls
-  // them, so the BFF refuses them like any other non-web route.
+  // The automation surfaces (devices, sources, the inbox, rules, tasks,
+  // approvals) left the dashboard in round 3. The api and the mock api still
+  // serve these routes; the web never calls them, so the BFF refuses them
+  // like any other non-web route.
   "GET /api/v1/devices": AUTOMATION_REMOVED,
   "PATCH /api/v1/devices/{dev_id}": AUTOMATION_REMOVED,
   "POST /api/v1/devices/{dev_id}/revoke": AUTOMATION_REMOVED,
@@ -143,16 +143,6 @@ export const NON_WEB_ROUTE_KEYS: Readonly<
   "POST /api/v1/tasks/{tsk_id}/resume": AUTOMATION_REMOVED,
   "GET /api/v1/approvals": AUTOMATION_REMOVED,
   "POST /api/v1/approvals/{apr_id}/decide": AUTOMATION_REMOVED,
-  "GET /api/v1/cloud-sources": AUTOMATION_REMOVED,
-  "POST /api/v1/cloud-sources": AUTOMATION_REMOVED,
-  "GET /api/v1/cloud-sources/{csr_id}": AUTOMATION_REMOVED,
-  "PATCH /api/v1/cloud-sources/{csr_id}": AUTOMATION_REMOVED,
-  "PUT /api/v1/cloud-sources/{csr_id}/follow": AUTOMATION_REMOVED,
-  "DELETE /api/v1/cloud-sources/{csr_id}/follow": AUTOMATION_REMOVED,
-  "GET /api/v1/cloud-sources/{csr_id}/runs": AUTOMATION_REMOVED,
-  "POST /api/v1/cloud-sources/{csr_id}/runs": AUTOMATION_REMOVED,
-  "GET /api/v1/cloud-discovery/runs": AUTOMATION_REMOVED,
-  "POST /api/v1/cloud-discovery/refresh": AUTOMATION_REMOVED,
 };
 
 /** Binary / calendar routes the `/download/*` server route may stream. */

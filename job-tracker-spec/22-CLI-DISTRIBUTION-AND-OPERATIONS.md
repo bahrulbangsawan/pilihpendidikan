@@ -1,5 +1,10 @@
 # 22 — CLI Distribution and Operations
 
+> **Removed (2026-11-24).** The `pilih-jobs` CLI (`apps/jobs-cli`) was
+> removed from the repository with its CI, install scripts and the `e2e/`
+> suite, before it was ever published. This document is kept as history; it
+> no longer describes anything that ships.
+
 This document covers how `pilih-jobs` reaches users' machines, how it stays
 current, how it is removed, and how it is operated once released: telemetry,
 crash reports, support bundles, fleet observability and incident runbooks.

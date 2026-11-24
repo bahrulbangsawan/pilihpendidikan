@@ -1,16 +1,15 @@
 // JSON Schema export of the registered contracts (D-20, 02 §"Shared
 // contracts"). One document per group, `{"$schema", "$defs": {Name: …}}`,
 // self-contained: every schema a group's definitions reference is included
-// under its own stable name, so `datamodel-codegen` produces named Pydantic
-// classes per file without cross-file references.
+// under its own stable name, so a code generator gets named types per file
+// without cross-file references.
 //
 // Export uses `io: "input"`: plain objects carry no `additionalProperties:
-// false`, so older CLIs ignore fields added within v1; strict objects
+// false`, so older clients ignore fields added within v1; strict objects
 // (e.g. CvTailoringPatch) keep it.
 import { z } from "zod";
 import "./adapters";
 import "./api/routes";
-import "./cloud";
 import "./data";
 import "./email";
 import "./facts";

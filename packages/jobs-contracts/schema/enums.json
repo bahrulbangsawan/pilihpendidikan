@@ -181,110 +181,6 @@
       "type": "string",
       "enum": ["web", "cli", "mcp", "system", "legacy_migration"]
     },
-    "CloudErrorClass": {
-      "type": "string",
-      "enum": [
-        "network",
-        "timeout",
-        "http_5xx",
-        "rate_limited",
-        "access_denied",
-        "challenge_detected",
-        "robots_disallowed",
-        "not_found",
-        "source_closed",
-        "source_unavailable",
-        "parse_error",
-        "schema_invalid",
-        "selector_drift",
-        "unsupported_content",
-        "policy_blocked",
-        "cancelled",
-        "auth_required",
-        "engine_unavailable",
-        "invalid_config"
-      ]
-    },
-    "CloudRunKind": {
-      "type": "string",
-      "enum": ["scrape", "directory", "probe"]
-    },
-    "CloudRunStatus": {
-      "type": "string",
-      "enum": [
-        "queued",
-        "running",
-        "succeeded",
-        "partial",
-        "failed",
-        "blocked",
-        "auth_required",
-        "rate_limited",
-        "unsupported",
-        "skipped"
-      ]
-    },
-    "CloudRunTrigger": {
-      "type": "string",
-      "enum": ["schedule", "manual", "retry"]
-    },
-    "CloudSourceCategory": {
-      "type": "string",
-      "enum": [
-        "job_board",
-        "aggregator",
-        "freelance_marketplace",
-        "talent_network",
-        "staffing_service",
-        "tutoring_platform",
-        "content_marketplace",
-        "community",
-        "directory",
-        "defunct",
-        "unknown"
-      ]
-    },
-    "CloudSourceHealth": {
-      "type": "string",
-      "enum": [
-        "ACTIVE",
-        "FAILED",
-        "BLOCKED",
-        "AUTH_REQUIRED",
-        "RATE_LIMITED",
-        "UNSUPPORTED"
-      ]
-    },
-    "CloudSourceOrigin": {
-      "type": "string",
-      "enum": ["default", "directory", "operator"]
-    },
-    "CloudSourceStatus": {
-      "type": "string",
-      "enum": [
-        "ACTIVE",
-        "DISABLED",
-        "SCRAPING",
-        "FAILED",
-        "BLOCKED",
-        "AUTH_REQUIRED",
-        "RATE_LIMITED",
-        "UNSUPPORTED"
-      ]
-    },
-    "CloudStrategy": {
-      "type": "string",
-      "enum": [
-        "json_api",
-        "rss",
-        "json_ld",
-        "embedded_json",
-        "html_selectors",
-        "browser",
-        "ai",
-        "none"
-      ]
-    },
     "CredentialKind": {
       "type": "string",
       "enum": [
@@ -432,9 +328,7 @@
         "JOBS_AUTO_MODE_ENABLED",
         "JOBS_EMAIL_SERVER_SEND_ENABLED",
         "AI_DISABLED",
-        "JOBS_LEGACY_BACKEND",
-        "JOBS_CLOUD_DISCOVERY_ENABLED",
-        "JOBS_CLOUD_AI_ENABLED"
+        "JOBS_LEGACY_BACKEND"
       ]
     },
     "FileKind": {

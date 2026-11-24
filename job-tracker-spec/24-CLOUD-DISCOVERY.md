@@ -1,5 +1,11 @@
 # 24 — Cloud Discovery of Remote-Job Boards
 
+> **Removed (2026-11-24).** Cloud discovery was removed: the scraper
+> (`apps/jobs-scraper`) and the `apps/api` side (the hourly dispatch, the
+> `jobs-scrape` queues, the `SCRAPER` binding and the cloud catalog routes).
+> Its D1 tables and applied migrations stay, unused. This document is kept as
+> history; it no longer describes anything that ships.
+
 A server-side pipeline that keeps a curated catalog of public remote-job
 boards fresh every hour on Cloudflare, without giving up the discovery rules
 of 15. Decisions D-37 … D-41 (00 §4). OpenSpec change:

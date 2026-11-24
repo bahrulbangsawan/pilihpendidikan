@@ -6,10 +6,11 @@ pilihpendidikan hosts browser-based document builders for students and job
 seekers — a CV builder, an invoice builder and an Apple Developer Academy
 portfolio builder — plus the backend Worker that stores their documents and
 exposes them to AI assistants over MCP, and the Job Tracker
-(`job-tracker-spec/`): a web dashboard (`apps/jobs`), a local Python CLI
-(`apps/jobs-cli`, `pilih-jobs`) that runs discovery and browser automation on
-the user's machine, and the `/api/v1` API inside `apps/api` as the single
-source of truth. The apps were extracted from the
+(`job-tracker-spec/`): a web dashboard (`apps/jobs`) and the `/api/v1` API
+inside `apps/api` as the single source of truth. The local Python CLI
+(`apps/jobs-cli`) and the cloud discovery scraper (`apps/jobs-scraper`) were
+removed in November 2026; the API's CLI-facing routes remain without a
+client. The apps were extracted from the
 `bahrul` monorepo with their git history and now live on
 `*.pilihpendidikan.com`.
 
@@ -25,11 +26,10 @@ source of truth. The apps were extracted from the
 - **Icons**: lucide-react
 - **Font**: Inter Variable 4.0 (opsz axis) via `@fontsource-variable/inter`, the only family
 - **Lint/format**: Biome 2.5 with the Ultracite rule set
-- **Tests**: Vitest (apps), `bun test` (`apps/api`, `packages/jobs-contracts`, `packages/cv-engine`), pytest (`apps/jobs-cli`)
-- **Contracts**: Zod 4 in `packages/jobs-contracts` → committed JSON Schema → generated Pydantic v2 models for the CLI (D-20)
+- **Tests**: Vitest (apps), `bun test` (`apps/api`, `packages/jobs-contracts`, `packages/cv-engine`)
+- **Contracts**: Zod 4 in `packages/jobs-contracts` → committed JSON Schema (D-20)
 - **Job Tracker backend**: D1 `pilihpendidikan-jobs` (`JOBS_DB`), R2 `pilihpendidikan-jobs-files` (`JOBS_FILES`), Queue `jobs-ai` + DLQ `jobs-ai-dlq`, feature flags in `DB.feature_flags`; OpenAI (Decisions + Responses, `store: false`) called only from `apps/api`
-- **CLI**: Python 3.12 via `uv` (hatchling), Typer, httpx, keyring, Scrapling `[fetchers]` (no stealth features, D-16), Playwright for Python
-- **Language**: TypeScript, plus Python for `apps/jobs-cli`
+- **Language**: TypeScript
 
 ## Workspace Apps & Packages
 
@@ -39,9 +39,8 @@ source of truth. The apps were extracted from the
 | `apps/cv` | CV builder (four templates, PDF + JSON export) | `4003` | `cv.pilihpendidikan.com` (Worker `cv-pilihpendidikan`) |
 | `apps/invoice` | Invoice builder with Indonesian region data | `4004` | `invoice.pilihpendidikan.com` (Worker `invoice-pilihpendidikan`) |
 | `apps/portfolio` | Apple Developer Academy portfolio builder (A4 landscape) | `4005` | `portfolio.pilihpendidikan.com` (Worker `portfolio-pilihpendidikan`) |
-| `apps/api` | Backend Worker: cloud save, sign-in, tokens, OAuth (MCP clients + the `pilih-jobs-cli` first-party client), MCP server, and the Job Tracker API `/api/v1/*` with its queue consumer and crons | `8788` (wrangler dev) | `api.pilihpendidikan.com` |
+| `apps/api` | Backend Worker: cloud save, sign-in, tokens, OAuth (MCP clients; the `pilih-jobs-cli` first-party client is registered but unused), MCP server, and the Job Tracker API `/api/v1/*` with its queue consumer and crons | `8788` (wrangler dev) | `api.pilihpendidikan.com` |
 | `apps/jobs` | Job Tracker dashboard (TanStack Start SSR, BFF session cookie, Cursor design system) | `4007` | `jobs.pilihpendidikan.com` (Worker `jobs-pilihpendidikan`; not deployed, hub entry `soon`) |
-| `apps/jobs-cli` | `pilih-jobs` Python CLI (uv project; `package.json` is a Turborepo shim): discovery, browser agent, worker, sync | — | PyPI `pilih-jobs` (not published) |
 | `apps/design` | Cursor design system page (Vite SPA, renders `@rulisme/ui` from source) | `4006` | not deployed |
 | `packages/ui` | `@rulisme/ui` shared components and the Cursor theme (apps compile it from `src/`; `dist/` for package exports) | — | — |
 | `packages/config` | `@pilihpendidikan/config`: `tsconfig.base.json`, `motion.css` | — | — |
@@ -70,8 +69,8 @@ source of truth. The apps were extracted from the
 
 ### Testing Strategy
 
-- Vitest per app, `bun test` for `apps/api` and the two TS packages, pytest for `apps/jobs-cli` (`bun run test` fans out through Turborepo; the Python leg needs `uv`, `scripts/require-uv.sh`)
-- Spec-numbered tests carry their id in the title (`T6-03 …`, `test_T20_01_…`, `S-31 …`)
+- Vitest per app, `bun test` for `apps/api` and the two TS packages (`bun run test` fans out through Turborepo)
+- Spec-numbered tests carry their id in the title (`T6-03 …`, `S-31 …`)
 - `bun run check` must pass before committing; `bun run build` must succeed for every app
 - Browser checks with `agent-browser` against the dev servers
 
@@ -90,8 +89,8 @@ source of truth. The apps were extracted from the
 ## Important Constraints
 
 - Printed documents are ink on white paper inside the dark Cursor chrome: Inter only, no uppercase or letter-spacing, print ink colours, print sizes and the static weights 400 / 600 / 700 (the PDFs embed `@fontsource/inter`)
-- No deploys, DNS changes or remote data migrations without the owner's approval. For the Job Tracker this includes creating `JOBS_DB`, `JOBS_FILES` and the `jobs-ai` queues, `OPENAI_API_KEY`, the legacy `JOBS_KV` → `JOBS_DB` migration `--execute`, flipping D-33 flags in production, and publishing `pilih-jobs`
-- Discovery never uses Scrapling's stealth features and never touches LinkedIn or Indeed (D-16, D-17); submissions are never inferred (D-18) and a lease lost after `submit_intent` is never retried (D-19); `auto` mode stays behind `JOBS_AUTO_MODE_ENABLED` and the A-07 legal review
+- No deploys, DNS changes or remote data migrations without the owner's approval. For the Job Tracker this includes creating `JOBS_DB`, `JOBS_FILES` and the `jobs-ai` queues, `OPENAI_API_KEY`, the legacy `JOBS_KV` → `JOBS_DB` migration `--execute`, and flipping D-33 flags in production
+- Submissions are never inferred (D-18) and a lease lost after `submit_intent` is never retried (D-19); `auto` mode stays behind `JOBS_AUTO_MODE_ENABLED` and the A-07 legal review
 
 ## External Dependencies
 
@@ -99,4 +98,3 @@ source of truth. The apps were extracted from the
 - `og.bahrul.me` (public OG image renderer)
 - `api.pilihpendidikan.com` (`apps/api`) for cloud save, auth, MCP and the Job Tracker API
 - OpenAI API (Decisions `gpt-6-luna`, Responses Structured Outputs), from `apps/api` only (D-12)
-- Job sources: official ATS JSON board APIs (Greenhouse, Lever, Ashby, SmartRecruiters, Workable), Workday (opt-in), career pages; PyPI for the CLI

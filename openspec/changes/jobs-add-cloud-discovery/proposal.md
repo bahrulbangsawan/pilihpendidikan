@@ -1,5 +1,11 @@
 # Change: Cloud discovery of remote-job boards
 
+> **Removed (2026-11-24).** Cloud discovery was removed: the scraper
+> (`apps/jobs-scraper`) and the `apps/api` side (the hourly dispatch, the
+> `jobs-scrape` queues, the `SCRAPER` binding and the cloud catalog routes).
+> Its D1 tables and applied migrations stay, unused. This change is kept as history
+> and is no longer validated in CI.
+
 ## Why
 
 Discovery runs only on the user's machine today (D-16, D-36): nothing is

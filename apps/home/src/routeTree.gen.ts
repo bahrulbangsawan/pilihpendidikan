@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
-import { Route as BotRouteImport } from './routes/bot'
 import { Route as IdRouteImport } from './routes/id'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 
@@ -23,11 +22,6 @@ const IndexRoute = IndexRouteImport.update({
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
   path: '/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BotRoute = BotRouteImport.update({
-  id: '/bot',
-  path: '/bot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IdRoute = IdRouteImport.update({
@@ -44,14 +38,12 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/bot': typeof BotRoute
   '/id': typeof IdRoute
   '/llms.txt': typeof LlmsDottxtRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/bot': typeof BotRoute
   '/id': typeof IdRoute
   '/llms.txt': typeof LlmsDottxtRoute
 }
@@ -59,22 +51,20 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/bot': typeof BotRoute
   '/id': typeof IdRoute
   '/llms.txt': typeof LlmsDottxtRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$' | '/bot' | '/id' | '/llms.txt'
+  fullPaths: '/' | '/$' | '/id' | '/llms.txt'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/bot' | '/id' | '/llms.txt'
-  id: '__root__' | '/' | '/$' | '/bot' | '/id' | '/llms.txt'
+  to: '/' | '/$' | '/id' | '/llms.txt'
+  id: '__root__' | '/' | '/$' | '/id' | '/llms.txt'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
-  BotRoute: typeof BotRoute
   IdRoute: typeof IdRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
 }
@@ -93,13 +83,6 @@ declare module '@tanstack/react-router' {
       path: '/$'
       fullPath: '/$'
       preLoaderRoute: typeof SplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bot': {
-      id: '/bot'
-      path: '/bot'
-      fullPath: '/bot'
-      preLoaderRoute: typeof BotRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/id': {
@@ -122,7 +105,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
-  BotRoute: BotRoute,
   IdRoute: IdRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
 }

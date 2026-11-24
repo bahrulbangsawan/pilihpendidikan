@@ -1,5 +1,10 @@
 # 18 — Browser Automation
 
+> **Removed (2026-11-24).** The `pilih-jobs` CLI (`apps/jobs-cli`) was
+> removed from the repository with its CI, install scripts and the `e2e/`
+> suite, before it was ever published. This document is kept as history; it
+> no longer describes anything that ships.
+
 This document specifies how the `pilih-jobs` CLI drives a real browser on the
 user's machine to fill and submit job applications: the technology choice,
 the three browser modes, profile and session handling, and the executor that

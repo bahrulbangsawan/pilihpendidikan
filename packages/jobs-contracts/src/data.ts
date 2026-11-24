@@ -1,9 +1,8 @@
 // Typed, validated access to the package's JSON data files: the skills
-// dictionary (07 §3 F1), title families (07 §3 F2) and the Connect CLI
-// commands (22 §12). The files themselves are exported too
+// dictionary (07 §3 F1) and title families (07 §3 F2). The files themselves
+// are exported too
 // (`@pilihpendidikan/jobs-contracts/skills-dictionary.json`, …).
 import { z } from "zod";
-import cliCommandsFile from "../cli-commands.json" with { type: "json" };
 import skillsFile from "../skills-dictionary.json" with { type: "json" };
 import titleFamiliesFile from "../title-families.json" with { type: "json" };
 import { normalizeText } from "./fingerprint";
@@ -65,51 +64,10 @@ export const TitleFamiliesSchema = defineSchema(
 );
 export type TitleFamilies = z.infer<typeof TitleFamiliesSchema>;
 
-const perOs = z.object({
-  macos: z.string().min(1),
-  linux: z.string().min(1),
-  windows: z.string().min(1),
-});
-const labelledCommand = z.object({
-  id: z.string().min(1),
-  label: z.string().min(1),
-  command: z.string().min(1),
-});
-
-export const CliCommandsSchema = defineSchema(
-  "data",
-  "CliCommands",
-  z.object({
-    version: z.literal(1),
-    description: z.string(),
-    package: z.string(),
-    executable: z.string(),
-    alias: z.string(),
-    requirements: z.string(),
-    install_uv: perOs.extend({ docs_url: z.string().url() }),
-    steps: z.array(
-      z.object({
-        id: z.string().min(1),
-        title: z.string().min(1),
-        commands: perOs,
-        note: z.string(),
-      })
-    ),
-    alternatives: z.array(labelledCommand.extend({ available: z.boolean() })),
-    step_up: z.array(labelledCommand),
-    troubleshooting: z.array(labelledCommand),
-    upgrade: z.object({ uv: z.string(), pipx: z.string() }),
-    uninstall: z.string(),
-  })
-);
-export type CliCommands = z.infer<typeof CliCommandsSchema>;
-
 export const SKILLS_DICTIONARY: SkillsDictionary =
   SkillsDictionarySchema.parse(skillsFile);
 export const TITLE_FAMILIES: TitleFamilies =
   TitleFamiliesSchema.parse(titleFamiliesFile);
-export const CLI_COMMANDS: CliCommands =
-  CliCommandsSchema.parse(cliCommandsFile);
 
 let skillIndex: Map<string, string> | null = null;
 

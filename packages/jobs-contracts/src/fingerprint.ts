@@ -1,7 +1,7 @@
 // Posting fingerprints (`fp1`, 03 §4.2), content hashes and dedupe groups.
 //
-// The CLI re-implements every function here in Python and must reproduce
-// `test-vectors/*.json` byte for byte, so each step is spelled out. Hashing
+// Any other implementation must reproduce `test-vectors/*.json` byte for byte
+// (the removed Python CLI did), so each step is spelled out. Hashing
 // uses WebCrypto (`crypto.subtle`), so the module runs unchanged in Workers,
 // Bun and browsers. Registrable domains come from the vendored Public Suffix
 // List (`psl/public_suffix_list.dat`, compiled into `psl-data.ts`).

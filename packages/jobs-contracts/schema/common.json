@@ -84,16 +84,6 @@
       "required": ["binary", "content_type"],
       "description": "Marker: the HTTP body is raw bytes, not JSON (headers carry the metadata)"
     },
-    "CloudRunId": {
-      "type": "string",
-      "pattern": "^crn_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
-      "description": "cloud_run id (crn_<ULID>)"
-    },
-    "CloudSourceId": {
-      "type": "string",
-      "pattern": "^csr_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
-      "description": "cloud_source id (csr_<ULID>)"
-    },
     "CountryCode": {
       "type": "string",
       "pattern": "^[A-Z]{2}$",
@@ -377,8 +367,8 @@
     },
     "UserJobSourceId": {
       "type": "string",
-      "pattern": "^(?:src|csr)_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
-      "description": "job source id (src_<ULID>) or cloud source id (csr_<ULID>)"
+      "pattern": "^src_[0-7][0-9A-HJKMNP-TV-Z]{25}$",
+      "description": "job source id (src_<ULID>)"
     }
   }
 }

@@ -8,6 +8,15 @@ cross-platform CLI (`apps/jobs-cli`) that runs Scrapling discovery and
 Playwright browser automation on the user's machine, and the Cloudflare backend
 (`apps/api`, extended) that is the single source of truth.
 
+> **Update 2026-11-24: the CLI and the scraper were removed.** The local CLI
+> (`apps/jobs-cli`, documents 15, 16, 18, 22) and cloud discovery (the
+> `apps/jobs-scraper` container and the `apps/api` side, document 24) are gone
+> from the repository, with the CLI's CI, install scripts and the `e2e/`
+> suite. What ships is the dashboard and `/api/v1`. The API's CLI-facing parts
+> (devices, task claims and leases, the AI proxy, the CLI OAuth client;
+> documents 17, 19, 20, 21) remain, unused, behind flags that stay off. The
+> documents are kept as history and each carries a note.
+
 > **Roles in one line each**
 > - **`apps/jobs-cli`** is the *local execution engine* (discovery, browser automation, CV attachment).
 > - **Cloudflare (`apps/api` + D1 + R2 + Queues)** is the *centralized source of truth*.

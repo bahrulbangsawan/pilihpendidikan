@@ -1,5 +1,10 @@
 # 16 — Local CLI Architecture (`apps/jobs-cli`)
 
+> **Removed (2026-11-24).** The `pilih-jobs` CLI (`apps/jobs-cli`) was
+> removed from the repository with its CI, install scripts and the `e2e/`
+> suite, before it was ever published. This document is kept as history; it
+> no longer describes anything that ships.
+
 The CLI is the **local execution engine**. It runs Scrapling discovery,
 Playwright browser automation and CV attachment on the user's machine, and
 syncs every result to Cloudflare, the source of truth. This document covers the

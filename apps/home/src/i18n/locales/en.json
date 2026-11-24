@@ -14,7 +14,6 @@
     "home": "Pilih Pendidikan home",
     "features": "Features",
     "exports": "What you get",
-    "crawler": "Crawler",
     "menu": "Menu",
     "menuTitle": "Pilih Pendidikan"
   },
@@ -205,7 +204,6 @@
   "about": {
     "heading": "Built for students and job seekers",
     "body": "Every builder is free, works in English and Bahasa Indonesia, and keeps your documents in your browser until you save them.",
-    "link": "How our crawler works",
     "shotAlt": "The job tracker's stats page"
   }
 }

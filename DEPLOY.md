@@ -18,8 +18,7 @@ backend.** After each deploy, the hub picks the service up through
 
 The Job Tracker (D1 `pilihpendidikan-jobs`, R2, queues, the legacy jobs
 migration, `apps/jobs`) has its own ordered plan in [Job Tracker](#job-tracker),
-CLI releases are in [pilih-jobs CLI releases](#pilih-jobs-cli-releases), and
-the [Release notes](#release-notes) list what changes for existing users.
+and the [Release notes](#release-notes) list what changes for existing users.
 
 ## Hub: pilihpendidikan.com (apps/home)
 
@@ -222,7 +221,7 @@ The hub links a service only when its entry in
 deploy: a `"live"` entry is a public link. For each of `cv`, `invoice`,
 `portfolio`, `api` and `jobs`, in that service's own order above:
 
-1. **Deploy the subdomain** (step 4 for `api`, step 6 for the apps, J1–J7 of
+1. **Deploy the subdomain** (step 4 for `api`, step 6 for the apps, J1–J6 of
    [Job Tracker](#job-tracker) for `jobs`).
 2. **Smoke-test it on its real URL:**
    - `cv` / `invoice` / `portfolio`: `curl -sI https://<app>.pilihpendidikan.com`
@@ -232,7 +231,7 @@ deploy: a `"live"` entry is a public link. For each of `cv`, `invoice`,
      sign-in that delivers its email). Flipping `api` publishes the MCP
      endpoint and the `/connect` link on the hub.
    - `jobs`: the J6 checks with `JOBS_V1_ENABLED` on (sign in, the board
-     loads, `/cli` shows the install commands).
+     loads, a card moves).
 3. **Flip its hub status:** change its one line in
    `apps/home/src/config/services.ts` from `status: "soon"` to
    `status: "live"`, then `bun run test` in `apps/home` (the link-guard tests
@@ -256,23 +255,25 @@ To take a service off the hub, set it back to `"soon"` and redeploy the hub.
 
 ## Job Tracker
 
-The api's `/api/v1`, the `apps/jobs` dashboard and the `pilih-jobs` CLI.
-The Job Tracker (`job-tracker-spec/`) is implemented and tested locally but
-**nothing in this section has been run** (status 2026-10-13): no resource is
-created, `REPLACE_WITH_JOBS_DB_ID` is still a placeholder, no migration ran
-remotely, no flag changed, `apps/jobs` is not deployed and the CLI is not on
-PyPI. Every step marked **[owner]** creates a resource, writes data, deploys,
-changes a flag or publishes, and needs the owner's go-ahead (02 §7, 14 §8).
+The api's `/api/v1` and the `apps/jobs` dashboard. The `pilih-jobs` CLI and
+the cloud discovery scraper were removed in November 2026, before either was
+published or deployed; the API keeps its CLI-facing routes (devices, task
+claims and leases, the AI proxy, the CLI OAuth client) behind flags that stay
+off. The Job Tracker (`job-tracker-spec/`) is implemented and tested locally
+but **nothing in this section has been run** (status 2026-10-13): no resource
+is created, `REPLACE_WITH_JOBS_DB_ID` is still a placeholder, no migration ran
+remotely, no flag changed and `apps/jobs` is not deployed. Every step marked
+**[owner]** creates a resource, writes data, deploys, changes a flag or
+publishes, and needs the owner's go-ahead (02 §7, 14 §8).
 
 Order in one line (02 §7): **resources → schema → deploy api dark → legacy
 migration (dry run, execute, verify) → flags on → deploy `apps/jobs` →
-publish the CLI → flip `jobs` on the hub.**
+flip `jobs` on the hub.**
 
 ### J0. Before you start
 
-- `bun install`, `uv sync` in `apps/jobs-cli`, then `bun run check`,
-  `bun run check-types` and `bun run build` pass on the commit you deploy, and
-  `bun run e2e` passes on it (13 §5, about 30 minutes; see `e2e/README.md`).
+- `bun install`, then `bun run check`, `bun run check-types` and
+  `bun run build` pass on the commit you deploy.
 - Release gates (13 §8) that apply before any production deploy of the jobs
   routes: **G1** the isolation sweep S-31 is green (`apps/api`
   `src/jobs/isolation-sweep.test.ts`, part of `bun run check`); **G2** the
@@ -350,7 +351,8 @@ bunx wrangler d1 migrations apply pilihpendidikan-jobs --remote # migrations-job
 `0002` adds users, OAuth grants and refresh tokens, devices, the support
 access log and `feature_flags` with every Job Tracker flag off and
 `JOBS_LEGACY_BACKEND = "kv"`; `0003` registers the first-party
-`pilih-jobs-cli` OAuth client.
+`pilih-jobs-cli` OAuth client (kept: applied migrations never change; the CLI
+itself was removed).
 
 ### J3. Deploy the api dark [owner]
 
@@ -367,7 +369,7 @@ Smoke-check:
 ```sh
 curl -s https://api.pilihpendidikan.com/health
 curl -s https://api.pilihpendidikan.com/api/v1/meta        # 200, "features": [] while dark
-curl -s https://api.pilihpendidikan.com/.well-known/oauth-authorization-server   # revocation_endpoint, CLI scopes
+curl -s https://api.pilihpendidikan.com/.well-known/oauth-authorization-server   # revocation_endpoint
 curl -s -H "Authorization: Bearer <a personal token>" \
   -o /dev/null -w '%{http_code}\n' https://api.pilihpendidikan.com/api/v1/board  # 404 while JOBS_V1_ENABLED is off
 ```
@@ -420,9 +422,9 @@ D1 must be rewound,
 | Flag | Turns on | When |
 |---|---|---|
 | `JOBS_V1_ENABLED` | the whole `/api/v1` (dashboard, discovery, sync) | after J3–J4; no redeploy needed |
-| `JOBS_CLI_LOGIN_ENABLED` | OAuth login of `pilih-jobs` and device registration | with the first CLI release (J7) |
-| `JOBS_AUTOMATION_ENABLED` | browser agent tasks, assisted and approval modes | M5: after the internal pilot; A-07 review started |
-| `JOBS_AUTO_MODE_ENABLED` | unattended `auto` rules | M7: only after the A-07 legal review closes (G7) |
+| `JOBS_CLI_LOGIN_ENABLED` | OAuth login of the removed `pilih-jobs` CLI and device registration | keep off: the CLI was removed |
+| `JOBS_AUTOMATION_ENABLED` | browser agent tasks (run by the removed CLI) | keep off |
+| `JOBS_AUTO_MODE_ENABLED` | unattended `auto` rules (run by the removed CLI) | keep off |
 | `JOBS_EMAIL_SERVER_SEND_ENABLED` | e-mail applications sent by the api | only if A-03 holds |
 | `AI_DISABLED` | kill switch: scoring falls back to deterministic, tailoring and agent AI calls stop | `true` in an OpenAI incident (22 §10.2) |
 
@@ -434,8 +436,7 @@ curl -s https://api.pilihpendidikan.com/api/v1/meta        # "features": ["jobs_
 Before AI features reach users outside the owner (M4): the privacy notice
 covers AI processing and retention, ZDR is requested from OpenAI, and the
 A-09 legal review is done (G6); per-user budgets are live (`JOBS_AI_MONTHLY_BUDGET_USD`,
-G8). `JOBS_MIN_CLI_VERSION` / `JOBS_RECOMMENDED_CLI_VERSION` are vars in
-`apps/api/wrangler.jsonc` and change only with an api deploy.
+G8).
 
 ### J6. Deploy `apps/jobs` [owner]
 
@@ -460,29 +461,16 @@ curl -sI https://jobs.pilihpendidikan.com/id   # redirects to / and sets the job
 ```
 
 In a browser: request a sign-in link, open it, press Continue and land on the
-board (e2e S-01 covers this flow; the api's confirm page must let its form
-redirect to the dashboard origin), then check that `document.cookie` shows no
-bearer, a card moves, `/cli` lists the install commands, and
+board (the api's confirm page must let its form redirect to the dashboard
+origin), then check that `document.cookie` shows no bearer, a card moves, and
 `agent-browser errors` is empty.
 
-### J7. Publish the CLI [owner]
-
-[pilih-jobs CLI releases](#pilih-jobs-cli-releases) below, then
-`flag JOBS_CLI_LOGIN_ENABLED true` and check `pilih-jobs login` →
-`pilih-jobs status` against production from a clean machine.
-
-### J8. Going live on the hub [owner] (12 §15)
+### J7. Going live on the hub [owner] (12 §15)
 
 [Going live](#going-live-flip-a-service-on-the-hub) for `jobs`: smoke-test
 `https://jobs.pilihpendidikan.com` (J6), flip `jobs` to `"live"` in
 `apps/home/src/config/services.ts` (its hub shortcut is `J`), `bun run test`
-in `apps/home`, redeploy the hub. The same hub deploy publishes
-`https://pilihpendidikan.com/install-cli.sh` and `install-cli.ps1`: once the
-CLI is on PyPI, set `available: true` on the `install_script` (and, when the
-tap exists, `homebrew`) entries of `packages/jobs-contracts/cli-commands.json`
-and redeploy `apps/jobs`. Check `curl -sI https://pilihpendidikan.com/install-cli.ps1`
-and `irm https://pilihpendidikan.com/install-cli.ps1` on Windows (the script
-must come back as text).
+in `apps/home`, redeploy the hub.
 
 ### Rollback (Job Tracker)
 
@@ -492,167 +480,6 @@ must come back as text).
 - Workers: `bunx wrangler rollback` in `apps/api` / `apps/jobs`.
 - `JOBS_DB`: `bunx wrangler d1 time-travel restore pilihpendidikan-jobs --timestamp=<ISO>`
   (or `--bookmark=`; in place, the undo bookmark is printed).
-- A bad CLI release: raise `JOBS_MIN_CLI_VERSION` above it (an owner-approved
-  api deploy; old CLIs get `426`), yank it on PyPI, publish the fix (22 §10.4).
-
----
-
-## Cloud discovery (job-tracker-spec/24)
-
-The hourly remote-job pipeline: `apps/api` cron `0 * * * *` → queue
-`jobs-scrape` → `apps/api` consumer → service binding `SCRAPER` → Worker
-`jobs-scraper-pilihpendidikan` (`apps/jobs-scraper`) → Cloudflare Container
-(Python + Scrapling). It ships dark behind `JOBS_CLOUD_DISCOVERY_ENABLED`.
-Needs the **Workers Paid** plan (Containers). Every step is [owner].
-
-**Order matters:** the next `apps/api` deploy carries the `jobs-scrape`
-producer/consumers and the `SCRAPER` binding, so the queues and the scraper
-Worker must exist first, or `wrangler deploy` of the api fails. The scraper in
-turn binds the api's `CloudScheduler` RPC entrypoint (the scheduler fallback,
-24 §6.6): on a first install deploy the scraper without that binding or deploy
-the api once before it; afterwards, when both change, deploy the api first.
-
-### C1. Resources
-
-```sh
-bunx wrangler queues create jobs-scrape
-bunx wrangler queues create jobs-scrape-dlq
-```
-
-### C2. Deploy the scraper (Docker running locally)
-
-```sh
-cd apps/jobs-scraper
-bun run test                    # Worker routing + pytest (SSRF, strategies, errors)
-bunx wrangler deploy            # builds the linux/amd64 image, pushes it, creates the container app
-```
-
-The Worker has no route and `workers_dev: false`: only the api's service
-binding reaches it. The first container start takes a few minutes after the
-first deploy.
-
-### C3. Migrate and deploy the api
-
-```sh
-cd apps/api
-bunx wrangler d1 time-travel info pilihpendidikan-jobs              # bookmark
-bunx wrangler d1 migrations apply pilihpendidikan --remote          # 0004_cloud_discovery_flags.sql (flags, dark)
-bunx wrangler d1 migrations apply pilihpendidikan-jobs --remote     # 0002_cloud_discovery.sql (ADD COLUMN only + new tables)
-cd ../.. && bun run build && cd apps/api && bun run deploy          # jobs-scrape consumers, hourly cron, SCRAPER binding
-```
-
-Set `ADMIN_EMAILS` (a var in `apps/api/wrangler.jsonc`) to the operators'
-emails before this deploy: only they can edit the catalog, run, retry and
-refresh. It also grants document support access (D-26 keeps it away from
-Job Tracker data). The catalog seeds itself from
-`packages/jobs-contracts/cloud-sources.json` on the first read of
-`/sources` or the first hourly tick.
-
-### C4. Turn it on
-
-```sh
-flag JOBS_CLOUD_DISCOVERY_ENABLED true      # hourly dispatch, manual runs, weekly directory refresh
-# optional, after the AI privacy items of J5:
-flag JOBS_CLOUD_AI_ENABLED true             # AI fallback for sources with ai_enabled; budget JOBS_CLOUD_AI_MONTHLY_BUDGET_USD
-```
-
-Smoke test: open `/sources` as an operator, "Run now" on We Work Remotely,
-watch the run log turn `succeeded` with new jobs, follow the board and check
-the inbox. `bunx wrangler tail api-pilihpendidikan` shows
-`cloud_scrape_finished` lines; `bunx wrangler tail jobs-scraper-pilihpendidikan`
-the scraper.
-
-Before enabling a held-back board, review it: Working Nomads' terms ban
-using the service "to build a competitive product"; Remotive's API terms
-(≤ 4 calls a day, link back, no display to collect signups) need its written
-OK, and it currently challenges our crawler.
-
-### Browser Rendering (24 §4.4)
-
-The scraper Worker binds Cloudflare Browser Rendering (`"browser": {"binding":
-"BROWSER"}` in `apps/jobs-scraper/wrangler.jsonc`; Workers Paid, 10 browser-hours
-a month included, then $0.09 / hour). No resource to create. Sources opt in with
-`strategy: "browser"`, `allow_browser: true` and `strategy_config.renderer:
-"browser_rendering"` (seed: Dynamite Jobs, every 6 hours). A deploy that changes
-`apps/jobs-scraper/python` must roll out the container (plain `bun run deploy`,
-not `--containers-rollout=none`). Usage: Workers & Pages → Browser Rendering;
-renders log `page_rendered` in the run log.
-
-### Scheduler fallback (24 §6.6)
-
-If the api's Cron Triggers are not dispatched (check Workers & Pages →
-api-pilihpendidikan → Triggers → Past Events), the scraper Worker's
-`DispatchClock` alarm ticks the `*/5` and hourly schedules instead. It arms
-itself from api traffic (any request, at most every 10 min per isolate) and
-from the scraper's hourly cron. Check it with
-`bunx wrangler tail jobs-scraper-pilihpendidikan` (one
-`scheduler_clock_tick` line every 5 minutes) or in the api logs
-(`cloud_dispatch_done` on the hour).
-
-### Rollback (cloud discovery)
-
-- Instant: `flag JOBS_CLOUD_DISCOVERY_ENABLED false` (queued messages are
-  skipped, nothing new is dispatched); `flag JOBS_CLOUD_AI_ENABLED false`.
-- One source: disable it in `/sources` (or `PATCH enabled: false`).
-- Workers: `bunx wrangler rollback` in `apps/api` / `apps/jobs-scraper`.
-- Data: the migration only adds tables and nullable columns; cloud postings
-  are ordinary public postings (`cloud_source_id` set).
-
----
-
-## pilih-jobs CLI releases
-
-`.github/workflows/release-cli.yml` runs on a tag `cli-vX.Y.Z` (or
-`cli-vX.Y.Z-beta.N`) and follows 22 §7: verify (ruff, pyright, pytest) → the
-OS / Python matrix (`cli-matrix.yml`) and the e2e suite (`e2e.yml`) →
-contracts drift → `uv build`, CycloneDX SBOM from `uv.lock`, regenerated
-`THIRD_PARTY_NOTICES`, `SHA256SUMS` (also covering the hub's install scripts),
-rendered Homebrew formula and Scoop manifest → TestPyPI → PyPI via Trusted
-Publishing with PEP 740 attestations → GitHub release → (stable) packaging bot
-PRs → (stable) a PR raising `JOBS_RECOMMENDED_CLI_VERSION`. Nothing has been
-published yet.
-
-### One-time setup [owner]
-
-1. Decide A-11 (the MIT licence in `apps/jobs-cli/pyproject.toml`).
-2. On pypi.org and test.pypi.org add a **pending trusted publisher** for the
-   project `pilih-jobs`: repository `bahrulbangsawan/pilihpendidikan`,
-   workflow `release-cli.yml`, environment `pypi` (PyPI) / `testpypi`
-   (TestPyPI). No API token is stored anywhere.
-3. GitHub → Settings → Environments: `testpypi`, `pypi` and
-   `cli-version-bump`, each with the owner as required reviewer (the manual
-   gates of steps 6 and 9). Settings → Actions → General: allow GitHub Actions
-   to create pull requests (for the version-bump PR).
-4. Optional, M7: the tap `pilihpendidikan/homebrew-tap` and the bucket
-   `pilihpendidikan/scoop-bucket`, a bot token with contents + pull-request
-   write on both as the secret `PACKAGING_BOT_TOKEN`, and the variable
-   `PACKAGING_BOT = 1`. Before merging the first formula PR run
-   `brew install --build-from-source`, `brew test` and
-   `brew audit --strict --online` on macOS arm64 / x64 and Linux (the formula
-   is a template: `apps/jobs-cli/packaging/`).
-5. Optional nightly live checks (`nightly-live.yml`): the variable
-   `PILIH_JOBS_LIVE_CANARY = 1` (live adapter canaries), and `JOBS_AI_LIVE = 1`
-   plus the secret `OPENAI_API_KEY` (a separate, low-cap key) for the T7-11
-   Decisions contract test (A-01).
-
-### Each release [owner]
-
-1. Set the version in `apps/jobs-cli/src/pilih_jobs/version.py`
-   (`__version__ = "0.2.0"` or `"0.2.0-beta.1"`) and `pyproject.toml`
-   (`0.2.0` / `0.2.0b1`), `uv lock`, `bun run check` green, merge to `main`.
-2. `git tag cli-v0.2.0 && git push origin cli-v0.2.0`.
-3. Approve the `testpypi`, then the `pypi` deployment when the checks are
-   green; the GitHub release follows. A beta is a GitHub pre-release and
-   installs with `uv tool install --prerelease allow pilih-jobs`.
-4. Stable only: approve `cli-version-bump`, review and merge its PR, then
-   deploy `apps/api` (owner) for the new recommended version to show in
-   `/api/v1/meta`. Raise `JOBS_MIN_CLI_VERSION` only with 14 days' notice
-   through the recommended version first (13 §9), or as the bad-release kill
-   switch (22 §10.4).
-
-The install scripts (`apps/home/public/install-cli.sh`, `install-cli.ps1`)
-ship with the hub, not with a CLI release; each release lists their SHA-256
-in `SHA256SUMS` so a user can check the copy the hub serves.
 
 ---
 

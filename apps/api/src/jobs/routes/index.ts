@@ -10,7 +10,6 @@ import { routes as aiProxyRoutes } from "./ai-proxy/index";
 import { routes as analyticsRoutes } from "./analytics/index";
 import { routes as applicationsRoutes } from "./applications/index";
 import { routes as automationRoutes } from "./automation/index";
-import { routes as cloudRoutes } from "./cloud/index";
 import { routes as cvRoutes } from "./cv/index";
 import { routes as devicesRoutes } from "./devices/index";
 import { routes as discoveryRoutes } from "./discovery/index";
@@ -37,7 +36,6 @@ export const allRoutes: readonly RouteDef[] = [
   ...syncRoutes, // §11
   ...analyticsRoutes, // §12
   ...emailRoutes, // §13
-  ...cloudRoutes, // §15
 ];
 
 let table: ReturnType<typeof buildRouteTable> | null = null;

@@ -1,5 +1,10 @@
 # Change: Add the pilih-jobs CLI, local discovery and sync
 
+> **Removed (2026-11-24).** The `pilih-jobs` CLI (`apps/jobs-cli`) was
+> removed from the repository with its CI, install scripts and the `e2e/`
+> suite, before it was ever published. This change is kept as history and is no
+> longer validated in CI.
+
 ## Why
 
 The Job Tracker runs discovery and browser automation on the user's own

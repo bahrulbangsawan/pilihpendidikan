@@ -335,8 +335,6 @@ describe("TW-BFF requests are validated against the contracts before leaving the
       "/api/v1/inbox",
       "/api/v1/rules",
       "/api/v1/approvals",
-      "/api/v1/cloud-sources",
-      "/api/v1/cloud-discovery/",
     ];
     const leaked = WEB_ROUTE_KEYS.filter((key) =>
       automation.some((prefix) => key.split(" ")[1]?.startsWith(prefix))

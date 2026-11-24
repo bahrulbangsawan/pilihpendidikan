@@ -20,6 +20,19 @@ const SPEC_04 = join(
 );
 
 const JOBS_TABLES = Object.keys(ROW_CODECS);
+// Created by migrations-jobs/0002 for cloud discovery, which was removed; the
+// applied migration stays, so the tables exist with no codec or record.
+const RETIRED_JOBS_TABLES = [
+  "cloud_sources",
+  "cloud_runs",
+  "cloud_source_follows",
+  "cloud_state",
+];
+// Seeded dark by migrations/0004 for the same feature; unknown keys now.
+const RETIRED_FLAG_KEYS = [
+  "JOBS_CLOUD_DISCOVERY_ENABLED",
+  "JOBS_CLOUD_AI_ENABLED",
+];
 const SUBSECTION_RE = /^-- 2\.\d /;
 const SQL_BLOCK_RE = /```sql\n([\s\S]*?)```/g;
 
@@ -199,7 +212,7 @@ describe("TCORE-MIGRATION identity migrations 0002/0003 (04 §1, 17 §3.2)", () 
     ).toThrow("CHECK constraint failed");
   });
 
-  it("TCORE-MIGRATION seeds every D-33 flag dark (incl. the 24 cloud flags) and the CLI client of 17 §3.2", () => {
+  it("TCORE-MIGRATION seeds every D-33 flag dark (plus the retired cloud flags) and the CLI client of 17 §3.2", () => {
     const db = legacyDb();
     migrate(db);
     const flags = Object.fromEntries(
@@ -209,7 +222,9 @@ describe("TCORE-MIGRATION identity migrations 0002/0003 (04 §1, 17 §3.2)", () 
           .all() as Array<{ key: string; value: string }>
       ).map((row) => [row.key, row.value])
     );
-    expect(Object.keys(flags).sort()).toEqual([...FEATURE_FLAG_KEYS].sort());
+    expect(Object.keys(flags).sort()).toEqual(
+      [...FEATURE_FLAG_KEYS, ...RETIRED_FLAG_KEYS].sort()
+    );
     expect(flags).toEqual({
       JOBS_V1_ENABLED: "false",
       JOBS_CLI_LOGIN_ENABLED: "false",
@@ -315,7 +330,7 @@ describe("TCORE-JOBS-SCHEMA JOBS_DB migration 0001 (04 §2)", () => {
     )
       .map((t) => t.name)
       .sort();
-    expect(tables).toEqual([...JOBS_TABLES].sort());
+    expect(tables).toEqual([...JOBS_TABLES, ...RETIRED_JOBS_TABLES].sort());
     const indexSql = sqlite
       .query(
         "SELECT name, sql FROM sqlite_master WHERE type = 'index' AND sql IS NOT NULL"

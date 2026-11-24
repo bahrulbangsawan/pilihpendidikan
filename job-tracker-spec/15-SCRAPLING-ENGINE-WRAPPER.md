@@ -1,5 +1,10 @@
 # 15 — Scrapling Engine Wrapper and Source Adapters
 
+> **Removed (2026-11-24).** The `pilih-jobs` CLI (`apps/jobs-cli`) was
+> removed from the repository with its CI, install scripts and the `e2e/`
+> suite, before it was ever published. This document is kept as history; it
+> no longer describes anything that ships.
+
 This document specifies how the local CLI discovers jobs. **Scrapling is the
 mandatory scraping engine** (D-16). We wrap it in `ScraplingJobEngine` and put a
 plugin-style **source adapter registry** on top. Official ATS JSON APIs are used

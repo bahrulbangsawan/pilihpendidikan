@@ -17,8 +17,7 @@
 //
 // The same object also serves `scheduled` (crons, dispatched by
 // `controller.cron` in src/jobs/cron) and `queue` (the `jobs-ai` consumer in
-// src/jobs/queue, and the `jobs-scrape` consumer of cloud discovery in
-// src/jobs/cloud). `createApp(mcp, deps)` takes optional kernel dependencies
+// src/jobs/queue). `createApp(mcp, deps)` takes optional kernel dependencies
 // (a fake clock, a scripted AI provider) so tests drive all three.
 
 import { applyCors, handlePreflight } from "./cors";
@@ -27,8 +26,6 @@ import { jsonError } from "./http";
 import { runScheduled } from "./jobs/cron/index";
 import type { KernelDeps } from "./jobs/core/deps";
 import { dispatchV1, V1_PREFIX } from "./jobs/core/router";
-import { handleCloudBatch, isCloudQueue } from "./jobs/cloud/consumer";
-import { maybeEnsureSchedulerClock } from "./jobs/cron/fallback";
 import { handleJobsAiBatch } from "./jobs/queue/consumer";
 import { v1RouteTable } from "./jobs/routes/index";
 import { isLocalRequest } from "./origins";
@@ -129,9 +126,6 @@ export function createApp(mcp: McpHandlers, deps: KernelDeps = {}) {
       env: Env,
       ctx: ExecutionContext
     ): Promise<Response> {
-      // Keep the scraper Worker's scheduler clock armed (24 §6.6); throttled
-      // to one cheap call per isolate every 10 minutes, off the request path.
-      ctx.waitUntil(maybeEnsureSchedulerClock(env, Date.now()));
       return (
         httpsUpgrade(request) ??
         handlePreflight(request) ??
@@ -143,7 +137,6 @@ export function createApp(mcp: McpHandlers, deps: KernelDeps = {}) {
       env: Env,
       ctx: ExecutionContext
     ) {
-      ctx.waitUntil(maybeEnsureSchedulerClock(env, Date.now()));
       ctx.waitUntil(
         runScheduled(controller, env, ctx, deps).catch((err: unknown) => {
           console.error("scheduled run failed", {
@@ -157,10 +150,6 @@ export function createApp(mcp: McpHandlers, deps: KernelDeps = {}) {
       env: Env,
       ctx: ExecutionContext
     ): Promise<void> {
-      if (isCloudQueue(batch.queue)) {
-        await handleCloudBatch(batch, env, ctx, deps);
-        return;
-      }
       await handleJobsAiBatch(batch, env, ctx, deps);
     },
   } satisfies ExportedHandler<Env>;

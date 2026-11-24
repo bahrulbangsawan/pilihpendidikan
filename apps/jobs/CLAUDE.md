@@ -9,8 +9,9 @@ Scope: a **manual** job tracker — Board (kanban / list / table), application
 details, Stats, Profile, Settings. The automation surfaces (inbox, approvals,
 runs and the run monitor, rules, sources and the cloud catalog, CLI &
 devices, `/jobs/$ujbId`) were removed from the dashboard (round 3); their old
-URLs fall through to `$.tsx` and show the 404 page. The api, CLI and mock api
-still serve them.
+URLs fall through to `$.tsx` and show the 404 page. The api and the mock api
+still serve the routes behind them; the CLI that drove them was removed
+(November 2026).
 
 The look is the Cursor design system (cursor.com's dark theme) with reui.io's
 application layouts, **dark only**: next-themes pins `.dark` (`forcedTheme="dark"` in
@@ -83,7 +84,6 @@ select / menu options carry a lucide icon.
 - `bun run test` — Vitest (`vitest.config.ts`; DOM tests use `// @vitest-environment happy-dom` and `src/test/render.tsx`).
 - `bun run typecheck`, `bun run build`, `bunx biome check .` (from the repo root: `bunx biome check apps/jobs`).
 - `bun run deploy` — `wrangler deploy` (owner approval required; `DEPLOY.md` § Job Tracker J6).
-- Full-stack flows against the real api, CLI and browser: `bun run e2e` at the root (`e2e/web.test.ts`: S-01 sign-in, S-03 drag and drop). Scenarios that used the removed approvals / Apply tab / CLI screens now drive those steps through `/api/v1` (`e2e/README.md` § The dashboard after round 3).
 
 ## Deploy
 
@@ -110,8 +110,8 @@ The hub links the dashboard only after `jobs` is flipped to `"live"` in `apps/ho
 | `src/components/shell/` | `app-shell.tsx` (layout, global keys), `sidebar-nav.tsx` + `nav-items.ts`, `user-menu.tsx` (footer + profile dropdown), `top-bar.tsx` (breadcrumb, actions slot), `use-change-locale.ts` (page frame and settings layout come from `@rulisme/ui/blocks/page` and `blocks/settings`), ⌘K palette, `?` sheet, New-by-URL dialog, `ShellActions` context |
 | `src/components/board/`, `application/`, `bulk/`, `stats/`, `render/`, `profile/`, `settings/`, `sign-in/` | Screens. Shared: `rich-text.tsx`, `app-link.tsx`, `not-found.tsx` |
 | `src/i18n/` | `getT`, `useTranslation`; catalogues `locales/{en,id}.json` (same keys, tested) |
-| `src/test/` | Contract-valid fixtures (parsed with the contract schemas): `fixtures.ts` (board, applications), `fixtures-rest.ts` (CV variants, files, emails, analytics, plus the automation records the mock api still serves), `fixtures-cv.ts` (a fictional tailored CVData), `fixtures-cloud.ts` (fictional cloud boards, kept for the mock api); `render.tsx` (DOM harness), `dom-harness.tsx` (fake BFF transport, providers, async helpers for DOM tests) |
-| `scripts/mock-api.ts` + `scripts/mock/` | The dev mock api: shared state (`state.ts`: board, applications, devices, `detailExtras`, `extraEvents`, `fresh()` time shift), reply helpers (`types.ts`) and one module per area (`inbox`, `automation`, `devices`, `sources`, `cloud`, `analytics`, `cv`) |
+| `src/test/` | Contract-valid fixtures (parsed with the contract schemas): `fixtures.ts` (board, applications), `fixtures-rest.ts` (CV variants, files, emails, analytics, plus the automation records the mock api still serves), `fixtures-cv.ts` (a fictional tailored CVData); `render.tsx` (DOM harness), `dom-harness.tsx` (fake BFF transport, providers, async helpers for DOM tests) |
+| `scripts/mock-api.ts` + `scripts/mock/` | The dev mock api: shared state (`state.ts`: board, applications, devices, `detailExtras`, `extraEvents`, `fresh()` time shift), reply helpers (`types.ts`) and one module per area (`inbox`, `automation`, `devices`, `sources`, `analytics`, `cv`) |
 
 ## BFF rules (D-15, PLAN C7, 11 §4.1) — do not bend these
 

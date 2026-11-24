@@ -2,7 +2,6 @@ import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  CLI_COMMANDS,
   canonicalSkill,
   SKILLS_DICTIONARY,
   TITLE_FAMILIES,
@@ -203,17 +202,5 @@ describe("data files", () => {
       titleFamilyOf("Backend Developer")
     );
     expect(titleFamilyOf("Pastry Chef")).toBeNull();
-  });
-
-  test("TC-ROUNDTRIP CLI commands for /cli (22 §12)", () => {
-    const ids = CLI_COMMANDS.steps.map((step) => step.id);
-    expect(ids).toContain("install");
-    expect(ids).toContain("login");
-    const install = CLI_COMMANDS.steps.find((step) => step.id === "install");
-    expect(install?.commands.macos).toBe("uv tool install pilih-jobs");
-    expect(
-      CLI_COMMANDS.steps.find((step) => step.id === "browser")?.commands.windows
-    ).toBe("pilih-jobs browser install");
-    expect(CLI_COMMANDS.executable).toBe("pilih-jobs");
   });
 });

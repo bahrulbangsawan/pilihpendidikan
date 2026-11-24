@@ -1,5 +1,10 @@
 # 20 — Local ↔ Cloud Synchronization
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this document's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 This document defines how the `pilih-jobs` CLI exchanges data with Cloudflare.
 It covers what each side owns, the CLI's local SQLite store, the outbox
 (push), the change feed (pull), the concurrency and conflict rules, and how

@@ -2,7 +2,8 @@
 // candidate-action set, the field plan, and the four AI proxy calls.
 //
 // The object schemas below follow 19 §3 field for field, limits included.
-// They are written once here and generated into Pydantic for the CLI (D-20).
+// They are written once here (D-20). The CLI that sent them was removed
+// (2026-11-24); the api's AI proxy routes keep the contract.
 import { z } from "zod";
 import { LeaseIdSchema, TaskIdSchema } from "./ids";
 import type { VerificationVerdict } from "./enums";

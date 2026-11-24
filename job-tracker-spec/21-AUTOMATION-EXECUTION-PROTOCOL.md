@@ -1,5 +1,10 @@
 # 21 — Automation Execution Protocol (Remote → Local)
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this document's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 How work requested in `apps/jobs` (or by rules, MCP, or the CLI itself)
 reaches an authenticated local `pilih-jobs` worker. It covers how the task is
 claimed exactly once, how it is kept alive, cancelled, paused for approval and

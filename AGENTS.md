@@ -41,9 +41,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 | `apps/portfolio/src/components/portfolio-generator.tsx` | Portfolio editor shell, `MCP_API` |
 | `apps/portfolio/src/components/portfolio-data-model.ts` | Locked ADA portfolio data model and limits |
 | `apps/jobs/src/` | Job Tracker dashboard: `routes/` (screens), `functions/` (the only server functions: session, `bffRequest`, render), `server/runtime.server.ts` (env, API fetcher, cookies), `lib/api-routes.ts` (which `/api/v1` routes the web may call) |
-| `apps/jobs-cli/src/pilih_jobs/` | `pilih-jobs` CLI: `cli/` (one Typer module per command group), `auth/`, `sync/`, `discovery/` + `adapters/`, `browser/` + `agent/` + `policy/`, `tasks/` (worker, leases), `contracts/_generated/` (generated, never hand-edited) |
-| `apps/jobs-cli/packaging/` | Homebrew formula and Scoop manifest templates + `render.py` (filled per release by `release-cli.yml`; nothing is published from here) |
-| `packages/jobs-contracts/` | `@pilihpendidikan/jobs-contracts`: Zod contracts (`src/`), generated JSON Schema (`schema/`), test vectors, `adapters.json`, `cli-commands.json` (the `/cli` page), email templates |
+| `packages/jobs-contracts/` | `@pilihpendidikan/jobs-contracts`: Zod contracts (`src/`), generated JSON Schema (`schema/`), test vectors, `adapters.json`, email templates |
 | `packages/ui/src/styles/theme.css` | The Cursor theme: every token, type role, weight, radius, elevation, layout utility and the one dark scheme |
 | `apps/*/src/styles.css` | Four imports (tailwind, `motion.css`, `shadcn.css`, the theme) plus print-artifact CSS; no tokens (parity-checked) |
 | `apps/design/src/showcase/` | The design system page: one file per section, shared `layout.tsx`, `state-matrix.tsx`, `color-pair.tsx` |
@@ -51,27 +49,26 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 | `apps/*/public/{robots.txt,sitemap.xml,llms.txt}` | Crawler and agent discovery files |
 | `packages/ui/src/` | `@rulisme/ui`: the 61 shadcn components plus `rails`, `kbd`, `spinner`, `not-found` (`ui/`), `form/`, `reui/`, `hooks/` (`use-shortcut`, `use-mobile`), `lib/` (`utils`, `type-scale`) |
 | `packages/config/` | `tsconfig.base.json`, `motion.css` (Cursor motion: curve, `press`, `pulse-dot`, spinner) |
-| `scripts/` | Cursor style lint, theme / tailwind-merge / showcase / CV-template parity checks, `require-uv.sh` |
+| `scripts/` | Cursor style lint, theme / tailwind-merge / showcase / CV-template parity checks |
 | `apps/api/src/app.ts` | Backend router and dispatch order (`apps/api/CLAUDE.md` has the route table) |
 | `apps/api/src/jobs/` | Job Tracker API (`/api/v1`): `core/` (router kernel), `routes/` + `services/` + `repo/` per area (only `repo/` touches `JOBS_DB`), `ai/`, `queue/`, `cron/`, `legacy/` (the `/api/jobs` + MCP facade); rules in its `README.md` |
 | `apps/api/src/mcp-tools.ts` | MCP tool registration (`cv_*`, `invoice_*`, `portfolio_*`, `jobs_*`, aliases, scope filter) |
 | `apps/api/src/auth.ts` / `src/routes/connect.ts` | Bearer resolution and `mcp_tokens`; the `/connect` token page |
 | `apps/api/migrations/`, `apps/api/migrations-jobs/` | D1 schema of `DB` and of `JOBS_DB` |
 | `apps/api/scripts/migrate-*.ts`, `support-access.ts` | Gated data migrations and break-glass support access (dry run unless `--execute`) |
-| `e2e/` | Full-stack Job Tracker scenarios (`bun run e2e`); `HANDOFF.md` lists what is covered elsewhere |
-| `.github/workflows/` | CI, CLI matrix, nightly e2e, opt-in live checks, CLI release |
-| `DEPLOY.md` | Ordered provisioning, migration and deploy plan (builders, Job Tracker, CLI releases) |
+| `.github/workflows/` | CI, the opt-in live AI contract check |
+| `DEPLOY.md` | Ordered provisioning, migration and deploy plan (builders, Job Tracker) |
 
 ## Workflow
 
-- Run `bun x ultracite fix && bun run check` before committing (the chain includes the Python leg, so install uv first; `scripts/require-uv.sh` says how)
+- Run `bun x ultracite fix && bun run check` before committing
 - The apps and the design page compile `@rulisme/ui` from `packages/ui/src` (no library build needed to see a change); `bun run build` also refreshes its published `dist/`
 - Run the api locally with `bun run dev:api` (port 8788) so the apps' cloud save works in dev; for the Job Tracker also `bun run db:migrate:jobs:local && bun run db:seed:local` in `apps/api` once, then `bun run dev:jobs` (port 4007)
-- Never run `apps/api/scripts/migrate-*.ts --execute`, `support-access.ts --execute`, `wrangler deploy`, any `--remote` command, a feature-flag change in a remote `DB`, or a CLI release tag (`cli-v*`) without the owner's go-ahead
+- Never run `apps/api/scripts/migrate-*.ts --execute`, `support-access.ts --execute`, `wrangler deploy`, any `--remote` command, or a feature-flag change in a remote `DB` without the owner's go-ahead
 - Use `bunx @fission-ai/openspec@1.13.2 validate <change-id> --strict` after writing proposals
 - UI primitives live in `packages/ui` — every shadcn component is already there; check it (and `apps/design`) before creating new ones
 - Keep each CV `*-preview.tsx` (apps/cv) and its `*-pdf.tsx` (packages/cv-engine) in sync by hand; they are separate renderers in two packages and `bun run parity:cv-templates` fails a change set that touches the PDF alone. The invoice and portfolio pairs stay inside their apps
-- Change a Job Tracker contract in `packages/jobs-contracts` first, regenerate (`bun run build` there, `bun run contracts` in `apps/jobs-cli`) and commit the generated files; `bun run contracts:check` guards the drift
+- Change a Job Tracker contract in `packages/jobs-contracts`, regenerate (`bun run build` there) and commit the generated files; `bun run contracts:check` guards the drift
 
 <!-- BEGIN:turborepo-agent-rules -->
 

@@ -1,17 +1,14 @@
 # Repository CI (job-tracker-spec 13 §7): the whole workspace check chain,
 # type checks and builds on every push to main and every pull request.
 #
-#   bun run check        Biome → turbo lint (incl. the Python leg: ruff,
-#                        ruff format, import-linter) → typography lint and
-#                        parities → CV template parity → contracts drift
-#                        (JSON Schema + generated Pydantic models) → turbo
-#                        test (incl. pytest) → bun audit + pip-audit
-#   bun run check-types  tsc for scripts/ + turbo typecheck (incl. pyright)
+#   bun run check        Biome → turbo lint → typography lint and parities →
+#                        CV template parity → contracts drift (JSON Schema)
+#                        → turbo test → bun audit
+#   bun run check-types  tsc for scripts/ + turbo typecheck
 #   bun run build        packages, apps (wrangler types + vite build), api
-#                        (wrangler deploy --dry-run), the CLI wheel (uv build)
+#                        (wrangler deploy --dry-run)
 #
-# Nothing here deploys, publishes or touches a Cloudflare resource. The CLI's
-# OS / Python matrix is cli-matrix.yml; the full-stack suite is e2e.yml.
+# Nothing here deploys, publishes or touches a Cloudflare resource.
 name: CI
 
 on:
@@ -46,24 +43,12 @@ jobs:
         with:
           bun-version: 1.4.2
 
-      # uv is required for the Python leg (A-06, scripts/require-uv.sh).
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: "0.12.1"
-          python-version: "3.12"
-          enable-cache: true
-          cache-dependency-glob: apps/jobs-cli/uv.lock
-
       # lint:typography (scripts/lint-typography.sh) greps with ripgrep.
       - name: Install ripgrep
         run: sudo apt-get update && sudo apt-get install -y ripgrep
 
       - name: Install the workspace
         run: bun install --frozen-lockfile
-
-      - name: Python environment of apps/jobs-cli (lockfile must be current)
-        working-directory: apps/jobs-cli
-        run: uv sync --locked
 
       - name: CV template parity against the pull request base
         if: github.event_name == 'pull_request'
@@ -87,15 +72,13 @@ jobs:
             api-add-user-ids-and-jobs-db \
             api-extend-oauth-for-cli \
             jobs-add-dashboard \
-            jobs-add-cli \
             jobs-add-cv-variants \
             jobs-add-matching \
             jobs-add-browser-agent \
             jobs-add-email-applications \
             jobs-add-analytics \
             jobs-add-auto-apply \
-            jobs-add-bulk-actions \
-            jobs-add-cloud-discovery; do
+            jobs-add-bulk-actions; do
             if [ -d "openspec/changes/$id" ]; then
               bunx @fission-ai/openspec@1.13.2 validate "$id" --strict --no-interactive
             fi

@@ -1,5 +1,10 @@
 # 19 — AI Application Agent
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this document's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 This document specifies the agent that plans and drives a job application in
 the local browser. Models **decide**: they classify pages, choose among
 enumerated actions, and map form fields to the user's verified facts. The

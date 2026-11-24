@@ -75,11 +75,6 @@ export function HubFooter() {
             </a>
           </li>
           <li>
-            <a className={LINK_CLASS} href="/bot">
-              {t("nav.crawler")}
-            </a>
-          </li>
-          <li>
             <a className={LINK_CLASS} href={`${localePath(locale)}#mcp`}>
               {t("footer.mcp")}
             </a>

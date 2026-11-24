@@ -14,7 +14,6 @@
     "home": "Beranda Pilih Pendidikan",
     "features": "Fitur",
     "exports": "Yang Anda dapatkan",
-    "crawler": "Crawler",
     "menu": "Menu",
     "menuTitle": "Pilih Pendidikan"
   },
@@ -205,7 +204,6 @@
   "about": {
     "heading": "Dibuat untuk pelajar dan pencari kerja",
     "body": "Setiap pembuat dokumen gratis, tersedia dalam bahasa Inggris dan bahasa Indonesia, dan menyimpan dokumen Anda di browser sampai Anda menyimpannya.",
-    "link": "Cara kerja crawler kami",
     "shotAlt": "Halaman statistik pelacak lamaran"
   }
 }

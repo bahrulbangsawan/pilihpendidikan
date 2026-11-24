@@ -5,7 +5,6 @@ import { createApp } from "../../app";
 import { createCtx, createTestEnv } from "../../../test/fakes";
 import {
   CRON_DAILY,
-  CRON_HOURLY,
   CRON_EVERY_FIVE_MINUTES,
   CRON_JOBS,
   runScheduled,
@@ -23,14 +22,10 @@ describe("TCORE-CRON scheduled dispatch (14 §7)", () => {
       expect(wrangler).toContain(`"${cron}"`);
     }
     expect(Object.keys(CRON_JOBS).sort()).toEqual(
-      [CRON_DAILY, CRON_EVERY_FIVE_MINUTES, CRON_HOURLY].sort()
+      [CRON_DAILY, CRON_EVERY_FIVE_MINUTES].sort()
     );
     expect(CRON_JOBS[CRON_EVERY_FIVE_MINUTES].map((j) => j.name)).toEqual([
       "leases",
-      "cloud-reaper",
-    ]);
-    expect(CRON_JOBS[CRON_HOURLY].map((j) => j.name)).toEqual([
-      "cloud-dispatch",
     ]);
     expect(CRON_JOBS[CRON_DAILY].map((j) => j.name)).toEqual([
       "request-log",
@@ -52,7 +47,7 @@ describe("TCORE-CRON scheduled dispatch (14 §7)", () => {
     );
     expect(report).toEqual({
       cron: CRON_EVERY_FIVE_MINUTES,
-      ran: ["leases", "cloud-reaper"],
+      ran: ["leases"],
       failed: [],
     });
     expect(

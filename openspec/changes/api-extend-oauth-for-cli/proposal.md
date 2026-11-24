@@ -1,5 +1,10 @@
 # Change: Extend the api's OAuth server for the pilih-jobs CLI
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this change's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 ## Why
 
 The `pilih-jobs` CLI (`jobs-add-cli`) must sign in as the same user as

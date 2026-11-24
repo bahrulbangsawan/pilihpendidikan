@@ -17,7 +17,6 @@ const MENU_LINKS = [
   { key: "nav.features", hash: "#why" },
   { key: "nav.exports", hash: "#exports" },
   { key: "nav.assistants", hash: "#mcp" },
-  { key: "nav.crawler", hash: "" },
 ] as const;
 import { BrandMark } from "./brand-mark";
 
@@ -55,9 +54,6 @@ export function HubHeader() {
           </a>
           <a className={NAV_LINK_CLASS} href={`${localePath(locale)}#exports`}>
             {t("nav.exports")}
-          </a>
-          <a className={NAV_LINK_CLASS} href="/bot">
-            {t("nav.crawler")}
           </a>
         </nav>
         <div className="flex items-center gap-2">
@@ -109,7 +105,7 @@ export function HubHeader() {
                   <SheetClose asChild key={key}>
                     <a
                       className="type-subtitle rounded-md px-2 py-2 text-foreground transition-colors duration-140 ease-standard hover:bg-pane"
-                      href={hash ? `${localePath(locale)}${hash}` : "/bot"}
+                      href={`${localePath(locale)}${hash}`}
                     >
                       {t(key)}
                     </a>

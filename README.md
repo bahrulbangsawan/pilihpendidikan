@@ -1,7 +1,7 @@
 # pilihpendidikan
 
 Document builders that run in the browser and export print-ready PDFs, a job
-application tracker with a local CLI, and the hub page at the apex domain:
+application tracker, and the hub page at the apex domain:
 
 | App | What it builds | Dev | Production |
 | --- | -------------- | --- | ---------- |
@@ -9,8 +9,7 @@ application tracker with a local CLI, and the hub page at the apex domain:
 | `apps/cv` | CVs, four templates (basic, harvard, simple, standard) | <http://localhost:4003> | <https://cv.pilihpendidikan.com> |
 | `apps/invoice` | Invoices with Indonesian region (wilayah) addresses | <http://localhost:4004> | <https://invoice.pilihpendidikan.com> |
 | `apps/portfolio` | Apple Developer Academy portfolios, A4 landscape | <http://localhost:4005> | <https://portfolio.pilihpendidikan.com> |
-| `apps/jobs` | Job Tracker dashboard: board, inbox, approvals, devices, stats | <http://localhost:4007> | <https://jobs.pilihpendidikan.com> (not live yet) |
-| `apps/jobs-cli` | `pilih-jobs`, the Job Tracker CLI (Python): discovery, browser apply with approval, sync | `uv run pilih-jobs` | PyPI `pilih-jobs` (not published yet) |
+| `apps/jobs` | Job Tracker dashboard: board, application details, stats | <http://localhost:4007> | <https://jobs.pilihpendidikan.com> (not live yet) |
 | `apps/api` | Backend Worker: cloud save, sign-in, personal tokens, OAuth, MCP server, Job Tracker API (`/api/v1`) | <http://localhost:8788> | <https://api.pilihpendidikan.com> |
 | `apps/design` | The Cursor design system page: tokens, type roles, every component | <http://localhost:4006> | not deployed |
 
@@ -29,15 +28,11 @@ the hub lists it as "soon" until it goes live (`DEPLOY.md` § Job Tracker).
 
 - [Bun](https://bun.sh) 1.4.2 or newer
 - Node 22.22+, 24.15+ or 26+ (for tooling that shells out to Node)
-- [uv](https://docs.astral.sh/uv/) 0.12+ for the Python CLI (`apps/jobs-cli`);
-  `bun run check` runs its lint, tests and audit and fails without uv. uv
-  downloads Python 3.12 itself.
 
 ## Getting started
 
 ```sh
 bun install
-(cd apps/jobs-cli && uv sync)   # the CLI's Python environment
 bun dev            # builds @rulisme/ui, then runs every app and the api Worker
 bun run dev:cv     # or one app: dev:home, dev:cv, dev:invoice, dev:portfolio, dev:jobs, dev:design, dev:api
 ```
@@ -71,14 +66,11 @@ bun run dev                      # api on :8788
 # terminal 2: the dashboard (from the repo root)
 cp apps/jobs/.dev.vars.example apps/jobs/.dev.vars
 bun run dev:jobs                 # http://localhost:4007
-
-# terminal 3: the CLI
-cd apps/jobs-cli && uv run pilih-jobs --api-url http://localhost:8788 login
 ```
 
 Sign in to the dashboard with the e-mail link wrangler prints. `apps/jobs`
 also has `bun run dev:mock-api` (contract fixtures on :8790) for UI work
-without the api. The CLI's own guide is [`apps/jobs-cli/README.md`](apps/jobs-cli/README.md).
+without the api.
 
 The apps compile `@rulisme/ui` straight from `packages/ui/src` (TypeScript
 `paths` plus Vite's `resolve.tsconfigPaths`), so a component change shows up
@@ -89,35 +81,31 @@ its `dist/` for the package exports.
 
 ```sh
 bun x ultracite fix   # format and autofix (Biome, Ultracite rules)
-bun run check         # biome → turbo lint (+ ruff) → style lint → parities → contracts drift → tests (+ pytest) → audit (+ pip-audit)
-bun run check-types   # tsc + turbo typecheck (+ pyright)
-bun run build         # packages/ui, then each app (wrangler types + vite build) and the CLI wheel
-bun run e2e           # full-stack Job Tracker scenarios, about 30 minutes (see e2e/README.md)
+bun run check         # biome → turbo lint → style lint → parities → contracts drift → tests → audit
+bun run check-types   # tsc + turbo typecheck
+bun run build         # packages/ui, then each app (wrangler types + vite build)
 ```
 
 CI (`.github/workflows/`) runs `check`, `check-types` and `build` on every
-push and pull request, the CLI on macOS, Windows and Linux with Python
-3.11–3.13 (`cli-matrix.yml`), the e2e suite nightly, and releases the CLI from
-`cli-v*` tags (`release-cli.yml`, owner-approved).
+push and pull request, plus an opt-in nightly contract test against the live
+AI provider (`nightly-live.yml`).
 
 ## Layout
 
 ```
-apps/home                               hub landing page (pilihpendidikan.com) + CLI install scripts
+apps/home                               hub landing page (pilihpendidikan.com)
 apps/cv  apps/invoice  apps/portfolio   TanStack Start apps on Cloudflare Workers
 apps/jobs                               Job Tracker dashboard (jobs.pilihpendidikan.com)
-apps/jobs-cli                           pilih-jobs, the Job Tracker CLI (Python, uv)
 apps/api                                backend Worker (api.pilihpendidikan.com)
 apps/design                             Cursor design system page (localhost:4006)
 packages/ui                             @rulisme/ui component library + the Cursor theme
-packages/jobs-contracts                 @pilihpendidikan/jobs-contracts (Zod → JSON Schema → Pydantic)
+packages/jobs-contracts                 @pilihpendidikan/jobs-contracts (Zod → JSON Schema)
 packages/cv-engine                      @pilihpendidikan/cv-engine (CV types, schema, PDF templates)
 packages/config                         @pilihpendidikan/config (tsconfig base, motion.css)
-e2e/                                    full-stack Job Tracker scenarios
 job-tracker-spec/                       the Job Tracker specification
-scripts/                                style lint, parity checks, require-uv.sh
+scripts/                                style lint, parity checks
 openspec/                               change proposals and specs
-.github/workflows/                      CI, CLI matrix, e2e, live checks, CLI release
+.github/workflows/                      CI, opt-in live AI check
 docs/archive/                           reports written before the extraction
 portfolio-mock/                         the static mock the portfolio app was built from
 ```
@@ -139,9 +127,8 @@ Each `wrangler.jsonc` binds its Worker (`home-pilihpendidikan`,
 `portfolio-pilihpendidikan`, `jobs-pilihpendidikan`) to its custom domain.
 
 The Job Tracker needs its own resources, migrations and a dark launch before
-`apps/jobs` deploys, and the CLI is released to PyPI from a `cli-v*` tag: both
-are in `DEPLOY.md` (§ Job Tracker, § pilih-jobs CLI releases). Every deploy,
-data migration, flag change and release needs the owner's go-ahead.
+`apps/jobs` deploys (`DEPLOY.md` § Job Tracker). Every deploy, data
+migration and flag change needs the owner's go-ahead.
 
 The hub links a builder only when its entry in
 `apps/home/src/config/services.ts` is `"live"`. When a subdomain goes live,

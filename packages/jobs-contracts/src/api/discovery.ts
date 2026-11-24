@@ -327,7 +327,7 @@ export const InboxItemSchema = defineSchema(
     score: ScoreSummarySchema.nullable(),
     provenance: z.object({
       run_id: RunIdSchema.nullable(),
-      /** A CLI source (`src_…`) or a followed cloud source (`csr_…`, 24 §5.3). */
+      /** The CLI source (`src_…`) that delivered the posting. */
       source_id: UserJobSourceIdSchema.nullable(),
       source_label: z.string().nullable(),
       source_kind: SourceKindSchema,

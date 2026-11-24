@@ -1,5 +1,10 @@
 # 17 — OAuth 2.0 + PKCE Authentication (CLI ↔ apps/api)
 
+> **Client removed (2026-11-24).** The `pilih-jobs` CLI that this document's
+> flows run on was removed from the repository. The `apps/api` side described
+> here (routes, records, flags) remains, unused and behind flags that stay off;
+> read the CLI parts as history.
+
 How the `pilih-jobs` CLI obtains, refreshes, stores and loses credentials for the
 same user identity that signs in to `apps/jobs`. The CLI authenticates against
 the existing authorization server in `apps/api` (D-09). That server is extended

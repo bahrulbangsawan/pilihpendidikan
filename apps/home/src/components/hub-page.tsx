@@ -234,13 +234,6 @@ function About() {
           <p className="type-subtitle md:type-title text-pretty text-ink-sec">
             {t("about.body")}
           </p>
-          <a
-            className="type-subtitle mt-[14.9px] inline-flex items-center gap-1 self-start text-link transition-colors duration-140 ease-standard hover:text-link/75"
-            href="/bot"
-          >
-            {t("about.link")}
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
         <div className="relative h-[280px] overflow-hidden rounded-xs bg-stage-warm lg:col-span-16 lg:h-[465px]">
           <WindowFrame
