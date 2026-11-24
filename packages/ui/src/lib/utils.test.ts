@@ -5,7 +5,7 @@ import {
 import { describe, expect, it } from "vitest";
 import { cn, ensureUrl, formatPhoneDisplay } from "./utils";
 
-describe("cn() with the Zedative type utilities", () => {
+describe("cn() with the Cursor type utilities", () => {
   it("lets a role replace a generic size and line height", () => {
     expect(cn("text-xs leading-none", "type-body")).toBe("type-body");
   });

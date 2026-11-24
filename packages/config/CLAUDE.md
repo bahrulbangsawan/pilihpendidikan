@@ -10,7 +10,7 @@ Every UI app (`apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio`, `apps/de
 @import "@pilihpendidikan/config/motion.css";
 ```
 
-It implements DESIGN.md § Motion: the curve and duration every bare `transition-*` uses (150ms, `cubic-bezier(0.4, 0, 0.2, 1)`, also as `ease-standard`), the `press` utility (`translateY(1px) scale(0.99)` on `:active`, instant), the `pulse-dot` status pulse (only without reduced motion), the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. Zedative has no entrances, hover lifts, route transitions or overlay animations, so there are no utilities for them. Change a value here, never per component.
+It implements DESIGN.md § Motion: the curve and duration every bare `transition-*` uses (140ms, `cubic-bezier(0.4, 0, 0.2, 1)`, also as `ease-standard`), the `press` utility (a no-op: pressables do not move on `:active`), the `pulse-dot` status pulse (only without reduced motion), the Blocks spinner (`.spinner-blocks`) and the single `prefers-reduced-motion` kill switch. The Cursor design system has no entrances, hover lifts, route transitions or overlay animations, so there are no utilities for them. Change a value here, never per component.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-// Zedative badge, cursor.com's "Most popular" pill: a full-round chip in the
+// Cursor badge, cursor.com's "Most popular" pill: a full-round chip in the
 // caption role. `default` is the orange at 10% with orange text, `secondary`
 // a card-03 pill, `outline` a 10% ring. Every variant sets
 // its own border colour so `badgeVariants()` is conflict-free on an <a>.

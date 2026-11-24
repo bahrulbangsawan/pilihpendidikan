@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "@pilihpendidikan/config/motion.css";
 @import "@rulisme/ui/styles/shadcn.css";
-/* Zedative tokens, type roles, rails and paper (see DESIGN.md). Every app
+/* Cursor design system tokens, type roles and layout (DESIGN.md). Every app
    imports the same theme and defines no tokens of its own; this file adds
    only the print artifact below. */
 @import "@rulisme/ui/styles/theme.css";
@@ -13,28 +13,28 @@
 /*
  * ── Portfolio preview document ──────────────────────────────────────────────
  * A locked, print-faithful Apple-Developer-Academy A4-LANDSCAPE artifact that
- * rests on the editor's graph paper. TYPOGRAPHY.md § Exceptions: it is a print
- * artifact, so every colour on its pages is a literal and Night Desk (`.dark`)
- * never re-themes it — the deck looks the same in both schemes (only the
- * sheet's frame and the print view's backdrop, which are chrome and never
- * print, follow the theme tokens). Ported verbatim in
+ * rests on the editor's dark canvas. TYPOGRAPHY.md § Exceptions: it is a print
+ * artifact, so every colour on its pages is a literal and the dark chrome
+ * (`.dark`) never re-themes it (only the sheet's frame and the print view's
+ * backdrop, which are chrome and never print, follow the theme tokens).
+ * Ported verbatim in
  * geometry from portfolio-mock/index.html — fixed 16:9 image slot (150mm),
  * bounded Scope-of-Work list, -webkit-line-clamp per LINES,
- * align-content:start, equal 12px rhythm — with the Zedative adaptations,
- * mirrored in portfolio-pdf.tsx: the cover on Zedative's dark `shot` surface
+ * align-content:start, equal 12px rhythm — with the print-style adaptations,
+ * mirrored in portfolio-pdf.tsx: the cover on the deck's dark slate surface
  * (#2f343e) in #fafafa with light blue-grey secondary text (every pair
- * ≥ 4.5:1); project pages in Zedative ink on white (fg #000000 headings and
+ * ≥ 4.5:1); project pages in print ink on white (fg #000000 headings and
  * names, ink #393d45 body, fg-muted #5a6170 values and meta, `line` #cbcfd4
  * rules, `border` #dadde2 frames); cobalt links (#1348dc on paper, the lifted
- * Night Desk cobalt #7c9cff on the cover); neutral flat badges; 2px chips and
+ * cobalt #7c9cff on the cover); neutral flat badges; 2px chips and
  * a 2px image tile; NO drop shadows (pages get a hairline frame). Type is
- * Zedative's one family, Inter, at the static cuts the PDF embeds
+ * the print family, Inter, at the static cuts the PDF embeds
  * (src/lib/pdf-fonts.ts): 400 text, 600 headings and names, 700 the cover
  * title. Copy renders as written, in sentence case, with no case transform
  * and no tracking.
  */
 .pf-deck {
-  /* Paper: Zedative's print palette as literals, so `.dark` never reaches it. */
+  /* Paper: the print palette as literals, so `.dark` never reaches it. */
   --pf-bg: #ffffff;
   --pf-fg: #000000; /* fg — project title, headings, the author's name */
   --pf-ink: #393d45; /* ink — body copy, 10.90:1 */
@@ -42,8 +42,8 @@
   --pf-line: #cbcfd4; /* line — the hairline rules */
   --pf-border: #dadde2; /* border — chip and image frames */
   --pf-panel: #fafafa; /* bg-2 — chip and image-slot fill */
-  --pf-accent: #1348dc; /* Zedative cobalt — links on paper, 7.03:1 */
-  --pf-cover-bg: #2f343e; /* Zedative `shot`, the brand's dark surface */
+  --pf-accent: #1348dc; /* print cobalt — links on paper, 7.03:1 */
+  --pf-cover-bg: #2f343e; /* the deck's dark slate cover surface */
   --pf-cover-fg: #fafafa; /* 11.96:1 on the cover */
   --pf-cover-soft: #b4b9c3; /* kicker, subtitle — 6.34:1 */
   --pf-cover-faint: #9aa1ad; /* footer columns — 4.80:1 */
@@ -56,7 +56,7 @@
 
   width: var(--pf-page-w);
   /* The deck's own base type, insulated from the chrome: <body> carries the
-     Zedative body role (13px on a 20px line), which would otherwise leak into
+     chrome's body role (14px on a 21px line), which would otherwise leak into
      every deck element that sets no size or line height of its own (it
      clipped the cover subtitle). Inter at its text optical size throughout,
      the optical size of the static cuts embedded in the PDF. */
@@ -83,7 +83,7 @@
   margin: 0 auto 28px;
   overflow: hidden;
   background: var(--pf-bg);
-  /* The sheet's 1px frame on the graph paper, in place of the mock's drop
+  /* The sheet's 1px frame on the dark canvas, in place of the mock's drop
      shadow. Chrome, not ink: the `border` token, removed in print. */
   border: 1px solid var(--border);
 }
@@ -124,7 +124,7 @@
   color: var(--pf-cover-fg);
 }
 /* Headings set their colour: the theme's base layer gives h1–h6 the chrome
-   `foreground`, which would follow Night Desk. */
+   `foreground`, which would follow the dark chrome. */
 .pf-cover__title {
   display: -webkit-box;
   margin: 0;
@@ -251,7 +251,7 @@
 .pf-tag {
   padding: 5px 9px;
   border: 1px solid var(--pf-border);
-  border-radius: 2px; /* a Zedative chip — the mock used 999px pills */
+  border-radius: 2px; /* a print chip — the mock used 999px pills */
   background: var(--pf-panel);
   color: var(--pf-muted);
   font-size: 11px;
@@ -321,7 +321,7 @@
      follows at 16:9, capped at the column). The image is pre-validated 16:9, so
      object-fit: cover fills it with NO crop. Matches the PDF renderer's fixed
      16:9 card. Sized below full width because a full-width 16:9 is too tall.
-     A Zedative tile: 2px corners and a 1px `border` frame, as in the PDF. */
+     A print tile: 2px corners and a 1px `border` frame, as in the PDF. */
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;

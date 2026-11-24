@@ -2,7 +2,7 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative field, cursor.com's docs search box: 36px like the buttons it sits
+// Cursor field, cursor.com's docs search box: 36px like the buttons it sits
 // beside, 8px radius, a 10% border on the page colour, body role (16px on
 // touch screens). Hover deepens the fill; focus turns the border to 20% ink
 // and draws the 2px ink outline.

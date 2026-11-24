@@ -12,7 +12,7 @@ application tracker with a local CLI, and the hub page at the apex domain:
 | `apps/jobs` | Job Tracker dashboard: board, inbox, approvals, devices, stats | <http://localhost:4007> | <https://jobs.pilihpendidikan.com> (not live yet) |
 | `apps/jobs-cli` | `pilih-jobs`, the Job Tracker CLI (Python): discovery, browser apply with approval, sync | `uv run pilih-jobs` | PyPI `pilih-jobs` (not published yet) |
 | `apps/api` | Backend Worker: cloud save, sign-in, personal tokens, OAuth, MCP server, Job Tracker API (`/api/v1`) | <http://localhost:8788> | <https://api.pilihpendidikan.com> |
-| `apps/design` | The Zedative design system page: tokens, type roles, every component | <http://localhost:4006> | not deployed |
+| `apps/design` | The Cursor design system page: tokens, type roles, every component | <http://localhost:4006> | not deployed |
 
 Every web app is bilingual (English at `/`, Indonesian at `/id`). The builders
 keep a local draft in the browser and can save to the cloud with a personal
@@ -108,8 +108,8 @@ apps/cv  apps/invoice  apps/portfolio   TanStack Start apps on Cloudflare Worker
 apps/jobs                               Job Tracker dashboard (jobs.pilihpendidikan.com)
 apps/jobs-cli                           pilih-jobs, the Job Tracker CLI (Python, uv)
 apps/api                                backend Worker (api.pilihpendidikan.com)
-apps/design                             Zedative design system page (localhost:4006)
-packages/ui                             @rulisme/ui component library + the Zedative theme
+apps/design                             Cursor design system page (localhost:4006)
+packages/ui                             @rulisme/ui component library + the Cursor theme
 packages/jobs-contracts                 @pilihpendidikan/jobs-contracts (Zod → JSON Schema → Pydantic)
 packages/cv-engine                      @pilihpendidikan/cv-engine (CV types, schema, PDF templates)
 packages/config                         @pilihpendidikan/config (tsconfig base, motion.css)
@@ -156,6 +156,6 @@ These apps were extracted from the `bahrul` monorepo (where they lived as
 extraction time. Reports in `docs/archive/` and `og-metadata-audit.md`
 predate the move and still refer to the old `*.bahrul.me` hosts.
 
-See `CLAUDE.md` for conventions, `DESIGN.md` for the Zedative design system
+See `CLAUDE.md` for conventions, `DESIGN.md` for the Cursor design system
 and `TYPOGRAPHY.md` for the enforced type rules. Run `bun run dev:design` to
 browse the system.

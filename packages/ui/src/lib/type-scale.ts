@@ -1,5 +1,5 @@
 /**
- * The Zedative type scale (DESIGN.md § Typography), cursor.com's scale: one
+ * The Cursor type scale (DESIGN.md § Typography), cursor.com's scale: one
  * family, eight roles,
  * each at a default and a compact step. Compact is for dense regions
  * (toolbars, filter bars, sidebars). The utilities live in

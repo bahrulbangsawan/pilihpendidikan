@@ -3,7 +3,7 @@
  * tailwind-merge typography-config parity check.
  *
  * `cn()` (`packages/ui/src/lib/utils.ts`, imported by every app as
- * `@rulisme/ui/lib/utils`) registers the Zedative type utilities with
+ * `@rulisme/ui/lib/utils`) registers the Cursor type utilities with
  * tailwind-merge: the `type-role` group (`type-body`, `type-title-compact`,
  * …) and the `type-weight` group (`weight-semibold`, …), both fed from
  * `TYPE_UTILITIES` / `TYPE_WEIGHTS` in `packages/ui/src/lib/type-scale.ts`.

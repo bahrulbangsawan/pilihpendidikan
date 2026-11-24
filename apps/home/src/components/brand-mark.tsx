@@ -1,5 +1,5 @@
-// The pilihpendidikan mark as a Zedative logo square (DESIGN.md § Components
-// › Nav, § Shapes: 2px corners). The icon PNGs bake in round app-icon
+// The pilihpendidikan mark as a logo square in the Cursor design system
+// (DESIGN.md § Shapes: 4px corners). The icon PNGs bake in round app-icon
 // corners, so the image renders 40% larger than its square and the square
 // crops those corners away; the glyph stays centred.
 const SIZES = {

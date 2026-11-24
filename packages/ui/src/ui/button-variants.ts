@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-// Zedative buttons, cursor.com's `.btn` family: pills with a 1px border,
+// Cursor buttons, cursor.com's `.btn` family: pills with a 1px border,
 // weight 400, leading 1, only colours transition (140ms). `default` is the
 // dark pill, `secondary` the warm-grey pill, `outline` the 20%-outlined
 // ghost, `ghost` a borderless toolbar control, `link` the orange text link

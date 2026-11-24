@@ -12,7 +12,7 @@ export {
   formatPhoneDisplay,
 } from "@pilihpendidikan/cv-engine/format";
 
-// tailwind-merge knows nothing about the Zedative type utilities defined in
+// tailwind-merge knows nothing about the Cursor type utilities defined in
 // `@rulisme/ui/styles/theme.css` (DESIGN.md / TYPOGRAPHY.md). Register the
 // roles (`type-body`, `type-title-compact`, …) and the weights
 // (`weight-semibold`, …) as their own groups so `cn()` keeps the last role

@@ -12,8 +12,8 @@ devices, `/jobs/$ujbId`) were removed from the dashboard (round 3); their old
 URLs fall through to `$.tsx` and show the 404 page. The api, CLI and mock api
 still serve them.
 
-The look is Zedative (cursor.com's dark system) with reui.io's application
-layouts, **dark only**: next-themes pins `.dark` (`forcedTheme="dark"` in
+The look is the Cursor design system (cursor.com's dark theme) with reui.io's
+application layouts, **dark only**: next-themes pins `.dark` (`forcedTheme="dark"` in
 `-root-components.tsx`); there is no theme switch anywhere. The shell
 (reui app-shell): a 240px sidebar on `bg-sidebar` with a right rule — brand
 row (20px mark, "Pilih Jobs", collapse toggle; collapsed it is a 56px icon

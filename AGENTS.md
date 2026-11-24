@@ -44,14 +44,14 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 | `apps/jobs-cli/src/pilih_jobs/` | `pilih-jobs` CLI: `cli/` (one Typer module per command group), `auth/`, `sync/`, `discovery/` + `adapters/`, `browser/` + `agent/` + `policy/`, `tasks/` (worker, leases), `contracts/_generated/` (generated, never hand-edited) |
 | `apps/jobs-cli/packaging/` | Homebrew formula and Scoop manifest templates + `render.py` (filled per release by `release-cli.yml`; nothing is published from here) |
 | `packages/jobs-contracts/` | `@pilihpendidikan/jobs-contracts`: Zod contracts (`src/`), generated JSON Schema (`schema/`), test vectors, `adapters.json`, `cli-commands.json` (the `/cli` page), email templates |
-| `packages/ui/src/styles/theme.css` | The Zedative theme: every token, type role, weight, radius, elevation, rail/paper utility and the Night Desk scheme |
+| `packages/ui/src/styles/theme.css` | The Cursor theme: every token, type role, weight, radius, elevation, layout utility and the one dark scheme |
 | `apps/*/src/styles.css` | Four imports (tailwind, `motion.css`, `shadcn.css`, the theme) plus print-artifact CSS; no tokens (parity-checked) |
 | `apps/design/src/showcase/` | The design system page: one file per section, shared `layout.tsx`, `state-matrix.tsx`, `color-pair.tsx` |
 | `apps/*/src/i18n/locales/{en,id}.json` | UI copy, English and Indonesian |
 | `apps/*/public/{robots.txt,sitemap.xml,llms.txt}` | Crawler and agent discovery files |
 | `packages/ui/src/` | `@rulisme/ui`: the 61 shadcn components plus `rails`, `kbd`, `spinner`, `not-found` (`ui/`), `form/`, `reui/`, `hooks/` (`use-shortcut`, `use-mobile`), `lib/` (`utils`, `type-scale`) |
-| `packages/config/` | `tsconfig.base.json`, `motion.css` (Zedative motion: curve, `press`, `pulse-dot`, spinner) |
-| `scripts/` | Zedative style lint, theme / tailwind-merge / showcase / CV-template parity checks, `require-uv.sh` |
+| `packages/config/` | `tsconfig.base.json`, `motion.css` (Cursor motion: curve, `press`, `pulse-dot`, spinner) |
+| `scripts/` | Cursor style lint, theme / tailwind-merge / showcase / CV-template parity checks, `require-uv.sh` |
 | `apps/api/src/app.ts` | Backend router and dispatch order (`apps/api/CLAUDE.md` has the route table) |
 | `apps/api/src/jobs/` | Job Tracker API (`/api/v1`): `core/` (router kernel), `routes/` + `services/` + `repo/` per area (only `repo/` touches `JOBS_DB`), `ai/`, `queue/`, `cron/`, `legacy/` (the `/api/jobs` + MCP facade); rules in its `README.md` |
 | `apps/api/src/mcp-tools.ts` | MCP tool registration (`cv_*`, `invoice_*`, `portfolio_*`, `jobs_*`, aliases, scope filter) |

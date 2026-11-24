@@ -120,7 +120,7 @@ export function RenderCvPage({ cvvId }: { cvvId: string }) {
   }
 
   return (
-    <main className="graph-paper grid min-h-dvh place-items-center px-4 py-10">
+    <main className="grid min-h-dvh place-items-center px-4 py-10">
       <section
         aria-busy={outcome === null}
         aria-labelledby="render-title"

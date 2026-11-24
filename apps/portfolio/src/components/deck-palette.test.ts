@@ -6,7 +6,7 @@ import styles from "../styles.css?raw";
 // Desk never re-themes it, and it keeps no Warp colour. The PDF is tested as
 // rendered in deck-render.test.tsx, which also holds it to exactly this
 // palette.
-const ZEDATIVE_DECK = [
+const PRINT_DECK = [
   "#2f343e", // cover: shot
   "#fafafa", // cover text; chip and image-slot fill on paper
   "#b4b9c3", // cover secondary text
@@ -25,7 +25,7 @@ const ZEDATIVE_DECK = [
 
 const WARP = ["#121212", "#6f839f", "#bd9f65", "#faf9f6", "#b4b4b2", "#868684"];
 
-// The neutral greys the paper used before it took Zedative's ink.
+// The neutral greys the paper used before it took the current print ink.
 const RETIRED_GREYS = [
   "#1d1d1f",
   "#6e6e73",
@@ -50,7 +50,7 @@ function captures(source: string, pattern: RegExp): string[] {
 }
 
 describe("portfolio deck palette", () => {
-  it.each(ZEDATIVE_DECK)("defines %s on the paper", (hex) => {
+  it.each(PRINT_DECK)("defines %s on the paper", (hex) => {
     expect(preview).toContain(hex);
   });
 
@@ -78,7 +78,7 @@ describe("portfolio deck type", () => {
     expect(styles).not.toMatch(CASE_OR_TRACKING);
   });
 
-  it("frames the 16:9 image as a 2px Zedative tile", () => {
+  it("frames the 16:9 image as a 2px print tile", () => {
     const start = styles.indexOf(".pf-figure {");
     expect(start).toBeGreaterThan(-1);
     expect(styles.slice(start, styles.indexOf("}", start))).toContain(

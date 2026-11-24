@@ -48,7 +48,7 @@ export function OverviewSection() {
             className="type-headline lg:type-hero-compact text-balance text-foreground"
             id="overview-title"
           >
-            Zedative design system
+            Cursor design system
           </h1>
           <p className="type-subtitle text-pretty text-ink">
             The pilihpendidikan design system: a warm near-black page, cards one

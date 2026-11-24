@@ -73,7 +73,7 @@ export function RootComponent() {
   // The builder is dark only (cursor.com's dark theme): `<html>` carries
   // `.dark` from the server and next-themes is pinned to it. The invoice
   // sheet keeps its own white-paper tokens.
-  // Toasts are Zedative windows (`@rulisme/ui/ui/sonner`) and stay until
+  // Toasts are Cursor-style windows (`@rulisme/ui/ui/sonner`) and stay until
   // dismissed.
   return (
     <ThemeProvider

@@ -66,7 +66,7 @@ image slot grows (height-driven, never cropped)** to fill the empty space, and
 the reflection strip + footer pack flush at the bottom. Keep the slot exactly
 16:9 (uploads are pre-validated 16:9) and never let content overflow the page.
 
-## Design system — Zedative
+## Design system — Cursor
 
 The chrome follows the root `DESIGN.md` (rules mapped to code in its
 **Implementation** section) and `TYPOGRAPHY.md`; `src/styles.css` only imports
@@ -80,7 +80,7 @@ print CSS. What is specific to this app:
   36px/400 title) opens the form; sections are 40px apart with no rules, headings `type-title-compact
   weight-semibold`, the column capped at 640px; the deck sits on a `bg-background`
   well (32px padding) inside the card pane's 24px gutter. Below `md` the panes stack and a floating button downloads.
-- **Theme.** Dark only (Zedative has one scheme): `<html>` carries
+- **Theme.** Dark only (the Cursor design system has one scheme): `<html>` carries
   `className="dark"` from the server and next-themes is pinned with
   `forcedTheme="dark"`; there is no toggle.
 - **Shortcut.** The primary action is downloading the PDF: the toolbar button
@@ -99,8 +99,8 @@ print CSS. What is specific to this app:
   string through `@rulisme/ui/print/pdf-text`, collapsing spaces and line
   breaks as the preview's paragraphs do.
   `.pf-deck` prints in colour (`print-color-adjust: exact`), so the cover slab
-  survives a browser print. It takes Zedative's colours in
-  **both renderers, kept in sync by hand**: the cover is `shot` `#2f343e` with
+  survives a browser print. It takes the print palette in
+  **both renderers, kept in sync by hand**: the cover is slate `#2f343e` with
   `#fafafa` text, `#b4b9c3` / `#9aa1ad` secondary text and a `#4a505c` rule;
   links are cobalt `#1348dc` on paper and the lifted `#7c9cff` on the cover
   (every text pair ≥ 4.5:1); tags and badges are 2px chips; no drop shadows

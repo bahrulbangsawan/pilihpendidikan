@@ -1,6 +1,6 @@
 /*
- * Zedative — the pilihpendidikan design system (DESIGN.md), rebuilt on the
- * cursor.com system in its dark theme: warm near-black (#14120b) and warm
+ * Cursor — the pilihpendidikan design system (DESIGN.md): the cursor.com
+ * system in its dark theme: warm near-black (#14120b) and warm
  * light ink (#edecec), cards one step lighter (#1b1913) with a 2.5% hairline
  * and a 4px radius, pill buttons (light primary, warm-grey secondary,
  * 20%-outlined ghost), orange (#f54e00)
@@ -11,7 +11,7 @@
  *
  *   @import "@rulisme/ui/styles/theme.css";
  *
- * Dark only: the Night Desk scheme is cursor.com's dark theme (#14120b
+ * Dark only: the one scheme is cursor.com's dark theme (#14120b
  * paper, #1b1913 cards, #edecec ink, a light pill for the primary action).
  * There is no light scheme and no theme switch.
  *
@@ -134,7 +134,7 @@
   --container-prose: 383px;
 }
 
-/* ── Night Desk: the only scheme (cursor.com dark) ─────────────────────── *
+/* ── The only scheme (cursor.com dark) ──────────────────────────────────── *
  * pilihpendidikan is dark only. `.dark` is kept as an alias so markup that
  * still sets it (or `className="dark"` on a subtree) changes nothing. Print
  * artifacts re-scope their own paper tokens in each app's styles.css. */
@@ -423,24 +423,6 @@
   width: calc(100% - 40px);
   max-width: var(--container-rail);
   margin-inline: auto;
-}
-
-/* Retired Zedative ornaments, kept as no-ops so older markup still
-   compiles while it is migrated: nodes, diamonds, graph paper, hatching. */
-@utility rail-nodes {
-  &::before,
-  &::after {
-    content: none;
-  }
-}
-@utility diamond {
-  display: none;
-}
-@utility graph-paper {
-  background-image: none;
-}
-@utility hatch {
-  background-image: none;
 }
 
 /* The cursor.com card: one step darker than the page, 4px radius, a 2.5%

@@ -1,6 +1,7 @@
 /*
- * Shared motion for every Zedative app (apps/home · apps/cv · apps/invoice ·
- * apps/portfolio · apps/design). DESIGN.md § Motion:
+ * Shared motion for every app on the Cursor design system (apps/home ·
+ * apps/cv · apps/invoice · apps/portfolio · apps/design).
+ * DESIGN.md § Motion:
  *
  *   - Duration 140ms, easing cubic-bezier(0.4, 0, 0.2, 1).
  *   - What animates: button and tile background + lip shadow, nav-link hover

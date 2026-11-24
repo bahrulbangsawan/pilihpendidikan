@@ -24,7 +24,7 @@ import { FieldButton } from "./field-button";
 import { Input } from "./input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-// Date pickers (reui's date selector in Zedative): the trigger is the
+// Date pickers (reui's date selector in the Cursor style): the trigger is the
 // cursor.com field (36px, 32px at `sm`, 8px corners, a 10% border that
 // deepens on hover) led by a calendar icon, with a round clear button at the
 // end once a value is set. The flyout holds an optional presets column

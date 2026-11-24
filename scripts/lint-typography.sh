@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Zedative style lint — enforces TYPOGRAPHY.md (and the DESIGN.md Don'ts it
-# encodes) across every UI root. Run via `bun run lint:typography`. Exits
-# non-zero on any violation.
+# Cursor design system style lint — enforces TYPOGRAPHY.md (and the
+# DESIGN.md Don'ts it encodes) across every UI root. Run via
+# `bun run lint:typography`. Exits non-zero on any violation.
 
 set -uo pipefail
 
@@ -58,9 +58,9 @@ run_check() {
   fi
 }
 
-printf 'Zedative (cursor.com dark) style lint — see TYPOGRAPHY.md for rules\n\n'
+printf 'Cursor design system (cursor.com dark) style lint — see TYPOGRAPHY.md for rules\n\n'
 
-# 1) Generic Tailwind sizes. Zedative has eight roles (cursor.com's scale) and nothing else.
+# 1) Generic Tailwind sizes. The Cursor system has eight roles (cursor.com's scale) and nothing else.
 run_check \
   "No generic text sizes (text-xs … text-9xl)" \
   "use a role: type-hero / type-headline / type-display / type-title / type-subtitle / type-body / type-caption / type-micro (or a -compact step)" \
@@ -147,7 +147,7 @@ run_check \
 # 15) Warp palette classes no longer exist.
 run_check \
   "No Warp palette classes (bg-deep-ember, text-gold-leaf …)" \
-  "use the Zedative tokens (DESIGN.md § Implementation › Token map)" \
+  "use the Cursor design system tokens (DESIGN.md § Implementation › Token map)" \
   rg -n -P '(?<![\w-])(bg|text|border|ring|fill|stroke|outline|decoration)-(warm-off-white|bone-gray|pale-stone|faint-linen|smoke-charcoal|iron-veil|slate-hearth|deep-ember|smoked-onyx|absolute|ink-black|gold-leaf|muted-cobalt|surface-(canvas|banded|card|control|floating))(?![\w-])' "${SCOPE[@]}" "${TS_GLOBS[@]}"
 
 # 16) Semantic tokens already switch with the theme.
@@ -188,8 +188,8 @@ run_check \
 
 printf '\n'
 if [[ $fail -ne 0 ]]; then
-  printf '\033[31mZedative style lint FAILED.\033[0m See TYPOGRAPHY.md.\n'
+  printf '\033[31mCursor style lint FAILED.\033[0m See TYPOGRAPHY.md.\n'
   exit 1
 fi
-printf '\033[32mZedative style lint passed.\033[0m\n'
+printf '\033[32mCursor style lint passed.\033[0m\n'
 exit 0

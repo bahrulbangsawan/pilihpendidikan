@@ -36,7 +36,7 @@ describe("typeClass()", () => {
     expect(TYPE_UTILITIES).toHaveLength(16);
   });
 
-  it("offers exactly the three Zedative weights", () => {
+  it("offers exactly the three Cursor weights", () => {
     expect(TYPE_WEIGHTS).toEqual(["normal", "semibold", "bold"]);
   });
 });

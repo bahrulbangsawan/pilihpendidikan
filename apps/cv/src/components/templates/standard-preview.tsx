@@ -10,6 +10,11 @@ import {
   PreviewExperienceEntry,
 } from "./preview-entries";
 
+// The Cursor print style on paper, the twin of cv-engine's standard-pdf.tsx:
+// Inter (`.cv-page` sets `--font-print`), the print ink colours through the
+// token classes it re-scopes (src/styles.css), copy set as written, no
+// letter-spacing. Change it together with its PDF template.
+
 function formatMonth(value: string): string {
   if (!value) {
     return "";

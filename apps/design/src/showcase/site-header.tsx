@@ -18,7 +18,10 @@ import { useState } from "react";
 import { useActiveSection } from "./active-section";
 import { groupOf, NAV_GROUPS } from "./nav";
 
-/** The lettermark: a 20px light tile, like Cursor's mark beside its name. */
+/**
+ * The lettermark: a 20px light tile with the pilihpendidikan "p", then the
+ * system's name.
+ */
 export function Wordmark() {
   return (
     <a
@@ -29,9 +32,9 @@ export function Wordmark() {
         aria-hidden="true"
         className="type-caption grid size-5 place-items-center rounded-sm bg-primary text-primary-foreground"
       >
-        Z
+        p
       </span>
-      Zedative
+      Cursor style
     </a>
   );
 }

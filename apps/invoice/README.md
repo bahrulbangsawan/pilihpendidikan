@@ -16,7 +16,7 @@ export. Production: <https://invoice.pilihpendidikan.com>.
 
 - [TanStack Start](https://tanstack.com/start) on [Cloudflare Workers](https://workers.cloudflare.com)
 - [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@rulisme/ui` (shadcn/ui-based, `packages/ui`)
-- The Zedative design system (root `DESIGN.md`): light by default, with a Night Desk toggle
+- The Cursor design system (root `DESIGN.md`): dark only; the invoice itself stays white paper
 - [TypeScript](https://www.typescriptlang.org), [Bun](https://bun.sh), Biome, Vitest
 
 ## Getting Started

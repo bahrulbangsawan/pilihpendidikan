@@ -1,6 +1,6 @@
 ---
 version: "beta"
-name: "Zedative"
+name: "Cursor"
 description: "cursor.com's dark system: warm near-black paper, one step lighter cards with a 2.5% hairline and 4px corners, pill buttons, one family (Geist) at weight 400 on cursor.com's type scale, and orange only for text links."
 scheme: "dark only"
 colors:
@@ -34,9 +34,9 @@ typography:
     micro: "11/1.45 (compact 10/1.4)"
 ---
 
-# Zedative
+# Cursor
 
-Zedative is the pilihpendidikan design system. Since November 2026 it is cursor.com's system in its dark theme, measured value by value from the live site (computed styles and CSS variables, `cook/refs/`): the same paper, ink, card, border and orange, the same pill buttons, the same type scale, container and section rhythm. Only the typeface differs, because Cursor's own (CursorGothic) is proprietary: Geist sets within 0.4% of its widths with an identical cap height. Nothing of Cursor's is shipped: no logo, no artwork, no copy.
+Cursor is the pilihpendidikan design system: cursor.com's system in its dark theme, measured value by value from the live site (computed styles and CSS variables, `cook/refs/`): the same paper, ink, card, border and orange, the same pill buttons, the same type scale, container and section rhythm. Only the typeface differs, because Cursor's own (CursorGothic) is proprietary: Geist sets within 0.4% of its widths with an identical cap height. Nothing of Cursor's is shipped: no logo, no artwork, no copy.
 
 **Dark only.** There is one scheme. There is no light theme and no theme switch in any app. Print artifacts (the CV, invoice and portfolio documents) stay white paper (§ Print artifacts).
 
@@ -170,7 +170,7 @@ Each app's `src/styles.css` is four imports (`tailwindcss`, `motion.css`, `shadc
 
 ### Layout utilities
 
-`rail` is the 1300px container with 20px gutters; `band` a plain full-bleed section. `Band`, `Rail` and `Diamond` (`@rulisme/ui/ui/rails`) remain for older markup: `Diamond`, `rail-nodes`, `graph-paper` and `hatch` render nothing. `surface-card` paints the card recipe on any element.
+`rail` is the 1300px container with 20px gutters; `band` a plain full-bleed section; `Band` and `Rail` (`@rulisme/ui/ui/rails`) render them. `surface-card` paints the card recipe on any element.
 
 ### Focus
 

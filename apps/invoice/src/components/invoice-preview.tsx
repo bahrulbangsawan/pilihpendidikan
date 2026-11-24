@@ -52,11 +52,11 @@ export function InvoicePreview({ data }: { data: InvoiceData }) {
     );
   }
 
-  // Zedative on paper, mirroring invoice-pdf.tsx: Inter at 400 / 600 / 700,
-  // the copy as written (sentence case, no letter-spacing), and the print
+  // The Cursor print style, mirroring invoice-pdf.tsx: Inter at 400 / 600 /
+  // 700, the copy as written (sentence case, no letter-spacing), and the print
   // palette through tokens that `.invoice-page` (styles.css) re-scopes to
-  // literal values, so Night Desk never recolours the sheet. Running text is
-  // `ink` (inherited); the title, names and the amount due `foreground`;
+  // literal values, so the dark chrome never recolours the sheet. Running text
+  // is `ink` (inherited); the title, names and the amount due `foreground`;
   // labels, column headers, periods and sub-items `muted-foreground`; rules
   // `line`. Amounts take tabular figures (the PDF's `tnum`).
   return (

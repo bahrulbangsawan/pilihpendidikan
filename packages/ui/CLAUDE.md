@@ -1,6 +1,6 @@
 # packages/ui — Shared Component Library (@rulisme/ui)
 
-Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio` and `apps/design`, plus the one **Zedative** theme (`DESIGN.md`) every app imports. All 61 shadcn/ui components are here (installed with the shadcn CLI, lyra geometry, radix base, lucide icons) and restyled to Zedative (cursor.com's dark system, `DESIGN.md`).
+Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/home`, `apps/cv`, `apps/invoice`, `apps/portfolio` and `apps/design`, plus the one **Cursor** theme (`DESIGN.md`) every app imports. All 61 shadcn/ui components are here (installed with the shadcn CLI, lyra geometry, radix base, lucide icons) and restyled to the Cursor design system (cursor.com's dark theme, `DESIGN.md`).
 
 ## Build (important)
 
@@ -13,9 +13,9 @@ Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/ho
 
 ## Structure & imports
 
-- `src/styles/theme.css` → `@rulisme/ui/styles/theme.css`: every Zedative token in its one dark scheme on `:root` (shadcn roles + `ink`, `ink-sec`, `ink-mid`, `line`, `hairline`, `pane`, `pane-2`, `pane-3`, `link`, `success`, `shot`, `primary-deep`, `wash`, `highlight`, `syn-*`; `.dark` is an alias), the eight `type-*` roles and `weight-*` utilities, radius, elevation (`shadow-md` flyout, `shadow-lg` window), the `band` / `rail` / `surface-card` / `typeset` / `field-touch` utilities (`rail-nodes`, `diamond`, `graph-paper`, `hatch` are retired no-ops), and the base layer (focus, selection, mono code). The only place tokens are defined.
+- `src/styles/theme.css` → `@rulisme/ui/styles/theme.css`: every Cursor design system token in its one dark scheme on `:root` (shadcn roles + `ink`, `ink-sec`, `ink-mid`, `line`, `hairline`, `pane`, `pane-2`, `pane-3`, `link`, `success`, `shot`, `primary-deep`, `wash`, `highlight`, `syn-*`; `.dark` is an alias), the eight `type-*` roles and `weight-*` utilities, radius, elevation (`shadow-md` flyout, `shadow-lg` window), the `band` / `rail` / `surface-card` / `typeset` / `field-touch` utilities, and the base layer (focus, selection, mono code). The only place tokens are defined.
 - `src/styles/shadcn.css` → `@rulisme/ui/styles/shadcn.css`: the shadcn runtime variants and utilities (from the CLI, unchanged).
-- `src/ui/` — every shadcn component (button, card, dialog, select, sidebar, chart, …) plus `rails` (`Band`, `Rail` = the 1300px container, `Diamond` = renders nothing), `kbd`, the Blocks `spinner` and `not-found` → `@rulisme/ui/ui/button`. `buttonVariants`, `badgeVariants` and `tabsListVariants` live in their own `*-variants.ts` files.
+- `src/ui/` — every shadcn component (button, card, dialog, select, sidebar, chart, …) plus `rails` (`Band` = a full-bleed section, `Rail` = the 1300px container), `kbd`, the Blocks `spinner` and `not-found` → `@rulisme/ui/ui/button`. `buttonVariants`, `badgeVariants` and `tabsListVariants` live in their own `*-variants.ts` files.
 - `src/blocks/` — composites (screen patterns): `page` (PageHeader, PageContent, PageSection, PageGutter), `doc-header` (DocHeader), `settings` (SubNavLayout, SettingsCard, SettingsRow, SectionCard), `kanban`, `user-menu`, `app-brand`, `ghost-page`, `window-frame` → `@rulisme/ui/blocks/page`. Data-agnostic: content and copy come in as props, no app hooks, routing or i18n inside; apps keep their behaviour (dnd-kit wiring, sessions) and pass refs, handlers and items.
 - `src/form/` — composed form pieces (`form-field`, `month-picker`, `section-list`) → `@rulisme/ui/form/form-field`
 - `src/reui/phone-input.tsx` → `@rulisme/ui/reui/phone-input`
@@ -34,12 +34,12 @@ Reusable React 19 UI primitives published as `@rulisme/ui`, consumed by `apps/ho
 - Apps render no raw `<button>`, `<input>`, `<select>`, `<textarea>` or `<option>` (lint rule 19, `scripts/check-raw-controls.ts`, TYPOGRAPHY.md § Raw controls): the raw elements live only in this package. A generic piece an app builds twice belongs here (in `blocks/` if it is a screen pattern).
 - Menu rows (`SelectItem`, `DropdownMenuItem`, `CommandItem`, `ComboboxItem`, context and menubar items) size a leading lucide icon to 16px in `ink-sec`; `SelectItem` and `DropdownMenuItem` take a trailing `description`.
 - Every file in `ui/`, `blocks/`, `form/` and `reui/` is rendered on the design page (`bun run parity:showcase`); composites go in its Patterns section (`apps/design/src/showcase/sections/patterns.tsx`).
-- Adding a shadcn component: run `bunx --bun shadcn@latest add <name>` from any app or from here. Every `components.json` (this package and `apps/*`) says `radix-lyra` on the radix base with lucide icons, and the apps' `ui` / `utils` aliases point at `@rulisme/ui`, so the file lands in `src/ui/` here (check with `--dry-run`). Then restyle it to Zedative, rewrite its `@rulisme/ui/...` imports to relative ones (this package's `tsconfig.json` maps the alias so the CLI's output type-checks meanwhile), and render it in `apps/design`.
+- Adding a shadcn component: run `bunx --bun shadcn@latest add <name>` from any app or from here. Every `components.json` (this package and `apps/*`) says `radix-lyra` on the radix base with lucide icons, and the apps' `ui` / `utils` aliases point at `@rulisme/ui`, so the file lands in `src/ui/` here (check with `--dry-run`). Then restyle it to the Cursor design system, rewrite its `@rulisme/ui/...` imports to relative ones (this package's `tsconfig.json` maps the alias so the CLI's output type-checks meanwhile), and render it in `apps/design`.
 
 ## Components
 
 Import paths are `@rulisme/ui/<folder>/<file>`. Every shadcn part keeps its
-upstream props; the table names what Zedative adds or what to pass.
+upstream props; the table names what the Cursor design system adds or what to pass.
 
 ### Primitives (`ui/`)
 
@@ -98,7 +98,7 @@ upstream props; the table names what Zedative adds or what to pass.
 | PropertyChip | `ui/property-chip` | 32px fact chip (8px corners, 8px side padding) with icon, an `ink-sec` label and a `foreground` value | `icon`, `label`, children; `propertyChipClassName` styles a Select trigger as the same chip |
 | Questionnaire (+parts) | `ui/questionnaire` | Step-by-step form | composition |
 | RadioGroup (+Item) | `ui/radio-group` | Radios | Radix |
-| Band, Rail, Diamond | `ui/rails` | Layout container (Diamond renders nothing) | — |
+| Band, Rail | `ui/rails` | Full-bleed section; the 1300px container | `asChild` |
 | ResizablePanelGroup (+Panel, Handle) | `ui/resizable` | Split panes | react-resizable-panels |
 | ScrollArea, ScrollBar | `ui/scroll-area` | Styled scroll | Radix |
 | SegmentedControl (+Item) | `ui/segmented-control` | Single-choice pill track | `value`, `onValueChange`, `size`; items `value`, icon child |

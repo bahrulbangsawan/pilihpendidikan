@@ -24,7 +24,7 @@ const COLUMNS = [
     heading: "Workspace",
     links: [
       { label: "pilihpendidikan.com", href: "https://pilihpendidikan.com" },
-      { label: "Zedative flavor", href: "https://flavors.design/f/zedative" },
+      { label: "cursor.com", href: "https://cursor.com" },
     ],
   },
 ] as const;
@@ -74,7 +74,7 @@ export function SiteFooter() {
       </div>
       <div className="mx-auto w-full max-w-6xl px-5 pb-10 sm:px-10 xl:px-16">
         <p className="type-caption text-muted-foreground">
-          © pilihpendidikan · Zedative renders @rulisme/ui from source.
+          © pilihpendidikan · Cursor style, rendered from @rulisme/ui source.
         </p>
       </div>
     </footer>

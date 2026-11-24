@@ -2,8 +2,8 @@ import type * as React from "react";
 
 import { cn } from "../lib/utils";
 
-// Zedative card, cursor.com's `.card`: one step darker than the page
-// (#f2f1ed), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding
+// Cursor card, cursor.com's `.card`: one step lighter than the page
+// (#1b1913), a 4px radius, a 2.5% hairline, no shadow, 17.5px padding
 // (15.9px on top). Running text inside inherits `ink`; `CardTitle` is the
 // 16px subtitle role in `foreground`, `CardDescription` the same size at 60%.
 function Card({

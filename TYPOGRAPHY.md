@@ -1,6 +1,6 @@
 # Typography and Style Rules — Enforcement
 
-This document is the authoritative spec for **enforcing** the Zedative design
+This document is the authoritative spec for **enforcing** the Cursor design
 system (`DESIGN.md`) in code. `DESIGN.md` owns the visual values; this file
 owns the utilities, the lint rules and their exceptions. Where they conflict,
 `DESIGN.md` wins on values and this file wins on rules.
